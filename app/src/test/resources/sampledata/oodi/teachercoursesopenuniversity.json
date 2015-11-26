@@ -1,0 +1,26 @@
+{
+  "md5": "fcfc1a528efb11588421754f7c3d0e21",
+  "status": 200,
+  "data": [
+    {
+      "realisation_name": "Kreikka (KL20), ryhm\u00e4 2",
+      "show_students": 1,
+      "realisation_type_code": 17,
+      "enroll_end_date": "2015-10-19T20:59:00.000Z",
+      "enroll_start_date": "2015-09-18T12:00:00.000Z",
+      "faculty_code": "H10",
+      "teacher_role_code": 3,
+      "end_date": "2016-04-26T21:00:00.000Z",
+      "start_date": "2015-10-25T22:00:00.000Z",
+      "credits": 10,
+      "organisation_name": "Eksegetiikka",
+      "show_hierarchy": 1,
+      "course_id": 105975184,
+      "image_uri": null,
+      "weboodi_uri": "https:\/\/weboodi.helsinki.fi\/hy\/alkusivu.jsp?Kieli=1&avattavaSivu=opettaptied&OpetTap=105975184",
+      "learningopportunity_id": "A10440",
+      "teacher_id": "010540",
+      "organisation_code": "H1001"
+    }
+  ]
+}

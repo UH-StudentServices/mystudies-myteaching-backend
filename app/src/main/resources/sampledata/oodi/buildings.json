@@ -1,0 +1,40 @@
+{
+  "status": 200,
+  "data": [
+    {
+      "country": "FI",
+      "zipcode": "00120",
+      "address2": null,
+      "address1": "Georgsgatan 18",
+      "building_id": 0
+    },
+    {
+      "country": "FI",
+      "zipcode": "00790",
+      "address2": null,
+      "address1": "Viikinkaari 11",
+      "building_id": 1
+    },
+    {
+      "country": "FI",
+      "zipcode": "00790",
+      "address2": null,
+      "address1": " ",
+      "building_id": 2
+    },
+    {
+      "country": "FI",
+      "zipcode": " ",
+      "address2": null,
+      "address1": "Viikinkaari 11",
+      "building_id": 3
+    },
+    {
+      "country": "FI",
+      "zipcode": " ",
+      "address2": null,
+      "address1": " ",
+      "building_id": 4
+    }
+  ]
+}

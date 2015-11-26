@@ -1,0 +1,69 @@
+{
+  "md5": "93d13c84e11ef490bd12d11b9afc1752",
+  "status": 200,
+  "data": {
+    "realisation_name": "Kotieläinbiotekniikka osa B",
+    "students": [
+      {
+        "person_id": 96504004,
+        "student_number": "014178711",
+        "enrollment_status_code": 2,
+        "last_name": "Käki",
+        "first_names": "Kaisa Maarit",
+        "email": null,
+        "mobile_phone": "040-1234321"
+      }
+    ],
+    "credit_points": 5,
+    "last_changed": "2014-05-06T19:55:51.000Z",
+    "subcourses": [],
+    "events": [
+      {
+        "type_code": 5,
+        "weekday_code": 1,
+        "start_date": "2014-09-01T09:00:00.000Z",
+        "end_date": "2014-09-29T11:00:00.000Z",
+        "locations": "MMKEL seminaarisali, Koetilantie 5, 1. krs",
+        "locations_abbreviated": "MMKEL seminaarisali",
+        "building_id": "17"
+      }
+    ],
+    "realisation_type_code": 5,
+    "enroll_end_date": "2014-09-01T20:59:00.000Z",
+    "enroll_start_date": "2014-06-30T21:00:00.000Z",
+    "teachers": [
+      {
+        "person_id": 47510601,
+        "teacher_role_code": 3,
+        "teacher_id": "075393",
+        "email": null,
+        "first_names": "Kari A",
+        "calling_name": "Kari",
+        "last_name": "Rantala",
+        "full_name": "Rantala Kari A"
+      }
+    ],
+    "end_date": "2014-10-02T21:00:00.000Z",
+    "start_date": "2014-08-31T21:00:00.000Z",
+    "organisations": [
+      {
+        "code": "H830",
+        "name": "Maataloustieteiden laitos",
+        "percentage": 100
+      }
+    ],
+    "course_id": 101472950,
+    "languages": [{"langcode": "fi"}],
+    "descriptions": [
+      {
+        "element_id": 30,
+        "description": "<p>B) Biotekniikan perusteet kotieläinjalostuksessa</p>"
+      },
+      {
+        "element_id": 103775613,
+        "description": "<p>genetiikka, eläimet, DNA, molekyylit</p>"
+      }
+    ],
+    "learningopportunity_id": "815058"
+  }
+}

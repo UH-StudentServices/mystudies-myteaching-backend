@@ -1,0 +1,14 @@
+{
+  "provider_url": "http://foo.bar",
+  "description": "Description",
+  "title": "Title",
+  "author_name": "Author Name",
+  "thumbnail_width": 200,
+  "url": "http://foo.bar/baz",
+  "thumbnail_url": "http://foo.bar/baz.jpg",
+  "author_url": "http://foo.bar/author",
+  "version": "1.0",
+  "provider_name": "Foo",
+  "type": "link",
+  "thumbnail_height": 400
+}

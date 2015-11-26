@@ -1,0 +1,112 @@
+{
+  "status": "ok",
+  "data": {
+    "items": [
+      {
+        "ID": "focus100k_na_7",
+        "feedID": "ontology",
+        "feedName": "ontology",
+        "title": "Koulutus ja kasvatus",
+        "text": "How should perceptions and conceptions of sustainability and citizenship influence teaching-learning processes for sustainable development education and intercultural sensitivity?  Kaivola, Taina ; Cabral, Sophie  \nUniversity of Helsinki, Matemaattis- luonnontieteellisen tiedekunnan kanslia \nUNESCO Conference on Intercultural Education Teaching and Learning for Intercultural Understanding, Human Rights and a Culture of Peace+ \nNon peer reviewed \n http://hdl.handle.net/10138/33895  \n2003 \n 1171 Geosciences   516 Educational sciences  \n",
+        "date": "2015-06-05T16:26:10",
+        "relevance": 100,
+        "popularity": 0,
+        "tags": [
+          {
+            "name": "sys_f_extracategory",
+            "values": [
+              "7"
+            ]
+          }
+        ]
+      },
+      {
+        "ID": "helda.helsinki.fi/handle/10138/15149",
+        "feedID": "helda",
+        "feedName": "Helda",
+        "title": "NORD0081B_03",
+        "text": "How should perceptions and conceptions of sustainability and citizenship influence teaching-learning processes for sustainable development education and intercultural sensitivity?  Kaivola, Taina ; Cabral, Sophie  \nUniversity of Helsinki, Matemaattis- luonnontieteellisen tiedekunnan kanslia \nUNESCO Conference on Intercultural Education Teaching and Learning for Intercultural Understanding, Human Rights and a Culture of Peace+ \nNon peer reviewed \n http://hdl.handle.net/10138/33895  \n2003 \n 1171 Geosciences   516 Educational sciences  \n",
+        "link": "https://helda.helsinki.fi/handle/10138/15149",
+        "date": "2009-12-15T10:31:40",
+        "relevance": 13,
+        "popularity": 0,
+        "tags": [
+          {
+            "name": "author",
+            "values": [
+              "Mirja Saari"
+            ]
+          },
+          {
+            "name": "sys_f_lang",
+            "values": [
+              "sv"
+            ]
+          },
+          {
+            "name": "text_lang",
+            "values": [
+              "sv"
+            ]
+          },
+          {
+            "name": "collection",
+            "values": [
+              "Research resources"
+            ]
+          },
+          {
+            "name": "article_type",
+            "values": [
+              "article"
+            ]
+          }
+        ]
+      },
+      {
+        "ID": "helda.helsinki.fi/handle/10138/15123",
+        "feedID": "helda",
+        "feedName": "Helda",
+        "title": "Helda sample result",
+        "text": "Sample HELDA result",
+        "link": "https://helda.helsinki.fi/handle/10138/15123",
+        "date": "2009-12-15T10:31:40",
+        "relevance": 13,
+        "popularity": 0
+      },
+      {
+        "ID": "helsinginyliopisto.etapahtuma.fi/12345",
+        "feedID": "etapahtuma",
+        "feedName": "Etapahtuma",
+        "title": "Event sample result title",
+        "text": "Event sample result text",
+        "link": "https://helsinginyliopisto.etapahtuma.fi/bar/123",
+        "date": "2009-12-15T10:31:40",
+        "relevance": 13,
+        "popularity": 0
+      },
+      {
+        "ID": "courses.helsinki.fi/123",
+        "feedID": "courses",
+        "feedName": "Courses Helsinki",
+        "title": "Courses sample search result title",
+        "text": "Courses sample text",
+        "link": "https://courses.helsinki.fi/foo/123",
+        "date": "2009-12-15T10:31:40",
+        "relevance": 13,
+        "popularity": 0
+      },
+      {
+        "ID": "www.helsinki.fi/123344",
+        "feedID": "helsinki",
+        "feedName": "University public site",
+        "title": "Univeristy public site sample search result title",
+        "text": "Univeristy public site sample text",
+        "link": "https://www.helsinki.fi/baz/123333",
+        "date": "2009-12-15T10:31:40",
+        "relevance": 13,
+        "popularity": 0
+      }
+    ]
+  }
+}

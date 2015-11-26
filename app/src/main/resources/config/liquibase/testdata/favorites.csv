@@ -1,0 +1,11 @@
+id;type;order_index;user_id;created_by;portfolio
+1;RSS;2;1;test@helsinki.fi;false
+2;TWITTER;2;1;system;true
+3;RSS;0;1;test@helsinki.fi;false
+4;LINK;0;1;test@helsinki.fi;true
+5;LINK;1;1;test@helsinki.fi;true
+6;LINK;1;3;test@helsinki.fi;true
+7;UNICAFE;3;1;test@helsinki.fi;false
+8;LINK;2;3;test@helsinki.fi;true
+9;LINK;0;3;test@helsinki.fi;false
+10;LINK;1;3;test@helsinki.fi;false

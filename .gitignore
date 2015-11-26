@@ -1,0 +1,18 @@
+# Intellij
+.idea/
+*.iml
+*.iws
+*.ipr
+app/classes/
+
+# Mac
+.DS_Store
+
+# Gradle
+build/
+log/
+
+# Vagrant
+.vagrant/
+
+node_modules

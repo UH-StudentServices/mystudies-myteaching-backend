@@ -1,0 +1,32 @@
+{
+  "md5": "10addfd8798e38bc11d13e43b47fda27",
+  "status": 200,
+  "data": [
+    {
+      "weekday_code": 4,
+      "building_address1": "Viikinkaari 11",
+      "building_zipcode" : "00790",
+      "room_name_short": "F24 Fabianinkatu 24, Sali 531",
+      "end_date": "2015-08-13T11:00:00.000Z",
+      "start_date": "2015-08-13T07:00:00.000Z",
+      "course_id": 99903629,
+      "simple_type_code": 2,
+      "realisation_type_code": 17,
+      "learningopportunity_name": "Kreikka (KL20)",
+      "learningopportunity_id": "10440"
+    },
+    {
+      "weekday_code": 4,
+      "building_address1": "Viikinkaari 11",
+      "building_zipcode" : "00790",
+      "room_name_short": "Päärakennus, sali 1",
+      "end_date": "2015-09-13T11:00:00.000Z",
+      "start_date": "2015-09-13T07:00:00.000Z",
+      "course_id": 99903629,
+      "simple_type_code": 2,
+      "realisation_type_code": 19,
+      "learningopportunity_name": "Kreikka",
+      "learningopportunity_id": "10440"
+    }
+  ]
+}

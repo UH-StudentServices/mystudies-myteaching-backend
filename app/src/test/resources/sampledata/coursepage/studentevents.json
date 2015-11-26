@@ -1,0 +1,26 @@
+[
+  {
+    "course_implementation_id":"123456789",
+    "title":"Title: Test 04159adb2253",
+    "begin":"2014-10-28T14:00:00Z",
+    "end":"2014-11-28T14:00:00Z",
+    "where":"Place: Test 04156f654df1",
+    "exam": false
+  },
+  {
+    "course_implementation_id":"123456789",
+    "title":"Tentti",
+    "begin":"2040-10-28T11:00:00Z",
+    "end":"2040-11-28T14:00:00Z",
+    "where":"Tenttisali",
+    "exam": true
+  },
+  {
+    "course_implementation_id":"123456789",
+    "title":"Ei päättymisaikaa",
+    "begin":"2040-10-28T11:00:00Z",
+    "end":"",
+    "where":"Paikka X",
+    "exam": false
+  }
+]

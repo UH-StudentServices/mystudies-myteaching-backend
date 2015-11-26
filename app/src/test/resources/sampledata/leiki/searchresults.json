@@ -1,0 +1,69 @@
+{
+  "status": "ok",
+  "data": {
+    "items": [
+      {
+        "ID": "focus100k_na_7",
+        "feedID": "ontology",
+        "feedName": "ontology",
+        "title": "Koulutus ja kasvatus",
+        "text": "Text",
+        "link": "https://helda.helsinki.fi/handle/00/15149",
+        "date": "2015-06-05T16:26:10",
+        "relevance": 100,
+        "popularity": 0,
+        "tags": [
+          {
+            "name": "sys_f_extracategory",
+            "values": [
+              "7"
+            ]
+          }
+        ]
+      },
+      {
+        "ID": "helda.helsinki.fi/handle/10138/15149",
+        "feedID": "helda",
+        "feedName": "Helda",
+        "title": "NORD0081B_03",
+        "text": "Text",
+        "link": "https://helda.helsinki.fi/handle/10138/15149",
+        "date": "2009-12-15T10:31:40",
+        "relevance": 13,
+        "popularity": 0,
+        "tags": [
+          {
+            "name": "author",
+            "values": [
+              "Mirja Saari"
+            ]
+          },
+          {
+            "name": "sys_f_lang",
+            "values": [
+              "sv"
+            ]
+          },
+          {
+            "name": "text_lang",
+            "values": [
+              "sv"
+            ]
+          },
+          {
+            "name": "collection",
+            "values": [
+              "Research resources"
+            ]
+          },
+          {
+            "name": "article_type",
+            "values": [
+              "article"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

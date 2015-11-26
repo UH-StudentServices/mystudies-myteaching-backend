@@ -1,0 +1,292 @@
+# Disable the spring security default configuration from spring-boot-actuator
+management.security.enabled: true
+security.basic.enabled: false
+
+# Disable Jolokia - An http/json bridge for remote JMX access
+endpoints.jolokia.enabled: false
+
+async:
+    corePoolSize: 2
+    maxPoolSize: 50
+    queueCapacity: 10000
+
+spring:
+    messageSource:
+        cacheSeconds: 1
+
+userDefaults :
+    defaultUsefulLinks :
+        studentDefaultUsefulLinks :
+            - url: https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=content_view&_nfls=true&placeId=HY034217&contentId=HY054735
+              description: usefulLinks.yths
+              orderIndex: 0
+            - url: https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY034234
+              description: usefulLinks.studyingAndTrainingAbroad
+              orderIndex: 1
+        teacherDefaultUsefulLinks :
+            - url: https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY1001598
+              description: usefulLinks.academicAdministration
+              orderIndex: 0
+            - url: https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY1001593
+              description: usefulLinks.professionalDevelopment
+              orderIndex: 1
+            - url: https://flamma.helsinki.fi/fi/HY056508
+              description: usefulLinks.staffAndFacultyMobility
+              orderIndex: 2
+        studentOpenUniversityDefaultUsefulLinks:
+            - url:
+                fi: https://flamma.helsinki.fi/fi/HY311624/HY311616
+                sv: https://flamma.helsinki.fi/sv/HY311624/HY324589
+                en: https://flamma.helsinki.fi/en/HY311624/HY321072
+              description: usefulLinks.studentCounseling
+              orderIndex: 0
+            - url:
+                fi: https://flamma.helsinki.fi/fi/HY311619
+                sv: https://flamma.helsinki.fi/sv/HY325480
+                en: https://flamma.helsinki.fi/en/HY321195
+              description: usefulLinks.examsAndOtherAssessmentTools
+              orderIndex: 1
+            - url:
+                fi: https://flamma.helsinki.fi/fi/HY311624/HY311620
+                sv: https://flamma.helsinki.fi/sv/HY311624/HY324614
+                en: https://flamma.helsinki.fi/en/HY311624/HY321193
+              description: usefulLinks.certificateOfStudyAttainments
+              orderIndex: 2
+            - url: https://www.avoin.helsinki.fi/omat/osallistumiset/
+              description: usefulLinks.openUniversity
+              orderIndex: 3
+        teacherOpenUniversityDefaultUsefulLinks:
+            - url: https://flamma.helsinki.fi/fi/HY311604
+              description: usefulLinks.teachingSupportOpenUniversity
+              orderIndex: 0
+            - url: https://flamma.helsinki.fi/fi/HY311747
+              description: usefulLinks.teachingPracticesInOpenUniversity
+              orderIndex: 1
+            - url: https://www.avoin.helsinki.fi/opettajille/pedagoginen_koulutus.htm
+              description: usefulLinks.pedagogicTraining
+              orderIndex: 2
+            - url: https://www.avoin.helsinki.fi/opettajille/index.htm
+              description: usefulLinks.forTeachers
+              orderIndex: 3
+    facultyUsefulLinks :
+        defaultFacultyCode: default
+        teacherFacultyLinks:
+            - faculty: A57000
+              url: https://flamma.helsinki.fi/fi/HY301045
+              description: usefulLinks.teachingSupport
+              orderIndex: 3
+            - faculty: A90000
+              url: https://flamma.helsinki.fi/fi/HY306071
+              description: usefulLinks.forTeacher
+              orderIndex: 3
+            - faculty: A55000
+              url: https://flamma.helsinki.fi/fi/HY300953
+              description: usefulLinks.forPersonnel
+              orderIndex: 3
+            - faculty: A40000
+              url: https://flamma.helsinki.fi/fi/HY291485
+              description: usefulLinks.teachingSupport
+              orderIndex: 3
+            - faculty: A60000
+              url: https://flamma.helsinki.fi/fi/HY302860
+              description: usefulLinks.forPersonnel
+              orderIndex: 3
+            - faculty: A30000
+              url: https://flamma.helsinki.fi/fi/HY291609
+              description: usefulLinks.teaching
+              orderIndex: 3
+            - faculty: A80000
+              url: https://flamma.helsinki.fi/fi/HY301055
+              description: usefulLinks.forPersonnel
+              orderIndex: 3
+            - faculty: A50000
+              url: https://flamma.helsinki.fi/fi/HY287029
+              description: usefulLinks.forPersonnel
+              orderIndex: 3
+            - faculty: A20000
+              url: https://flamma.helsinki.fi/fi/HY307740
+              description: usefulLinks.teachingSupport
+              orderIndex: 3
+            - faculty: A74000
+              url: https://flamma.helsinki.fi/sv/HY286442
+              description: usefulLinks.teachingMatters
+              orderIndex: 3
+            - faculty: A10000
+              url: https://flamma.helsinki.fi/fi/HY292308
+              description: usefulLinks.teachingSupport
+              orderIndex: 3
+            - faculty: A70000
+              url: https://flamma.helsinki.fi/fi/HY286934
+              description: usefulLinks.teachingMatters
+              orderIndex: 3
+            - faculty: default
+              url: https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY034203
+              description: usefulLinks.teachingMatters
+              orderIndex: 3
+            - faculty: A93000
+              url: https://www.avoin.helsinki.fi/omat/osallistumiset/
+              description: usefulLinks.openUniversity
+              orderIndex: 3
+        studentFacultyLinks:
+            - faculty: H57
+              url: https://flamma.helsinki.fi/fi/HY300842
+              description: usefulLinks.forStudent
+              orderIndex: 3
+            - faculty: H90
+              url: https://flamma.helsinki.fi/fi/HY297557
+              description: usefulLinks.forStudent
+              orderIndex: 3
+            - faculty: H55
+              url: https://flamma.helsinki.fi/fi/HY300952
+              description: usefulLinks.forStudent
+              orderIndex: 3
+            - faculty: H40
+              url: https://flamma.helsinki.fi/fi/HY290050
+              description: usefulLinks.forStudent
+              orderIndex: 3
+            - faculty: H60
+              url: https://flamma.helsinki.fi/fi/HY303821
+              description: usefulLinks.forStudent
+              orderIndex: 3
+            - faculty: H30
+              url: https://flamma.helsinki.fi/fi/HY291608
+              description: usefulLinks.forStudent
+              orderIndex: 3
+            - faculty: H80
+              url: https://flamma.helsinki.fi/fi/HY301046
+              description: usefulLinks.forStudent
+              orderIndex: 3
+            - faculty: H50
+              url: https://flamma.helsinki.fi/fi/HY287012
+              description: usefulLinks.forStudent
+              orderIndex: 3
+            - faculty: H20
+              url: https://flamma.helsinki.fi/fi/HY307150
+              description: usefulLinks.forStudent
+              orderIndex: 3
+            - faculty: H74
+              url: https://flamma.helsinki.fi/sv/HY284948
+              description: usefulLinks.forStudent
+              orderIndex: 3
+            - faculty: H10
+              url: https://flamma.helsinki.fi/fi/HY292307
+              description: usefulLinks.forStudent
+              orderIndex: 3
+            - faculty: H70
+              url: https://flamma.helsinki.fi/fi/HY286484
+              description: usefulLinks.forStudent
+              orderIndex: 3
+            - faculty: default
+              url: https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY034202
+              description: usefulLinks.forStudent
+              orderIndex: 3
+
+courses:
+    examTypeCodes: 8,16,19,20,23,27
+
+avatarSize: 510
+saml:
+  idp.metadataUrl: https://login.helsinki.fi/metadata/sign-hy-metadata.xml
+  teacher:
+    alias: teacher
+  student:
+    alias: student
+
+studentAppUrl:
+teacherAppUrl:
+appRelativeUrl: /app
+
+leiki:
+    base.url: http://suositukset.student.helsinki.fi
+    client.implementation: rest
+
+flamma:
+    base.url: https://flamma.helsinki.fi
+
+search:
+  maxSearchResults: 100
+  maxCategoryResults: 10
+
+recommendations:
+  maxRecommendations: 5
+  uidPrefix: opintohistoria_
+
+cookieDomain: helsinki.fi
+
+unisportMyReservationsUrl: https://unisport.fi/yol/web/fi/shibbolethAuth.do
+
+httpClient:
+  readTimeout: 5000
+  connectTimeout: 1000
+  maxTotal: 500
+  defaultMaxPerRoute: 500
+
+cache:
+    timeToLiveSeconds: 3600
+    studentEvents:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
+    studentEnrollments:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
+    teacherEvents:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
+    teacherCourses:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
+    coursePage:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 5000
+    coursePageOneOffEvents:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 5000
+    courseUniRealisations:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 5000
+    studentNews:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 1
+    teacherNews:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 1
+    isOpenUniversityStudent:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 10000
+    isOpenUniversityTeacher:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 5000
+    europeHelsinkiTimeZone:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 1
+
+fileStorage:
+  path: /opt/opintoni/files
+  uri: /files
+
+facultyLinks:
+  A93000: https://flamma.helsinki.fi/portal/units/avoin
+  H57: https://flamma.helsinki.fi/portal/units/bio
+  H90: https://flamma.helsinki.fi/portal/units/vetmed
+  H55: https://flamma.helsinki.fi/portal/units/farmasia
+  H40: https://flamma.helsinki.fi/portal/units/hum
+  H60: https://flamma.helsinki.fi/portal/units/kaytt
+  H30: https://flamma.helsinki.fi/portal/units/ltdk
+  H80: https://flamma.helsinki.fi/portal/units/mmtdk
+  H50: https://flamma.helsinki.fi/portal/units/matlu
+  H20: https://flamma.helsinki.fi/portal/units/law
+  H74: https://flamma.helsinki.fi/portal/units/sockom
+  H10: https://flamma.helsinki.fi/portal/units/teologinen
+  H70: https://flamma.helsinki.fi/portal/units/valt
+  A57000: https://flamma.helsinki.fi/portal/units/bio
+  A90000: https://flamma.helsinki.fi/portal/units/vetmed
+  A55000: https://flamma.helsinki.fi/portal/units/farmasia
+  A40000: https://flamma.helsinki.fi/portal/units/hum
+  A60000: https://flamma.helsinki.fi/portal/units/kaytt
+  A30000: https://flamma.helsinki.fi/portal/units/ltdk
+  A80000: https://flamma.helsinki.fi/portal/units/mmtdk
+  A50000: https://flamma.helsinki.fi/portal/units/matlu
+  A20000: https://flamma.helsinki.fi/portal/units/law
+  A74000: https://flamma.helsinki.fi/portal/units/sockom
+  A10000: https://flamma.helsinki.fi/portal/units/teologinen
+  A70000: https://flamma.helsinki.fi/portal/units/valt

@@ -1,0 +1,44 @@
+{
+  "status": "ok",
+  "data": {
+    "matches": [
+      {
+        "keyword": "teaching",
+        "match": [
+          {
+            "categoryID": 357832,
+            "categoryName": "Teaching Methods"
+          },
+          {
+            "categoryID": 514135,
+            "categoryName": "Teaching Hospital"
+          },
+          {
+            "categoryID": 772772,
+            "categoryName": "Teaching Facilities"
+          },
+          {
+            "categoryID": 391132,
+            "categoryName": "Teaching Material"
+          },
+          {
+            "categoryID": 147202,
+            "categoryName": "Teaching Film And Video"
+          },
+          {
+            "categoryID": 743372,
+            "categoryName": "Teaching Technology"
+          },
+          {
+            "categoryID": 544982,
+            "categoryName": "Learning Materials"
+          },
+          {
+            "categoryID": 64852,
+            "categoryName": "Educational Equipment"
+          }
+        ]
+      }
+    ]
+  }
+}

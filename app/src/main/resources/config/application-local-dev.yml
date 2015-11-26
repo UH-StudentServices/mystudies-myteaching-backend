@@ -1,0 +1,62 @@
+server:
+    port: 8080
+    session-timeout: 1800 # Seconds
+
+spring:
+    profiles:
+        active: local-dev
+    datasource:
+        dataSourceClassName: org.h2.jdbcx.JdbcDataSource
+        url: jdbc:h2:mem:jhipster;DB_CLOSE_DELAY=-1
+        databaseName:
+        serverName:
+        username:
+        password:
+
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+        database: H2
+        openInView: false
+        show_sql: true
+        generate-ddl: false
+        hibernate:
+            ddl-auto: none
+            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        properties:
+            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: true
+            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+
+metrics:
+    jmx.enabled: false
+
+oodi:
+    base.url: https://oprek4.it.helsinki.fi:30039
+    client.implementation: mock
+
+coursePage:
+    base.url: https://dev.student.helsinki.fi/api/v1
+    client.implementation: mock
+    defaultCourseImageUri: https://dev.student.helsinki.fi/sites/default/files/styles/liftup_322_x_190/public/images/default_images/default_image.jpg
+
+leiki:
+    base.url: http://suositukset.student.helsinki.fi
+    client.implementation: mock
+
+googleAnalyticsAccount: UA-61958961-1
+
+hostUrl: http://local.student.helsinki.fi:3000
+portfolioHostUrl: http://local.student.helsinki.fi:3001
+portfolioUrl: http://local.student.helsinki.fi:3001/portfolio/#
+loginUrlTeacher: /app/locallog.html
+loginUrlStudent: /app/locallog.html
+logoutUrl: /logout
+teacherAppUrl: http://local.teacher.helsinki.fi:3000
+studentAppUrl: http://local.student.helsinki.fi:3000
+
+embedlyApiKey: dd741e653b0e4841bc59a60650031057
+
+environment: local
+
+adminAccounts: opettaja@helsinki.fi, opiskelija@helsinki.fi

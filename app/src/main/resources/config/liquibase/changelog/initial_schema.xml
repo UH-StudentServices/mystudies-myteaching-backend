@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This file is part of MystudiesMyteaching application.
+  ~
+  ~ MystudiesMyteaching application is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ MystudiesMyteaching application is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <changeSet id="Add sequence for hibernate" author="Sebastian Monte" dbms="postgresql">
+        <createSequence sequenceName="hibernate_sequence" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="Add user table" author="Sebastian Monte">
+        <createTable tableName="user">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="edu_person_principal_name" type="varchar(255)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add auditing tables" author="Sebastian Monte">
+        <createTable tableName="persistent_audit_event">
+            <column name="event_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="principal" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_date" type="timestamp"/>
+            <column name="event_type" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="persistent_audit_event_data">
+            <column name="event_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="varchar(255)"/>
+        </createTable>
+        <addPrimaryKey columnNames="event_id, name" tableName="persistent_audit_event_data"/>
+
+        <createIndex indexName="idx_persistent_audit_event"
+                     tableName="persistent_audit_event"
+                     unique="false">
+            <column name="principal" type="varchar(255)"/>
+            <column name="event_date" type="timestamp"/>
+        </createIndex>
+
+        <createIndex indexName="idx_persistent_audit_event_data"
+                     tableName="persistent_audit_event_data"
+                     unique="false">
+            <column name="event_id" type="bigint"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="event_id"
+                                 baseTableName="persistent_audit_event_data"
+                                 constraintName="fk_event_persistent_audit_event_data"
+                                 referencedColumnNames="event_id"
+                                 referencedTableName="persistent_audit_event"/>
+    </changeSet>
+
+    <changeSet id="Rename user table" author="Sebastian Monte">
+        <renameTable oldTableName="user" newTableName="user_account"/>
+    </changeSet>
+
+    <changeSet id="Add favorite" author="Sebastian Monte">
+        <createTable tableName="favorite">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type" type="varchar(255)">
+                <constraints nullable="false"></constraints>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_favorite" references="user_account(id)"/>
+            </column>
+            <column name="order_index" type="int"/>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add twitter favorite" author="Sebastian Monte">
+        <createTable tableName="twitter_favorite">
+            <column name="id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_favorite_twitter_favorite" references="favorite(id)"/>
+            </column>
+            <column name="feed_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Update varchar for created_by and modified_by" author="Sebastian Monte">
+        <modifyDataType tableName="user_account" columnName="created_by" newDataType="varchar(255)" />
+        <modifyDataType tableName="user_account" columnName="last_modified_by" newDataType="varchar(255)" />
+    </changeSet>
+
+    <changeSet id="Add rss favorite" author="Henri Meltaus">
+        <createTable tableName="rss_favorite">
+            <column name="id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_favorite_rss_favorite" references="favorite(id)"/>
+            </column>
+            <column name="url" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add link favorite" author="Juho Rautio">
+        <createTable tableName="link_favorite">
+            <column name="id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_favorite_link_favorite" references="favorite(id)"/>
+            </column>
+            <column name="url" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="provider_name" type="varchar(100)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="title" type="varchar(200)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="thumbnail_url" type="varchar(200)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="thumbnail_width" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="thumbnail_height" type="int">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add unicafe favorite" author="Juho Rautio">
+        <createTable tableName="unicafe_favorite">
+            <column name="id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_favorite_unicafe_favorite" references="favorite(id)"/>
+            </column>
+            <column name="restaurantId" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add user settings" author="Sebastian Monte">
+        <createTable tableName="user_settings">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_settings_user" references="user_account(id)"/>
+            </column>
+            <column name="carousel_image_file_name" type="varchar(500)"></column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add user settings to existing users" author="Sebastian Monte">
+        <sql>
+            insert into user_settings(user_id, created_by)
+            select id, 'system' from user_account
+        </sql>
+    </changeSet>
+
+    <changeSet id="Add todo item table" author="Sebastian Monte">
+        <createTable tableName="todo_item">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_todo_item_user" references="user_account(id)"/>
+            </column>
+            <column name="content" type="varchar(500)">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add status column to todo item" author="Sebastian Monte">
+        <addColumn tableName="todo_item">
+            <column name="status" type="varchar(255)" defaultValue="OPEN">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Add useful links table" author="Marko Rautajoki">
+        <createTable tableName="useful_link">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_useful_link_user" references="user_account(id)"/>
+            </column>
+            <column name="url" type="varchar(500)">
+                <constraints nullable="false" />
+            </column>
+            <column name="description" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add type to useful link" author="Marko Rautajoki">
+        <addColumn tableName="useful_link">
+            <column name="type" type="varchar(255)" defaultValue="DEFAULT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Add user notification table" author="Sebastian Monte">
+        <createTable tableName="user_notification">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_user_notification_user" references="user_account(id)"/>
+            </column>
+            <column name="notification_id" type="varchar(500)">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add user avatar to user settings" author="Sebastian Monte">
+        <addColumn tableName="user_settings">
+            <column name="avatar_image" type="blob" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Add orderIndex to useful link" author="Marko Rautajoki">
+        <addColumn tableName="useful_link">
+            <column name="order_index" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Rename restaurantId column" author="Sebastian Monte">
+        <renameColumn tableName="unicafe_favorite"
+                      oldColumnName="restaurantId"
+                      newColumnName="restaurant_id" />
+    </changeSet>
+
+    <changeSet id="Add portfolio table" author="Sebastian Monte">
+        <createTable tableName="portfolio">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints unique="true"
+                             nullable="false"
+                             foreignKeyName="fk_portfolio_user"
+                             references="user_account(id)"/>
+            </column>
+            <column name="url" type="varchar(500)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Rename portfolio path" author="Marko Rautajoki">
+        <renameColumn tableName="portfolio" oldColumnName="url" newColumnName="path"/>
+    </changeSet>
+
+    <changeSet id="Add oodi person id to user_account table" author="Henri Meltaus">
+        <addColumn tableName="user_account">
+            <column name="oodi_person_id" type="varchar(255)" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Add default user background file name" author="Sebastian Monte">
+        <sql>
+            update user_settings
+            set carousel_image_file_name = 'Profile_1.jpg'
+            where carousel_image_file_name is null
+        </sql>
+    </changeSet>
+
+    <changeSet id="Add intro and ownerName fields to portfolio" author="Marko Rautajoki">
+        <addColumn tableName="portfolio">
+            <column name="intro" type="varchar(500)"/>
+        </addColumn>
+        <addColumn tableName="portfolio">
+            <column name="owner_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Add visibility field to portfolio" author="Juho Rautio">
+        <addColumn tableName="portfolio">
+            <column name="visibility" type="varchar(20)" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Set visibilities to portfolios" author="Juho Rautio">
+        <sql>
+            UPDATE portfolio SET visibility = 'PRIVATE';
+        </sql>
+    </changeSet>
+
+    <changeSet id="Set portfolio visibility not nullable" author="Juho Rautio">
+        <addNotNullConstraint tableName="portfolio" columnName="visibility" columnDataType="varchar" />
+    </changeSet>
+
+    <changeSet id="Add portfolio keyword table" author="Sebastian Monte">
+        <createTable tableName="portfolio_keyword">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="varchar(50)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add portfolio keyword relationship table" author="Sebastian Monte">
+        <createTable tableName="portfolio_keyword_relationship">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_relationship_portfolio" references="portfolio(id)"/>
+            </column>
+            <column name="portfolio_keyword_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_relationship_portfolio_keyword" references="portfolio_keyword(id)"/>
+            </column>
+            <column name="order_index" type="int"/>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add portfolio summary text" author="Marko Rautajoki">
+        <addColumn tableName="portfolio">
+            <column name="summary" type="text"></column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Add flags for showing student and teacher tours" author="Marko Rautajoki">
+        <addColumn tableName="user_settings">
+            <column name="show_my_studies_tour" type="int" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="show_my_teaching_tour" type="int" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="change show studies flag types to boolean" author="Marko Rautajoki">
+       <dropColumn tableName="user_settings" columnName="show_my_studies_tour"></dropColumn>
+       <dropColumn tableName="user_settings" columnName="show_my_teaching_tour"></dropColumn>
+        <addColumn tableName="user_settings">
+            <column name="show_my_studies_tour" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="show_my_teaching_tour" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="Change carousel column name" author="Sebastian Monte">
+        <renameColumn tableName="user_settings"
+                      oldColumnName="carousel_image_file_name"
+                      newColumnName="background_filename" />
+    </changeSet>
+    <changeSet id="Add unique constraint to oodi_person_id" author="Sebastian Monte">
+        <addUniqueConstraint tableName="user_account" columnNames="oodi_person_id"/>
+    </changeSet>
+
+    <changeSet id="Add portfolio boolean to favorite" author="Marko Rautajoki">
+        <addColumn tableName="favorite">
+            <column name="portfolio" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="Add flag for portfolio tour to user settings" author="Marko Rautajoki">
+        <addColumn tableName="user_settings">
+            <column name="show_portfolio_tour" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="Add contact information table" author="Sebastian Monte">
+        <createTable tableName="contact_information">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints unique="true"
+                             nullable="false"
+                             foreignKeyName="fk_contact_information_portfolio"
+                             references="portfolio(id)"/>
+            </column>
+            <column name="phone_number" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add some link table" author="Sebastian Monte">
+        <createTable tableName="some_link">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_some_link_portfolio" references="portfolio(id)"/>
+            </column>
+            <column name="url" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add degree table" author="Sebastian Monte">
+        <createTable tableName="degree">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_degree_portfolio" references="portfolio(id)"/>
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(500)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_of_degree" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add delete cascades" author="Sebastian Monte">
+
+        <dropForeignKeyConstraint baseTableName="favorite" constraintName="fk_user_favorite"/>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="favorite"
+                                 constraintName="fk_user_favorite"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_account"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="twitter_favorite" constraintName="fk_favorite_twitter_favorite"/>
+        <addForeignKeyConstraint baseColumnNames="id"
+                                 baseTableName="twitter_favorite"
+                                 constraintName="fk_favorite_twitter_favorite"
+                                 referencedColumnNames="id"
+                                 referencedTableName="favorite"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="rss_favorite" constraintName="fk_favorite_rss_favorite"/>
+        <addForeignKeyConstraint baseColumnNames="id"
+                                 baseTableName="rss_favorite"
+                                 constraintName="fk_favorite_rss_favorite"
+                                 referencedColumnNames="id"
+                                 referencedTableName="favorite"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="link_favorite" constraintName="fk_favorite_link_favorite"/>
+        <addForeignKeyConstraint baseColumnNames="id"
+                                 baseTableName="link_favorite"
+                                 constraintName="fk_favorite_link_favorite"
+                                 referencedColumnNames="id"
+                                 referencedTableName="favorite"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="unicafe_favorite" constraintName="fk_favorite_unicafe_favorite"/>
+        <addForeignKeyConstraint baseColumnNames="id"
+                                 baseTableName="unicafe_favorite"
+                                 constraintName="fk_favorite_unicafe_favorite"
+                                 referencedColumnNames="id"
+                                 referencedTableName="favorite"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="user_settings" constraintName="fk_user_settings_user"/>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="user_settings"
+                                 constraintName="fk_user_settings_user"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_account"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="todo_item" constraintName="fk_todo_item_user"/>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="todo_item"
+                                 constraintName="fk_todo_item_user"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_account"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="useful_link" constraintName="fk_useful_link_user"/>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="useful_link"
+                                 constraintName="fk_useful_link_user"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_account"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="user_notification" constraintName="fk_user_notification_user"/>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="user_notification"
+                                 constraintName="fk_user_notification_user"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_account"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="portfolio" constraintName="fk_portfolio_user"/>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="portfolio"
+                                 constraintName="fk_portfolio_user"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_account"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="portfolio_keyword_relationship" constraintName="fk_relationship_portfolio"/>
+        <addForeignKeyConstraint baseColumnNames="portfolio_id"
+                                 baseTableName="portfolio_keyword_relationship"
+                                 constraintName="fk_relationship_portfolio"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portfolio"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="portfolio_keyword_relationship" constraintName="fk_relationship_portfolio_keyword"/>
+        <addForeignKeyConstraint baseColumnNames="portfolio_keyword_id"
+                                 baseTableName="portfolio_keyword_relationship"
+                                 constraintName="fk_relationship_portfolio_keyword"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portfolio_keyword"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="contact_information" constraintName="fk_contact_information_portfolio"/>
+        <addForeignKeyConstraint baseColumnNames="portfolio_id"
+                                 baseTableName="contact_information"
+                                 constraintName="fk_contact_information_portfolio"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portfolio"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="some_link" constraintName="fk_some_link_portfolio"/>
+        <addForeignKeyConstraint baseColumnNames="portfolio_id"
+                                 baseTableName="some_link"
+                                 constraintName="fk_some_link_portfolio"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portfolio"
+                                 onDelete="CASCADE"/>
+
+        <dropForeignKeyConstraint baseTableName="degree" constraintName="fk_degree_portfolio"/>
+        <addForeignKeyConstraint baseColumnNames="portfolio_id"
+                                 baseTableName="degree"
+                                 constraintName="fk_degree_portfolio"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portfolio"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="Add portfolio study attainment whitelist table" author="Juho Rautio">
+        <createTable tableName="study_attainment_whitelist">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_whitelist_portfolio" references="portfolio(id)" deleteCascade="true" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="Add portfolio study attainment whitelist entry table" author="Juho Rautio">
+        <createTable tableName="study_attainment_whitelist_entry">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="study_attainment_whitelist_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_whitelist_whitelist_entry" references="study_attainment_whitelist(id)" deleteCascade="true" />
+            </column>
+            <column name="oodi_study_attainment_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="Add workexperience table" author="Marko Rautajoki">
+        <createTable tableName="work_experience">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_work_experience_portfolio" references="portfolio(id)" deleteCascade="true"/>
+            </column>
+            <column name="job_title" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="employer" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add job search table" author="Marko Rautajoki">
+        <createTable tableName="job_search">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints unique="true" nullable="false" foreignKeyName="fk_job_search_portfolio" references="portfolio(id)" deleteCascade="true"/>
+            </column>
+            <column name="contact_email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add component visibility table" author="Sebastian Monte">
+        <createTable tableName="component_visibility">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_component_visibility_portfolio"
+                             references="portfolio(id)" deleteCascade="true"/>
+            </column>
+            <column name="component" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="visibility" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add calendarfeed table" author="Marko Rautajoki">
+        <createTable tableName="calendar_feed">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="feed_id" type="char(36)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints unique="true" nullable="false" foreignKeyName="fk_user_calendarfeed" references="user_account(id)" deleteCascade="true"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add unisport favorite" author="Juho Rautio">
+        <createTable tableName="unisport_favorite">
+            <column name="id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_favorite_unisport_favorite" references="favorite(id)"  deleteCascade="true" />
+            </column>
+            <column name="url" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Remove url column from unisport favorite" author="Sebastian Monte">
+        <dropColumn tableName="unisport_favorite" columnName="url"/>
+    </changeSet>
+
+    <changeSet id="Add unique constraint to user table" author="Sebastian Monte">
+        <addUniqueConstraint tableName="user_account" columnNames="edu_person_principal_name"/>
+    </changeSet>
+
+    <changeSet id="Add localized text tables" author="Sebastian Monte">
+        <createTable tableName="localized_text">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="localization">
+            <column name="language_code" type="varchar(2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="localized_text_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_localization_localized_text" references="localized_text(id)" deleteCascade="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add localized url to useful link" author="Sebastian Monte">
+        <addColumn tableName="useful_link">
+            <column name="localized_text_id" type="bigint">
+                <constraints foreignKeyName="fk_localized_url_localized_text" referencedColumnNames="localized_text(id)"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Remove useful link url non-null constraint" author="Sebastian Monte">
+        <dropNotNullConstraint tableName="useful_link" columnName="url" columnDataType="varchar(500)"/>
+    </changeSet>
+
+    <changeSet id="Add uploaded background file name to user settings" author="Sebastian Monte">
+        <addColumn tableName="user_settings">
+            <column name="uploaded_background_filename" type="varchar(500)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Add feedback table" author="Sebastian Monte">
+        <createTable tableName="feedback">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="content" type="varchar(2000)"/>
+            <column name="metadata" type="varchar(2000)"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="Add number of visible items to RssFavorite" author="Juho Rautio">
+        <addColumn tableName="rss_favorite">
+            <column name="visible_items" type="int" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Add visible items values to RssFavorite" author="Juho Rautio">
+        <sql>UPDATE rss_favorite SET visible_items = 3</sql>
+    </changeSet>
+
+    <changeSet id="Add visible items not null constraint to RssFavorite" author="Juho Rautio">
+        <addNotNullConstraint tableName="rss_favorite" columnName="visible_items" columnDataType="int" />
+    </changeSet>
+
+    <changeSet id="Add email to feedback" author="Marko Rautajoki">
+        <addColumn tableName="feedback">
+            <column name="email" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

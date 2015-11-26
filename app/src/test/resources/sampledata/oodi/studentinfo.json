@@ -1,0 +1,19 @@
+{
+  "md5": "e9bcf29fae812d8909c4ffacfe25fcc7",
+  "status": 200,
+  "data": {
+    "student_number": "010189791",
+    "email": null,
+    "phone": "00-1234567",
+    "city": "Helsinki",
+    "zipcode": "00170",
+    "address1": "Liisankatu 30",
+    "studyattainments": 196,
+    "address2": null,
+    "language": "suomi",
+    "last_name": "Opiskelija",
+    "mobile_phone": "000-1234567",
+    "country": "Suomi",
+    "first_names": "Olli"
+  }
+}

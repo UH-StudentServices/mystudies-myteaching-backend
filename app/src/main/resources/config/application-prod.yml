@@ -1,0 +1,56 @@
+server:
+    port: 8080
+    session-timeout: 1800 # Seconds
+
+spring:
+    profiles:
+        active: prod
+    datasource:
+        dataSourceClassName: ${datasource.dataSourceClassName}
+        url: ${datasource.url}
+        databaseName: ${datasource.databaseName}
+        serverName: ${datasource.serverName}
+        username: ${datasource.username}
+        password: ${datasource.password}
+
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+        database: ${jpa.database}
+        openInView: ${jpa.openInView}
+        show_sql: ${jpa.show_sql}
+        generate-ddl: ${jpa.generate-ddl}
+        hibernate:
+            ddl-auto: ${jpa.hibernate.ddl-auto}
+            naming-strategy: ${jpa.hibernate.naming-strategy}
+        properties:
+            hibernate.cache.use_second_level_cache: ${jpa.properties.hibernate.cache.use_second_level_cache}
+            hibernate.cache.use_query_cache: ${jpa.properties.hibernate.cache.use_query_cache}
+            hibernate.generate_statistics: ${jpa.properties.hibernate.generate_statistics}
+            hibernate.cache.region.factory_class: ${jpa.properties.hibernate.cache.region.factory_class}
+
+metrics:
+    jmx.enabled: true
+
+oodi:
+    base.url: https://oprek4.it.helsinki.fi:30040
+    client.implementation: rest
+
+coursePage:
+    base.url: https://courses.helsinki.fi/api/v1
+    client.implementation: rest
+    defaultCourseImageUri: https://courses.helsinki.fi/sites/default/files/styles/liftup_322_x_190/public/images/default_images/default_image.jpg
+
+googleAnalyticsAccount: UA-55852460-5
+
+hostUrl: https://student.helsinki.fi
+portfolioHostUrl: https://student.helsinki.fi
+portfolioUrl: /portfolio/#
+loginUrlTeacher: /saml/login/alias/teacher
+loginUrlStudent: /saml/login/alias/student
+logoutUrl: /saml/logout?local=true
+teacherAppUrl: https://teacher.helsinki.fi
+studentAppUrl: https://student.helsinki.fi
+
+embedlyApiKey: 2cb3558d787c40a9a7c334bc276297a6
+
+environment: prod

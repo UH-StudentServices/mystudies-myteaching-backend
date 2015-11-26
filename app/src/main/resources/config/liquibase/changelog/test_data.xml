@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This file is part of MystudiesMyteaching application.
+  ~
+  ~ MystudiesMyteaching application is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ MystudiesMyteaching application is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="Insert test data" author="Sebastian Monte" context="test">
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/users.csv"
+                  separator=";"
+                  tableName="user_account">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/favorites.csv"
+                  separator=";"
+                  tableName="favorite">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/twitter_favorites.csv"
+                  separator=";"
+                  tableName="twitter_favorite">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/rss_favorites.csv"
+                  separator=";"
+                  tableName="rss_favorite">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/link_favorites.csv"
+                  separator=";"
+                  tableName="link_favorite">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/user_settings.csv"
+                  separator=";"
+                  tableName="user_settings">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/todo_items.csv"
+                  separator=";"
+                  tableName="todo_item">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/useful_links.csv"
+                  separator=";"
+                  tableName="useful_link">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/user_notifications.csv"
+                  separator=";"
+                  tableName="user_notification">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/portfolios.csv"
+                  separator=";"
+                  tableName="portfolio">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/portfolio_keywords.csv"
+                  separator=";"
+                  tableName="portfolio_keyword">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/portfolio_keyword_relationships.csv"
+                  separator=";"
+                  tableName="portfolio_keyword_relationship">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/contact_information.csv"
+                  separator=";"
+                  tableName="contact_information">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/degrees.csv"
+                  separator=";"
+                  tableName="degree">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/work_experience.csv"
+                  separator=";"
+                  tableName="work_experience">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/job_search.csv"
+                  separator=";"
+                  tableName="job_search">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/study_attainment_whitelists.csv"
+                  separator=";"
+                  tableName="study_attainment_whitelist">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/study_attainment_whitelist_entries.csv"
+                  separator=";"
+                  tableName="study_attainment_whitelist_entry">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/component_visibilities.csv"
+                  separator=";"
+                  tableName="component_visibility">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/calendar_feeds.csv"
+                  separator=";"
+                  tableName="calendar_feed">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/unicafe_favorites.csv"
+                  separator=";"
+                  tableName="unicafe_favorite">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/feedback.csv"
+                  separator=";"
+                  tableName="feedback">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

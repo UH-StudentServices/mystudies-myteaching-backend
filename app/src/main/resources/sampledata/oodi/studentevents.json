@@ -1,0 +1,32 @@
+{
+  "md5": "7b70a7e92c923556a29c04460f35679e",
+  "status": 200,
+  "data": [
+    {
+      "weekday_code": 1,
+      "building_address1": "Viikinkaari 11",
+      "building_zipcode" : "00790",
+      "realisation_type_code": 19,
+      "room_name_short": "Arppeanumin auditorio",
+      "end_date": "2030-08-31T12:00:00.000Z",
+      "start_date": "2030-08-31T09:00:00.000Z",
+      "course_id": 123456789,
+      "simple_type_code": 2,
+      "learningopportunity_name": "Formulointi III - tentti",
+      "learningopportunity_id": "123456789"
+    },
+    {
+      "weekday_code": 3,
+      "building_address1": "Viikinkaari 11",
+      "building_zipcode" : "00790",
+      "realisation_type_code": 17,
+      "room_name_short": "Päärakennus, sali 1",
+      "end_date": "2014-10-27T13:45:00.000Z",
+      "start_date": "2014-10-27T12:15:00.000Z",
+      "course_id": 123456789,
+      "simple_type_code": 1,
+      "learningopportunity_name": "Johdatus kasvatuspsykologiaan",
+      "learningopportunity_id": "123456789"
+    }
+  ]
+}

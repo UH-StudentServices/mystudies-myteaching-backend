@@ -1,0 +1,5 @@
+id;user_id;background_filename;show_my_studies_tour;show_my_teaching_tour;avatar_image;created_by
+1;1;file_1.jpg;true;true;null;system
+2;2;file_2.jpg;true;true;AA213FD51B3801043FBC;system
+3;3;file_3.jpg;true;true;null;system
+4;4;file_3.jpg;true;true;null;system

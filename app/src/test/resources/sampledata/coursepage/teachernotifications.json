@@ -1,0 +1,20 @@
+[
+  {
+    "id": 3,
+    "message": "has written a message",
+    "user": "admin",
+    "timestamp": "2015-06-05T11:08:06Z",
+    "type": "course_implementation_comment_create",
+    "oodi_uid": "1",
+    "course_imp_id": "99903629"
+  },
+  {
+    "id": 4,
+    "message": "has removed an event",
+    "user": "editor",
+    "timestamp": "2015-06-03T12:27:44Z",
+    "type": "course_implementation_event_remove",
+    "oodi_uid": "2",
+    "course_imp_id": "99903629"
+  }
+]

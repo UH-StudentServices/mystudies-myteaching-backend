@@ -1,0 +1,27 @@
+{
+  "status": "ok",
+  "data": {
+    "items": [
+      {
+        "ID": "courses.helsinki.fi/fi/400583",
+        "feedID": "kurssit_archive",
+        "feedName": "Kurssit (arkisto)",
+        "title": "Henkilökohtainen opintosuunnitelma (HOPS) (ENG321)",
+        "link": "https://dev.student.helsinki.fi/590155/107694052",
+        "date": "2015-08-31T14:01:08",
+        "relevance": 0,
+        "popularity": 0
+      },
+      {
+        "ID": "courses.helsinki.fi/fi/400581",
+        "feedID": "kurssit_archive",
+        "feedName": "Kurssit (arkisto)",
+        "title": "Seminaari (ENG320)",
+        "link": "https://dev.student.helsinki.fi/590155/107694052",
+        "date": "2015-08-31T14:01:08",
+        "relevance": 0,
+        "popularity": 0
+      }
+    ]
+  }
+}
