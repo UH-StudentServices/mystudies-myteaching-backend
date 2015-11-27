@@ -27,13 +27,13 @@ public class DateTimeUtilTest  {
     @Test
     public void thatLastSemesterStringIsObtainedCorrectlyBeforeEndOfYear() {
         LocalDate d = LocalDate.of(2015, 10, 10);
-        assertEquals("01082014000000", DateTimeUtil.getLastSemesterStartDateString(d));
+        assertEquals("01052015000000", DateTimeUtil.getSemesterStartDateString(d));
     }
 
     @Test
     public void thatLastSemesterStringIsObtainedCorrectlyAfterEndOfYear() {
         LocalDate d = LocalDate.of(2016, 4, 10);
-        assertEquals("01082014000000", DateTimeUtil.getLastSemesterStartDateString(d));
+        assertEquals("01052015000000", DateTimeUtil.getSemesterStartDateString(d));
     }
 
 }

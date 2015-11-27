@@ -57,7 +57,7 @@ public class OodiUserRoleServiceTest {
 
     @Test
     public void thatTeacherIsOpenUniversityUser() {
-        when(oodiClient.getTeacherCourses("123", Locale.ENGLISH, DateTimeUtil.getLastSemesterStartDateString(LocalDate.now())))
+        when(oodiClient.getTeacherCourses("123", Locale.ENGLISH, DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
             .thenReturn(courses(Lists.newArrayList("A123", "A456")));
 
         assertTrue(oodiUserRoleService.isOpenUniversityTeacher("123"));
@@ -65,7 +65,7 @@ public class OodiUserRoleServiceTest {
 
     @Test
     public void thatTeacherIsNotOpenUniversityUser() {
-        when(oodiClient.getTeacherCourses("123", Locale.ENGLISH, DateTimeUtil.getLastSemesterStartDateString(LocalDate.now())))
+        when(oodiClient.getTeacherCourses("123", Locale.ENGLISH, DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
             .thenReturn(courses(Lists.newArrayList("A123", "456")));
 
         assertFalse(oodiUserRoleService.isOpenUniversityTeacher("123"));

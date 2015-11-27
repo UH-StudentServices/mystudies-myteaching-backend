@@ -57,7 +57,7 @@ public class OodiRestClientCacheTest extends SpringTest {
     public void thatTeacherCoursesAreCached() {
         teacherRequestChain("123").courses();
 
-        String sinceDateString = DateTimeUtil.getLastSemesterStartDateString(LocalDate.now());
+        String sinceDateString = DateTimeUtil.getSemesterStartDateString(LocalDate.now());
 
         List<OodiTeacherCourse> courses = oodiRestClient.getTeacherCourses("123", Locale.ENGLISH, sinceDateString);
         List<OodiTeacherCourse> cachedCourses = oodiRestClient.getTeacherCourses("123", Locale.ENGLISH, sinceDateString);
