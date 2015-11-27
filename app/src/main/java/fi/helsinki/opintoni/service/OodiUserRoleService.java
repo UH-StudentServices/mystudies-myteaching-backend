@@ -39,7 +39,7 @@ public class OodiUserRoleService {
 
     @Cacheable(CacheConstants.IS_OPEN_UNIVERSITY_TEACHER)
     public boolean isOpenUniversityTeacher(String teacherNumber) {
-        return oodiClient.getTeacherCourses(teacherNumber, Locale.ENGLISH, DateTimeUtil.getLastSemesterStartDateString(LocalDate.now())).stream()
+        return oodiClient.getTeacherCourses(teacherNumber, Locale.ENGLISH, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
             .map(course -> course.basecode)
             .allMatch(this::isOpenUniversityId);
     }

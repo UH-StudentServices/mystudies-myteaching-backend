@@ -146,11 +146,11 @@ public abstract class SpringTest {
     }
 
     protected TeacherRequestChain defaultTeacherRequestChain() {
-        return new TeacherRequestChain(TestConstants.TEACHER_NUMBER, DateTimeUtil.getLastSemesterStartDateString(LocalDate.now()), oodiServer, coursePageServer);
+        return new TeacherRequestChain(TestConstants.TEACHER_NUMBER, DateTimeUtil.getSemesterStartDateString(LocalDate.now()), oodiServer, coursePageServer);
     }
 
     protected TeacherRequestChain teacherRequestChain(String teacherNumber) {
-        return new TeacherRequestChain(teacherNumber, DateTimeUtil.getLastSemesterStartDateString(LocalDate.now()), oodiServer, coursePageServer);
+        return new TeacherRequestChain(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()), oodiServer, coursePageServer);
     }
 
     protected StudentRequestChain defaultStudentRequestChain() {

@@ -24,12 +24,12 @@ import java.time.LocalDateTime;
 
 public class DateTimeUtil {
 
-    private static final int SEMESTER_START_MONTH = 8;
+    private static final int SEMESTER_START_MONTH = 5;
 
-    public static String getLastSemesterStartDateString(LocalDate now) {
+    public static String getSemesterStartDateString(LocalDate now) {
         int year = now.getYear();
         int month = now.getMonthValue();
-        LocalDateTime d = LocalDateTime.of(month < SEMESTER_START_MONTH ? year - 2 : year - 1, SEMESTER_START_MONTH, 1, 0, 0, 0);
+        LocalDateTime d = LocalDateTime.of(month < SEMESTER_START_MONTH ? year - 1 : year, SEMESTER_START_MONTH, 1, 0, 0, 0);
         return d.format(DateFormatter.OODI_DATE_FORMATTER);
     }
 
