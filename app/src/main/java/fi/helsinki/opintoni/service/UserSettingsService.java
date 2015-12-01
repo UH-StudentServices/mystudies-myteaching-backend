@@ -108,13 +108,16 @@ public class UserSettingsService {
     }
 
     public BufferedImage getUserBackgroundImage(String oodiPersonId) throws IOException {
-        String backgroundFilename = userRepository
+        UserSettings userSettings =  userRepository
             .findByOodiPersonId(oodiPersonId)
             .map(u -> userSettingsRepository.findByUserId(u.id))
-            .map(s -> s.backgroundFilename)
             .orElseThrow(notFoundException("Background not found"));
 
-        return backgroundImageService.getBackgroundImage(backgroundFilename);
+        if(userSettings.backgroundFilename != null) {
+            return backgroundImageService.getDefaultBackgroundImage(userSettings.backgroundFilename);
+        } else {
+            return backgroundImageService.getCustomBackgroundImage(userSettings.uploadedBackgroundFilename);
+        }
     }
 
     public void deleteUserAvatar(Long id) {

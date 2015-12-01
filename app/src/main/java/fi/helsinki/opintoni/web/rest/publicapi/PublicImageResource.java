@@ -75,7 +75,7 @@ public class PublicImageResource extends AbstractResource {
         method = RequestMethod.GET,
         produces = {MediaType.IMAGE_JPEG_VALUE})
     public ResponseEntity<BufferedImage> serve(@PathVariable String fileName) throws IOException {
-        return new ResponseEntity<>(backgroundImageService.getBackgroundImage(fileName), HttpStatus.OK);
+        return new ResponseEntity<>(backgroundImageService.getDefaultBackgroundImage(fileName), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/backgrounds", method = RequestMethod.GET)
