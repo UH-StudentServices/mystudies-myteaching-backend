@@ -35,7 +35,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Optional;
+
+import static fi.helsinki.opintoni.exception.http.NotFoundException.notFoundException;
 
 
 @Service
@@ -47,18 +50,21 @@ public class UserSettingsService {
     private final ImageService imageService;
     private final UserSettingsConverter userSettingsConverter;
     private final FileStorage fileStorage;
+    private final BackgroundImageService backgroundImageService;
 
     @Autowired
     public UserSettingsService(UserSettingsRepository userSettingsRepository,
                                UserRepository userRepository,
                                ImageService imageService,
                                UserSettingsConverter userSettingsConverter,
-                               FileStorage fileStorage) {
+                               FileStorage fileStorage,
+                               BackgroundImageService backgroundImageService) {
         this.userSettingsRepository = userSettingsRepository;
         this.userRepository = userRepository;
         this.imageService = imageService;
         this.userSettingsConverter = userSettingsConverter;
         this.fileStorage = fileStorage;
+        this.backgroundImageService = backgroundImageService;
     }
 
     public UserSettingsDto findByUserId(Long userId) {
@@ -99,6 +105,16 @@ public class UserSettingsService {
         }
 
         return imageService.bytesToBufferedImage(userSettings.userAvatar.imageData);
+    }
+
+    public BufferedImage getUserBackgroundImage(String oodiPersonId) throws IOException {
+        String backgroundFilename = userRepository
+            .findByOodiPersonId(oodiPersonId)
+            .map(u -> userSettingsRepository.findByUserId(u.id))
+            .map(s -> s.backgroundFilename)
+            .orElseThrow(notFoundException("Background not found"));
+
+        return backgroundImageService.getBackgroundImage(backgroundFilename);
     }
 
     public void deleteUserAvatar(Long id) {

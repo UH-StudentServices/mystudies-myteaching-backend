@@ -36,6 +36,6 @@ public class PublicProfileResourceTest extends SpringTest {
             .andExpect(jsonPath("$.avatarImageUrl")
                 .value("https://opi-1.student.helsinki.fi/api/public/v1/images/avatar/200"))
             .andExpect(jsonPath("$.backgroundImageUrl")
-                .value("https://opi-1.student.helsinki.fi/api/public/v1/images/backgrounds/file_2.jpg"));
+                .value("https://opi-1.student.helsinki.fi/api/public/v1/images/backgrounds/Profile_2.jpg"));
     }
 }
