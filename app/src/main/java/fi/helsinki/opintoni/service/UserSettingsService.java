@@ -135,7 +135,7 @@ public class UserSettingsService {
         Optional<User> user = userRepository.findByOodiPersonId(oodiPersonId);
         return user.map(u -> u.id)
             .map(this::getUserAvatarImage)
-            .orElse(null);
+            .orElseThrow(notFoundException("Avatar not found for user"));
     }
 
     @SkipLoggingAspect
