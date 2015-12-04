@@ -21,7 +21,7 @@ public class FeedService {
     public FeedDto getFeed(String feedUrl, int limit) {
         return feedClient.getFeed(feedUrl)
             .map(f -> feedConverter.toDto(f, limit))
-            .orElseThrow(() -> new RuntimeException("Feed not found"));
+            .orElse(null);
     }
 
 }
