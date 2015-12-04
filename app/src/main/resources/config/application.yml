@@ -290,3 +290,6 @@ facultyLinks:
   A74000: https://flamma.helsinki.fi/portal/units/sockom
   A10000: https://flamma.helsinki.fi/portal/units/teologinen
   A70000: https://flamma.helsinki.fi/portal/units/valt
+
+feed.client.implementation: remote
+

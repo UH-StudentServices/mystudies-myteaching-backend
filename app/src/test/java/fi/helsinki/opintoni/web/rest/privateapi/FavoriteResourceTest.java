@@ -99,4 +99,22 @@ public class FavoriteResourceTest extends SpringTest {
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(1)));
     }
+
+    @Test
+    public void thatRSSFeedIsReturned() throws Exception {
+        mockMvc.perform(get("/api/private/v1/favorites/rss?url=http://www.helsinki.fi&limit=3").with(securityContext(studentSecurityContext()))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.title").value("RSS feed"))
+            .andExpect(jsonPath("$.link").value("http://www.helsinki.fi"))
+            .andExpect(jsonPath("$.entries[0].title").value("Feed entry title"))
+            .andExpect(jsonPath("$.entries[0].link").value("http://www.helsinki.fi/entry"))
+            .andExpect(jsonPath("$.entries[0].description").value("Feed description"))
+            .andExpect(jsonPath("$.entries[0].date[0]").value(2015))
+            .andExpect(jsonPath("$.entries[0].date[1]").value(12))
+            .andExpect(jsonPath("$.entries[0].date[2]").value(4))
+            .andExpect(jsonPath("$.entries[0].date[3]").value(11))
+            .andExpect(jsonPath("$.entries[0].date[4]").value(8))
+            .andExpect(jsonPath("$.entries[0].date[5]").value(42));
+    }
 }
