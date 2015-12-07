@@ -21,5 +21,7 @@ public interface FileStorage {
 
     void put(String name, byte[] data);
 
+    byte[] get(String name);
+
     void remove(String name);
 }

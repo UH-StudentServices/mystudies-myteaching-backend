@@ -51,8 +51,27 @@ public class PublicImageResourceTest extends SpringTest {
     }
 
     @Test
+    public void that404IsReturnedWhenUserHasNoCustomAvatar() throws Exception {
+        mockMvc.perform(get("/api/public/v1/images/avatar/200"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void that404IsReturnedWhenUserIsNotFound() throws Exception {
+        mockMvc.perform(get("/api/public/v1/images/avatar/999"))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void thatBackgroundImageIsReturned() throws Exception {
         mockMvc.perform(get("/api/public/v1/images/backgrounds/Profile_1.jpg"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.IMAGE_JPEG));
+    }
+
+    @Test
+    public void thatUserBackgroundIsReturned() throws Exception {
+        mockMvc.perform(get("/api/public/v1/images/background/987654321"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.IMAGE_JPEG));
     }

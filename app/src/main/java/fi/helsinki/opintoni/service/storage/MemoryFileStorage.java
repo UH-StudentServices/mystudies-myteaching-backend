@@ -31,6 +31,11 @@ public class MemoryFileStorage implements FileStorage {
     }
 
     @Override
+    public byte[] get(String name) {
+        return filesMemory.getBytes(name);
+    }
+
+    @Override
     public void remove(String name) {
         filesMemory.remove(name);
     }

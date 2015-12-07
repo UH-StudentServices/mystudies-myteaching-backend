@@ -63,7 +63,7 @@ public class PortfolioResourceTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.backgroundUri").value(
-                "https://opi-1.student.helsinki.fi/api/public/v1/images/backgrounds/file_3.jpg"
+                "https://opi-1.student.helsinki.fi/api/public/v1/images/backgrounds/Profile_3.jpg"
             ))
             .andExpect(jsonPath("$.componentVisibilities").isArray())
             .andExpect(jsonPath("$.componentVisibilities[0].component").value("WORK_EXPERIENCE"))

@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.service;
 
 import com.google.common.collect.ImmutableMap;
+import fi.helsinki.opintoni.service.storage.FileStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -41,10 +42,12 @@ public class BackgroundImageService {
     private ImmutableMap<String, String> fileNamesToPath;
 
     private final ImageService imageService;
+    private final FileStorage fileStorage;
 
     @Autowired
-    public BackgroundImageService(ImageService imageService) {
+    public BackgroundImageService(ImageService imageService, FileStorage fileStorage) {
         this.imageService = imageService;
+        this.fileStorage = fileStorage;
     }
 
     @PostConstruct
@@ -70,7 +73,11 @@ public class BackgroundImageService {
         return result;
     }
 
-    public BufferedImage getBackgroundImage(String fileName) throws IOException {
+    public BufferedImage getCustomBackgroundImage(String fileName) {
+        return imageService.bytesToBufferedImage(fileStorage.get(fileName));
+    }
+
+    public BufferedImage getDefaultBackgroundImage(String fileName) throws IOException {
         String filePath = fileNamesToPath.get(fileName);
 
         if (filePath == null) {

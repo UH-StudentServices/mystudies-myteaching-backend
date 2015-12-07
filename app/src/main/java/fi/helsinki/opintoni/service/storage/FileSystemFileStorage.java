@@ -18,10 +18,10 @@
 package fi.helsinki.opintoni.service.storage;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class FileSystemFileStorage implements FileStorage {
 
@@ -42,6 +42,22 @@ public class FileSystemFileStorage implements FileStorage {
         } catch (IOException e) {
             throw new RuntimeException("Could not save file");
         }
+    }
+
+    @Override
+    public byte[] get(String name) {
+        byte[] imageData;
+        try {
+            InputStream inputStream = new FileInputStream(appConfiguration.get("fileStorage.path") + "/" + name);
+            imageData = IOUtils.toByteArray(inputStream);
+            inputStream.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("File not found: " + name);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not open file: " + name);
+        }
+
+        return imageData;
     }
 
     @Override

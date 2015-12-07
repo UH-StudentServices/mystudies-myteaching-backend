@@ -20,7 +20,7 @@ package fi.helsinki.opintoni.sampledata;
 public class UserSettingsSampleData {
     public static final Long USER_SETTINGS_ID = 3L;
     public static final String BACKGROUND_URI =
-        "https://opi-1.student.helsinki.fi/api/public/v1/images/backgrounds/file_3.jpg";
+        "https://opi-1.student.helsinki.fi/api/public/v1/images/backgrounds/Profile_3.jpg";
     public static final String BACKGROUND_URI_UPDATED =
-        "https://opi-1.student.helsinki.fi/api/public/v1/images/backgrounds/file_1.jpg";
+        "https://opi-1.student.helsinki.fi/api/public/v1/images/backgrounds/Profile_1.jpg";
 }
