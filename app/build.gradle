@@ -205,6 +205,7 @@ dependencies {
     compile group: 'com.rometools', name: 'rome', version: rome_version
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: httpclient_version
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-csv', version: jackson_dataformat_csv_version
+
     testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: awaility_version
     testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: json_path_version
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: spring_boot_version
@@ -216,6 +217,7 @@ dependencies {
 
     compile "org.slf4j:jcl-over-slf4j:1.7.7"
     compile "ch.qos.logback:logback-classic:1.1.2"
+    compile "com.rometools:rome:1.5.1"
 }
 
 

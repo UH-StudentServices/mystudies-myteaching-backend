@@ -284,3 +284,5 @@ facultyLinks:
   A70000: https://flamma.helsinki.fi/portal/units/valt
 
 adminAccounts: opettaja@helsinki.fi
+
+feed.client.implementation: mock

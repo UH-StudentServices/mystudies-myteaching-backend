@@ -21,8 +21,10 @@ import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.domain.Favorite;
 import fi.helsinki.opintoni.domain.UnicafeFavorite;
 import fi.helsinki.opintoni.dto.FavoriteDto;
+import fi.helsinki.opintoni.dto.FeedDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.FavoriteService;
+import fi.helsinki.opintoni.service.FeedService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
@@ -42,12 +44,15 @@ public class FavoriteResource extends AbstractResource {
 
     private final FavoriteService favoriteService;
     private final PermissionChecker permissionChecker;
+    private final FeedService feedService;
 
     @Autowired
     public FavoriteResource(FavoriteService favoriteService,
-                            PermissionChecker permissionChecker) {
+                            PermissionChecker permissionChecker,
+                            FeedService feedService) {
         this.favoriteService = favoriteService;
         this.permissionChecker = permissionChecker;
+        this.feedService = feedService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -61,6 +66,12 @@ public class FavoriteResource extends AbstractResource {
     public ResponseEntity<FavoriteDto> saveRssFavorite(@UserId Long userId,
                                                        @RequestBody SaveRssFavoriteRequest request) {
         return response(favoriteService.saveRssFavorite(userId, request));
+    }
+
+    @RequestMapping(value = "/rss", method = RequestMethod.GET)
+    @Timed
+    public ResponseEntity<FeedDto> getRssFeed(@RequestParam("url") String feedUrl, @RequestParam("limit") int limit) {
+        return response(feedService.getFeed(feedUrl, limit));
     }
 
     @RequestMapping(value = "/unicafe", method = RequestMethod.POST)
