@@ -213,8 +213,6 @@ recommendations:
 
 cookieDomain: helsinki.fi
 
-unisportMyReservationsUrl: https://unisport.fi/yol/web/fi/shibbolethAuth.do
-
 httpClient:
   readTimeout: 5000
   connectTimeout: 1000
