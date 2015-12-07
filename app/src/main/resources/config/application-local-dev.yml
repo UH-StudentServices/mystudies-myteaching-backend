@@ -44,7 +44,7 @@ leiki:
     base.url: http://suositukset.student.helsinki.fi
     client.implementation: mock
 
-googleAnalyticsAccount: UA-61958961-
+googleAnalyticsAccount: UA-61958961-1
 
 unisportMyReservationsUrl: https://unisport.fi/yol/web/<%= userLanguage %>/ext/opintoni/reservationList.do?mockData=true
 
