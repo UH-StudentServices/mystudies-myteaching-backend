@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LocationResolver {
     public BuildingDto getBuilding(OodiEvent oodiEvent) {
-        if (oodiEvent.buildingStreet == null || oodiEvent.buildingZipCode == null) {
+        if (oodiEvent.buildingStreet == null) {
             return null;
         } else {
             return new BuildingDto(oodiEvent.buildingStreet, oodiEvent.buildingZipCode);
