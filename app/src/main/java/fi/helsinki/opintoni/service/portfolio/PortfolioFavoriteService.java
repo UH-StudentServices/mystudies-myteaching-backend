@@ -20,7 +20,7 @@ package fi.helsinki.opintoni.service.portfolio;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
-import fi.helsinki.opintoni.service.FavoriteService;
+import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

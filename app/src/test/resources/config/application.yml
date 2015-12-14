@@ -38,6 +38,28 @@ metrics:
     jmx.enabled: false
 
 userDefaults :
+    defaultFavorites:
+        - type: UNICAFE
+          restaurantId : 3
+        - type: TWITTER
+          value: helsinkiuni
+        - type: RSS
+          url: http://helsinginyliopisto.etapahtuma.fi/Default.aspx?tabid=959&format=atom
+          visibleItems: 3
+        - type: RSS
+          url: https://university.helsinki.fi/fi/feeds/news/rss
+          visibleItems: 3
+        - type: RSS
+          url: http://hyy.helsinki.fi/en/feed/uutiset/rss.xml
+          visibleItems: 3
+        - type: TWITTER
+          value: opinder_uh
+        - type: RSS
+          url: http://www.helsinki.fi/blogit/feed/postfeed.php
+          visibleItems: 3
+        - type: RSS
+          url: http://yle.fi/uutiset/rss/uutiset.rss?osasto=tiede
+          visibleItems: 3
     defaultUsefulLinks :
         studentDefaultUsefulLinks :
             - url: https://flamma.helsinki.fi/1

@@ -23,7 +23,7 @@ import fi.helsinki.opintoni.domain.UnicafeFavorite;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.dto.FeedDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
-import fi.helsinki.opintoni.service.FavoriteService;
+import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import fi.helsinki.opintoni.service.FeedService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
