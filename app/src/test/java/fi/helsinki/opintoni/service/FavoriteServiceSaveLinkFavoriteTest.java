@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.LinkFavoriteDto;
 import fi.helsinki.opintoni.sampledata.EmbedLySampleData;
+import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import fi.helsinki.opintoni.web.rest.privateapi.InsertLinkFavoriteRequest;

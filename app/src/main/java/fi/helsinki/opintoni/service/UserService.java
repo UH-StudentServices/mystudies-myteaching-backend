@@ -25,6 +25,7 @@ import fi.helsinki.opintoni.dto.UserSettingsDto;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.UserSettingsRepository;
 import fi.helsinki.opintoni.security.AppUser;
+import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import fi.helsinki.opintoni.service.usefullink.UsefulLinkService;
 import fi.helsinki.opintoni.util.UriBuilder;
 import org.springframework.beans.factory.annotation.Autowired;

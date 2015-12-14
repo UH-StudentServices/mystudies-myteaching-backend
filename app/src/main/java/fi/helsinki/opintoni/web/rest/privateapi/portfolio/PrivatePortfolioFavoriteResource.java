@@ -21,7 +21,7 @@ import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.domain.Favorite;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
-import fi.helsinki.opintoni.service.FavoriteService;
+import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import fi.helsinki.opintoni.service.portfolio.PortfolioFavoriteService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;

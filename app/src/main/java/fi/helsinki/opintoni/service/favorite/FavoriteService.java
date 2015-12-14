@@ -15,7 +15,7 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.service;
+package fi.helsinki.opintoni.service.favorite;
 
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.domain.*;
@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -43,14 +44,17 @@ public class FavoriteService {
     private final FavoriteRepository favoriteRepository;
     private final FavoriteConverter favoriteConverter;
     private final UserRepository userRepository;
+    private final FavoriteProperties favoriteProperties;
 
     @Autowired
     public FavoriteService(FavoriteRepository favoriteRepository,
                            FavoriteConverter favoriteConverter,
-                           UserRepository userRepository) {
+                           UserRepository userRepository,
+                           FavoriteProperties favoriteProperties) {
         this.favoriteRepository = favoriteRepository;
         this.favoriteConverter = favoriteConverter;
         this.userRepository = userRepository;
+        this.favoriteProperties = favoriteProperties;
     }
 
     public List<FavoriteDto> findByUserId(final Long userId) {
@@ -181,17 +185,26 @@ public class FavoriteService {
         return portfolio ? favoriteRepository::getMaxOrderIndexInPortfolio : favoriteRepository::getMaxOrderIndex;
     }
 
+    private void createFavorite(Map<String, String> favorite, List<Favorite> favorites) {
+        switch(Favorite.Type.valueOf(favorite.get("type"))) {
+            case UNICAFE:
+                favorites.add(createUnicafeFavorite(Integer.parseInt(favorite.get("restaurantId"))));
+                break;
+            case RSS:
+                favorites.add(createRssFavorite(favorite.get("url"), Integer.parseInt(favorite.get("visibleItems"))));
+                break;
+            case TWITTER:
+                favorites.add(createTwitterFavorite(favorite.get("value")));
+                break;
+        }
+    }
+
     public void createDefaultFavorites(final User user) {
         List<Favorite> favorites = Lists.newArrayList();
 
-        favorites.add(createUnicafeFavorite(3));
-        favorites.add(createTwitterFavorite("helsinkiuni"));
-        favorites.add(createRssFavorite("http://helsinginyliopisto.etapahtuma.fi/Default.aspx?tabid=959&format=atom", 3));
-        favorites.add(createRssFavorite("https://university.helsinki.fi/fi/feeds/news/rss", 3));
-        favorites.add(createRssFavorite("http://hyy.helsinki.fi/en/feed/uutiset/rss.xml", 3));
-        favorites.add(createTwitterFavorite("opinder_uh"));
-        favorites.add(createRssFavorite("http://www.helsinki.fi/blogit/feed/postfeed.php", 3));
-        favorites.add(createRssFavorite("http://yle.fi/uutiset/rss/uutiset.rss?osasto=tiede", 3));
+        List<Map<String, String>> defaultFavorites = favoriteProperties.getDefaultFavorites();
+
+        defaultFavorites.stream().forEach(f -> createFavorite(f, favorites));
 
         IntStream.range(0, favorites.size())
             .forEach(index -> {

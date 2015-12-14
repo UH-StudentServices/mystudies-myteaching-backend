@@ -21,6 +21,7 @@ import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.*;
 import fi.helsinki.opintoni.repository.FavoriteRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
+import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
