@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 public class LocationResolverTest extends SpringTest {
@@ -46,11 +47,13 @@ public class LocationResolverTest extends SpringTest {
     }
 
     @Test
-    public void thatNullIsReturnedWhenZipCodeIsBlank() {
-        OodiEvent oodiEvent = oodiEventWithBuilding("Osoite", null);
+    public void thatBuildingDtoIsReturnedWhenZipCodeIsBlankButAddressIsNot() {
+        String street = "Osoite";
+        OodiEvent oodiEvent = oodiEventWithBuilding(street, null);
 
         BuildingDto buildingDto = locationResolver.getBuilding(oodiEvent);
-        assertNull(buildingDto);
+        assertNotNull(buildingDto);
+        assertEquals(street, buildingDto.street);
     }
 
     @Test
