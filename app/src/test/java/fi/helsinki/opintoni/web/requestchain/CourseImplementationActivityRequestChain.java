@@ -17,30 +17,28 @@
 
 package fi.helsinki.opintoni.web.requestchain;
 
+
 import fi.helsinki.opintoni.server.CoursePageServer;
 
-public class CourseImplementationRequestChain<T> implements NestedRequestChain<T> {
+import java.util.List;
+
+public class CourseImplementationActivityRequestChain <T> implements NestedRequestChain<T> {
 
     private final CoursePageServer coursePageServer;
     private final T parentBuilder;
-    private final String courseImplementationId;
+    private List<String> activityCourseImplementationIds;
 
-    public CourseImplementationRequestChain(T parentBuilder,
-                                            CoursePageServer coursePageServer,
-                                            String courseImplementationId) {
+    public CourseImplementationActivityRequestChain(T parentBuilder,
+                                                    CoursePageServer coursePageServer,
+                                                    List<String> activityCourseImplementationIds) {
         this.parentBuilder = parentBuilder;
         this.coursePageServer = coursePageServer;
-        this.courseImplementationId = courseImplementationId;
+        this.activityCourseImplementationIds = activityCourseImplementationIds;
     }
 
-    protected CourseImplementationRequestChain<T> expectImplementation() {
-        coursePageServer.expectCourseImplementationRequest(courseImplementationId);
-        return this;
-    }
-
-    protected CourseImplementationRequestChain<T> expectImplementation(
-        String responseFile) {
-        coursePageServer.expectCourseImplementationRequest(courseImplementationId, responseFile);
+    public CourseImplementationActivityRequestChain<T> activity(String responseFile) {
+        coursePageServer.expectCourseImplementationActivityRequest(activityCourseImplementationIds,
+            responseFile);
         return this;
     }
 
@@ -50,3 +48,4 @@ public class CourseImplementationRequestChain<T> implements NestedRequestChain<T
     }
 
 }
+

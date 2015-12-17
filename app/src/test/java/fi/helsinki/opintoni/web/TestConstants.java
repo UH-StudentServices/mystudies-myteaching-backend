@@ -26,5 +26,7 @@ public class TestConstants {
     public static final String TEACHER_NUMBER = "010540";
     public static final String TEACHER_COURSE_REALISATION_ID = "99903629";
 
+    public static final String EXAM_TEACHER_COURSE_REALISATION_ID = "99903628";
+
     public static final Long PORTFOLIO_ID = 2L;
 }

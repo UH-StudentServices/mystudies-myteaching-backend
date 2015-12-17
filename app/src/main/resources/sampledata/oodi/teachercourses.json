@@ -41,6 +41,26 @@
       "learningopportunity_id": "10440",
       "teacher_id": "010540",
       "organisation_code": "H1001"
+    },
+    {
+      "realisation_name": "Testitentti",
+      "show_students": 1,
+      "realisation_type_code": 27,
+      "enroll_end_date": "2017-10-19T20:59:00.000Z",
+      "enroll_start_date": "2016-09-29T12:00:00.000Z",
+      "faculty_code": "H10",
+      "teacher_role_code": 3,
+      "end_date": "2018-04-26T21:00:00.000Z",
+      "start_date": "2017-10-25T22:00:00.000Z",
+      "credits": 10,
+      "organisation_name": "Eksegetiikka",
+      "show_hierarchy": 1,
+      "course_id": 987654321,
+      "image_uri": null,
+      "weboodi_uri": "https://weboodi.helsinki.fi/",
+      "learningopportunity_id": "10440",
+      "teacher_id": "010540",
+      "organisation_code": "H1001"
     }
   ]
 }
