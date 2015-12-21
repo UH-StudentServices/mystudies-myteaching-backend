@@ -82,6 +82,7 @@ public class UserNotificationsResourceTest extends SpringTest {
             .enrollments()
             .defaultCourseUnitRealisation()
             .defaultImplementation()
+            .and()
             .activity("studentnotifications.json");
     }
 

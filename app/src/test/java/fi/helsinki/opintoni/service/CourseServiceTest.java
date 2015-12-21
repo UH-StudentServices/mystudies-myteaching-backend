@@ -57,8 +57,9 @@ public class CourseServiceTest extends SpringTest {
         Set<CourseDto> courseDtos = courseService
             .getCourses(Optional.empty(), Optional.of(TestConstants.TEACHER_NUMBER), Locale.ENGLISH);
 
-        assertEquals(1, courseDtos.size());
+        assertEquals(2, courseDtos.size());
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.TEACHER_COURSE_REALISATION_ID));
+        assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID));
     }
 
     @Test
@@ -72,9 +73,10 @@ public class CourseServiceTest extends SpringTest {
                 Optional.of(TestConstants.TEACHER_NUMBER),
                 Locale.ENGLISH);
 
-        assertEquals(2, courseDtos.size());
+        assertEquals(3, courseDtos.size());
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.STUDENT_COURSE_REALISATION_ID));
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.TEACHER_COURSE_REALISATION_ID));
+        assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID));
     }
 
     private Matcher<Set<CourseDto>> hasCourseWithRealisationId(String realisationId) {
@@ -110,6 +112,8 @@ public class CourseServiceTest extends SpringTest {
     private void expectTeacherCourses() {
         defaultTeacherRequestChain()
             .courses()
-            .defaultCourseImplementation();
+            .defaultCourseImplementation()
+            .and()
+            .examCourseImplementation();
     }
 }

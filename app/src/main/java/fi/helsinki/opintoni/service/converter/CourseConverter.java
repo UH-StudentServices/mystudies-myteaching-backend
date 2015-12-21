@@ -25,6 +25,7 @@ import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiEnrollment;
 import fi.helsinki.opintoni.integration.oodi.OodiTeacherCourse;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
+import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.util.CoursePageUriBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,14 +39,17 @@ public class CourseConverter {
     private final CoursePageClient coursePageClient;
     private final OodiClient oodiClient;
     private final CoursePageUriBuilder coursePageUriBuilder;
+    private final EventTypeResolver eventTypeResolver;
 
     @Autowired
     public CourseConverter(CoursePageClient coursePageClient,
                            OodiClient oodiClient,
-                           CoursePageUriBuilder coursePageUriBuilder) {
+                           CoursePageUriBuilder coursePageUriBuilder,
+                           EventTypeResolver eventTypeResolver) {
         this.coursePageClient = coursePageClient;
         this.oodiClient = oodiClient;
         this.coursePageUriBuilder = coursePageUriBuilder;
+        this.eventTypeResolver = eventTypeResolver;
     }
 
     public CourseDto toDto(OodiEnrollment oodiEnrollment, Locale locale) {
@@ -67,7 +71,8 @@ public class CourseConverter {
             oodiEnrollment.realisationId,
             oodiEnrollment.credits,
             courseUnitRealisation.teachers.stream().map(t -> t.fullName).collect(Collectors.toList()),
-            coursePage.hasMaterial);
+            coursePage.hasMaterial,
+            eventTypeResolver.isExam(oodiEnrollment.typeCode));
     }
 
     public CourseDto toDto(OodiTeacherCourse oodiTeacherCourse) {
@@ -84,7 +89,8 @@ public class CourseConverter {
             oodiTeacherCourse.startDate,
             oodiTeacherCourse.endDate,
             oodiTeacherCourse.realisationId, null, Lists.newArrayList(),
-            coursePage.hasMaterial);
+            coursePage.hasMaterial,
+            eventTypeResolver.isExam(oodiTeacherCourse.realisationTypeCode));
     }
 
 }

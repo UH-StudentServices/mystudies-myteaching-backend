@@ -21,6 +21,8 @@ import fi.helsinki.opintoni.server.CoursePageServer;
 import fi.helsinki.opintoni.server.OodiServer;
 import fi.helsinki.opintoni.web.TestConstants;
 
+import java.util.Arrays;
+
 public class TeacherRequestChain {
 
     private final OodiServer oodiServer;
@@ -54,6 +56,10 @@ public class TeacherRequestChain {
         return courseImplementation(TestConstants.TEACHER_COURSE_REALISATION_ID);
     }
 
+    public CourseImplementationRequestChain<TeacherRequestChain> examCourseImplementation() {
+        return courseImplementation(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID);
+    }
+
     public CourseImplementationRequestChain<TeacherRequestChain> courseImplementation(
         String courseImplementationId) {
         CourseImplementationRequestChain<TeacherRequestChain> builder =
@@ -74,6 +80,16 @@ public class TeacherRequestChain {
                 courseImplementationId);
         return builder.expectImplementation(responseFile);
 
+    }
+
+    public CourseImplementationActivityRequestChain<TeacherRequestChain> activity(String responseFile) {
+        CourseImplementationActivityRequestChain<TeacherRequestChain> chain =
+            new CourseImplementationActivityRequestChain<>(
+                this,
+                coursePageServer,
+                Arrays.asList(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID, TestConstants.TEACHER_COURSE_REALISATION_ID)
+            );
+        return chain.activity(responseFile);
     }
 
     public TeacherRequestChain defaultOneOffEvents() {

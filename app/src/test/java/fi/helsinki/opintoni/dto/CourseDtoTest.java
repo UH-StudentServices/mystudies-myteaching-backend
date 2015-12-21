@@ -55,6 +55,7 @@ public class CourseDtoTest {
             realisationId,
             4,
             Lists.newArrayList(),
-            false);
+            false,
+            true);
     }
 }

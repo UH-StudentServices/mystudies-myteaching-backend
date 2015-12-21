@@ -25,6 +25,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -74,8 +76,9 @@ public class CoursePageServer {
     }
 
 
-    public void expectCourseImplementationActivityRequest(String courseImplementationId, String responseFile) {
-        server.expect(requestTo(new UserNotificationServiceTest.ActivityUrlMatcher(coursePageBaseUrl, courseImplementationId)))
+    public void expectCourseImplementationActivityRequest(List<String> courseImplementationIds, String responseFile) {
+        server.expect(
+            requestTo(new UserNotificationServiceTest.ActivityUrlMatcher(coursePageBaseUrl, courseImplementationIdsToString(courseImplementationIds))))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(
                     SampleDataFiles.toText("coursepage/" + responseFile),
@@ -90,5 +93,14 @@ public class CoursePageServer {
 
     private String eventsUrl(String courseImplementationId) {
         return coursePageBaseUrl + "/events?course_implementation_id=" + courseImplementationId;
+    }
+
+    private String courseImplementationIdsToString(List<String> courseImplementationIds) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(courseImplementationIds.get(0));
+        courseImplementationIds.stream()
+            .skip(1)
+            .forEach(i -> builder.append("," + i));
+        return builder.toString();
     }
 }
