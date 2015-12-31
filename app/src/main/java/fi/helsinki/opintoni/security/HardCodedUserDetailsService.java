@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.security;
 
 import fi.helsinki.opintoni.config.Constants;
+import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -64,6 +65,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
     private UserDetails createTeacher() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("opettaja@helsinki.fi")
+            .eduPersonAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .email("opettaja@mail.helsinki.fi")
             .commonName("Olli Opettaja")
             .teacherNumber("010540")
@@ -75,6 +77,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
     private UserDetails createStudent() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("opiskelija@helsinki.fi")
+            .eduPersonAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("opiskelija@mail.helsinki.fi")
             .commonName("Olli Opiskelija")
             .studentNumber("010189791")
@@ -85,6 +88,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
     private UserDetails createHybridUser() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("hybriduser@helsinki.fi")
+            .eduPersonAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("hybriduser@mail.helsinki.fi")
             .commonName("Hybrid User")
             .teacherNumber("010540")
