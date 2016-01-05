@@ -219,7 +219,7 @@ public final class AppUser extends User {
                 authorities.add(new SimpleGrantedAuthority(Role.STUDENT.name()));
             }
 
-            if (teacherNumber.isPresent() && !eduPersonPrimaryAffiliation.equals(SAMLEduPersonAffiliation.STUDENT)) {
+            if (teacherNumber.isPresent() && !SAMLEduPersonAffiliation.STUDENT.equals(eduPersonPrimaryAffiliation)) {
                 authorities.add(new SimpleGrantedAuthority(Role.TEACHER.name()));
             }
 
