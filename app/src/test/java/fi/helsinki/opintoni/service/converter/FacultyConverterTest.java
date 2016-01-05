@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.service.converter;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.FacultyDto;
 import fi.helsinki.opintoni.security.AppUser;
+import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.web.TestConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,7 @@ public class FacultyConverterTest extends SpringTest {
         return new AppUser.AppUserBuilder()
             .oodiPersonId("123")
             .teacherNumber(TestConstants.TEACHER_NUMBER)
+            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .eduPersonPrincipalName("eduPersonPrincipalName")
             .teacherFacultyCode("A90000")
             .build();
@@ -92,6 +94,7 @@ public class FacultyConverterTest extends SpringTest {
         return new AppUser.AppUserBuilder()
             .oodiPersonId("123")
             .studentNumber(TestConstants.STUDENT_NUMBER)
+            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .eduPersonPrincipalName("eduPersonPrincipalName")
             .build();
     }

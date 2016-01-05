@@ -38,6 +38,7 @@ public final class AppUser extends User {
     private final String commonName;
     private final String eduPersonPrincipalName;
     private final SAMLEduPersonAffiliation eduPersonAffiliation;
+    private final SAMLEduPersonAffiliation eduPersonPrimaryAffiliation;
     private final String oodiPersonId;
     private final String preferredLanguage;
     private final Optional<String> teacherFacultyCode;
@@ -51,6 +52,7 @@ public final class AppUser extends User {
 
         this.eduPersonPrincipalName = builder.eduPersonPrincipalName;
         this.eduPersonAffiliation = builder.eduPersonAffiliation;
+        this.eduPersonPrimaryAffiliation = builder.eduPersonPrimaryAffiliation;
         this.email = builder.email;
         this.commonName = builder.commonName;
         this.studentNumber = builder.studentNumber;
@@ -97,6 +99,10 @@ public final class AppUser extends User {
         return eduPersonAffiliation;
     }
 
+    public SAMLEduPersonAffiliation getEduPersonPrimaryAffiliation() {
+        return eduPersonPrimaryAffiliation;
+    }
+
     public boolean hasRole(Role role) {
         return authorities.stream().anyMatch(a -> a.getAuthority().equals(role.name()));
     }
@@ -111,6 +117,7 @@ public final class AppUser extends User {
             .append("email", email)
             .append("eduPersonPrincipalName", eduPersonPrincipalName)
             .append("eduPersonAffiliation", eduPersonAffiliation.getValue())
+            .append("eduPersonPrimaryAffiliation", eduPersonPrimaryAffiliation.getValue())
             .append("commonName", commonName)
             .append("studentNumber", studentNumber)
             .append("teacherNumber", teacherNumber)
@@ -122,6 +129,7 @@ public final class AppUser extends User {
 
         private String eduPersonPrincipalName;
         private SAMLEduPersonAffiliation eduPersonAffiliation;
+        private SAMLEduPersonAffiliation eduPersonPrimaryAffiliation;
         private String email;
         private String commonName;
         private String oodiPersonId;
@@ -139,6 +147,11 @@ public final class AppUser extends User {
 
         public AppUserBuilder eduPersonAffiliation(SAMLEduPersonAffiliation eduPersonAffiliation) {
             this.eduPersonAffiliation = eduPersonAffiliation;
+            return this;
+        }
+
+        public AppUserBuilder eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation eduPersonPrimaryAffiliation) {
+            this.eduPersonPrimaryAffiliation = eduPersonPrimaryAffiliation;
             return this;
         }
 
@@ -206,7 +219,7 @@ public final class AppUser extends User {
                 authorities.add(new SimpleGrantedAuthority(Role.STUDENT.name()));
             }
 
-            if (teacherNumber.isPresent()) {
+            if (teacherNumber.isPresent() && !eduPersonPrimaryAffiliation.equals(SAMLEduPersonAffiliation.STUDENT)) {
                 authorities.add(new SimpleGrantedAuthority(Role.TEACHER.name()));
             }
 

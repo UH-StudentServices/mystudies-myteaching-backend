@@ -130,6 +130,7 @@ public abstract class SpringTest {
                 .studentNumber(TestConstants.STUDENT_NUMBER)
                 .eduPersonPrincipalName("opiskelija@helsinki.fi")
                 .eduPersonAffiliation(SAMLEduPersonAffiliation.STUDENT)
+                .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
                 .oodiPersonId("1111")
                 .build(),
             ""));
@@ -142,6 +143,7 @@ public abstract class SpringTest {
                 .teacherNumber(TestConstants.TEACHER_NUMBER)
                 .eduPersonPrincipalName("opettaja@helsinki.fi")
                 .eduPersonAffiliation(SAMLEduPersonAffiliation.FACULTY)
+                .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
                 .teacherFacultyCode("A10000")
                 .oodiPersonId("2222")
                 .build(),
