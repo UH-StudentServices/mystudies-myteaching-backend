@@ -23,4 +23,5 @@ public class FeedbackDto {
     public String content;
     public String created;
     public String email;
+    public boolean processed;
 }

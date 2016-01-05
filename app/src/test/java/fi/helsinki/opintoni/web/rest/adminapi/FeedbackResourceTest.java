@@ -49,8 +49,8 @@ public class FeedbackResourceTest extends SpringTest {
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$[0].content").value("Feedback 1"))
             .andExpect(jsonPath("$[0].email").value("teppo.testaaja@helsinki.fi"))
-            .andExpect(jsonPath("$[0].created").value("13.10.2015 11:30"));
-
+            .andExpect(jsonPath("$[0].created").value("13.10.2015 11:30"))
+            .andExpect(jsonPath("$[0].processed").value(false));
     }
 
     @Test
