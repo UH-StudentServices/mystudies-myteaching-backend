@@ -24,9 +24,7 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,5 +54,14 @@ public class FeedbackResource extends AbstractResource {
         method = RequestMethod.GET)
     public ResponseEntity<List<FeedbackDto>> getFeedback() {
         return response(feedbackService.getAllFeedback());
+    }
+
+    @RequestMapping(
+        method = RequestMethod.PUT,
+        value = "/{feedbackId}")
+    public ResponseEntity<List<FeedbackDto>> updateFeedback(
+        @PathVariable("feedbackId") long feedbackId,
+        @RequestBody FeedbackDto feedback) {
+        return response(feedbackService.updateFeedback(feedbackId, feedback));
     }
 }

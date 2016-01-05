@@ -35,6 +35,7 @@ public class FeedbackConverter {
 
     public FeedbackDto toDto(Feedback feedback) {
         FeedbackDto feedbackDto = new FeedbackDto();
+        feedbackDto.id = feedback.id;
         feedbackDto.content = feedback.content;
         feedbackDto.metadata = feedback.metadata;
         feedbackDto.created = timeService.toHelsinkiTimeFromUTC(feedback.getCreatedDate());

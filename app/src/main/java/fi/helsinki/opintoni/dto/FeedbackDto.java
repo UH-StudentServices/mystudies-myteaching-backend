@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.dto;
 
 public class FeedbackDto {
 
+    public Long id;
     public String metadata;
     public String content;
     public String created;
