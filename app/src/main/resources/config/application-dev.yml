@@ -58,3 +58,5 @@ embedlyApiKey: dd741e653b0e4841bc59a60650031057
 environment: dev
 
 adminAccounts: opettaja@helsinki.fi, opiskelija@helsinki.fi
+
+feed.client.implementation: mock
