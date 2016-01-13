@@ -50,6 +50,8 @@ portfolioUrl: /portfolio/#
 loginUrlTeacher: /app/locallog.html
 loginUrlStudent: /app/locallog.html
 logoutUrl: /logout
+teacherAppUrl: https://opi-1.teacher.helsinki.fi
+studentAppUrl: https://opi-1.student.helsinki.fi
 
 embedlyApiKey: dd741e653b0e4841bc59a60650031057
 
