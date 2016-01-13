@@ -20,6 +20,7 @@ package fi.helsinki.opintoni;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.security.AppUser;
+import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.server.*;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
@@ -128,6 +129,8 @@ public abstract class SpringTest {
             new AppUser.AppUserBuilder()
                 .studentNumber(TestConstants.STUDENT_NUMBER)
                 .eduPersonPrincipalName("opiskelija@helsinki.fi")
+                .eduPersonAffiliation(SAMLEduPersonAffiliation.STUDENT)
+                .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
                 .oodiPersonId("1111")
                 .build(),
             ""));
@@ -139,6 +142,8 @@ public abstract class SpringTest {
             new AppUser.AppUserBuilder()
                 .teacherNumber(TestConstants.TEACHER_NUMBER)
                 .eduPersonPrincipalName("opettaja@helsinki.fi")
+                .eduPersonAffiliation(SAMLEduPersonAffiliation.FACULTY)
+                .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
                 .teacherFacultyCode("A10000")
                 .oodiPersonId("2222")
                 .build(),

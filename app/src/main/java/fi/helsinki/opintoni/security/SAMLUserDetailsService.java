@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.security;
 
+import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.saml2.core.Attribute;
@@ -33,6 +34,8 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
     private final Logger log = LoggerFactory.getLogger(SAMLUserDetailsService.class);
 
     private static final String SAML_ATTRIBUTE_EDU_PERSON_PRINCIPAL_NAME = "urn:oid:1.3.6.1.4.1.5923.1.1.1.6";
+    private static final String SAML_ATTRIBUTE_EDU_PERSON_AFFILIATION = "urn:oid:1.3.6.1.4.1.5923.1.1.1.1";
+    private static final String SAML_ATTRIBUTE_EDU_PERSON_PRIMARY_AFFILIATION = "urn:oid:1.3.6.1.4.1.5923.1.1.1.5";
     private static final String SAML_ATTRIBUTE_EMAIL = "urn:oid:0.9.2342.19200300.100.1.3";
     private static final String SAML_ATTRIBUTE_COMMON_NAME = "urn:oid:2.5.4.3";
     private static final String SAML_ATTRIBUTE_OODI_UID = "1.3.6.1.4.1.18869.1.1.1.32";
@@ -40,6 +43,7 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
     private static final String SAML_ATTRIBUTE_STUDENT_NUMBER = "urn:oid:1.3.6.1.4.1.25178.1.2.14";
     private static final String SAML_ATTRIBUTE_TEACHER_FACULTY_CODE = "urn:mace:funet.fi:helsinki.fi:hyAccountingCode";
     private static final String SAML_ATTRIBUTE_PREFERRED_LANGUAGE = "urn:oid:2.16.840.1.113730.3.1.39";
+
 
     private final UserService userService;
 
@@ -58,6 +62,8 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
 
         AppUser.AppUserBuilder builder = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_PRINCIPAL_NAME))
+            .eduPersonAffiliation(SAMLEduPersonAffiliation.fromValue(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_AFFILIATION)))
+            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.fromValue(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_PRIMARY_AFFILIATION)))
             .email(credential.getAttributeAsString(SAML_ATTRIBUTE_EMAIL))
             .commonName(credential.getAttributeAsString(SAML_ATTRIBUTE_COMMON_NAME))
             .oodiPersonId(credential.getAttributeAsString(SAML_ATTRIBUTE_OODI_UID))

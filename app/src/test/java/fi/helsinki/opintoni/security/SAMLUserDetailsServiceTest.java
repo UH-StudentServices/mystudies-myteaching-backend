@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.security;
 
 import com.google.common.collect.Iterables;
+import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.service.UserService;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -58,6 +59,8 @@ public class SAMLUserDetailsServiceTest {
         assertEquals(OODI_PERSON_ID, appUser.getOodiPersonId());
         assertEquals(SAML_STUDENT_NUMBER_FINAL, appUser.getStudentNumber().get());
         assertEquals(SAML_PREFERRED_LANGUAGE, appUser.getPreferredLanguage());
+        assertEquals(SAMLEduPersonAffiliation.STUDENT, appUser.getEduPersonAffiliation());
+        assertEquals(SAMLEduPersonAffiliation.STUDENT, appUser.getEduPersonPrimaryAffiliation());
         assertFalse(appUser.getTeacherNumber().isPresent());
         assertEquals(1, appUser.getAuthorities().size());
 
@@ -77,6 +80,8 @@ public class SAMLUserDetailsServiceTest {
         assertEquals(OODI_PERSON_ID, appUser.getOodiPersonId());
         assertEquals(SAML_TEACHER_NUMBER, appUser.getTeacherNumber().get());
         assertEquals(SAML_PREFERRED_LANGUAGE, appUser.getPreferredLanguage());
+        assertEquals(SAMLEduPersonAffiliation.FACULTY, appUser.getEduPersonAffiliation());
+        assertEquals(SAMLEduPersonAffiliation.FACULTY, appUser.getEduPersonPrimaryAffiliation());
         assertFalse(appUser.getStudentNumber().isPresent());
         assertEquals(1, appUser.getAuthorities().size());
 
@@ -123,13 +128,18 @@ public class SAMLUserDetailsServiceTest {
 
     private SAMLCredential samlStudentCredential() {
         SAMLCredential credential = samlCommonCredential();
+
         when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.25178.1.2.14")).thenReturn(SAML_STUDENT_NUMBER);
+        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAMLEduPersonAffiliation.STUDENT.getValue());
+        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.5")).thenReturn(SAMLEduPersonAffiliation.STUDENT.getValue());
         return credential;
     }
 
     private SAMLCredential samlTeacherCredential() {
         SAMLCredential credential = samlCommonCredential();
         when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.3")).thenReturn(SAML_TEACHER_NUMBER);
+        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAMLEduPersonAffiliation.FACULTY.getValue());
+        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.5")).thenReturn(SAMLEduPersonAffiliation.FACULTY.getValue());
         return credential;
     }
 
@@ -137,6 +147,8 @@ public class SAMLUserDetailsServiceTest {
         SAMLCredential credential = samlCommonCredential();
         when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.3")).thenReturn(SAML_TEACHER_NUMBER);
         when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.25178.1.2.14")).thenReturn(SAML_STUDENT_NUMBER);
+        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAMLEduPersonAffiliation.STUDENT.getValue());
+        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.5")).thenReturn(SAMLEduPersonAffiliation.FACULTY.getValue());
         return credential;
     }
 

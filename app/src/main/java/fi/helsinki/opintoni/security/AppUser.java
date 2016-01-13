@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.security;
 
 import com.google.common.collect.Sets;
 import fi.helsinki.opintoni.localization.Language;
+import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,6 +37,8 @@ public final class AppUser extends User {
     private final String email;
     private final String commonName;
     private final String eduPersonPrincipalName;
+    private final SAMLEduPersonAffiliation eduPersonAffiliation;
+    private final SAMLEduPersonAffiliation eduPersonPrimaryAffiliation;
     private final String oodiPersonId;
     private final String preferredLanguage;
     private final Optional<String> teacherFacultyCode;
@@ -48,6 +51,8 @@ public final class AppUser extends User {
         super(builder.eduPersonPrincipalName, "password", builder.authorities);
 
         this.eduPersonPrincipalName = builder.eduPersonPrincipalName;
+        this.eduPersonAffiliation = builder.eduPersonAffiliation;
+        this.eduPersonPrimaryAffiliation = builder.eduPersonPrimaryAffiliation;
         this.email = builder.email;
         this.commonName = builder.commonName;
         this.studentNumber = builder.studentNumber;
@@ -90,6 +95,14 @@ public final class AppUser extends User {
         return preferredLanguage;
     }
 
+    public SAMLEduPersonAffiliation getEduPersonAffiliation() {
+        return eduPersonAffiliation;
+    }
+
+    public SAMLEduPersonAffiliation getEduPersonPrimaryAffiliation() {
+        return eduPersonPrimaryAffiliation;
+    }
+
     public boolean hasRole(Role role) {
         return authorities.stream().anyMatch(a -> a.getAuthority().equals(role.name()));
     }
@@ -103,6 +116,8 @@ public final class AppUser extends User {
         return new ToStringBuilder(this)
             .append("email", email)
             .append("eduPersonPrincipalName", eduPersonPrincipalName)
+            .append("eduPersonAffiliation", eduPersonAffiliation.getValue())
+            .append("eduPersonPrimaryAffiliation", eduPersonPrimaryAffiliation.getValue())
             .append("commonName", commonName)
             .append("studentNumber", studentNumber)
             .append("teacherNumber", teacherNumber)
@@ -113,6 +128,8 @@ public final class AppUser extends User {
     public static class AppUserBuilder {
 
         private String eduPersonPrincipalName;
+        private SAMLEduPersonAffiliation eduPersonAffiliation;
+        private SAMLEduPersonAffiliation eduPersonPrimaryAffiliation;
         private String email;
         private String commonName;
         private String oodiPersonId;
@@ -125,6 +142,16 @@ public final class AppUser extends User {
 
         public AppUserBuilder eduPersonPrincipalName(String eduPersonPrincipalName) {
             this.eduPersonPrincipalName = eduPersonPrincipalName;
+            return this;
+        }
+
+        public AppUserBuilder eduPersonAffiliation(SAMLEduPersonAffiliation eduPersonAffiliation) {
+            this.eduPersonAffiliation = eduPersonAffiliation;
+            return this;
+        }
+
+        public AppUserBuilder eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation eduPersonPrimaryAffiliation) {
+            this.eduPersonPrimaryAffiliation = eduPersonPrimaryAffiliation;
             return this;
         }
 
@@ -188,11 +215,11 @@ public final class AppUser extends User {
         private Set<GrantedAuthority> getAuthorities() {
             Set<GrantedAuthority> authorities = new HashSet<>();
 
-            if (studentNumber.isPresent()) {
+            if (SAMLEduPersonAffiliation.STUDENT.equals(eduPersonAffiliation)) {
                 authorities.add(new SimpleGrantedAuthority(Role.STUDENT.name()));
             }
 
-            if (teacherNumber.isPresent()) {
+            if (teacherNumber.isPresent() && !SAMLEduPersonAffiliation.STUDENT.equals(eduPersonPrimaryAffiliation)) {
                 authorities.add(new SimpleGrantedAuthority(Role.TEACHER.name()));
             }
 
