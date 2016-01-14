@@ -45,8 +45,8 @@ public class FeedbackResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(header().string("Content-Type", "text/csv;charset=UTF-8"))
             .andExpect(header().string("Content-Disposition", "attachment; filename=feedback.csv"))
-            .andExpect(content().string("\"Feedback 1\",\"13.10.2015 11:30\",\"teppo.testaaja@helsinki.fi\",\"{\"\"browser\"\": \"\"Chrome\"\"}\"\n" +
-                "\"Feedback 2\",\"16.10.2015 12:00\",,\n"));
+            .andExpect(content().string("\"Feedback 1\",\"13.10.2015 11:30\",\"teppo.testaaja@helsinki.fi\",1,\"{\"\"browser\"\": \"\"Chrome\"\"}\",false\n" +
+                "\"Feedback 2\",\"16.10.2015 12:00\",,2,,false\n"));
     }
 
     @Test
