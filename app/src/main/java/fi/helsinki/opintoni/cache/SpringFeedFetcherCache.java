@@ -1,34 +1,26 @@
 package fi.helsinki.opintoni.cache;
 
-import com.google.common.base.Preconditions;
 import com.rometools.fetcher.impl.FeedFetcherCache;
 import com.rometools.fetcher.impl.SyndFeedInfo;
 import org.springframework.cache.Cache;
 import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
 
-import javax.annotation.PostConstruct;
 import java.net.URL;
 import java.util.Optional;
 
 public class SpringFeedFetcherCache implements FeedFetcherCache {
 
-    private String cacheName;
+    private final String cacheName;
 
-    private CacheManager cacheManager;
+    private final CacheManager cacheManager;
+
+    private final Cache cache;
 
     public SpringFeedFetcherCache(String cacheName, CacheManager cacheManager) {
         this.cacheName = cacheName;
         this.cacheManager = cacheManager;
-    }
-
-    private Cache cache;
-
-    @PostConstruct
-    public void init() {
-        Preconditions.checkNotNull(cacheManager);
-        Preconditions.checkNotNull(cacheName);
-        cache = cacheManager.getCache(cacheName);
+        this.cache = cacheManager.getCache(cacheName);
     }
 
     @Override
