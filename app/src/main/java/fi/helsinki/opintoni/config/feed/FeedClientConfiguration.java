@@ -1,6 +1,8 @@
-package fi.helsinki.opintoni.config;
+package fi.helsinki.opintoni.config.feed;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rometools.fetcher.FeedFetcher;
+import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.integration.feed.FeedClient;
 import fi.helsinki.opintoni.integration.feed.FeedMockClient;
 import fi.helsinki.opintoni.integration.feed.FeedRemoteClient;
@@ -10,13 +12,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class FeedConfiguration {
+public class FeedClientConfiguration {
 
     @Autowired
     private AppConfiguration appConfiguration;
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private FeedFetcher feedFetcher;
 
     @Bean
     public FeedMockClient feedMockClient() {
@@ -25,7 +30,7 @@ public class FeedConfiguration {
 
     @Bean
     public FeedRemoteClient feedRemoteClient() {
-        return new FeedRemoteClient();
+        return new FeedRemoteClient(feedFetcher);
     }
 
     @Bean
