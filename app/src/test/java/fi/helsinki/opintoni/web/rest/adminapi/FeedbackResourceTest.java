@@ -37,6 +37,7 @@ public class FeedbackResourceTest extends SpringTest {
     private static final Long FEEDBACK_ID = 1L;
     private static final Integer FEEDBACK_ID_INT = 1;
     private static final boolean FEEDBACK_PROCESSED = true;
+    private static final String FEEDBACK_COMMENT = "Testikommentti";
 
     @Test
     public void thatFeedbackIsDownloadedAsCsv() throws Exception {
@@ -45,8 +46,8 @@ public class FeedbackResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(header().string("Content-Type", "text/csv;charset=UTF-8"))
             .andExpect(header().string("Content-Disposition", "attachment; filename=feedback.csv"))
-            .andExpect(content().string("\"Feedback 1\",\"13.10.2015 11:30\",\"teppo.testaaja@helsinki.fi\",1,\"{\"\"browser\"\": \"\"Chrome\"\"}\",false\n" +
-                "\"Feedback 2\",\"16.10.2015 12:00\",,2,,false\n"));
+            .andExpect(content().string("\"Testikommentti 1\",\"Feedback 1\",\"13.10.2015 11:30\",\"teppo.testaaja@helsinki.fi\",1,\"{\"\"browser\"\": \"\"Chrome\"\"}\",false\n" +
+                ",\"Feedback 2\",\"16.10.2015 12:00\",,2,,false\n"));
     }
 
     @Test
@@ -79,13 +80,15 @@ public class FeedbackResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$[0].id").value(FEEDBACK_ID_INT))
-            .andExpect(jsonPath("$[0].processed").value(FEEDBACK_PROCESSED));
+            .andExpect(jsonPath("$[0].processed").value(FEEDBACK_PROCESSED))
+            .andExpect(jsonPath("$[0].comment").value(FEEDBACK_COMMENT));
     }
 
     private FeedbackDto feedbackDto() {
         FeedbackDto feedbackDto = new FeedbackDto();
         feedbackDto.id = FEEDBACK_ID;
         feedbackDto.processed = FEEDBACK_PROCESSED;
+        feedbackDto.comment = FEEDBACK_COMMENT;
         return feedbackDto;
     }
 }

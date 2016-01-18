@@ -41,6 +41,7 @@ public class FeedbackConverter {
         feedbackDto.created = timeService.toHelsinkiTimeFromUTC(feedback.getCreatedDate());
         feedbackDto.email = feedback.email;
         feedbackDto.processed = feedback.processed;
+        feedbackDto.comment = feedback.comment;
         return feedbackDto;
     }
 }

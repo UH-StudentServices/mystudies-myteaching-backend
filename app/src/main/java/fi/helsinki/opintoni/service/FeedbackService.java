@@ -65,6 +65,7 @@ public class FeedbackService {
     public List<FeedbackDto> updateFeedback(Long feedbackId, FeedbackDto feedbackDto) {
         Feedback feedback = feedbackRepository.findOne(feedbackId);
         feedback.processed = feedbackDto.processed;
+        feedback.comment = feedbackDto.comment;
         return getAllFeedback();
     }
 }

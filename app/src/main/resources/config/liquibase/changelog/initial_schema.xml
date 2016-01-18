@@ -905,4 +905,9 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="Add comment to feedback" author="Henri Heiskanen">
+        <addColumn tableName="feedback">
+            <column name="comment" type="text"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
