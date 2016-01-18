@@ -307,4 +307,4 @@ facultyLinks:
 
 adminAccounts: opettaja@helsinki.fi
 
-feed.client.implementation: mock
+feed.client.implementation: remote

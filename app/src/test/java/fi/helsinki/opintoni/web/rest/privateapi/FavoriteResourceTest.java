@@ -17,10 +17,13 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
+import com.google.common.truth.StringUtil;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
@@ -31,6 +34,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class FavoriteResourceTest extends SpringTest {
+
+    @Autowired
+    Environment environment;
 
     @Test
     public void thatTwitterFavoriteIsSaved() throws Exception {
@@ -102,7 +108,11 @@ public class FavoriteResourceTest extends SpringTest {
 
     @Test
     public void thatRSSFeedIsReturned() throws Exception {
-        mockMvc.perform(get("/api/private/v1/favorites/rss?url=http://www.helsinki.fi&limit=3").with(securityContext(studentSecurityContext()))
+        String feedUrl = getRemoteMockApiUrl("/mockfeed");
+
+        String requestUrl = StringUtil.format("/api/private/v1/favorites/rss?url=%s&limit=3", feedUrl);
+
+        mockMvc.perform(get(requestUrl).with(securityContext(studentSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title").value("RSS feed"))
