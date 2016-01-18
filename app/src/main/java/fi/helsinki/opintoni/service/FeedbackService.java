@@ -25,11 +25,13 @@ import fi.helsinki.opintoni.service.converter.FeedbackConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.InsertFeedbackRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
@@ -58,5 +60,11 @@ public class FeedbackService {
             .stream()
             .map(feedbackConverter::toDto)
             .collect(Collectors.toList());
+    }
+
+    public List<FeedbackDto> updateFeedback(Long feedbackId, FeedbackDto feedbackDto) {
+        Feedback feedback = feedbackRepository.findOne(feedbackId);
+        feedback.processed = feedbackDto.processed;
+        return getAllFeedback();
     }
 }

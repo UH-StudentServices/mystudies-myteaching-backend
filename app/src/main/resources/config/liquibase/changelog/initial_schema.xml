@@ -899,4 +899,10 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="Add processed to feedback" author="Juho Rautio">
+        <addColumn tableName="feedback">
+            <column name="processed" type="boolean" defaultValue="false"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

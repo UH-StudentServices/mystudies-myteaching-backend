@@ -38,4 +38,8 @@ public class Feedback extends AbstractAuditingEntity {
 
     @Column(name = "email")
     public String email;
+
+    @Column(name = "processed")
+    public boolean processed;
+
 }
