@@ -25,7 +25,9 @@ import fi.helsinki.opintoni.integration.DateFormatter;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiRoles;
 import fi.helsinki.opintoni.util.TimeZoneUtils;
-import net.fortuna.ical4j.model.*;
+import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.DateTime;
+import net.fortuna.ical4j.model.PropertyList;
 import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.component.VTimeZone;
 import net.fortuna.ical4j.model.property.*;
@@ -38,6 +40,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.UUID;
 
 import static fi.helsinki.opintoni.exception.http.NotFoundException.notFoundException;
 
@@ -119,13 +122,17 @@ public class CalendarService {
         return title;
     }
 
+    private Uid generateUid() {
+        return new Uid(UUID.randomUUID().toString());
+    }
+
     private VEvent eventDtoToVEvent(EventDto eventDto) {
         PropertyList eventProperties = new PropertyList();
-
         eventProperties.add(new DtStart(convertStartDateToCalDate(eventDto)));
         eventProperties.add(new DtEnd(convertEndDateToCalDate(eventDto)));
         eventProperties.add(new Summary(getEventTitle(eventDto)));
         eventProperties.add(new Location((eventDto.locations)));
+        eventProperties.add(generateUid());
 
         return new VEvent(eventProperties);
     }
