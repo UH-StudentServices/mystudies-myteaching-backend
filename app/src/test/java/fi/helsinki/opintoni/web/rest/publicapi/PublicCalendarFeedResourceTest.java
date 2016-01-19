@@ -26,7 +26,6 @@ import org.mockito.internal.matchers.Contains;
 import org.mockito.internal.matchers.EndsWith;
 import org.mockito.internal.matchers.StartsWith;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -104,7 +103,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
     }
 
     private List<Matcher<String>> contentMatchers(String expectedICalStart, String expectedICalEnd, List<String> expectedIcalEvents) {
-        List<Matcher<String>> matchers = new ArrayList<>();
+        List<Matcher<String>> matchers = newArrayList();
 
         matchers.add(new StartsWith(expectedICalStart));
         matchers.add(new EndsWith(expectedICalEnd));
