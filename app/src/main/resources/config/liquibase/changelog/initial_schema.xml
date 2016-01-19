@@ -919,4 +919,8 @@
         </createIndex>
     </changeSet>
 
+    <changeSet id="Change event principal data value data type" author="Juho Rautio">
+        <modifyDataType tableName="persistent_audit_event_data" columnName="value" newDataType="text" />
+    </changeSet>
+
 </databaseChangeLog>
