@@ -19,15 +19,22 @@ package fi.helsinki.opintoni.web.rest.publicapi;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.web.WebConstants;
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.mockito.internal.matchers.And;
+import org.mockito.internal.matchers.Contains;
 import org.mockito.internal.matchers.EndsWith;
 import org.mockito.internal.matchers.StartsWith;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 public class PublicCalendarFeedResourceTest extends SpringTest {
 
@@ -46,45 +53,71 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 "TZURL:http://tzurl.org/zoneinfo/Europe/Helsinki",
                 "X-LIC-LOCATION:Europe/Helsinki");
 
-        String expectedICalEnd = String.join(CRLF,
+        List<String> expectedIcalEvents = newArrayList(
+            eventToString(
                 "BEGIN:VEVENT",
                 "DTSTART:20141027T121500Z",
                 "DTEND:20141027T134500Z",
                 "SUMMARY:Johdatus kasvatuspsykologiaan\\, Animal Biotechnology B (KEL/KEBIOT230)",
                 "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11",
-                "END:VEVENT",
+                "UID:"),
+            eventToString(
                 "BEGIN:VEVENT",
                 "DTSTART:20141028T140000Z",
                 "DTEND:20141128T140000Z",
                 "SUMMARY:Title: Test 04159adb2253\\, Animal Biotechnology B (KEL/KEBIOT230)",
                 "LOCATION:Place: Test 04156f654df1",
-                "END:VEVENT",
+                "UID:"),
+            eventToString(
                 "BEGIN:VEVENT",
                 "DTSTART:20150831T090000Z",
                 "DTEND:20150831T120000Z",
                 "SUMMARY:Formulointi III - tentti\\, Animal Biotechnology B (KEL/KEBIOT230)",
                 "LOCATION:Arppeanumin auditorio\\, Viikinkaari 11",
-                "END:VEVENT",
+                "UID:"),
+            eventToString(
                 "BEGIN:VEVENT",
                 "DTSTART:20401028T110000Z",
                 "DTEND:20401128T140000Z",
                 "SUMMARY:Tentti\\, Animal Biotechnology B (KEL/KEBIOT230)",
                 "LOCATION:Tenttisali",
-                "END:VEVENT",
+                "UID:"),
+            eventToString(
                 "BEGIN:VEVENT",
                 "DTSTART:20401028T110000Z",
                 "DTEND:20401028T215959Z",
                 "SUMMARY:Ei päättymisaikaa\\, Animal Biotechnology B (KEL/KEBIOT230)",
-                "LOCATION:Paikka X",
-                "END:VEVENT",
-                "END:VCALENDAR",
-                "");
+                "LOCATION:Paikka X"
+            )
+        );
+
+        String expectedICalEnd = "END:VCALENDAR" + CRLF;
 
         mockMvc.perform(get("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/en"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.TEXT_CALENDAR_UTF8))
-            .andExpect(content().string(new And(newArrayList(new StartsWith(expectedICalStart),
-                new EndsWith(expectedICalEnd)))));
+            .andExpect(content().string(Matchers.allOf(newArrayList(
+                contentMatchers(
+                    expectedICalStart,
+                    expectedICalEnd,
+                    expectedIcalEvents)))));
+    }
+
+    private List<Matcher<String>> contentMatchers(String expectedICalStart, String expectedICalEnd, List<String> expectedIcalEvents) {
+        List<Matcher<String>> matchers = new ArrayList<>();
+
+        matchers.add(new StartsWith(expectedICalStart));
+        matchers.add(new EndsWith(expectedICalEnd));
+
+        matchers.addAll(expectedIcalEvents.stream()
+            .map(Contains::new)
+            .collect(Collectors.toList()));
+
+        return matchers;
+    }
+
+    private String eventToString(String... args) {
+        return String.join(CRLF, args);
     }
 
     private void expectEvents() {
