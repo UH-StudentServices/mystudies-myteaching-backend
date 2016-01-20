@@ -19,7 +19,11 @@ package fi.helsinki.opintoni.domain;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "feedback")
@@ -42,4 +46,6 @@ public class Feedback extends AbstractAuditingEntity {
     @Column(name = "processed")
     public boolean processed;
 
+    @Column(name = "comment")
+    public String comment;
 }

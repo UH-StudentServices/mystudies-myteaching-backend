@@ -923,4 +923,9 @@
         <modifyDataType tableName="persistent_audit_event_data" columnName="value" newDataType="text" />
     </changeSet>
 
+    <changeSet id="Add comment to feedback" author="Henri Heiskanen">
+        <addColumn tableName="feedback">
+            <column name="comment" type="text"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
