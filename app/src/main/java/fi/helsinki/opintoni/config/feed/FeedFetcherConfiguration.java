@@ -15,12 +15,23 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.feed;
+package fi.helsinki.opintoni.config.feed;
 
-import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.fetcher.FeedFetcher;
+import com.rometools.fetcher.impl.FeedFetcherCache;
+import com.rometools.fetcher.impl.HttpURLFeedFetcher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import java.util.Optional;
+@Configuration
+public class FeedFetcherConfiguration {
 
-public interface FeedClient {
-    Optional<SyndFeed> getFeed(String feedUrl);
+    @Autowired
+    private FeedFetcherCache feedFetcherCache;
+
+    @Bean
+    public FeedFetcher feedFetcher() {
+        return new HttpURLFeedFetcher(feedFetcherCache);
+    }
 }

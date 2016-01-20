@@ -42,6 +42,8 @@ public class CacheConstants {
 
     public static final String EUROPE_HELSINKI_TIMEZONE = "europeHelsinkiTimeZone";
 
+    public static final String FEEDS = "feeds";
+
     public static final ImmutableList<String> cacheNames = ImmutableList.<String>builder()
         .add(STUDENT_EVENTS)
         .add(STUDENT_ENROLLMENTS)
@@ -57,5 +59,6 @@ public class CacheConstants {
         .add(IS_OPEN_UNIVERSITY_STUDENT)
         .add(IS_OPEN_UNIVERSITY_TEACHER)
         .add(EUROPE_HELSINKI_TIMEZONE)
+        .add(FEEDS)
         .build();
 }

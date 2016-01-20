@@ -905,6 +905,24 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="Change audit event principal data type to text" author="Juho Rautio">
+        <dropIndex tableName="persistent_audit_event" indexName="idx_persistent_audit_event" />
+        <modifyDataType tableName="persistent_audit_event" columnName="principal" newDataType="text" />
+    </changeSet>
+
+    <changeSet id="Re-create index on persistent audit event" author="Juho Rautio" dbms="postgresql">
+        <createIndex indexName="idx_persistent_audit_event"
+                     tableName="persistent_audit_event"
+                     unique="false">
+            <column name="principal" type="text"/>
+            <column name="event_date" type="timestamp"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="Change event principal data value data type" author="Juho Rautio">
+        <modifyDataType tableName="persistent_audit_event_data" columnName="value" newDataType="text" />
+    </changeSet>
+
     <changeSet id="Add comment to feedback" author="Henri Heiskanen">
         <addColumn tableName="feedback">
             <column name="comment" type="text"/>

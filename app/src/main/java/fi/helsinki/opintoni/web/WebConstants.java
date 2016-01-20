@@ -22,6 +22,7 @@ public final class WebConstants {
     public static final String APPLICATION_JSON_UTF8 = "application/json;charset=UTF-8";
     public static final String APPLICATION_JAVASCRIPT_UTF8 = "application/javascript;charset=UTF-8";
     public static final String TEXT_CALENDAR_UTF8 = "text/calendar;charset=UTF-8";
+    public static final String APPLICATION_XML = "application/xml;charset=UTF-8";
 
     private WebConstants() {
     }

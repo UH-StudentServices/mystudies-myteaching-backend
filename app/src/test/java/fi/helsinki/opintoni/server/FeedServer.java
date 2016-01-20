@@ -15,36 +15,32 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.feed;
+package fi.helsinki.opintoni.server;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.SyndFeedInput;
-import com.rometools.rome.io.XmlReader;
-import org.springframework.beans.factory.annotation.Autowired;
+import fi.helsinki.opintoni.web.WebConstants;
+import fi.helsinki.opintoni.web.rest.RestConstants;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
-public class FeedMockClient implements FeedClient {
-
+@RestController
+@Profile("test")
+@RequestMapping(
+    value = RestConstants.PUBLIC_API_V1 + "/mockfeed",
+    produces = WebConstants.APPLICATION_XML)
+public class FeedServer {
     @Value("classpath:sampledata/feed/feed.rss")
     private Resource mockFeed;
 
-    private final ObjectMapper objectMapper;
-
-    @Autowired
-    public FeedMockClient(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
-    }
-
-    @Override
-    public Optional<SyndFeed> getFeed(String feedUrl) {
-        Optional<SyndFeed> feed = Optional.empty();
+    @RequestMapping(method = RequestMethod.GET)
+    public String feed() {
+        String feed = null;
         try {
-            SyndFeedInput input = new SyndFeedInput();
-            feed = Optional.ofNullable(input.build(new XmlReader(mockFeed.getInputStream())));
+            feed = IOUtils.toString(mockFeed.getInputStream());
         } catch (Exception e) {
         }
         return feed;

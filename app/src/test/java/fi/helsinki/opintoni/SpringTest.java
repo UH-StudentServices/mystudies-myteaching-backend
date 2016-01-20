@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni;
 
+import com.google.common.truth.StringUtil;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.security.AppUser;
@@ -26,6 +27,7 @@ import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
 import fi.helsinki.opintoni.web.requestchain.TeacherRequestChain;
+import fi.helsinki.opintoni.web.rest.RestConstants;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import org.junit.Before;
@@ -35,6 +37,7 @@ import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -93,6 +96,9 @@ public abstract class SpringTest {
 
     @Autowired
     protected AppConfiguration appConfiguration;
+
+    @Autowired
+    private Environment environment;
 
     @Before
     public void initRestServer() {
@@ -164,6 +170,15 @@ public abstract class SpringTest {
 
     protected StudentRequestChain studentRequestChain(String studentNumber) {
         return new StudentRequestChain(studentNumber, oodiServer, coursePageServer);
+    }
+
+    protected String getRemoteMockApiUrl(String path) {
+        return StringUtil
+            .format("http://%s:%s%s/%s",
+                environment.getProperty("server.address"),
+                environment.getProperty("server.port"),
+                RestConstants.PUBLIC_API_V1,
+                path);
     }
 
 }
