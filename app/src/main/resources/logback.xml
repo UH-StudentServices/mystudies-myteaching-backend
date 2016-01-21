@@ -45,7 +45,6 @@
     </appender>
 
     <logger name="fi.helsinki.opintoni" level="info"/>
-    <logger name="fi.helsinki.opintoni.security" level="debug"/>
 
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.xml.bind" level="WARN"/>
