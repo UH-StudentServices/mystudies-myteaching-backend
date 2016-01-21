@@ -53,7 +53,6 @@ public class CourseService {
 
     public List<CourseDto> getStudentCourses(String studentNumber, Locale locale) {
         return oodiClient.getEnrollments(studentNumber, locale).stream()
-            .filter(oodiEnrollment -> !eventTypeResolver.isExam(oodiEnrollment.typeCode))
             .map(c -> courseConverter.toDto(c, locale))
             .collect(Collectors.toList());
     }
