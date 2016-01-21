@@ -25,6 +25,8 @@ import fi.helsinki.opintoni.web.TestConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -85,6 +87,7 @@ public class FacultyConverterTest extends SpringTest {
             .oodiPersonId("123")
             .teacherNumber(TestConstants.TEACHER_NUMBER)
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.FACULTY))
             .eduPersonPrincipalName("eduPersonPrincipalName")
             .teacherFacultyCode("A90000")
             .build();
@@ -95,6 +98,7 @@ public class FacultyConverterTest extends SpringTest {
             .oodiPersonId("123")
             .studentNumber(TestConstants.STUDENT_NUMBER)
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .eduPersonPrincipalName("eduPersonPrincipalName")
             .build();
     }

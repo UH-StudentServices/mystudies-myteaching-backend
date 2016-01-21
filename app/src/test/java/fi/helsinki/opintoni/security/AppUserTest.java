@@ -17,24 +17,43 @@
 
 package fi.helsinki.opintoni.security;
 
+import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import org.junit.Test;
 import org.springframework.security.authentication.BadCredentialsException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class AppUserTest {
+
+    private static final String STUDENT_NUMBER = "123";
+    private static final String EDU_PERSON_PRINCIPAL_NAME = "eduPersonPrincipalName";
 
     @Test(expected = BadCredentialsException.class)
     public void thatAppUserWithoutTeacherNorStudentNumberCannotBeCreated() {
         new AppUser.AppUserBuilder().build();
     }
 
+    @Test(expected = BadCredentialsException.class)
+    public void thatAppUserWithoutEduPersonAffiliationCannotBeCreated() {
+        new AppUser.AppUserBuilder()
+            .studentNumber(STUDENT_NUMBER)
+            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
+            .build();
+    }
+
     @Test
     public void thatPreferredLanguageIsSet() {
+        List<SAMLEduPersonAffiliation> foo = new ArrayList<>();
+        foo.add(SAMLEduPersonAffiliation.STUDENT);
         AppUser appUser = new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName("eduPersonPrincipalName")
-            .studentNumber("123")
+            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
+            .studentNumber(STUDENT_NUMBER)
             .preferredLanguage("fi")
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .build();
         assertEquals("fi", appUser.getPreferredLanguage());
     }
@@ -42,8 +61,9 @@ public class AppUserTest {
     @Test
     public void thatDefaultPreferredLanguageIsSet() {
         AppUser appUser = new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName("eduPersonPrincipalName")
-            .studentNumber("123")
+            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
+            .studentNumber(STUDENT_NUMBER)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .build();
         assertEquals("en", appUser.getPreferredLanguage());
     }
@@ -51,8 +71,9 @@ public class AppUserTest {
     @Test
     public void thatAdminRoleIsNotAddedByDefault() {
         AppUser appUser = new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName("eduPersonPrincipalName")
-            .studentNumber("123")
+            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
+            .studentNumber(STUDENT_NUMBER)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .build();
 
         assertFalse(isAdmin(appUser));
@@ -61,12 +82,22 @@ public class AppUserTest {
     @Test
     public void thatAdminRoleIsAdded() {
         AppUser appUser = new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName("eduPersonPrincipalName")
-            .studentNumber("123")
+            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
+            .studentNumber(STUDENT_NUMBER)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .role(AppUser.Role.ADMIN)
             .build();
 
         assertTrue(isAdmin(appUser));
+    }
+
+    @Test
+    public void thatMultiValueEduPersonAffiliationIsDetected() {
+        AppUser appUser = new AppUser.AppUserBuilder()
+            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
+            .studentNumber(STUDENT_NUMBER)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
+            .build();
     }
 
     private boolean isAdmin(AppUser appUser) {

@@ -37,7 +37,7 @@ public final class AppUser extends User {
     private final String email;
     private final String commonName;
     private final String eduPersonPrincipalName;
-    private final SAMLEduPersonAffiliation eduPersonAffiliation;
+    private final List<SAMLEduPersonAffiliation> eduPersonAffiliations;
     private final SAMLEduPersonAffiliation eduPersonPrimaryAffiliation;
     private final String oodiPersonId;
     private final String preferredLanguage;
@@ -51,7 +51,7 @@ public final class AppUser extends User {
         super(builder.eduPersonPrincipalName, "password", builder.authorities);
 
         this.eduPersonPrincipalName = builder.eduPersonPrincipalName;
-        this.eduPersonAffiliation = builder.eduPersonAffiliation;
+        this.eduPersonAffiliations = builder.eduPersonAffiliations;
         this.eduPersonPrimaryAffiliation = builder.eduPersonPrimaryAffiliation;
         this.email = builder.email;
         this.commonName = builder.commonName;
@@ -95,8 +95,8 @@ public final class AppUser extends User {
         return preferredLanguage;
     }
 
-    public SAMLEduPersonAffiliation getEduPersonAffiliation() {
-        return eduPersonAffiliation;
+    public List<SAMLEduPersonAffiliation> getEduPersonAffiliations() {
+        return eduPersonAffiliations;
     }
 
     public SAMLEduPersonAffiliation getEduPersonPrimaryAffiliation() {
@@ -116,7 +116,7 @@ public final class AppUser extends User {
         return new ToStringBuilder(this)
             .append("email", email)
             .append("eduPersonPrincipalName", eduPersonPrincipalName)
-            .append("eduPersonAffiliation", eduPersonAffiliation.getValue())
+            .append("eduPersonAffiliation", eduPersonAffiliations.toString())
             .append("eduPersonPrimaryAffiliation", eduPersonPrimaryAffiliation.getValue())
             .append("commonName", commonName)
             .append("studentNumber", studentNumber)
@@ -128,7 +128,7 @@ public final class AppUser extends User {
     public static class AppUserBuilder {
 
         private String eduPersonPrincipalName;
-        private SAMLEduPersonAffiliation eduPersonAffiliation;
+        private List<SAMLEduPersonAffiliation> eduPersonAffiliations;
         private SAMLEduPersonAffiliation eduPersonPrimaryAffiliation;
         private String email;
         private String commonName;
@@ -145,8 +145,8 @@ public final class AppUser extends User {
             return this;
         }
 
-        public AppUserBuilder eduPersonAffiliation(SAMLEduPersonAffiliation eduPersonAffiliation) {
-            this.eduPersonAffiliation = eduPersonAffiliation;
+        public AppUserBuilder eduPersonAffiliations(List<SAMLEduPersonAffiliation> eduPersonAffiliations) {
+            this.eduPersonAffiliations = eduPersonAffiliations;
             return this;
         }
 
@@ -208,6 +208,10 @@ public final class AppUser extends User {
                 preferredLanguage = Language.EN.getCode();
             }
 
+            if (eduPersonAffiliations == null || eduPersonAffiliations.isEmpty()) {
+                throw new BadCredentialsException("User does not have any eduPersonAffiliations");
+            }
+
             authorities = getAuthorities();
             return new AppUser(this);
         }
@@ -215,7 +219,7 @@ public final class AppUser extends User {
         private Set<GrantedAuthority> getAuthorities() {
             Set<GrantedAuthority> authorities = new HashSet<>();
 
-            if (SAMLEduPersonAffiliation.STUDENT.equals(eduPersonAffiliation)) {
+            if (eduPersonAffiliations.contains(SAMLEduPersonAffiliation.STUDENT)) {
                 authorities.add(new SimpleGrantedAuthority(Role.STUDENT.name()));
             }
 

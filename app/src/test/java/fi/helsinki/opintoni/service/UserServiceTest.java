@@ -26,9 +26,11 @@ import fi.helsinki.opintoni.repository.FavoriteRepository;
 import fi.helsinki.opintoni.repository.UsefulLinkRepository;
 import fi.helsinki.opintoni.repository.UserSettingsRepository;
 import fi.helsinki.opintoni.security.AppUser;
+import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,6 +97,7 @@ public class UserServiceTest extends SpringTest {
             .oodiPersonId("111")
             .eduPersonPrincipalName("newUser")
             .studentNumber("123")
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .build();
     }
 

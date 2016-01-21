@@ -42,6 +42,7 @@ public class SAMLUserDetailsServiceTest {
     private static final String SAML_TEACHER_NUMBER = "teacherNumber";
     private static final String OODI_PERSON_ID = "1440748";
     private static final String SAML_PREFERRED_LANGUAGE = "fi";
+    private static final String SAML_EDU_PERSON_AFFILIATION_MULTIVALUE = "member;student";
 
     private final UserService userService = mock(UserService.class);
 
@@ -59,7 +60,7 @@ public class SAMLUserDetailsServiceTest {
         assertEquals(OODI_PERSON_ID, appUser.getOodiPersonId());
         assertEquals(SAML_STUDENT_NUMBER_FINAL, appUser.getStudentNumber().get());
         assertEquals(SAML_PREFERRED_LANGUAGE, appUser.getPreferredLanguage());
-        assertEquals(SAMLEduPersonAffiliation.STUDENT, appUser.getEduPersonAffiliation());
+        assertTrue(appUser.getEduPersonAffiliations().contains(SAMLEduPersonAffiliation.STUDENT));
         assertEquals(SAMLEduPersonAffiliation.STUDENT, appUser.getEduPersonPrimaryAffiliation());
         assertFalse(appUser.getTeacherNumber().isPresent());
         assertEquals(1, appUser.getAuthorities().size());
@@ -80,7 +81,7 @@ public class SAMLUserDetailsServiceTest {
         assertEquals(OODI_PERSON_ID, appUser.getOodiPersonId());
         assertEquals(SAML_TEACHER_NUMBER, appUser.getTeacherNumber().get());
         assertEquals(SAML_PREFERRED_LANGUAGE, appUser.getPreferredLanguage());
-        assertEquals(SAMLEduPersonAffiliation.FACULTY, appUser.getEduPersonAffiliation());
+        assertTrue(appUser.getEduPersonAffiliations().contains(SAMLEduPersonAffiliation.FACULTY));
         assertEquals(SAMLEduPersonAffiliation.FACULTY, appUser.getEduPersonPrimaryAffiliation());
         assertFalse(appUser.getStudentNumber().isPresent());
         assertEquals(1, appUser.getAuthorities().size());
@@ -130,7 +131,7 @@ public class SAMLUserDetailsServiceTest {
         SAMLCredential credential = samlCommonCredential();
 
         when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.25178.1.2.14")).thenReturn(SAML_STUDENT_NUMBER);
-        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAMLEduPersonAffiliation.STUDENT.getValue());
+        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAML_EDU_PERSON_AFFILIATION_MULTIVALUE);
         when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.5")).thenReturn(SAMLEduPersonAffiliation.STUDENT.getValue());
         return credential;
     }

@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.domain.User;
+import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.service.SessionService;
 import fi.helsinki.opintoni.service.TimeService;
 import fi.helsinki.opintoni.service.UserService;
@@ -38,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -72,6 +74,7 @@ public class CustomAuthenticationSuccessHandlerTest {
             .studentNumber("1234")
             .oodiPersonId(OODI_PERSON_ID)
             .preferredLanguage("fi")
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .build();
         when(authentication.getPrincipal()).thenReturn(appUser);
     }
