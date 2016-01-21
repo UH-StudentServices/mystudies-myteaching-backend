@@ -105,7 +105,7 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
     }
 
     private List<SAMLEduPersonAffiliation> getEduPersonAffiliations(SAMLCredential credential) {
-        log.debug("EduPersonAffiliations as StringArray: " + credential.getAttributeAsStringArray(SAML_ATTRIBUTE_EDU_PERSON_AFFILIATION));
+        log.debug("EduPersonAffiliations as StringArray: " + Arrays.toString(credential.getAttributeAsStringArray(SAML_ATTRIBUTE_EDU_PERSON_AFFILIATION)));
         log.debug("EduPersonAffiliations as parsed list: " + Arrays.asList(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_AFFILIATION).split(";")));
 
         return Arrays.asList(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_AFFILIATION).split(";"))
