@@ -28,6 +28,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class SAMLUserDetailsService implements org.springframework.security.saml.userdetails.SAMLUserDetailsService {
 
@@ -62,7 +66,7 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
 
         AppUser.AppUserBuilder builder = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_PRINCIPAL_NAME))
-            .eduPersonAffiliation(SAMLEduPersonAffiliation.fromValue(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_AFFILIATION)))
+            .eduPersonAffiliations(getEduPersonAffiliations(credential))
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.fromValue(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_PRIMARY_AFFILIATION)))
             .email(credential.getAttributeAsString(SAML_ATTRIBUTE_EMAIL))
             .commonName(credential.getAttributeAsString(SAML_ATTRIBUTE_COMMON_NAME))
@@ -100,4 +104,10 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
         return StringUtils.substringAfterLast(credential.getAttributeAsString(SAML_ATTRIBUTE_STUDENT_NUMBER), ":");
     }
 
+    private List<SAMLEduPersonAffiliation> getEduPersonAffiliations(SAMLCredential credential) {
+        return Arrays.asList(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_AFFILIATION).split(";"))
+            .stream()
+            .map(SAMLEduPersonAffiliation::fromValue)
+            .collect(Collectors.toList());
+    }
 }

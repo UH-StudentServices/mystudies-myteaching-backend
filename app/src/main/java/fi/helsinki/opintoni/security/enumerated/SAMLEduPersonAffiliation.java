@@ -20,10 +20,10 @@ package fi.helsinki.opintoni.security.enumerated;
 
 public enum SAMLEduPersonAffiliation {
 
-    STUDENT("student"),
     FACULTY("faculty"),
     STAFF("staff"),
     EMPLOYEE("employee"),
+    STUDENT("student"),
     MEMBER("member"),
     AFFILIATE("affiliate"),
     ALUM("alum");

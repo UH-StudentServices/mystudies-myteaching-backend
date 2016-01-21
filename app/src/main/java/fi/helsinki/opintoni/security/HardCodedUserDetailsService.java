@@ -25,6 +25,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+
 @Component("localUserDetailsService")
 @Profile({
     Constants.SPRING_PROFILE_TEST,
@@ -65,7 +67,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
     private UserDetails createTeacher() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("opettaja@helsinki.fi")
-            .eduPersonAffiliation(SAMLEduPersonAffiliation.FACULTY)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.FACULTY))
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .email("opettaja@mail.helsinki.fi")
             .commonName("Olli Opettaja")
@@ -78,7 +80,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
     private UserDetails createStudent() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("opiskelija@helsinki.fi")
-            .eduPersonAffiliation(SAMLEduPersonAffiliation.STUDENT)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("opiskelija@mail.helsinki.fi")
             .commonName("Olli Opiskelija")
@@ -90,7 +92,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
     private UserDetails createHybridUser() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("hybriduser@helsinki.fi")
-            .eduPersonAffiliation(SAMLEduPersonAffiliation.STUDENT)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .email("hybriduser@mail.helsinki.fi")
             .commonName("Hybrid User")
@@ -103,7 +105,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
     private UserDetails createTestTeacher() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("testteachert@helsinki.fi")
-            .eduPersonAffiliation(SAMLEduPersonAffiliation.FACULTY)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.FACULTY))
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .email("testteachert@mail.helsinki.fi")
             .commonName("Test Teacher")
@@ -115,7 +117,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
     private UserDetails createTestStudent() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("teststudent@helsinki.fi")
-            .eduPersonAffiliation(SAMLEduPersonAffiliation.STUDENT)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("teststudent@mail.helsinki.fi")
             .commonName("Test Student")
@@ -127,7 +129,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
     private UserDetails createTestHybridUser() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("testhybriduser@helsinki.fi")
-            .eduPersonAffiliation(SAMLEduPersonAffiliation.STUDENT)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .email("testhybriduser@mail.helsinki.fi")
             .commonName("Test Hybrid User")

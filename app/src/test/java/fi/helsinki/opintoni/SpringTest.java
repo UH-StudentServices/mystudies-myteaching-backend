@@ -51,6 +51,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TestApplication.class)
@@ -135,11 +136,11 @@ public abstract class SpringTest {
             new AppUser.AppUserBuilder()
                 .studentNumber(TestConstants.STUDENT_NUMBER)
                 .eduPersonPrincipalName("opiskelija@helsinki.fi")
-                .eduPersonAffiliation(SAMLEduPersonAffiliation.STUDENT)
-                .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
-                .oodiPersonId("1111")
-                .build(),
-            ""));
+                .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
+                        .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
+                        .oodiPersonId("1111")
+                        .build(),
+                    ""));
     }
 
     protected void configureTeacherSecurityContext() {
@@ -148,7 +149,7 @@ public abstract class SpringTest {
             new AppUser.AppUserBuilder()
                 .teacherNumber(TestConstants.TEACHER_NUMBER)
                 .eduPersonPrincipalName("opettaja@helsinki.fi")
-                .eduPersonAffiliation(SAMLEduPersonAffiliation.FACULTY)
+                .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.FACULTY))
                 .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
                 .teacherFacultyCode("A10000")
                 .oodiPersonId("2222")
