@@ -58,17 +58,18 @@ public class StudyAttainmentService {
             .map(whitelist -> {
                 List<Long> whitelistedAttainmentIds = getWhitelistedAttainmentIds(whitelist);
                 List<OodiStudyAttainment> studyAttainments =
-                    oodiClient.getStudyAttainments(getStudentNumber(portfolio), locale);
-                return getWhitelistedAttainments(studyAttainments, whitelistedAttainmentIds);
+                    oodiClient.getStudyAttainments(getStudentNumber(portfolio));
+                return getWhitelistedAttainments(studyAttainments, whitelistedAttainmentIds, locale);
             }).orElse(Lists.newArrayList());
     }
 
     private List<StudyAttainmentDto> getWhitelistedAttainments(List<OodiStudyAttainment> studyAttainments,
-                                                               List<Long> whitelistedAttainmentIds) {
+                                                               List<Long> whitelistedAttainmentIds,
+                                                               Locale locale) {
         Comparator<StudyAttainmentDto> studyAttainmentDtoComparator = this::compareStudyAttainments;
         return studyAttainments.stream()
             .filter(a -> whitelistedAttainmentIds.contains(a.studyAttainmentId))
-            .map(studyAttainmentConverter::toDto)
+            .map(a -> studyAttainmentConverter.toDto(a, locale))
             .sorted(studyAttainmentDtoComparator.reversed())
             .collect(Collectors.toList());
     }
@@ -87,8 +88,8 @@ public class StudyAttainmentService {
     public List<StudyAttainmentDto> getStudyAttainments(String studentNumber, int limit, Locale locale) {
         Comparator<StudyAttainmentDto> studyAttainmentDtoComparator = this::compareStudyAttainments;
 
-        return oodiClient.getStudyAttainments(studentNumber, locale).stream()
-            .map(studyAttainmentConverter::toDto)
+        return oodiClient.getStudyAttainments(studentNumber).stream()
+            .map(a -> studyAttainmentConverter.toDto(a, locale))
             .sorted(studyAttainmentDtoComparator.reversed())
             .limit(limit)
             .collect(Collectors.toList());

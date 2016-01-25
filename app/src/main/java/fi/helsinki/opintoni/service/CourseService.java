@@ -46,13 +46,13 @@ public class CourseService {
     }
 
     public List<CourseDto> getTeacherCourses(String teacherNumber, Locale locale) {
-        return oodiClient.getTeacherCourses(teacherNumber, locale, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
-            .map(courseConverter::toDto)
+        return oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
+            .map(c -> courseConverter.toDto(c, locale))
             .collect(Collectors.toList());
     }
 
     public List<CourseDto> getStudentCourses(String studentNumber, Locale locale) {
-        return oodiClient.getEnrollments(studentNumber, locale).stream()
+        return oodiClient.getEnrollments(studentNumber).stream()
             .map(c -> courseConverter.toDto(c, locale))
             .collect(Collectors.toList());
     }

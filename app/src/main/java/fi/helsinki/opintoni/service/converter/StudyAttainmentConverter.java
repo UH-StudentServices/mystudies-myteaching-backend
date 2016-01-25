@@ -21,17 +21,26 @@ import fi.helsinki.opintoni.dto.StudyAttainmentDto;
 import fi.helsinki.opintoni.dto.TeacherDto;
 import fi.helsinki.opintoni.integration.oodi.OodiStudyAttainment;
 import fi.helsinki.opintoni.integration.oodi.OodiTeacher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Component
 public class StudyAttainmentConverter {
 
-    public StudyAttainmentDto toDto(OodiStudyAttainment oodiStudyAttainment) {
+    private final LocalizedValueConverter localizedValueConverter;
+
+    @Autowired
+    public StudyAttainmentConverter(LocalizedValueConverter localizedValueConverter) {
+        this.localizedValueConverter = localizedValueConverter;
+    }
+
+    public StudyAttainmentDto toDto(OodiStudyAttainment oodiStudyAttainment, Locale locale) {
         return new StudyAttainmentDto(
             oodiStudyAttainment.studyAttainmentId,
-            oodiStudyAttainment.learningOpportunityName,
+            localizedValueConverter.toLocalizedString(oodiStudyAttainment.learningOpportunityName, locale),
             oodiStudyAttainment.teachers.stream()
                 .map(this::convertOodiTeacherToDto)
                 .collect(Collectors.toList()),

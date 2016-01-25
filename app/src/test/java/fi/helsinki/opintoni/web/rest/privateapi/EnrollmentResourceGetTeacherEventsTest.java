@@ -56,7 +56,7 @@ public class EnrollmentResourceGetTeacherEventsTest extends SpringTest {
             .andExpect(jsonPath("$[0].startDate[2]").value(13))
             .andExpect(jsonPath("$[0].startDate[3]").value(7))
             .andExpect(jsonPath("$[0].startDate[4]").value(0))
-            .andExpect(jsonPath("$[0].title").value("Kreikka (KL20)"))
+            .andExpect(jsonPath("$[0].title").value("Formulation III"))
             .andExpect(jsonPath("$[0].locations").value("F24 Fabianinkatu 24, Sali 531, Viikinkaari 11"))
             .andExpect(jsonPath("$[0].type").value(EventDto.Type.DEFAULT.name()))
             .andExpect(jsonPath("$[0].source").value(EventDto.Source.OODI.name()))

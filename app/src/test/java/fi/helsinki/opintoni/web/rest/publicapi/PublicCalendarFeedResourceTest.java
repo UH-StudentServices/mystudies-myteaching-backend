@@ -57,7 +57,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 "BEGIN:VEVENT",
                 "DTSTART:20141027T121500Z",
                 "DTEND:20141027T134500Z",
-                "SUMMARY:Johdatus kasvatuspsykologiaan\\, Animal Biotechnology B (KEL/KEBIOT230)",
+                "SUMMARY:Formulation II\\, Animal Biotechnology B (KEL/KEBIOT230)",
                 "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11",
                 "UID:"),
             eventToString(
@@ -71,7 +71,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 "BEGIN:VEVENT",
                 "DTSTART:20150831T090000Z",
                 "DTEND:20150831T120000Z",
-                "SUMMARY:Formulointi III - tentti\\, Animal Biotechnology B (KEL/KEBIOT230)",
+                "SUMMARY:Formulation III\\, Animal Biotechnology B (KEL/KEBIOT230)",
                 "LOCATION:Arppeanumin auditorio\\, Viikinkaari 11",
                 "UID:"),
             eventToString(

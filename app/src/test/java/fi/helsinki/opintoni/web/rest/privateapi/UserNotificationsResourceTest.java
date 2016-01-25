@@ -60,7 +60,7 @@ public class UserNotificationsResourceTest extends SpringTest {
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(2)))
             .andExpect(jsonPath("$[0].notificationId").value("3"))
-            .andExpect(jsonPath("$[0].courseName").value("Geenitekniikka"))
+            .andExpect(jsonPath("$[0].courseName").value("Gene Technology"))
             .andExpect(jsonPath("$[0].notificationUri")
                 .value("https://dev.student.helsinki.fi/tvt?group-course-messages"))
             .andExpect(jsonPath("$[0].avatarUri")

@@ -24,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 
 import static org.junit.Assert.assertSame;
 
@@ -37,8 +36,8 @@ public class OodiRestClientCacheTest extends SpringTest {
     public void thatStudentEnrollmentsAreCached() {
         studentRequestChain("123").enrollments();
 
-        List<OodiEnrollment> enrollments = oodiRestClient.getEnrollments("123", Locale.ENGLISH);
-        List<OodiEnrollment> cachedEnrollments = oodiRestClient.getEnrollments("123", Locale.ENGLISH);
+        List<OodiEnrollment> enrollments = oodiRestClient.getEnrollments("123");
+        List<OodiEnrollment> cachedEnrollments = oodiRestClient.getEnrollments("123");
 
         assertSame(enrollments, cachedEnrollments);
     }
@@ -47,8 +46,8 @@ public class OodiRestClientCacheTest extends SpringTest {
     public void thatStudentEventsAreCached() {
         studentRequestChain("123").events();
 
-        List<OodiEvent> events = oodiRestClient.getStudentEvents("123", Locale.ENGLISH);
-        List<OodiEvent> cachedEvents = oodiRestClient.getStudentEvents("123", Locale.ENGLISH);
+        List<OodiEvent> events = oodiRestClient.getStudentEvents("123");
+        List<OodiEvent> cachedEvents = oodiRestClient.getStudentEvents("123");
 
         assertSame(events, cachedEvents);
     }
@@ -59,8 +58,8 @@ public class OodiRestClientCacheTest extends SpringTest {
 
         String sinceDateString = DateTimeUtil.getSemesterStartDateString(LocalDate.now());
 
-        List<OodiTeacherCourse> courses = oodiRestClient.getTeacherCourses("123", Locale.ENGLISH, sinceDateString);
-        List<OodiTeacherCourse> cachedCourses = oodiRestClient.getTeacherCourses("123", Locale.ENGLISH, sinceDateString);
+        List<OodiTeacherCourse> courses = oodiRestClient.getTeacherCourses("123", sinceDateString);
+        List<OodiTeacherCourse> cachedCourses = oodiRestClient.getTeacherCourses("123", sinceDateString);
 
         assertSame(courses, cachedCourses);
     }
@@ -69,8 +68,8 @@ public class OodiRestClientCacheTest extends SpringTest {
     public void thatTeacherEventsAreCached() {
         teacherRequestChain("123").events();
 
-        List<OodiEvent> events = oodiRestClient.getTeacherEvents("123", Locale.ENGLISH);
-        List<OodiEvent> cachedEvents = oodiRestClient.getTeacherEvents("123", Locale.ENGLISH);
+        List<OodiEvent> events = oodiRestClient.getTeacherEvents("123");
+        List<OodiEvent> cachedEvents = oodiRestClient.getTeacherEvents("123");
 
         assertSame(events, cachedEvents);
     }

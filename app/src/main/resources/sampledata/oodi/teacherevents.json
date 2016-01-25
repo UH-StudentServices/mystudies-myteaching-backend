@@ -12,7 +12,20 @@
       "course_id": 99903629,
       "simple_type_code": 2,
       "realisation_type_code": 17,
-      "learningopportunity_name": "Kreikka (KL20)",
+      "learningopportunity_name": [
+        {
+          "langcode": "fi",
+          "text": "Epigenetics"
+        },
+        {
+          "langcode": "sv",
+          "text": "Epigenetics"
+        },
+        {
+          "langcode": "en",
+          "text": "Epigenetics"
+        }
+      ],
       "learningopportunity_id": "10440"
     },
     {

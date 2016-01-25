@@ -3,7 +3,20 @@
   "status": 200,
   "data": [
     {
-      "realisation_name": "Kreikka (KL20), ryhm\u00e4 2",
+      "realisation_name": [
+        {
+          "langcode": "fi",
+          "text": "Formulointi II"
+        },
+        {
+          "langcode": "sv",
+          "text": "Formulering II"
+        },
+        {
+          "langcode": "en",
+          "text": "Formulation II"
+        }
+      ],
       "show_students": 1,
       "realisation_type_code": 17,
       "enroll_end_date": "2015-10-19T20:59:00.000Z",

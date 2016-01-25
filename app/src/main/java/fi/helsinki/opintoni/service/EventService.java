@@ -71,8 +71,8 @@ public class EventService {
     }
 
     private List<EventDto> getOodiTeacherEvents(String teacherNumber, Locale locale) {
-        return oodiClient.getTeacherEvents(teacherNumber, locale).stream()
-            .map(eventConverter::toDto)
+        return oodiClient.getTeacherEvents(teacherNumber).stream()
+            .map(e -> eventConverter.toDto(e, locale))
             .collect(Collectors.toList());
     }
 
@@ -96,8 +96,8 @@ public class EventService {
     }
 
     private List<EventDto> getOodiStudentEvents(String studentNumber, Locale locale) {
-        return oodiClient.getStudentEvents(studentNumber, locale).stream()
-            .map(eventConverter::toDto)
+        return oodiClient.getStudentEvents(studentNumber).stream()
+            .map(e -> eventConverter.toDto(e, locale))
             .collect(Collectors.toList());
     }
 

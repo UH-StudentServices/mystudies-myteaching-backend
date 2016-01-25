@@ -19,9 +19,11 @@ package fi.helsinki.opintoni.integration.oodi;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.integration.DateFormatter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class OodiEvent {
 
@@ -35,7 +37,7 @@ public class OodiEvent {
     public Integer realisationId;
 
     @JsonProperty("learningopportunity_name")
-    public String learningOpportunityName;
+    public List<OodiLocalizedValue> learningOpportunityName = Lists.newArrayList();
 
     @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT_OODI)
     @JsonProperty("end_date")

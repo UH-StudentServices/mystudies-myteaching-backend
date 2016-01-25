@@ -20,23 +20,22 @@ package fi.helsinki.opintoni.integration.oodi;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 
 import java.util.List;
-import java.util.Locale;
 
 public interface OodiClient {
 
-    List<OodiEnrollment> getEnrollments(String studentNumber, Locale locale);
+    List<OodiEnrollment> getEnrollments(String studentNumber);
 
-    List<OodiEvent> getStudentEvents(String studentNumber, Locale locale);
+    List<OodiEvent> getStudentEvents(String studentNumber);
 
-    List<OodiEvent> getTeacherEvents(String teacherNumber, Locale locale);
+    List<OodiEvent> getTeacherEvents(String teacherNumber);
 
-    List<OodiStudyAttainment> getStudyAttainments(String studentNumber, Locale locale);
+    List<OodiStudyAttainment> getStudyAttainments(String studentNumber);
 
-    List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, Locale locale, String sinceDateString);
+    List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString);
 
-    List<OodiStudyRight> getStudentStudyRights(String studentNumber, Locale locale);
+    List<OodiStudyRight> getStudentStudyRights(String studentNumber);
 
-    OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId, Locale locale);
+    OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId);
 
     OodiStudentInfo getStudentInfo(String studentNumber);
 

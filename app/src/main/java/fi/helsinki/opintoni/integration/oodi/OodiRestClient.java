@@ -27,7 +27,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Locale;
 
 public class OodiRestClient implements OodiClient {
 
@@ -43,71 +42,71 @@ public class OodiRestClient implements OodiClient {
 
     @Override
     @Cacheable(CacheConstants.STUDENT_ENROLLMENTS)
-    public List<OodiEnrollment> getEnrollments(String studentNumber, Locale locale) {
-        return getOodiData("{baseUrl}/students/{studentNumber}/enrollments?langcode={locale}",
+    public List<OodiEnrollment> getEnrollments(String studentNumber) {
+        return getOodiData("{baseUrl}/students/{studentNumber}/enrollments",
             new ParameterizedTypeReference<OodiResponse<OodiEnrollment>>() {
-            }, baseUrl, studentNumber, locale.getLanguage());
+            }, baseUrl, studentNumber);
     }
 
     @Override
     @Cacheable(CacheConstants.STUDENT_EVENTS)
-    public List<OodiEvent> getStudentEvents(String studentNumber, Locale locale) {
-        return getOodiData("{baseUrl}/students/{studentNumber}/events?langcode={locale}",
+    public List<OodiEvent> getStudentEvents(String studentNumber) {
+        return getOodiData("{baseUrl}/students/{studentNumber}/events",
             new ParameterizedTypeReference<OodiResponse<OodiEvent>>() {
-            }, baseUrl, studentNumber, locale.getLanguage());
+            }, baseUrl, studentNumber);
     }
 
     @Override
-    public List<OodiStudyAttainment> getStudyAttainments(String studentNumber, Locale locale) {
-        return getOodiData("{baseUrl}/students/{studentNumber}/studyattainments?langcode={locale}",
+    public List<OodiStudyAttainment> getStudyAttainments(String studentNumber) {
+        return getOodiData("{baseUrl}/students/{studentNumber}/studyattainments",
             new ParameterizedTypeReference<OodiResponse<OodiStudyAttainment>>() {
-            }, baseUrl, studentNumber, locale.getLanguage());
+            }, baseUrl, studentNumber);
     }
 
     @Override
     @Cacheable(CacheConstants.TEACHER_COURSES)
-    public List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, Locale locale, String sinceDateString) {
-        return getOodiData("{baseUrl}/teachers/{teacherNumber}/teaching/all?langcode={locale}&since_date={sinceDate}",
+    public List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
+        return getOodiData("{baseUrl}/teachers/{teacherNumber}/teaching/all?since_date={sinceDate}",
             new ParameterizedTypeReference<OodiResponse<OodiTeacherCourse>>() {
-            }, baseUrl, teacherNumber, locale.getLanguage() ,sinceDateString);
+            }, baseUrl, teacherNumber ,sinceDateString);
     }
 
     @Override
-    public List<OodiStudyRight> getStudentStudyRights(String studentNumber, Locale locale) {
-        return getOodiData("{baseUrl}/students/{studentNumber}/studyrights?langcode={locale}",
+    public List<OodiStudyRight> getStudentStudyRights(String studentNumber) {
+        return getOodiData("{baseUrl}/students/{studentNumber}/studyrights",
             new ParameterizedTypeReference<OodiResponse<OodiStudyRight>>() {
-            }, baseUrl, studentNumber, locale.getLanguage());
+            }, baseUrl, studentNumber);
     }
 
     @Override
     @Cacheable(CacheConstants.COURSE_UNIT_REALISATIONS)
-    public OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId, Locale locale) {
-        return getSingleOodiData("{baseUrl}/courseunitrealisations/{realisationId}?langcode={locale}",
+    public OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId) {
+        return getSingleOodiData("{baseUrl}/courseunitrealisations/{realisationId}",
             new ParameterizedTypeReference<OodiSingleResponse<OodiCourseUnitRealisation>>() {
-            }, baseUrl, realisationId, locale.getLanguage());
+            }, baseUrl, realisationId);
     }
 
     @Override
     public OodiStudentInfo getStudentInfo(String studentNumber) {
-        return getSingleOodiData("{baseUrl}/students/{studentNumber}/info?langcode=en",
+        return getSingleOodiData("{baseUrl}/students/{studentNumber}/info",
             new ParameterizedTypeReference<OodiSingleResponse<OodiStudentInfo>>() {
             }, baseUrl, studentNumber);
     }
 
     @Override
     public OodiRoles getRoles(String oodiPersonId) {
-        return getSingleOodiData("{baseUrl}/persons/{oodiPersonId}/roles?langcode=en",
+        return getSingleOodiData("{baseUrl}/persons/{oodiPersonId}/roles",
             new ParameterizedTypeReference<OodiSingleResponse<OodiRoles>>() {
             }, baseUrl, oodiPersonId);
     }
 
     @Override
     @Cacheable(CacheConstants.TEACHER_EVENTS)
-    public List<OodiEvent> getTeacherEvents(String teacherNumber, Locale locale) {
-        return getOodiData("{baseUrl}/teachers/{teacherNumber}/events?langcode={locale}",
+    public List<OodiEvent> getTeacherEvents(String teacherNumber) {
+        return getOodiData("{baseUrl}/teachers/{teacherNumber}/events",
             new ParameterizedTypeReference<OodiResponse<OodiEvent>>() {
             },
-            baseUrl, teacherNumber, locale.getLanguage());
+            baseUrl, teacherNumber);
     }
 
     public <T> List<T> getOodiData(String url,

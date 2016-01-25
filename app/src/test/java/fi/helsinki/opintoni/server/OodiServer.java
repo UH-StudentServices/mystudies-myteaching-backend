@@ -148,42 +148,42 @@ public class OodiServer {
     }
 
     private String buildingsUrl() {
-        return oodiBaseUrl + "/codes/buildings?langcode=fi";
+        return oodiBaseUrl + "/codes/buildings";
     }
 
     private String studyRightsUrl(String studentNumber) {
-        return oodiBaseUrl + "/students/" + studentNumber + "/studyrights?langcode=fi";
+        return oodiBaseUrl + "/students/" + studentNumber + "/studyrights";
     }
 
     private String studyAttainmentsUrl(String studentNumber) {
-        return oodiBaseUrl + "/students/" + studentNumber + "/studyattainments?langcode=en";
+        return oodiBaseUrl + "/students/" + studentNumber + "/studyattainments";
     }
 
     private String teachingUrl(String teacherNumber, String sinceDateString) {
-        return oodiBaseUrl + "/teachers/" + teacherNumber + "/teaching/all?langcode=en&since_date=" + sinceDateString;
+        return oodiBaseUrl + "/teachers/" + teacherNumber + "/teaching/all?since_date=" + sinceDateString;
     }
 
     private String enrollmentsUrl(String studentNumber) {
-        return oodiBaseUrl + "/students/" + studentNumber + "/enrollments?langcode=en";
+        return oodiBaseUrl + "/students/" + studentNumber + "/enrollments";
     }
 
     private String eventsUrl(String studentNumber) {
-        return oodiBaseUrl + "/students/" + studentNumber + "/events?langcode=en";
+        return oodiBaseUrl + "/students/" + studentNumber + "/events";
     }
 
     private String studentInfoUrl(String studentNumber) {
-        return oodiBaseUrl + "/students/" + studentNumber + "/info?langcode=en";
+        return oodiBaseUrl + "/students/" + studentNumber + "/info";
     }
 
     private String teacherEventsUrl(String teacherNumber) {
-        return oodiBaseUrl + "/teachers/" + teacherNumber + "/events?langcode=en";
+        return oodiBaseUrl + "/teachers/" + teacherNumber + "/events";
     }
 
     private String courseUnitRealisationUrl(String realisationId) {
-        return oodiBaseUrl + "/courseunitrealisations/" + realisationId + "?langcode=en";
+        return oodiBaseUrl + "/courseunitrealisations/" + realisationId;
     }
 
     private String rolesUrl(String oodiPersonId) {
-        return oodiBaseUrl + "/persons/" + oodiPersonId + "/roles?langcode=en";
+        return oodiBaseUrl + "/persons/" + oodiPersonId + "/roles";
     }
 }

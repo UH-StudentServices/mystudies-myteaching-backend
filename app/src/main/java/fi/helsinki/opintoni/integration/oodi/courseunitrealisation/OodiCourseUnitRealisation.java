@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.integration.oodi.courseunitrealisation;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.integration.DateFormatter;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class OodiCourseUnitRealisation {
     public Integer realisationId;
 
     @JsonProperty("teachers")
-    public List<OodiCourseUnitRealisationTeacher> teachers;
+    public List<OodiCourseUnitRealisationTeacher> teachers = Lists.newArrayList();
 
     @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT_OODI)
     @JsonProperty("end_date")
