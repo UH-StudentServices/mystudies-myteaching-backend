@@ -23,7 +23,20 @@
       "grade": "5",
       "credits": 6,
       "expiry_date": null,
-      "learningopportunity_name": "Formulointi III",
+      "learningopportunity_name": [
+        {
+          "langcode": "fi",
+          "text": "Formulointi III"
+        },
+        {
+          "langcode": "sv",
+          "text": "Formulering III"
+        },
+        {
+          "langcode": "en",
+          "text": "Formulation III"
+        }
+      ],
       "learningopportunity_id": "123456789"
     },
     {

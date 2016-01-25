@@ -308,3 +308,5 @@ facultyLinks:
 adminAccounts: opettaja@helsinki.fi
 
 feed.client.implementation: remote
+
+locale.default: fi

@@ -35,7 +35,7 @@ public class OodiStudyAttainment {
     public Long studyAttainmentId;
 
     @JsonProperty("learningopportunity_name")
-    public String learningOpportunityName;
+    public List<OodiLocalizedValue> learningOpportunityName = Lists.newArrayList();
 
     @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT_OODI)
     @JsonProperty("attainment_date")

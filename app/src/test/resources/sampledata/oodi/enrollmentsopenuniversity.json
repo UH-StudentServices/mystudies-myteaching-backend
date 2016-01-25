@@ -3,7 +3,20 @@
   "status": 200,
   "data": [
     {
-      "name": "Avoin: Geenitekniikka",
+      "name": [
+        {
+          "langcode": "fi",
+          "text": "Geenitekniikka"
+        },
+        {
+          "langcode": "sv",
+          "text": "Genteknologi"
+        },
+        {
+          "langcode": "en",
+          "text": "Gene Technology"
+        }
+      ],
       "coursepage_uri": null,
       "end_date": "2016-02-03T22:00:00.000Z",
       "start_date": "2016-01-04T22:00:00.000Z",

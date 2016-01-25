@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,16 +43,19 @@ public class EventConverter {
     private final EventTypeResolver eventTypeResolver;
     private final LocationResolver locationResolver;
     private final CoursePageUriBuilder coursePageUriBuilder;
+    private final LocalizedValueConverter localizedValueConverter;
 
     @Autowired
     public EventConverter(CoursePageClient coursePageClient,
                           EventTypeResolver eventTypeResolver,
                           LocationResolver locationResolver,
-                          CoursePageUriBuilder coursePageUriBuilder) {
+                          CoursePageUriBuilder coursePageUriBuilder,
+                          LocalizedValueConverter localizedValueConverter) {
         this.coursePageClient = coursePageClient;
         this.eventTypeResolver = eventTypeResolver;
         this.locationResolver = locationResolver;
         this.coursePageUriBuilder = coursePageUriBuilder;
+        this.localizedValueConverter = localizedValueConverter;
     }
 
     public EventDto toDto(CoursePageEvent event) {
@@ -73,7 +77,7 @@ public class EventConverter {
             coursePage.hasMaterial);
     }
 
-    public EventDto toDto(OodiEvent event) {
+    public EventDto toDto(OodiEvent event, Locale locale) {
         CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(String.valueOf(event.realisationId));
         return new EventDto(
             eventTypeResolver.getEventTypeByOodiTypeCode(event.typeCode),
@@ -82,7 +86,7 @@ public class EventConverter {
             event.endDate,
             event.realisationId,
             getLocations(event),
-            event.learningOpportunityName,
+            localizedValueConverter.toLocalizedString(event.learningOpportunityName, locale),
             coursePage.title,
             coursePageUriBuilder.getLocalizedUri(coursePage),
             coursePageUriBuilder.getImageUri(coursePage),

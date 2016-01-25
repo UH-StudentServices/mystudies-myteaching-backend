@@ -40,16 +40,19 @@ public class CourseConverter {
     private final OodiClient oodiClient;
     private final CoursePageUriBuilder coursePageUriBuilder;
     private final EventTypeResolver eventTypeResolver;
+    private final LocalizedValueConverter localizedValueConverter;
 
     @Autowired
     public CourseConverter(CoursePageClient coursePageClient,
                            OodiClient oodiClient,
                            CoursePageUriBuilder coursePageUriBuilder,
-                           EventTypeResolver eventTypeResolver) {
+                           EventTypeResolver eventTypeResolver,
+                           LocalizedValueConverter localizedValueConverter) {
         this.coursePageClient = coursePageClient;
         this.oodiClient = oodiClient;
         this.coursePageUriBuilder = coursePageUriBuilder;
         this.eventTypeResolver = eventTypeResolver;
+        this.localizedValueConverter = localizedValueConverter;
     }
 
     public CourseDto toDto(OodiEnrollment oodiEnrollment, Locale locale) {
@@ -60,7 +63,7 @@ public class CourseConverter {
         return new CourseDto(
             oodiEnrollment.learningOpportunityId,
             oodiEnrollment.typeCode,
-            oodiEnrollment.name,
+            localizedValueConverter.toLocalizedString(oodiEnrollment.name, locale),
             coursePageUriBuilder.getImageUri(coursePage),
             coursePageUriBuilder.getLocalizedUri(coursePage),
             coursePageUriBuilder.getMaterialUri(coursePage),
@@ -75,12 +78,12 @@ public class CourseConverter {
             eventTypeResolver.isExam(oodiEnrollment.typeCode));
     }
 
-    public CourseDto toDto(OodiTeacherCourse oodiTeacherCourse) {
+    public CourseDto toDto(OodiTeacherCourse oodiTeacherCourse, Locale locale) {
         CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiTeacherCourse.realisationId);
         return new CourseDto(
             oodiTeacherCourse.basecode,
             oodiTeacherCourse.realisationTypeCode,
-            oodiTeacherCourse.realisationName,
+            localizedValueConverter.toLocalizedString(oodiTeacherCourse.realisationName, locale),
             coursePageUriBuilder.getImageUri(coursePage),
             coursePageUriBuilder.getLocalizedUri(coursePage),
             coursePageUriBuilder.getMaterialUri(coursePage),
