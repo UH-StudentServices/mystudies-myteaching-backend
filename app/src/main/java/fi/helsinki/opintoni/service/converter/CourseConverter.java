@@ -58,7 +58,7 @@ public class CourseConverter {
     public CourseDto toDto(OodiEnrollment oodiEnrollment, Locale locale) {
         CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiEnrollment.realisationId);
         OodiCourseUnitRealisation courseUnitRealisation =
-            oodiClient.getCourseUnitRealisation(oodiEnrollment.realisationId, locale);
+            oodiClient.getCourseUnitRealisation(oodiEnrollment.realisationId);
 
         return new CourseDto(
             oodiEnrollment.learningOpportunityId,

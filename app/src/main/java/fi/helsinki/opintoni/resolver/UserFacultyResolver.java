@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Locale;
 
 @Component
 public class UserFacultyResolver {
@@ -46,7 +45,7 @@ public class UserFacultyResolver {
     }
 
     public String getStudentFacultyCode(String studentNumber) {
-        List<OodiStudyRight> studyRights = oodiClient.getStudentStudyRights(studentNumber, new Locale("fi"));
+        List<OodiStudyRight> studyRights = oodiClient.getStudentStudyRights(studentNumber);
         return studyRights.stream()
             .filter(studyRight -> studyRight.priority == 1)
             .findFirst()

@@ -25,7 +25,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Locale;
 
 @Service
 public class OodiUserRoleService {
@@ -39,14 +38,14 @@ public class OodiUserRoleService {
 
     @Cacheable(CacheConstants.IS_OPEN_UNIVERSITY_TEACHER)
     public boolean isOpenUniversityTeacher(String teacherNumber) {
-        return oodiClient.getTeacherCourses(teacherNumber, Locale.ENGLISH, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
+        return oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
             .map(course -> course.basecode)
             .allMatch(this::isOpenUniversityId);
     }
 
     @Cacheable(CacheConstants.IS_OPEN_UNIVERSITY_STUDENT)
     public boolean isOpenUniversityStudent(String studentNumber) {
-        return oodiClient.getEnrollments(studentNumber, Locale.ENGLISH).stream()
+        return oodiClient.getEnrollments(studentNumber).stream()
             .map(enrollment -> enrollment.learningOpportunityId)
             .allMatch(this::isOpenUniversityId);
     }

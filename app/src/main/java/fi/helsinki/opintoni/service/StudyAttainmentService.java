@@ -58,7 +58,7 @@ public class StudyAttainmentService {
             .map(whitelist -> {
                 List<Long> whitelistedAttainmentIds = getWhitelistedAttainmentIds(whitelist);
                 List<OodiStudyAttainment> studyAttainments =
-                    oodiClient.getStudyAttainments(getStudentNumber(portfolio), locale);
+                    oodiClient.getStudyAttainments(getStudentNumber(portfolio));
                 return getWhitelistedAttainments(studyAttainments, whitelistedAttainmentIds, locale);
             }).orElse(Lists.newArrayList());
     }
@@ -88,7 +88,7 @@ public class StudyAttainmentService {
     public List<StudyAttainmentDto> getStudyAttainments(String studentNumber, int limit, Locale locale) {
         Comparator<StudyAttainmentDto> studyAttainmentDtoComparator = this::compareStudyAttainments;
 
-        return oodiClient.getStudyAttainments(studentNumber, locale).stream()
+        return oodiClient.getStudyAttainments(studentNumber).stream()
             .map(a -> studyAttainmentConverter.toDto(a, locale))
             .sorted(studyAttainmentDtoComparator.reversed())
             .limit(limit)

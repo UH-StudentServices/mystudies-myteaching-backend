@@ -26,7 +26,6 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertFalse;
@@ -41,7 +40,7 @@ public class OodiUserRoleServiceTest {
 
     @Test
     public void thatStudentIsOpenUniversityUser() {
-        when(oodiClient.getEnrollments("123", Locale.ENGLISH))
+        when(oodiClient.getEnrollments("123"))
             .thenReturn(enrollments(Lists.newArrayList("A123", "A456")));
 
         assertTrue(oodiUserRoleService.isOpenUniversityStudent("123"));
@@ -49,7 +48,7 @@ public class OodiUserRoleServiceTest {
 
     @Test
     public void thatStudentIsNotOpenUniversityUser() {
-        when(oodiClient.getEnrollments("123", Locale.ENGLISH))
+        when(oodiClient.getEnrollments("123"))
             .thenReturn(enrollments(Lists.newArrayList("A123", "456")));
 
         assertFalse(oodiUserRoleService.isOpenUniversityStudent("123"));
@@ -57,7 +56,7 @@ public class OodiUserRoleServiceTest {
 
     @Test
     public void thatTeacherIsOpenUniversityUser() {
-        when(oodiClient.getTeacherCourses("123", Locale.ENGLISH, DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
+        when(oodiClient.getTeacherCourses("123", DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
             .thenReturn(courses(Lists.newArrayList("A123", "A456")));
 
         assertTrue(oodiUserRoleService.isOpenUniversityTeacher("123"));
@@ -65,7 +64,7 @@ public class OodiUserRoleServiceTest {
 
     @Test
     public void thatTeacherIsNotOpenUniversityUser() {
-        when(oodiClient.getTeacherCourses("123", Locale.ENGLISH, DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
+        when(oodiClient.getTeacherCourses("123", DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
             .thenReturn(courses(Lists.newArrayList("A123", "456")));
 
         assertFalse(oodiUserRoleService.isOpenUniversityTeacher("123"));

@@ -44,7 +44,7 @@ public class LocalizedValueConverter {
     private Optional<String> getLocalizationByLocaleString(List<OodiLocalizedValue> oodiLocalizedValues, String localeString) {
         return oodiLocalizedValues
             .stream()
-            .filter(oodiLocalizedValue -> localeString.equals(oodiLocalizedValue.langcode))
+            .filter(oodiLocalizedValue -> localeString.equals(oodiLocalizedValue.langcode.toString()))
             .findFirst()
             .map(oodiLocalizedValue -> oodiLocalizedValue.text);
     }

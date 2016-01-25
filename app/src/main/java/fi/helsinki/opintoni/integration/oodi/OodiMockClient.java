@@ -25,7 +25,6 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 public class OodiMockClient implements OodiClient {
 
@@ -66,43 +65,43 @@ public class OodiMockClient implements OodiClient {
     }
 
     @Override
-    public List<OodiEnrollment> getEnrollments(String studentNumber, Locale locale) {
+    public List<OodiEnrollment> getEnrollments(String studentNumber) {
         return getOodiResponse(studentCourses, new TypeReference<OodiResponse<OodiEnrollment>>() {
         });
     }
 
     @Override
-    public List<OodiEvent> getStudentEvents(String studentNumber, Locale locale) {
+    public List<OodiEvent> getStudentEvents(String studentNumber) {
         return getOodiResponse(studentEvents, new TypeReference<OodiResponse<OodiEvent>>() {
         });
     }
 
     @Override
-    public List<OodiStudyAttainment> getStudyAttainments(String studentNumber, Locale locale) {
+    public List<OodiStudyAttainment> getStudyAttainments(String studentNumber) {
         return getOodiResponse(studentAttainments, new TypeReference<OodiResponse<OodiStudyAttainment>>() {
         });
     }
 
     @Override
-    public List<OodiEvent> getTeacherEvents(String teacherNumber, Locale locale) {
+    public List<OodiEvent> getTeacherEvents(String teacherNumber) {
         return getOodiResponse(teacherEvents, new TypeReference<OodiResponse<OodiEvent>>() {
         });
     }
 
     @Override
-    public List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, Locale locale, String sinceDateString) {
+    public List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
         return getOodiResponse(teacherCourses, new TypeReference<OodiResponse<OodiTeacherCourse>>() {
         });
     }
 
     @Override
-    public List<OodiStudyRight> getStudentStudyRights(String studentNumber, Locale locale) {
+    public List<OodiStudyRight> getStudentStudyRights(String studentNumber) {
         return getOodiResponse(studentStudyRights, new TypeReference<OodiResponse<OodiStudyRight>>() {
         });
     }
 
     @Override
-    public OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId, Locale locale) {
+    public OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId) {
         return getSingleOodiResponse(courseUnitRealisation,
             new TypeReference<OodiSingleResponse<OodiCourseUnitRealisation>>() {
             });

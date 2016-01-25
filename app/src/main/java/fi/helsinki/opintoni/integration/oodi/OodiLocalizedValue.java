@@ -1,13 +1,13 @@
 package fi.helsinki.opintoni.integration.oodi;
 
 public class OodiLocalizedValue {
-    public String langcode;
+    public OodiLocale langcode;
     public String text;
 
     public OodiLocalizedValue() {
     }
 
-    public OodiLocalizedValue(String langcode, String text) {
+    public OodiLocalizedValue(OodiLocale langcode, String text) {
         this.langcode = langcode;
         this.text = text;
     }

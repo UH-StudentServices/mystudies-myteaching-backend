@@ -2,6 +2,7 @@ package fi.helsinki.opintoni.service.converter;
 
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.integration.oodi.OodiLocale;
 import fi.helsinki.opintoni.integration.oodi.OodiLocalizedValue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,9 @@ public class LocalizedValueConverterTest extends SpringTest {
     @Test
     public void thatItCanLocalizeToFinnish() {
         List<OodiLocalizedValue> oodiLocalizedValues = Lists.newArrayList(
-            new OodiLocalizedValue("fi", "finnish"),
-            new OodiLocalizedValue("sv", "swedish"),
-            new OodiLocalizedValue("en", "english"));
+            new OodiLocalizedValue(OodiLocale.FI, "finnish"),
+            new OodiLocalizedValue(OodiLocale.SV, "swedish"),
+            new OodiLocalizedValue(OodiLocale.EN, "english"));
 
         assertEquals("finnish", localizedValueConverter.toLocalizedString(oodiLocalizedValues, new Locale("fi")));
     }
@@ -29,9 +30,9 @@ public class LocalizedValueConverterTest extends SpringTest {
     @Test
     public void thatItCanLocalizeToSwedish() {
         List<OodiLocalizedValue> oodiLocalizedValues = Lists.newArrayList(
-            new OodiLocalizedValue("fi", "finnish"),
-            new OodiLocalizedValue("sv", "swedish"),
-            new OodiLocalizedValue("en", "english"));
+            new OodiLocalizedValue(OodiLocale.FI, "finnish"),
+            new OodiLocalizedValue(OodiLocale.SV, "swedish"),
+            new OodiLocalizedValue(OodiLocale.EN, "english"));
 
         assertEquals("swedish", localizedValueConverter.toLocalizedString(oodiLocalizedValues, new Locale("sv")));
     }
@@ -39,9 +40,9 @@ public class LocalizedValueConverterTest extends SpringTest {
     @Test
     public void thatItCanLocalizeToEnglish() {
         List<OodiLocalizedValue> oodiLocalizedValues = Lists.newArrayList(
-            new OodiLocalizedValue("fi", "finnish"),
-            new OodiLocalizedValue("sv", "swedish"),
-            new OodiLocalizedValue("en", "english"));
+            new OodiLocalizedValue(OodiLocale.FI, "finnish"),
+            new OodiLocalizedValue(OodiLocale.SV, "swedish"),
+            new OodiLocalizedValue(OodiLocale.EN, "english"));
 
         assertEquals("english", localizedValueConverter.toLocalizedString(oodiLocalizedValues, Locale.ENGLISH));
     }
@@ -49,8 +50,8 @@ public class LocalizedValueConverterTest extends SpringTest {
     @Test
     public void thatItWillChooseTheDefaultIfMatchingLocaleIsNotFound() {
         List<OodiLocalizedValue> oodiLocalizedValues = Lists.newArrayList(
-            new OodiLocalizedValue("fi", "finnish"),
-            new OodiLocalizedValue("sv", "swedish"));
+            new OodiLocalizedValue(OodiLocale.FI, "finnish"),
+            new OodiLocalizedValue(OodiLocale.SV, "swedish"));
 
         assertEquals("finnish", localizedValueConverter.toLocalizedString(oodiLocalizedValues, Locale.ENGLISH));
     }
@@ -58,7 +59,7 @@ public class LocalizedValueConverterTest extends SpringTest {
     @Test
     public void thatItWillChooseTheFirstIfMatchingOrDefaultLocaleIsNotFound() {
         List<OodiLocalizedValue> oodiLocalizedValues = Lists.newArrayList(
-            new OodiLocalizedValue("sv", "swedish"));
+            new OodiLocalizedValue(OodiLocale.SV, "swedish"));
 
         assertEquals("swedish", localizedValueConverter.toLocalizedString(oodiLocalizedValues, Locale.ENGLISH));
     }

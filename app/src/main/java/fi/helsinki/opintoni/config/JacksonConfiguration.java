@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.config;
 
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +32,7 @@ public class JacksonConfiguration {
     public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
         Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder = new Jackson2ObjectMapperBuilder();
         jackson2ObjectMapperBuilder.modules(Lists.newArrayList(
-            new JSR310Module(),
+            new JavaTimeModule(),
             new Jdk8Module(),
             new JodaModule()));
         jackson2ObjectMapperBuilder.failOnUnknownProperties(false);
