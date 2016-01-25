@@ -38,7 +38,20 @@
       "course_id": 99903629,
       "simple_type_code": 2,
       "realisation_type_code": 19,
-      "learningopportunity_name": "Kreikka",
+      "learningopportunity_name": [
+        {
+          "langcode": "fi",
+          "text": "Formulointi II"
+        },
+        {
+          "langcode": "sv",
+          "text": "Formulering II"
+        },
+        {
+          "langcode": "en",
+          "text": "Formulation II"
+        }
+      ],
       "learningopportunity_id": "10440"
     }
   ]
