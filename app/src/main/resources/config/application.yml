@@ -236,8 +236,8 @@ recommendations:
 cookieDomain: helsinki.fi
 
 httpClient:
-  readTimeout: 5000
-  connectTimeout: 1000
+  readTimeout: 15000
+  connectTimeout: 3000
   maxTotal: 500
   defaultMaxPerRoute: 500
 
