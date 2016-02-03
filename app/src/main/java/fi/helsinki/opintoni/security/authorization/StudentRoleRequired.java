@@ -25,6 +25,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-@PreAuthorize("hasRole('STUDENT')")
+@PreAuthorize("hasAuthority('STUDENT')")
 public @interface StudentRoleRequired {
 }
