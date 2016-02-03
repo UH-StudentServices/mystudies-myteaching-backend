@@ -127,6 +127,7 @@ configurations.all {
   all*.exclude group: "commons-logging", module: "commons-logging"
   all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
   all*.exclude group: "org.slf4j", module: "log4j-over-slf4j"
+  all*.exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
 }
 
 configurations.compile {
@@ -180,9 +181,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: spring_boot_version
-    compile(group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version) {
-        exclude module: 'spring-boot-starter-tomcat'
-    }
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-undertow', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: spring_boot_version
     compile group: 'org.springframework.cloud', name: 'spring-cloud-cloudfoundry-connector', version: spring_cloud_version
@@ -210,7 +209,6 @@ dependencies {
     testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: awaility_version
     testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: json_path_version
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: spring_boot_version
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-jetty', version: spring_boot_version
     testCompile group: 'org.assertj', name: 'assertj-core-java8', version: assertj_core_version
     testCompile group: 'junit', name: 'junit', version:'4.12'
     testCompile group: 'org.mockito', name: 'mockito-core', version:'1.9.5'
