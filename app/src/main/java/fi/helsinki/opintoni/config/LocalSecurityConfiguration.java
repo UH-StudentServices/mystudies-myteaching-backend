@@ -101,4 +101,9 @@ public class LocalSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/admin/**").access(Constants.ADMIN_ROLE_REQUIRED)
             .anyRequest().authenticated();
     }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(RestConstants.PUBLIC_API_V1 + "/images/**");
+    }
 }

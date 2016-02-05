@@ -361,4 +361,9 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(samlAuthenticationProvider());
     }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(RestConstants.PUBLIC_API_V1 + "/images/**");
+    }
 }
