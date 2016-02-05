@@ -71,7 +71,6 @@ public class FeedbackResourceTest extends SpringTest {
 
     @Test
     public void thatFeedbackIsUpdated() throws Exception {
-
         mockMvc.perform(put(RestConstants.ADMIN_API_V1 + "/feedback/" + FEEDBACK_ID)
             .with(securityContext(teacherSecurityContext()))
             .content(WebTestUtils.toJsonBytes(feedbackDto()))

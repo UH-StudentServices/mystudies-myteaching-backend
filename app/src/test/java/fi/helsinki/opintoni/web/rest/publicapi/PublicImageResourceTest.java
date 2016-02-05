@@ -47,7 +47,7 @@ public class PublicImageResourceTest extends SpringTest {
     public void thatUserAvatarIsReturned() throws Exception {
         mockMvc.perform(get("/api/public/v1/images/avatar/987654321"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.IMAGE_JPEG));
+            .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
     }
 
     @Test
@@ -66,14 +66,14 @@ public class PublicImageResourceTest extends SpringTest {
     public void thatBackgroundImageIsReturned() throws Exception {
         mockMvc.perform(get("/api/public/v1/images/backgrounds/Profile_1.jpg"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.IMAGE_JPEG));
+            .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
     }
 
     @Test
     public void thatUserBackgroundIsReturned() throws Exception {
         mockMvc.perform(get("/api/public/v1/images/background/987654321"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.IMAGE_JPEG));
+            .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
     }
 
     @Test
