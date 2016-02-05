@@ -68,6 +68,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private AutowireCapableBeanFactory beanFactory;
 
+    private static final int ONE_YEAR = 31536000;
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.addAll(Lists.newArrayList(
@@ -115,7 +117,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     private WebContentInterceptor imageCacheInterceptor() {
         WebContentInterceptor interceptor = new WebContentInterceptor();
-        interceptor.setCacheControl(CacheControl.maxAge(31536000, TimeUnit.SECONDS).mustRevalidate().cachePublic());
+        interceptor.setCacheControl(CacheControl.maxAge(ONE_YEAR, TimeUnit.SECONDS).mustRevalidate().cachePublic());
 
         return interceptor;
     }
