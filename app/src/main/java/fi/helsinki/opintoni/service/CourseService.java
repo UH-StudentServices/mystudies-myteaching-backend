@@ -57,6 +57,19 @@ public class CourseService {
             .collect(Collectors.toList());
     }
 
+    public List<String> getTeacherCourseIds(String teacherNumber) {
+        return oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
+            .map(e -> String.valueOf(e.realisationId))
+            .collect(Collectors.toList());
+    }
+
+    public List<String> getStudentCourseIds(String studentNumber) {
+        return oodiClient.getEnrollments(studentNumber)
+            .stream()
+            .map(e -> String.valueOf(e.realisationId))
+            .collect(Collectors.toList());
+    }
+
 
     public Set<CourseDto> getCourses(Optional<String> studentNumber, Optional<String> teacherNumber, Locale locale) {
         Set<CourseDto> courseDtos = new HashSet<>();

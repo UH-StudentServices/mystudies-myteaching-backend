@@ -26,14 +26,11 @@ import fi.helsinki.opintoni.integration.oodi.OodiEvent;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.resolver.LocationResolver;
 import fi.helsinki.opintoni.util.CoursePageUriBuilder;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -59,8 +56,12 @@ public class EventConverter {
     }
 
     public EventDto toDto(CoursePageEvent event) {
-        CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(String.valueOf(event
-            .courseImplementationId));
+        CoursePageCourseImplementation coursePage = coursePageClient
+            .getCoursePage(String.valueOf(event.courseImplementationId));
+        return toDto(event, coursePage);
+    }
+
+    public EventDto toDto(CoursePageEvent event, CoursePageCourseImplementation coursePage) {
         return new EventDto(
             eventTypeResolver.getEventTypeByCoursePageEvent(event),
             EventDto.Source.COURSE_PAGE,
@@ -79,6 +80,10 @@ public class EventConverter {
 
     public EventDto toDto(OodiEvent event, Locale locale) {
         CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(String.valueOf(event.realisationId));
+        return toDto(event, coursePage, locale);
+    }
+
+    public EventDto toDto(OodiEvent event, CoursePageCourseImplementation coursePage, Locale locale) {
         return new EventDto(
             eventTypeResolver.getEventTypeByOodiTypeCode(event.typeCode),
             EventDto.Source.OODI,
