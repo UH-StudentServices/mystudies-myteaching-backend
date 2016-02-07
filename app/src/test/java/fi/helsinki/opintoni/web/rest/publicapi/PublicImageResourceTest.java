@@ -31,12 +31,17 @@ import java.io.IOException;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PublicImageResourceTest extends SpringTest {
 
     @Autowired
     private UserSettingsService userSettingsService;
+
+    private static final String DEFAULT_BACKGROUND_IMAGE_URL = "/api/public/v1/images/backgrounds/Profile_1.jpg";
 
     @Before
     public void insertUserAvatar() throws IOException {
@@ -47,7 +52,7 @@ public class PublicImageResourceTest extends SpringTest {
     public void thatUserAvatarIsReturned() throws Exception {
         mockMvc.perform(get("/api/public/v1/images/avatar/987654321"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.IMAGE_JPEG));
+            .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
     }
 
     @Test
@@ -64,16 +69,16 @@ public class PublicImageResourceTest extends SpringTest {
 
     @Test
     public void thatBackgroundImageIsReturned() throws Exception {
-        mockMvc.perform(get("/api/public/v1/images/backgrounds/Profile_1.jpg"))
+        mockMvc.perform(get(DEFAULT_BACKGROUND_IMAGE_URL))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.IMAGE_JPEG));
+            .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
     }
 
     @Test
     public void thatUserBackgroundIsReturned() throws Exception {
         mockMvc.perform(get("/api/public/v1/images/background/987654321"))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.IMAGE_JPEG));
+            .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
     }
 
     @Test
@@ -97,6 +102,12 @@ public class PublicImageResourceTest extends SpringTest {
                 "Profile_10.jpg",
                 "Profile_11.jpg",
                 "Profile_12.jpg")));
+    }
+
+    @Test
+    public void thatCacheControlHeaderIsAdded() throws Exception {
+        mockMvc.perform(get(DEFAULT_BACKGROUND_IMAGE_URL))
+            .andExpect(header().string("cache-control", "max-age=31536000, must-revalidate, public"));
     }
 
     private String getImageData() {

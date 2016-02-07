@@ -29,15 +29,23 @@ import fi.helsinki.opintoni.web.arguments.TeacherNumberArgumentResolver;
 import fi.helsinki.opintoni.web.arguments.UserIdArgumentResolver;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.http.converter.BufferedImageHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.security.web.bind.support.AuthenticationPrincipalArgumentResolver;
+import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.mvc.WebContentInterceptor;
 
+import javax.servlet.Filter;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
@@ -56,6 +64,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     private SecurityUtils securityUtils;
+
+    @Autowired
+    private AutowireCapableBeanFactory beanFactory;
+
+    @Autowired
+    private AppConfiguration appConfiguration;
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
@@ -85,6 +99,28 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry
             .addInterceptor(publicPortfolioInterceptor)
             .addPathPatterns(RestConstants.PUBLIC_API_V1 + "/portfolio/**");
+
+        registry
+            .addInterceptor(imageCacheInterceptor())
+            .addPathPatterns(RestConstants.PUBLIC_API_V1 + "/images/**");
     }
 
+    @Bean
+    public FilterRegistrationBean eTagFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        Filter eTagFilter = new ShallowEtagHeaderFilter();
+        beanFactory.autowireBean(eTagFilter);
+        registration.setFilter(eTagFilter);
+        registration.addUrlPatterns(RestConstants.PUBLIC_API_V1 + "/images/*");
+
+        return registration;
+    }
+
+    private WebContentInterceptor imageCacheInterceptor() {
+        WebContentInterceptor interceptor = new WebContentInterceptor();
+        long cachingPeriod = appConfiguration.getInteger("staticResourceCachingPeriod");
+        interceptor.setCacheControl(CacheControl.maxAge(cachingPeriod, TimeUnit.SECONDS).mustRevalidate().cachePublic());
+
+        return interceptor;
+    }
 }

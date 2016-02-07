@@ -33,4 +33,8 @@ public final class Constants {
     public static final String OPINTONI_LAST_LOGIN = "OPINTONI_LAST_LOGIN";
     public static final String SESSION_COOKIE_NAME = "OPINTONI_JSESSIONID";
     public static final String OPINTONI_HAS_LOGGED_IN = "OPINTONI_HAS_LOGGED_IN";
+
+    public static final String ADMIN_ROLE_REQUIRED = "hasAuthority('ADMIN')";
+    public static final String TEACHER_ROLE_REQUIRED = "hasAuthority('TEACHER')";
+    public static final String STUDENT_ROLE_REQUIRED = "hasAuthority('STUDENT')";
 }

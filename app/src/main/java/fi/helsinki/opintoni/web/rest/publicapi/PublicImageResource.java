@@ -23,7 +23,7 @@ import fi.helsinki.opintoni.service.UserSettingsService;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,29 +53,36 @@ public class PublicImageResource extends AbstractResource {
     @RequestMapping(
         value = "/avatar/{oodiPersonId}",
         method = RequestMethod.GET,
-        produces = {MediaType.IMAGE_JPEG_VALUE}
+        produces = MediaType.IMAGE_JPEG_VALUE
     )
     public ResponseEntity<BufferedImage> getUserAvatarByOodiPersonId(@PathVariable("oodiPersonId") String oodiPersonId)
         throws IOException {
-        return new ResponseEntity<>(userSettingsService.getUserAvatarImageByOodiPersonId(oodiPersonId), HttpStatus.OK);
+        return ResponseEntity.ok()
+            .headers(headersWithContentType(MediaType.IMAGE_JPEG))
+            .body(userSettingsService.getUserAvatarImageByOodiPersonId(oodiPersonId));
     }
 
     @RequestMapping(
         value = "/background/{oodiPersonId}",
         method = RequestMethod.GET,
-        produces = {MediaType.IMAGE_JPEG_VALUE}
+        produces = MediaType.IMAGE_JPEG_VALUE
     )
     public ResponseEntity<BufferedImage> getUserBackgroundByOodiPersonId(@PathVariable("oodiPersonId") String oodiPersonId)
         throws IOException {
-        return new ResponseEntity<>(userSettingsService.getUserBackgroundImage(oodiPersonId), HttpStatus.OK);
+        return ResponseEntity.ok()
+            .headers(headersWithContentType(MediaType.IMAGE_JPEG))
+            .body(userSettingsService.getUserBackgroundImage(oodiPersonId));
     }
 
     @RequestMapping(
         value = "/backgrounds/{fileName:.+}",
         method = RequestMethod.GET,
-        produces = {MediaType.IMAGE_JPEG_VALUE})
+        produces = MediaType.IMAGE_JPEG_VALUE
+    )
     public ResponseEntity<BufferedImage> serve(@PathVariable String fileName) throws IOException {
-        return new ResponseEntity<>(backgroundImageService.getDefaultBackgroundImage(fileName), HttpStatus.OK);
+        return ResponseEntity.ok()
+            .headers(headersWithContentType(MediaType.IMAGE_JPEG))
+            .body(backgroundImageService.getDefaultBackgroundImage(fileName));
     }
 
     @RequestMapping(value = "/backgrounds", method = RequestMethod.GET)
@@ -84,4 +91,9 @@ public class PublicImageResource extends AbstractResource {
         return response(backgroundImageService.getBackgroundImageFiles());
     }
 
+    private HttpHeaders headersWithContentType(MediaType contentType) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(contentType);
+        return headers;
+    }
 }

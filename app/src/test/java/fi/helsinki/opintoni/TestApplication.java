@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni;
 
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
@@ -31,7 +32,7 @@ public class TestApplication {
 
     public static void main(String[] args) throws UnknownHostException {
         SpringApplication app = new SpringApplication(TestApplication.class);
-        app.setShowBanner(false);
+        app.setBannerMode(Banner.Mode.LOG);
         app.run(args).getEnvironment();
     }
 

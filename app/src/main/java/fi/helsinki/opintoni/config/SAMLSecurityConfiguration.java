@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.config;
 
 import fi.helsinki.opintoni.security.*;
+import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.saml2.metadata.provider.HTTPMetadataProvider;
@@ -37,6 +38,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.*;
@@ -350,7 +352,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/redirect").permitAll()
             .antMatchers("/api/public/v1/**").permitAll()
             .antMatchers("/api/private/v1/admin/*").access(securityUtils.getWhitelistedIpAccess())
-            .antMatchers("/api/admin/**").access("hasRole('ADMIN')")
+            .antMatchers("/api/admin/**").access(Constants.ADMIN_ROLE_REQUIRED)
             .antMatchers("/metrics/metrics/*").access(securityUtils.getWhitelistedIpAccess())
             .anyRequest().authenticated();
     }
@@ -360,4 +362,8 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(samlAuthenticationProvider());
     }
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(RestConstants.PUBLIC_API_V1 + "/images/**");
+    }
 }
