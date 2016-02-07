@@ -83,10 +83,10 @@ public class EventService {
         Stream<EventDto> coursePageEventDtos = coursePageEvents
             .map(coursePageEvent -> eventConverter.toDto(coursePageEvent, getCoursePage(coursePages, getRealisationId(coursePageEvent))));
 
-       return Stream
-           .concat(oodiEventDtos, coursePageEventDtos)
-           .sorted()
-           .collect(Collectors.toList());
+        return Stream
+            .concat(oodiEventDtos, coursePageEventDtos)
+            .sorted()
+            .collect(Collectors.toList());
     }
 
     private CoursePageCourseImplementation getCoursePage(Map<String, CoursePageCourseImplementation> coursePages, String realisationId) {
