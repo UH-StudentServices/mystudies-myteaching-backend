@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.domain.CalendarFeed;
 import fi.helsinki.opintoni.dto.CalendarFeedDto;
 import fi.helsinki.opintoni.dto.EventDto;
+import fi.helsinki.opintoni.exception.http.CalendarFeedNotFoundException;
 import fi.helsinki.opintoni.integration.DateFormatter;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiRoles;
@@ -41,8 +42,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
-
-import static fi.helsinki.opintoni.exception.http.NotFoundException.notFoundException;
 
 @Service
 public class CalendarService {
@@ -82,7 +81,7 @@ public class CalendarService {
     public String showCalendarFeed(String feedId, Locale locale) {
         return calendarTransactionalService.findByFeedId(feedId)
             .map(c -> getCalendarFeedFromEvents(c, locale))
-            .orElseThrow(notFoundException("Calendar feed not found"));
+            .orElseThrow(CalendarFeedNotFoundException::new);
     }
 
     private String getCalendarFeedFromEvents(CalendarFeed calendarFeed, Locale locale) {
