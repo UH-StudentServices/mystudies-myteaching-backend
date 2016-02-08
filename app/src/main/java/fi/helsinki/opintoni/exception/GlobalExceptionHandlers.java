@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.exception;
 
 import fi.helsinki.opintoni.exception.http.BadRequestException;
+import fi.helsinki.opintoni.exception.http.CalendarFeedNotFoundException;
 import fi.helsinki.opintoni.exception.http.ForbiddenException;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import org.slf4j.Logger;
@@ -67,6 +68,11 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
         LOGGER.error("Caught exception", e);
 
         return new ResponseEntity<>(new CommonError("Something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = CalendarFeedNotFoundException.class)
+    public ResponseEntity handleCalendarFeedNotFound() throws Exception {
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
     @Override
