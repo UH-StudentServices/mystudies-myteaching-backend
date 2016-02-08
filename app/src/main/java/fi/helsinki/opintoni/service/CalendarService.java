@@ -81,7 +81,7 @@ public class CalendarService {
     public String showCalendarFeed(String feedId, Locale locale) {
         return calendarTransactionalService.findByFeedId(feedId)
             .map(c -> getCalendarFeedFromEvents(c, locale))
-            .orElseThrow(() -> new CalendarFeedNotFoundException());
+            .orElseThrow(CalendarFeedNotFoundException::new);
     }
 
     private String getCalendarFeedFromEvents(CalendarFeed calendarFeed, Locale locale) {
