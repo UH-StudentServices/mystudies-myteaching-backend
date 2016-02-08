@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.integration.oodi;
 
+import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 public class OodiRestClient implements OodiClient {
 
@@ -68,7 +70,7 @@ public class OodiRestClient implements OodiClient {
     public List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
         return getOodiData("{baseUrl}/teachers/{teacherNumber}/teaching/all?since_date={sinceDate}",
             new ParameterizedTypeReference<OodiResponse<OodiTeacherCourse>>() {
-            }, baseUrl, teacherNumber ,sinceDateString);
+            }, baseUrl, teacherNumber, sinceDateString);
     }
 
     @Override
@@ -114,7 +116,11 @@ public class OodiRestClient implements OodiClient {
                                    Object... uriVariables) {
         List<T> data;
         try {
-            data = restTemplate.exchange(url, HttpMethod.GET, null, typeReference, uriVariables).getBody().data;
+            data = Optional
+                .ofNullable(restTemplate.exchange(url, HttpMethod.GET, null, typeReference, uriVariables).getBody())
+                .map(r -> r.data)
+                .orElse(Lists.newArrayList());
+
         } catch (Exception e) {
             LOGGER.error("Caught OodiIntegrationException", e);
             throw new OodiIntegrationException(e.getMessage(), e);

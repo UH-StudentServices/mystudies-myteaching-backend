@@ -17,20 +17,22 @@
 
 package fi.helsinki.opintoni.service;
 
-import fi.helsinki.opintoni.dto.CourseDto;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
+import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
+import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
+import fi.helsinki.opintoni.integration.oodi.OodiEvent;
 import fi.helsinki.opintoni.service.converter.EventConverter;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.BiFunction;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class EventService {
@@ -53,52 +55,77 @@ public class EventService {
     }
 
     public List<EventDto> getStudentEvents(String studentNumber, Locale locale) {
-        return getEvents(studentNumber, locale, this::getOodiStudentEvents, this::getCoursePageStudentEvents);
+        return getEvents(
+            oodiClient.getStudentEvents(studentNumber),
+            courseService.getStudentCourseIds(studentNumber),
+            locale);
     }
 
     public List<EventDto> getTeacherEvents(String teacherNumber, Locale locale) {
-        return getEvents(teacherNumber, locale, this::getOodiTeacherEvents, this::getCoursePageTeacherEvents);
+        return getEvents(
+            oodiClient.getTeacherEvents(teacherNumber),
+            courseService.getTeacherCourseIds(teacherNumber),
+            locale);
     }
 
-    @SafeVarargs
-    private final List<EventDto> getEvents(String id, Locale locale, BiFunction<String, Locale, List<EventDto>>...
-        eventProvides) {
-        return Arrays.asList(eventProvides)
-            .stream()
-            .flatMap(p -> p.apply(id, locale).stream())
+    private List<EventDto> getEvents(
+        List<OodiEvent> oodiEvents,
+        List<String> courseIds,
+        Locale locale) {
+
+        Map<String, CoursePageCourseImplementation> coursePages = getCoursePages(oodiEvents, courseIds);
+
+        Stream<CoursePageEvent> coursePageEvents = getCoursePageEvents(courseIds);
+
+        Stream<EventDto> oodiEventDtos = oodiEvents.stream()
+            .map(oodiEvent -> eventConverter.toDto(oodiEvent, getCoursePage(coursePages, getRealisationId(oodiEvent)), locale));
+
+        Stream<EventDto> coursePageEventDtos = coursePageEvents
+            .map(coursePageEvent -> eventConverter.toDto(coursePageEvent, getCoursePage(coursePages, getRealisationId(coursePageEvent))));
+
+        return Stream
+            .concat(oodiEventDtos, coursePageEventDtos)
             .sorted()
             .collect(Collectors.toList());
     }
 
-    private List<EventDto> getOodiTeacherEvents(String teacherNumber, Locale locale) {
-        return oodiClient.getTeacherEvents(teacherNumber).stream()
-            .map(e -> eventConverter.toDto(e, locale))
-            .collect(Collectors.toList());
+    private CoursePageCourseImplementation getCoursePage(Map<String, CoursePageCourseImplementation> coursePages, String realisationId) {
+        return Optional
+            .ofNullable(coursePages.get(realisationId))
+            .orElseGet(() -> new CoursePageCourseImplementation());
     }
 
-    private List<EventDto> getCoursePageTeacherEvents(String teacherNumber, Locale locale) {
-        return getCoursePageEventsForCourses(courseService.getTeacherCourses(teacherNumber, locale));
+    private String getRealisationId(OodiEvent oodiEvent) {
+        return String.valueOf(oodiEvent.realisationId);
     }
 
-    private List<EventDto> getCoursePageStudentEvents(String studentNumber, Locale locale) {
-        return getCoursePageEventsForCourses(courseService.getStudentCourses(studentNumber, locale));
+    private String getRealisationId(CoursePageEvent coursePageEvent) {
+        return String.valueOf(coursePageEvent.courseImplementationId);
     }
 
-    private List<EventDto> getCoursePageEventsForCourses(List<CourseDto> courses) {
-        return courses
+    private Map<String, CoursePageCourseImplementation> getCoursePages(
+        List<OodiEvent> oodiEvents,
+        List<String> courseIds) {
+        return Stream
+                .concat(
+                    getOodiEventCourseIds(oodiEvents),
+                    courseIds.stream())
+                .distinct()
+                .collect(Collectors.toMap(
+                    realisationId -> realisationId,
+                    coursePageClient::getCoursePage));
+    }
+
+    private Stream<String> getOodiEventCourseIds(List<OodiEvent> oodiEvents) {
+        return oodiEvents
             .stream()
-            .map(course -> course.realisationId)
-            .distinct()
-            .filter(StringUtils::isNotEmpty)
-            .flatMap(realisationId -> coursePageClient.getEvents(realisationId).stream())
-            .map(eventConverter::toDto)
-            .collect(Collectors.toList());
+            .map(oodiEvent -> String.valueOf(oodiEvent.realisationId));
     }
 
-    private List<EventDto> getOodiStudentEvents(String studentNumber, Locale locale) {
-        return oodiClient.getStudentEvents(studentNumber).stream()
-            .map(e -> eventConverter.toDto(e, locale))
-            .collect(Collectors.toList());
+    private Stream<CoursePageEvent> getCoursePageEvents(List<String> courseIds) {
+        return
+            courseIds.stream()
+                .flatMap(courseId -> coursePageClient.getEvents(courseId).stream());
     }
 
 }

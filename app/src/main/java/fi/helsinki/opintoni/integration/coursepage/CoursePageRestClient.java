@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.integration.coursepage;
 
-import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.integration.DateFormatter;
 import org.springframework.cache.annotation.Cacheable;
@@ -29,8 +28,11 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public class CoursePageRestClient implements CoursePageClient {
 
@@ -44,13 +46,15 @@ public class CoursePageRestClient implements CoursePageClient {
 
     @Cacheable(CacheConstants.COURSE_PAGE_ONE_OFF_EVENTS)
     public List<CoursePageEvent> getEvents(String courseImplementationId) {
-        final ResponseEntity<List<CoursePageEvent>> responseEntity =
+        ResponseEntity<List<CoursePageEvent>> responseEntity =
             restTemplate.exchange("{baseUrl}/events?course_implementation_id={courseImplementationId}", HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<CoursePageEvent>>() {
                 },
                 baseUrl, courseImplementationId);
-        return responseEntity.getBody();
+
+        return Optional.ofNullable(responseEntity.getBody())
+            .orElse(newArrayList());
     }
 
     @Cacheable(CacheConstants.COURSE_PAGE)
@@ -70,10 +74,10 @@ public class CoursePageRestClient implements CoursePageClient {
                                                                    LocalDateTime from,
                                                                    Locale locale) {
         if (courseImplementationIds.isEmpty()) {
-            return Lists.newArrayList();
+            return newArrayList();
         }
 
-        return restTemplate.exchange(
+        ResponseEntity<List<CoursePageNotification>> responseEntity = restTemplate.exchange(
             "{baseUrl}/course_implementation_activity" +
                 "?course_implementation_id={courseImplementationIds}&timestamp={from}&langcode={locale}",
             HttpMethod.GET,
@@ -83,7 +87,10 @@ public class CoursePageRestClient implements CoursePageClient {
             baseUrl,
             courseImplementationIds.stream().collect(Collectors.joining(",")),
             from.format(DateFormatter.COURSE_PAGE_DATE_TIME_FORMATTER),
-            locale.getLanguage()).getBody();
+            locale.getLanguage());
+
+        return Optional.ofNullable(responseEntity.getBody())
+            .orElse(newArrayList());
     }
 
 }
