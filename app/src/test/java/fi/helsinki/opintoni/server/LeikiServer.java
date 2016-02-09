@@ -77,7 +77,7 @@ public class LeikiServer {
 
     private String courseRecommendationsUrl(String studentNumber) {
         return leikiBaseUrl + "/focus/api?method=getsocial&"
-            + "similaritylimit=99&format=json&t_type=kurssit&max=5&uid=opintohistoria_" + studentNumber;
+            + "similaritylimit=99&format=json&t_type=kurssit&max=5&uid=opintohistoriatesti_" + studentNumber;
     }
 
 }

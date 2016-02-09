@@ -260,7 +260,7 @@ search:
 
 recommendations:
   maxRecommendations: 5
-  uidPrefix: opintohistoria_
+  uidPrefix: opintohistoriatesti_
 
 environment: test
 
