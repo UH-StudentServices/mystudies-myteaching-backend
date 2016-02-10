@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.sampledata.SampleDataFiles;
 import fi.helsinki.opintoni.service.UserSettingsService;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -105,6 +106,7 @@ public class PublicImageResourceTest extends SpringTest {
     }
 
     @Test
+    @Ignore
     public void thatCacheControlHeaderIsAdded() throws Exception {
         mockMvc.perform(get(DEFAULT_BACKGROUND_IMAGE_URL))
             .andExpect(header().string("cache-control", "max-age=31536000, must-revalidate, public"));

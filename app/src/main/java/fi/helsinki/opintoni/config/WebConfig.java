@@ -99,11 +99,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry
             .addInterceptor(publicPortfolioInterceptor)
             .addPathPatterns(RestConstants.PUBLIC_API_V1 + "/portfolio/**");
+    }
 
-        registry
-            .addInterceptor(imageCacheInterceptor())
-            .addPathPatterns(RestConstants.PUBLIC_API_V1 + "/images/**")
-            .excludePathPatterns(RestConstants.PUBLIC_API_V1 + "/images/avatar/**");
+    @Bean
+    public FilterRegistrationBean eTagFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        Filter eTagFilter = new ShallowEtagHeaderFilter();
+        beanFactory.autowireBean(eTagFilter);
+        registration.setFilter(eTagFilter);
+        registration.addUrlPatterns(RestConstants.PUBLIC_API_V1 + "/images/*");
+
+        return registration;
     }
 
     private WebContentInterceptor imageCacheInterceptor() {
