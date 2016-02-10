@@ -111,12 +111,4 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         return registration;
     }
-
-    private WebContentInterceptor imageCacheInterceptor() {
-        WebContentInterceptor interceptor = new WebContentInterceptor();
-        long cachingPeriod = appConfiguration.getInteger("staticResourceCachingPeriod");
-        interceptor.setCacheControl(CacheControl.maxAge(cachingPeriod, TimeUnit.SECONDS).mustRevalidate().cachePublic());
-
-        return interceptor;
-    }
 }

@@ -22,7 +22,6 @@ import fi.helsinki.opintoni.sampledata.SampleDataFiles;
 import fi.helsinki.opintoni.service.UserSettingsService;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,7 +32,6 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -103,13 +101,6 @@ public class PublicImageResourceTest extends SpringTest {
                 "Profile_10.jpg",
                 "Profile_11.jpg",
                 "Profile_12.jpg")));
-    }
-
-    @Test
-    @Ignore
-    public void thatCacheControlHeaderIsAdded() throws Exception {
-        mockMvc.perform(get(DEFAULT_BACKGROUND_IMAGE_URL))
-            .andExpect(header().string("cache-control", "max-age=31536000, must-revalidate, public"));
     }
 
     private String getImageData() {
