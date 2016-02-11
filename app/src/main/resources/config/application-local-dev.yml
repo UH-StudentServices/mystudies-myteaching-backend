@@ -38,7 +38,7 @@ oodi:
 coursePage:
     base.url: https://dev.student.helsinki.fi/api/v1
     client.implementation: mock
-    defaultCourseImageUri: https://dev.student.helsinki.fi/sites/default/files/styles/liftup_322_x_190/public/images/default_images/default_image.jpg
+    defaultCourseImageUri: /app/assets/images/course/default_course_image.jpg
 
 leiki:
     base.url: http://suositukset.student.helsinki.fi
