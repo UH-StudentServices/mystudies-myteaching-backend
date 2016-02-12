@@ -61,7 +61,8 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
     }
 
     private void expectTeacherCourses() {
-        defaultTeacherRequestChain().courses().defaultCourseImplementation().and().examCourseImplementation();
+        defaultTeacherRequestChain()
+            .defaultCoursesWithImplementationsAndRealisations();
     }
 
 }

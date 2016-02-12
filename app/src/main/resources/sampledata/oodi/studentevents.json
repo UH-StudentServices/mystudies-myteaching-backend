@@ -26,7 +26,8 @@
           "text": "Formulation III"
         }
       ],
-      "learningopportunity_id": "123456789"
+      "learningopportunity_id": "123456789",
+      "cancelled" : "false"
     },
     {
       "weekday_code": 3,
@@ -52,7 +53,8 @@
           "text": "Formulation II"
         }
       ],
-      "learningopportunity_id": "123456789"
+      "learningopportunity_id": "123456789",
+      "cancelled" : "false"
     }
   ]
 }

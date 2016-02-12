@@ -19,9 +19,10 @@ package fi.helsinki.opintoni.web.requestchain;
 
 import fi.helsinki.opintoni.server.CoursePageServer;
 import fi.helsinki.opintoni.server.OodiServer;
-import fi.helsinki.opintoni.web.TestConstants;
 
 import java.util.Arrays;
+
+import static fi.helsinki.opintoni.web.TestConstants.*;
 
 public class TeacherRequestChain {
 
@@ -42,6 +43,16 @@ public class TeacherRequestChain {
         return this;
     }
 
+    public TeacherRequestChain defaultCoursesWithImplementationsAndRealisations() {
+        return courses()
+            .defaultCourseImplementation()
+            .and()
+            .examCourseImplementation()
+            .and()
+            .courseUnitRealisation(TEACHER_COURSE_REALISATION_ID)
+            .courseUnitRealisation(EXAM_TEACHER_COURSE_REALISATION_ID);
+    }
+
     public TeacherRequestChain courses(String responseFile) {
         oodiServer.expectTeacherCoursesRequest(teacherNumber, sinceDateString, responseFile);
         return this;
@@ -53,11 +64,16 @@ public class TeacherRequestChain {
     }
 
     public CourseImplementationRequestChain<TeacherRequestChain> defaultCourseImplementation() {
-        return courseImplementation(TestConstants.TEACHER_COURSE_REALISATION_ID);
+        return courseImplementation(TEACHER_COURSE_REALISATION_ID);
     }
 
     public CourseImplementationRequestChain<TeacherRequestChain> examCourseImplementation() {
-        return courseImplementation(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID);
+        return courseImplementation(EXAM_TEACHER_COURSE_REALISATION_ID);
+    }
+
+    public TeacherRequestChain courseUnitRealisation(String realisationId) {
+        oodiServer.expectCourseUnitRealisationRequest(realisationId);
+        return this;
     }
 
     public CourseImplementationRequestChain<TeacherRequestChain> courseImplementation(
@@ -87,13 +103,13 @@ public class TeacherRequestChain {
             new CourseImplementationActivityRequestChain<>(
                 this,
                 coursePageServer,
-                Arrays.asList(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID, TestConstants.TEACHER_COURSE_REALISATION_ID)
+                Arrays.asList(EXAM_TEACHER_COURSE_REALISATION_ID, TEACHER_COURSE_REALISATION_ID)
             );
         return chain.activity(responseFile);
     }
 
     public TeacherRequestChain defaultOneOffEvents() {
-        coursePageServer.expectTeacherCourseImplementationEventsRequest(TestConstants.TEACHER_COURSE_REALISATION_ID);
+        coursePageServer.expectTeacherCourseImplementationEventsRequest(TEACHER_COURSE_REALISATION_ID);
         return this;
     }
 }

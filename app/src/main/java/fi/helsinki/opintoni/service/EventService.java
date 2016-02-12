@@ -78,6 +78,7 @@ public class EventService {
         Stream<CoursePageEvent> coursePageEvents = getCoursePageEvents(courseIds);
 
         Stream<EventDto> oodiEventDtos = oodiEvents.stream()
+            .filter(oodiEvent -> !oodiEvent.isCancelled)
             .map(oodiEvent -> eventConverter.toDto(oodiEvent, getCoursePage(coursePages, getRealisationId(oodiEvent)), locale));
 
         Stream<EventDto> coursePageEventDtos = coursePageEvents

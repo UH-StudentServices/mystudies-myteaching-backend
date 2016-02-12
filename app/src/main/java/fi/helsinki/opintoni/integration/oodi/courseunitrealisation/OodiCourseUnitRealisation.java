@@ -40,4 +40,7 @@ public class OodiCourseUnitRealisation {
     @JsonProperty("start_date")
     public String startDate;
 
+    @JsonProperty("cancelled")
+    public boolean isCancelled;
+
 }

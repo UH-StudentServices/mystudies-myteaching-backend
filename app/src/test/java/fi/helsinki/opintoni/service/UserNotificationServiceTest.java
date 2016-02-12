@@ -40,11 +40,7 @@ public class UserNotificationServiceTest extends SpringTest {
     @Test
     public void thatUserNotificationsAreReturned() {
         defaultTeacherRequestChain()
-            .courses()
-            .defaultCourseImplementation()
-            .and()
-            .examCourseImplementation()
-            .and()
+            .defaultCoursesWithImplementationsAndRealisations()
             .activity("teachernotifications.json");
 
         List<UserNotificationDto> userNotifications = userNotificationService

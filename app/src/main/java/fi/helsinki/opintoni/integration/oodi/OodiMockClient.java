@@ -19,14 +19,21 @@ package fi.helsinki.opintoni.integration.oodi;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class OodiMockClient implements OodiClient {
+
+    private static final String COURSE_UNIT_REALISATION_ID = "101472950";
+    private static final String CANCELLED_COURSE_UNIT_REALISATION_ID = "123456789";
 
     @Value("classpath:sampledata/oodi/studentcourses.json")
     private Resource studentCourses;
@@ -52,6 +59,9 @@ public class OodiMockClient implements OodiClient {
     @Value("classpath:sampledata/oodi/courseunitrealisation.json")
     private Resource courseUnitRealisation;
 
+    @Value("classpath:sampledata/oodi/courseunitrealisationcancelled.json")
+    private Resource courseUnitRealisationCancelled;
+
     @Value("classpath:sampledata/oodi/roles.json")
     private Resource roles;
 
@@ -59,6 +69,16 @@ public class OodiMockClient implements OodiClient {
     private Resource studentInfo;
 
     private final ObjectMapper objectMapper;
+
+    private Map<String, Resource> courseUnitRealisationsById;
+
+    @PostConstruct
+    private void createCourseUnitRealisationsMap() {
+        this.courseUnitRealisationsById = ImmutableMap.of(
+            COURSE_UNIT_REALISATION_ID, courseUnitRealisation,
+            CANCELLED_COURSE_UNIT_REALISATION_ID, courseUnitRealisationCancelled);
+    }
+
 
     public OodiMockClient(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -102,7 +122,11 @@ public class OodiMockClient implements OodiClient {
 
     @Override
     public OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId) {
-        return getSingleOodiResponse(courseUnitRealisation,
+        Resource courseUnitRealisationResponce = Optional
+            .ofNullable(courseUnitRealisationsById.get(realisationId))
+            .orElse(courseUnitRealisation);
+
+        return getSingleOodiResponse(courseUnitRealisationResponce,
             new TypeReference<OodiSingleResponse<OodiCourseUnitRealisation>>() {
             });
     }
