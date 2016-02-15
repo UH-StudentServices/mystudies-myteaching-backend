@@ -79,6 +79,11 @@ public class StudentRequestChain {
         return this;
     }
 
+    public StudentRequestChain cancelledCourseUnitRealisation() {
+        oodiServer.expectCancelledCourseUnitRealisationRequest(TestConstants.STUDENT_COURSE_REALISATION_ID);
+        return this;
+    }
+
     public StudentRequestChain defaultOneOffEvents() {
         coursePageServer.expectStudentCourseImplementationEventsRequest(TestConstants.STUDENT_COURSE_REALISATION_ID);
         return this;
