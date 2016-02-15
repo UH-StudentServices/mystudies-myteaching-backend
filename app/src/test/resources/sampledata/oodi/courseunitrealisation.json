@@ -64,6 +64,7 @@
         "description": "<p>genetiikka, eläimet, DNA, molekyylit</p>"
       }
     ],
-    "learningopportunity_id": "815058"
+    "learningopportunity_id": "815058",
+    "cancelled" : "false"
   }
 }

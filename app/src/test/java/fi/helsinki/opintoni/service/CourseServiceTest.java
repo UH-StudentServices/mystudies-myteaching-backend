@@ -111,9 +111,6 @@ public class CourseServiceTest extends SpringTest {
 
     private void expectTeacherCourses() {
         defaultTeacherRequestChain()
-            .courses()
-            .defaultCourseImplementation()
-            .and()
-            .examCourseImplementation();
+            .defaultCoursesWithImplementationsAndRealisations();
     }
 }

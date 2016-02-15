@@ -26,7 +26,8 @@
           "text": "Formulation III"
         }
       ],
-      "learningopportunity_id": "10440"
+      "learningopportunity_id": "10440",
+      "cancelled" : "false"
     },
     {
       "weekday_code": 4,
@@ -52,7 +53,35 @@
           "text": "Formulation II"
         }
       ],
-      "learningopportunity_id": "10440"
+      "learningopportunity_id": "10440",
+      "cancelled" : "false"
+    },
+    {
+      "weekday_code": 4,
+      "building_address1": "Viikinkaari 11",
+      "building_zipcode" : "00790",
+      "room_name_short": "Päärakennus, sali 1",
+      "end_date": "2015-09-13T11:00:00.000Z",
+      "start_date": "2015-09-13T07:00:00.000Z",
+      "course_id": 99903629,
+      "simple_type_code": 2,
+      "realisation_type_code": 19,
+      "learningopportunity_name": [
+        {
+          "langcode": "fi",
+          "text": "Formulointi IIII"
+        },
+        {
+          "langcode": "sv",
+          "text": "Formulering IIII"
+        },
+        {
+          "langcode": "en",
+          "text": "Formulation IIII"
+        }
+      ],
+      "learningopportunity_id": "10440",
+      "cancelled" : "true"
     }
   ]
 }

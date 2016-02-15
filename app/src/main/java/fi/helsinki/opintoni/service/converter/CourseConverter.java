@@ -75,11 +75,16 @@ public class CourseConverter {
             oodiEnrollment.credits,
             courseUnitRealisation.teachers.stream().map(t -> t.fullName).collect(Collectors.toList()),
             coursePage.hasMaterial,
-            eventTypeResolver.isExam(oodiEnrollment.typeCode));
+            eventTypeResolver.isExam(oodiEnrollment.typeCode),
+            courseUnitRealisation.isCancelled);
     }
 
     public CourseDto toDto(OodiTeacherCourse oodiTeacherCourse, Locale locale) {
         CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiTeacherCourse.realisationId);
+
+        OodiCourseUnitRealisation courseUnitRealisation =
+            oodiClient.getCourseUnitRealisation(oodiTeacherCourse.realisationId);
+
         return new CourseDto(
             oodiTeacherCourse.basecode,
             oodiTeacherCourse.realisationTypeCode,
@@ -93,7 +98,8 @@ public class CourseConverter {
             oodiTeacherCourse.endDate,
             oodiTeacherCourse.realisationId, null, Lists.newArrayList(),
             coursePage.hasMaterial,
-            eventTypeResolver.isExam(oodiTeacherCourse.realisationTypeCode));
+            eventTypeResolver.isExam(oodiTeacherCourse.realisationTypeCode),
+            courseUnitRealisation.isCancelled);
     }
 
 }

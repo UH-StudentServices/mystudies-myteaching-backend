@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.web.WebConstants;
+import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
@@ -31,11 +32,28 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
 
     @Test
     public void thatStudentCoursesAreReturned() throws Exception {
-        defaultStudentRequestChain()
-            .enrollments()
-            .defaultCourseUnitRealisation()
-            .defaultImplementation();
+        expectCourseRequestChain()
+            .defaultCourseUnitRealisation();
 
+        thatStudentCoursesAreReturned(false);
+    }
+
+    @Test
+    public void thatCancelledCourseStatusIsReturned() throws Exception{
+        expectCourseRequestChain()
+            .cancelledCourseUnitRealisation();
+
+        thatStudentCoursesAreReturned(true);
+    }
+
+    private StudentRequestChain expectCourseRequestChain() {
+        return defaultStudentRequestChain()
+            .enrollments()
+            .defaultImplementation()
+            .and();
+    }
+
+    private void thatStudentCoursesAreReturned(boolean expectedCancellation) throws Exception {
         mockMvc.perform(get("/api/private/v1/students/enrollments/courses")
             .with(securityContext(studentSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
@@ -59,7 +77,8 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[0].endDate[4]").value(0))
             .andExpect(jsonPath("$[0].webOodiUri").value("https://weboodi.helsinki.fi"))
             .andExpect(jsonPath("$[0].teachers[0]").value("Rantala Kari A"))
-            .andExpect(jsonPath("$[0].hasMaterial").value(true));
+            .andExpect(jsonPath("$[0].hasMaterial").value(true))
+            .andExpect(jsonPath("$[0].isCancelled").value(expectedCancellation));
     }
 
 }

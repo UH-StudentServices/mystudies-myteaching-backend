@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CourseService {
@@ -57,19 +58,16 @@ public class CourseService {
             .collect(Collectors.toList());
     }
 
-    public List<String> getTeacherCourseIds(String teacherNumber) {
+    public Stream<String> getTeacherCourseIds(String teacherNumber) {
         return oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
-            .map(e -> String.valueOf(e.realisationId))
-            .collect(Collectors.toList());
+            .map(e -> String.valueOf(e.realisationId));
     }
 
-    public List<String> getStudentCourseIds(String studentNumber) {
+    public Stream<String> getStudentCourseIds(String studentNumber) {
         return oodiClient.getEnrollments(studentNumber)
             .stream()
-            .map(e -> String.valueOf(e.realisationId))
-            .collect(Collectors.toList());
+            .map(e -> String.valueOf(e.realisationId));
     }
-
 
     public Set<CourseDto> getCourses(Optional<String> studentNumber, Optional<String> teacherNumber, Locale locale) {
         Set<CourseDto> courseDtos = new HashSet<>();

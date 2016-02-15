@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.EventDto;
+import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -77,6 +78,7 @@ public class EnrollmentResourceGetTeacherEventsTest extends SpringTest {
             .defaultCourseImplementation()
             .and()
             .courses("teachercourses_singlecourse.json")
+            .courseUnitRealisation(TestConstants.TEACHER_COURSE_REALISATION_ID)
             .defaultOneOffEvents();
     }
 

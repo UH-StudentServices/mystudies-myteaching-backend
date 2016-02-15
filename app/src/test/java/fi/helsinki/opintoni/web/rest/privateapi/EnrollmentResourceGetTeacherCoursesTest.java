@@ -56,12 +56,15 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[0].webOodiUri").value("https://weboodi.helsinki.fi/"))
             .andExpect(jsonPath("$[0].hasMaterial").value(true))
             .andExpect(jsonPath("$[0].isExam").value(false))
+            .andExpect(jsonPath("$[0].isCancelled").value(false))
             .andExpect(jsonPath("$[1].code").value("10442"))
-            .andExpect(jsonPath("$[1].isExam").value(true));
+            .andExpect(jsonPath("$[1].isExam").value(true))
+            .andExpect(jsonPath("$[1].isCancelled").value(true));
     }
 
     private void expectTeacherCourses() {
-        defaultTeacherRequestChain().courses().defaultCourseImplementation().and().examCourseImplementation();
+        defaultTeacherRequestChain()
+            .defaultCoursesWithImplementationsAndRealisations();
     }
 
 }

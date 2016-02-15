@@ -103,10 +103,18 @@ public class OodiServer {
     }
 
     public void expectCourseUnitRealisationRequest(String realisationId) {
+        courseUnitRealisationRequest(realisationId, "oodi/courseunitrealisation.json");
+    }
+
+    public void expectCancelledCourseUnitRealisationRequest(String realisationId) {
+        courseUnitRealisationRequest(realisationId, "oodi/cancelledcourseunitrealisation.json");
+    }
+
+    private void courseUnitRealisationRequest(String realisationId, String fileName) {
         server.expect(requestTo(courseUnitRealisationUrl(realisationId)))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(
-                    SampleDataFiles.toText("oodi/courseunitrealisation.json"),
+                    SampleDataFiles.toText(fileName),
                     MediaType.APPLICATION_JSON)
             );
     }

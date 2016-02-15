@@ -52,4 +52,7 @@ public class OodiEvent {
 
     @JsonProperty("building_zipcode")
     public String buildingZipCode;
+
+    @JsonProperty("cancelled")
+    public boolean isCancelled;
 }
