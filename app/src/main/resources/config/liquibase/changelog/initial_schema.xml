@@ -928,4 +928,29 @@
             <column name="comment" type="text"/>
         </addColumn>
     </changeSet>
+
+    <changeSet id="Add free_text_content table" author="Marko Rautajoki">
+        <createTable tableName="free_text_content">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_free_text_content_portfolio" references="portfolio(id)" deleteCascade="true"/>
+            </column>
+            <column name="title" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

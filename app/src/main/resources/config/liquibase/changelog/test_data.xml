@@ -156,6 +156,12 @@
                   tableName="feedback">
             <column name="created_date" type="timestamp"/>
         </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/free_text_contents.csv"
+                  separator=";"
+                  tableName="free_text_content">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
     </changeSet>
 
 </databaseChangeLog>

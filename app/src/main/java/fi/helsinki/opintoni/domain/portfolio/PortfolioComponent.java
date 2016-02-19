@@ -24,5 +24,6 @@ public enum PortfolioComponent {
     CONTACT_INFORMATION,
     WORK_EXPERIENCE,
     FAVORITES,
-    CREDITS
+    CREDITS,
+    FREE_TEXT_CONTENT
 }
