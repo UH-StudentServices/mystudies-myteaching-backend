@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class WorkExperienceServiceTest extends SpringTest {
 
@@ -48,10 +48,10 @@ public class WorkExperienceServiceTest extends SpringTest {
 
         WorkExperienceDto savedWorkExperienceDto = workExperienceDtos.get(0);
 
-        assertEquals(1, workExperienceDtos.size());
-        assertEquals(workExperienceDto.jobTitle, savedWorkExperienceDto.jobTitle);
-        assertEquals(workExperienceDto.employer, savedWorkExperienceDto.employer);
-        assertEquals(workExperienceDto.startDate, savedWorkExperienceDto.startDate);
-        assertEquals(workExperienceDto.endDate, savedWorkExperienceDto.endDate);
+        assertThat(workExperienceDtos).hasSize(1);
+        assertThat(savedWorkExperienceDto.jobTitle).isEqualTo(workExperienceDto.jobTitle);
+        assertThat(savedWorkExperienceDto.employer).isEqualTo(workExperienceDto.employer);
+        assertThat(savedWorkExperienceDto.startDate).isEqualTo(workExperienceDto.startDate);
+        assertThat(savedWorkExperienceDto.endDate).isEqualTo(workExperienceDto.endDate);
     }
 }

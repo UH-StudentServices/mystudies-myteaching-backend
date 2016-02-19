@@ -20,13 +20,13 @@ package fi.helsinki.opintoni.service;
 import fi.helsinki.opintoni.dto.UnicafeFavoriteDto;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FavoriteServiceSaveUnicafeFavoriteTest extends AbstractFavoriteServiceTest {
 
     @Test
     public void shouldPersistUnicafeFavoriteCorrectly() {
         UnicafeFavoriteDto dto = (UnicafeFavoriteDto) favoriteService.insertUnicafeFavorite(1L, 3);
-        assertEquals(new Integer(3), dto.restaurantId);
+        assertThat(dto.restaurantId).isEqualTo(new Integer(3));
     }
 }

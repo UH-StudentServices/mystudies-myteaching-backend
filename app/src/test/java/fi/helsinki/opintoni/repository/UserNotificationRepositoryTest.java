@@ -22,7 +22,7 @@ import fi.helsinki.opintoni.domain.UserNotification;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserNotificationRepositoryTest extends SpringTest {
 
@@ -32,6 +32,6 @@ public class UserNotificationRepositoryTest extends SpringTest {
     @Test
     public void thatUserNotificationIsFound() {
         UserNotification userNotification = userNotificationRepository.getOne(1L);
-        assertNotNull(userNotification);
+        assertThat(userNotification).isNotNull();
     }
 }

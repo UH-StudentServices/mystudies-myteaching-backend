@@ -22,7 +22,7 @@ import fi.helsinki.opintoni.web.TestConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserFacultyResolverTest extends SpringTest {
 
@@ -36,7 +36,7 @@ public class UserFacultyResolverTest extends SpringTest {
 
         String faculty = userFacultyResolver.getStudentFacultyCode(TestConstants.STUDENT_NUMBER);
 
-        assertEquals("H70", faculty);
+        assertThat(faculty).isEqualTo("H70");
     }
 
     @Test
@@ -46,7 +46,7 @@ public class UserFacultyResolverTest extends SpringTest {
 
         String faculty = userFacultyResolver.getStudentFacultyCode(TestConstants.STUDENT_NUMBER);
 
-        assertEquals("default", faculty);
+        assertThat(faculty).isEqualTo("default");
     }
 
 }

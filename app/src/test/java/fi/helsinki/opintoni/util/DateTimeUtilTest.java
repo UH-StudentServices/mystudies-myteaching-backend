@@ -21,19 +21,19 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DateTimeUtilTest  {
     @Test
     public void thatLastSemesterStringIsObtainedCorrectlyBeforeEndOfYear() {
         LocalDate d = LocalDate.of(2015, 10, 10);
-        assertEquals("01052015000000", DateTimeUtil.getSemesterStartDateString(d));
+        assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo("01052015000000");
     }
 
     @Test
     public void thatLastSemesterStringIsObtainedCorrectlyAfterEndOfYear() {
         LocalDate d = LocalDate.of(2016, 4, 10);
-        assertEquals("01052015000000", DateTimeUtil.getSemesterStartDateString(d));
+        assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo("01052015000000");
     }
 
 }

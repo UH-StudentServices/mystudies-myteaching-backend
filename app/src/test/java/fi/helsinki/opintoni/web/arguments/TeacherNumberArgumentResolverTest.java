@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.util.ReflectionUtils;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class TeacherNumberArgumentResolverTest extends SpringTest {
 
@@ -42,19 +42,19 @@ public class TeacherNumberArgumentResolverTest extends SpringTest {
     @Test
     public void supportsStringParameterWithTeacherNumberAnnotation() throws Exception {
         MethodParameter param = getMethodParam("helloTeacher", String.class);
-        assertTrue(resolver.supportsParameter(param));
+        assertThat(resolver.supportsParameter(param)).isTrue();
     }
 
     @Test
     public void doesNotSupportStringParameterWithoutTeacherNumberAnnotation() throws Exception {
         MethodParameter param = getMethodParam("hello", String.class);
-        assertFalse(resolver.supportsParameter(param));
+        assertThat(resolver.supportsParameter(param)).isFalse();
     }
 
     @Test(expected = ForbiddenException.class)
     public void doesNotSupportParameterOfWrongTypeWithTeacherNumberAnnotation() throws Exception {
         MethodParameter param = getMethodParam("helloError", Long.class);
-        assertFalse(resolver.supportsParameter(param));
+        assertThat(resolver.supportsParameter(param)).isFalse();
     }
 
     @Test
@@ -62,7 +62,7 @@ public class TeacherNumberArgumentResolverTest extends SpringTest {
         configureTeacherSecurityContext();
 
         MethodParameter param = getMethodParam("helloTeacher", String.class);
-        assertEquals("010540", resolver.resolveArgument(param, null, null, null));
+        assertThat("010540").isEqualTo(resolver.resolveArgument(param, null, null, null));
     }
 
     @Test(expected = ForbiddenException.class)

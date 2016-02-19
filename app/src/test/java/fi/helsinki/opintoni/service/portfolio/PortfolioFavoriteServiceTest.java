@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PortfolioFavoriteServiceTest extends SpringTest {
 
@@ -37,11 +37,11 @@ public class PortfolioFavoriteServiceTest extends SpringTest {
     public void thatFavoritesAreFoundForPortfolio() {
         List<FavoriteDto> favoriteDtoList = portfolioFavoriteService.findByPortfolioId(3L);
 
-        assertEquals(3, favoriteDtoList.size());
-        assertEquals(LinkFavoriteDto.class, favoriteDtoList.get(0).getClass());
-        assertEquals(LinkFavoriteDto.class, favoriteDtoList.get(1).getClass());
-        assertEquals(TwitterFavoriteDto.class, favoriteDtoList.get(2).getClass());
-        assertEquals("http://www.helsinki.fi", ((LinkFavoriteDto)favoriteDtoList.get(0)).url);
-        assertEquals("http://www.iltalehti.fi", ((LinkFavoriteDto)favoriteDtoList.get(1)).url);
+        assertThat(favoriteDtoList).hasSize(3);
+        assertThat(favoriteDtoList.get(0).getClass()).isEqualTo(LinkFavoriteDto.class);
+        assertThat(favoriteDtoList.get(1).getClass()).isEqualTo(LinkFavoriteDto.class);
+        assertThat(favoriteDtoList.get(2).getClass()).isEqualTo(TwitterFavoriteDto.class);
+        assertThat(((LinkFavoriteDto)favoriteDtoList.get(0)).url).isEqualTo("http://www.helsinki.fi");
+        assertThat(((LinkFavoriteDto)favoriteDtoList.get(1)).url).isEqualTo("http://www.iltalehti.fi");
     }
 }

@@ -27,7 +27,7 @@ import org.springframework.http.MediaType;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -57,6 +57,6 @@ public class PrivateSummaryResourceTest extends SpringTest {
             .content(WebTestUtils.toJsonBytes(request)))
             .andExpect(status().isOk());
 
-        assertEquals("New summary", portfolioRepository.findOne(2L).summary);
+        assertThat(portfolioRepository.findOne(2L).summary).isEqualTo("New summary");
     }
 }

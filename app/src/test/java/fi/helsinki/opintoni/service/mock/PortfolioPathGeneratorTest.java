@@ -25,7 +25,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
@@ -41,17 +41,17 @@ public class PortfolioPathGeneratorTest {
 
     @Test
     public void thatNonConflictingPortfolioPathIsGenerated() {
-        assertEquals("test.name", portfolioPathGenerator.create("Test Name"));
-        assertEquals("test.name", portfolioPathGenerator.create(" Test  Name "));
-        assertEquals("test.middle.name", portfolioPathGenerator.create("Test Middle Name"));
-        assertEquals("test.middle.name", portfolioPathGenerator.create("Test Middle Name"));
-        assertEquals("jeanne.d.arc", portfolioPathGenerator.create("jeanne d'arc"));
+        assertThat(portfolioPathGenerator.create("Test Name")).isEqualTo("test.name");
+        assertThat(portfolioPathGenerator.create(" Test  Name ")).isEqualTo("test.name");
+        assertThat(portfolioPathGenerator.create("Test Middle Name")).isEqualTo("test.middle.name");
+        assertThat(portfolioPathGenerator.create("Test Middle Name")).isEqualTo("test.middle.name");
+        assertThat(portfolioPathGenerator.create("jeanne d'arc")).isEqualTo("jeanne.d.arc");
     }
 
     @Test
     public void thatConflictingPortfolioPathIsGenerated() {
         when(portfolioRepository.countByPath("test.name")).thenReturn(1);
-        assertEquals("test.name-1", portfolioPathGenerator.create("Test Name"));
+        assertThat(portfolioPathGenerator.create("Test Name")).isEqualTo("test.name-1");
     }
 
     @Test(expected = RuntimeException.class)
@@ -62,6 +62,6 @@ public class PortfolioPathGeneratorTest {
 
     @Test
     public void thatNullIsHandled() {
-        assertNull(portfolioPathGenerator.create(null));
+        assertThat(portfolioPathGenerator.create(null)).isNull();
     }
 }

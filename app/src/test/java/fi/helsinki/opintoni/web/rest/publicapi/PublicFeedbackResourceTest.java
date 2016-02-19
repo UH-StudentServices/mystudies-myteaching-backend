@@ -34,7 +34,7 @@ import java.util.Map;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,13 +56,13 @@ public class PublicFeedbackResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        assertEquals(3, feedbackRepository.findAll().size());
+        assertThat(feedbackRepository.findAll()).hasSize(3);
 
         Feedback feedback = feedbackRepository.findAll().get(2);
 
-        assertEquals(request.content, feedback.content);
-        assertEquals(request.email, feedback.email);
-        assertEquals("{\"browser\":\"Chrome\"}", feedback.metadata);
+        assertThat(feedback.content).isEqualTo(request.content);
+        assertThat(feedback.email).isEqualTo(request.email);
+        assertThat(feedback.metadata).isEqualTo("{\"browser\":\"Chrome\"}");
     }
 
     private JsonNode getMetadata() {

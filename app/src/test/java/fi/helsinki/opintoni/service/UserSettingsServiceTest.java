@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class UserSettingsServiceTest extends SpringTest {
 
@@ -44,7 +44,7 @@ public class UserSettingsServiceTest extends SpringTest {
         userSettingsService.updateUserAvatar(1L, imageBase64);
 
         UserSettings userSettings = userSettingsRepository.findOne(1L);
-        assertTrue(userSettings.userAvatar.imageData.length > 0);
+        assertThat(userSettings.userAvatar.imageData.length > 0).isTrue();
     }
 
     @Test
@@ -53,35 +53,35 @@ public class UserSettingsServiceTest extends SpringTest {
         userSettingsService.updateUserAvatar(1L, imageBase64);
 
         UserSettings userSettings = userSettingsRepository.findOne(1L);
-        assertTrue(userSettings.userAvatar.imageData.length > 0);
+        assertThat(userSettings.userAvatar.imageData.length > 0).isTrue();
 
         userSettingsService.deleteUserAvatar(1L);
 
         userSettings = userSettingsRepository.findOne(1L);
-        assertNull(userSettings.userAvatar);
+        assertThat(userSettings.userAvatar).isNull();
     }
 
     @Test
     public void thatShowMyStudiesTourIsUpdated() {
-        assertTrue(userSettingsRepository.findOne(1L).showMyStudiesTour);
+        assertThat(userSettingsRepository.findOne(1L).showMyStudiesTour).isTrue();
 
         UpdateUserSettingsRequest request = new UpdateUserSettingsRequest();
         request.showMyStudiesTour = false;
 
         userSettingsService.update(1L, request);
 
-        assertFalse(userSettingsRepository.findOne(1L).showMyStudiesTour);
+        assertThat(userSettingsRepository.findOne(1L).showMyStudiesTour).isFalse();
     }
 
     @Test
     public void thatShowMyTeachingTourIsUpdated() {
-        assertTrue(userSettingsRepository.findOne(1L).showMyTeachingTour);
+        assertThat(userSettingsRepository.findOne(1L).showMyTeachingTour).isTrue();
 
         UpdateUserSettingsRequest request = new UpdateUserSettingsRequest();
         request.showMyTeachingTour = false;
 
         userSettingsService.update(1L, request);
 
-        assertFalse(userSettingsRepository.findOne(1L).showMyTeachingTour);
+        assertThat(userSettingsRepository.findOne(1L).showMyTeachingTour).isFalse();
     }
 }

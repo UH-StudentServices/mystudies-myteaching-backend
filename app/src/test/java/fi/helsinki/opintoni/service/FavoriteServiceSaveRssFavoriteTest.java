@@ -21,7 +21,7 @@ import fi.helsinki.opintoni.dto.RssFavoriteDto;
 import fi.helsinki.opintoni.web.rest.privateapi.SaveRssFavoriteRequest;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FavoriteServiceSaveRssFavoriteTest extends AbstractFavoriteServiceTest {
 
@@ -39,8 +39,8 @@ public class FavoriteServiceSaveRssFavoriteTest extends AbstractFavoriteServiceT
         request.url = URL1;
         request.visibleItems = VISIBLE_ITEMS1;
         RssFavoriteDto favorite = (RssFavoriteDto) favoriteService.saveRssFavorite(1L, request);
-        assertEquals(URL1, favorite.url);
-        assertEquals(VISIBLE_ITEMS1, favorite.visibleItems);
+        assertThat(favorite.url).isEqualTo(URL1);
+        assertThat(favorite.visibleItems).isEqualTo(VISIBLE_ITEMS1);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class FavoriteServiceSaveRssFavoriteTest extends AbstractFavoriteServiceT
         request.url = URL2;
         request.visibleItems = VISIBLE_ITEMS3;
         RssFavoriteDto favorite = (RssFavoriteDto) favoriteService.saveRssFavorite(2L, request);
-        assertEquals(URL2, favorite.url);
-        assertEquals(VISIBLE_ITEMS3, favorite.visibleItems);
+        assertThat(favorite.url).isEqualTo(URL2);
+        assertThat(favorite.visibleItems).isEqualTo(VISIBLE_ITEMS3);
     }
 }

@@ -21,8 +21,7 @@ import fi.helsinki.opintoni.SpringTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class EventTypeResolverTest extends SpringTest {
 
@@ -31,12 +30,12 @@ public class EventTypeResolverTest extends SpringTest {
 
     @Test
     public void thatExamIsResolved() {
-        assertTrue(eventTypeResolver.isExam(8));
-        assertTrue(eventTypeResolver.isExam(16));
-        assertTrue(eventTypeResolver.isExam(19));
-        assertTrue(eventTypeResolver.isExam(20));
-        assertTrue(eventTypeResolver.isExam(23));
-        assertTrue(eventTypeResolver.isExam(27));
-        assertFalse(eventTypeResolver.isExam(5));
+        assertThat(eventTypeResolver.isExam(8)).isTrue();
+        assertThat(eventTypeResolver.isExam(16)).isTrue();
+        assertThat(eventTypeResolver.isExam(19)).isTrue();
+        assertThat(eventTypeResolver.isExam(20)).isTrue();
+        assertThat(eventTypeResolver.isExam(23)).isTrue();
+        assertThat(eventTypeResolver.isExam(27)).isTrue();
+        assertThat(eventTypeResolver.isExam(5)).isFalse();
     }
 }

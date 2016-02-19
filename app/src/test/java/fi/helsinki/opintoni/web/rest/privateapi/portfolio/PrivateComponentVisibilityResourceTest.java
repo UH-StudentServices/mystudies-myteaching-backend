@@ -32,7 +32,7 @@ import java.util.Optional;
 import static fi.helsinki.opintoni.domain.portfolio.ComponentVisibility.Visibility;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -56,13 +56,13 @@ public class PrivateComponentVisibilityResourceTest extends SpringTest {
 
         ComponentVisibility permission = getByIdAndComponent(2L, PortfolioComponent.ATTAINMENTS).get();
 
-        assertEquals(Visibility.PRIVATE, permission.visibility);
-        assertEquals(PortfolioComponent.ATTAINMENTS, permission.component);
+        assertThat(permission.visibility).isEqualTo(Visibility.PRIVATE);
+        assertThat(permission.component).isEqualTo(PortfolioComponent.ATTAINMENTS);
     }
 
     @Test
     public void thatComponentVisibilityIsUpdated() throws Exception {
-        assertTrue(getByIdAndComponent(2L, PortfolioComponent.WORK_EXPERIENCE).isPresent());
+        assertThat(getByIdAndComponent(2L, PortfolioComponent.WORK_EXPERIENCE).isPresent()).isTrue();
 
         UpdateComponentVisibilityRequest request =
             createRequest(PortfolioComponent.WORK_EXPERIENCE, Visibility.PRIVATE);
@@ -75,8 +75,8 @@ public class PrivateComponentVisibilityResourceTest extends SpringTest {
 
         ComponentVisibility permission = getByIdAndComponent(2L, PortfolioComponent.WORK_EXPERIENCE).get();
 
-        assertEquals(Visibility.PRIVATE, permission.visibility);
-        assertEquals(PortfolioComponent.WORK_EXPERIENCE, permission.component);
+        assertThat(permission.visibility).isEqualTo(Visibility.PRIVATE);
+        assertThat(permission.component).isEqualTo(PortfolioComponent.WORK_EXPERIENCE);
     }
 
     private Optional<ComponentVisibility> getByIdAndComponent(Long id, PortfolioComponent component) {

@@ -22,14 +22,14 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FavoriteServiceFindByUserIdTest extends AbstractFavoriteServiceTest {
 
     @Test
     public void usersFavoritesAreReturnedOrderedAndWithCorrectData() {
         List<FavoriteDto> favorites = favoriteService.findByUserId(1L);
-        assertTrue(favorites.size() == 3);
+        assertThat(favorites.size() == 3).isTrue();
 
         assertRssFavorite(favorites.get(0), 3L, "http://www.mtv3.fi/rss");
         assertRssFavorite(favorites.get(1), 1L, "http://www.news.com/rss");
@@ -38,7 +38,7 @@ public class FavoriteServiceFindByUserIdTest extends AbstractFavoriteServiceTest
     @Test
     public void usersFavoritesAreReturnedOrderedAndWithCorrectDataForPortfolio() {
         List<FavoriteDto> favorites = favoriteService.findByUserIdForPortfolio(1L);
-        assertTrue(favorites.size() == 3);
+        assertThat(favorites.size() == 3).isTrue();
 
         assertLinkFavorite(favorites.get(0), 4L, "http://www.helsinki.fi", "Helsingin yliopisto");
         assertLinkFavorite(favorites.get(1), 5L, "http://www.iltalehti.fi", "Iltalehti");

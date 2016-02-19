@@ -22,7 +22,7 @@ import org.junit.Test;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TimeServiceTest {
 
@@ -35,6 +35,6 @@ public class TimeServiceTest {
 
         LocalDateTime endOfDay = timeService.endOfDayHelsinki(localDateTime);
 
-        assertEquals("2015-05-01T20:59:59Z", endOfDay.format(dateTimeFormatter));
+        assertThat(endOfDay.format(dateTimeFormatter)).isEqualTo("2015-05-01T20:59:59Z");
     }
 }

@@ -28,8 +28,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +42,7 @@ public class OodiUserRoleServiceTest {
         when(oodiClient.getEnrollments("123"))
             .thenReturn(enrollments(Lists.newArrayList("A123", "A456")));
 
-        assertTrue(oodiUserRoleService.isOpenUniversityStudent("123"));
+        assertThat(oodiUserRoleService.isOpenUniversityStudent("123")).isTrue();
     }
 
     @Test
@@ -51,7 +50,7 @@ public class OodiUserRoleServiceTest {
         when(oodiClient.getEnrollments("123"))
             .thenReturn(enrollments(Lists.newArrayList("A123", "456")));
 
-        assertFalse(oodiUserRoleService.isOpenUniversityStudent("123"));
+        assertThat(oodiUserRoleService.isOpenUniversityStudent("123")).isFalse();
     }
 
     @Test
@@ -59,7 +58,7 @@ public class OodiUserRoleServiceTest {
         when(oodiClient.getTeacherCourses("123", DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
             .thenReturn(courses(Lists.newArrayList("A123", "A456")));
 
-        assertTrue(oodiUserRoleService.isOpenUniversityTeacher("123"));
+        assertThat(oodiUserRoleService.isOpenUniversityTeacher("123")).isTrue();
     }
 
     @Test
@@ -67,7 +66,7 @@ public class OodiUserRoleServiceTest {
         when(oodiClient.getTeacherCourses("123", DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
             .thenReturn(courses(Lists.newArrayList("A123", "456")));
 
-        assertFalse(oodiUserRoleService.isOpenUniversityTeacher("123"));
+        assertThat(oodiUserRoleService.isOpenUniversityTeacher("123")).isFalse();
     }
 
     private List<OodiEnrollment> enrollments(List<String> learningOpportunityIds) {

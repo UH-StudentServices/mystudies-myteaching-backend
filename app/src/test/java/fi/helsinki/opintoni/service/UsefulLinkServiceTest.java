@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -72,13 +72,13 @@ public class UsefulLinkServiceTest extends SpringTest {
     public void thatUsefulLinksAreFetchedByUserId() {
         List<UsefulLinkDto> usefulLinkDtoList = usefulLinkService.findByUserId(3L, englishLocale());
 
-        assertEquals(usefulLinkDtoList.size(), 2);
-        assertEquals("Google", usefulLinkDtoList.get(0).description);
-        assertEquals("http://www.google.com", usefulLinkDtoList.get(0).url);
-        assertEquals("USER_DEFINED", usefulLinkDtoList.get(0).type);
-        assertEquals("Helsinki University", usefulLinkDtoList.get(1).description);
-        assertEquals("http://www.helsinki.fi", usefulLinkDtoList.get(1).url);
-        assertEquals("USER_DEFINED", usefulLinkDtoList.get(1).type);
+        assertThat(2).isEqualTo(usefulLinkDtoList.size());
+        assertThat(usefulLinkDtoList.get(0).description).isEqualTo("Google");
+        assertThat(usefulLinkDtoList.get(0).url).isEqualTo("http://www.google.com");
+        assertThat(usefulLinkDtoList.get(0).type).isEqualTo("USER_DEFINED");
+        assertThat(usefulLinkDtoList.get(1).description).isEqualTo("Helsinki University");
+        assertThat(usefulLinkDtoList.get(1).url).isEqualTo("http://www.helsinki.fi");
+        assertThat(usefulLinkDtoList.get(1).type).isEqualTo("USER_DEFINED");
     }
 
     @Test
@@ -96,7 +96,7 @@ public class UsefulLinkServiceTest extends SpringTest {
         List<UsefulLinkDto> usefulLinkDtoList = usefulLinkService.findByUserId(3L, englishLocale());
         Optional<UsefulLinkDto> usefulLinkDtoOptional = usefulLinkDtoList.stream().filter(u -> u.url.equals(url))
             .findFirst();
-        assertTrue(usefulLinkDtoOptional.isPresent());
+        assertThat(usefulLinkDtoOptional.isPresent()).isTrue();
     }
 
     @Test
@@ -115,8 +115,8 @@ public class UsefulLinkServiceTest extends SpringTest {
         Optional<UsefulLinkDto> usefulLinkDtoOptional = usefulLinkDtoList.stream().filter(u -> u.id.equals(1L))
             .findFirst();
 
-        assertEquals(usefulLinkDtoOptional.get().url, url);
-        assertEquals(usefulLinkDtoOptional.get().description, description);
+        assertThat(url).isEqualTo(usefulLinkDtoOptional.get().url);
+        assertThat(description).isEqualTo(usefulLinkDtoOptional.get().description);
     }
 
     @Test
@@ -125,7 +125,7 @@ public class UsefulLinkServiceTest extends SpringTest {
         List<UsefulLinkDto> usefulLinkDtoList = usefulLinkService.findByUserId(3L, englishLocale());
         Optional<UsefulLinkDto> usefulLinkDtoOptional = usefulLinkDtoList.stream().filter(u -> u.id.equals(1L))
             .findFirst();
-        assertFalse(usefulLinkDtoOptional.isPresent());
+        assertThat(usefulLinkDtoOptional.isPresent()).isFalse();
     }
 
     @Test
@@ -138,7 +138,7 @@ public class UsefulLinkServiceTest extends SpringTest {
             .studyRights();
 
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
-        assertEquals(USEFUL_LINKS_COUNT_FOR_DEFAULT_STUDENT, usefulLinks.size());
+        assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_DEFAULT_STUDENT);
         checkLinkURLAndDescription(usefulLinks.get(0),
             "https://flamma.helsinki.fi/fi/HY286484",
             "usefulLinks.forStudent");
@@ -167,7 +167,7 @@ public class UsefulLinkServiceTest extends SpringTest {
         defaultTeacherRequestChain().courses();
 
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
-        assertEquals(USEFUL_LINKS_COUNT_FOR_DEFAULT_TEACHER, usefulLinks.size());
+        assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_DEFAULT_TEACHER);
 
         checkLinkURLAndDescription(usefulLinks.get(0),
             "https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY1001598",
@@ -206,7 +206,7 @@ public class UsefulLinkServiceTest extends SpringTest {
         searchPageTitleDto.searchUrl = MOCK_WEBPAGE_URL;
 
         SearchPageTitleDto searchResult = usefulLinkService.searchPageTitle(searchPageTitleDto);
-        assertEquals(searchResult.searchResult, MOCK_WEBPAGE_TITLE);
+        assertThat(MOCK_WEBPAGE_TITLE).isEqualTo(searchResult.searchResult);
     }
 
     @Test
@@ -216,8 +216,8 @@ public class UsefulLinkServiceTest extends SpringTest {
 
         List<UsefulLinkDto> usefulLinkDtos = usefulLinkService.updateOrder(3L, orderUsefulLinksDto, englishLocale());
 
-        assertTrue(usefulLinkDtos.get(0).id.equals(2L));
-        assertTrue(usefulLinkDtos.get(1).id.equals(1L));
+        assertThat(usefulLinkDtos.get(0).id.equals(2L)).isTrue();
+        assertThat(usefulLinkDtos.get(1).id.equals(1L)).isTrue();
     }
 
     private List<UsefulLinkDto> createDefaultLinksForUser(AppUser appUser) {
@@ -235,7 +235,7 @@ public class UsefulLinkServiceTest extends SpringTest {
 
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
 
-        assertEquals(USEFUL_LINKS_COUNT_FOR_OPEN_UNI_STUDENT, usefulLinks.size());
+        assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_OPEN_UNI_STUDENT);
         checkLinkURLAndDescription(usefulLinks.get(0),
             "https://www.helsinki.fi/en/open-university",
             "usefulLinks.openUniversity");
@@ -253,7 +253,7 @@ public class UsefulLinkServiceTest extends SpringTest {
 
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
 
-        assertEquals(USEFUL_LINKS_COUNT_FOR_OPEN_UNI_TEACHER, usefulLinks.size());
+        assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_OPEN_UNI_TEACHER);
         checkLinkURLAndDescription(usefulLinks.get(0),
             "https://flamma.helsinki.fi/fi/HY311604",
             "usefulLinks.teachingSupportOpenUniversity");
@@ -279,7 +279,7 @@ public class UsefulLinkServiceTest extends SpringTest {
 
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
 
-        assertEquals(USEFUL_LINKS_COUNT_FOR_STUDENT_WITH_UNKNOWN_FACULTY, usefulLinks.size());
+        assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_STUDENT_WITH_UNKNOWN_FACULTY);
         checkLinkURLAndDescription(usefulLinks.get(0),
             "https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY034202",
             "usefulLinks.forStudent");
@@ -290,7 +290,7 @@ public class UsefulLinkServiceTest extends SpringTest {
     }
 
     private void checkLinkURLAndDescription(UsefulLinkDto link, String url, String description) {
-        assertEquals(url, link.url);
-        assertEquals(description, link.description);
+        assertThat(link.url).isEqualTo(url);
+        assertThat(link.description).isEqualTo(description);
     }
 }

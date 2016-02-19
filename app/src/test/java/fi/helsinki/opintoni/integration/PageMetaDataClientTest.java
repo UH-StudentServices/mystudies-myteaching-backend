@@ -26,7 +26,7 @@ import fi.helsinki.opintoni.sampledata.OpenGraphSampleData;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PageMetaDataClientTest extends SpringTest {
 
@@ -37,7 +37,7 @@ public class PageMetaDataClientTest extends SpringTest {
     public void shouldGetAndParsePageMetaData() {
         metaDataServer.expectMetaDataRequest();
         PageMetaData metaData = pageMetaDataClient.getPageMetaData(OpenGraphSampleData.URL);
-        assertEquals(OpenGraphSampleData.TITLE, metaData.title);
+        assertThat(metaData.title).isEqualTo(OpenGraphSampleData.TITLE);
     }
 
     @Test(expected = BadRequestException.class)

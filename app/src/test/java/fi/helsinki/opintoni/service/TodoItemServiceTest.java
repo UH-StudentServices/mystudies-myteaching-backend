@@ -22,7 +22,7 @@ import fi.helsinki.opintoni.dto.TodoItemDto;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TodoItemServiceTest extends SpringTest {
 
@@ -36,7 +36,7 @@ public class TodoItemServiceTest extends SpringTest {
 
         todoItemDto = todoItemService.insert(1L, todoItemDto);
 
-        assertEquals("Content", todoItemDto.content);
+        assertThat(todoItemDto.content).isEqualTo("Content");
     }
 
 }

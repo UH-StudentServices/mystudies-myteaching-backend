@@ -20,14 +20,11 @@ package fi.helsinki.opintoni.security;
 import com.google.common.collect.Iterables;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.service.UserService;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.saml.SAMLCredential;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -56,19 +53,19 @@ public class SAMLUserDetailsServiceTest {
 
         AppUser appUser = (AppUser) userDetailsService.loadUserBySAML(credential);
 
-        assertEquals(SAML_PRINCIPAL_NAME, appUser.getUsername());
-        assertEquals(SAML_EMAIL, appUser.getEmail());
-        assertEquals(SAML_COMMON_NAME, appUser.getCommonName());
-        assertEquals(OODI_PERSON_ID, appUser.getOodiPersonId());
-        assertEquals(SAML_STUDENT_NUMBER_FINAL, appUser.getStudentNumber().get());
-        assertEquals(SAML_PREFERRED_LANGUAGE, appUser.getPreferredLanguage());
-        assertTrue(appUser.getEduPersonAffiliations().contains(SAMLEduPersonAffiliation.STUDENT));
-        assertEquals(SAMLEduPersonAffiliation.STUDENT, appUser.getEduPersonPrimaryAffiliation());
-        assertFalse(appUser.getTeacherNumber().isPresent());
-        assertEquals(1, appUser.getAuthorities().size());
+        assertThat(appUser.getUsername()).isEqualTo(SAML_PRINCIPAL_NAME);
+        assertThat(appUser.getEmail()).isEqualTo(SAML_EMAIL);
+        assertThat(appUser.getCommonName()).isEqualTo(SAML_COMMON_NAME);
+        assertThat(appUser.getOodiPersonId()).isEqualTo(OODI_PERSON_ID);
+        assertThat(appUser.getStudentNumber().get()).isEqualTo(SAML_STUDENT_NUMBER_FINAL);
+        assertThat(appUser.getPreferredLanguage()).isEqualTo(SAML_PREFERRED_LANGUAGE);
+        assertThat(appUser.getEduPersonAffiliations().contains(SAMLEduPersonAffiliation.STUDENT)).isTrue();
+        assertThat(appUser.getEduPersonPrimaryAffiliation()).isEqualTo(SAMLEduPersonAffiliation.STUDENT);
+        assertThat(appUser.getTeacherNumber().isPresent()).isFalse();
+        assertThat(appUser.getAuthorities()).hasSize(1);
 
         GrantedAuthority grantedAuthority = Iterables.getOnlyElement(appUser.getAuthorities());
-        assertEquals(AppUser.Role.STUDENT.name(), grantedAuthority.getAuthority());
+        assertThat(grantedAuthority.getAuthority()).isEqualTo(AppUser.Role.STUDENT.name());
     }
 
     @Test
@@ -77,19 +74,19 @@ public class SAMLUserDetailsServiceTest {
 
         AppUser appUser = (AppUser) userDetailsService.loadUserBySAML(credential);
 
-        assertEquals(SAML_PRINCIPAL_NAME, appUser.getUsername());
-        assertEquals(SAML_EMAIL, appUser.getEmail());
-        assertEquals(SAML_COMMON_NAME, appUser.getCommonName());
-        assertEquals(OODI_PERSON_ID, appUser.getOodiPersonId());
-        assertEquals(SAML_TEACHER_NUMBER, appUser.getTeacherNumber().get());
-        assertEquals(SAML_PREFERRED_LANGUAGE, appUser.getPreferredLanguage());
-        assertTrue(appUser.getEduPersonAffiliations().contains(SAMLEduPersonAffiliation.FACULTY));
-        assertEquals(SAMLEduPersonAffiliation.FACULTY, appUser.getEduPersonPrimaryAffiliation());
-        assertFalse(appUser.getStudentNumber().isPresent());
-        assertEquals(1, appUser.getAuthorities().size());
+        assertThat(appUser.getUsername()).isEqualTo(SAML_PRINCIPAL_NAME);
+        assertThat(appUser.getEmail()).isEqualTo(SAML_EMAIL);
+        assertThat(appUser.getCommonName()).isEqualTo(SAML_COMMON_NAME);
+        assertThat(appUser.getOodiPersonId()).isEqualTo(OODI_PERSON_ID);
+        assertThat(appUser.getTeacherNumber().get()).isEqualTo(SAML_TEACHER_NUMBER);
+        assertThat(appUser.getPreferredLanguage()).isEqualTo(SAML_PREFERRED_LANGUAGE);
+        assertThat(appUser.getEduPersonAffiliations().contains(SAMLEduPersonAffiliation.FACULTY)).isTrue();
+        assertThat(appUser.getEduPersonPrimaryAffiliation()).isEqualTo(SAMLEduPersonAffiliation.FACULTY);
+        assertThat(appUser.getStudentNumber().isPresent()).isFalse();
+        assertThat(appUser.getAuthorities()).hasSize(1);
 
         GrantedAuthority grantedAuthority = Iterables.getOnlyElement(appUser.getAuthorities());
-        assertEquals(AppUser.Role.TEACHER.name(), grantedAuthority.getAuthority());
+        assertThat(grantedAuthority.getAuthority()).isEqualTo(AppUser.Role.TEACHER.name());
     }
 
     @Test
@@ -98,13 +95,11 @@ public class SAMLUserDetailsServiceTest {
 
         AppUser appUser = (AppUser) userDetailsService.loadUserBySAML(credential);
 
-        assertEquals(SAML_TEACHER_NUMBER, appUser.getTeacherNumber().get());
-        assertEquals(SAML_STUDENT_NUMBER_FINAL, appUser.getStudentNumber().get());
-        assertEquals(2, appUser.getAuthorities().size());
-        assertThat(appUser.getAuthorities(),
-            hasItem(Matchers.hasProperty("authority", equalTo(AppUser.Role.TEACHER.name()))));
-        assertThat(appUser.getAuthorities(),
-            hasItem(Matchers.hasProperty("authority", equalTo(AppUser.Role.STUDENT.name()))));
+        assertThat(appUser.getTeacherNumber().get()).isEqualTo(SAML_TEACHER_NUMBER);
+        assertThat(appUser.getStudentNumber().get()).isEqualTo(SAML_STUDENT_NUMBER_FINAL);
+        assertThat(appUser.getAuthorities()).hasSize(2);
+        assertThat(appUser.getAuthorities()).extracting("authority").contains(AppUser.Role.TEACHER.name());
+        assertThat(appUser.getAuthorities()).extracting("authority").contains(AppUser.Role.STUDENT.name());
     }
 
     @Test
@@ -115,7 +110,7 @@ public class SAMLUserDetailsServiceTest {
 
         AppUser appUser = (AppUser) userDetailsService.loadUserBySAML(credential);
 
-        assertFalse(appUser.hasRole(AppUser.Role.ADMIN));
+        assertThat(appUser.hasRole(AppUser.Role.ADMIN)).isFalse();
     }
 
     @Test
@@ -126,7 +121,7 @@ public class SAMLUserDetailsServiceTest {
 
         AppUser appUser = (AppUser) userDetailsService.loadUserBySAML(credential);
 
-        assertTrue(appUser.hasRole(AppUser.Role.ADMIN));
+        assertThat(appUser.hasRole(AppUser.Role.ADMIN)).isTrue();
     }
 
     private SAMLCredential samlStudentCredential() {

@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class UserServiceTest extends SpringTest {
 
@@ -55,13 +55,13 @@ public class UserServiceTest extends SpringTest {
     @Test
     public void thatUserIsFoundByEduPersonPrincipalName() {
         Optional<User> user = userService.findFirstByEduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME);
-        assertTrue(user.isPresent());
+        assertThat(user.isPresent()).isTrue();
     }
 
     @Test
     public void thatUserIsSaved() {
         User user = saveStudent();
-        assertNotNull(user.id);
+        assertThat(user.id).isNotNull();
     }
 
     @Test
@@ -75,14 +75,14 @@ public class UserServiceTest extends SpringTest {
     public void thatUsefulLinksAreCreated() {
         User user = saveStudent();
         List<UsefulLink> usefulLinks = usefulLinkRepository.findByUserIdOrderByOrderIndexAsc(user.id);
-        assertTrue(usefulLinks.size() > 0);
+        assertThat(usefulLinks.size() > 0).isTrue();
     }
 
     @Test
     public void thatFavoritesAreCreated() {
         User user = saveStudent();
         List<Favorite> favorites = favoriteRepository.findByUserIdOrderByOrderIndexAsc(user.id);
-        assertTrue(favorites.size() > 0);
+        assertThat(favorites.size() > 0).isTrue();
     }
 
     private User saveStudent() {
@@ -103,11 +103,11 @@ public class UserServiceTest extends SpringTest {
 
     @Test
     public void thatUserIsAdmin() {
-        assertTrue(userService.isAdmin("opettaja@helsinki.fi"));
+        assertThat(userService.isAdmin("opettaja@helsinki.fi")).isTrue();
     }
 
     @Test
     public void thatUserIsNotAdmin() {
-        assertFalse(userService.isAdmin("notadmin@helsinki.fi"));
+        assertThat(userService.isAdmin("notadmin@helsinki.fi")).isFalse();
     }
 }

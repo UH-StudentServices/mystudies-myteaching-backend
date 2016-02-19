@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class NewsServiceCacheTest extends SpringTest {
 
@@ -39,7 +39,7 @@ public class NewsServiceCacheTest extends SpringTest {
         List<NewsDto> news = newsService.getStudentNews(new Locale("fi"));
         List<NewsDto> cachedNews = newsService.getStudentNews(new Locale("fi"));
 
-        assertSame(news, cachedNews);
+        assertThat(cachedNews).isSameAs(news);
     }
 
     @Test
@@ -49,6 +49,6 @@ public class NewsServiceCacheTest extends SpringTest {
         List<NewsDto> news = newsService.getTeacherNews(new Locale("fi"));
         List<NewsDto> cachedNews = newsService.getTeacherNews(new Locale("fi"));
 
-        assertSame(news, cachedNews);
+        assertThat(cachedNews).isSameAs(news);
     }
 }

@@ -24,8 +24,7 @@ import fi.helsinki.opintoni.domain.portfolio.SomeLink;
 import fi.helsinki.opintoni.repository.portfolio.ContactInformationRepository;
 import fi.helsinki.opintoni.repository.portfolio.SomeLinkRepository;
 import fi.helsinki.opintoni.web.WebTestUtils;
-import fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation
-    .UpdateContactInformationWithSomeLinksRequest;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation.UpdateContactInformationWithSomeLinksRequest;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation.UpdateSomeLink;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +32,8 @@ import org.springframework.http.MediaType;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -128,7 +126,7 @@ public class PrivateContactInformationResourceTest extends SpringTest {
     @Test
     public void thatSomeLinksAreDeleted() throws Exception {
         persistSomeLink(2L);
-        assertFalse(someLinkRepository.findByPortfolioId(2L).isEmpty());
+        assertThat(someLinkRepository.findByPortfolioId(2L).isEmpty()).isFalse();
 
         UpdateContactInformationWithSomeLinksRequest request = new UpdateContactInformationWithSomeLinksRequest();
 
@@ -138,7 +136,7 @@ public class PrivateContactInformationResourceTest extends SpringTest {
             .content(WebTestUtils.toJsonBytes(request)))
             .andExpect(status().isOk());
 
-        assertTrue(someLinkRepository.findByPortfolioId(2L).isEmpty());
+        assertThat(someLinkRepository.findByPortfolioId(2L).isEmpty()).isTrue();
     }
 
     private void persistSomeLink(Long portfolioId) {
