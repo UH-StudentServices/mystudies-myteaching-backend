@@ -48,10 +48,11 @@ public class FreeTextContentService {
         return freeTextContentConverter.toDto(freeTextContentRepository.save(freeTextContent));
     }
 
-    public void updateFreeTextContent(Long freeTextContentId, FreeTextContentDto freeTextContentDto) {
+    public FreeTextContentDto updateFreeTextContent(Long freeTextContentId, FreeTextContentDto freeTextContentDto) {
         FreeTextContent freeTextContent = freeTextContentRepository.findOne(freeTextContentId);
         freeTextContent.title = freeTextContentDto.title;
         freeTextContent.text = freeTextContentDto.text;
+        return freeTextContentDto;
     }
 
     public void deleteFreeTextContent(Long freeTextContentId) {

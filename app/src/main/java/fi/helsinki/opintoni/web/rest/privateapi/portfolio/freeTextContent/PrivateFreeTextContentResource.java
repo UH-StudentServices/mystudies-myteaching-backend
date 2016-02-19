@@ -47,12 +47,11 @@ public class PrivateFreeTextContentResource extends AbstractResource {
     @RequestMapping(
         method = RequestMethod.PUT,
         value = "/{freeTextContentId}")
-    public ResponseEntity updateFreeTextContent(@UserId Long userId,
+    public ResponseEntity<FreeTextContentDto> updateFreeTextContent(@UserId Long userId,
                                                 @PathVariable Long freeTextContentId,
                                                 @RequestBody FreeTextContentDto freeTextContentDto) {
         permissionChecker.verifyPermission(userId, freeTextContentId, FreeTextContent.class);
-        freeTextContentService.updateFreeTextContent(freeTextContentId, freeTextContentDto);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return response(freeTextContentService.updateFreeTextContent(freeTextContentId, freeTextContentDto));
     }
 
     @RequestMapping(

@@ -60,7 +60,9 @@ public class PrivateFreeTextContentResourceTest extends SpringTest {
            .with(securityContext(studentSecurityContext()))
            .content(WebTestUtils.toJsonBytes(freeTextContentDto))
            .contentType(MediaType.APPLICATION_JSON))
-           .andExpect(status().isNoContent());
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$.title").value(NEW_TITLE))
+           .andExpect(jsonPath("$.text").value(NEW_TEXT));
    }
 
     @Test
