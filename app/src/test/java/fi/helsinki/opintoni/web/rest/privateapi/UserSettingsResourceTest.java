@@ -36,11 +36,14 @@ import static fi.helsinki.opintoni.sampledata.UserSettingsSampleData.USER_SETTIN
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.web.WebTestUtils.toJsonBytes;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserSettingsResourceTest extends SpringTest {
 
@@ -144,7 +147,7 @@ public class UserSettingsResourceTest extends SpringTest {
         String uploadedBackgroundFilename = "oldpicture.jpg";
 
         addUploadedBackgroundToDbAndFileSystem(uploadedBackgroundFilename);
-        assertTrue(filesMemory.contains(uploadedBackgroundFilename));
+        assertThat(filesMemory.contains(uploadedBackgroundFilename)).isTrue();
 
         SelectBackgroundRequest request = new SelectBackgroundRequest();
         request.filename = "Profile_1.jpg";
@@ -153,7 +156,7 @@ public class UserSettingsResourceTest extends SpringTest {
             .content(toJsonBytes(request))
             .contentType(MediaType.APPLICATION_JSON));
 
-        assertFalse(filesMemory.contains(uploadedBackgroundFilename));
+        assertThat(filesMemory.contains(uploadedBackgroundFilename)).isFalse();
     }
 
     @Test
@@ -161,7 +164,7 @@ public class UserSettingsResourceTest extends SpringTest {
         String uploadedBackgroundFilename = "oldpicture.jpg";
 
         addUploadedBackgroundToDbAndFileSystem(uploadedBackgroundFilename);
-        assertTrue(filesMemory.contains(uploadedBackgroundFilename));
+        assertThat(filesMemory.contains(uploadedBackgroundFilename)).isTrue();
 
         UploadImageBase64Request request = new UploadImageBase64Request();
         request.imageBase64 = imageToBase64("usersettings/useravatar.jpg");
@@ -172,7 +175,7 @@ public class UserSettingsResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        assertFalse(filesMemory.contains(uploadedBackgroundFilename));
+        assertThat(filesMemory.contains(uploadedBackgroundFilename)).isFalse();
     }
 
     private void addUploadedBackgroundToDbAndFileSystem(String uploadedBackgroundFilename) {

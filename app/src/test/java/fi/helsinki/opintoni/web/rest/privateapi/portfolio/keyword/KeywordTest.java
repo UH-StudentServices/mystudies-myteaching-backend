@@ -20,7 +20,7 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio.keyword;
 import com.google.common.testing.EqualsTester;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class KeywordTest {
 
@@ -45,6 +45,6 @@ public class KeywordTest {
         Keyword anotherKeyword = new Keyword();
         anotherKeyword.title = "Title 2";
 
-        assertFalse(aKeyword.equals(anotherKeyword));
+        assertThat(aKeyword.equals(anotherKeyword)).isFalse();
     }
 }

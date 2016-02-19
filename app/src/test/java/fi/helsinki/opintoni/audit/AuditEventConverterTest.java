@@ -31,8 +31,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +41,7 @@ public class AuditEventConverterTest {
 
     @Test
     public void thatNullAuditEventsAreConverted() {
-        assertTrue(auditEventConverter.convertToAuditEvent(null).isEmpty());
+        assertThat(auditEventConverter.convertToAuditEvent(null).isEmpty()).isTrue();
     }
 
     @Test
@@ -51,14 +50,14 @@ public class AuditEventConverterTest {
 
         List<AuditEvent> auditEvents = auditEventConverter.convertToAuditEvent(persistentAuditEvents);
 
-        assertEquals(1, auditEvents.size());
+        assertThat(auditEvents).hasSize(1);
 
         AuditEvent auditEvent = auditEvents.get(0);
 
-        assertEquals("principal", auditEvent.getPrincipal());
-        assertEquals("type", auditEvent.getType());
-        assertEquals(0, auditEvent.getData().size());
-        assertEquals(getJodaLocalDateTime().toDate(), auditEvent.getTimestamp());
+        assertThat(auditEvent.getPrincipal()).isEqualTo("principal");
+        assertThat(auditEvent.getType()).isEqualTo("type");
+        assertThat(auditEvent.getData()).isEmpty();
+        assertThat(auditEvent.getTimestamp()).isEqualTo(getJodaLocalDateTime().toDate());
     }
 
     private List<PersistentAuditEvent> getPersistentAuditEvents() {
@@ -82,7 +81,7 @@ public class AuditEventConverterTest {
 
     @Test
     public void thatNullDataIsConverted() {
-        assertTrue(auditEventConverter.convertDataToStrings(null).isEmpty());
+        assertThat(auditEventConverter.convertDataToStrings(null).isEmpty()).isTrue();
     }
 
     @Test
@@ -100,9 +99,9 @@ public class AuditEventConverterTest {
 
         Map<String, String> stringsByKey = auditEventConverter.convertDataToStrings(data);
 
-        assertEquals(3, stringsByKey.size());
-        assertEquals("value", stringsByKey.get("key"));
-        assertEquals("127.0.0.1", stringsByKey.get("remoteAddress"));
-        assertEquals("ABCDEFGHIJK", stringsByKey.get("sessionId"));
+        assertThat(stringsByKey).hasSize(3);
+        assertThat(stringsByKey.get("key")).isEqualTo("value");
+        assertThat(stringsByKey.get("remoteAddress")).isEqualTo("127.0.0.1");
+        assertThat(stringsByKey.get("sessionId")).isEqualTo("ABCDEFGHIJK");
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LocalizedValueConverterTest extends SpringTest {
 
@@ -28,7 +28,8 @@ public class LocalizedValueConverterTest extends SpringTest {
             new OodiLocalizedValue(OodiLocale.SV, SWEDISH_VALUE),
             new OodiLocalizedValue(OodiLocale.EN, ENGLISH_VALUE));
 
-        assertEquals(FINNISH_VALUE, localizedValueConverter.toLocalizedString(oodiLocalizedValues, new Locale("fi")));
+        assertThat(FINNISH_VALUE)
+            .isEqualTo(localizedValueConverter.toLocalizedString(oodiLocalizedValues, new Locale("fi")));
     }
 
     @Test
@@ -38,7 +39,8 @@ public class LocalizedValueConverterTest extends SpringTest {
             new OodiLocalizedValue(OodiLocale.SV, SWEDISH_VALUE),
             new OodiLocalizedValue(OodiLocale.EN, ENGLISH_VALUE));
 
-        assertEquals(SWEDISH_VALUE, localizedValueConverter.toLocalizedString(oodiLocalizedValues, new Locale("sv")));
+        assertThat(SWEDISH_VALUE)
+            .isEqualTo(localizedValueConverter.toLocalizedString(oodiLocalizedValues, new Locale("sv")));
     }
 
     @Test
@@ -48,7 +50,8 @@ public class LocalizedValueConverterTest extends SpringTest {
             new OodiLocalizedValue(OodiLocale.SV, SWEDISH_VALUE),
             new OodiLocalizedValue(OodiLocale.EN, ENGLISH_VALUE));
 
-        assertEquals(ENGLISH_VALUE, localizedValueConverter.toLocalizedString(oodiLocalizedValues, Locale.ENGLISH));
+        assertThat(ENGLISH_VALUE)
+            .isEqualTo(localizedValueConverter.toLocalizedString(oodiLocalizedValues, Locale.ENGLISH));
     }
 
     @Test
@@ -57,7 +60,8 @@ public class LocalizedValueConverterTest extends SpringTest {
             new OodiLocalizedValue(OodiLocale.FI, FINNISH_VALUE),
             new OodiLocalizedValue(OodiLocale.SV, SWEDISH_VALUE));
 
-        assertEquals(FINNISH_VALUE, localizedValueConverter.toLocalizedString(oodiLocalizedValues, Locale.ENGLISH));
+        assertThat(FINNISH_VALUE)
+            .isEqualTo(localizedValueConverter.toLocalizedString(oodiLocalizedValues, Locale.ENGLISH));
     }
 
     @Test
@@ -65,6 +69,7 @@ public class LocalizedValueConverterTest extends SpringTest {
         List<OodiLocalizedValue> oodiLocalizedValues = Lists.newArrayList(
             new OodiLocalizedValue(OodiLocale.SV, SWEDISH_VALUE));
 
-        assertEquals(SWEDISH_VALUE, localizedValueConverter.toLocalizedString(oodiLocalizedValues, Locale.ENGLISH));
+        assertThat(SWEDISH_VALUE)
+            .isEqualTo(localizedValueConverter.toLocalizedString(oodiLocalizedValues, Locale.ENGLISH));
     }
 }

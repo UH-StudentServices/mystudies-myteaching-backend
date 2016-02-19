@@ -25,7 +25,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNull;
 
 public class CoursePageUriBuilderTest extends SpringTest {
@@ -38,7 +38,7 @@ public class CoursePageUriBuilderTest extends SpringTest {
         LocaleContextHolder.setLocale(new Locale("en"));
 
         CoursePageCourseImplementation coursePage = createCoursePage();
-        assertEquals("http://courses.helsinki.fi/123", coursePageUriBuilder.getLocalizedUri(coursePage));
+        assertThat(coursePageUriBuilder.getLocalizedUri(coursePage)).isEqualTo("http://courses.helsinki.fi/123");
     }
 
     @Test
@@ -46,7 +46,7 @@ public class CoursePageUriBuilderTest extends SpringTest {
         LocaleContextHolder.setLocale(new Locale("fi"));
 
         CoursePageCourseImplementation coursePage = createCoursePage();
-        assertEquals("http://courses.helsinki.fi/fi/123", coursePageUriBuilder.getLocalizedUri(coursePage));
+        assertThat(coursePageUriBuilder.getLocalizedUri(coursePage)).isEqualTo("http://courses.helsinki.fi/fi/123");
     }
 
     @Test
@@ -54,7 +54,7 @@ public class CoursePageUriBuilderTest extends SpringTest {
         LocaleContextHolder.setLocale(new Locale("sv"));
 
         CoursePageCourseImplementation coursePage = createCoursePage();
-        assertEquals("http://courses.helsinki.fi/sv/123", coursePageUriBuilder.getLocalizedUri(coursePage));
+        assertThat(coursePageUriBuilder.getLocalizedUri(coursePage)).isEqualTo("http://courses.helsinki.fi/sv/123");
     }
 
     private CoursePageCourseImplementation createCoursePage() {
@@ -68,18 +68,18 @@ public class CoursePageUriBuilderTest extends SpringTest {
         CoursePageCourseImplementation coursePage = new CoursePageCourseImplementation();
 
         LocaleContextHolder.setLocale(new Locale("en"));
-        assertNull(coursePageUriBuilder.getLocalizedUri(coursePage));
+        assertThat(coursePageUriBuilder.getLocalizedUri(coursePage)).isNull();
 
         LocaleContextHolder.setLocale(new Locale("fi"));
-        assertNull(coursePageUriBuilder.getLocalizedUri(coursePage));
+        assertThat(coursePageUriBuilder.getLocalizedUri(coursePage)).isNull();
 
         LocaleContextHolder.setLocale(new Locale("sv"));
-        assertNull(coursePageUriBuilder.getLocalizedUri(coursePage));
+        assertThat(coursePageUriBuilder.getLocalizedUri(coursePage)).isNull();
     }
 
     @Test
     public void thatDefaultImageUriIsResolved() {
         String imageUri = coursePageUriBuilder.getImageUri(new CoursePageCourseImplementation());
-        assertEquals("https://dev.student.helsinki.fi/default", imageUri);
+        assertThat(imageUri).isEqualTo("https://dev.student.helsinki.fi/default");
     }
 }

@@ -21,19 +21,19 @@ import org.junit.Test;
 
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LeikiTTypeTest {
 
     @Test
     public void shouldReturnLeikiTTypeByLocale() {
         LeikiTType sv = LeikiTType.getByLocale(Locale.forLanguageTag("sv"));
-        assertEquals(LeikiTType.SV, sv);
+        assertThat(sv).isEqualTo(LeikiTType.SV);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionOnInvalidLocale() {
         LeikiTType sv = LeikiTType.getByLocale(Locale.forLanguageTag("de"));
-        assertEquals(LeikiTType.SV, sv);
+        assertThat(sv).isEqualTo(LeikiTType.SV);
     }
 }

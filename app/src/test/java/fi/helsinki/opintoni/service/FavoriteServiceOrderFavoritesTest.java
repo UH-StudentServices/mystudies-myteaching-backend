@@ -23,7 +23,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FavoriteServiceOrderFavoritesTest extends AbstractFavoriteServiceTest {
 
@@ -32,8 +32,8 @@ public class FavoriteServiceOrderFavoritesTest extends AbstractFavoriteServiceTe
         favoriteService.orderFavorites(1L, Arrays.asList(1L, 3L));
 
         final List<FavoriteDto> favorites = favoriteService.findByUserId(1L);
-        assertEquals(new Long(1), favorites.get(0).id);
-        assertEquals(new Long(3), favorites.get(1).id);
+        assertThat(favorites.get(0).id).isEqualTo(new Long(1));
+        assertThat(favorites.get(1).id).isEqualTo(new Long(3));
     }
 
     @Test
@@ -41,8 +41,8 @@ public class FavoriteServiceOrderFavoritesTest extends AbstractFavoriteServiceTe
         favoriteService.orderPortfolioFavorites(1L, Arrays.asList(5L, 4L));
 
         final List<FavoriteDto> favorites = favoriteService.findByUserIdForPortfolio(1L);
-        assertEquals(new Long(5), favorites.get(0).id);
-        assertEquals(new Long(4), favorites.get(1).id);
+        assertThat(favorites.get(0).id).isEqualTo(new Long(5));
+        assertThat(favorites.get(1).id).isEqualTo(new Long(4));
     }
 
 }

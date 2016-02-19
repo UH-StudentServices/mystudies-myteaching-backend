@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.service;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FavoriteServiceDeleteFavoriteTest extends AbstractFavoriteServiceTest {
 
@@ -37,6 +37,6 @@ public class FavoriteServiceDeleteFavoriteTest extends AbstractFavoriteServiceTe
     }
 
     private void assertThatFavoriteIsDeleted() {
-        assertTrue(favoriteService.findByUserId(USER_ID).stream().noneMatch(f -> f.id.equals(FAVORITE_ID)));
+        assertThat(favoriteService.findByUserId(USER_ID).stream().noneMatch(f -> f.id.equals(FAVORITE_ID))).isTrue();
     }
 }

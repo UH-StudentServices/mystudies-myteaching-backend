@@ -23,7 +23,7 @@ import fi.helsinki.opintoni.integration.oodi.OodiEvent;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -35,7 +35,7 @@ public class LocationResolverTest extends SpringTest {
     @Test
     public void thatNullIsReturnedWithNullBuildingId() {
         BuildingDto buildingDto = locationResolver.getBuilding(new OodiEvent());
-        assertNull(buildingDto);
+        assertThat(buildingDto).isNull();
     }
 
     @Test
@@ -43,7 +43,7 @@ public class LocationResolverTest extends SpringTest {
         OodiEvent oodiEvent = oodiEventWithBuilding(null, "12345");
 
         BuildingDto buildingDto = locationResolver.getBuilding(oodiEvent);
-        assertNull(buildingDto);
+        assertThat(buildingDto).isNull();
     }
 
     @Test
@@ -52,8 +52,8 @@ public class LocationResolverTest extends SpringTest {
         OodiEvent oodiEvent = oodiEventWithBuilding(street, null);
 
         BuildingDto buildingDto = locationResolver.getBuilding(oodiEvent);
-        assertNotNull(buildingDto);
-        assertEquals(street, buildingDto.street);
+        assertThat(buildingDto).isNotNull();
+        assertThat(buildingDto.street).isEqualTo(street);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class LocationResolverTest extends SpringTest {
         OodiEvent oodiEvent = oodiEventWithBuilding(null, null);
 
         BuildingDto buildingDto = locationResolver.getBuilding(oodiEvent);
-        assertNull(buildingDto);
+        assertThat(buildingDto).isNull();
     }
 
     @Test
@@ -72,8 +72,8 @@ public class LocationResolverTest extends SpringTest {
         OodiEvent oodiEvent = oodiEventWithBuilding(street, zip);
 
         BuildingDto buildingDto = locationResolver.getBuilding(oodiEvent);
-        assertEquals(street, buildingDto.street);
-        assertEquals(zip, buildingDto.zipCode);
+        assertThat(buildingDto.street).isEqualTo(street);
+        assertThat(buildingDto.zipCode).isEqualTo(zip);
     }
 
     private OodiEvent oodiEventWithBuilding(String street, String zip) {

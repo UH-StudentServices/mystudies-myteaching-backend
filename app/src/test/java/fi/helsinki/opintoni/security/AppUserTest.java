@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class AppUserTest {
 
@@ -55,7 +55,7 @@ public class AppUserTest {
             .preferredLanguage("fi")
             .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .build();
-        assertEquals("fi", appUser.getPreferredLanguage());
+        assertThat(appUser.getPreferredLanguage()).isEqualTo("fi");
     }
 
     @Test
@@ -65,7 +65,7 @@ public class AppUserTest {
             .studentNumber(STUDENT_NUMBER)
             .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .build();
-        assertEquals("en", appUser.getPreferredLanguage());
+        assertThat(appUser.getPreferredLanguage()).isEqualTo("en");
     }
 
     @Test
@@ -76,7 +76,7 @@ public class AppUserTest {
             .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .build();
 
-        assertFalse(isAdmin(appUser));
+        assertThat(isAdmin(appUser)).isFalse();
     }
 
     @Test
@@ -88,7 +88,7 @@ public class AppUserTest {
             .role(AppUser.Role.ADMIN)
             .build();
 
-        assertTrue(isAdmin(appUser));
+        assertThat(isAdmin(appUser)).isTrue();
     }
 
     @Test

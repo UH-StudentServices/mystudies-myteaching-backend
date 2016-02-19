@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.util;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNull;
 
 public class HtmlUtilsTest {
@@ -27,13 +27,13 @@ public class HtmlUtilsTest {
     @Test
     public void thatHtmlIsConvertedToText() {
         String text = HtmlUtils.getText("<p>Some &quot;html&quot; content here!<p>");
-        assertEquals("Some \"html\" content here!", text);
+        assertThat(text).isEqualTo("Some \"html\" content here!");
     }
 
     @Test
     public void thatNullIsReturned() {
         String text = HtmlUtils.getText(null);
-        assertNull(text);
+        assertThat(text).isNull();
     }
 
 }

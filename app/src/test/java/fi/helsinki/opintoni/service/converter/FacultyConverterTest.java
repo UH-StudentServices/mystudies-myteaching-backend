@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNull;
 
 public class FacultyConverterTest extends SpringTest {
@@ -41,8 +41,8 @@ public class FacultyConverterTest extends SpringTest {
 
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createTeacher());
 
-        assertEquals("A93000", facultyDto.code);
-        assertEquals("https://flamma.helsinki.fi/portal/units/avoin", facultyDto.uri);
+        assertThat(facultyDto.code).isEqualTo("A93000");
+        assertThat(facultyDto.uri).isEqualTo("https://flamma.helsinki.fi/portal/units/avoin");
     }
 
     @Test
@@ -51,15 +51,15 @@ public class FacultyConverterTest extends SpringTest {
 
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createStudent());
 
-        assertEquals("A93000", facultyDto.code);
-        assertEquals("https://flamma.helsinki.fi/portal/units/avoin", facultyDto.uri);
+        assertThat(facultyDto.code).isEqualTo("A93000");
+        assertThat(facultyDto.uri).isEqualTo("https://flamma.helsinki.fi/portal/units/avoin");
     }
 
     @Test
     public void thatUnknownFacultyReturnsNull() {
         defaultStudentRequestChain().enrollments().studyRights("studentstudyrightswithunknownfaculty.json");
 
-        assertNull(facultyConverter.getFacultyDto(createStudent()));
+        assertThat(facultyConverter.getFacultyDto(createStudent())).isNull();
     }
 
     @Test
@@ -68,8 +68,8 @@ public class FacultyConverterTest extends SpringTest {
 
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createTeacher());
 
-        assertEquals("A90000", facultyDto.code);
-        assertEquals("https://flamma.helsinki.fi/portal/units/vetmed", facultyDto.uri);
+        assertThat(facultyDto.code).isEqualTo("A90000");
+        assertThat(facultyDto.uri).isEqualTo("https://flamma.helsinki.fi/portal/units/vetmed");
     }
 
     @Test
@@ -78,8 +78,8 @@ public class FacultyConverterTest extends SpringTest {
 
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createStudent());
 
-        assertEquals("H70", facultyDto.code);
-        assertEquals("https://flamma.helsinki.fi/portal/units/valt", facultyDto.uri);
+        assertThat(facultyDto.code).isEqualTo("H70");
+        assertThat(facultyDto.uri).isEqualTo("https://flamma.helsinki.fi/portal/units/valt");
     }
 
     private AppUser createTeacher() {

@@ -21,7 +21,7 @@ import fi.helsinki.opintoni.dto.TwitterFavoriteDto;
 import fi.helsinki.opintoni.web.rest.privateapi.InsertTwitterFavoriteRequest;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class FavoriteServiceSaveTwitterFavoriteTest extends AbstractFavoriteServiceTest {
 
@@ -33,8 +33,8 @@ public class FavoriteServiceSaveTwitterFavoriteTest extends AbstractFavoriteServ
 
         TwitterFavoriteDto dto = (TwitterFavoriteDto) favoriteService.insertTwitterFavoriteForPortfolio(1L, request);
 
-        assertEquals("USER_TIMELINE", dto.feedType);
-        assertEquals("helsinkiuni", dto.value);
+        assertThat(dto.feedType).isEqualTo("USER_TIMELINE");
+        assertThat(dto.value).isEqualTo("helsinkiuni");
     }
 
 }

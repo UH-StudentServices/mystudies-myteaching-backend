@@ -23,7 +23,7 @@ import fi.helsinki.opintoni.sampledata.SampleDataFiles;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class OpenGraphMetaDataParserTest {
 
@@ -37,12 +37,12 @@ public class OpenGraphMetaDataParserTest {
     @Test
     public void shouldParseMetaDataFromHead() {
         PageMetaData metaData = parser.parsePageMetaData(SampleDataFiles.toText("pagemetadata/document.html"));
-        assertEquals(OpenGraphSampleData.DESCRIPTION, metaData.description);
-        assertEquals(OpenGraphSampleData.IMAGE, metaData.image);
-        assertEquals(OpenGraphSampleData.SITE_NAME, metaData.siteName);
-        assertEquals(OpenGraphSampleData.TITLE, metaData.title);
-        assertEquals(OpenGraphSampleData.TYPE, metaData.type);
-        assertEquals(OpenGraphSampleData.URL, metaData.url);
+        assertThat(metaData.description).isEqualTo(OpenGraphSampleData.DESCRIPTION);
+        assertThat(metaData.image).isEqualTo(OpenGraphSampleData.IMAGE);
+        assertThat(metaData.siteName).isEqualTo(OpenGraphSampleData.SITE_NAME);
+        assertThat(metaData.title).isEqualTo(OpenGraphSampleData.TITLE);
+        assertThat(metaData.type).isEqualTo(OpenGraphSampleData.TYPE);
+        assertThat(metaData.url).isEqualTo(OpenGraphSampleData.URL);
     }
 
 }

@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.Assert.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class OodiRestClientCacheTest extends SpringTest {
 
@@ -39,7 +39,7 @@ public class OodiRestClientCacheTest extends SpringTest {
         List<OodiEnrollment> enrollments = oodiRestClient.getEnrollments("123");
         List<OodiEnrollment> cachedEnrollments = oodiRestClient.getEnrollments("123");
 
-        assertSame(enrollments, cachedEnrollments);
+        assertThat(cachedEnrollments).isSameAs(enrollments);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class OodiRestClientCacheTest extends SpringTest {
         List<OodiEvent> events = oodiRestClient.getStudentEvents("123");
         List<OodiEvent> cachedEvents = oodiRestClient.getStudentEvents("123");
 
-        assertSame(events, cachedEvents);
+        assertThat(cachedEvents).isSameAs(events);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class OodiRestClientCacheTest extends SpringTest {
         List<OodiTeacherCourse> courses = oodiRestClient.getTeacherCourses("123", sinceDateString);
         List<OodiTeacherCourse> cachedCourses = oodiRestClient.getTeacherCourses("123", sinceDateString);
 
-        assertSame(courses, cachedCourses);
+        assertThat(cachedCourses).isSameAs(courses);
     }
 
     @Test
@@ -71,6 +71,6 @@ public class OodiRestClientCacheTest extends SpringTest {
         List<OodiEvent> events = oodiRestClient.getTeacherEvents("123");
         List<OodiEvent> cachedEvents = oodiRestClient.getTeacherEvents("123");
 
-        assertSame(events, cachedEvents);
+        assertThat(cachedEvents).isSameAs(events);
     }
 }

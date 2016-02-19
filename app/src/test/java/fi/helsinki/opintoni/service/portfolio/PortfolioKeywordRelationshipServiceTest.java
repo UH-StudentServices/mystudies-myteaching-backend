@@ -29,7 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class PortfolioKeywordRelationshipServiceTest extends SpringTest {
@@ -55,8 +55,8 @@ public class PortfolioKeywordRelationshipServiceTest extends SpringTest {
         List<KeywordDto> keywordDtos = portfolioKeywordRelationshipService
             .update(PORTFOLIO_ID_WITH_NO_KEYWORDS, updateKeywordsRequest);
 
-        assertEquals(1, keywordDtos.size());
-        assertEquals(KEYWORD_TITLE, keywordDtos.get(0).title);
+        assertThat(keywordDtos).hasSize(1);
+        assertThat(keywordDtos.get(0).title).isEqualTo(KEYWORD_TITLE);
     }
 
     @Test
@@ -70,8 +70,8 @@ public class PortfolioKeywordRelationshipServiceTest extends SpringTest {
         List<KeywordDto> keywordDtos = portfolioKeywordRelationshipService
             .update(PORTFOLIO_ID_WITH_NO_KEYWORDS, updateKeywordsRequest);
 
-        assertEquals(1, keywordDtos.size());
-        assertEquals("New keyword", keywordDtos.get(0).title);
+        assertThat(keywordDtos).hasSize(1);
+        assertThat(keywordDtos.get(0).title).isEqualTo("New keyword");
     }
 
     @Test
@@ -86,16 +86,16 @@ public class PortfolioKeywordRelationshipServiceTest extends SpringTest {
         List<PortfolioKeywordRelationship> portfolioKeywordRelationships = portfolioKeywordRelationshipRepository
             .findByPortfolioIdOrderByOrderIndexAsc(PORTFOLIO_ID_WITH_EXISTING_KEYWORDS);
 
-        assertEquals(1, portfolioKeywordRelationships.size());
-        assertEquals(new Long(1), portfolioKeywordRelationships.get(0).id);
+        assertThat(portfolioKeywordRelationships).hasSize(1);
+        assertThat(portfolioKeywordRelationships.get(0).id).isEqualTo(new Long(1));
 
         portfolioKeywordRelationshipService.update(PORTFOLIO_ID_WITH_EXISTING_KEYWORDS, updateKeywordsRequest);
 
         portfolioKeywordRelationships = portfolioKeywordRelationshipRepository
             .findByPortfolioIdOrderByOrderIndexAsc(PORTFOLIO_ID_WITH_EXISTING_KEYWORDS);
 
-        assertEquals(1, portfolioKeywordRelationships.size());
-        assertEquals(new Long(2), portfolioKeywordRelationships.get(0).id);
+        assertThat(portfolioKeywordRelationships).hasSize(1);
+        assertThat(portfolioKeywordRelationships.get(0).id).isEqualTo(new Long(2));
     }
 
     @Test
@@ -116,8 +116,8 @@ public class PortfolioKeywordRelationshipServiceTest extends SpringTest {
         List<PortfolioKeywordRelationship> portfolioKeywordRelationships = portfolioKeywordRelationshipRepository
             .findByPortfolioIdOrderByOrderIndexAsc(PORTFOLIO_ID_WITH_NO_KEYWORDS);
 
-        assertEquals(2, portfolioKeywordRelationships.size());
-        assertEquals("First keyword", portfolioKeywordRelationships.get(0).portfolioKeyword.title);
-        assertEquals("Second keyword", portfolioKeywordRelationships.get(1).portfolioKeyword.title);
+        assertThat(portfolioKeywordRelationships).hasSize(2);
+        assertThat(portfolioKeywordRelationships.get(0).portfolioKeyword.title).isEqualTo("First keyword");
+        assertThat(portfolioKeywordRelationships.get(1).portfolioKeyword.title).isEqualTo("Second keyword");
     }
 }

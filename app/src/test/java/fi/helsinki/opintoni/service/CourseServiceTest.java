@@ -30,7 +30,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThat;
 
 public class CourseServiceTest extends SpringTest {
@@ -45,9 +45,9 @@ public class CourseServiceTest extends SpringTest {
         Set<CourseDto> courseDtos = courseService
             .getCourses(Optional.of(TestConstants.STUDENT_NUMBER), Optional.empty(), Locale.ENGLISH);
 
-        assertEquals(1, courseDtos.size());
+        assertThat(courseDtos).hasSize(1);
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.STUDENT_COURSE_REALISATION_ID));
-        assertEquals("Rantala Kari A", courseDtos.iterator().next().teachers.get(0));
+        assertThat(courseDtos.iterator().next().teachers.get(0)).isEqualTo("Rantala Kari A");
     }
 
     @Test
@@ -57,7 +57,7 @@ public class CourseServiceTest extends SpringTest {
         Set<CourseDto> courseDtos = courseService
             .getCourses(Optional.empty(), Optional.of(TestConstants.TEACHER_NUMBER), Locale.ENGLISH);
 
-        assertEquals(2, courseDtos.size());
+        assertThat(courseDtos).hasSize(2);
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.TEACHER_COURSE_REALISATION_ID));
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID));
     }
@@ -73,7 +73,7 @@ public class CourseServiceTest extends SpringTest {
                 Optional.of(TestConstants.TEACHER_NUMBER),
                 Locale.ENGLISH);
 
-        assertEquals(3, courseDtos.size());
+        assertThat(courseDtos).hasSize(3);
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.STUDENT_COURSE_REALISATION_ID));
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.TEACHER_COURSE_REALISATION_ID));
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID));

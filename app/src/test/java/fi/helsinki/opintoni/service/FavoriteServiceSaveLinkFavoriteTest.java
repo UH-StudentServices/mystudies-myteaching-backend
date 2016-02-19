@@ -34,7 +34,7 @@ import org.springframework.http.MediaType;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -65,12 +65,12 @@ public class FavoriteServiceSaveLinkFavoriteTest extends SpringTest {
         LinkFavoriteDto favorite =
             (LinkFavoriteDto) favoriteService.insertLinkFavoriteForPortfolio(USER_ID, insertRequest);
 
-        assertEquals(EmbedLySampleData.URL, favorite.url);
-        assertEquals(EmbedLySampleData.PROVIDER_NAME, favorite.providerName);
-        assertEquals(EmbedLySampleData.TITLE, favorite.title);
-        assertEquals(EmbedLySampleData.THUMBNAIL_URL, favorite.thumbnailUrl);
-        assertEquals(EmbedLySampleData.THUMBNAIL_WIDTH, favorite.thumbnailWidth);
-        assertEquals(EmbedLySampleData.THUMBNAIL_HEIGHT, favorite.thumbnailHeight);
+        assertThat(favorite.url).isEqualTo(EmbedLySampleData.URL);
+        assertThat(favorite.providerName).isEqualTo(EmbedLySampleData.PROVIDER_NAME);
+        assertThat(favorite.title).isEqualTo(EmbedLySampleData.TITLE);
+        assertThat(favorite.thumbnailUrl).isEqualTo(EmbedLySampleData.THUMBNAIL_URL);
+        assertThat(favorite.thumbnailWidth).isEqualTo(EmbedLySampleData.THUMBNAIL_WIDTH);
+        assertThat(favorite.thumbnailHeight).isEqualTo(EmbedLySampleData.THUMBNAIL_HEIGHT);
     }
 
     @Test

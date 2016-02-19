@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.env.MockEnvironment;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppConfigurationTest {
 
@@ -39,24 +39,24 @@ public class AppConfigurationTest {
 
     @Test
     public void getProperty() {
-        assertEquals("true", appConfiguration.get("enabled"));
+        assertThat(appConfiguration.get("enabled")).isEqualTo("true");
     }
 
     @Test
     public void overrideProperty() {
-        assertEquals("http://www.radiogaga.com", appConfiguration.get("url"));
+        assertThat(appConfiguration.get("url")).isEqualTo("http://www.radiogaga.com");
     }
 
     @Test
     public void resetProperty() {
         appConfiguration.reset("url");
-        assertEquals("http://www.mysite.com", appConfiguration.get("url"));
+        assertThat(appConfiguration.get("url")).isEqualTo("http://www.mysite.com");
     }
 
     @Test
     public void resetAllProperties() {
         appConfiguration.resetAll();
-        assertEquals("http://www.mysite.com", appConfiguration.get("url"));
-        assertEquals("true", appConfiguration.get("enabled"));
+        assertThat(appConfiguration.get("url")).isEqualTo("http://www.mysite.com");
+        assertThat(appConfiguration.get("enabled")).isEqualTo("true");
     }
 }

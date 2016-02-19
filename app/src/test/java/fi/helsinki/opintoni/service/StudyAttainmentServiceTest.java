@@ -31,9 +31,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.ATTAINMENT_DATE;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.CREDITS;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.GRADE;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.LEARNING_OPPORTINITY_NAME;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.TEACHERS;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class StudyAttainmentServiceTest extends SpringTest {
 
@@ -50,7 +53,7 @@ public class StudyAttainmentServiceTest extends SpringTest {
 
         List<StudyAttainmentDto> studyAttainments = studyAttainmentService.getStudyAttainments(
             TestConstants.STUDENT_NUMBER, limitStudyAttainments, Locale.ENGLISH);
-        assertEquals(limitStudyAttainments, studyAttainments.size());
+        assertThat(studyAttainments.size()).isEqualTo(limitStudyAttainments);
 
         StudyAttainmentDto studyAttainmentDto = Iterables.getOnlyElement(studyAttainments);
         assertStudyAttainmentDto(studyAttainmentDto);
@@ -64,13 +67,13 @@ public class StudyAttainmentServiceTest extends SpringTest {
 
         List<StudyAttainmentDto> studyAttainments = studyAttainmentService.getStudyAttainments(
             TestConstants.STUDENT_NUMBER, limitStudyAttainments, Locale.ENGLISH);
-        assertEquals(limitStudyAttainments, studyAttainments.size());
+        assertThat(studyAttainments.size()).isEqualTo(limitStudyAttainments);
 
         List<LocalDateTime> dates = studyAttainments.stream().map(s -> s.attainmentDate).collect(Collectors.toList());
 
-        assertTrue(dates.get(0).isAfter(dates.get(1)));
-        assertTrue(dates.get(1).isAfter(dates.get(2)));
-        assertTrue(dates.get(2).isAfter(dates.get(3)));
+        assertThat(dates.get(0).isAfter(dates.get(1))).isTrue();
+        assertThat(dates.get(1).isAfter(dates.get(2))).isTrue();
+        assertThat(dates.get(2).isAfter(dates.get(3))).isTrue();
 
     }
 
@@ -82,9 +85,9 @@ public class StudyAttainmentServiceTest extends SpringTest {
             TestConstants.PORTFOLIO_ID,
             Locale.ENGLISH);
 
-        assertEquals(2, studyAttainments.size());
-        assertEquals(new Long(1L), studyAttainments.get(0).studyAttainmentId);
-        assertEquals(new Long(2), studyAttainments.get(1).studyAttainmentId);
+        assertThat(studyAttainments).hasSize(2);
+        assertThat(studyAttainments.get(0).studyAttainmentId).isEqualTo(new Long(1L));
+        assertThat(studyAttainments.get(1).studyAttainmentId).isEqualTo(new Long(2));
     }
 
     @Test
@@ -93,24 +96,24 @@ public class StudyAttainmentServiceTest extends SpringTest {
             MISSING_WHITELIST_PORTFOLIO_ID,
             Locale.ENGLISH);
 
-        assertTrue(studyAttainments.isEmpty());
+        assertThat(studyAttainments.isEmpty()).isTrue();
     }
 
     private void assertStudyAttainmentDto(StudyAttainmentDto studyAttainmentDto) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-        assertEquals(ATTAINMENT_DATE, studyAttainmentDto.attainmentDate.format(formatter));
-        assertEquals(CREDITS, studyAttainmentDto.credits);
-        assertEquals(GRADE, studyAttainmentDto.grade);
-        assertEquals(LEARNING_OPPORTINITY_NAME, studyAttainmentDto.learningOpportunityName);
-        assertEquals(
+        assertThat(studyAttainmentDto.attainmentDate.format(formatter)).isEqualTo(ATTAINMENT_DATE);
+        assertThat(studyAttainmentDto.credits).isEqualTo(CREDITS);
+        assertThat(studyAttainmentDto.grade).isEqualTo(GRADE);
+        assertThat(studyAttainmentDto.learningOpportunityName).isEqualTo(LEARNING_OPPORTINITY_NAME);
+        assertThat(
             TEACHERS.stream()
                 .map(t1 -> t1.shortName)
-                .collect(Collectors.toList()),
+                .collect(Collectors.toList()))
+            .isEqualTo(
             studyAttainmentDto.teachers.stream()
                 .map(t2 -> t2.shortName)
-                .collect(Collectors.toList())
-        );
+                .collect(Collectors.toList()));
     }
 
 }

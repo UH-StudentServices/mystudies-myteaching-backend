@@ -25,8 +25,7 @@ import fi.helsinki.opintoni.exception.http.NotFoundException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class PermissionCheckerTest extends SpringTest {
 
@@ -60,7 +59,7 @@ public class PermissionCheckerTest extends SpringTest {
 
     @Test
     public void thatUserDoesNotHavePermission() {
-        assertFalse(permissionChecker.hasPermission(2L, 1L, Favorite.class));
+        assertThat(permissionChecker.hasPermission(2L, 1L, Favorite.class)).isFalse();
     }
 
     @Test(expected = NotFoundException.class)
@@ -70,7 +69,7 @@ public class PermissionCheckerTest extends SpringTest {
 
     @Test
     public void thatUserHasPermission() {
-        assertTrue(permissionChecker.hasPermission(1L, 1L, Favorite.class));
+        assertThat(permissionChecker.hasPermission(1L, 1L, Favorite.class)).isTrue();
     }
 
 }

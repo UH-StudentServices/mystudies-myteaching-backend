@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static fi.helsinki.opintoni.web.TestConstants.TEACHER_COURSE_REALISATION_ID;
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class CoursePageRestClientTest extends SpringTest {
 
@@ -40,7 +40,7 @@ public class CoursePageRestClientTest extends SpringTest {
 
         CoursePageCourseImplementation coursePage = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID);
 
-        assertEquals("http://dev.student.helsinki.fi/image", coursePage.imageUrl);
+        assertThat(coursePage.imageUrl).isEqualTo("http://dev.student.helsinki.fi/image");
     }
 
     @Test
@@ -48,21 +48,21 @@ public class CoursePageRestClientTest extends SpringTest {
         defaultTeacherRequestChain()
             .coursePageImplementation(TEACHER_COURSE_REALISATION_ID, "courses_without_image.json");
 
-        assertEquals("", coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).imageUrl);
+        assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).imageUrl).isEqualTo("");
     }
 
     @Test
     public void thatNullImageUriIsReturnedWhenCoursePageDoesNotExist() {
         defaultTeacherRequestChain().coursePageImplementation(TEACHER_COURSE_REALISATION_ID, "courses_empty.json");
 
-        assertNull(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).imageUrl);
+        assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).imageUrl).isNull();
     }
 
     @Test
     public void thatEmptyNotificationListIsReturnedWithEmptyIds() {
         List<CoursePageNotification> notifications = coursePageRestClient
             .getCoursePageNotifications(Sets.newHashSet(), LocalDateTime.now(), Locale.ENGLISH);
-        assertTrue(notifications.isEmpty());
+        assertThat(notifications.isEmpty()).isTrue();
     }
 
     @Test
@@ -70,6 +70,6 @@ public class CoursePageRestClientTest extends SpringTest {
         defaultTeacherRequestChain()
             .coursePageImplementation(TEACHER_COURSE_REALISATION_ID, "courses_with_moodle_url.json");
 
-        assertEquals("http://example.com", coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).moodleUrl);
+        assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).moodleUrl).isEqualTo("http://example.com");
     }
 }

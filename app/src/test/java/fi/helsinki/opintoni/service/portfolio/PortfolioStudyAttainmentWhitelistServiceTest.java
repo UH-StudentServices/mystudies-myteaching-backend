@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 
 public class PortfolioStudyAttainmentWhitelistServiceTest extends SpringTest {
@@ -54,20 +54,20 @@ public class PortfolioStudyAttainmentWhitelistServiceTest extends SpringTest {
         whitelistService.update(PORTFOLIO_ID, whitelistDto);
 
         StudyAttainmentWhitelist whitelist = whitelistRepository.findByPortfolioId(PORTFOLIO_ID).get();
-        assertEquals(OODI_ATTAINMENT_ID_1, whitelist.whitelistEntries.get(0).studyAttainmentId);
-        assertEquals(OODI_ATTAINMENT_ID_2, whitelist.whitelistEntries.get(1).studyAttainmentId);
+        assertThat(whitelist.whitelistEntries.get(0).studyAttainmentId).isEqualTo(OODI_ATTAINMENT_ID_1);
+        assertThat(whitelist.whitelistEntries.get(1).studyAttainmentId).isEqualTo(OODI_ATTAINMENT_ID_2);
 
         whitelistDto.oodiStudyAttainmentIds = Collections.singletonList(OODI_ATTAINMENT_ID_3);
         whitelistService.update(PORTFOLIO_ID, whitelistDto);
 
         whitelist = whitelistRepository.findByPortfolioId(PORTFOLIO_ID).get();
-        assertEquals(OODI_ATTAINMENT_ID_3, whitelist.whitelistEntries.get(0).studyAttainmentId);
+        assertThat(whitelist.whitelistEntries.get(0).studyAttainmentId).isEqualTo(OODI_ATTAINMENT_ID_3);
     }
 
     @Test
     public void shouldGetStudyAttaimentWhitelist() {
         StudyAttainmentWhitelistDto studyAttainmentWhitelistDto = whitelistService.get(2L);
-        assertNotNull(studyAttainmentWhitelistDto);
+        assertThat(studyAttainmentWhitelistDto).isNotNull();
     }
 
     @Test(expected = NotFoundException.class)

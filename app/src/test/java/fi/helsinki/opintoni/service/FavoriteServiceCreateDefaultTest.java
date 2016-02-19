@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThat;
 
 public class FavoriteServiceCreateDefaultTest extends SpringTest {
@@ -50,7 +50,7 @@ public class FavoriteServiceCreateDefaultTest extends SpringTest {
 
         List<Favorite> favorites = favoriteRepository.findByUserIdOrderByOrderIndexAsc(user.id);
 
-        assertEquals(8, favorites.size());
+        assertThat(favorites).hasSize(8);
         assertThat(favorites.get(0), instanceOf(UnicafeFavorite.class));
         assertThat(favorites.get(1), instanceOf(TwitterFavorite.class));
         assertThat(favorites.get(2), instanceOf(RssFavorite.class));

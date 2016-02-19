@@ -21,7 +21,7 @@ import fi.helsinki.opintoni.SpringTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AvatarImageServiceTest extends SpringTest {
 
@@ -30,22 +30,22 @@ public class AvatarImageServiceTest extends SpringTest {
 
     @Test
     public void thatDefaultAvatarImageUrlIsReturned() {
-        assertEquals("https://opi-1.student.helsinki.fi/app/assets/icons/avatar.png", avatarImageService.getAvatarImageUrl(1L));
+        assertThat(avatarImageService.getAvatarImageUrl(1L)).isEqualTo("https://opi-1.student.helsinki.fi/app/assets/icons/avatar.png");
     }
 
     @Test
     public void thatDefaultPortfolioAvatarImageUrlIsReturned() {
-        assertEquals("https://opi-1.student.helsinki.fi/portfolio/assets/icons/avatar.png", avatarImageService.getPortfolioAvatarImageUrl(1L));
+        assertThat(avatarImageService.getPortfolioAvatarImageUrl(1L)).isEqualTo("https://opi-1.student.helsinki.fi/portfolio/assets/icons/avatar.png");
     }
 
     @Test
     public void thatAvatarImageUrlIsReturned() {
-        assertEquals("https://opi-1.student.helsinki.fi/api/public/v1/images/avatar/200", avatarImageService.getAvatarImageUrl(2L));
+        assertThat(avatarImageService.getAvatarImageUrl(2L)).isEqualTo("https://opi-1.student.helsinki.fi/api/public/v1/images/avatar/200");
     }
 
     @Test
     public void thatPortfolioAvatarImageUrlIsReturned() {
-        assertEquals("https://opi-1.student.helsinki.fi/api/public/v1/images/avatar/200", avatarImageService.getPortfolioAvatarImageUrl(2L));
+        assertThat(avatarImageService.getPortfolioAvatarImageUrl(2L)).isEqualTo("https://opi-1.student.helsinki.fi/api/public/v1/images/avatar/200");
     }
 
 }

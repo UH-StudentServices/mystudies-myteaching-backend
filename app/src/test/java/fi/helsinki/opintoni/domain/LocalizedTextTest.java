@@ -22,7 +22,7 @@ import org.junit.Test;
 
 import java.util.Locale;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class LocalizedTextTest {
 
@@ -41,6 +41,6 @@ public class LocalizedTextTest {
         LocalizedText localizedText = new LocalizedText();
         localizedText.put(Language.EN, "English");
 
-        assertEquals("English", localizedText.getByLocale(Locale.ENGLISH));
+        assertThat(localizedText.getByLocale(Locale.ENGLISH)).isEqualTo("English");
     }
 }

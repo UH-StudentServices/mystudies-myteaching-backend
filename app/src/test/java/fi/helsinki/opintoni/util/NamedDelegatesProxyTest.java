@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.util;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class NamedDelegatesProxyTest {
 
@@ -35,17 +35,17 @@ public class NamedDelegatesProxyTest {
     public void thatChangingDelegateWorks() {
 
         delegateSelector.setDelegateName("casio");
-        assertEquals(7, calculator.add(3, 4));
+        assertThat(calculator.add(3, 4)).isEqualTo(7);
 
         delegateSelector.setDelegateName("ludotronic");
-        assertEquals(12, calculator.add(3, 4));
+        assertThat(calculator.add(3, 4)).isEqualTo(12);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void thatChangingToNonExistentDelegateThrowsAnException() {
 
         delegateSelector.setDelegateName("Henning Dynesen");
-        assertEquals(7, calculator.add(3, 4));
+        assertThat(calculator.add(3, 4)).isEqualTo(7);
     }
 
     interface MyCalculator {

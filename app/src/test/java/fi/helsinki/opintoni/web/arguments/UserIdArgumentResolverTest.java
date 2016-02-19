@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.util.ReflectionUtils;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class UserIdArgumentResolverTest extends SpringTest {
 
@@ -47,19 +47,19 @@ public class UserIdArgumentResolverTest extends SpringTest {
     @Test
     public void supportsLongParameterWithUserIdAnnotation() throws Exception {
         MethodParameter param = getMethodParam("helloUser", Long.class);
-        assertTrue(resolver.supportsParameter(param));
+        assertThat(resolver.supportsParameter(param)).isTrue();
     }
 
     @Test
     public void doesNotSupportStringParameterWithoutUserIdAnnotation() throws Exception {
         MethodParameter param = getMethodParam("hello", Long.class);
-        assertFalse(resolver.supportsParameter(param));
+        assertThat(resolver.supportsParameter(param)).isFalse();
     }
 
     @Test(expected = ForbiddenException.class)
     public void doesNotSupportParameterOfWrongTypeWithUserIdAnnotation() throws Exception {
         MethodParameter param = getMethodParam("helloError", String.class);
-        assertFalse(resolver.supportsParameter(param));
+        assertThat(resolver.supportsParameter(param)).isFalse();
     }
 
     @Test
@@ -67,7 +67,7 @@ public class UserIdArgumentResolverTest extends SpringTest {
         configureTeacherSecurityContext();
 
         MethodParameter param = getMethodParam("helloUser", Long.class);
-        assertEquals(4L, resolver.resolveArgument(param, null, null, null));
+        assertThat(4L).isEqualTo(resolver.resolveArgument(param, null, null, null));
     }
 
     private static MethodParameter getMethodParam(String methodName, Class<?> argType) {

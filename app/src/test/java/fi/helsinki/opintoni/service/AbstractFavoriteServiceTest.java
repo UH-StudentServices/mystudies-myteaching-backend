@@ -23,7 +23,7 @@ import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThat;
 
 abstract class AbstractFavoriteServiceTest extends SpringTest {
@@ -36,8 +36,8 @@ abstract class AbstractFavoriteServiceTest extends SpringTest {
         assertThat(dto, instanceOf(TwitterFavoriteDto.class));
 
         TwitterFavoriteDto twitterFavoriteDto = (TwitterFavoriteDto) dto;
-        assertEquals(feedType, twitterFavoriteDto.feedType);
-        assertEquals(value, twitterFavoriteDto.value);
+        assertThat(twitterFavoriteDto.feedType).isEqualTo(feedType);
+        assertThat(twitterFavoriteDto.value).isEqualTo(value);
     }
 
     protected final void assertRssFavorite(FavoriteDto dto, Long id, String url) {
@@ -45,7 +45,7 @@ abstract class AbstractFavoriteServiceTest extends SpringTest {
         assertThat(dto, instanceOf(RssFavoriteDto.class));
 
         RssFavoriteDto rssFavoriteDto = (RssFavoriteDto) dto;
-        assertEquals(url, rssFavoriteDto.url);
+        assertThat(rssFavoriteDto.url).isEqualTo(url);
     }
 
     protected final void assertUnisportFavorite(FavoriteDto dto, Long id, String url) {
@@ -53,7 +53,7 @@ abstract class AbstractFavoriteServiceTest extends SpringTest {
         assertThat(dto, instanceOf(UnisportFavoriteDto.class));
 
         UnisportFavoriteDto unisportFavoriteDto = (UnisportFavoriteDto) dto;
-        assertEquals(url, unisportFavoriteDto.url);
+        assertThat(unisportFavoriteDto.url).isEqualTo(url);
     }
 
     protected final void assertLinkFavorite(FavoriteDto dto, Long id, String url, String title) {
@@ -61,12 +61,12 @@ abstract class AbstractFavoriteServiceTest extends SpringTest {
         assertThat(dto, instanceOf(LinkFavoriteDto.class));
 
         LinkFavoriteDto linkFavoriteDto = (LinkFavoriteDto) dto;
-        assertEquals(url, linkFavoriteDto.url);
-        assertEquals(title, linkFavoriteDto.title);
+        assertThat(linkFavoriteDto.url).isEqualTo(url);
+        assertThat(linkFavoriteDto.title).isEqualTo(title);
     }
 
     private void assertFavorite(FavoriteDto dto, Long id, String type) {
-        assertEquals(id, dto.id);
-        assertEquals(type, dto.type);
+        assertThat(dto.id).isEqualTo(id);
+        assertThat(dto.type).isEqualTo(type);
     }
 }

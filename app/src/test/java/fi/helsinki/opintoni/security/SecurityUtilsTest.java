@@ -25,7 +25,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class SecurityUtilsTest extends SpringTest {
 
@@ -43,6 +43,6 @@ public class SecurityUtilsTest extends SpringTest {
 
     @Test
     public void thatWhitelistedIpAccessIsReturned() {
-        assertEquals("hasIpAddress('1.1.1.1') or hasIpAddress('2.2.2.2')", securityUtils.getWhitelistedIpAccess());
+        assertThat(securityUtils.getWhitelistedIpAccess()).isEqualTo("hasIpAddress('1.1.1.1') or hasIpAddress('2.2.2.2')");
     }
 }

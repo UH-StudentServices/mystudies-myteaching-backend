@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
 
 public class UserNotificationServiceTest extends SpringTest {
 
@@ -46,17 +46,17 @@ public class UserNotificationServiceTest extends SpringTest {
         List<UserNotificationDto> userNotifications = userNotificationService
             .getUserNotifications(1L, Optional.empty(), Optional.of(TestConstants.TEACHER_NUMBER), Locale.ENGLISH);
 
-        assertEquals(2, userNotifications.size());
+        assertThat(userNotifications).hasSize(2);
 
         UserNotificationDto userNotificationDto = userNotifications.get(0);
-        assertEquals("3", userNotificationDto.notificationId);
-        assertEquals("has written a message", userNotificationDto.message);
-        assertTrue(userNotificationDto.read);
+        assertThat(userNotificationDto.notificationId).isEqualTo("3");
+        assertThat(userNotificationDto.message).isEqualTo("has written a message");
+        assertThat(userNotificationDto.read).isTrue();
 
         userNotificationDto = userNotifications.get(1);
-        assertEquals("4", userNotificationDto.notificationId);
-        assertEquals("has removed an event", userNotificationDto.message);
-        assertFalse(userNotificationDto.read);
+        assertThat(userNotificationDto.notificationId).isEqualTo("4");
+        assertThat(userNotificationDto.message).isEqualTo("has removed an event");
+        assertThat(userNotificationDto.read).isFalse();
     }
 
     public static class ActivityUrlMatcher extends TypeSafeMatcher<String> {
