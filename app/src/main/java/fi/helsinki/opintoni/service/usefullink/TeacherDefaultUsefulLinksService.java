@@ -64,7 +64,7 @@ public class TeacherDefaultUsefulLinksService extends DefaultUsefulLinksService 
         List<UsefulLink> usefulLinks = createUsefulLinks(defaultUsefulLinks, user);
 
         String teacherFacultyCode = userFacultyResolver.getTeacherFacultyCode(appUser);
-        usefulLinks.add(getFacultyUsefulLink(teacherFacultyCode, facultyLinkOptions, user));
+        usefulLinks.addAll(getFacultyUsefulLinks(teacherFacultyCode, facultyLinkOptions, user));
 
         return usefulLinks;
     }

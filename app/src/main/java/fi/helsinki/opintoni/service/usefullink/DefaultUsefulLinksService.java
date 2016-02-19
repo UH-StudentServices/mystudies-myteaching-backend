@@ -24,24 +24,25 @@ import fi.helsinki.opintoni.localization.Language;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DefaultUsefulLinksService {
 
+    private static final String DEFAULT_FACULTY_IDENTIFIER = "default";
+
     protected List<UsefulLink> createUsefulLinks(List<Map<String, String>> usefulLinks, User user) {
         return usefulLinks.stream()
-            .map(l -> fromProperties(l, user))
+            .map(l -> usefulLinkFromDescriptor(l, user))
             .collect(Collectors.toList());
     }
 
     protected List<UsefulLink> createLocalizedUsefulLinks(List<Map<String, String>> usefulLinks, User user) {
         return usefulLinks.stream()
-            .map(l -> fromProperties(l, user))
+            .map(l -> usefulLinkFromDescriptor(l, user))
             .collect(Collectors.toList());
     }
 
-    private UsefulLink fromProperties(Map<String, String> properties, User user) {
+    private UsefulLink usefulLinkFromDescriptor(Map<String, String> properties, User user) {
         UsefulLink usefulLink = new UsefulLink();
         usefulLink.type = UsefulLink.UsefulLinkType.DEFAULT;
         usefulLink.description = properties.get("description");
@@ -67,21 +68,26 @@ public class DefaultUsefulLinksService {
         return localizedUrl;
     }
 
-    protected UsefulLink getFacultyUsefulLink(String facultyCode,
-                                              List<Map<String, String>> facultyLinkOptions,
-                                              User user) {
-        Optional<Map<String, String>> facultyProperties = facultyLinkOptions.stream()
-            .filter(map -> map.get("faculty").equals(facultyCode))
-            .findFirst();
+    protected List<UsefulLink> getFacultyUsefulLinks(String facultyCode, List<Map<String, String>> facultyLinkOptions,
+                                                     User user) {
+        List<UsefulLink> matchingFacultyLinks = getUsefulLinksByFaculty(facultyCode, facultyLinkOptions, user);
 
-        return facultyProperties.map(properties -> fromProperties(properties, user))
-            .orElse(fromProperties(getDefaultFacultyProperties(facultyLinkOptions), user));
+        if(matchingFacultyLinks.isEmpty()) {
+            matchingFacultyLinks = getUsefulLinksByFaculty(DEFAULT_FACULTY_IDENTIFIER, facultyLinkOptions, user);
+
+            if(matchingFacultyLinks.isEmpty()) {
+                throw new IllegalStateException("Default faculty not configured");
+            }
+        }
+
+        return matchingFacultyLinks;
     }
 
-    protected Map<String, String> getDefaultFacultyProperties(List<Map<String, String>> facultyLinkOptions) {
+    private List<UsefulLink> getUsefulLinksByFaculty(String facultyCode, List<Map<String, String>> facultyLinkOptions,
+                                               User user) {
         return facultyLinkOptions.stream()
-            .filter(map -> map.get("faculty").equals("default"))
-            .findFirst()
-            .orElseThrow(() -> new RuntimeException("Default faculty not configured"));
+            .filter(map -> map.get("faculty").equals(facultyCode))
+            .map(properties -> usefulLinkFromDescriptor(properties, user))
+            .collect(Collectors.toList());
     }
 }
