@@ -62,7 +62,10 @@ userDefaults :
           visibleItems: 3
     defaultUsefulLinks :
         studentDefaultUsefulLinks :
-            - url: https://flamma.helsinki.fi/fi/HY034202
+            - url:
+                fi: https://flamma.helsinki.fi/fi/HY034202
+                sv: https://flamma.helsinki.fi/sv/HY034202
+                en: https://flamma.helsinki.fi/en/HY034202
               description: usefulLinks.studentServices
               orderIndex: 0
             - url:

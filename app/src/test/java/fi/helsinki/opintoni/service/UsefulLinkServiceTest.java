@@ -140,7 +140,7 @@ public class UsefulLinkServiceTest extends SpringTest {
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
         assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_DEFAULT_STUDENT);
         checkLinkURLAndDescription(usefulLinks.get(0),
-            "https://flamma.helsinki.fi/fi/HY034202",
+            "https://flamma.helsinki.fi/en/HY034202",
             "usefulLinks.studentServices");
         checkLinkURLAndDescription(usefulLinks.get(1),
             "https://flamma.helsinki.fi/fi/HY286484",
