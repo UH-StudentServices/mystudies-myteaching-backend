@@ -18,6 +18,8 @@
 package fi.helsinki.opintoni.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
+import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
 import fi.helsinki.opintoni.integration.leiki.LeikiClient;
 import fi.helsinki.opintoni.integration.leiki.LeikiMockClient;
 import fi.helsinki.opintoni.integration.leiki.LeikiRestClient;
@@ -43,7 +45,9 @@ public class LeikiConfiguration {
     public RestTemplate leikiRestTemplate() {
         final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
-        return new RestTemplate(Collections.singletonList(converter));
+        RestTemplate restTemplate =  new RestTemplate(Collections.singletonList(converter));
+        restTemplate.setInterceptors(Lists.newArrayList(new LoggingInterceptor()));
+        return restTemplate;
     }
 
     @Bean
