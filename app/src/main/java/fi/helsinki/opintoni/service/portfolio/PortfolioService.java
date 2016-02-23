@@ -99,11 +99,11 @@ public class PortfolioService {
             .orElseThrow(notFoundException("Portfolio not found"));
     }
 
-    public Map<PortfolioRole, String> getUserPortfolioPath(Long userId) {
+    public Map<String, String> getUserPortfolioPath(Long userId) {
         return portfolioRepository
             .findByUserId(userId)
             .collect(Collectors.toMap(
-                portfolio -> portfolio.portfolioRole,
+                portfolio -> portfolio.portfolioRole.getRole(),
                 portfolio -> portfolio.path));
     }
 

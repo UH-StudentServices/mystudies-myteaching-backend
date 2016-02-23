@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.dto;
 
-import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Map;
@@ -31,7 +30,7 @@ public class SessionDto {
     public String language;
     public String avatarUrl;
     public FacultyDto faculty;
-    public Map<PortfolioRole, String> portfolioPath;
+    public Map<String, String> portfolioPath;
     public Set<String> roles;
     public boolean openUniversity;
 
