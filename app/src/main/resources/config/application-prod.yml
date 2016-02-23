@@ -45,8 +45,6 @@ googleAnalyticsAccount: UA-55852460-5
 unisportMyReservationsUrl: https://unisport.fi/yol/web/<%= userLanguage %>/ext/opintoni/reservationList.do
 
 hostUrl: https://student.helsinki.fi
-portfolioHostUrl: https://student.helsinki.fi
-portfolioUrl: /portfolio/#
 loginUrlTeacher: /saml/login/alias/teacher
 loginUrlStudent: /saml/login/alias/student
 logoutUrl: /saml/logout?local=true

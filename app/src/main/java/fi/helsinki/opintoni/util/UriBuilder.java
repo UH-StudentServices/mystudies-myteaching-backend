@@ -54,7 +54,7 @@ public class UriBuilder {
     }
 
     public String getPortfolioDefaultUserAvatarUrl() {
-        return appConfiguration.get("portfolioHostUrl") + "/portfolio/assets/icons/avatar.png";
+        return "/portfolio/assets/icons/avatar.png";
     }
 
     private String getAbsoluteUrl(String relativeUrl) {
@@ -62,7 +62,7 @@ public class UriBuilder {
     }
 
     public String getPortfolioUrl(Portfolio portfolio) {
-        return appConfiguration.get("portfolioUrl") + "/" + portfolio.portfolioRole.getRole() + "/" + portfolio.path;
+        return appConfiguration.get("portfolioUrl." + portfolio.portfolioRole.getRole()) + "/" + portfolio.path;
     }
 
 }
