@@ -289,7 +289,7 @@ googleAnalyticsAccount: UA-123
 
 hostUrl: https://opi-1.student.helsinki.fi
 portfolioHostUrl: https://opi-1.student.helsinki.fi
-portfolioUrl: ${hostUrl}/portfolio/#
+portfolioUrl: ${hostUrl}/portfolio
 appRelativeUrl: ${hostUrl}/app
 
 avatarSize: 240

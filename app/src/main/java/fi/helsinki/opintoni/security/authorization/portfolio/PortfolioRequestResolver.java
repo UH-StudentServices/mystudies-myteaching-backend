@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.security.authorization.portfolio;
 
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.service.portfolio.PortfolioService;
+import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerMapping;
@@ -59,7 +60,10 @@ public class PortfolioRequestResolver {
     }
 
     private Optional<PortfolioDto> getPortfolioDtoByPath(Map<String, String> templateVariables) {
-        return Optional.ofNullable(portfolioService.findByPath(templateVariables.get("path")));
+        return Optional.ofNullable(portfolioService
+            .findByPath(
+                templateVariables.get("path"),
+                PortfolioRole.fromValue(templateVariables.get("portfolioRole"))));
     }
 
 }

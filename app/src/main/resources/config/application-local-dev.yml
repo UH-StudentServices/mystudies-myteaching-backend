@@ -50,7 +50,7 @@ unisportMyReservationsUrl: https://unisport.fi/yol/web/<%= userLanguage %>/ext/o
 
 hostUrl: http://local.student.helsinki.fi:3000
 portfolioHostUrl: http://local.student.helsinki.fi:3001
-portfolioUrl: http://local.student.helsinki.fi:3001/portfolio/#
+portfolioUrl: http://local.student.helsinki.fi:3001/portfolio
 loginUrlTeacher: /app/locallog.html
 loginUrlStudent: /app/locallog.html
 logoutUrl: /logout

@@ -43,7 +43,7 @@ public class SessionResourceTest extends SpringTest {
             .andExpect(jsonPath("$.name").value("Olli Opiskelija"))
             .andExpect(jsonPath("$.roles", hasItem("STUDENT")))
             .andExpect(jsonPath("$.openUniversity").value(false))
-            .andExpect(jsonPath("$.portfolioPath").value("olli.opiskelija"))
+            .andExpect(jsonPath("$.portfolioPath.STUDENT").value("olli.opiskelija"))
             .andExpect(jsonPath("$.faculty.code").value("H70"))
             .andExpect(jsonPath("$.faculty.uri").value("https://flamma.helsinki.fi/portal/units/valt"));
     }

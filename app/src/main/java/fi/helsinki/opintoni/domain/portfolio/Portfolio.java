@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.domain.portfolio;
 import fi.helsinki.opintoni.domain.AbstractAuditingEntity;
 import fi.helsinki.opintoni.domain.Ownership;
 import fi.helsinki.opintoni.domain.User;
+import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -45,7 +46,6 @@ public class Portfolio extends AbstractAuditingEntity implements Ownership {
     @NotNull
     public User user;
 
-
     @Column(name = "visibility")
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -69,6 +69,11 @@ public class Portfolio extends AbstractAuditingEntity implements Ownership {
     @Size(max = 2500)
     public String summary;
 
+    @Column(name="portfolio_role")
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    public PortfolioRole portfolioRole;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -78,6 +83,7 @@ public class Portfolio extends AbstractAuditingEntity implements Ownership {
             .append("ownerName", ownerName)
             .append("intro", intro)
             .append("summary", summary)
+            .append("portfolioRole", portfolioRole.name())
             .toString();
     }
 

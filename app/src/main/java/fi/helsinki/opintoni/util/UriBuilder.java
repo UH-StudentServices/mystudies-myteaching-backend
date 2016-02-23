@@ -62,7 +62,7 @@ public class UriBuilder {
     }
 
     public String getPortfolioUrl(Portfolio portfolio) {
-        return appConfiguration.get("portfolioUrl") + "/" + portfolio.path;
+        return appConfiguration.get("portfolioUrl") + "/" + portfolio.portfolioRole.getRole() + "/#/" + portfolio.path;
     }
 
 }
