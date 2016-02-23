@@ -40,10 +40,10 @@ public class PortfolioResourceTest extends SpringTest {
     private static final String PORTFOLIO_API_URL = "/api/private/v1/portfolio";
     private static final String STUDENT_PORTFOLIO_API_URL = PORTFOLIO_API_URL + "/student";
     private static final String TEACHER_PORTFOLIO_API_URL = PORTFOLIO_API_URL + "/teacher";
-    private static final String EXPECTED_STUDENT_PORTFOLIO_URL = "https://opi-1.student.helsinki.fi/portfolio/student/#/olli.opiskelija";
-    private static final String EXPECTED_TEACHER_PORTFOLIO_URL = "https://opi-1.student.helsinki.fi/portfolio/teacher/#/olli.opettaja";
-    private static final String EXPECTED_HYBRID_USER_STUDENT_PORTFOLIO_URL = "https://opi-1.student.helsinki.fi/portfolio/student/#/hybrid.user";
-    private static final String EXPECTED_HYBRID_USER_TEACHER_PORTFOLIO_URL = "https://opi-1.student.helsinki.fi/portfolio/teacher/#/hybrid.user";
+    private static final String EXPECTED_STUDENT_PORTFOLIO_URL = "https://opi-1.student.helsinki.fi/portfolio/#/student/olli.opiskelija";
+    private static final String EXPECTED_TEACHER_PORTFOLIO_URL = "https://opi-1.student.helsinki.fi/portfolio/#/teacher/olli.opettaja";
+    private static final String EXPECTED_HYBRID_USER_STUDENT_PORTFOLIO_URL = "https://opi-1.student.helsinki.fi/portfolio/#/student/hybrid.user";
+    private static final String EXPECTED_HYBRID_USER_TEACHER_PORTFOLIO_URL = "https://opi-1.student.helsinki.fi/portfolio/#/teacher/hybrid.user";
 
     @Autowired
     private PortfolioRepository portfolioRepository;

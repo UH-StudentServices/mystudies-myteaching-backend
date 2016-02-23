@@ -40,7 +40,7 @@ public class PortfolioServiceTest extends SpringTest {
     @Test
     public void thatPortfolioIsFoundByPath() {
         PortfolioDto portfolioDto = portfolioService.findByPath("pekka", PortfolioRole.STUDENT);
-        assertThat(portfolioDto.url).isEqualTo("https://opi-1.student.helsinki.fi/portfolio/student/#/pekka");
+        assertThat(portfolioDto.url).isEqualTo("https://opi-1.student.helsinki.fi/portfolio/#/student/pekka");
     }
 
     @Test

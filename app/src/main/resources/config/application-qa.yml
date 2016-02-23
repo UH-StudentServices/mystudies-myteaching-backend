@@ -46,7 +46,7 @@ unisportMyReservationsUrl: https://unisport.fi/yol/web/<%= userLanguage %>/ext/o
 
 hostUrl: https://qa.student.helsinki.fi
 portfolioHostUrl: https://qa.student.helsinki.fi
-portfolioUrl: /portfolio
+portfolioUrl: /portfolio/#
 loginUrlTeacher: /saml/login/alias/teacher
 loginUrlStudent: /saml/login/alias/student
 logoutUrl: /saml/logout?local=true
