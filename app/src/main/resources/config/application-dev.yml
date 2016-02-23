@@ -14,7 +14,7 @@ spring:
         password: ${datasource.password}
 
     jpa:
-        database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+        database-platform: org.hibernate.dialect.Oracle10gDialect
         database: ${jpa.database}
         openInView: ${jpa.openInView}
         show_sql: ${jpa.show_sql}
