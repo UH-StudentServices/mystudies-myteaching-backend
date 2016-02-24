@@ -49,9 +49,8 @@ public class WorkExperience extends AbstractAuditingEntity implements Ownership 
     @Column(name = "start_date", nullable = false)
     public LocalDate startDate;
 
-    @NotNull
     @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDate")
-    @Column(name = "end_date", nullable = false)
+    @Column(name = "end_date")
     public LocalDate endDate;
 
     @NotNull

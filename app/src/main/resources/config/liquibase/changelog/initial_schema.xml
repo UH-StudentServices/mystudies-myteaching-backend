@@ -978,4 +978,7 @@
                 tableName="portfolio"
                 columnNames="user_id, portfolio_role"/>
     </changeSet>
+    <changeSet id="Drop not null constraint from workexperience end date" author="Marko Rautajoki">
+        <dropNotNullConstraint tableName="work_experience" columnName="end_date" columnDataType="date"></dropNotNullConstraint>
+    </changeSet>
 </databaseChangeLog>
