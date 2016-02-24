@@ -22,11 +22,11 @@ import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
+import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
 
 
 public class PortfolioServiceTest extends SpringTest {
@@ -39,8 +39,8 @@ public class PortfolioServiceTest extends SpringTest {
 
     @Test
     public void thatPortfolioIsFoundByPath() {
-        PortfolioDto portfolioDto = portfolioService.findByPath("pekka");
-        assertThat(portfolioDto.url).isEqualTo("https://opi-1.student.helsinki.fi/portfolio/#/pekka");
+        PortfolioDto portfolioDto = portfolioService.findByPath("pekka", PortfolioRole.STUDENT);
+        assertThat(portfolioDto.url).isEqualTo("/portfolio/#/pekka");
     }
 
     @Test
@@ -63,11 +63,12 @@ public class PortfolioServiceTest extends SpringTest {
 
     @Test
     public void thatPortfolioIsCreated() {
-        assertThat(portfolioRepository.findByUserId(4L).isPresent()).isFalse();
+        assertThat(portfolioRepository.findByUserId(4L).count()).isZero();
 
-        portfolioService.insert(4L, "Olli Opettaja");
+        portfolioService.insert(4L, "Olli Opettaja", PortfolioRole.TEACHER);
 
-        Portfolio portfolio = portfolioRepository.findByUserId(4L).get();
+        Portfolio portfolio = portfolioRepository.findByUserId(4L).findFirst().get();
         assertThat(portfolio.visibility).isEqualTo(PortfolioVisibility.PRIVATE);
+        assertThat(portfolio.portfolioRole).isEqualTo(PortfolioRole.TEACHER);
     }
 }

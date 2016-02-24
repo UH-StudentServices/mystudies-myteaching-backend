@@ -28,7 +28,7 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
 
     @Test
     public void thatPortfolioIsReturned() throws Exception {
-        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + "/portfolio/find/olli.opiskelija"))
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + "/portfolio/student/olli.opiskelija"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(2));
     }

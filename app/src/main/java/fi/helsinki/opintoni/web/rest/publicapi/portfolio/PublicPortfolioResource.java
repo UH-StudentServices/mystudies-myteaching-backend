@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.web.rest.publicapi.portfolio;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.service.portfolio.PortfolioService;
 import fi.helsinki.opintoni.web.WebConstants;
+import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,10 @@ public class PublicPortfolioResource extends AbstractResource {
         this.portfolioService = portfolioService;
     }
 
-    @RequestMapping(value = "/find/{path:.*}", method = RequestMethod.GET)
-    public ResponseEntity<PortfolioDto> getByPath(@PathVariable("path") String path) {
-        return response(portfolioService.findByPath(path));
+    @RequestMapping(value = "/{portfolioRole}/{path:.*}", method = RequestMethod.GET)
+    public ResponseEntity<PortfolioDto> getByPath(
+        @PathVariable("path") String path,
+        @PathVariable("portfolioRole") String portfolioRole) {
+        return response(portfolioService.findByPath(path, PortfolioRole.fromValue(portfolioRole)));
     }
 }

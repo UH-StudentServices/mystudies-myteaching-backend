@@ -20,19 +20,18 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.security.AppUser;
+import fi.helsinki.opintoni.security.authorization.StudentRoleRequired;
+import fi.helsinki.opintoni.security.authorization.TeacherRoleRequired;
 import fi.helsinki.opintoni.service.portfolio.PortfolioService;
 import fi.helsinki.opintoni.web.WebConstants;
+import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import fi.helsinki.opintoni.web.arguments.UserId;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -48,28 +47,42 @@ public class PrivatePortfolioResource extends AbstractResource {
         this.portfolioService = portfolioService;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(value = "/{portfolioRole}", method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<PortfolioDto> get(@UserId Long userId) {
-        return response(portfolioService.get(userId));
+    public ResponseEntity<PortfolioDto> get(@PathVariable("portfolioRole") String portfolioRole, @UserId Long userId) {
+        return response(portfolioService.get(
+            userId,
+            PortfolioRole.fromValue(portfolioRole)));
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/student", method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<PortfolioDto> insert(@UserId Long userId,
+    @StudentRoleRequired
+    public ResponseEntity<PortfolioDto> insertStudentPortfolio(@UserId Long userId,
                                                @AuthenticationPrincipal AppUser appUser) {
-        return response(portfolioService.insert(userId, appUser.getCommonName()));
+        return response(portfolioService.insert(
+            userId,
+            appUser.getCommonName(),
+            PortfolioRole.STUDENT));
     }
 
-    @RequestMapping(value = "/find/{path:.*}", method = RequestMethod.GET)
-    public ResponseEntity<PortfolioDto> findByPath(@PathVariable("path") String path) {
-        PortfolioDto portfolioDto = portfolioService.findByPath(path);
+    @RequestMapping(value = "/teacher", method = RequestMethod.POST)
+    @Timed
+    @TeacherRoleRequired
+    public ResponseEntity<PortfolioDto> insertTeacherPortfolio(@UserId Long userId,
+                                                               @AuthenticationPrincipal AppUser appUser) {
+        return response(portfolioService.insert(
+            userId,
+            appUser.getCommonName(),
+            PortfolioRole.TEACHER));
+    }
+
+    @RequestMapping(value = "/{portfolioRole}/{path:.*}", method = RequestMethod.GET)
+    public ResponseEntity<PortfolioDto> findByPath(
+        @PathVariable("portfolioRole") String portfolioRole,
+        @PathVariable("path") String path) {
+        PortfolioDto portfolioDto = portfolioService.findByPath(path, PortfolioRole.fromValue(portfolioRole));
         return response(portfolioDto);
-    }
-
-    @RequestMapping(value = "/{portfolioId}", method = RequestMethod.GET)
-    public ResponseEntity<PortfolioDto> findById(@PathVariable("portfolioId") Long portfolioId) {
-        return response(portfolioService.findById(portfolioId));
     }
 
     @RequestMapping(value = "/{portfolioId}", method = RequestMethod.PUT)

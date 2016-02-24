@@ -24,13 +24,15 @@ import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.converter.PortfolioConverter;
+import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.summary.UpdateSummaryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static fi.helsinki.opintoni.exception.http.NotFoundException.notFoundException;
 
@@ -58,41 +60,51 @@ public class PortfolioService {
         this.whitelistService = whitelistService;
     }
 
-    public PortfolioDto insert(Long userId, String name) {
-        if (portfolioRepository.findByUserId(userId).isPresent()) {
-            throw new RuntimeException("User portfolio already exists");
-        }
+    public PortfolioDto insert(Long userId, String name, PortfolioRole portfolioRole) {
+        String portfolioPath = portfolioRepository
+            .findByUserId(userId)
+            .findFirst()
+            .map(portfolio -> portfolio.path)
+            .orElse(portfolioPathGenerator.create(name));
 
         Portfolio portfolio = new Portfolio();
         portfolio.user = userRepository.findOne(userId);
-        portfolio.path = portfolioPathGenerator.create(name);
+        portfolio.path = portfolioPath;
         portfolio.ownerName = name;
         portfolio.visibility = PortfolioVisibility.PRIVATE;
+        portfolio.portfolioRole = portfolioRole;
         Portfolio inserted = portfolioRepository.save(portfolio);
         whitelistService.insert(inserted);
         return portfolioConverter.toDto(inserted);
     }
 
-    public PortfolioDto get(Long userId) {
-        return getPortfolio(portfolioRepository::findByUserId, userId);
+    public PortfolioDto get(Long userId, PortfolioRole portfolioRole) {
+        return convertPortfolioToDto(portfolioRepository
+            .findByUserIdAndPortfolioRole(userId, portfolioRole));
     }
 
-    public PortfolioDto findByPath(String path) {
-        return getPortfolio(portfolioRepository::findByPath, path);
+    public PortfolioDto findByPath(String path, PortfolioRole portfolioRole) {
+        return convertPortfolioToDto(portfolioRepository
+            .findByPathAndPortfolioRole(path, portfolioRole));
     }
 
     public PortfolioDto findById(Long portfolioId) {
-        return getPortfolio(portfolioRepository::findById, portfolioId);
+        return convertPortfolioToDto(portfolioRepository
+            .findById(portfolioId));
     }
 
-    public <T> PortfolioDto getPortfolio(Function<T, Optional<Portfolio>> getter, T identifier) {
-        return getter.apply(identifier)
+    private PortfolioDto convertPortfolioToDto(Optional<Portfolio> portfolioOptional) {
+        return portfolioOptional
             .map(portfolioConverter::toDto)
             .orElseThrow(notFoundException("Portfolio not found"));
     }
 
-    public Optional<String> getUserPortfolioPath(Long userId) {
-        return portfolioRepository.findByUserId(userId).map(p -> p.path);
+    public Map<String, String> getUserPortfolioPath(Long userId) {
+        return portfolioRepository
+            .findByUserId(userId)
+            .collect(Collectors.toMap(
+                portfolio -> portfolio.portfolioRole.getRole(),
+                portfolio -> portfolio.path));
     }
 
     public PortfolioDto update(Long portfolioId, PortfolioDto portfolioDto) {

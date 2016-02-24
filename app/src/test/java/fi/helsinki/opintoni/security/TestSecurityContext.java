@@ -35,4 +35,10 @@ public class TestSecurityContext {
         return securityContext;
     }
 
+    public static SecurityContext hybridUserSecurityContext() {
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("hybriduser", "password"));
+        return securityContext;
+    }
+
 }

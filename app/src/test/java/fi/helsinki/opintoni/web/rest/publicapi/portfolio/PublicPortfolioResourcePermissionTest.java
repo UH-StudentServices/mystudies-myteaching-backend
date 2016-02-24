@@ -21,6 +21,7 @@ import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
+import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,7 +36,7 @@ public class PublicPortfolioResourcePermissionTest extends SpringTest {
 
     @Test
     public void thatUserCannotLoadPrivatePortfolioFromPublicApi() throws Exception {
-        mockMvc.perform(get("/api/public/v1/portfolio/find/olli.opiskelija")
+        mockMvc.perform(get("/api/public/v1/portfolio/student/olli.opiskelija")
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
@@ -44,11 +45,11 @@ public class PublicPortfolioResourcePermissionTest extends SpringTest {
 
     @Test
     public void thatUserCannotLoadRestrictedPortfolioFromPublicApi() throws Exception {
-        Portfolio portfolio = portfolioRepository.findByPath("olli.opiskelija").get();
+        Portfolio portfolio = portfolioRepository.findByPathAndPortfolioRole("olli.opiskelija", PortfolioRole.STUDENT).get();
         portfolio.visibility = PortfolioVisibility.RESTRICTED;
         portfolioRepository.save(portfolio);
 
-        mockMvc.perform(get("/api/public/v1/portfolio/find/olli.opiskelija")
+        mockMvc.perform(get("/api/public/v1/portfolio/student/olli.opiskelija")
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))

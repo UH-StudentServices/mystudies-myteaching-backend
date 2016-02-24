@@ -953,4 +953,29 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="Add portfolioRole column to portfolio table. Empties all portfolios and refactores unique indexes." author="Marko Rautajoki">
+        <addColumn tableName="portfolio">
+            <column name="portfolio_role" type="varchar(20)" defaultValue="STUDENT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <sql>DELETE from portfolio</sql>
+        <dropColumn tableName="portfolio" columnName="user_id"/>
+        <dropColumn tableName="portfolio" columnName="path"/>
+        <addColumn tableName="portfolio">
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_portfolio_user"
+                             references="user_account(id)"/>
+            </column>
+            <column name="path" type="varchar(500)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <addUniqueConstraint
+                constraintName="portfolio_unique_user_id_portfolio_role"
+                tableName="portfolio"
+                columnNames="user_id, portfolio_role"/>
+    </changeSet>
 </databaseChangeLog>

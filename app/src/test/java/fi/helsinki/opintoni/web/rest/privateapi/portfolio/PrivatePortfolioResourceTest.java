@@ -28,9 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivatePortfolioResourceTest extends SpringTest {
 
+    private static final String STUDENT_PORTFOLIO_API_URL = "/portfolio/student";
+
     @Test
     public void thatPortfolioIsReturned() throws Exception {
-        mockMvc.perform(get(RestConstants.PRIVATE_API_V1 + "/portfolio")
+        mockMvc.perform(get(RestConstants.PRIVATE_API_V1 + STUDENT_PORTFOLIO_API_URL)
             .with(securityContext(studentSecurityContext())))
             .andExpect(jsonPath("$.id").value(2));
     }

@@ -294,9 +294,11 @@ flamma:
 googleAnalyticsAccount: UA-123
 
 hostUrl: https://opi-1.student.helsinki.fi
-portfolioHostUrl: https://opi-1.student.helsinki.fi
-portfolioUrl: ${hostUrl}/portfolio/#
 appRelativeUrl: ${hostUrl}/app
+portfolioUrl:
+  student: /portfolio/#
+  teacher: /portfolio/#
+
 
 avatarSize: 240
 

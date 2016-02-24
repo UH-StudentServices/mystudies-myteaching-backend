@@ -18,15 +18,18 @@
 package fi.helsinki.opintoni.repository.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
+import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
 
     int countByPath(String path);
 
-    Optional<Portfolio> findByUserId(Long userId);
-    Optional<Portfolio> findByPath(String path);
+    Optional<Portfolio> findByUserIdAndPortfolioRole(Long userId, PortfolioRole portfolioRole);
+    Optional<Portfolio> findByPathAndPortfolioRole(String path, PortfolioRole portfolioRole);
     Optional<Portfolio> findById(Long id);
+    Stream<Portfolio> findByUserId(Long userId);
 }

@@ -1,4 +1,4 @@
-id;user_id;visibility;path;owner_name;intro;created_by;summary
-1;2;PRIVATE;pekka;Pekka;Introtext;system;null
-2;3;PRIVATE;olli.opiskelija;Olli Opiskelija;Introtext;system;Summary
-3;1;PRIVATE;test.test;Test Test;Introtext;system;null
+id;user_id;visibility;path;owner_name;intro;created_by;summary;portfolio_role
+1;2;PRIVATE;pekka;Pekka;Introtext;system;null;STUDENT
+2;3;PRIVATE;olli.opiskelija;Olli Opiskelija;Introtext;system;Summary;STUDENT
+3;1;PRIVATE;test.test;Test Test;Introtext;system;null;STUDENT

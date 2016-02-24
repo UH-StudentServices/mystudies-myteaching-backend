@@ -27,6 +27,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -48,7 +49,7 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new CommonError("Not found"), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = ForbiddenException.class)
+    @ExceptionHandler(value = {ForbiddenException.class, AccessDeniedException.class})
     public ResponseEntity<CommonError> handleForbidden() throws Exception {
         return new ResponseEntity<>(new CommonError("Forbidden"), HttpStatus.FORBIDDEN);
     }
