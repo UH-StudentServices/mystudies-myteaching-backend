@@ -9,7 +9,7 @@ public class LanguageProficiencyConverter {
     public LanguageProficiencyDto toDto(PortfolioLanguageProficiency languageProficiency) {
         LanguageProficiencyDto languageProficiencyDto = new LanguageProficiencyDto();
         languageProficiencyDto.id = languageProficiency.id;
-        languageProficiencyDto.languageCode = languageProficiency.languageCode;
+        languageProficiencyDto.language = languageProficiency.languageCode;
         languageProficiencyDto.proficiency = languageProficiency.proficiency;
         return languageProficiencyDto;
     }

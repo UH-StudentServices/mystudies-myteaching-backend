@@ -6,5 +6,5 @@ import fi.helsinki.opintoni.domain.portfolio.PortfolioLanguage;
 public class LanguageProficiencyDto {
     public Long id;
     public LanguageProficiency proficiency;
-    public PortfolioLanguage languageCode;
+    public PortfolioLanguage language;
 }

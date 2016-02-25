@@ -15,6 +15,6 @@ public class PublicLanguageProficiencyResourceTest extends PublicPortfolioTest {
         mockMvc.perform(get(PUBLIC_PORTFOLIO_URL + SUBRESOURCE_PATH))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(2)));
+            .andExpect(jsonPath("$", hasSize(3)));
     }
 }

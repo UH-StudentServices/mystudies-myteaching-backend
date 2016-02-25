@@ -1,6 +1,6 @@
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio.languageProficiency;
 
-import fi.helsinki.opintoni.domain.portfolio.PortfolioLanguageProficiency;
+import fi.helsinki.opintoni.dto.portfolio.LanguageProficienciesChangeDescriptorDto;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficiencyDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.portfolio.LanguageProficiencyService;
@@ -42,30 +42,11 @@ public class PrivateLanguageProficiencyResource extends AbstractResource {
         return response(languageProficiencyService.findByPortfolioId(portfolioId));
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<LanguageProficiencyDto> addLanguageProficiency(@PathVariable Long portfolioId,
-                                                                         @RequestBody LanguageProficiencyDto languageProficiencyDto) {
-        return response(languageProficiencyService.addLanguageProficiency(portfolioId, languageProficiencyDto));
-    }
-
-    @RequestMapping(
-        method = RequestMethod.PUT,
-        value = "/{languageProficiencyId}")
-    public ResponseEntity<LanguageProficiencyDto> updateLanguageProficiency(@UserId Long userId,
-                                                                            @PathVariable Long languageProficiencyId,
-                                                                            @RequestBody LanguageProficiencyDto languageProficiencyDto) {
-        permissionChecker.verifyPermission(userId, languageProficiencyId, PortfolioLanguageProficiency.class);
-
-        return response(languageProficiencyService.updateLanguageProficiency(languageProficiencyId, languageProficiencyDto));
-    }
-
-    @RequestMapping(
-        method = RequestMethod.DELETE,
-        value = "/{languageProficiencyId}")
-    public ResponseEntity deleteLanguageProficiency(@UserId Long userId, @PathVariable Long languageProficiencyId) {
-        permissionChecker.verifyPermission(userId, languageProficiencyId, PortfolioLanguageProficiency.class);
-        languageProficiencyService.deleteLanguageProficiency(languageProficiencyId);
-
+    @RequestMapping(method = RequestMethod.PATCH)
+    public ResponseEntity updateLanguageProficiencies(@UserId Long userId,
+                                                      @PathVariable Long portfolioId,
+                                                      @RequestBody LanguageProficienciesChangeDescriptorDto changeDescriptor) {
+        languageProficiencyService.updateLanguageProficiencies(changeDescriptor, portfolioId, userId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
