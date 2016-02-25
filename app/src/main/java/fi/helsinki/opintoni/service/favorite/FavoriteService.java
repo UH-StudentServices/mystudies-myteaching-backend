@@ -70,7 +70,6 @@ public class FavoriteService {
             .stream()
             .filter(f -> f.isPortfolio() == portfolio)
             .map(favoriteConverter::toDto)
-            .filter(f -> f != null)
             .collect(Collectors.toList());
     }
 
