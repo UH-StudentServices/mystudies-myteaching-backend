@@ -25,5 +25,6 @@ public enum PortfolioComponent {
     WORK_EXPERIENCE,
     FAVORITES,
     CREDITS,
-    FREE_TEXT_CONTENT
+    FREE_TEXT_CONTENT,
+    LANGUAGE_PROFICIENCY
 }
