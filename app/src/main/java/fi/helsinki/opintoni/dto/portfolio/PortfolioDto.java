@@ -17,10 +17,11 @@
 
 package fi.helsinki.opintoni.dto.portfolio;
 
-import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public class PortfolioDto {
 
@@ -31,6 +32,6 @@ public class PortfolioDto {
     public String backgroundUri;
     public PortfolioVisibility visibility;
     public String avatarUrl;
-    public List<ComponentVisibilityDto> componentVisibilities = Lists.newArrayList();
-
+    public List<ComponentVisibilityDto> componentVisibilities = newArrayList();
+    public List<LanguageProficiencyDto> languageProficiencies = newArrayList();
 }

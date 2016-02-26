@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
+import fi.helsinki.opintoni.service.converter.PortfolioConverter;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class PortfolioServiceTest extends SpringTest {
 
     @Test
     public void thatPortfolioIsFoundByPath() {
-        PortfolioDto portfolioDto = portfolioService.findByPath("pekka", PortfolioRole.STUDENT);
+        PortfolioDto portfolioDto = portfolioService.findByPath("pekka", PortfolioRole.STUDENT, PortfolioConverter.ComponentFetchStrategy.PUBLIC);
         assertThat(portfolioDto.url).isEqualTo("/portfolio/#/pekka");
     }
 

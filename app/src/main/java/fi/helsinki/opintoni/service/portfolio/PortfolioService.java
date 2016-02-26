@@ -74,28 +74,32 @@ public class PortfolioService {
         portfolio.visibility = PortfolioVisibility.PRIVATE;
         portfolio.portfolioRole = portfolioRole;
         Portfolio inserted = portfolioRepository.save(portfolio);
+
         whitelistService.insert(inserted);
-        return portfolioConverter.toDto(inserted);
+
+        return portfolioConverter.toDto(inserted, PortfolioConverter.ComponentFetchStrategy.NONE);
     }
 
     public PortfolioDto get(Long userId, PortfolioRole portfolioRole) {
         return convertPortfolioToDto(portfolioRepository
-            .findByUserIdAndPortfolioRole(userId, portfolioRole));
+            .findByUserIdAndPortfolioRole(userId, portfolioRole), PortfolioConverter.ComponentFetchStrategy.ALL);
     }
 
-    public PortfolioDto findByPath(String path, PortfolioRole portfolioRole) {
+    public PortfolioDto findByPath(String path, PortfolioRole portfolioRole,
+                                   PortfolioConverter.ComponentFetchStrategy componentFetchStrategy) {
         return convertPortfolioToDto(portfolioRepository
-            .findByPathAndPortfolioRole(path, portfolioRole));
+            .findByPathAndPortfolioRole(path, portfolioRole), componentFetchStrategy);
     }
 
     public PortfolioDto findById(Long portfolioId) {
         return convertPortfolioToDto(portfolioRepository
-            .findById(portfolioId));
+            .findById(portfolioId), PortfolioConverter.ComponentFetchStrategy.NONE);
     }
 
-    private PortfolioDto convertPortfolioToDto(Optional<Portfolio> portfolioOptional) {
+    private PortfolioDto convertPortfolioToDto(Optional<Portfolio> portfolioOptional,
+                                               PortfolioConverter.ComponentFetchStrategy componentFetchStrategy) {
         return portfolioOptional
-            .map(portfolioConverter::toDto)
+            .map((portfolio) -> portfolioConverter.toDto(portfolio, componentFetchStrategy))
             .orElseThrow(notFoundException("Portfolio not found"));
     }
 
@@ -112,7 +116,7 @@ public class PortfolioService {
         portfolio.visibility = portfolioDto.visibility;
         portfolio.ownerName = portfolioDto.ownerName;
         portfolio.intro = portfolioDto.intro;
-        return portfolioConverter.toDto(portfolioRepository.save(portfolio));
+        return portfolioConverter.toDto(portfolioRepository.save(portfolio), PortfolioConverter.ComponentFetchStrategy.NONE);
     }
 
     public SummaryDto getSummary(Long portfolioId) {
