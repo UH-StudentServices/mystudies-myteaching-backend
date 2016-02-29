@@ -56,8 +56,7 @@ public class LanguageProficiencyService {
         }
     }
 
-    private void addLanguageProficiency(Long portfolioId,
-                                                          LanguageProficiencyDto languageProficiencyDto) {
+    private void addLanguageProficiency(Long portfolioId, LanguageProficiencyDto languageProficiencyDto) {
         PortfolioLanguageProficiency portfolioLanguageProficiency = new PortfolioLanguageProficiency();
         portfolioLanguageProficiency.languageCode = languageProficiencyDto.language;
         portfolioLanguageProficiency.proficiency = languageProficiencyDto.proficiency;
