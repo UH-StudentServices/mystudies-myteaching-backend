@@ -30,6 +30,8 @@ import fi.helsinki.opintoni.util.UriBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Component
 public class PortfolioConverter {
 
@@ -94,7 +96,9 @@ public class PortfolioConverter {
     }
 
     private void fetchAllComponents(Long portfolioId, PortfolioDto portfolioDto) {
-        portfolioDto.languageProficiencies = languageProficiencyService.findByPortfolioId(portfolioId);
+        Arrays.asList(PortfolioComponent.values()).stream().forEach(componentType -> {
+            fetchComponentData(portfolioId, portfolioDto, componentType);
+        });
     }
 
     private String getBackgroundUri(Portfolio portfolio) {
