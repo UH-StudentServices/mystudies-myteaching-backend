@@ -17,15 +17,20 @@
 
 package fi.helsinki.opintoni.service.converter;
 
+import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
+import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.dto.UserSettingsDto;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.service.AvatarImageService;
 import fi.helsinki.opintoni.service.ComponentVisibilityService;
 import fi.helsinki.opintoni.service.UserSettingsService;
+import fi.helsinki.opintoni.service.portfolio.LanguageProficiencyService;
 import fi.helsinki.opintoni.util.UriBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
 
 @Component
 public class PortfolioConverter {
@@ -34,19 +39,22 @@ public class PortfolioConverter {
     private final ComponentVisibilityService componentVisibilityService;
     private final UserSettingsService userSettingsService;
     private final AvatarImageService avatarImageService;
+    private final LanguageProficiencyService languageProficiencyService;
 
     @Autowired
     public PortfolioConverter(UriBuilder uriBuilder,
                               ComponentVisibilityService componentVisibilityService,
                               UserSettingsService userSettingsService,
-                              AvatarImageService avatarImageService) {
+                              AvatarImageService avatarImageService,
+                              LanguageProficiencyService languageProficiencyService) {
         this.uriBuilder = uriBuilder;
         this.componentVisibilityService = componentVisibilityService;
         this.userSettingsService = userSettingsService;
         this.avatarImageService = avatarImageService;
+        this.languageProficiencyService = languageProficiencyService;
     }
 
-    public PortfolioDto toDto(Portfolio portfolio) {
+    public PortfolioDto toDto(Portfolio portfolio, ComponentFetchStrategy componentFetchStrategy) {
         PortfolioDto portfolioDto = new PortfolioDto();
         portfolioDto.id = portfolio.id;
         portfolioDto.url = uriBuilder.getPortfolioUrl(portfolio);
@@ -56,7 +64,41 @@ public class PortfolioConverter {
         portfolioDto.visibility = portfolio.visibility;
         portfolioDto.avatarUrl = avatarImageService.getPortfolioAvatarImageUrl(portfolio.getOwnerId());
         portfolioDto.componentVisibilities = componentVisibilityService.findByPortfolioId(portfolio.id);
+
+        fetchPortfolioComponents(portfolio.id, portfolioDto, componentFetchStrategy);
+
         return portfolioDto;
+    }
+
+    private void fetchPortfolioComponents(Long portfolioId,
+                                          PortfolioDto portfolioDto,
+                                          ComponentFetchStrategy componentFetchStrategy) {
+        if(componentFetchStrategy == ComponentFetchStrategy.ALL) {
+            fetchAllComponents(portfolioId, portfolioDto);
+        } else if(componentFetchStrategy == ComponentFetchStrategy.PUBLIC) {
+            fetchPublicComponents(portfolioId, portfolioDto);
+        }
+    }
+
+    private void fetchPublicComponents(Long portfolioId, PortfolioDto portfolioDto) {
+        componentVisibilityService.findByPortfolioId(portfolioId).stream()
+            .filter(visibility -> ComponentVisibility.Visibility.PUBLIC.toString().equals(visibility.visibility))
+            .map(visibility -> PortfolioComponent.valueOf(visibility.component))
+            .forEach(component -> fetchComponentData(portfolioId, portfolioDto, component));
+    }
+
+    private void fetchComponentData(Long portfolioId, PortfolioDto portfolioDto, PortfolioComponent component) {
+        switch(component) {
+            case LANGUAGE_PROFICIENCY:
+                portfolioDto.languageProficiencies = languageProficiencyService.findByPortfolioId(portfolioId);
+                break;
+        }
+    }
+
+    private void fetchAllComponents(Long portfolioId, PortfolioDto portfolioDto) {
+        Arrays.asList(PortfolioComponent.values()).stream().forEach(componentType -> {
+            fetchComponentData(portfolioId, portfolioDto, componentType);
+        });
     }
 
     private String getBackgroundUri(Portfolio portfolio) {
@@ -64,4 +106,7 @@ public class PortfolioConverter {
         return userSettingsDto.backgroundUri;
     }
 
+    public enum ComponentFetchStrategy {
+        ALL, NONE, PUBLIC
+    }
 }

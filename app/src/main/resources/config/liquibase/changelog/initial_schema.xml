@@ -979,7 +979,40 @@
                 tableName="portfolio"
                 columnNames="user_id, portfolio_role"/>
     </changeSet>
+
     <changeSet id="Drop not null constraint from workexperience end date" author="Marko Rautajoki">
         <dropNotNullConstraint tableName="work_experience" columnName="end_date" columnDataType="date"></dropNotNullConstraint>
+    </changeSet>
+
+    <changeSet id="Add table for portfolio's language proficiency" author="Henri Heiskanen">
+        <createTable tableName="language_proficiency">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_language_proficiency_portfolio"
+                             references="portfolio(id)"
+                             deleteCascade="true"/>
+            </column>
+            <column name="language_code" type="varchar(2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="proficiency" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <addUniqueConstraint tableName="language_proficiency"
+                             columnNames="portfolio_id, language_code"
+                             constraintName="unique_lang_code_portfolio_id_pair"/>
     </changeSet>
 </databaseChangeLog>
