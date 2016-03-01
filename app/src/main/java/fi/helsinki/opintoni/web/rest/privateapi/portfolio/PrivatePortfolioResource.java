@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.authorization.StudentRoleRequired;
 import fi.helsinki.opintoni.security.authorization.TeacherRoleRequired;
+import fi.helsinki.opintoni.service.converter.PortfolioConverter;
 import fi.helsinki.opintoni.service.portfolio.PortfolioService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
@@ -81,7 +82,8 @@ public class PrivatePortfolioResource extends AbstractResource {
     public ResponseEntity<PortfolioDto> findByPath(
         @PathVariable("portfolioRole") String portfolioRole,
         @PathVariable("path") String path) {
-        PortfolioDto portfolioDto = portfolioService.findByPath(path, PortfolioRole.fromValue(portfolioRole));
+        PortfolioDto portfolioDto = portfolioService.findByPath(path, PortfolioRole.fromValue(portfolioRole),
+            PortfolioConverter.ComponentFetchStrategy.PUBLIC);
         return response(portfolioDto);
     }
 

@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.web.rest.publicapi.portfolio;
 
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
+import fi.helsinki.opintoni.service.converter.PortfolioConverter;
 import fi.helsinki.opintoni.service.portfolio.PortfolioService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
@@ -47,6 +48,7 @@ public class PublicPortfolioResource extends AbstractResource {
     public ResponseEntity<PortfolioDto> getByPath(
         @PathVariable("path") String path,
         @PathVariable("portfolioRole") String portfolioRole) {
-        return response(portfolioService.findByPath(path, PortfolioRole.fromValue(portfolioRole)));
+        return response(portfolioService.findByPath(path, PortfolioRole.fromValue(portfolioRole),
+            PortfolioConverter.ComponentFetchStrategy.PUBLIC));
     }
 }
