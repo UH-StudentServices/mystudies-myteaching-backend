@@ -19,12 +19,15 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
+import fi.helsinki.opintoni.integration.oodi.OodiEnrollment;
+import fi.helsinki.opintoni.integration.oodi.OodiTeacherCourse;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class OodiUserRoleService {
@@ -38,20 +41,27 @@ public class OodiUserRoleService {
 
     @Cacheable(CacheConstants.IS_OPEN_UNIVERSITY_TEACHER)
     public boolean isOpenUniversityTeacher(String teacherNumber) {
-        return oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
-            .map(course -> course.basecode)
-            .allMatch(this::isOpenUniversityId);
+        List<OodiTeacherCourse> oodiTeacherCourses = oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()));
+        return oodiTeacherCourses.isEmpty() ?
+            false :
+            oodiTeacherCourses
+                .stream()
+                .map(course -> course.basecode)
+                .allMatch(this::isOpenUniversityId);
     }
 
     @Cacheable(CacheConstants.IS_OPEN_UNIVERSITY_STUDENT)
     public boolean isOpenUniversityStudent(String studentNumber) {
-        return oodiClient.getEnrollments(studentNumber).stream()
-            .map(enrollment -> enrollment.learningOpportunityId)
-            .allMatch(this::isOpenUniversityId);
+        List<OodiEnrollment> oodiEnrollments = oodiClient.getEnrollments(studentNumber);
+        return oodiEnrollments.isEmpty() ?
+            false :
+            oodiEnrollments
+                .stream()
+                .map(enrollment -> enrollment.learningOpportunityId)
+                .allMatch(this::isOpenUniversityId);
     }
 
     private boolean isOpenUniversityId(String code) {
         return code.startsWith("A");
     }
-
 }

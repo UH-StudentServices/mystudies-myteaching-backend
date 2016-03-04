@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.service;
 
-import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiEnrollment;
 import fi.helsinki.opintoni.integration.oodi.OodiTeacherCourse;
@@ -31,42 +30,83 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static com.google.common.collect.Lists.newArrayList;
 
 public class OodiUserRoleServiceTest {
+
+    private static final String STUDENT_NUMBER = "123";
+    private static final String TEACHER_NUMBER = "321";
+    private static final List<String> USER_ENROLLMENTS = newArrayList("123", "456");
+    private static final List<String> USER_ENROLLMENTS_SOME_OPEN_UNIVERSITY = newArrayList("123", "A456");
+    private static final List<String> USER_ENROLLMENTS_OPEN_UNIVERSITY = newArrayList("A123", "A456");
 
     private final OodiClient oodiClient = mock(OodiClient.class);
     private final OodiUserRoleService oodiUserRoleService = new OodiUserRoleService(oodiClient);
 
-    @Test
-    public void thatStudentIsOpenUniversityUser() {
-        when(oodiClient.getEnrollments("123"))
-            .thenReturn(enrollments(Lists.newArrayList("A123", "A456")));
+    private void setupOodiClientMockForStudent(List<String> enrollments) {
+        when(oodiClient.getEnrollments(STUDENT_NUMBER))
+            .thenReturn(enrollments(enrollments));
+    }
 
-        assertThat(oodiUserRoleService.isOpenUniversityStudent("123")).isTrue();
+    private void setupOodiClientMockForTeacher(List<String> enrollments) {
+        when(oodiClient.getTeacherCourses(TEACHER_NUMBER, DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
+            .thenReturn(courses(enrollments));
     }
 
     @Test
-    public void thatStudentIsNotOpenUniversityUser() {
-        when(oodiClient.getEnrollments("123"))
-            .thenReturn(enrollments(Lists.newArrayList("A123", "456")));
+    public void thatStudentIsOpenUniversityUserWhenAllCoursesAreOpenUniversityCourses() {
+        setupOodiClientMockForStudent(USER_ENROLLMENTS_OPEN_UNIVERSITY);
 
-        assertThat(oodiUserRoleService.isOpenUniversityStudent("123")).isFalse();
+        assertThat(oodiUserRoleService.isOpenUniversityStudent(STUDENT_NUMBER)).isTrue();
     }
 
     @Test
-    public void thatTeacherIsOpenUniversityUser() {
-        when(oodiClient.getTeacherCourses("123", DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
-            .thenReturn(courses(Lists.newArrayList("A123", "A456")));
+    public void thatStudentIsNotOpenUniversityUserWhenSomeCoursesAreOpenUniversityCourses() {
+        setupOodiClientMockForStudent(USER_ENROLLMENTS_SOME_OPEN_UNIVERSITY);
 
-        assertThat(oodiUserRoleService.isOpenUniversityTeacher("123")).isTrue();
+        assertThat(oodiUserRoleService.isOpenUniversityStudent(STUDENT_NUMBER)).isFalse();
     }
 
     @Test
-    public void thatTeacherIsNotOpenUniversityUser() {
-        when(oodiClient.getTeacherCourses("123", DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
-            .thenReturn(courses(Lists.newArrayList("A123", "456")));
+    public void thatStudentIsNotOpenUniversityUserWhenNoCoursesAreOpenUniversityCourses() {
+        setupOodiClientMockForStudent(USER_ENROLLMENTS);
 
-        assertThat(oodiUserRoleService.isOpenUniversityTeacher("123")).isFalse();
+        assertThat(oodiUserRoleService.isOpenUniversityStudent(STUDENT_NUMBER)).isFalse();
+    }
+
+    @Test
+    public void thatStudentIsNotOpenUniversityUserWhenNoCoursesAreFound() {
+        setupOodiClientMockForStudent(newArrayList());
+
+        assertThat(oodiUserRoleService.isOpenUniversityStudent(STUDENT_NUMBER)).isFalse();
+    }
+
+    @Test
+    public void thatTeacherIsOpenUniversityUserWhenAllCoursesAreOpenUniversityCourses() {
+        setupOodiClientMockForTeacher(USER_ENROLLMENTS_OPEN_UNIVERSITY);
+
+        assertThat(oodiUserRoleService.isOpenUniversityTeacher(TEACHER_NUMBER)).isTrue();
+    }
+
+    @Test
+    public void thatTeacherIsNotOpenUniversityUserWhenSomeCoursesAreOpenUniversityCourses() {
+        setupOodiClientMockForTeacher(USER_ENROLLMENTS_SOME_OPEN_UNIVERSITY);
+
+        assertThat(oodiUserRoleService.isOpenUniversityTeacher(TEACHER_NUMBER)).isFalse();
+    }
+
+    @Test
+    public void thatTeacherIsNotOpenUniversityUserWhenNoCoursesAreOpenUniversityCourses() {
+        setupOodiClientMockForTeacher(USER_ENROLLMENTS);
+
+        assertThat(oodiUserRoleService.isOpenUniversityTeacher(TEACHER_NUMBER)).isFalse();
+    }
+
+    @Test
+    public void thatTeacherIsNotOpenUniversityUserWhenNoCoursesAreFound() {
+        setupOodiClientMockForTeacher(newArrayList());
+
+        assertThat(oodiUserRoleService.isOpenUniversityTeacher(TEACHER_NUMBER)).isFalse();
     }
 
     private List<OodiEnrollment> enrollments(List<String> learningOpportunityIds) {
