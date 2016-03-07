@@ -43,9 +43,9 @@ public class PrivateLanguageProficiencyResource extends AbstractResource {
     }
 
     @RequestMapping(method = RequestMethod.PATCH)
-    public ResponseEntity updateLanguageProficiencies(@UserId Long userId,
-                                                      @PathVariable Long portfolioId,
-                                                      @RequestBody LanguageProficienciesChangeDescriptorDto changeDescriptor) {
+    public ResponseEntity update(@UserId Long userId,
+                                 @PathVariable Long portfolioId,
+                                 @RequestBody LanguageProficienciesChangeDescriptorDto changeDescriptor) {
         languageProficiencyService.updateLanguageProficiencies(changeDescriptor, portfolioId, userId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
