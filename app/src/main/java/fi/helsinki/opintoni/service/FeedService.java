@@ -32,6 +32,20 @@ public class FeedService {
             .orElse(null);
     }
 
+    public FeedDto findRssFeed(String feedUrl) {
+        return feedClient
+            .getFeed(feedUrl)
+            .map(feedConverter::toDto)
+            .orElseGet(() -> parseAndRetrieveFeedFromWebPage(feedUrl));
+    }
+
+    private FeedDto parseAndRetrieveFeedFromWebPage(String feedUrl) {
+        return parseFeedUrlFromWebPage(feedUrl)
+            .flatMap(feedClient::getFeed)
+            .map(feedConverter::toDto)
+            .orElse(null);
+    }
+
     public String urlToFeedUrl(String url) {
         if(feedClient.getFeed(url).isPresent()) {
             return url;

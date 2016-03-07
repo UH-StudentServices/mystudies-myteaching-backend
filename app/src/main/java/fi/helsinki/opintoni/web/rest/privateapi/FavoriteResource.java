@@ -74,6 +74,12 @@ public class FavoriteResource extends AbstractResource {
         return response(feedService.getFeed(feedUrl, limit));
     }
 
+    @RequestMapping(value = "/rss/find", method = RequestMethod.GET)
+    @Timed
+    public ResponseEntity<FeedDto> findRssFeed(@RequestParam("url") String feedUrl) {
+        return response(feedService.findRssFeed(feedUrl));
+    }
+
     @RequestMapping(value = "/unicafe", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<FavoriteDto> saveUnicafeFavorite(@UserId Long userId,

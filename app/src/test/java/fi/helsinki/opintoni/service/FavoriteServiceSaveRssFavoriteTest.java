@@ -29,23 +29,27 @@ public class FavoriteServiceSaveRssFavoriteTest extends AbstractFavoriteServiceT
 
     private static final Integer VISIBLE_ITEMS3 = 3;
 
+    private static final String URL1 = "http://bbc.co.uk/rss";
+
+    private static final String URL2 = "http://www.dagetblader.se/rss";
+
     @Test
     public void rssFavoritesIsPersistedCorrectly() {
         SaveRssFavoriteRequest request = new SaveRssFavoriteRequest();
-        request.url = getMockFeedApiUrl();
+        request.url = URL1;
         request.visibleItems = VISIBLE_ITEMS1;
         RssFavoriteDto favorite = (RssFavoriteDto) favoriteService.saveRssFavorite(1L, request);
-        assertThat(favorite.url).isEqualTo(request.url);
+        assertThat(favorite.url).isEqualTo(URL1);
         assertThat(favorite.visibleItems).isEqualTo(VISIBLE_ITEMS1);
     }
 
     @Test
     public void firstRssFavoritesIsPersistedCorrectly() {
         SaveRssFavoriteRequest request = new SaveRssFavoriteRequest();
-        request.url = getMockFeedApiUrl();
+        request.url = URL2;
         request.visibleItems = VISIBLE_ITEMS3;
         RssFavoriteDto favorite = (RssFavoriteDto) favoriteService.saveRssFavorite(2L, request);
-        assertThat(favorite.url).isEqualTo(request.url);
+        assertThat(favorite.url).isEqualTo(URL2);
         assertThat(favorite.visibleItems).isEqualTo(VISIBLE_ITEMS3);
     }
 }
