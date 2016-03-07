@@ -83,7 +83,7 @@ public class PrivatePortfolioResource extends AbstractResource {
         @PathVariable("portfolioRole") String portfolioRole,
         @PathVariable("path") String path) {
         PortfolioDto portfolioDto = portfolioService.findByPath(path, PortfolioRole.fromValue(portfolioRole),
-            PortfolioConverter.ComponentFetchStrategy.PUBLIC);
+            PortfolioConverter.ComponentFetchStrategy.ALL);
         return response(portfolioDto);
     }
 
