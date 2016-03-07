@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import com.google.common.truth.StringUtil;
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.sampledata.OpenGraphSampleData;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import org.junit.Test;
@@ -69,8 +70,10 @@ public class FavoriteResourceTest extends SpringTest {
 
     @Test
     public void thatRssFavoriteIsSaved() throws Exception {
+        metaDataServer.expectMetaDataRequest();
+
         SaveRssFavoriteRequest request = new SaveRssFavoriteRequest();
-        request.url = "http://rssfeed.com";
+        request.url = OpenGraphSampleData.URL;
         request.visibleItems = 3;
 
         mockMvc.perform(post("/api/private/v1/favorites/rss").with(securityContext(studentSecurityContext()))
@@ -80,7 +83,7 @@ public class FavoriteResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.id").value(any(Number.class)))
-            .andExpect(jsonPath("$.url").value("http://rssfeed.com"))
+            .andExpect(jsonPath("$.url").value("http://helsinki.fi/feed"))
             .andExpect(jsonPath("$.visibleItems").value(3));
     }
 
@@ -108,7 +111,7 @@ public class FavoriteResourceTest extends SpringTest {
 
     @Test
     public void thatRSSFeedIsReturned() throws Exception {
-        String feedUrl = getRemoteMockApiUrl("/mockfeed");
+        String feedUrl = getMockFeedApiUrl();
 
         String requestUrl = StringUtil.format("/api/private/v1/favorites/rss?url=%s&limit=3", feedUrl);
 

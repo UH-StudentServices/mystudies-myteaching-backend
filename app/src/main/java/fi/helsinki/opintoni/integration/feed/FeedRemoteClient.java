@@ -35,7 +35,8 @@ public class FeedRemoteClient implements FeedClient {
         Optional<SyndFeed> feed = Optional.empty();
         try {
             feed = Optional.ofNullable(feedFetcher.retrieveFeed(new URL(feedUrl)));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         return feed;
     }
 }

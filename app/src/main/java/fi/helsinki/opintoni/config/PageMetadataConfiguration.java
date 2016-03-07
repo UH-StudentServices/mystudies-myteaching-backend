@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.config;
 
 import fi.helsinki.opintoni.integration.pagemetadata.PageMetaDataClient;
+import fi.helsinki.opintoni.integration.pagemetadata.PageMetaDataHttpClient;
 import fi.helsinki.opintoni.integration.pagemetadata.SpringPageMetaDataHttpClient;
 import fi.helsinki.opintoni.integration.pagemetadata.opengraph.OpenGraphPageMetaDataParser;
 import org.springframework.context.annotation.Bean;
@@ -41,6 +42,11 @@ public class PageMetadataConfiguration {
     @Bean
     public PageMetaDataClient pageMetaDataClient() {
         return new PageMetaDataClient(new SpringPageMetaDataHttpClient(metaDataRestTemplate()), new OpenGraphPageMetaDataParser());
+    }
+
+    @Bean
+    public PageMetaDataHttpClient pageMetaDataHttpClient() {
+        return new SpringPageMetaDataHttpClient(metaDataRestTemplate());
     }
 
 }

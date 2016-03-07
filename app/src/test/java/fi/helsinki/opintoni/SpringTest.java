@@ -186,4 +186,8 @@ public abstract class SpringTest {
                 path);
     }
 
+    protected String getMockFeedApiUrl() {
+        return getRemoteMockApiUrl("/mockfeed");
+    }
+
 }

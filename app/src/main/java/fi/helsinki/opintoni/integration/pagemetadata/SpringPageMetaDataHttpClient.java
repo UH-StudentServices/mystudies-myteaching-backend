@@ -18,11 +18,19 @@
 package fi.helsinki.opintoni.integration.pagemetadata;
 
 import com.google.common.collect.Lists;
-import fi.helsinki.opintoni.exception.http.BadRequestException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
-public class SpringPageMetaDataHttpClient implements PageMetaDataHttpClient{
+import java.util.Optional;
+
+public class SpringPageMetaDataHttpClient implements PageMetaDataHttpClient {
+    private static final String USER_AGENT_KEY = "User-Agent";
+    private static final String USER_AGENT = "Mozilla";
+    private static final String PARAMETERS_KEY = "parameters";
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(SpringPageMetaDataHttpClient.class);
 
     private final RestTemplate metaDataRestTemplate;
 
@@ -31,20 +39,21 @@ public class SpringPageMetaDataHttpClient implements PageMetaDataHttpClient{
     }
 
     @Override
-    public String getPageBody(String pageUrl) {
+    public Optional<String> getPageBody(String pageUrl) {
+        Optional<String> pageBody = Optional.empty();
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Lists.newArrayList(MediaType.TEXT_HTML));
-            headers.add("User-Agent", "Mozilla");
-            HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+            headers.add(USER_AGENT_KEY, USER_AGENT);
+            HttpEntity<String> entity = new HttpEntity<>(PARAMETERS_KEY, headers);
 
             ResponseEntity<String> response = metaDataRestTemplate.exchange(pageUrl, HttpMethod.GET, entity, String.class);
-            if (!response.getStatusCode().equals(HttpStatus.OK)) {
-                throw new Exception("Meta data request for url " + pageUrl + " failed with status code " + response.getStatusCode());
+            if (response.getStatusCode().equals(HttpStatus.OK)) {
+                pageBody = Optional.ofNullable(response.getBody());
             }
-            return response.getBody();
-        } catch (Exception e) {
-            throw new BadRequestException(e.getMessage());
-        }
+        } catch (Exception e) {}
+
+        return pageBody;
+
     }
 }

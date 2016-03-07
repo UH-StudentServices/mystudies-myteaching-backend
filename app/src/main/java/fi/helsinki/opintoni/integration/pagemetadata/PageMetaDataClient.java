@@ -17,6 +17,8 @@
 
 package fi.helsinki.opintoni.integration.pagemetadata;
 
+import fi.helsinki.opintoni.exception.http.BadRequestException;
+
 public class PageMetaDataClient {
 
     private final PageMetaDataHttpClient httpClient;
@@ -29,7 +31,10 @@ public class PageMetaDataClient {
     }
 
     public PageMetaData getPageMetaData(String pageUrl) {
-        return parser.parsePageMetaData(httpClient.getPageBody(pageUrl));
+        return httpClient
+            .getPageBody(pageUrl)
+            .map(parser::parsePageMetaData)
+            .orElseThrow(() -> new BadRequestException("Page metadata not found for url " + pageUrl));
     }
 
 }

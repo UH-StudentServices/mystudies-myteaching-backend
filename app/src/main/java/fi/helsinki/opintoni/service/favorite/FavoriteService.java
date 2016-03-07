@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.domain.*;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.repository.FavoriteRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
+import fi.helsinki.opintoni.service.FeedService;
 import fi.helsinki.opintoni.service.converter.FavoriteConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.InsertLinkFavoriteRequest;
 import fi.helsinki.opintoni.web.rest.privateapi.InsertTwitterFavoriteRequest;
@@ -45,16 +46,19 @@ public class FavoriteService {
     private final FavoriteConverter favoriteConverter;
     private final UserRepository userRepository;
     private final FavoriteProperties favoriteProperties;
+    private final FeedService feedService;
 
     @Autowired
     public FavoriteService(FavoriteRepository favoriteRepository,
                            FavoriteConverter favoriteConverter,
                            UserRepository userRepository,
-                           FavoriteProperties favoriteProperties) {
+                           FavoriteProperties favoriteProperties,
+                           FeedService feedService) {
         this.favoriteRepository = favoriteRepository;
         this.favoriteConverter = favoriteConverter;
         this.userRepository = userRepository;
         this.favoriteProperties = favoriteProperties;
+        this.feedService = feedService;
     }
 
     public List<FavoriteDto> findByUserId(final Long userId) {
@@ -77,7 +81,7 @@ public class FavoriteService {
         int maxOrderIndex = orderIndex(false).apply(userId);
 
         RssFavorite favorite = new RssFavorite();
-        favorite.url = saveRssFavoriteRequest.url;
+        favorite.url = feedService.urlToFeedUrl(saveRssFavoriteRequest.url);
         favorite.visibleItems = saveRssFavoriteRequest.visibleItems;
         favorite.type = Favorite.Type.RSS;
         favorite.orderIndex = maxOrderIndex + 1;
