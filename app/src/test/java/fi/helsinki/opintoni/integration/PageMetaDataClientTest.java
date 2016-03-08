@@ -35,14 +35,14 @@ public class PageMetaDataClientTest extends SpringTest {
 
     @Test
     public void shouldGetAndParsePageMetaData() {
-        metaDataServer.expectMetaDataRequest();
+        webPageServer.expectMetaDataRequest();
         PageMetaData metaData = pageMetaDataClient.getPageMetaData(OpenGraphSampleData.URL);
         assertThat(metaData.title).isEqualTo(OpenGraphSampleData.TITLE);
     }
 
     @Test(expected = BadRequestException.class)
     public void shouldThrowBadRequestException() {
-        metaDataServer.expectMetaDataNotFound();
+        webPageServer.expectMetaDataNotFound();
         pageMetaDataClient.getPageMetaData(OpenGraphSampleData.INVALID_URL);
     }
 

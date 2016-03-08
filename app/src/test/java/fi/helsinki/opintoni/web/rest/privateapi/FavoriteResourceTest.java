@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import com.google.common.truth.StringUtil;
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.sampledata.RSSFeedSampleData;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import org.junit.Test;
@@ -31,6 +32,7 @@ import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityC
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class FavoriteResourceTest extends SpringTest {
@@ -108,7 +110,7 @@ public class FavoriteResourceTest extends SpringTest {
 
     @Test
     public void thatRSSFeedIsReturned() throws Exception {
-        String feedUrl = getRemoteMockApiUrl("/mockfeed");
+        String feedUrl = getMockFeedApiUrl();
 
         String requestUrl = StringUtil.format("/api/private/v1/favorites/rss?url=%s&limit=3", feedUrl);
 
@@ -126,5 +128,30 @@ public class FavoriteResourceTest extends SpringTest {
             .andExpect(jsonPath("$.entries[0].date[3]").value(11))
             .andExpect(jsonPath("$.entries[0].date[4]").value(8))
             .andExpect(jsonPath("$.entries[0].date[5]").value(42));
+    }
+
+    @Test
+    public void thatRSSFeedIsFoundWhenUrlIsFeedUrl() throws Exception {
+        String feedUrl = getMockFeedApiUrl();
+        assertFindRssFeed(feedUrl, feedUrl);
+    }
+
+    @Test
+    public void thatRSSFeedIsFoundWhenUrlIsWebPageContainingFeedUrl() throws Exception {
+        String feedUrl = getMockFeedApiUrl();
+        webPageServer.expectRssFeedRequest(feedUrl);
+        assertFindRssFeed(RSSFeedSampleData.WEBPAGE_CONTAINING_RSS_FEED_URL, feedUrl);
+    }
+
+    private void assertFindRssFeed(String feedUrl, String expectedResultUrl) throws Exception{
+        String requestUrl = StringUtil.format(
+            "/api/private/v1/favorites/rss/find?url=%s",
+            feedUrl);
+
+        mockMvc.perform(get(requestUrl).with(securityContext(studentSecurityContext()))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.title").value("RSS feed"))
+            .andExpect(jsonPath("$.url").value(expectedResultUrl));
     }
 }

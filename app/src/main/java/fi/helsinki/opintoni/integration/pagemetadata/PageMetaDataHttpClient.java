@@ -17,8 +17,10 @@
 
 package fi.helsinki.opintoni.integration.pagemetadata;
 
+import java.util.Optional;
+
 public interface PageMetaDataHttpClient {
 
-    String getPageBody(String pageUrl);
+    Optional<String> getPageBody(String pageUrl);
 
 }

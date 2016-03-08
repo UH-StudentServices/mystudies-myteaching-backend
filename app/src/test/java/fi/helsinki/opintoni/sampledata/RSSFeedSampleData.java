@@ -15,26 +15,8 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.pagemetadata;
+package fi.helsinki.opintoni.sampledata;
 
-import fi.helsinki.opintoni.exception.http.BadRequestException;
-
-public class PageMetaDataClient {
-
-    private final PageMetaDataHttpClient httpClient;
-
-    private final PageMetaDataParser parser;
-
-    public PageMetaDataClient(PageMetaDataHttpClient httpClient, PageMetaDataParser parser) {
-        this.httpClient = httpClient;
-        this.parser = parser;
-    }
-
-    public PageMetaData getPageMetaData(String pageUrl) {
-        return httpClient
-            .getPageBody(pageUrl)
-            .map(parser::parsePageMetaData)
-            .orElseThrow(() -> new BadRequestException("Page metadata not found for url " + pageUrl));
-    }
-
+public class RSSFeedSampleData {
+    public static final String WEBPAGE_CONTAINING_RSS_FEED_URL = "http://helsinki.fi/webpagecontainingfeedlink";
 }

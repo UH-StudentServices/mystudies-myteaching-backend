@@ -55,4 +55,8 @@ public class FeedConverter {
         return feedDto;
     }
 
+    public FeedDto toDto(SyndFeed feed) {
+        return toDto(feed, 1);
+    }
+
 }

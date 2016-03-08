@@ -15,26 +15,14 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.pagemetadata;
+package fi.helsinki.opintoni.dto;
 
-import fi.helsinki.opintoni.exception.http.BadRequestException;
+public class FindFeedDto {
+    public String title;
+    public String url;
 
-public class PageMetaDataClient {
-
-    private final PageMetaDataHttpClient httpClient;
-
-    private final PageMetaDataParser parser;
-
-    public PageMetaDataClient(PageMetaDataHttpClient httpClient, PageMetaDataParser parser) {
-        this.httpClient = httpClient;
-        this.parser = parser;
+    public FindFeedDto(String title, String url) {
+        this.title = title;
+        this.url = url;
     }
-
-    public PageMetaData getPageMetaData(String pageUrl) {
-        return httpClient
-            .getPageBody(pageUrl)
-            .map(parser::parsePageMetaData)
-            .orElseThrow(() -> new BadRequestException("Page metadata not found for url " + pageUrl));
-    }
-
 }
