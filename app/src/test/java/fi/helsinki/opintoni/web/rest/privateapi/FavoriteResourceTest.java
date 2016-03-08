@@ -132,17 +132,18 @@ public class FavoriteResourceTest extends SpringTest {
 
     @Test
     public void thatRSSFeedIsFoundWhenUrlIsFeedUrl() throws Exception {
-        assertFindRssFeed(getMockFeedApiUrl());
+        String feedUrl = getMockFeedApiUrl();
+        assertFindRssFeed(feedUrl, feedUrl);
     }
 
     @Test
     public void thatRSSFeedIsFoundWhenUrlIsWebPageContainingFeedUrl() throws Exception {
-        webPageServer.expectRssFeedRequest(getMockFeedApiUrl());
-
-        assertFindRssFeed(RSSFeedSampleData.WEBPAGE_CONTAINING_RSS_FEED_URL);
+        String feedUrl = getMockFeedApiUrl();
+        webPageServer.expectRssFeedRequest(feedUrl);
+        assertFindRssFeed(RSSFeedSampleData.WEBPAGE_CONTAINING_RSS_FEED_URL, feedUrl);
     }
 
-    private void assertFindRssFeed(String feedUrl) throws Exception{
+    private void assertFindRssFeed(String feedUrl, String expectedResultUrl) throws Exception{
         String requestUrl = StringUtil.format(
             "/api/private/v1/favorites/rss/find?url=%s",
             feedUrl);
@@ -151,6 +152,6 @@ public class FavoriteResourceTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title").value("RSS feed"))
-            .andExpect(jsonPath("$.link").value("http://www.helsinki.fi"));
+            .andExpect(jsonPath("$.url").value(expectedResultUrl));
     }
 }

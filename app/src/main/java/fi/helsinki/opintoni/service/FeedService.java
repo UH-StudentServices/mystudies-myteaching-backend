@@ -1,6 +1,7 @@
 package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.dto.FeedDto;
+import fi.helsinki.opintoni.dto.FindFeedDto;
 import fi.helsinki.opintoni.integration.feed.FeedClient;
 import fi.helsinki.opintoni.integration.pagemetadata.PageMetaDataHttpClient;
 import fi.helsinki.opintoni.service.converter.FeedConverter;
@@ -32,17 +33,18 @@ public class FeedService {
             .orElse(null);
     }
 
-    public FeedDto findRssFeed(String feedUrl) {
+    public FindFeedDto findRssFeed(String feedUrl) {
         return feedClient
             .getFeed(feedUrl)
-            .map(feedConverter::toDto)
+            .map(feed -> new FindFeedDto(feed.getTitle(), feedUrl))
             .orElseGet(() -> parseAndRetrieveFeedFromWebPage(feedUrl));
     }
 
-    private FeedDto parseAndRetrieveFeedFromWebPage(String feedUrl) {
+    private FindFeedDto parseAndRetrieveFeedFromWebPage(String feedUrl) {
         return parseFeedUrlFromWebPage(feedUrl)
-            .flatMap(feedClient::getFeed)
-            .map(feedConverter::toDto)
+            .flatMap(parsedUrl ->
+                feedClient.getFeed(parsedUrl)
+                    .map(feed -> new FindFeedDto(feed.getTitle(), parsedUrl)))
             .orElse(null);
     }
 

@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.domain.Favorite;
 import fi.helsinki.opintoni.domain.UnicafeFavorite;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.dto.FeedDto;
+import fi.helsinki.opintoni.dto.FindFeedDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import fi.helsinki.opintoni.service.FeedService;
@@ -76,7 +77,7 @@ public class FavoriteResource extends AbstractResource {
 
     @RequestMapping(value = "/rss/find", method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<FeedDto> findRssFeed(@RequestParam("url") String feedUrl) {
+    public ResponseEntity<FindFeedDto> findRssFeed(@RequestParam("url") String feedUrl) {
         return response(feedService.findRssFeed(feedUrl));
     }
 
