@@ -262,7 +262,7 @@ saml:
 
 studentAppUrl:
 teacherAppUrl:
-appRelativeUrl: /app
+appRelativeUrl:
 
 leiki:
     base.url: http://suositukset.student.helsinki.fi

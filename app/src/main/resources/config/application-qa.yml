@@ -38,7 +38,7 @@ oodi:
 coursePage:
     base.url: https://dev.courses.helsinki.fi/api/v1
     client.implementation: rest
-    defaultCourseImageUri: /app/assets/images/course/default_course_image.jpg
+    defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
 googleAnalyticsAccount: UA-55852460-2
 

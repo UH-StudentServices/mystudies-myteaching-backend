@@ -38,15 +38,15 @@ oodi:
 coursePage:
     base.url: https://dev.student.helsinki.fi/api/v1
     client.implementation: mock
-    defaultCourseImageUri: /app/assets/images/course/default_course_image.jpg
+    defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
 googleAnalyticsAccount: UA-55852460-3
 
 unisportMyReservationsUrl: https://unisport.fi/yol/web/<%= userLanguage %>/ext/opintoni/reservationList.do?mockData=true
 
 hostUrl: https://opi-1.student.helsinki.fi
-loginUrlTeacher: /app/locallog.html
-loginUrlStudent: /app/locallog.html
+loginUrlTeacher: /locallog.html
+loginUrlStudent: /locallog.html
 logoutUrl: /logout
 teacherAppUrl: https://opi-1.teacher.helsinki.fi
 studentAppUrl: https://opi-1.student.helsinki.fi
