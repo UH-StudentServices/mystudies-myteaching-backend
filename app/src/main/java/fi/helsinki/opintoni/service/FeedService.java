@@ -46,14 +46,6 @@ public class FeedService {
             .orElse(null);
     }
 
-    public String urlToFeedUrl(String url) {
-        if(feedClient.getFeed(url).isPresent()) {
-            return url;
-        } else {
-            return parseFeedUrlFromWebPage(url).orElse(url);
-        }
-    }
-
     private Optional<String> parseFeedUrlFromWebPage(String url) {
         return pageMetaDataHttpClient
             .getPageBody(url)

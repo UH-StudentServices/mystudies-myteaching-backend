@@ -15,27 +15,8 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.feed;
+package fi.helsinki.opintoni.sampledata;
 
-import com.rometools.fetcher.FeedFetcher;
-import com.rometools.rome.feed.synd.SyndFeed;
-
-import java.net.URL;
-import java.util.Optional;
-
-public class FeedRemoteClient implements FeedClient {
-    private final FeedFetcher feedFetcher;
-
-    public FeedRemoteClient(FeedFetcher feedFetcher) {
-        this.feedFetcher = feedFetcher;
-    }
-
-    @Override
-    public Optional<SyndFeed> getFeed(String feedUrl) {
-        Optional<SyndFeed> feed = Optional.empty();
-        try {
-            feed = Optional.ofNullable(feedFetcher.retrieveFeed(new URL(feedUrl)));
-        } catch (Exception e) {}
-        return feed;
-    }
+public class RSSFeedSampleData {
+    public static final String WEBPAGE_CONTAINING_RSS_FEED_URL = "http://helsinki.fi/webpagecontainingfeedlink";
 }

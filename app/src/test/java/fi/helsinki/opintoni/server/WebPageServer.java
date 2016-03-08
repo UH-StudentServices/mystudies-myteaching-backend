@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.server;
 
 import fi.helsinki.opintoni.sampledata.OpenGraphSampleData;
+import fi.helsinki.opintoni.sampledata.RSSFeedSampleData;
 import fi.helsinki.opintoni.sampledata.SampleDataFiles;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -30,11 +31,11 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-public class MetaDataServer {
+public class WebPageServer {
 
     private final MockRestServiceServer server;
 
-    public MetaDataServer(RestTemplate metaDataRestTemplate) {
+    public WebPageServer(RestTemplate metaDataRestTemplate) {
         this.server = MockRestServiceServer.createServer(metaDataRestTemplate);
     }
 
@@ -42,6 +43,13 @@ public class MetaDataServer {
         server.expect(requestTo(OpenGraphSampleData.URL))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(SampleDataFiles.toText("pagemetadata/document.html"), MediaType.TEXT_HTML));
+    }
+
+    public void expectRssFeedRequest(String feedUrl) {
+        server.expect(requestTo(RSSFeedSampleData.WEBPAGE_CONTAINING_RSS_FEED_URL))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(
+                String.format(SampleDataFiles.toText("rssfeedwebpage/rssFeedWebPage.html"), feedUrl), MediaType.TEXT_HTML));
     }
 
     public void expectMetaDataNotFound() {
