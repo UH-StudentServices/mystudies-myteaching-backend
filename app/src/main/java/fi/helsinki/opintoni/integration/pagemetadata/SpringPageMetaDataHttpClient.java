@@ -18,8 +18,6 @@
 package fi.helsinki.opintoni.integration.pagemetadata;
 
 import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,8 +27,6 @@ public class SpringPageMetaDataHttpClient implements PageMetaDataHttpClient {
     private static final String USER_AGENT_KEY = "User-Agent";
     private static final String USER_AGENT = "Mozilla";
     private static final String PARAMETERS_KEY = "parameters";
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(SpringPageMetaDataHttpClient.class);
 
     private final RestTemplate metaDataRestTemplate;
 
