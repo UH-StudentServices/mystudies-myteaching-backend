@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
@@ -133,25 +134,36 @@ public class FavoriteResourceTest extends SpringTest {
     @Test
     public void thatRSSFeedIsFoundWhenUrlIsFeedUrl() throws Exception {
         String feedUrl = getMockFeedApiUrl();
-        assertFindRssFeed(feedUrl, feedUrl);
+
+        findRssFeed(feedUrl)
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$[0].title").value("RSS feed"))
+            .andExpect(jsonPath("$[0].url").value(feedUrl));
     }
 
     @Test
     public void thatRSSFeedIsFoundWhenUrlIsWebPageContainingFeedUrl() throws Exception {
-        String feedUrl = getMockFeedApiUrl();
-        webPageServer.expectRssFeedRequest(feedUrl);
-        assertFindRssFeed(RSSFeedSampleData.WEBPAGE_CONTAINING_RSS_FEED_URL, feedUrl);
+        String feedUrl1 = getMockFeedApiUrl(RSSFeedSampleData.FEED_ID_1);
+        String feedUrl2 = getMockFeedApiUrl(RSSFeedSampleData.FEED_ID_2);
+
+        webPageServer.expectRssFeedRequest(feedUrl1, feedUrl2);
+
+        findRssFeed(RSSFeedSampleData.WEBPAGE_CONTAINING_RSS_FEED_URL)
+            .andExpect(jsonPath("$", hasSize(2)))
+            .andExpect(jsonPath("$[0].title").value("RSS feed"))
+            .andExpect(jsonPath("$[0].url").value(feedUrl1))
+            .andExpect(jsonPath("$[1].title").value("RSS feed 2"))
+            .andExpect(jsonPath("$[1].url").value(feedUrl2));
     }
 
-    private void assertFindRssFeed(String feedUrl, String expectedResultUrl) throws Exception{
+    private ResultActions findRssFeed(String feedUrl) throws Exception{
         String requestUrl = StringUtil.format(
             "/api/private/v1/favorites/rss/find?url=%s",
             feedUrl);
 
-        mockMvc.perform(get(requestUrl).with(securityContext(studentSecurityContext()))
+        return mockMvc.perform(get(requestUrl).with(securityContext(studentSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.title").value("RSS feed"))
-            .andExpect(jsonPath("$.url").value(expectedResultUrl));
+            .andExpect(status().isOk());
     }
 }

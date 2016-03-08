@@ -19,4 +19,6 @@ package fi.helsinki.opintoni.sampledata;
 
 public class RSSFeedSampleData {
     public static final String WEBPAGE_CONTAINING_RSS_FEED_URL = "http://helsinki.fi/webpagecontainingfeedlink";
+    public static final String FEED_ID_1 = "1";
+    public static final String FEED_ID_2 = "2";
 }

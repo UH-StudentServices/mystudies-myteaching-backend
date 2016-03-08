@@ -77,7 +77,7 @@ public class FavoriteResource extends AbstractResource {
 
     @RequestMapping(value = "/rss/find", method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<FindFeedDto> findRssFeed(@RequestParam("url") String feedUrl) {
+    public ResponseEntity<List<FindFeedDto>> findRssFeed(@RequestParam("url") String feedUrl) {
         return response(feedService.findRssFeed(feedUrl));
     }
 

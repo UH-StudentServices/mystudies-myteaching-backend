@@ -46,10 +46,14 @@ public class WebPageServer {
     }
 
     public void expectRssFeedRequest(String feedUrl) {
+        expectRssFeedRequest(feedUrl, "");
+    }
+
+    public void expectRssFeedRequest(String firstFeedUrl, String secondFeedUrl) {
         server.expect(requestTo(RSSFeedSampleData.WEBPAGE_CONTAINING_RSS_FEED_URL))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(
-                String.format(SampleDataFiles.toText("rssfeedwebpage/rssFeedWebPage.html"), feedUrl), MediaType.TEXT_HTML));
+                String.format(SampleDataFiles.toText("rssfeedwebpage/rssFeedWebPage.html"), firstFeedUrl, secondFeedUrl), MediaType.TEXT_HTML));
     }
 
     public void expectMetaDataNotFound() {

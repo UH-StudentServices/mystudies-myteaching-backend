@@ -17,6 +17,8 @@
 
 package fi.helsinki.opintoni.server;
 
+import com.google.common.collect.ImmutableMap;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.apache.commons.io.IOUtils;
@@ -25,7 +27,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.PostConstruct;
+import java.util.Map;
 
 @RestController
 @Profile("test")
@@ -33,16 +39,25 @@ import org.springframework.web.bind.annotation.RestController;
     value = RestConstants.PUBLIC_API_V1 + "/mockfeed",
     produces = WebConstants.APPLICATION_XML)
 public class FeedServer {
-    @Value("classpath:sampledata/feed/feed.rss")
-    private Resource mockFeed;
+    @Value("classpath:sampledata/feed/feed1.rss")
+    private Resource mockFeed1;
+
+    @Value("classpath:sampledata/feed/feed2.rss")
+    private Resource mockFeed2;
+
+    private Map<String, Resource> feeds;
+
+    @PostConstruct
+    private void init() {
+        feeds = ImmutableMap.of("1", mockFeed1, "2", mockFeed2);
+    }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String feed() {
-        String feed = null;
+    public String feed(@RequestParam("id") String feedId) {
         try {
-            feed = IOUtils.toString(mockFeed.getInputStream());
+            return IOUtils.toString(feeds.get(feedId).getInputStream());
         } catch (Exception e) {
+            throw new NotFoundException("Feed not found for id: " + feedId);
         }
-        return feed;
     }
 }

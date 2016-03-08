@@ -1,15 +1,19 @@
 package fi.helsinki.opintoni.service;
 
+import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.FeedDto;
 import fi.helsinki.opintoni.dto.FindFeedDto;
 import fi.helsinki.opintoni.integration.feed.FeedClient;
 import fi.helsinki.opintoni.integration.pagemetadata.PageMetaDataHttpClient;
 import fi.helsinki.opintoni.service.converter.FeedConverter;
 import org.jsoup.Jsoup;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FeedService {
@@ -33,28 +37,39 @@ public class FeedService {
             .orElse(null);
     }
 
-    public FindFeedDto findRssFeed(String feedUrl) {
-        return feedClient
-            .getFeed(feedUrl)
-            .map(feed -> new FindFeedDto(feed.getTitle(), feedUrl))
-            .orElseGet(() -> parseAndRetrieveFeedFromWebPage(feedUrl));
+    public List<FindFeedDto> findRssFeed(String feedUrl) {
+        Optional<List<FindFeedDto>> findFeedDtoOptional = findFeed(feedUrl).map(Lists::newArrayList);
+
+        return findFeedDtoOptional.orElseGet(() -> parseAndRetrieveFeedsFromWebPage(feedUrl));
     }
 
-    private FindFeedDto parseAndRetrieveFeedFromWebPage(String feedUrl) {
-        return parseFeedUrlFromWebPage(feedUrl)
-            .flatMap(parsedUrl ->
-                feedClient.getFeed(parsedUrl)
-                    .map(feed -> new FindFeedDto(feed.getTitle(), parsedUrl)))
-            .orElse(null);
+    private List<FindFeedDto> parseAndRetrieveFeedsFromWebPage(String feedUrl) {
+        return parseFeedUrlsFromWebPage(feedUrl)
+            .stream()
+            .map(parsedFeedUrl -> findFeed(parsedFeedUrl).orElse(null))
+            .filter(feedDto -> feedDto != null)
+            .collect(Collectors.toList());
     }
 
-    private Optional<String> parseFeedUrlFromWebPage(String url) {
+    private Optional<FindFeedDto> findFeed(String feedUrl) {
+        return feedClient.getFeed(feedUrl)
+            .map(feed -> new FindFeedDto(feed.getTitle(), feedUrl));
+    }
+
+    private List<String> parseFeedUrlsFromWebPage(String url) {
         return pageMetaDataHttpClient
             .getPageBody(url)
             .map(Jsoup::parse)
             .map(document -> document.select(FEED_CSS_SELECTOR))
-            .filter(elements -> !elements.isEmpty())
-            .map(elements -> elements.get(0).attr(FEED_HREF_ATTRIBUTE));
+            .map(this::getFeedUrls)
+            .orElseGet(Lists::newArrayList);
+    }
+
+    private List<String> getFeedUrls(Elements elements) {
+        return elements
+            .stream()
+            .map(element -> element.attr(FEED_HREF_ATTRIBUTE))
+            .collect(Collectors.toList());
     }
 
 }

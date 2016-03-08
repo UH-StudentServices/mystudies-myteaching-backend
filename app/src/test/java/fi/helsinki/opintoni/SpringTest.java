@@ -184,7 +184,11 @@ public abstract class SpringTest {
     }
 
     protected String getMockFeedApiUrl() {
-        return getRemoteMockApiUrl("/mockfeed");
+        return getRemoteMockApiUrl(String.format("mockfeed?id=%s", "1"));
+    }
+
+    protected String getMockFeedApiUrl(String feedId) {
+        return getRemoteMockApiUrl(String.format("mockfeed?id=%s", feedId));
     }
 
 }
