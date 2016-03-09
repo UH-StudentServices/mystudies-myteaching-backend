@@ -17,16 +17,18 @@
 
 package fi.helsinki.opintoni.service.mock;
 
+import fi.helsinki.opintoni.config.SlugifyConfiguration;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.portfolio.PortfolioPathGenerator;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -36,22 +38,28 @@ public class PortfolioPathGeneratorTest {
     @Mock
     private PortfolioRepository portfolioRepository;
 
-    @InjectMocks
     private PortfolioPathGenerator portfolioPathGenerator;
+
+    @Before
+    public void setup() throws IOException {
+        SlugifyConfiguration slugifyConfiguration = new SlugifyConfiguration();
+        portfolioPathGenerator = new PortfolioPathGenerator(portfolioRepository, slugifyConfiguration.slugify());
+    }
 
     @Test
     public void thatNonConflictingPortfolioPathIsGenerated() {
-        assertThat(portfolioPathGenerator.create("Test Name")).isEqualTo("test.name");
-        assertThat(portfolioPathGenerator.create(" Test  Name ")).isEqualTo("test.name");
-        assertThat(portfolioPathGenerator.create("Test Middle Name")).isEqualTo("test.middle.name");
-        assertThat(portfolioPathGenerator.create("Test Middle Name")).isEqualTo("test.middle.name");
-        assertThat(portfolioPathGenerator.create("jeanne d'arc")).isEqualTo("jeanne.d.arc");
+        assertThat(portfolioPathGenerator.create("Test Name")).isEqualTo("test-name");
+        assertThat(portfolioPathGenerator.create(" Test  Name ")).isEqualTo("test-name");
+        assertThat(portfolioPathGenerator.create("Test Middle Name")).isEqualTo("test-middle-name");
+        assertThat(portfolioPathGenerator.create("Test Middle Name")).isEqualTo("test-middle-name");
+        assertThat(portfolioPathGenerator.create("jeanne d'arc")).isEqualTo("jeanne-d-arc");
+        assertThat(portfolioPathGenerator.create("Jönssi Mörköperä")).isEqualTo("jonssi-morkopera");
     }
 
     @Test
     public void thatConflictingPortfolioPathIsGenerated() {
-        when(portfolioRepository.countByPath("test.name")).thenReturn(1);
-        assertThat(portfolioPathGenerator.create("Test Name")).isEqualTo("test.name-1");
+        when(portfolioRepository.countByPath("test-name")).thenReturn(1);
+        assertThat(portfolioPathGenerator.create("Test Name")).isEqualTo("test-name-1");
     }
 
     @Test(expected = RuntimeException.class)

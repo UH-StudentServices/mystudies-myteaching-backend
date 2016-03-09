@@ -207,6 +207,7 @@ dependencies {
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: httpclient_version
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-csv', version: jackson_dataformat_csv_version
     compile group: 'com.rometools', name: 'rome-fetcher', version: '1.5.1'
+    compile group: 'com.github.slugify', name: 'slugify', version: com_github_slugify_version
 
     testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: awaility_version
     testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: json_path_version

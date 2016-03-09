@@ -17,8 +17,8 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
+import com.github.slugify.Slugify;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,17 +31,17 @@ public class PortfolioPathGenerator {
 
     private final PortfolioRepository portfolioRepository;
 
+    private final Slugify slugify;
+
     @Autowired
-    public PortfolioPathGenerator(PortfolioRepository portfolioRepository) {
+    public PortfolioPathGenerator(PortfolioRepository portfolioRepository, Slugify slugify) {
         this.portfolioRepository = portfolioRepository;
+        this.slugify = slugify;
     }
 
     public String create(String name) {
         return Optional.ofNullable(name)
-            .map(StringUtils::trim)
-            .map(this::spacesToDots)
-            .map(StringUtils::lowerCase)
-            .map(this::removeCharactersThatBreakPath)
+            .map(n -> slugify.slugify(n))
             .map(this::makeUnique)
             .orElse(null);
     }
@@ -64,11 +64,4 @@ public class PortfolioPathGenerator {
         return portfolioRepository.countByPath(path) == 0;
     }
 
-    private String removeCharactersThatBreakPath(String path) {
-        return StringUtils.replacePattern(path, "[^a-z0-9-_.]", ".");
-    }
-
-    private String spacesToDots(String name) {
-        return StringUtils.replacePattern(name, "\\s+", ".");
-    }
 }

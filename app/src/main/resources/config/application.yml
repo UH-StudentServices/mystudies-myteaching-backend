@@ -367,6 +367,6 @@ feed.client.implementation: remote
 locale.default: fi
 
 portfolioUrl:
-  student: /portfolio/#
-  teacher: /portfolio/#
+  student: /portfolio
+  teacher: /portfolio
 
