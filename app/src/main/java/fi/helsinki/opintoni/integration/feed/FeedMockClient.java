@@ -29,7 +29,7 @@ import java.util.Optional;
 
 public class FeedMockClient implements FeedClient {
 
-    @Value("classpath:sampledata/feed/feed.rss")
+    @Value("classpath:sampledata/feed/feed1.rss")
     private Resource mockFeed;
 
     private final ObjectMapper objectMapper;
