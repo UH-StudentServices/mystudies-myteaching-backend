@@ -38,7 +38,7 @@ public class RestrictedPortfolioResourcePermissionTest extends SpringTest {
 
     @Test
     public void thatUserCannotLoadPrivatePortfolioFromRestrictedApi() throws Exception {
-        mockMvc.perform(get("/api/restricted/v1/portfolio/student/olli.opiskelija")
+        mockMvc.perform(get("/api/restricted/v1/portfolio/student/olli-opiskelija")
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
@@ -48,11 +48,11 @@ public class RestrictedPortfolioResourcePermissionTest extends SpringTest {
 
     @Test
     public void thatUserCanLoadPublicPortfolioFromRestrictedApi() throws Exception {
-        Portfolio portfolio = portfolioRepository.findByPathAndPortfolioRole("olli.opiskelija", PortfolioRole.STUDENT).get();
+        Portfolio portfolio = portfolioRepository.findByPathAndPortfolioRole("olli-opiskelija", PortfolioRole.STUDENT).get();
         portfolio.visibility = PortfolioVisibility.PUBLIC;
         portfolioRepository.save(portfolio);
 
-        mockMvc.perform(get("/api/restricted/v1/portfolio/student/olli.opiskelija")
+        mockMvc.perform(get("/api/restricted/v1/portfolio/student/olli-opiskelija")
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)

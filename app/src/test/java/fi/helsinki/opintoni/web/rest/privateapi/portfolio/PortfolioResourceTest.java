@@ -146,7 +146,7 @@ public class PortfolioResourceTest extends SpringTest {
 
     @Test
     public void thatPortfolioIsFoundByPath() throws Exception {
-        mockMvc.perform(get(STUDENT_PORTFOLIO_API_URL + "/olli.opiskelija").with(securityContext
+        mockMvc.perform(get(STUDENT_PORTFOLIO_API_URL + "/olli-opiskelija").with(securityContext
             (studentSecurityContext()))
             .characterEncoding("UTF-8")
             .accept(MediaType.APPLICATION_JSON))
