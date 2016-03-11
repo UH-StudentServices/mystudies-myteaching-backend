@@ -30,7 +30,7 @@ public class AvatarImageServiceTest extends SpringTest {
 
     @Test
     public void thatDefaultAvatarImageUrlIsReturned() {
-        assertThat(avatarImageService.getAvatarImageUrl(1L)).isEqualTo("https://opi-1.student.helsinki.fi/app/assets/icons/avatar.png");
+        assertThat(avatarImageService.getAvatarImageUrl(1L)).isEqualTo("https://opi-1.student.helsinki.fi/assets/icons/avatar.png");
     }
 
     @Test

@@ -42,10 +42,10 @@ public class CustomAuthenticationFailureHandlerTest {
     @Test
     public void thatFailedAuthenticationResultsInAccessDeniedPage() throws Exception {
         HttpServletResponse response = mock(HttpServletResponse.class);
-        when(appConfiguration.get("appRelativeUrl")).thenReturn("/app");
+        when(appConfiguration.get("appRelativeUrl")).thenReturn("");
 
         handler.onAuthenticationFailure(mock(HttpServletRequest.class), response, mock(AuthenticationException.class));
 
-        verify(response).sendRedirect("/app/#/error/accessdenied");
+        verify(response).sendRedirect("/error/accessdenied");
     }
 }

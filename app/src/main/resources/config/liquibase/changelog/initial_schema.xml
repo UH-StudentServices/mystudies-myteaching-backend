@@ -1015,4 +1015,9 @@
                              columnNames="portfolio_id, language_code"
                              constraintName="unique_lang_code_portfolio_id_pair"/>
     </changeSet>
+
+    <changeSet id="Drop existing portfolios because paths have migrated to html5 urls and slugified names" author="Juho Rautio">
+        <sql>DELETE from portfolio</sql>
+    </changeSet>
+
 </databaseChangeLog>

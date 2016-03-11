@@ -15,22 +15,29 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.controller;
+package fi.helsinki.opintoni.config;
 
-import fi.helsinki.opintoni.SpringTest;
-import org.junit.Test;
+import com.github.slugify.Slugify;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.io.IOException;
+import java.util.HashMap;
 
-public class RootControllerTest extends SpringTest {
+@Configuration
+public class SlugifyConfiguration {
 
-    @Test
-    public void thatUserIsRedirectedFromRootUrl() throws Exception {
-        mockMvc.perform(get("/"))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(header().string("Location", "https://opi-1.student.helsinki.fi"));
+    @Bean
+    public Slugify slugify() throws IOException {
+        Slugify slugify = new Slugify();
+
+        slugify.setCustomReplacements(new HashMap<String, String>() {{
+            put("ä", "a");
+            put("å", "a");
+            put("ö", "o");
+        }});
+
+        return slugify;
     }
 
 }

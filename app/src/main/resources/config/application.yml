@@ -262,7 +262,7 @@ saml:
 
 studentAppUrl:
 teacherAppUrl:
-appRelativeUrl: /app
+appRelativeUrl:
 
 leiki:
     base.url: http://suositukset.student.helsinki.fi
@@ -367,6 +367,6 @@ feed.client.implementation: remote
 locale.default: fi
 
 portfolioUrl:
-  student: /portfolio/#
-  teacher: /portfolio/#
+  student: /portfolio
+  teacher: /portfolio
 

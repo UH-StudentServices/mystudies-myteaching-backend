@@ -50,7 +50,7 @@ public class UriBuilder {
     }
 
     public String getDefaultUserAvatarUrl() {
-        return getAbsoluteUrl("/app/assets/icons/avatar.png");
+        return getAbsoluteUrl("/assets/icons/avatar.png");
     }
 
     public String getPortfolioDefaultUserAvatarUrl() {

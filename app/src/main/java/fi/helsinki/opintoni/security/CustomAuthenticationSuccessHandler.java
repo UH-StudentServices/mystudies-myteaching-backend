@@ -56,10 +56,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             addLastLoginCookie(response);
             addHasLoggedInCookie(response);
 
-            response.sendRedirect("/app/");
+            response.sendRedirect("/");
 
         } catch (OodiIntegrationException e) {
-            response.sendRedirect("/app/#/error/maintenance");
+            response.sendRedirect("/error/maintenance");
         }
 
     }

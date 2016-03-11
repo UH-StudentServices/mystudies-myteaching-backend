@@ -38,6 +38,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        response.sendRedirect(appConfiguration.get("appRelativeUrl") + "/#/error/accessdenied");
+        response.sendRedirect(appConfiguration.get("appRelativeUrl") + "/error/accessdenied");
     }
 }

@@ -38,7 +38,7 @@ oodi:
 coursePage:
     base.url: https://dev.student.helsinki.fi/api/v1
     client.implementation: mock
-    defaultCourseImageUri: /app/assets/images/course/default_course_image.jpg
+    defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
 leiki:
     base.url: http://suositukset.student.helsinki.fi
@@ -49,14 +49,14 @@ googleAnalyticsAccount: UA-61958961-1
 unisportMyReservationsUrl: https://unisport.fi/yol/web/<%= userLanguage %>/ext/opintoni/reservationList.do?mockData=true
 
 hostUrl: http://local.student.helsinki.fi:3000
-loginUrlTeacher: /app/locallog.html
-loginUrlStudent: /app/locallog.html
+loginUrlTeacher: /locallog.html
+loginUrlStudent: /locallog.html
 logoutUrl: /logout
 teacherAppUrl: http://local.teacher.helsinki.fi:3000
 studentAppUrl: http://local.student.helsinki.fi:3000
 portfolioUrl:
-  student: http://local.student.helsinki.fi:3002/portfolio/#
-  teacher: http://local.teacher.helsinki.fi:3002/portfolio/#
+  student: http://local.student.helsinki.fi:3002
+  teacher: http://local.teacher.helsinki.fi:3002
 
 embedlyApiKey: dd741e653b0e4841bc59a60650031057
 
