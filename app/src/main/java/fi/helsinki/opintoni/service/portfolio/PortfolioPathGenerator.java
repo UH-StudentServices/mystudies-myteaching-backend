@@ -41,7 +41,7 @@ public class PortfolioPathGenerator {
 
     public String create(String name) {
         return Optional.ofNullable(name)
-            .map(n -> slugify.slugify(n))
+            .map(slugify::slugify)
             .map(this::makeUnique)
             .orElse(null);
     }
