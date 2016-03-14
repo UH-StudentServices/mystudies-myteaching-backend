@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.config;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
-import org.apache.catalina.connector.Connector;
 import org.apache.catalina.mbeans.JmxRemoteLifecycleListener;
 import org.apache.catalina.valves.RemoteIpValve;
 import org.slf4j.Logger;
@@ -102,10 +101,12 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         remoteIpValve.setInternalProxies(appConfiguration.get("internalProxies"));
         tomcat.addContextValves(remoteIpValve);
 
+        /*
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         connector.setProxyPort(appConfiguration.getInteger("http.connector.proxy_port"));
         connector.setPort(appConfiguration.getInteger("http.connector.app_port"));
         tomcat.addAdditionalTomcatConnectors(connector);
+        */
 
         return tomcat;
     }
