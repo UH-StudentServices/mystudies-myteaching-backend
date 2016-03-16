@@ -17,23 +17,15 @@
 
 package fi.helsinki.opintoni.web.rest.publicapi.portfolio;
 
-import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
-import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
-import fi.helsinki.opintoni.repository.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PublicPortfolioComponentVisibilityTest extends PublicPortfolioTest {
-
-    @Autowired
-    private ComponentVisibilityRepository componentVisibilityRepository;
 
     @Autowired
     private PortfolioRepository portfolioRepository;
@@ -43,61 +35,14 @@ public class PublicPortfolioComponentVisibilityTest extends PublicPortfolioTest 
         setPrivateVisibilitiesForEveryComponent();
     }
 
-    private void setPrivateVisibilitiesForEveryComponent() {
-        componentVisibilityRepository.deleteAll();
-
-        Arrays.asList(PortfolioComponent.values()).forEach(component -> {
-            ComponentVisibility componentVisibility = new ComponentVisibility();
-            componentVisibility.component = component;
-            componentVisibility.visibility = ComponentVisibility.Visibility.PRIVATE;
-            componentVisibility.portfolio = portfolioRepository.findOne(2L);
-            componentVisibilityRepository.save(componentVisibility);
-        });
-    }
-
-    @Test
-    public void thatPrivateDegreesAreNotReturned() throws Exception {
-        returnsForbidden(PUBLIC_PORTFOLIO_URL + "/degree");
-    }
-
     @Test
     public void thatPrivateAttainmentsAreNotReturned() throws Exception {
-        returnsForbidden(PUBLIC_PORTFOLIO_URL + "/attainment");
-    }
-
-    @Test
-    public void thatPrivateContactInformationIsNotReturned() throws Exception {
-        returnsForbidden(PUBLIC_PORTFOLIO_URL + "/contactinformation");
-    }
-
-    @Test
-    public void thatPrivateKeywordsAreNotReturned() throws Exception {
-        returnsForbidden(PUBLIC_PORTFOLIO_URL + "/keyword");
-    }
-
-    @Test
-    public void thatPrivateWorkExperienceIsNotReturned() throws Exception {
-        returnsForbidden(PUBLIC_PORTFOLIO_URL + "/workexperience");
-    }
-
-    @Test
-    public void thatPrivateJobSearchIsNotReturned() throws Exception {
-        returnsForbidden(PUBLIC_PORTFOLIO_URL + "/jobsearch");
-    }
-
-    @Test
-    public void thatPrivateFavoritesAreNotReturned() throws Exception {
-        returnsForbidden(PUBLIC_PORTFOLIO_URL + "/favorites");
-    }
-
-    @Test
-    public void thatPrivateSummaryIsNotReturned() throws Exception {
-        returnsForbidden(PUBLIC_PORTFOLIO_URL + "/summary");
+        returnsForbidden(PUBLIC_PORTFOLIO_API_PATH + "/attainment");
     }
 
     @Test
     public void thatPrivateCreditsAreNotReturned() throws Exception {
-        returnsForbidden(PUBLIC_PORTFOLIO_URL + "/credits");
+        returnsForbidden(PUBLIC_PORTFOLIO_API_PATH + "/credits");
     }
 
     private void returnsForbidden(String url) throws Exception {

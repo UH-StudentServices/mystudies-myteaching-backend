@@ -30,16 +30,6 @@ public class PrivateWorkExperienceResourcePermissionTest extends SpringTest {
     private final String RESOURCE_URL = "/api/private/v1/portfolio/2/workexperience";
 
     @Test
-    public void thatUserCannotGetWorkExperienceFromPortfolioSheDoesNotOwn() throws Exception {
-        mockMvc.perform(get(RESOURCE_URL).with(securityContext
-            (teacherSecurityContext()))
-            .characterEncoding("UTF-8")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNotFound());
-    }
-
-    @Test
     public void thatUserCannotInsertWorkExperienceIntoPortfolioSheDoesNotOwn() throws Exception {
         mockMvc.perform(post(RESOURCE_URL).with(securityContext
             (teacherSecurityContext()))

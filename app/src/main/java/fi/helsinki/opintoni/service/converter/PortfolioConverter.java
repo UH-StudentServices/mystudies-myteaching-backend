@@ -22,10 +22,20 @@ import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.dto.UserSettingsDto;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
+import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
+import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.AvatarImageService;
 import fi.helsinki.opintoni.service.ComponentVisibilityService;
+import fi.helsinki.opintoni.service.CreditsService;
 import fi.helsinki.opintoni.service.UserSettingsService;
+import fi.helsinki.opintoni.service.portfolio.ContactInformationService;
+import fi.helsinki.opintoni.service.portfolio.DegreeService;
+import fi.helsinki.opintoni.service.portfolio.FreeTextContentService;
+import fi.helsinki.opintoni.service.portfolio.JobSearchService;
 import fi.helsinki.opintoni.service.portfolio.LanguageProficiencyService;
+import fi.helsinki.opintoni.service.portfolio.PortfolioFavoriteService;
+import fi.helsinki.opintoni.service.portfolio.PortfolioKeywordRelationshipService;
+import fi.helsinki.opintoni.service.portfolio.WorkExperienceService;
 import fi.helsinki.opintoni.util.UriBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,18 +50,45 @@ public class PortfolioConverter {
     private final UserSettingsService userSettingsService;
     private final AvatarImageService avatarImageService;
     private final LanguageProficiencyService languageProficiencyService;
+    private final FreeTextContentService freeTextContentService;
+    private final CreditsService creditsService;
+    private final PortfolioFavoriteService favoriteService;
+    private final WorkExperienceService workExperienceService;
+    private final JobSearchService jobSearchService;
+    private final ContactInformationService contactInformationService;
+    private final DegreeService degreeService;
+    private final PortfolioKeywordRelationshipService keywordRelationshipService;
+    private final PortfolioRepository portfolioRepository;
 
     @Autowired
     public PortfolioConverter(UriBuilder uriBuilder,
                               ComponentVisibilityService componentVisibilityService,
                               UserSettingsService userSettingsService,
                               AvatarImageService avatarImageService,
-                              LanguageProficiencyService languageProficiencyService) {
+                              LanguageProficiencyService languageProficiencyService,
+                              FreeTextContentService freeTextContentService,
+                              CreditsService creditsService,
+                              PortfolioFavoriteService favoriteService,
+                              WorkExperienceService workExperienceService,
+                              JobSearchService jobSearchService,
+                              ContactInformationService contactInformationService,
+                              DegreeService degreeService,
+                              PortfolioKeywordRelationshipService keywordRelationshipService,
+                              PortfolioRepository portfolioRepository) {
         this.uriBuilder = uriBuilder;
         this.componentVisibilityService = componentVisibilityService;
         this.userSettingsService = userSettingsService;
         this.avatarImageService = avatarImageService;
         this.languageProficiencyService = languageProficiencyService;
+        this.freeTextContentService = freeTextContentService;
+        this.creditsService = creditsService;
+        this.favoriteService = favoriteService;
+        this.workExperienceService = workExperienceService;
+        this.jobSearchService = jobSearchService;
+        this.contactInformationService = contactInformationService;
+        this.degreeService = degreeService;
+        this.keywordRelationshipService = keywordRelationshipService;
+        this.portfolioRepository = portfolioRepository;
     }
 
     public PortfolioDto toDto(Portfolio portfolio, ComponentFetchStrategy componentFetchStrategy) {
@@ -80,6 +117,12 @@ public class PortfolioConverter {
         }
     }
 
+    private void fetchAllComponents(Long portfolioId, PortfolioDto portfolioDto) {
+        Arrays.asList(PortfolioComponent.values()).stream().forEach(componentType -> {
+            fetchComponentData(portfolioId, portfolioDto, componentType);
+        });
+    }
+
     private void fetchPublicComponents(Long portfolioId, PortfolioDto portfolioDto) {
         componentVisibilityService.findByPortfolioId(portfolioId).stream()
             .filter(visibility -> ComponentVisibility.Visibility.PUBLIC.toString().equals(visibility.visibility))
@@ -92,13 +135,32 @@ public class PortfolioConverter {
             case LANGUAGE_PROFICIENCY:
                 portfolioDto.languageProficiencies = languageProficiencyService.findByPortfolioId(portfolioId);
                 break;
+            case FREE_TEXT_CONTENT:
+                portfolioDto.freeTextContent = freeTextContentService.findByPortfolioId(portfolioId);
+                break;
+            case FAVORITES:
+                portfolioDto.favorites = favoriteService.findByPortfolioId(portfolioId);
+                break;
+            case WORK_EXPERIENCE:
+                portfolioDto.workExperience = workExperienceService.findByPortfolioId(portfolioId);
+                portfolioDto.jobSearch = jobSearchService.findByPortfolioId(portfolioId);
+                break;
+            case CONTACT_INFORMATION:
+                portfolioDto.contactInformation = contactInformationService.findByPortfolioId(portfolioId);
+                break;
+            case DEGREES:
+                portfolioDto.degrees = degreeService.findByPortfolioId(portfolioId);
+                break;
+            case STUDIES:
+                portfolioDto.keywords = keywordRelationshipService.findByPortfolioId(portfolioId);
+                portfolioDto.summary = new SummaryDto(portfolioRepository.findOne(portfolioId).summary);
+                break;
+            case CREDITS:
+            case ATTAINMENTS:
+            default:
+                // Do not eagerly fetch components that involve external API calls
+                break;
         }
-    }
-
-    private void fetchAllComponents(Long portfolioId, PortfolioDto portfolioDto) {
-        Arrays.asList(PortfolioComponent.values()).stream().forEach(componentType -> {
-            fetchComponentData(portfolioId, portfolioDto, componentType);
-        });
     }
 
     private String getBackgroundUri(Portfolio portfolio) {

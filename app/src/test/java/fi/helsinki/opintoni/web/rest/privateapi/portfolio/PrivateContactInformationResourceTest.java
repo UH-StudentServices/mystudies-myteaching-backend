@@ -34,7 +34,6 @@ import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securi
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,24 +45,6 @@ public class PrivateContactInformationResourceTest extends SpringTest {
 
     @Autowired
     private SomeLinkRepository someLinkRepository;
-
-    @Test
-    public void thatContactInformationIsReturned() throws Exception {
-        mockMvc.perform(get("/api/private/v1/portfolio/2/contactinformation")
-            .with(securityContext(studentSecurityContext())))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.email").value("olli.opiskelija@helsinki.fi"))
-            .andExpect(jsonPath("$.phoneNumber").value("+358112223333"));
-    }
-
-    @Test
-    public void thatNotFoundIsThrown() throws Exception {
-        contactInformationRepository.delete(1L);
-
-        mockMvc.perform(get("/api/private/v1/portfolio/2/contactinformation")
-            .with(securityContext(studentSecurityContext())))
-            .andExpect(status().isNotFound());
-    }
 
     @Test
     public void thatContactInformationIsUpdated() throws Exception {

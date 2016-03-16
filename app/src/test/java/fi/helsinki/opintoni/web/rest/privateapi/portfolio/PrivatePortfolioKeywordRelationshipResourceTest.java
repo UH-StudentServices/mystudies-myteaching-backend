@@ -28,25 +28,12 @@ import org.springframework.http.MediaType;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivatePortfolioKeywordRelationshipResourceTest extends SpringTest {
 
     private final String RESOURCE_URL = "/api/private/v1/portfolio/2/keyword";
-
-    @Test
-    public void thatPortfolioKeywordRelationshipsAreReturned() throws Exception {
-        mockMvc.perform(get(RESOURCE_URL).with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(1)))
-            .andExpect(jsonPath("$.[0].title").value("Keyword 1"));
-    }
 
     @Test
     public void thatKeywordsAreUpdated() throws Exception {

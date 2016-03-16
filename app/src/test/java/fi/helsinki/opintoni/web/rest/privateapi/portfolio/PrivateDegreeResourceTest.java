@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
-import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.degree.UpdateDegree;
@@ -26,29 +25,15 @@ import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivateDegreeResourceTest extends SpringTest {
-
-    @Test
-    public void thatDegreesAreReturned() throws Exception {
-        mockMvc.perform(get("/api/private/v1/portfolio/2/degree")
-            .with(securityContext(studentSecurityContext())))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(1)))
-            .andExpect(jsonPath("$[0].title").value("Luonnontieteiden kandidaatti"))
-            .andExpect(jsonPath("$[0].description").value("Globaalit rakenneoptimointimenetelmät"))
-            .andExpect(jsonPath("$[0].dateOfDegree[0]").value(2015))
-            .andExpect(jsonPath("$[0].dateOfDegree[1]").value(6))
-            .andExpect(jsonPath("$[0].dateOfDegree[2]").value(6));
-    }
 
     @Test
     public void thatDegreesAreUpdated() throws Exception {
@@ -59,7 +44,7 @@ public class PrivateDegreeResourceTest extends SpringTest {
 
         mockMvc.perform(post("/api/private/v1/portfolio/2/degree")
             .with(securityContext(studentSecurityContext()))
-            .content(WebTestUtils.toJsonBytes(Lists.newArrayList(updateDegree)))
+            .content(WebTestUtils.toJsonBytes(newArrayList(updateDegree)))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
@@ -75,11 +60,10 @@ public class PrivateDegreeResourceTest extends SpringTest {
     public void thatDegreesAreDeleted() throws Exception {
         mockMvc.perform(post("/api/private/v1/portfolio/2/degree")
             .with(securityContext(studentSecurityContext()))
-            .content(WebTestUtils.toJsonBytes(Lists.newArrayList()))
+            .content(WebTestUtils.toJsonBytes(newArrayList()))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(0)));
     }
-
 }

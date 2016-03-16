@@ -18,13 +18,11 @@
 package fi.helsinki.opintoni.dto.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
+import fi.helsinki.opintoni.dto.FavoriteDto;
 
 import java.util.List;
 
-import static com.google.common.collect.Lists.newArrayList;
-
 public class PortfolioDto {
-
     public Long id;
     public String url;
     public String intro;
@@ -32,6 +30,14 @@ public class PortfolioDto {
     public String backgroundUri;
     public PortfolioVisibility visibility;
     public String avatarUrl;
-    public List<ComponentVisibilityDto> componentVisibilities = newArrayList();
-    public List<LanguageProficiencyDto> languageProficiencies = newArrayList();
+    public List<ComponentVisibilityDto> componentVisibilities;
+    public List<LanguageProficiencyDto> languageProficiencies;
+    public List<FreeTextContentDto> freeTextContent;
+    public List<FavoriteDto> favorites;
+    public List<WorkExperienceDto> workExperience;
+    public JobSearchDto jobSearch;
+    public ContactInformationDto contactInformation;
+    public List<DegreeDto> degrees;
+    public List<KeywordDto> keywords;
+    public SummaryDto summary;
 }

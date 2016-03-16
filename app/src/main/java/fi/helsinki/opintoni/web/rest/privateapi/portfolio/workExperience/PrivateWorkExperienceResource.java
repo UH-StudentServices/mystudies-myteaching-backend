@@ -49,13 +49,6 @@ public class PrivateWorkExperienceResource extends AbstractResource {
         this.permissionChecker = permissionChecker;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<WorkExperienceDto>> findByPortfolioId(@UserId Long userId,
-                                                                     @PathVariable Long portfolioId) {
-        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
-        return response(workExperienceService.findByPortfolioId(portfolioId));
-    }
-
     @RequestMapping(method = RequestMethod.POST)
     @Timed
     public ResponseEntity<WorkExperienceDto> insert(@UserId Long userId,
@@ -74,5 +67,11 @@ public class PrivateWorkExperienceResource extends AbstractResource {
                                                           @PathVariable Long workExperienceId) {
         permissionChecker.verifyPermission(userId, workExperienceId, WorkExperience.class);
         return response(workExperienceService.delete(workExperienceId, portfolioId));
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    protected ResponseEntity<List<WorkExperienceDto>> findByPortfolioId(@UserId Long userId,
+                                                                        @PathVariable Long portfolioId) {
+        return response(workExperienceService.findByPortfolioId(portfolioId));
     }
 }

@@ -37,21 +37,6 @@ public class PrivateWorkExperienceResourceTest extends SpringTest {
     private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/workexperience";
 
     @Test
-    public void thatPortfolioWorkExperienceIsReturned() throws Exception {
-        mockMvc.perform(get(RESOURCE_URL).with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(1)))
-            .andExpect(jsonPath("$.[0].jobTitle").value("Harjoittelija"))
-            .andExpect(jsonPath("$.[0].employer").value("HY"))
-            .andExpect(jsonPath("$.[0].startDate[0]").value(2015))
-            .andExpect(jsonPath("$.[0].startDate[1]").value(6))
-            .andExpect(jsonPath("$.[0].startDate[2]").value(6));
-    }
-
-    @Test
     public void thatPortfolioWorkExperienceIsSaved() throws Exception {
 
         WorkExperienceDto workExperienceDto = new WorkExperienceDto();

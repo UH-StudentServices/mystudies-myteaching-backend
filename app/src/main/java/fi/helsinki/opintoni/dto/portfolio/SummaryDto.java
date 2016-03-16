@@ -17,11 +17,19 @@
 
 package fi.helsinki.opintoni.dto.portfolio;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public class SummaryDto {
 
     public String summary;
 
     public SummaryDto(String summary) {
         this.summary = summary;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return summary;
     }
 }

@@ -50,13 +50,6 @@ public class PrivateContactInformationResource extends AbstractResource {
         this.permissionChecker = permissionChecker;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<ContactInformationDto> findByPortfolioId(@UserId Long userId,
-                                                                   @PathVariable Long portfolioId) {
-        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
-        return response(contactInformationService.findByPortfolioId(portfolioId));
-    }
-
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ContactInformationDto> update(
         @UserId Long userId,

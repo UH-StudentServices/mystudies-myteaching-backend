@@ -18,18 +18,26 @@
 package fi.helsinki.opintoni.web.rest.publicapi.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
+import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
+import fi.helsinki.opintoni.repository.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
+
 public abstract class PublicPortfolioTest extends SpringTest {
 
-    protected static final String PUBLIC_PORTFOLIO_URL = "/api/public/v1/portfolio/2";
+    protected static final String PUBLIC_PORTFOLIO_API_PATH = "/api/public/v1/portfolio/2";
 
     @Autowired
     private PortfolioRepository portfolioRepository;
+
+    @Autowired
+    private ComponentVisibilityRepository componentVisibilityRepository;
 
     @Before
     public void savePortfolioAsPublic() {
@@ -38,4 +46,15 @@ public abstract class PublicPortfolioTest extends SpringTest {
         portfolioRepository.save(portfolio);
     }
 
+    public void setPrivateVisibilitiesForEveryComponent() {
+        componentVisibilityRepository.deleteAll();
+
+        Arrays.asList(PortfolioComponent.values()).forEach(component -> {
+            ComponentVisibility componentVisibility = new ComponentVisibility();
+            componentVisibility.component = component;
+            componentVisibility.visibility = ComponentVisibility.Visibility.PRIVATE;
+            componentVisibility.portfolio = portfolioRepository.findOne(2L);
+            componentVisibilityRepository.save(componentVisibility);
+        });
+    }
 }
