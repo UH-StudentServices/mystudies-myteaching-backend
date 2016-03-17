@@ -23,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
-import java.util.Optional;
 
 @Component
 public class CourseRecommendationConverter {
@@ -53,9 +52,6 @@ public class CourseRecommendationConverter {
     }
 
     private String getRecommendedCourseLink(LeikiCourseRecommendation leikiCourseRecommendation) {
-        return Optional
-            .ofNullable(leikiCourseRecommendation.link)
-            .map(coursePageUriLocalizer::localize)
-            .orElse(null);
+        return leikiCourseRecommendation.link != null ? coursePageUriLocalizer.localize(leikiCourseRecommendation.link) : null;
     }
 }
