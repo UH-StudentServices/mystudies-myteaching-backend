@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping(value = RestConstants.PRIVATE_API_V1 + "/recommendations")
@@ -44,7 +45,7 @@ public class RecommendationResource extends AbstractResource {
 
     @RequestMapping(value = "/courses", method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<List<CourseRecommendationDto>> search(@StudentNumber String studentNumber) throws Exception {
-        return response(recommendationService.getCourseRecommendations(studentNumber));
+    public ResponseEntity<List<CourseRecommendationDto>> search(@StudentNumber String studentNumber, Locale locale) throws Exception {
+        return response(recommendationService.getCourseRecommendations(studentNumber, locale));
     }
 }

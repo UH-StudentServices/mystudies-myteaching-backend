@@ -27,6 +27,8 @@ import java.util.function.Function;
 @Component
 public class CoursePageUriLocalizer {
 
+    private static final String COURSEPAGE_URL_LANGUAGE_STRING_REGEXP = "/sv|/fi";
+
     private final ImmutableMap<String, Function<String, String>> localizers = ImmutableMap.of(
         "fi", this::toFinnish,
         "sv", this::toSwedish,
@@ -35,7 +37,7 @@ public class CoursePageUriLocalizer {
 
     public String localize(String originalUrl) {
         Locale locale = LocaleContextHolder.getLocale();
-        return localizers.get(locale.getLanguage()).apply(originalUrl);
+        return localizers.get(locale.getLanguage()).apply(stripLanguageFromUrl(originalUrl));
     }
 
     private String toFinnish(String coursePageUrl) {
@@ -48,5 +50,9 @@ public class CoursePageUriLocalizer {
 
     private String toEnglish(String coursePageUrl) {
         return coursePageUrl;
+    }
+
+    private String stripLanguageFromUrl(String coursePageUrl) {
+        return coursePageUrl.replaceAll(COURSEPAGE_URL_LANGUAGE_STRING_REGEXP , "");
     }
 }

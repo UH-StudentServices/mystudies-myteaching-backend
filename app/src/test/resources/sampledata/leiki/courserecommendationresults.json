@@ -10,7 +10,21 @@
         "link": "https://dev.student.helsinki.fi/590155/107694052",
         "date": "2015-08-31T14:01:08",
         "relevance": 0,
-        "popularity": 0
+        "popularity": 0,
+        "tags": [
+          {
+            "name": "lang_en",
+            "values": [
+              "Henkilökohtainen opintosuunnitelma (HOPS) (ENG321) (en)"
+            ]
+          },
+          {
+            "name": "lang_sv",
+            "values": [
+              "Henkilökohtainen opintosuunnitelma (HOPS) (ENG321) (sv)"
+            ]
+          }
+        ]
       },
       {
         "ID": "courses.helsinki.fi/fi/400581",
@@ -20,7 +34,21 @@
         "link": "https://dev.student.helsinki.fi/590155/107694052",
         "date": "2015-08-31T14:01:08",
         "relevance": 0,
-        "popularity": 0
+        "popularity": 0,
+        "tags": [
+          {
+            "name": "lang_en",
+            "values": [
+              "Seminaari (ENG320) (en)"
+            ]
+          },
+          {
+            "name": "lang_sv",
+            "values": [
+              "Seminaari (ENG320) (sv)"
+            ]
+          }
+        ]
       }
     ]
   }
