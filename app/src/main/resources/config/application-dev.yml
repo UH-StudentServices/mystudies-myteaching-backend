@@ -44,12 +44,12 @@ googleAnalyticsAccount: UA-55852460-3
 
 unisportMyReservationsUrl: https://unisport.fi/yol/web/<%= userLanguage %>/ext/opintoni/reservationList.do?mockData=true
 
-hostUrl: http://opi-1.student.helsinki.fi
+hostUrl: https://opi-1.student.helsinki.fi
 loginUrlTeacher: /locallog.html
 loginUrlStudent: /locallog.html
 logoutUrl: /logout
-teacherAppUrl: http://opi-1.teacher.helsinki.fi
-studentAppUrl: http://opi-1.student.helsinki.fi
+teacherAppUrl: https://opi-1.teacher.helsinki.fi
+studentAppUrl: https://opi-1.student.helsinki.fi
 
 embedlyApiKey: dd741e653b0e4841bc59a60650031057
 

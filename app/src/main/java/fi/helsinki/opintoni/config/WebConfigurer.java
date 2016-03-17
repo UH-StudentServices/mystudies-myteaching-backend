@@ -110,6 +110,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         EnumSet<DispatcherType> dispatcherTypes =
             EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
         if (env.acceptsProfiles(
+            Constants.SPRING_PROFILE_DEVELOPMENT,
             Constants.SPRING_PROFILE_QA,
             Constants.SPRING_PROFILE_PRODUCTION)) {
             initMetrics(servletContext, dispatcherTypes);
