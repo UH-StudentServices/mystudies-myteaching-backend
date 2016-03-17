@@ -19,15 +19,39 @@ package fi.helsinki.opintoni.service.converter;
 
 import fi.helsinki.opintoni.dto.CourseRecommendationDto;
 import fi.helsinki.opintoni.integration.leiki.LeikiCourseRecommendation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Locale;
 
 @Component
 public class CourseRecommendationConverter {
 
-    public CourseRecommendationDto toDto(LeikiCourseRecommendation leikiCourseRecommendation) {
+    private static final String LEIKI_LANG_TAG_PREFIX = "lang_";
+
+    private final CoursePageUriLocalizer coursePageUriLocalizer;
+
+    @Autowired
+    public CourseRecommendationConverter(CoursePageUriLocalizer coursePageUriLocalizer) {
+        this.coursePageUriLocalizer = coursePageUriLocalizer;
+    }
+
+    public CourseRecommendationDto toDto(LeikiCourseRecommendation leikiCourseRecommendation, Locale locale) {
         CourseRecommendationDto courseRecommendationDto = new CourseRecommendationDto();
-        courseRecommendationDto.link = leikiCourseRecommendation.link;
-        courseRecommendationDto.title = leikiCourseRecommendation.title;
+        courseRecommendationDto.link = getRecommendedCourseLink(leikiCourseRecommendation);
+        courseRecommendationDto.title = getRecommendedCourseTitle(leikiCourseRecommendation, locale);
         return courseRecommendationDto;
+    }
+
+    private String getRecommendedCourseTitle(LeikiCourseRecommendation leikiCourseRecommendation, Locale locale) {
+        return leikiCourseRecommendation.tags.stream()
+            .filter(tag -> tag.name.equals(LEIKI_LANG_TAG_PREFIX + locale.getLanguage()))
+            .findFirst()
+            .flatMap(tag -> tag.values.stream().findFirst())
+            .orElse(leikiCourseRecommendation.title);
+    }
+
+    private String getRecommendedCourseLink(LeikiCourseRecommendation leikiCourseRecommendation) {
+        return leikiCourseRecommendation.link != null ? coursePageUriLocalizer.localize(leikiCourseRecommendation.link) : null;
     }
 }

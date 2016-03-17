@@ -17,12 +17,12 @@
 
 package fi.helsinki.opintoni.integration.leiki;
 
+
 import com.google.common.collect.Lists;
 
 import java.util.List;
 
-public class LeikiCourseRecommendation {
-    public String link;
-    public String title;
-    public List<LeikiCourseRecommendationTag> tags = Lists.newArrayList();
+public class LeikiCourseRecommendationTag {
+    public String name;
+    public List<String> values = Lists.newArrayList();
 }

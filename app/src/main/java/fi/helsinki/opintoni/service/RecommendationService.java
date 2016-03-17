@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,10 +40,10 @@ public class RecommendationService {
     }
 
 
-    public List<CourseRecommendationDto> getCourseRecommendations(String studentNumber) {
+    public List<CourseRecommendationDto> getCourseRecommendations(String studentNumber, Locale locale) {
         return leikiClient
             .getCourseRecommendations(studentNumber).stream()
-            .map(courseRecommendationConverter::toDto)
+            .map(courseRecommendation -> courseRecommendationConverter.toDto(courseRecommendation, locale))
             .collect(Collectors.toList());
     }
 
