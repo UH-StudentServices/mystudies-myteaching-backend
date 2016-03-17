@@ -4,12 +4,8 @@ import fi.helsinki.opintoni.SpringTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
-
 import java.util.Locale;
-
 import static org.assertj.core.api.Assertions.assertThat;
-
-
 
 public class CoursePageUriLocalizerTest extends SpringTest {
 
@@ -74,11 +70,7 @@ public class CoursePageUriLocalizerTest extends SpringTest {
         assertThat(coursePageUriLocalizer.localize("http://courses.helsinki.fi/sv/30250")).isEqualTo("http://courses.helsinki.fi/fi/30250");
     }
 
-
-
     private void setLocale(String localeName) {
         LocaleContextHolder.setLocale(new Locale(localeName));
     }
-
-
 }
