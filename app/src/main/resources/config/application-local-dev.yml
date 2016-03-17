@@ -55,8 +55,8 @@ logoutUrl: /logout
 teacherAppUrl: http://local.teacher.helsinki.fi:3000
 studentAppUrl: http://local.student.helsinki.fi:3000
 portfolioUrl:
-  student: http://local.student.helsinki.fi:3002
-  teacher: http://local.teacher.helsinki.fi:3002
+  student: http://local.student.helsinki.fi:3002/portfolio
+  teacher: http://local.teacher.helsinki.fi:3002/portfolio
 
 embedlyApiKey: dd741e653b0e4841bc59a60650031057
 
