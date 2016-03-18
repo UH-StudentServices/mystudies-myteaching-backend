@@ -50,14 +50,6 @@ public class PrivatePortfolioKeywordRelationshipResource extends AbstractResourc
         this.permissionChecker = permissionChecker;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    @Timed
-    public ResponseEntity<List<KeywordDto>> findByPortfolioId(@UserId Long userId,
-                                                              @PathVariable Long portfolioId) {
-        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
-        return response(portfolioKeywordRelationshipService.findByPortfolioId(portfolioId));
-    }
-
     @RequestMapping(method = RequestMethod.POST)
     @Timed
     public ResponseEntity<List<KeywordDto>> update(@UserId Long userId,

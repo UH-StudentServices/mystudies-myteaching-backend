@@ -10,9 +10,11 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import static fi.helsinki.opintoni.web.rest.RestConstants.MATCH_NUMBER;
 import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_API_V1;
@@ -31,11 +33,6 @@ public class PrivateFreeTextContentResource extends AbstractResource {
     public PrivateFreeTextContentResource(PermissionChecker permissionChecker, FreeTextContentService freeTextContentService) {
         this.permissionChecker = permissionChecker;
         this.freeTextContentService = freeTextContentService;
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<FreeTextContentDto>> findByPortfolioId(@PathVariable Long portfolioId) {
-        return response(freeTextContentService.findByPortfolioId(portfolioId));
     }
 
     @RequestMapping(method = RequestMethod.POST)

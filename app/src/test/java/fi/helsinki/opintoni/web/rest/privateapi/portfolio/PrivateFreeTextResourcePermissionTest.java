@@ -18,17 +18,8 @@ public class PrivateFreeTextResourcePermissionTest extends SpringTest {
 
     private static final String API_PATH_OWN_PORTFOLIO = "/portfolio/2/freetextcontent";
 
-
     private static final String API_PATH_TO_OTHER_USERS_PORTFOLIO = "/portfolio/1/freetextcontent";
-    private static final String API_PATH_OWN_FREETEXTCONTENT_ID = "/1";
     private static final String API_PATH_OHTER_USERS_FREETEXTCONTENT_ID = "/2";
-
-    @Test
-    public void thatUserCannotLoadFreeTextContentFromPortfolioSheDoesNowOwnThroughPrivateApi() throws Exception {
-        mockMvc.perform(get(RestConstants.PRIVATE_API_V1 + API_PATH_TO_OTHER_USERS_PORTFOLIO)
-            .with(securityContext(studentSecurityContext())))
-            .andExpect(status().isNotFound());
-    }
 
     @Test
     public void thatUserCannotInsertFreeTextContentToPortfolioSheDoesNowOwn() throws Exception {

@@ -19,21 +19,28 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.portfolio.JobSearchDto;
+import fi.helsinki.opintoni.service.portfolio.JobSearchService;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivateJobSearchResourceTest extends SpringTest {
 
     private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/jobsearch";
     private static final String CONTACT_EMAIL = "olli.opiskelija@helsinki.fi";
+    private static final long PORTFOLIO_ID = 2L;
+
+    @Autowired
+    private JobSearchService jobSearchService;
 
     private void saveJobSearch(ResultMatcher expectedResult) throws Exception {
         JobSearchDto jobSearchDto = new JobSearchDto();
@@ -58,11 +65,8 @@ public class PrivateJobSearchResourceTest extends SpringTest {
     public void thatJobSearchGetsSaved() throws Exception {
         deleteJobSearch();
         saveJobSearch(status().isOk());
-        mockMvc.perform(get(RESOURCE_URL).with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.contactEmail").value(CONTACT_EMAIL));
+
+        assertThat(jobSearchService.findByPortfolioId(PORTFOLIO_ID).contactEmail).isEqualTo(CONTACT_EMAIL);
     }
 
     @Test
@@ -73,10 +77,8 @@ public class PrivateJobSearchResourceTest extends SpringTest {
     @Test
     public void thatJobSearchIsDeleted() throws Exception {
         deleteJobSearch();
-        mockMvc.perform(get(RESOURCE_URL).with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNotFound());
+
+        assertThat(jobSearchService.findByPortfolioId(PORTFOLIO_ID)).isNull();
     }
 
 }

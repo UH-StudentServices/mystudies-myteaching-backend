@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio.summary;
 
 import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
-import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.portfolio.PortfolioService;
 import fi.helsinki.opintoni.web.WebConstants;
@@ -28,7 +27,11 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
@@ -45,14 +48,6 @@ public class PrivateSummaryResource extends AbstractResource {
     public PrivateSummaryResource(PermissionChecker permissionChecker, PortfolioService portfolioService) {
         this.permissionChecker = permissionChecker;
         this.portfolioService = portfolioService;
-    }
-
-    @RequestMapping(method = RequestMethod.GET)
-    @Timed
-    public ResponseEntity<SummaryDto> get(@UserId Long userId,
-                                          @PathVariable Long portfolioId) {
-        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
-        return response(portfolioService.getSummary(portfolioId));
     }
 
     @RequestMapping(method = RequestMethod.POST)

@@ -17,15 +17,8 @@
 
 package fi.helsinki.opintoni.web.rest.restrictedapi.portfolio;
 
-import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
-import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
-import fi.helsinki.opintoni.repository.ComponentVisibilityRepository;
-import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Arrays;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
@@ -34,77 +27,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class RestrictedPortfolioComponentVisibilityTest extends RestrictedPortfolioTest {
 
-    @Autowired
-    private ComponentVisibilityRepository componentVisibilityRepository;
-
-    @Autowired
-    private PortfolioRepository portfolioRepository;
-
     @Before
     public void init() {
         setPrivateVisibilitiesForEveryComponent();
     }
 
-    private void setPrivateVisibilitiesForEveryComponent() {
-        componentVisibilityRepository.deleteAll();
-
-        Arrays.asList(PortfolioComponent.values()).forEach(component -> {
-            ComponentVisibility componentVisibility = new ComponentVisibility();
-            componentVisibility.component = component;
-            componentVisibility.visibility = ComponentVisibility.Visibility.PRIVATE;
-            componentVisibility.portfolio = portfolioRepository.findOne(2L);
-            componentVisibilityRepository.save(componentVisibility);
-        });
-    }
-
-    @Test
-    public void thatPrivateDegreesAreNotReturned() throws Exception {
-        returnsForbidden(RESTRICTED_PORTFOLIO_URL + "/degree");
-    }
-
     @Test
     public void thatPrivateAttainmentsAreNotReturned() throws Exception {
-        returnsForbidden(RESTRICTED_PORTFOLIO_URL + "/attainment");
-    }
-
-    @Test
-    public void thatPrivateContactInformationIsNotReturned() throws Exception {
-        returnsForbidden(RESTRICTED_PORTFOLIO_URL + "/contactinformation");
-    }
-
-    @Test
-    public void thatPrivateKeywordsAreNotReturned() throws Exception {
-        returnsForbidden(RESTRICTED_PORTFOLIO_URL + "/keyword");
-    }
-
-    @Test
-    public void thatPrivateWorkExperienceIsNotReturned() throws Exception {
-        returnsForbidden(RESTRICTED_PORTFOLIO_URL + "/workexperience");
-    }
-
-    @Test
-    public void thatPrivateJobSearchIsNotReturned() throws Exception {
-        returnsForbidden(RESTRICTED_PORTFOLIO_URL + "/jobsearch");
-    }
-
-    @Test
-    public void thatPrivateFavoritesAreNotReturned() throws Exception {
-        returnsForbidden(RESTRICTED_PORTFOLIO_URL + "/favorites");
-    }
-
-    @Test
-    public void thatPrivateSummaryIsNotReturned() throws Exception {
-        returnsForbidden(RESTRICTED_PORTFOLIO_URL + "/summary");
+        returnsForbidden(RESTRICTED_PORTFOLIO_API_PATH + "/attainment");
     }
 
     @Test
     public void thatPrivateCreditsAreNotReturned() throws Exception {
-        returnsForbidden(RESTRICTED_PORTFOLIO_URL + "/credits");
+        returnsForbidden(RESTRICTED_PORTFOLIO_API_PATH + "/credits");
     }
 
     private void returnsForbidden(String url) throws Exception {
         mockMvc.perform(get(url).with(securityContext(studentSecurityContext())))
             .andExpect(status().isForbidden());
     }
-
 }

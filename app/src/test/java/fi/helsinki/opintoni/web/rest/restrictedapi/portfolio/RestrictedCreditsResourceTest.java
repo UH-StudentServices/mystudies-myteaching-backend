@@ -33,7 +33,7 @@ public class RestrictedCreditsResourceTest extends RestrictedPortfolioTest {
             .roles()
             .info();
 
-        mockMvc.perform(get(RESTRICTED_PORTFOLIO_URL + "/credits")
+        mockMvc.perform(get(RESTRICTED_PORTFOLIO_API_PATH + "/credits")
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.totalCredits").value(196));

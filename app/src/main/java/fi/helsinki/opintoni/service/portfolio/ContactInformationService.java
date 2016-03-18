@@ -24,17 +24,15 @@ import fi.helsinki.opintoni.dto.portfolio.ContactInformationDto;
 import fi.helsinki.opintoni.repository.portfolio.ContactInformationRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.repository.portfolio.SomeLinkRepository;
-import fi.helsinki.opintoni.service.DtoService;
 import fi.helsinki.opintoni.service.converter.ContactInformationConverter;
-import fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation
-    .UpdateContactInformationWithSomeLinksRequest;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation.UpdateContactInformationWithSomeLinksRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service
-public class ContactInformationService extends DtoService {
+public class ContactInformationService {
 
     private final ContactInformationRepository contactInformationRepository;
     private final ContactInformationConverter contactInformationConverter;
@@ -53,9 +51,9 @@ public class ContactInformationService extends DtoService {
     }
 
     public ContactInformationDto findByPortfolioId(Long portfolioId) {
-        return getDto(portfolioId,
-            contactInformationRepository::findByPortfolioId,
-            contactInformationConverter::toDto);
+        return contactInformationRepository.findByPortfolioId(portfolioId)
+            .map(contactInformationConverter::toDto)
+            .orElse(null);
     }
 
     public ContactInformationDto updateContactInformationWithSomeLinks(

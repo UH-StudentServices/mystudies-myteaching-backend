@@ -25,23 +25,12 @@ import org.springframework.http.MediaType;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivatePortfolioKeywordRelationshipResourcePermissionTest extends SpringTest {
 
     private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/keyword";
-
-    @Test
-    public void thatUserCannotLoadKeywordsFromPrivateApiThatSheDoesNotOwn() throws Exception {
-        mockMvc.perform(get(RESOURCE_URL)
-            .with(securityContext(teacherSecurityContext()))
-            .characterEncoding("UTF-8")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNotFound());
-    }
 
     @Test
     public void thatUserCannotUpdateKeywordsFromPrivateApiThatSheDoesNotOwn() throws Exception {

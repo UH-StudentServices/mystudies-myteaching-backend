@@ -50,13 +50,6 @@ public class PrivateDegreeResource extends AbstractResource {
         this.permissionChecker = permissionChecker;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<DegreeDto>> findByPortfolioId(@UserId Long userId,
-                                                             @PathVariable Long portfolioId) {
-        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
-        return response(degreeService.findByPortfolioId(portfolioId));
-    }
-
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<List<DegreeDto>> update(@UserId Long userId,
                                                   @PathVariable Long portfolioId,

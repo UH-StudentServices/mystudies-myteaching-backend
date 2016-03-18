@@ -21,7 +21,6 @@ import fi.helsinki.opintoni.domain.portfolio.JobSearch;
 import fi.helsinki.opintoni.dto.portfolio.JobSearchDto;
 import fi.helsinki.opintoni.repository.portfolio.JobSearchRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
-import fi.helsinki.opintoni.service.DtoService;
 import fi.helsinki.opintoni.service.converter.JobSearchConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class JobSearchService extends DtoService {
+public class JobSearchService {
 
     private final JobSearchRepository jobSearchRepository;
     private final PortfolioRepository portfolioRepository;
@@ -45,8 +44,9 @@ public class JobSearchService extends DtoService {
     }
 
     public JobSearchDto findByPortfolioId(Long portfolioId) {
-        return getDto(portfolioId, jobSearchRepository::findByPortfolioId,
-            jobSearchConverter::toDto);
+        return jobSearchRepository.findByPortfolioId(portfolioId)
+            .map(jobSearchConverter::toDto)
+            .orElse(null);
     }
 
     public JobSearchDto insert(Long portfolioId, JobSearchDto jobSearchDto) {
