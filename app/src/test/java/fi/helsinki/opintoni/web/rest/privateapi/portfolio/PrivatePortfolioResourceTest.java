@@ -18,44 +18,57 @@
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.dto.portfolio.DegreeDto;
 import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;
 import fi.helsinki.opintoni.dto.portfolio.KeywordDto;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficiencyDto;
+import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.dto.portfolio.WorkExperienceDto;
+import fi.helsinki.opintoni.service.portfolio.PortfolioService;
+import fi.helsinki.opintoni.web.WebTestUtils;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivatePortfolioResourceTest extends SpringTest {
 
-    private static final String STUDENT_PORTFOLIO_API_URL = "/portfolio/student";
-
+    private static final long PORTFOLIO_ID = 2L;
+    private static final String STUDENT_PORTFOLIO_API_PATH = "/portfolio/student";
+    private static final String PORTFOLIO_UPDATE_API_PATH = "/portfolio/" + PORTFOLIO_ID;
     private static final String STUDENT_EMAIL = "olli.opiskelija@helsinki.fi";
+
+    @Autowired
+    private PortfolioService portfolioService;
 
     @Test
     public void thatPortfolioIsReturned() throws Exception {
-        mockMvc.perform(get(RestConstants.PRIVATE_API_V1 + STUDENT_PORTFOLIO_API_URL)
+        mockMvc.perform(get(RestConstants.PRIVATE_API_V1 + STUDENT_PORTFOLIO_API_PATH)
             .with(securityContext(studentSecurityContext())))
             .andExpect(jsonPath("$.id").value(2));
     }
 
     @Test
     public void thatPortfolioContainsAllLocallyStoredComponents() throws Exception {
-        mockMvc.perform(get(RestConstants.PRIVATE_API_V1 + STUDENT_PORTFOLIO_API_URL)
+        mockMvc.perform(get(RestConstants.PRIVATE_API_V1 + STUDENT_PORTFOLIO_API_PATH)
             .with(securityContext(studentSecurityContext())))
             .andExpect(jsonPath("$.contactInformation").value(
                 both(hasEntry("email", STUDENT_EMAIL)).and(hasEntry("phoneNumber", "+358112223333"))
@@ -113,5 +126,23 @@ public class PrivatePortfolioResourceTest extends SpringTest {
                     hasEntry("id", 8)
                 )
             )));
+    }
+
+    @Test
+    public void thatPortfolioVisibilityIsChanged() throws Exception {
+        PortfolioDto portfolioDto = new PortfolioDto();
+        portfolioDto.id = PORTFOLIO_ID;
+        portfolioDto.visibility = PortfolioVisibility.PUBLIC;
+        portfolioDto.ownerName = "Olli Opiskelija";
+
+        mockMvc.perform(put(RestConstants.PRIVATE_API_V1 + PORTFOLIO_UPDATE_API_PATH)
+            .with(securityContext(studentSecurityContext()))
+            .content(WebTestUtils.toJsonBytes(portfolioDto))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+        assertThat(portfolioService.findById(PORTFOLIO_ID).visibility)
+            .isEqualTo(PortfolioVisibility.PUBLIC);
     }
 }
