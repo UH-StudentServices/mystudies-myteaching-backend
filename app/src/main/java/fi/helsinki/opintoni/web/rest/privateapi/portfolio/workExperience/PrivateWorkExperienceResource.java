@@ -68,10 +68,4 @@ public class PrivateWorkExperienceResource extends AbstractResource {
         permissionChecker.verifyPermission(userId, workExperienceId, WorkExperience.class);
         return response(workExperienceService.delete(workExperienceId, portfolioId));
     }
-
-    @RequestMapping(method = RequestMethod.GET)
-    protected ResponseEntity<List<WorkExperienceDto>> findByPortfolioId(@UserId Long userId,
-                                                                        @PathVariable Long portfolioId) {
-        return response(workExperienceService.findByPortfolioId(portfolioId));
-    }
 }
