@@ -69,6 +69,7 @@ public class LanguageProficiencyService {
         validateOwnership(userId, languageProficiencyDto.id);
         PortfolioLanguageProficiency languageProficiency =
             languageProficiencyRepository.findOne(languageProficiencyDto.id);
+        languageProficiency.languageCode= languageProficiencyDto.language;
         languageProficiency.proficiency = languageProficiencyDto.proficiency;
     }
 
