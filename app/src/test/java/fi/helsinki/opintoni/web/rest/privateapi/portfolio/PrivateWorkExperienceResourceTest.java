@@ -19,14 +19,17 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.portfolio.WorkExperienceDto;
+import fi.helsinki.opintoni.service.portfolio.WorkExperienceService;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -35,6 +38,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PrivateWorkExperienceResourceTest extends SpringTest {
 
     private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/workexperience";
+    private static final long PORTFOLIO_ID = 2L;
+
+    @Autowired
+    private WorkExperienceService workExperienceService;
 
     @Test
     public void thatPortfolioWorkExperienceIsSaved() throws Exception {
@@ -68,11 +75,6 @@ public class PrivateWorkExperienceResourceTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        mockMvc.perform(get(RESOURCE_URL).with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(0)));
+        assertThat(workExperienceService.findByPortfolioId(PORTFOLIO_ID)).isEmpty();
     }
 }
