@@ -132,7 +132,7 @@ public class PortfolioConverter {
 
     private void fetchComponentData(Long portfolioId, PortfolioDto portfolioDto, PortfolioComponent component) {
         switch(component) {
-            case LANGUAGE_PROFICIENCY:
+            case LANGUAGE_PROFICIENCIES:
                 portfolioDto.languageProficiencies = languageProficiencyService.findByPortfolioId(portfolioId);
                 break;
             case FREE_TEXT_CONTENT:
