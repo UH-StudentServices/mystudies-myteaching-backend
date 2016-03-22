@@ -66,6 +66,7 @@ public class UserSettingsResourceTest extends SpringTest {
             .andExpect(jsonPath("$.backgroundType").value("DEFAULT"))
             .andExpect(jsonPath("$.showMyStudiesTour").value(true))
             .andExpect(jsonPath("$.showMyTeachingTour").value(true))
+            .andExpect(jsonPath("$.showBanner").value(true))
             .andExpect(jsonPath("$.showPortfolioTour").value(true));
     }
 
@@ -75,6 +76,7 @@ public class UserSettingsResourceTest extends SpringTest {
         request.showMyStudiesTour = false;
         request.showMyTeachingTour = false;
         request.showPortfolioTour = false;
+        request.showBanner = false;
 
         mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID)
             .with(securityContext(studentSecurityContext()))
@@ -88,7 +90,8 @@ public class UserSettingsResourceTest extends SpringTest {
             .andExpect(jsonPath("$.backgroundType").value("DEFAULT"))
             .andExpect(jsonPath("$.showMyStudiesTour").value(false))
             .andExpect(jsonPath("$.showMyTeachingTour").value(false))
-            .andExpect(jsonPath("$.showPortfolioTour").value(false));
+            .andExpect(jsonPath("$.showPortfolioTour").value(false))
+            .andExpect(jsonPath("$.showBanner").value(false));
     }
 
     @Test

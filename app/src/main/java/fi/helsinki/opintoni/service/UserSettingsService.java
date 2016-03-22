@@ -72,8 +72,12 @@ public class UserSettingsService {
     }
 
     public UserSettingsDto update(Long userSettingsId, UpdateUserSettingsRequest request) {
-        UserSettings updatedSettings = getUpdatedEntity(userSettingsId, request);
-        return userSettingsConverter.toDto(userSettingsRepository.save(updatedSettings));
+        UserSettings userSettings = userSettingsRepository.findOne(userSettingsId);
+        userSettings.showMyStudiesTour = request.showMyStudiesTour;
+        userSettings.showMyTeachingTour = request.showMyTeachingTour;
+        userSettings.showPortfolioTour = request.showPortfolioTour;
+        userSettings.showBanner = request.showBanner;
+        return userSettingsConverter.toDto(userSettingsRepository.save(userSettings));
     }
 
     @SkipLoggingAspect
@@ -87,14 +91,6 @@ public class UserSettingsService {
         userSettings.userAvatar.imageData = imageService.createUserAvatar(imageBase64);
 
         userSettingsRepository.save(userSettings);
-    }
-
-    private UserSettings getUpdatedEntity(Long userSettingsId, UpdateUserSettingsRequest request) {
-        UserSettings userSettings = userSettingsRepository.findOne(userSettingsId);
-        userSettings.showMyStudiesTour = request.showMyStudiesTour;
-        userSettings.showMyTeachingTour = request.showMyTeachingTour;
-        userSettings.showPortfolioTour = request.showPortfolioTour;
-        return userSettings;
     }
 
     public BufferedImage getUserAvatarImage(Long userId) {

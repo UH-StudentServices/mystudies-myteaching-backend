@@ -26,4 +26,5 @@ public class UserSettingsDto {
     public boolean showMyStudiesTour;
     public boolean showMyTeachingTour;
     public boolean showPortfolioTour;
+    public boolean showBanner;
 }

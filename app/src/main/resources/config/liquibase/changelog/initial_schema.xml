@@ -1020,4 +1020,12 @@
         <sql>DELETE from portfolio</sql>
     </changeSet>
 
+    <changeSet id="add show_banner field to user_usettings" author="Marko Rautajoki">
+        <addColumn tableName="user_settings">
+            <column name="show_banner" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

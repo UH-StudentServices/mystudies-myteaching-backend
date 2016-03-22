@@ -62,6 +62,9 @@ public class UserSettings extends AbstractAuditingEntity implements Ownership {
     @Column(name = "show_portfolio_tour")
     public boolean showPortfolioTour;
 
+    @Column(name = "show_banner")
+    public boolean showBanner;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
