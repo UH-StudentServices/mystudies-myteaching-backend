@@ -50,6 +50,7 @@ public class UserSettingsConverter {
         userSettingsDto.showMyStudiesTour = userSettings.showMyStudiesTour;
         userSettingsDto.showMyTeachingTour = userSettings.showMyTeachingTour;
         userSettingsDto.showPortfolioTour = userSettings.showPortfolioTour;
+        userSettingsDto.showBanner = userSettings.showBanner;
         return userSettingsDto;
     }
 
