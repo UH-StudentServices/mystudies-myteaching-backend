@@ -75,12 +75,12 @@ public class PrivatePortfolioResourceTest extends SpringTest {
             ))
             .andExpect(jsonPath("$.degrees").value(Matchers.<List<DegreeDto>>allOf(
                hasSize(1),
-                hasItem(
+               hasItem(
                     both(
                         hasEntry("title", "Luonnontieteiden kandidaatti")).and(
                         hasEntry("description", "Globaalit rakenneoptimointimenetelmät")
                     )
-                )
+               )
             )))
             .andExpect(jsonPath("$.workExperience").value(Matchers.<List<WorkExperienceDto>>allOf(
                 hasSize(1),
