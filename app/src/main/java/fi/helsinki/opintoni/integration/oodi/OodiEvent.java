@@ -36,7 +36,7 @@ public class OodiEvent {
     @JsonProperty("course_id")
     public Integer realisationId;
 
-    @JsonProperty("learningopportunity_name")
+    @JsonProperty("realisation_name")
     public List<OodiLocalizedValue> learningOpportunityName = Lists.newArrayList();
 
     @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT_OODI)
