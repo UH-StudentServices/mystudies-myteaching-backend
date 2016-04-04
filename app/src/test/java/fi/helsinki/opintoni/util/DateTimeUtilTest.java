@@ -24,16 +24,19 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DateTimeUtilTest  {
+
+    private static final String EXPECTED_DATE_STRING = "2015-05-01T00:00:00.000Z";
+
     @Test
     public void thatLastSemesterStringIsObtainedCorrectlyBeforeEndOfYear() {
         LocalDate d = LocalDate.of(2015, 10, 10);
-        assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo("01052015000000");
+        assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo(EXPECTED_DATE_STRING);
     }
 
     @Test
     public void thatLastSemesterStringIsObtainedCorrectlyAfterEndOfYear() {
         LocalDate d = LocalDate.of(2016, 4, 10);
-        assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo("01052015000000");
+        assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo(EXPECTED_DATE_STRING);
     }
 
 }

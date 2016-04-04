@@ -19,8 +19,8 @@ package fi.helsinki.opintoni.util;
 
 import fi.helsinki.opintoni.integration.DateFormatter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 
 public class DateTimeUtil {
 
@@ -29,8 +29,8 @@ public class DateTimeUtil {
     public static String getSemesterStartDateString(LocalDate now) {
         int year = now.getYear();
         int month = now.getMonthValue();
-        LocalDateTime d = LocalDateTime.of(month < SEMESTER_START_MONTH ? year - 1 : year, SEMESTER_START_MONTH, 1, 0, 0, 0);
-        return d.format(DateFormatter.OODI_DATE_FORMATTER);
+        LocalDateTime semesterStartDate = LocalDateTime.of(month < SEMESTER_START_MONTH ? year - 1 : year, SEMESTER_START_MONTH, 1, 0, 0, 0);
+        return semesterStartDate.format(DateTimeFormatter.ofPattern(DateFormatter.UTC_TIME_FORMAT_OODI));
     }
 
 }
