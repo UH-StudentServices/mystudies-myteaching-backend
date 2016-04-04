@@ -24,7 +24,5 @@ public class DateFormatter {
     public static final String UTC_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     public static final String UTC_TIME_FORMAT_OODI = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String LEIKI_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
-    public static final String OODI_DATE_FORMAT = "ddMMuuuuHHmmss";
     public static final DateTimeFormatter COURSE_PAGE_DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
-    public static final DateTimeFormatter OODI_DATE_FORMATTER = DateTimeFormatter.ofPattern(OODI_DATE_FORMAT);
 }
