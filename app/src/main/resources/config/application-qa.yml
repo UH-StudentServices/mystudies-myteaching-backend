@@ -32,7 +32,7 @@ metrics:
     jmx.enabled: true
 
 oodi:
-    base.url: https://oprek4.it.helsinki.fi:30039
+    base.url: https://oprek2.it.helsinki.fi:30039
     client.implementation: rest
 
 coursePage:
