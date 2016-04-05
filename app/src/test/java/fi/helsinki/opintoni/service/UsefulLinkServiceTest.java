@@ -54,7 +54,7 @@ public class UsefulLinkServiceTest extends SpringTest {
     private static final int USEFUL_LINKS_COUNT_FOR_STUDENT_WITH_UNKNOWN_FACULTY = 6;
     private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_STUDENT = 2;
     private static final int USEFUL_LINKS_COUNT_FOR_DEFAULT_TEACHER = 7;
-    private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_TEACHER = 4;
+    private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_TEACHER = 2;
 
     @Autowired
     RestTemplate linkUrlLoaderRestTemplate;
