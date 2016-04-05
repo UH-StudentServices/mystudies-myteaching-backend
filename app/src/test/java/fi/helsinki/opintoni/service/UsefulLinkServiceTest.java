@@ -263,12 +263,6 @@ public class UsefulLinkServiceTest extends SpringTest {
         checkLinkURLAndDescription(usefulLinks.get(1),
             "https://flamma.helsinki.fi/fi/HY311747",
             "usefulLinks.teachingPracticesInOpenUniversity");
-        checkLinkURLAndDescription(usefulLinks.get(2),
-            "https://www.avoin.helsinki.fi/opettajille/pedagoginen_koulutus.htm",
-            "usefulLinks.pedagogicTraining");
-        checkLinkURLAndDescription(usefulLinks.get(3),
-            "https://www.avoin.helsinki.fi/opettajille/index.htm",
-            "usefulLinks.forTeachers");
     }
 
     @Test

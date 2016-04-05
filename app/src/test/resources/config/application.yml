@@ -125,12 +125,6 @@ userDefaults :
             - url: https://flamma.helsinki.fi/fi/HY311747
               description: usefulLinks.teachingPracticesInOpenUniversity
               orderIndex: 1
-            - url: https://www.avoin.helsinki.fi/opettajille/pedagoginen_koulutus.htm
-              description: usefulLinks.pedagogicTraining
-              orderIndex: 2
-            - url: https://www.avoin.helsinki.fi/opettajille/index.htm
-              description: usefulLinks.forTeachers
-              orderIndex: 3
     facultyUsefulLinks :
         defaultFacultyCode: default
         teacherFacultyLinks:
