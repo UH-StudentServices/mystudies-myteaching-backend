@@ -26,6 +26,20 @@
           "text": "Formulation III"
         }
       ],
+      "realisation_root_name": [
+        {
+          "langcode": "fi",
+          "text": "Formulointi III"
+        },
+        {
+          "langcode": "sv",
+          "text": "Formulering III"
+        },
+        {
+          "langcode": "en",
+          "text": "Formulation III"
+        }
+      ],
       "learningopportunity_id": "10440",
       "cancelled" : "false"
     },
@@ -53,6 +67,20 @@
           "text": "Formulation II"
         }
       ],
+      "realisation_root_name": [
+        {
+          "langcode": "fi",
+          "text": "Formulointi II"
+        },
+        {
+          "langcode": "sv",
+          "text": "Formulering II"
+        },
+        {
+          "langcode": "en",
+          "text": "Formulation II"
+        }
+      ],
       "learningopportunity_id": "10440",
       "cancelled" : "false"
     },
@@ -67,6 +95,20 @@
       "simple_type_code": 2,
       "realisation_type_code": 19,
       "realisation_name": [
+        {
+          "langcode": "fi",
+          "text": "Harjoitus"
+        },
+        {
+          "langcode": "sv",
+          "text": "Harjoitus (sv)"
+        },
+        {
+          "langcode": "en",
+          "text": "Harjoitus (en)"
+        }
+      ],
+      "realisation_root_name": [
         {
           "langcode": "fi",
           "text": "Formulointi IIII"
