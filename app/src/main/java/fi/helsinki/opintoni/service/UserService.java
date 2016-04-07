@@ -107,6 +107,7 @@ public class UserService {
         userSettings.showMyStudiesTour = true;
         userSettings.showMyTeachingTour = true;
         userSettings.showPortfolioTour = true;
+        userSettings.showBanner = true;
         userSettingsRepository.save(userSettings);
     }
 
