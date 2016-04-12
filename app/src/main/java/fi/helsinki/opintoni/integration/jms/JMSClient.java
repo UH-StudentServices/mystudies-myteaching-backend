@@ -13,10 +13,10 @@ public abstract class JMSClient {
     private static final int SYNC_TIMEOUT = 10000;
 
     private final JmsTemplate jmsTemplate;
-    private final ObjectMapper objectMapper;
     private final String requestQueueName;
     private final String responseQueueName;
 
+    protected final ObjectMapper objectMapper;
 
     public JMSClient(JmsTemplate jmsTemplate, ObjectMapper objectMapper, String requestQueueName, String responseQueueName) {
         this.jmsTemplate = jmsTemplate;
@@ -47,7 +47,7 @@ public abstract class JMSClient {
 
     protected <T> T parseResponse(String response, TypeReference<T> typeReference) {
         try {
-            return objectMapper.readValue(response, typeReference);
+            return objectMapper.readValue(getDataFromResponse(response), typeReference);
         } catch (Exception e) {
             throw new RuntimeException("JMS response parsing failed");
         }
@@ -55,10 +55,11 @@ public abstract class JMSClient {
 
     protected <T> List<T> parseListResponse(String response, TypeReference<List<T>> typeReference ) {
         try {
-            return objectMapper.readValue(response, typeReference);
+            return objectMapper.readValue(getDataFromResponse(response), typeReference);
         } catch (Exception e) {
             throw new RuntimeException("JMS response parsing failed");
         }
     }
 
+    protected abstract String getDataFromResponse(String response);
 }

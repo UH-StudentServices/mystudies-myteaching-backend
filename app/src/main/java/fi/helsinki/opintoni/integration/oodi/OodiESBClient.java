@@ -1,6 +1,7 @@
 package fi.helsinki.opintoni.integration.oodi;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.cache.CacheConstants;
@@ -12,6 +13,8 @@ import org.springframework.jms.core.JmsTemplate;
 import java.util.List;
 
 public class OodiESBClient extends JMSClient implements OodiClient {
+
+    private static final String OODI_DATA_PROPERTY = "data";
 
     public static final String STUDENT_NUMBER_PARAMETER = "student_number";
     public static final String TEACHER_ID_PARAMETER = "teacher_id";
@@ -31,6 +34,16 @@ public class OodiESBClient extends JMSClient implements OodiClient {
 
     public OodiESBClient(JmsTemplate jmsTemplate, ObjectMapper objectMapper, String requestQueueName, String responseQueueName) {
         super(jmsTemplate, objectMapper, requestQueueName, responseQueueName);
+    }
+
+    @Override
+    protected String getDataFromResponse(String response) {
+        try {
+            JsonNode jsonNode = objectMapper.readValue(response, JsonNode.class);
+            return jsonNode.get(OODI_DATA_PROPERTY).toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse oodi response data" + response);
+        }
     }
 
     @Override

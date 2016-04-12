@@ -1,48 +1,52 @@
-[
-  {
-    "degree_date": null,
-    "person_id": 40442047,
-    "study_start_date": "2013-07-31T21:00:00.000Z",
-    "state": "Ensisijainen",
-    "faculty_code": "xxx",
-    "elements": [
-      {
-        "element_id": 10,
-        "code": "00336",
-        "name": "Valtiotieteiden maisteri",
-        "start_date": "2013-07-31T21:00:00.000Z",
-        "end_date": "2017-07-30T21:00:00.000Z"
-      },
-      {
-        "element_id": 15,
-        "code": "A2004",
-        "name": "Valtioneuvoston asetus (794\/2004) yliopistojen tutkinnoista",
-        "start_date": "2013-07-31T21:00:00.000Z",
-        "end_date": "2017-07-30T21:00:00.000Z"
-      },
-      {
-        "element_id": 20,
-        "code": "720034",
-        "name": "Sosiaality\u00f6",
-        "start_date": "2013-07-31T21:00:00.000Z",
-        "end_date": "2017-07-30T21:00:00.000Z"
-      },
-      {
-        "element_id": 40,
-        "code": "03615",
-        "name": "Sosiaality\u00f6",
-        "start_date": "2013-07-31T21:00:00.000Z",
-        "end_date": "2017-07-30T21:00:00.000Z"
-      }
-    ],
-    "admission_date": "2013-08-13T21:00:00.000Z",
-    "studyright_id": 97211850,
-    "end_date": "2017-07-30T21:00:00.000Z",
-    "priority": 1,
-    "start_date": "2013-07-31T21:00:00.000Z",
-    "extent": "Ylempi korkeakoulututkinto",
-    "organisation_name": "Sosiaality\u00f6",
-    "cancel_date": null,
-    "organisation_code": "H7202"
-  }
-]
+{
+  "md5": "e74fa181694f91775d1a7e6137c42f20",
+  "status": 200,
+  "data": [
+    {
+      "degree_date": null,
+      "person_id": 40442047,
+      "study_start_date": "2013-07-31T21:00:00.000Z",
+      "state": "Ensisijainen",
+      "faculty_code": "xxx",
+      "elements": [
+        {
+          "element_id": 10,
+          "code": "00336",
+          "name": "Valtiotieteiden maisteri",
+          "start_date": "2013-07-31T21:00:00.000Z",
+          "end_date": "2017-07-30T21:00:00.000Z"
+        },
+        {
+          "element_id": 15,
+          "code": "A2004",
+          "name": "Valtioneuvoston asetus (794\/2004) yliopistojen tutkinnoista",
+          "start_date": "2013-07-31T21:00:00.000Z",
+          "end_date": "2017-07-30T21:00:00.000Z"
+        },
+        {
+          "element_id": 20,
+          "code": "720034",
+          "name": "Sosiaality\u00f6",
+          "start_date": "2013-07-31T21:00:00.000Z",
+          "end_date": "2017-07-30T21:00:00.000Z"
+        },
+        {
+          "element_id": 40,
+          "code": "03615",
+          "name": "Sosiaality\u00f6",
+          "start_date": "2013-07-31T21:00:00.000Z",
+          "end_date": "2017-07-30T21:00:00.000Z"
+        }
+      ],
+      "admission_date": "2013-08-13T21:00:00.000Z",
+      "studyright_id": 97211850,
+      "end_date": "2017-07-30T21:00:00.000Z",
+      "priority": 1,
+      "start_date": "2013-07-31T21:00:00.000Z",
+      "extent": "Ylempi korkeakoulututkinto",
+      "organisation_name": "Sosiaality\u00f6",
+      "cancel_date": null,
+      "organisation_code": "H7202"
+    }
+  ]
+}
