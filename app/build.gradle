@@ -188,9 +188,14 @@ dependencies {
     compile group: 'org.springframework.cloud', name: 'spring-cloud-cloudfoundry-connector', version: spring_cloud_version
     compile group: 'org.springframework.cloud', name: 'spring-cloud-spring-service-connector', version: spring_cloud_version
     compile group: 'org.springframework.cloud', name: 'spring-cloud-localconfig-connector', version: spring_cloud_version
+    compile group: 'org.springframework', name: 'spring-jms', version: spring_jms_version
     compile(group: 'org.springframework', name: 'spring-context-support') {
         exclude(module: 'quartz')
     }
+    compile group: 'org.apache.activemq', name: 'activemq-pool', version: activemq_version
+    compile group: 'org.apache.activemq', name: 'activemq-broker', version: activemq_version
+    compile group: 'org.apache.activemq', name: 'activemq-kahadb-store', version: activemq_version
+
     compile 'org.apache.tomcat:tomcat-catalina-jmx-remote:8.0.22'
     compile group: 'com.google.guava', name: 'guava', version: '18.0'
     compile group: 'com.google.guava', name: 'guava-testlib', version: '18.0'

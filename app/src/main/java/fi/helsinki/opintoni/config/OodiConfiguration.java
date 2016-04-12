@@ -22,7 +22,8 @@ import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
 import fi.helsinki.opintoni.integration.interceptor.OodiExceptionInterceptor;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiMockClient;
+import fi.helsinki.opintoni.integration.oodi.OodiESBClient;
+import fi.helsinki.opintoni.integration.oodi.mock.OodiMockClient;
 import fi.helsinki.opintoni.integration.oodi.OodiRestClient;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -37,6 +38,7 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -52,6 +54,9 @@ public class OodiConfiguration {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
     @Bean
     public RestTemplate oodiRestTemplate() {
@@ -102,11 +107,21 @@ public class OodiConfiguration {
     }
 
     @Bean
+    public OodiClient oodiESBClient() {
+        return new OodiESBClient(
+            jmsTemplate,
+            objectMapper,
+            appConfiguration.get("esb.queueNames.out"),
+            appConfiguration.get("esb.queueNames.in"));
+    }
+
+    @Bean
     public OodiClient oodiClient() {
         return NamedDelegatesProxy.builder(
             OodiClient.class,
             () -> appConfiguration.get("oodi.client.implementation"))
             .with("rest", oodiRestClient())
+            .with("esb", oodiESBClient())
             .with("mock", oodiMockClient())
             .build();
     }

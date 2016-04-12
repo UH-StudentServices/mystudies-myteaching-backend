@@ -1,129 +1,125 @@
-{
-  "md5": "10addfd8798e38bc11d13e43b47fda27",
-  "status": 200,
-  "data": [
-    {
-      "weekday_code": 4,
-      "building_address1": "Viikinkaari 11",
-      "building_zipcode" : "00790",
-      "room_name_short": "F24 Fabianinkatu 24, Sali 531",
-      "end_date": "2015-08-13T11:00:00.000Z",
-      "start_date": "2015-08-13T07:00:00.000Z",
-      "course_id": 99903629,
-      "simple_type_code": 2,
-      "realisation_type_code": 17,
-      "realisation_name": [
-        {
-          "langcode": "fi",
-          "text": "Formulointi III"
-        },
-        {
-          "langcode": "sv",
-          "text": "Formulering III"
-        },
-        {
-          "langcode": "en",
-          "text": "Formulation III"
-        }
-      ],
-      "realisation_root_name": [
-        {
-          "langcode": "fi",
-          "text": "Formulointi III"
-        },
-        {
-          "langcode": "sv",
-          "text": "Formulering III"
-        },
-        {
-          "langcode": "en",
-          "text": "Formulation III"
-        }
-      ],
-      "learningopportunity_id": "10440",
-      "cancelled" : "false"
-    },
-    {
-      "weekday_code": 4,
-      "building_address1": "Viikinkaari 11",
-      "building_zipcode" : "00790",
-      "room_name_short": "Päärakennus, sali 1",
-      "end_date": "2015-09-13T11:00:00.000Z",
-      "start_date": "2015-09-13T07:00:00.000Z",
-      "course_id": 99903629,
-      "simple_type_code": 2,
-      "realisation_type_code": 19,
-      "realisation_name": [
-        {
-          "langcode": "fi",
-          "text": "Formulointi II"
-        },
-        {
-          "langcode": "sv",
-          "text": "Formulering II"
-        },
-        {
-          "langcode": "en",
-          "text": "Formulation II"
-        }
-      ],
-      "realisation_root_name": [
-        {
-          "langcode": "fi",
-          "text": "Formulointi II"
-        },
-        {
-          "langcode": "sv",
-          "text": "Formulering II"
-        },
-        {
-          "langcode": "en",
-          "text": "Formulation II"
-        }
-      ],
-      "learningopportunity_id": "10440",
-      "cancelled" : "false"
-    },
-    {
-      "weekday_code": 4,
-      "building_address1": "Viikinkaari 11",
-      "building_zipcode" : "00790",
-      "room_name_short": "Päärakennus, sali 1",
-      "end_date": "2015-09-13T11:00:00.000Z",
-      "start_date": "2015-09-13T07:00:00.000Z",
-      "course_id": 99903629,
-      "simple_type_code": 2,
-      "realisation_type_code": 19,
-      "realisation_name": [
-        {
-          "langcode": "fi",
-          "text": "Harjoitus"
-        },
-        {
-          "langcode": "sv",
-          "text": "Harjoitus (sv)"
-        },
-        {
-          "langcode": "en",
-          "text": "Harjoitus (en)"
-        }
-      ],
-      "realisation_root_name": [
-        {
-          "langcode": "fi",
-          "text": "Formulointi IIII"
-        },
-        {
-          "langcode": "sv",
-          "text": "Formulering IIII"
-        },
-        {
-          "langcode": "en",
-          "text": "Formulation IIII"
-        }
-      ],
-      "learningopportunity_id": "10440",
-      "cancelled" : "true"
-    }
-  ]
-}
+[
+  {
+    "weekday_code": 4,
+    "building_address1": "Viikinkaari 11",
+    "building_zipcode" : "00790",
+    "room_name_short": "F24 Fabianinkatu 24, Sali 531",
+    "end_date": "2015-08-13T11:00:00.000Z",
+    "start_date": "2015-08-13T07:00:00.000Z",
+    "course_id": 99903629,
+    "simple_type_code": 2,
+    "realisation_type_code": 17,
+    "realisation_name": [
+      {
+        "langcode": "fi",
+        "text": "Formulointi III"
+      },
+      {
+        "langcode": "sv",
+        "text": "Formulering III"
+      },
+      {
+        "langcode": "en",
+        "text": "Formulation III"
+      }
+    ],
+    "realisation_root_name": [
+      {
+        "langcode": "fi",
+        "text": "Formulointi III"
+      },
+      {
+        "langcode": "sv",
+        "text": "Formulering III"
+      },
+      {
+        "langcode": "en",
+        "text": "Formulation III"
+      }
+    ],
+    "learningopportunity_id": "10440",
+    "cancelled" : "false"
+  },
+  {
+    "weekday_code": 4,
+    "building_address1": "Viikinkaari 11",
+    "building_zipcode" : "00790",
+    "room_name_short": "Päärakennus, sali 1",
+    "end_date": "2015-09-13T11:00:00.000Z",
+    "start_date": "2015-09-13T07:00:00.000Z",
+    "course_id": 99903629,
+    "simple_type_code": 2,
+    "realisation_type_code": 19,
+    "realisation_name": [
+      {
+        "langcode": "fi",
+        "text": "Formulointi II"
+      },
+      {
+        "langcode": "sv",
+        "text": "Formulering II"
+      },
+      {
+        "langcode": "en",
+        "text": "Formulation II"
+      }
+    ],
+    "realisation_root_name": [
+      {
+        "langcode": "fi",
+        "text": "Formulointi II"
+      },
+      {
+        "langcode": "sv",
+        "text": "Formulering II"
+      },
+      {
+        "langcode": "en",
+        "text": "Formulation II"
+      }
+    ],
+    "learningopportunity_id": "10440",
+    "cancelled" : "false"
+  },
+  {
+    "weekday_code": 4,
+    "building_address1": "Viikinkaari 11",
+    "building_zipcode" : "00790",
+    "room_name_short": "Päärakennus, sali 1",
+    "end_date": "2015-09-13T11:00:00.000Z",
+    "start_date": "2015-09-13T07:00:00.000Z",
+    "course_id": 99903629,
+    "simple_type_code": 2,
+    "realisation_type_code": 19,
+    "realisation_name": [
+      {
+        "langcode": "fi",
+        "text": "Harjoitus"
+      },
+      {
+        "langcode": "sv",
+        "text": "Harjoitus (sv)"
+      },
+      {
+        "langcode": "en",
+        "text": "Harjoitus (en)"
+      }
+    ],
+    "realisation_root_name": [
+      {
+        "langcode": "fi",
+        "text": "Formulointi IIII"
+      },
+      {
+        "langcode": "sv",
+        "text": "Formulering IIII"
+      },
+      {
+        "langcode": "en",
+        "text": "Formulation IIII"
+      }
+    ],
+    "learningopportunity_id": "10440",
+    "cancelled" : "true"
+  }
+]

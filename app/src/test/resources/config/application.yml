@@ -271,7 +271,14 @@ courses:
 
 oodi:
     base.url: http://opi.helsinki.fi
-    client.implementation: rest
+    client.implementation: esb
+
+esb:
+    brokerUrl: tcp://localhost:61617
+    mock: true
+    queueNames:
+        in: doo.opintoni.in
+        out: doo.opintoni.out
 
 coursePage:
     base.url: http://coursepage.helsinki.fi
@@ -354,3 +361,4 @@ feed.client.implementation: remote
 locale.default: fi
 
 staticResourceCachingPeriod: 31536000
+

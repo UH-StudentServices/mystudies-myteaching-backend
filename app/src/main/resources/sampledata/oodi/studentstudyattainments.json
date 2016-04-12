@@ -1,80 +1,76 @@
-{
-  "md5": "54dc6c1c4a883a24a3678e31e05cf914",
-  "status": 200,
-  "data": [
-    {
-      "attainment_status_code": 4,
-      "attainment_date": "2016-01-01T22:00:00.000Z",
-      "studyattainment_id": 1,
-      "attainment_lang": null,
-      "person_id": 40442047,
-      "attainment_status": "Suoritettu",
-      "textual_assessment": null,
-      "teachers": [
-        {
-          "teacher_id": "059240",
-          "person_id": 47501681,
-          "short_name": "Opettaja Olli",
-          "last_names": "Opettaja",
-          "first_names": "Olli"
-        }
-      ],
-      "studyright_id": null,
-      "grade": "5",
-      "credits": 6,
-      "expiry_date": null,
-      "learningopportunity_name": [
-        {
-          "langcode": "fi",
-          "text": "Formulointi III"
-        },
-        {
-          "langcode": "sv",
-          "text": "Formulering III"
-        },
-        {
-          "langcode": "en",
-          "text": "Formulation III"
-        }
-      ],
-      "learningopportunity_id": "123456789"
-    },
-    {
-      "attainment_status_code": 4,
-      "attainment_date": "2015-10-01T22:00:00.000Z",
-      "studyattainment_id": 1,
-      "attainment_lang": null,
-      "person_id": 40442047,
-      "attainment_status": "Suoritettu",
-      "textual_assessment": null,
-      "teachers": [
-        {
-          "teacher_id": "059240",
-          "person_id": 47501681,
-          "short_name": "Opettaja Olli",
-          "last_names": "Opettaja",
-          "first_names": "Olli"
-        }
-      ],
-      "studyright_id": null,
-      "grade": "5",
-      "credits": 6,
-      "expiry_date": null,
-      "learningopportunity_name": [
-        {
-          "langcode": "fi",
-          "text": "Formulointi II"
-        },
-        {
-          "langcode": "sv",
-          "text": "Formulering II"
-        },
-        {
-          "langcode": "en",
-          "text": "Formulation II"
-        }
-      ],
-      "learningopportunity_id": "987654321"
-    }
-  ]
-}
+[
+  {
+    "attainment_status_code": 4,
+    "attainment_date": "2016-01-01T22:00:00.000Z",
+    "studyattainment_id": 1,
+    "attainment_lang": null,
+    "person_id": 40442047,
+    "attainment_status": "Suoritettu",
+    "textual_assessment": null,
+    "teachers": [
+      {
+        "teacher_id": "059240",
+        "person_id": 47501681,
+        "short_name": "Opettaja Olli",
+        "last_names": "Opettaja",
+        "first_names": "Olli"
+      }
+    ],
+    "studyright_id": null,
+    "grade": "5",
+    "credits": 6,
+    "expiry_date": null,
+    "learningopportunity_name": [
+      {
+        "langcode": "fi",
+        "text": "Formulointi III"
+      },
+      {
+        "langcode": "sv",
+        "text": "Formulering III"
+      },
+      {
+        "langcode": "en",
+        "text": "Formulation III"
+      }
+    ],
+    "learningopportunity_id": "123456789"
+  },
+  {
+    "attainment_status_code": 4,
+    "attainment_date": "2015-10-01T22:00:00.000Z",
+    "studyattainment_id": 1,
+    "attainment_lang": null,
+    "person_id": 40442047,
+    "attainment_status": "Suoritettu",
+    "textual_assessment": null,
+    "teachers": [
+      {
+        "teacher_id": "059240",
+        "person_id": 47501681,
+        "short_name": "Opettaja Olli",
+        "last_names": "Opettaja",
+        "first_names": "Olli"
+      }
+    ],
+    "studyright_id": null,
+    "grade": "5",
+    "credits": 6,
+    "expiry_date": null,
+    "learningopportunity_name": [
+      {
+        "langcode": "fi",
+        "text": "Formulointi II"
+      },
+      {
+        "langcode": "sv",
+        "text": "Formulering II"
+      },
+      {
+        "langcode": "en",
+        "text": "Formulation II"
+      }
+    ],
+    "learningopportunity_id": "987654321"
+  }
+]

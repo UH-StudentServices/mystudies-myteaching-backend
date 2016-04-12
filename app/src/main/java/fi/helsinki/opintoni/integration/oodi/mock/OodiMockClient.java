@@ -15,11 +15,12 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.oodi;
+package fi.helsinki.opintoni.integration.oodi.mock;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import fi.helsinki.opintoni.integration.oodi.*;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
