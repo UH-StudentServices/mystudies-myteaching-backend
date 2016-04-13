@@ -46,7 +46,7 @@ public class SynchronousMessage implements SessionCallback<Message> {
             String correlationId = createCorrelationId();
 
             Destination requestQueue = destinationResolver.resolveDestinationName(session, requestQueueName, false);
-            Destination responseQueue = destinationResolver.resolveDestinationName(session, responseQueueName, true);
+            Destination responseQueue = destinationResolver.resolveDestinationName(session, responseQueueName, false);
 
             producer = session.createProducer(requestQueue);
             consumer = session.createConsumer(responseQueue, createMessageSelector(correlationId));

@@ -22,15 +22,15 @@ public class OodiESBClient extends JMSClient implements OodiClient {
     public static final String PERSON_ID_PARAMETER = "person_id";
     public static final String REALISATION_ID_PARAMETER = "learningopportunity_id";
     
-    public static final String STUDENTS_ENROLLMENTS_METHOD = "doo.opintoni.students.enrollments";
-    public static final String STUDENTS_EVENTS_METHOD = "doo.opintoni.students.events";
-    public static final String TEACHERS_EVENTS_METHOD = "doo.opintoni.teachers.events";
-    public static final String STUDENTS_STUDYATTAINMENTS_METHOD = "doo.opintoni.students.studyattainments";
-    public static final String TEACHERS_TEACHING_ALL_METHOD = "doo.opintoni.teachers.teaching.all";
-    public static final String STUDENTS_STUDY_RIGHTS_METHOD = "doo.opintoni.students.studyrights";
-    public static final String COURSE_UNIT_REALISATION_METHOD = "doo.opintoni.courseunitrealisations";
+    public static final String STUDENTS_ENROLLMENTS_METHOD = "doo.oodi.students.enrollments";
+    public static final String STUDENTS_EVENTS_METHOD = "doo.oodi.students.events";
+    public static final String TEACHERS_EVENTS_METHOD = "doo.oodi.teachers.events";
+    public static final String STUDENTS_STUDYATTAINMENTS_METHOD = "doo.oodi.students.studyattainments";
+    public static final String TEACHERS_TEACHING_ALL_METHOD = "doo.oodi.teachers.teaching.all";
+    public static final String STUDENTS_STUDY_RIGHTS_METHOD = "doo.oodi.students.studyrights";
+    public static final String COURSE_UNIT_REALISATION_METHOD = "doo.oodi.courseunitrealisations";
     public static final String STUDENT_INFO_METHOD = "doo.oodi.students.info";
-    public static final String ROLES_METHOD = "doo.opintoni.persons.roles";
+    public static final String ROLES_METHOD = "doo.oodi.persons.roles";
 
     public OodiESBClient(JmsTemplate jmsTemplate, ObjectMapper objectMapper, String requestQueueName, String responseQueueName) {
         super(jmsTemplate, objectMapper, requestQueueName, responseQueueName);
