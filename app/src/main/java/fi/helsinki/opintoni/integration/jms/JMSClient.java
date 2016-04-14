@@ -8,7 +8,6 @@ import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.JMSException;
 import javax.jms.TextMessage;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -44,8 +43,6 @@ public abstract class JMSClient {
     }
 
     protected String queryMethodWithParameters(String method, Map<String, String> parameters) {
-        LOGGER.info("Querying method  " + method + " synchronously over JMS with parameters " + Arrays.toString(parameters.entrySet().toArray()));
-
         try {
             return sendMessage(method, parameters).getText();
         } catch (JMSException e) {
@@ -54,19 +51,19 @@ public abstract class JMSClient {
     }
 
     protected <T> T parseResponse(String response, TypeReference<T> typeReference) {
-        LOGGER.info("Parsing single response object " + response );
         try {
             return objectMapper.readValue(getDataFromResponse(response), typeReference);
         } catch (Exception e) {
+            LOGGER.error("Error parsing JMS response: " + response);
             throw new RuntimeException("JMS response parsing failed");
         }
     }
 
     protected <T> List<T> parseListResponse(String response, TypeReference<List<T>> typeReference ) {
-        LOGGER.info("Parsing list of response objects " + response );
         try {
             return objectMapper.readValue(getDataFromResponse(response), typeReference);
         } catch (Exception e) {
+            LOGGER.error("Error parsing JMS response: " + response);
             throw new RuntimeException("JMS response parsing failed");
         }
     }

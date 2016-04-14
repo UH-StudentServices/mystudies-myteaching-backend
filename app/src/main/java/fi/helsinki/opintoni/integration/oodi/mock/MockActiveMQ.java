@@ -24,6 +24,7 @@ public class MockActiveMQ {
         try {
             BrokerService broker = new BrokerService();
             broker.addConnector(appConfiguration.get("esb.brokerUrl"));
+            broker.setPersistent(false);
             broker.start();
         } catch (Exception e) {
             LOGGER.error("Failed to start ActiveMQ broker!");

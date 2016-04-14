@@ -42,7 +42,7 @@ public class OodiESBClient extends JMSClient implements OodiClient {
             JsonNode jsonNode = objectMapper.readValue(response, JsonNode.class);
             return jsonNode.get(OODI_DATA_PROPERTY).toString();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to parse oodi response data" + response);
+            throw new RuntimeException("Error in Oodi response " + response);
         }
     }
 
