@@ -59,35 +59,35 @@ public class OodiESBClient extends JMSClient implements OodiClient {
     @Override
     @Cacheable(CacheConstants.STUDENT_ENROLLMENTS)
     public List<OodiEnrollment> getEnrollments(String studentNumber) {
-        return parseListResponse(queryStudentData(STUDENTS_ENROLLMENTS_METHOD, studentNumber), new TypeReference<List<OodiEnrollment>>() {});
+        return parseResponse(queryStudentData(STUDENTS_ENROLLMENTS_METHOD, studentNumber), new TypeReference<List<OodiEnrollment>>() {});
     }
 
     @Override
     @Cacheable(CacheConstants.STUDENT_EVENTS)
     public List<OodiEvent> getStudentEvents(String studentNumber) {
-        return parseListResponse(queryStudentData(STUDENTS_EVENTS_METHOD, studentNumber), new TypeReference<List<OodiEvent>>() {});
+        return parseResponse(queryStudentData(STUDENTS_EVENTS_METHOD, studentNumber), new TypeReference<List<OodiEvent>>() {});
     }
 
     @Override
     @Cacheable(CacheConstants.TEACHER_EVENTS)
     public List<OodiEvent> getTeacherEvents(String teacherId) {
-        return parseListResponse(queryTeacherData(TEACHERS_EVENTS_METHOD, teacherId), new TypeReference<List<OodiEvent>>() {});
+        return parseResponse(queryTeacherData(TEACHERS_EVENTS_METHOD, teacherId), new TypeReference<List<OodiEvent>>() {});
     }
 
     @Override
     public List<OodiStudyAttainment> getStudyAttainments(String studentNumber) {
-        return parseListResponse(queryStudentData(STUDENTS_STUDYATTAINMENTS_METHOD, studentNumber), new TypeReference<List<OodiStudyAttainment>>() {});
+        return parseResponse(queryStudentData(STUDENTS_STUDYATTAINMENTS_METHOD, studentNumber), new TypeReference<List<OodiStudyAttainment>>() {});
     }
 
     @Override
     @Cacheable(CacheConstants.TEACHER_COURSES)
     public List<OodiTeacherCourse> getTeacherCourses(String teacherId, String sinceDateString) {
-        return parseListResponse(queryTeacherData(TEACHERS_TEACHING_ALL_METHOD, teacherId, sinceDateString), new TypeReference<List<OodiTeacherCourse>>() {});
+        return parseResponse(queryTeacherData(TEACHERS_TEACHING_ALL_METHOD, teacherId, sinceDateString), new TypeReference<List<OodiTeacherCourse>>() {});
     }
 
     @Override
     public List<OodiStudyRight> getStudentStudyRights(String studentNumber) {
-        return parseListResponse(queryStudentData(STUDENTS_STUDY_RIGHTS_METHOD, studentNumber), new TypeReference<List<OodiStudyRight>>() {});
+        return parseResponse(queryStudentData(STUDENTS_STUDY_RIGHTS_METHOD, studentNumber), new TypeReference<List<OodiStudyRight>>() {});
     }
 
     @Override

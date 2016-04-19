@@ -10,7 +10,6 @@ import org.springframework.util.StopWatch;
 
 import javax.jms.*;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -95,15 +94,6 @@ public abstract class JMSClient {
         }
     }
 
-    protected <T> List<T> parseListResponse(String response, TypeReference<List<T>> typeReference ) {
-        try {
-            return objectMapper.readValue(response, typeReference);
-        } catch (Exception e) {
-            LOGGER.error("Error parsing JMS response: " + response);
-            throw new RuntimeException("JMS response parsing failed");
-        }
-    }
-
     protected abstract String getDataFromResponse(String response) throws JMSResponseException;
 
     private TextMessage sendSynchronousMessage(Session session, String method, Map<String, Object> parameters) {
@@ -127,11 +117,10 @@ public abstract class JMSClient {
         }
     }
 
-    private TextMessage createTextMessage(
-        Session session,
-        String method,
-        Map<String, Object> parameters,
-        String correlationId) throws JMSException{
+    private TextMessage createTextMessage(Session session,
+                                          String method,
+                                          Map<String, Object> parameters,
+                                          String correlationId) throws JMSException{
         TextMessage textMessage = session.createTextMessage();
         textMessage.setStringProperty(METHOD_PROPERTY, method);
         textMessage.setJMSCorrelationID(correlationId);
