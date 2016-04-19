@@ -55,7 +55,7 @@ public abstract class JMSClient {
             session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             return sendSynchronousMessage(session, method, parameters);
         } catch (JMSException e) {
-            throw new RuntimeException("Failed to create jMS session");
+            throw new RuntimeException(e);
         } finally {
             //Close session and connection and return them back to pool when using PoolingConnectionFactory
             JmsUtils.closeSession(session);
