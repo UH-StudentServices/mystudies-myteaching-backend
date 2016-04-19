@@ -104,7 +104,6 @@ public class HardCodedUserDetailsService implements org.springframework.security
             .build();
     }
 
-
     private UserDetails createHybridUser() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("hybriduser@helsinki.fi")

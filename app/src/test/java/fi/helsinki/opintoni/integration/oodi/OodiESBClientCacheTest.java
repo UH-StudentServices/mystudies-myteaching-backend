@@ -27,7 +27,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OodiRestClientCacheTest extends SpringTest {
+public class OodiESBClientCacheTest extends SpringTest {
 
     @Autowired
     private OodiClient oodiESBClient;
