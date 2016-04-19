@@ -13,3 +13,4 @@ target
 build
 out/
 ci-deploy.properties
+activemq-data

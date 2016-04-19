@@ -36,6 +36,7 @@ import java.util.Arrays;
 public class HardCodedUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private static final String USERNAME_STUDENT = "opiskelija";
+    private static final String USERNAME_MAG = "mag_simp";
     private static final String USERNAME_TEACHER = "opettaja";
     private static final String USERNAME_HYBDID = "hybriduser";
     private static final String USERNAME_TEST_STUDENT = "teststudent";
@@ -49,6 +50,8 @@ public class HardCodedUserDetailsService implements org.springframework.security
 
         if (USERNAME_STUDENT.equals(lowercaseLogin)) {
             return createStudent();
+        } else if (USERNAME_MAG.equals(lowercaseLogin)) {
+            return createMag();
         } else if (USERNAME_TEACHER.equals(lowercaseLogin)) {
             return createTeacher();
         } else if (USERNAME_HYBDID.equals(lowercaseLogin)) {
@@ -86,6 +89,18 @@ public class HardCodedUserDetailsService implements org.springframework.security
             .commonName("Olli Opiskelija")
             .studentNumber("010189791")
             .oodiPersonId("1001")
+            .build();
+    }
+
+    private UserDetails createMag() {
+        return new AppUser.AppUserBuilder()
+            .eduPersonPrincipalName("mag_simp@helsinki.fi")
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
+            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
+            .email("opiskelija@mail.helsinki.fi")
+            .commonName("Maggie Simpson")
+            .studentNumber("011631484")
+            .oodiPersonId("80")
             .build();
     }
 
