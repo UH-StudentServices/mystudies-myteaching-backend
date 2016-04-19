@@ -21,7 +21,7 @@ public class JMSConfiguration {
     @Bean
     public ConnectionFactory connectionFactory() {
         String brokerUrl = appConfiguration.get("esb.brokerUrl");
-        PooledConnectionFactory connectionFactory = new PooledConnectionFactory();
+        PooledConnectionFactory connectionFactory = new PooledConnectionFactory(brokerUrl);
         if(brokerUrl.startsWith(SSL_PREFIX)) {
             connectionFactory.setConnectionFactory(AMQJMSConnectionFactory());
         }

@@ -36,8 +36,8 @@ oodi:
     client.implementation: esb
 
 esb:
-    brokerUrl: ssl://esbmt2.it.helsinki.fi:61617
-    mock: false
+    brokerUrl: tcp://localhost:61616
+    mock: true
     queueNames:
         in: doo.opintoni.in
         out: doo.opintoni.out
