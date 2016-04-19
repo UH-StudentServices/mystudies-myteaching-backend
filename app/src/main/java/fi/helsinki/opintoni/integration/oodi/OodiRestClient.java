@@ -18,11 +18,9 @@
 package fi.helsinki.opintoni.integration.oodi;
 
 import com.google.common.collect.Lists;
-import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;

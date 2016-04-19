@@ -6,11 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.integration.jms.JMSClient;
+import fi.helsinki.opintoni.integration.jms.JMSResponseException;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.support.destination.DestinationResolver;
 
+import javax.jms.ConnectionFactory;
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class OodiESBClient extends JMSClient implements OodiClient {
 
@@ -20,11 +24,11 @@ public class OodiESBClient extends JMSClient implements OodiClient {
     public static final String TEACHER_ID_PARAMETER = "teacher_id";
     public static final String SINCE_DATE_PARAMETER = "since_date";
     public static final String PERSON_ID_PARAMETER = "person_id";
-    public static final String REALISATION_ID_PARAMETER = "learningopportunity_id";
-    
+    public static final String COURSE_ID_PARAMETER = "course_id";
+
     public static final String STUDENTS_ENROLLMENTS_METHOD = "doo.oodi.students.enrollments";
     public static final String STUDENTS_EVENTS_METHOD = "doo.oodi.students.events";
-    public static final String TEACHERS_EVENTS_METHOD = "doo.oodi.teachers.events";
+    public static final String TEACHERS_EVENTS_METHOD = "doo.oodi.teachers.teaching.events";
     public static final String STUDENTS_STUDYATTAINMENTS_METHOD = "doo.oodi.students.studyattainments";
     public static final String TEACHERS_TEACHING_ALL_METHOD = "doo.oodi.teachers.teaching.all";
     public static final String STUDENTS_STUDY_RIGHTS_METHOD = "doo.oodi.students.studyrights";
@@ -32,17 +36,23 @@ public class OodiESBClient extends JMSClient implements OodiClient {
     public static final String STUDENT_INFO_METHOD = "doo.oodi.students.info";
     public static final String ROLES_METHOD = "doo.oodi.persons.roles";
 
-    public OodiESBClient(JmsTemplate jmsTemplate, ObjectMapper objectMapper, String requestQueueName, String responseQueueName) {
-        super(jmsTemplate, objectMapper, requestQueueName, responseQueueName);
+    public OodiESBClient(ConnectionFactory connectionFactory,
+                         DestinationResolver destinationResolver,
+                         ObjectMapper objectMapper,
+                         String requestQueueName,
+                         String responseQueueName) {
+        super(connectionFactory, destinationResolver, objectMapper, requestQueueName, responseQueueName);
     }
 
     @Override
-    protected String getDataFromResponse(String response) {
+    protected String getDataFromResponse(String response) throws JMSResponseException {
         try {
-            JsonNode jsonNode = objectMapper.readValue(response, JsonNode.class);
-            return jsonNode.get(OODI_DATA_PROPERTY).toString();
-        } catch (Exception e) {
-            throw new RuntimeException("Error in Oodi response " + response);
+            return Optional
+                .ofNullable(objectMapper.readValue(response, JsonNode.class).get(OODI_DATA_PROPERTY))
+                .map(JsonNode::toString)
+                .orElseThrow(() -> new JMSResponseException(response));
+        } catch (IOException e) {
+            throw new RuntimeException("Could not parse Oodi response to Json " + response);
         }
     }
 
@@ -85,7 +95,7 @@ public class OodiESBClient extends JMSClient implements OodiClient {
     public OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId) {
         return parseResponse(
             queryMethodWithParameters(COURSE_UNIT_REALISATION_METHOD,
-                ImmutableMap.of(REALISATION_ID_PARAMETER, realisationId)),
+                ImmutableMap.of(COURSE_ID_PARAMETER, Integer.valueOf(realisationId))),
             new TypeReference<OodiCourseUnitRealisation>() {});
     }
 

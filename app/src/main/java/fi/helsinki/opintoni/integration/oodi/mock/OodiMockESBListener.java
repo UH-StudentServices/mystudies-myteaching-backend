@@ -72,7 +72,7 @@ public class OodiMockESBListener {
                 responseMessage = oodiMockServer.getStudentStudyRights(getProperty(message, OodiESBClient.STUDENT_NUMBER_PARAMETER));
                 break;
             case(OodiESBClient.COURSE_UNIT_REALISATION_METHOD):
-                responseMessage = oodiMockServer.getCourseUnitRealisation(getProperty(message, OodiESBClient.REALISATION_ID_PARAMETER));
+                responseMessage = oodiMockServer.getCourseUnitRealisation(getProperty(message, OodiESBClient.COURSE_ID_PARAMETER));
                 break;
             case(OodiESBClient.ROLES_METHOD):
                 responseMessage = oodiMockServer.getRoles(getProperty(message, OodiESBClient.PERSON_ID_PARAMETER));
