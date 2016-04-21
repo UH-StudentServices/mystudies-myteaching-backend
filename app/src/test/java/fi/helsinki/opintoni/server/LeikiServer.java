@@ -65,21 +65,20 @@ public class LeikiServer {
     }
 
     private String searchCategoryUrl(String searchTerm) {
-        return leikiBaseUrl + "/focus/api?method=searchcategories&autocomplete=occurred"
-            + "&lang=en&text=" + searchTerm + "&format=json&max=10";
+        return String.format("%s/focus/api?method=searchcategories&autocomplete=occurred"
+            + "&lang=en&text=%s&format=json&max=10", leikiBaseUrl, searchTerm);
     }
 
     private String searchUrl(String searchTerm) {
-        return leikiBaseUrl + "/focus/api?method=searchc&sourceallmatch&instancesearch"
-            + "&lang=en&query=" + searchTerm + "&format=json&t_type=kaikki_en&max=100&fulltext=true"
-            + "&partialsearchpriority=ontology";
+        return String.format("%s/focus/api?method=searchc&sourceallmatch&instancesearch"
+            + "&lang=en&query=%s&format=json&t_type=kaikki_en&max=100&fulltext=true"
+            + "&partialsearchpriority=ontology", leikiBaseUrl, searchTerm);
     }
 
     private String courseRecommendationsUrl(String studentNumber) {
-        return leikiBaseUrl + "/focus/api?method=getsocial&"
-            + "similaritylimit=99&format=json&t_type=kurssit&max=5"
-            + "&uid=opintohistoriatesti_" + studentNumber
-            + "&showtags=true&unreadonly=true";
+        return String.format("%s/focus/api?method=getsocial&"
+            + "similaritylimit=99&format=json&t_type=kurssit&max=5&uid=opintohistoriatesti_%s"
+            + "&showtags=true&unreadonly=true", leikiBaseUrl, studentNumber);
     }
 
 }
