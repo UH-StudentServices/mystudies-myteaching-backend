@@ -94,6 +94,8 @@ public class LeikiRestClient implements LeikiClient {
             .queryParam("t_type", "kurssit")
             .queryParam("max", maxRecommendations)
             .queryParam("uid", recommendationUidPrefix + studentNumber)
+            .queryParam("showtags", "true")
+            .queryParam("unreadonly", "true")
             .build()
             .encode()
             .toUri();
