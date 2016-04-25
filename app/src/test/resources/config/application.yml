@@ -271,14 +271,7 @@ courses:
 
 oodi:
     base.url: http://opi.helsinki.fi
-    client.implementation: esb
-
-esb:
-    brokerUrl: tcp://localhost:61617
-    mock: true
-    queueNames:
-        in: doo.opintoni.in
-        out: doo.opintoni.out
+    client.implementation: rest
 
 coursePage:
     base.url: http://coursepage.helsinki.fi
