@@ -33,14 +33,7 @@ metrics:
 
 oodi:
     base.url: https://oprek4.it.helsinki.fi:30040
-    client.implementation: esb
-
-esb:
-    brokerUrl: ssl://esbmt1.it.helsinki.fi:616167
-    mock: false
-    queueNames:
-        in: doo.opintoni.in
-        out: doo.opintoni.out
+    client.implementation: rest
 
 coursePage:
     base.url: https://courses.helsinki.fi/api/v1

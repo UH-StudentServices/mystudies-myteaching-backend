@@ -20,11 +20,10 @@ package fi.helsinki.opintoni;
 import com.google.common.truth.StringUtil;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.config.Constants;
-import fi.helsinki.opintoni.integration.oodi.mock.OodiMockESBListener;
-import fi.helsinki.opintoni.integration.oodi.mock.OodiMockServer;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.server.*;
+import fi.helsinki.opintoni.server.WebPageServer;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
@@ -34,9 +33,6 @@ import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -74,6 +70,9 @@ public abstract class SpringTest {
     protected MockMvc mockMvc;
 
     @Autowired
+    protected RestTemplate oodiRestTemplate;
+
+    @Autowired
     protected RestTemplate coursePageRestTemplate;
 
     @Autowired
@@ -103,23 +102,14 @@ public abstract class SpringTest {
     @Autowired
     private Environment environment;
 
-    @Autowired
-    @InjectMocks
-    private OodiMockESBListener oodiMockESBListener;
-
-    @Mock
-    private OodiMockServer oodiMockServer;
-
     @Before
     public void initRestServer() {
-        MockitoAnnotations.initMocks(this);
-        configureMockMvc();
-
-        oodiServer = new OodiServer(oodiMockServer);
+        oodiServer = new OodiServer(appConfiguration, oodiRestTemplate);
         coursePageServer = new CoursePageServer(appConfiguration, coursePageRestTemplate);
         leikiServer = new LeikiServer(appConfiguration, leikiRestTemplate);
         flammaServer = new FlammaServer(appConfiguration, flammaRestTemplate);
         webPageServer = new WebPageServer(metaDataRestTemplate);
+        configureMockMvc();
     }
 
     @Before
@@ -148,10 +138,10 @@ public abstract class SpringTest {
                 .studentNumber(TestConstants.STUDENT_NUMBER)
                 .eduPersonPrincipalName("opiskelija@helsinki.fi")
                 .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
-                        .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
-                        .oodiPersonId("1111")
-                        .build(),
-                    ""));
+                .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
+                .oodiPersonId("1111")
+                .build(),
+            ""));
     }
 
     protected void configureTeacherSecurityContext() {
