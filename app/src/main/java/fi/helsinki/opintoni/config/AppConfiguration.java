@@ -33,8 +33,7 @@ import java.util.Optional;
     "file:/opt/opintoni/config/default.properties",
     "file:/opt/opintoni/config/network.properties",
     "file:/opt/opintoni/config/database.properties",
-    "file:/opt/opintoni/config/credentials.properties",
-    "file:/opt/opintoni/config/esb.properties"},
+    "file:/opt/opintoni/config/credentials.properties"},
     ignoreResourceNotFound = true)
 public class AppConfiguration {
 
