@@ -29,6 +29,7 @@
       "organisation_name": "Eksegetiikka",
       "show_hierarchy": 1,
       "course_id": 99903629,
+      "parent_id": null,
       "image_uri": null,
       "weboodi_uri": "https://weboodi.helsinki.fi/",
       "learningopportunity_id": "10440",
@@ -39,15 +40,15 @@
       "realisation_name": [
         {
           "langcode": "fi",
-          "text": "Formulointi II"
+          "text": "Formulointi III harjoitus"
         },
         {
           "langcode": "sv",
-          "text": "Formulering II"
+          "text": "Formulering III träning"
         },
         {
           "langcode": "en",
-          "text": "Formulation II"
+          "text": "Formulation III practice"
         }
       ],
       "show_students": 1,
@@ -62,6 +63,7 @@
       "organisation_name": "Eksegetiikka",
       "show_hierarchy": 1,
       "course_id": 99903628,
+      "parent_id": 99903629,
       "image_uri": null,
       "weboodi_uri": "https://weboodi.helsinki.fi/",
       "learningopportunity_id": "10442",

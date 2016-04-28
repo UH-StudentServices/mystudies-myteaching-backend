@@ -36,6 +36,7 @@ public class CourseDto {
     public final LocalDateTime startDate;
     public final LocalDateTime endDate;
     public final String realisationId;
+    public final String parentId;
     public final Integer credits;
     public final List<String> teachers;
     public final boolean hasMaterial;
@@ -53,6 +54,7 @@ public class CourseDto {
                      LocalDateTime startDate,
                      LocalDateTime endDate,
                      String realisationId,
+                     String parentId,
                      Integer credits,
                      List<String> teachers,
                      boolean hasMaterial,
@@ -69,6 +71,7 @@ public class CourseDto {
         this.startDate = startDate;
         this.endDate = endDate;
         this.realisationId = realisationId;
+        this.parentId = parentId;
         this.credits = credits;
         this.teachers = teachers;
         this.hasMaterial = hasMaterial;
@@ -90,6 +93,7 @@ public class CourseDto {
             .append("startDate", startDate)
             .append("endDate", endDate)
             .append("realisationId", realisationId)
+            .append("parentId", parentId)
             .append("teachers", teachers.stream().collect(Collectors.joining(", ")))
             .append("hasMaterial", hasMaterial)
             .append("isExam", isExam)

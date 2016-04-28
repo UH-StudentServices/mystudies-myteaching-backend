@@ -78,7 +78,8 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[0].webOodiUri").value("https://weboodi.helsinki.fi"))
             .andExpect(jsonPath("$[0].teachers[0]").value("Rantala Kari A"))
             .andExpect(jsonPath("$[0].hasMaterial").value(true))
-            .andExpect(jsonPath("$[0].isCancelled").value(expectedCancellation));
+            .andExpect(jsonPath("$[0].isCancelled").value(expectedCancellation))
+            .andExpect(jsonPath("$[0].parentId").isEmpty());
     }
 
 }
