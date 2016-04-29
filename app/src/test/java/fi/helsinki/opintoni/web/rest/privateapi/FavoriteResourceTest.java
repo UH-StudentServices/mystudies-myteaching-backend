@@ -74,7 +74,6 @@ public class FavoriteResourceTest extends SpringTest {
     public void thatRssFavoriteIsSaved() throws Exception {
         SaveRssFavoriteRequest request = new SaveRssFavoriteRequest();
         request.url = "http://rssfeed.com";
-        request.visibleItems = 3;
 
         mockMvc.perform(post("/api/private/v1/favorites/rss").with(securityContext(studentSecurityContext()))
             .content(WebTestUtils.toJsonBytes(request))
@@ -83,8 +82,7 @@ public class FavoriteResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.id").value(any(Number.class)))
-            .andExpect(jsonPath("$.url").value("http://rssfeed.com"))
-            .andExpect(jsonPath("$.visibleItems").value(3));
+            .andExpect(jsonPath("$.url").value("http://rssfeed.com"));
     }
 
     @Test

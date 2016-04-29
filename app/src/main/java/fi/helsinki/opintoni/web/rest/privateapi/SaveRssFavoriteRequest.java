@@ -21,6 +21,4 @@ public class SaveRssFavoriteRequest {
 
     public String url;
 
-    public Integer visibleItems;
-
 }

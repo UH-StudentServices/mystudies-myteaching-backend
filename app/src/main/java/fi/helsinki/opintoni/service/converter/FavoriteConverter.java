@@ -60,8 +60,7 @@ public class FavoriteConverter {
         return new RssFavoriteDto(
             favorite.id,
             favorite.type.name(),
-            favorite.url,
-            favorite.visibleItems);
+            favorite.url);
     }
 
     private LinkFavoriteDto toDto(LinkFavorite favorite) {

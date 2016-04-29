@@ -25,10 +25,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class FavoriteServiceSaveRssFavoriteTest extends AbstractFavoriteServiceTest {
 
-    private static final Integer VISIBLE_ITEMS1 = 1;
-
-    private static final Integer VISIBLE_ITEMS3 = 3;
-
     private static final String URL1 = "http://bbc.co.uk/rss";
 
     private static final String URL2 = "http://www.dagetblader.se/rss";
@@ -37,19 +33,15 @@ public class FavoriteServiceSaveRssFavoriteTest extends AbstractFavoriteServiceT
     public void rssFavoritesIsPersistedCorrectly() {
         SaveRssFavoriteRequest request = new SaveRssFavoriteRequest();
         request.url = URL1;
-        request.visibleItems = VISIBLE_ITEMS1;
         RssFavoriteDto favorite = (RssFavoriteDto) favoriteService.saveRssFavorite(1L, request);
         assertThat(favorite.url).isEqualTo(URL1);
-        assertThat(favorite.visibleItems).isEqualTo(VISIBLE_ITEMS1);
     }
 
     @Test
     public void firstRssFavoritesIsPersistedCorrectly() {
         SaveRssFavoriteRequest request = new SaveRssFavoriteRequest();
         request.url = URL2;
-        request.visibleItems = VISIBLE_ITEMS3;
         RssFavoriteDto favorite = (RssFavoriteDto) favoriteService.saveRssFavorite(2L, request);
         assertThat(favorite.url).isEqualTo(URL2);
-        assertThat(favorite.visibleItems).isEqualTo(VISIBLE_ITEMS3);
     }
 }
