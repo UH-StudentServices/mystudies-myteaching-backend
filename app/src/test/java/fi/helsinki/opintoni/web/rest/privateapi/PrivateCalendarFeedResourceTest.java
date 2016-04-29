@@ -41,14 +41,6 @@ public class PrivateCalendarFeedResourceTest extends SpringTest {
     }
 
     @Test
-    public void thatCalendarFeedIsDeleted() throws Exception {
-        mockMvc.perform(post(CALENDAR_API_URL).with(securityContext(teacherSecurityContext())));
-
-        mockMvc.perform(delete(CALENDAR_API_URL).with(securityContext(teacherSecurityContext())))
-            .andExpect(status().isNoContent());
-    }
-
-    @Test
     public void thatCalendarFeedIsReturned() throws Exception {
         mockMvc.perform(get(CALENDAR_API_URL).with(securityContext(studentSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))

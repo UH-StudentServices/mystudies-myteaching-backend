@@ -74,10 +74,6 @@ public class CalendarService {
         return calendarTransactionalService.createCalendarFeed(userId);
     }
 
-    public void deleteCalendarFeed(Long userId) {
-        calendarTransactionalService.deleteCalendarFeed(userId);
-    }
-
     public String showCalendarFeed(String feedId, Locale locale) {
         return calendarTransactionalService.findByFeedId(feedId)
             .map(c -> getCalendarFeedFromEvents(c, locale))

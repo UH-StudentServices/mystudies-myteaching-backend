@@ -24,7 +24,6 @@ import fi.helsinki.opintoni.web.arguments.UserId;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,12 +50,5 @@ public class PrivateCalendarResource extends AbstractResource {
     @Timed
     public ResponseEntity<CalendarFeedDto> createCalendarFeed(@UserId Long userId) throws Exception {
         return response(calendarService.createCalendarFeed(userId));
-    }
-
-    @RequestMapping(method = RequestMethod.DELETE)
-    @Timed
-    public ResponseEntity<Void> deleteCalendarFeed(@UserId Long userId) throws Exception {
-        calendarService.deleteCalendarFeed(userId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

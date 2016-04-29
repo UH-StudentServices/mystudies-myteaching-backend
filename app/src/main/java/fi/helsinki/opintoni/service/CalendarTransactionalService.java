@@ -59,10 +59,6 @@ public class CalendarTransactionalService extends DtoService {
         return calendarFeedConverter.toDto(calendarFeedRepository.save(calendarFeed));
     }
 
-    public void deleteCalendarFeed(Long userId) {
-        calendarFeedRepository.deleteByUserId(userId);
-    }
-
     public Optional<CalendarFeed> findByFeedId(String feedId) {
         return calendarFeedRepository.findByFeedId(feedId);
     }
