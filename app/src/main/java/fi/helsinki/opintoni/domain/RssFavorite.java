@@ -34,10 +34,6 @@ public class RssFavorite extends Favorite {
     @Column(name = "url")
     public String url;
 
-    @NotNull
-    @Column(name = "visible_items")
-    public Integer visibleItems;
-
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -45,7 +41,6 @@ public class RssFavorite extends Favorite {
             .append("type", super.type)
             .append("orderIndex", super.orderIndex)
             .append("url", url)
-            .append("visibleItems", visibleItems)
             .toString();
     }
 }

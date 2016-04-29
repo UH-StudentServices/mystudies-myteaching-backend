@@ -21,12 +21,9 @@ public final class RssFavoriteDto extends FavoriteDto {
 
     public final String url;
 
-    public final Integer visibleItems;
-
-    public RssFavoriteDto(Long id, String type, String url, Integer visibleItems) {
+    public RssFavoriteDto(Long id, String type, String url) {
         super(id, type);
         this.url = url;
-        this.visibleItems = visibleItems;
     }
 
 }

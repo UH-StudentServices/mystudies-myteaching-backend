@@ -78,7 +78,6 @@ public class FavoriteService {
 
         RssFavorite favorite = new RssFavorite();
         favorite.url = saveRssFavoriteRequest.url;
-        favorite.visibleItems = saveRssFavoriteRequest.visibleItems;
         favorite.type = Favorite.Type.RSS;
         favorite.orderIndex = maxOrderIndex + 1;
         favorite.user = userRepository.findOne(userId);
@@ -225,7 +224,6 @@ public class FavoriteService {
         RssFavorite rssFavorite = new RssFavorite();
         rssFavorite.type = Favorite.Type.RSS;
         rssFavorite.url = url;
-        rssFavorite.visibleItems = visibleItems;
         return rssFavorite;
     }
 

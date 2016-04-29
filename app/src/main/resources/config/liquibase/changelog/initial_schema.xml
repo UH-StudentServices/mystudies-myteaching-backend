@@ -1027,5 +1027,9 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="drop visible items from rss favorite" author="Juho Rautio">
+        <dropColumn tableName="rss_favorite" columnName="visible_items"></dropColumn>
+    </changeSet>
 
 </databaseChangeLog>
