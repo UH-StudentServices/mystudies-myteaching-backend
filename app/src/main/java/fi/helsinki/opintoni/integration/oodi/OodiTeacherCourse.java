@@ -50,4 +50,7 @@ public class OodiTeacherCourse {
     @JsonProperty("realisation_type_code")
     public Integer realisationTypeCode;
 
+    @JsonProperty("parent_id")
+    public String parentId;
+
 }

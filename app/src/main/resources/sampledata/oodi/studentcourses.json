@@ -23,10 +23,119 @@
       "credits": 3,
       "teaching_languages": "fi",
       "course_id": 123456789,
+      "parent_id": null,
       "type_code": 5,
       "image_uri": null,
       "weboodi_uri": "https://weboodi.helsinki.fi",
       "learningopportunity_id": "52736"
+    },
+    {
+      "name": [
+        {
+          "langcode": "fi",
+          "text": "Geenitekniikka harjoitus"
+        },
+        {
+          "langcode": "sv",
+          "text": "Genteknologi träning"
+        },
+        {
+          "langcode": "en",
+          "text": "Gene Technology practice"
+        }
+      ],
+      "coursepage_uri": null,
+      "end_date": "2016-02-03T22:00:00.000Z",
+      "start_date": "2016-01-04T22:00:00.000Z",
+      "credits": 3,
+      "teaching_languages": "fi",
+      "course_id": 123456790,
+      "parent_id": 123456789,
+      "type_code": 5,
+      "image_uri": null,
+      "weboodi_uri": "https://weboodi.helsinki.fi",
+      "learningopportunity_id": "52736"
+    },
+    {
+      "name": [
+        {
+          "langcode": "fi",
+          "text": "Geenitekniikka harjoitus 2"
+        },
+        {
+          "langcode": "sv",
+          "text": "Genteknologi träning 2"
+        },
+        {
+          "langcode": "en",
+          "text": "Gene Technology practice 2"
+        }
+      ],
+      "coursepage_uri": null,
+      "end_date": "2016-02-03T22:00:00.000Z",
+      "start_date": "2016-01-04T22:00:00.000Z",
+      "credits": 3,
+      "teaching_languages": "fi",
+      "course_id": 123456791,
+      "parent_id": 123456789,
+      "type_code": 5,
+      "image_uri": null,
+      "weboodi_uri": "https://weboodi.helsinki.fi",
+      "learningopportunity_id": "52736"
+    },
+    {
+      "name": [
+        {
+          "langcode": "fi",
+          "text": "Geenitekniikka 2"
+        },
+        {
+          "langcode": "sv",
+          "text": "Genteknologi 2"
+        },
+        {
+          "langcode": "en",
+          "text": "Gene Technology 2"
+        }
+      ],
+      "coursepage_uri": null,
+      "end_date": "2015-02-03T22:00:00.000Z",
+      "start_date": "2015-01-04T22:00:00.000Z",
+      "credits": 3,
+      "teaching_languages": "fi",
+      "course_id": 123456788,
+      "parent_id": null,
+      "type_code": 5,
+      "image_uri": null,
+      "weboodi_uri": "https://weboodi.helsinki.fi",
+      "learningopportunity_id": "52735"
+    },
+    {
+      "name": [
+        {
+          "langcode": "fi",
+          "text": "Geenitekniikka 3"
+        },
+        {
+          "langcode": "sv",
+          "text": "Genteknologi 3"
+        },
+        {
+          "langcode": "en",
+          "text": "Gene Technology 3"
+        }
+      ],
+      "coursepage_uri": null,
+      "end_date": "2014-02-03T22:00:00.000Z",
+      "start_date": "2014-01-04T22:00:00.000Z",
+      "credits": 3,
+      "teaching_languages": "fi",
+      "course_id": 123456787,
+      "parent_id": null,
+      "type_code": 5,
+      "image_uri": null,
+      "weboodi_uri": "https://weboodi.helsinki.fi",
+      "learningopportunity_id": "52734"
     }
   ]
 }
