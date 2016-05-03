@@ -40,6 +40,10 @@ coursePage:
     client.implementation: rest
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
+recommendations:
+    maxRecommendations: 5
+    uidPrefix: opintohistoria_
+
 googleAnalyticsAccount: UA-55852460-5
 
 unisportMyReservationsUrl: https://unisport.fi/yol/web/<%= userLanguage %>/ext/opintoni/reservationList.do
