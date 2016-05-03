@@ -24,12 +24,13 @@ import java.time.format.DateTimeFormatter;
 
 public class DateTimeUtil {
 
-    private static final int SEMESTER_START_MONTH = 5;
+    private static final int SEMESTER_START_MONTH = 8;
+    private static final int SEMESTER_START_MONTH_LIMIT = 5;
 
     public static String getSemesterStartDateString(LocalDate now) {
         int year = now.getYear();
         int month = now.getMonthValue();
-        LocalDateTime semesterStartDate = LocalDateTime.of(month < SEMESTER_START_MONTH ? year - 1 : year, SEMESTER_START_MONTH, 1, 0, 0, 0);
+        LocalDateTime semesterStartDate = LocalDateTime.of(month < SEMESTER_START_MONTH ? year - 1 : year, SEMESTER_START_MONTH_LIMIT, 1, 0, 0, 0);
         return semesterStartDate.format(DateTimeFormatter.ofPattern(DateFormatter.UTC_TIME_FORMAT_OODI));
     }
 
