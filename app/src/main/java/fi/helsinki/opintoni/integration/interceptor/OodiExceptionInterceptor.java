@@ -52,6 +52,7 @@ public class OodiExceptionInterceptor implements ClientHttpRequestInterceptor {
          */
         if (env.acceptsProfiles(
             Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT,
+            Constants.SPRING_PROFILE_DEMO,
             Constants.SPRING_PROFILE_QA,
             Constants.SPRING_PROFILE_PRODUCTION)) {
 

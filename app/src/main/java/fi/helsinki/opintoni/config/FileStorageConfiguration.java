@@ -47,6 +47,7 @@ public class FileStorageConfiguration {
     @Profile({
         Constants.SPRING_PROFILE_DEVELOPMENT,
         Constants.SPRING_PROFILE_QA,
+        Constants.SPRING_PROFILE_DEMO,
         Constants.SPRING_PROFILE_PRODUCTION
     })
     public FileStorage fileSystemFileStorage() {

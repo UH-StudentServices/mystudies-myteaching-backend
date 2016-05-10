@@ -112,6 +112,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         if (env.acceptsProfiles(
             Constants.SPRING_PROFILE_DEVELOPMENT,
             Constants.SPRING_PROFILE_QA,
+            Constants.SPRING_PROFILE_DEMO,
             Constants.SPRING_PROFILE_PRODUCTION)) {
             initMetrics(servletContext, dispatcherTypes);
 
