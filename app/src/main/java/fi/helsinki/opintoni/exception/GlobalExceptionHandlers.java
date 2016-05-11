@@ -21,6 +21,8 @@ import fi.helsinki.opintoni.exception.http.BadRequestException;
 import fi.helsinki.opintoni.exception.http.CalendarFeedNotFoundException;
 import fi.helsinki.opintoni.exception.http.ForbiddenException;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -61,15 +63,22 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<CommonError> handleException(Exception e) throws Exception {
+        // Only log a brief info message on broken pipes
+        if(StringUtils.containsIgnoreCase(ExceptionUtils.getRootCauseMessage(e), "Broken pipe")) {
+            LOGGER.info("Broken pipe occurred");
+            return null;
+        }
 
         // If the exception is annotated with @ResponseStatus, rethrow it for other handlers
         if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null) {
             throw e;
         }
+
         LOGGER.error("Caught exception", e);
 
         return new ResponseEntity<>(new CommonError("Something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @ExceptionHandler(value = CalendarFeedNotFoundException.class)
     public ResponseEntity handleCalendarFeedNotFound() throws Exception {
