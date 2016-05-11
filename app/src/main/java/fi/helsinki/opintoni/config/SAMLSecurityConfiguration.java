@@ -351,7 +351,6 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/saml/**").permitAll()
             .antMatchers("/redirect").permitAll()
             .antMatchers("/api/public/v1/**").permitAll()
-            .antMatchers("/api/private/v1/admin/*").access(securityUtils.getWhitelistedIpAccess())
             .antMatchers("/api/admin/**").access(Constants.ADMIN_ROLE_REQUIRED)
             .antMatchers("/metrics/metrics/*").access(securityUtils.getWhitelistedIpAccess())
             .anyRequest().authenticated();
