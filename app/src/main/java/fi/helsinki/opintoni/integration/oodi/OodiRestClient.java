@@ -85,21 +85,21 @@ public class OodiRestClient implements OodiClient {
     public OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId) {
         return getSingleOodiData("{baseUrl}/courseunitrealisations/{realisationId}",
             new ParameterizedTypeReference<OodiSingleResponse<OodiCourseUnitRealisation>>() {
-            }, baseUrl, realisationId);
+            }, OodiCourseUnitRealisation.class, baseUrl, realisationId);
     }
 
     @Override
     public OodiStudentInfo getStudentInfo(String studentNumber) {
         return getSingleOodiData("{baseUrl}/students/{studentNumber}/info",
             new ParameterizedTypeReference<OodiSingleResponse<OodiStudentInfo>>() {
-            }, baseUrl, studentNumber);
+            }, OodiStudentInfo.class, baseUrl, studentNumber);
     }
 
     @Override
     public OodiRoles getRoles(String oodiPersonId) {
         return getSingleOodiData("{baseUrl}/persons/{oodiPersonId}/roles",
             new ParameterizedTypeReference<OodiSingleResponse<OodiRoles>>() {
-            }, baseUrl, oodiPersonId);
+            }, OodiRoles.class, baseUrl, oodiPersonId);
     }
 
     @Override
@@ -129,10 +129,13 @@ public class OodiRestClient implements OodiClient {
     }
 
     public <T> T getSingleOodiData(String url, ParameterizedTypeReference<OodiSingleResponse<T>> typeReference,
-                                   Object... uriVariables) {
+                                   Class<T> clazz, Object... uriVariables) {
         T data;
         try {
-            data = restTemplate.exchange(url, HttpMethod.GET, null, typeReference, uriVariables).getBody().data;
+            data = Optional
+                .ofNullable(restTemplate.exchange(url, HttpMethod.GET, null, typeReference, uriVariables).getBody())
+                .map(r -> r.data)
+                .orElse(clazz.newInstance());
         } catch (Exception e) {
             LOGGER.error("Caught OodiIntegrationException", e);
             throw new OodiIntegrationException(e.getMessage(), e);
