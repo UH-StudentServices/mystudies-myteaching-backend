@@ -73,7 +73,7 @@ public class CoursePageUriBuilder {
     }
 
     public String getImageUri(CoursePageCourseImplementation coursePage) {
-        return coursePage.imageUrl != null
+        return (coursePage != null && coursePage.imageUrl != null)
             ? coursePage.imageUrl
             : appConfiguration.get("coursePage.defaultCourseImageUri");
     }
