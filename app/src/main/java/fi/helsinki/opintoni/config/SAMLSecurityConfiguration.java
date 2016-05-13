@@ -17,14 +17,7 @@
 
 package fi.helsinki.opintoni.config;
 
-import fi.helsinki.opintoni.config.logging.LowNoiseSAMLLogger;
-import fi.helsinki.opintoni.security.CustomAuthenticationFailureHandler;
-import fi.helsinki.opintoni.security.CustomAuthenticationSuccessHandler;
-import fi.helsinki.opintoni.security.HttpAuthenticationEntryPoint;
-import fi.helsinki.opintoni.security.SAMLContextProviderReverseProxy;
-import fi.helsinki.opintoni.security.SAMLLogoutSuccessHandler;
-import fi.helsinki.opintoni.security.SAMLUserDetailsService;
-import fi.helsinki.opintoni.security.SecurityUtils;
+import fi.helsinki.opintoni.security.*;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.velocity.app.VelocityEngine;
@@ -48,11 +41,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.saml.SAMLAuthenticationProvider;
-import org.springframework.security.saml.SAMLBootstrap;
-import org.springframework.security.saml.SAMLEntryPoint;
-import org.springframework.security.saml.SAMLLogoutFilter;
-import org.springframework.security.saml.SAMLProcessingFilter;
+import org.springframework.security.saml.*;
 import org.springframework.security.saml.context.SAMLContextProvider;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
@@ -66,14 +55,7 @@ import org.springframework.security.saml.processor.SAMLBinding;
 import org.springframework.security.saml.processor.SAMLProcessorImpl;
 import org.springframework.security.saml.trust.httpclient.TLSProtocolConfigurer;
 import org.springframework.security.saml.util.VelocityFactory;
-import org.springframework.security.saml.websso.SingleLogoutProfile;
-import org.springframework.security.saml.websso.SingleLogoutProfileImpl;
-import org.springframework.security.saml.websso.WebSSOProfile;
-import org.springframework.security.saml.websso.WebSSOProfileConsumer;
-import org.springframework.security.saml.websso.WebSSOProfileConsumerHoKImpl;
-import org.springframework.security.saml.websso.WebSSOProfileConsumerImpl;
-import org.springframework.security.saml.websso.WebSSOProfileImpl;
-import org.springframework.security.saml.websso.WebSSOProfileOptions;
+import org.springframework.security.saml.websso.*;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -84,12 +66,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
+import java.util.*;
 
 @Configuration
 @EnableWebSecurity
@@ -164,7 +141,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public SAMLDefaultLogger samlLogger() {
-        return new LowNoiseSAMLLogger();
+        return new SAMLDefaultLogger();
     }
 
     @Bean
