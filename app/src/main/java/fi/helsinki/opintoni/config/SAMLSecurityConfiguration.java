@@ -25,7 +25,7 @@ import org.opensaml.saml2.metadata.provider.HTTPMetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProvider;
 import org.opensaml.saml2.metadata.provider.MetadataProviderException;
 import org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider;
-import org.opensaml.util.resource.ClasspathResource;
+import org.opensaml.util.resource.FilesystemResource;
 import org.opensaml.xml.parse.StaticBasicParserPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -233,16 +233,8 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return extendedMetadataDelegate;
     }
 
-    private ClasspathResource getSpMetadata(String alias) throws Exception {
-        return new ClasspathResource(SAML_CONFIG_FOLDER + "/" + getEnv() + "/" + alias + "_sp.xml");
-    }
-
-    private String getEnv() {
-        if (environment.acceptsProfiles(Constants.SPRING_PROFILE_QA)) {
-            return Constants.SPRING_PROFILE_QA;
-        } else {
-            return Constants.SPRING_PROFILE_PRODUCTION;
-        }
+    private FilesystemResource getSpMetadata(String alias) throws Exception {
+        return new FilesystemResource(appConfiguration.get("saml.metadataLocation." + alias));
     }
 
     public ExtendedMetadata spExtendedMetadata(String alias) {
