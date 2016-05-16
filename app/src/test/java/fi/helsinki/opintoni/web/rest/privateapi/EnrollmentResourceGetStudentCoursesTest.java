@@ -18,11 +18,13 @@
 package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
+import static fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto.CourseMaterialType;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,12 +32,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
 
+    private static final String COURSE_PAGE_COURSE_MATERIAL_URL = "https://dev.student.helsinki.fi/tvt?group-imp-material";
+    private static final String MOODLE_COURSE_MATERIAL_URL = "http://moodle.helsinki.fi";
+
     @Test
     public void thatStudentCoursesAreReturned() throws Exception {
         expectCourseRequestChain()
             .defaultCourseUnitRealisation();
 
-        thatStudentCoursesAreReturned(false);
+        thatStudentCoursesAreReturned(false, COURSE_PAGE_COURSE_MATERIAL_URL, CourseMaterialType.COURSE_PAGE);
+    }
+
+    @Test
+    public void thatStudentCoursesAreReturnedWithMoodleMaterial() throws Exception {
+        defaultStudentRequestChain()
+            .enrollments()
+            .courseImplementation(TestConstants.STUDENT_COURSE_REALISATION_ID, "courses_with_moodle_url.json")
+            .and()
+            .defaultCourseUnitRealisation();
+
+        thatStudentCoursesAreReturned(false, MOODLE_COURSE_MATERIAL_URL, CourseMaterialType.MOODLE);
     }
 
     @Test
@@ -43,7 +59,7 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
         expectCourseRequestChain()
             .cancelledCourseUnitRealisation();
 
-        thatStudentCoursesAreReturned(true);
+        thatStudentCoursesAreReturned(true, COURSE_PAGE_COURSE_MATERIAL_URL, CourseMaterialType.COURSE_PAGE);
     }
 
     private StudentRequestChain expectCourseRequestChain() {
@@ -53,7 +69,9 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
             .and();
     }
 
-    private void thatStudentCoursesAreReturned(boolean expectedCancellation) throws Exception {
+    private void thatStudentCoursesAreReturned(boolean expectedCancellation,
+                                               String expectedCourseMaterialUri,
+                                               CourseMaterialType expectedCourseMaterialType) throws Exception {
         mockMvc.perform(get("/api/private/v1/students/enrollments/courses")
             .with(securityContext(studentSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
@@ -76,8 +94,9 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[0].endDate[3]").value(22))
             .andExpect(jsonPath("$[0].endDate[4]").value(0))
             .andExpect(jsonPath("$[0].webOodiUri").value("https://weboodi.helsinki.fi"))
+            .andExpect(jsonPath("$[0].courseMaterial.courseMaterialUri").value(expectedCourseMaterialUri))
+            .andExpect(jsonPath("$[0].courseMaterial.courseMaterialType").value(expectedCourseMaterialType.toString()))
             .andExpect(jsonPath("$[0].teachers[0]").value("Rantala Kari A"))
-            .andExpect(jsonPath("$[0].hasMaterial").value(true))
             .andExpect(jsonPath("$[0].isCancelled").value(expectedCancellation))
             .andExpect(jsonPath("$[0].parentId").isEmpty());
     }

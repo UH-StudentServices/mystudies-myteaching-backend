@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.dto;
 
+import fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -25,13 +26,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CourseDto {
+
+    public enum CourseMaterialType {
+        COURSE_PAGE, MOODLE
+    }
+
     public final String code;
     public final Integer typeCode;
     public final String name;
     public final String imageUri;
     public final String coursePageUri;
-    public final String courseMaterialUri;
-    public final String moodleUri;
+    public final CourseMaterialDto courseMaterial;
     public final String webOodiUri;
     public final LocalDateTime startDate;
     public final LocalDateTime endDate;
@@ -39,7 +44,6 @@ public class CourseDto {
     public final String parentId;
     public final Integer credits;
     public final List<String> teachers;
-    public final boolean hasMaterial;
     public final boolean isExam;
     public final boolean isCancelled;
 
@@ -48,8 +52,7 @@ public class CourseDto {
                      String name,
                      String imageUri,
                      String coursePageUri,
-                     String courseMaterialUri,
-                     String moodleUri,
+                     CourseMaterialDto courseMaterial,
                      String webOodiUri,
                      LocalDateTime startDate,
                      LocalDateTime endDate,
@@ -57,7 +60,6 @@ public class CourseDto {
                      String parentId,
                      Integer credits,
                      List<String> teachers,
-                     boolean hasMaterial,
                      boolean isExam,
                      boolean isCancelled) {
         this.typeCode = typeCode;
@@ -65,8 +67,7 @@ public class CourseDto {
         this.name = name;
         this.imageUri = imageUri;
         this.coursePageUri = coursePageUri;
-        this.courseMaterialUri = courseMaterialUri;
-        this.moodleUri = moodleUri;
+        this.courseMaterial = courseMaterial;
         this.webOodiUri = webOodiUri;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -74,7 +75,6 @@ public class CourseDto {
         this.parentId = parentId;
         this.credits = credits;
         this.teachers = teachers;
-        this.hasMaterial = hasMaterial;
         this.isExam = isExam;
         this.isCancelled = isCancelled;
     }
@@ -87,15 +87,13 @@ public class CourseDto {
             .append("name", name)
             .append("imageUri", imageUri)
             .append("coursePageUri", coursePageUri)
-            .append("courseMaterialUri", courseMaterialUri)
-            .append("moodleUri", moodleUri)
+            .append("courseMaterial", courseMaterial)
             .append("webOodiUri", webOodiUri)
             .append("startDate", startDate)
             .append("endDate", endDate)
             .append("realisationId", realisationId)
             .append("parentId", parentId)
             .append("teachers", teachers.stream().collect(Collectors.joining(", ")))
-            .append("hasMaterial", hasMaterial)
             .append("isExam", isExam)
             .append("isCancelled", isCancelled)
             .toString();

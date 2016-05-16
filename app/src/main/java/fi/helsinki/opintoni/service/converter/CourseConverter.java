@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service.converter;
 
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.CourseDto;
+import fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
@@ -32,6 +33,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 import java.util.stream.Collectors;
+
+import static fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto.CourseMaterialType.*;
 
 @Component
 public class CourseConverter {
@@ -66,8 +69,7 @@ public class CourseConverter {
             localizedValueConverter.toLocalizedString(oodiEnrollment.name, locale),
             coursePageUriBuilder.getImageUri(coursePage),
             coursePageUriBuilder.getLocalizedUri(coursePage),
-            coursePageUriBuilder.getMaterialUri(coursePage),
-            coursePage.moodleUrl,
+            getCourseMaterial(coursePage),
             oodiEnrollment.webOodiUri,
             oodiEnrollment.startDate,
             oodiEnrollment.endDate,
@@ -75,7 +77,6 @@ public class CourseConverter {
             oodiEnrollment.parentId,
             oodiEnrollment.credits,
             courseUnitRealisation.teachers.stream().map(t -> t.fullName).collect(Collectors.toList()),
-            coursePage.hasMaterial,
             eventTypeResolver.isExam(oodiEnrollment.typeCode),
             courseUnitRealisation.isCancelled);
     }
@@ -92,8 +93,7 @@ public class CourseConverter {
             localizedValueConverter.toLocalizedString(oodiTeacherCourse.realisationName, locale),
             coursePageUriBuilder.getImageUri(coursePage),
             coursePageUriBuilder.getLocalizedUri(coursePage),
-            coursePageUriBuilder.getMaterialUri(coursePage),
-            coursePage.moodleUrl,
+            getCourseMaterial(coursePage),
             oodiTeacherCourse.webOodiUri,
             oodiTeacherCourse.startDate,
             oodiTeacherCourse.endDate,
@@ -101,9 +101,18 @@ public class CourseConverter {
             oodiTeacherCourse.parentId,
             null,
             Lists.newArrayList(),
-            coursePage.hasMaterial,
             eventTypeResolver.isExam(oodiTeacherCourse.realisationTypeCode),
             courseUnitRealisation.isCancelled);
+    }
+
+    private CourseMaterialDto getCourseMaterial(CoursePageCourseImplementation coursePage) {
+        if(coursePage.moodleUrl != null) {
+            return new CourseMaterialDto(coursePage.moodleUrl, MOODLE);
+        } else if(coursePage.hasMaterial && coursePage.url != null) {
+            return new CourseMaterialDto(coursePageUriBuilder.getMaterialUri(coursePage), COURSE_PAGE);
+        } else {
+            return null;
+        }
     }
 
 }
