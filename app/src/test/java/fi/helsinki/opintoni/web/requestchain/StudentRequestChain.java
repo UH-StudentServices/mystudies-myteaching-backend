@@ -45,13 +45,20 @@ public class StudentRequestChain {
     }
 
     public CourseImplementationRequestChain<StudentRequestChain> courseImplementation(
+        String coursePageImplementationId, String responseFile) {
+        return courseImplementationRequestChain(coursePageImplementationId).expectImplementation(responseFile);
+    }
+
+    public CourseImplementationRequestChain<StudentRequestChain> courseImplementation(
         String coursePageImplementationId) {
-        CourseImplementationRequestChain<StudentRequestChain> builder =
-            new CourseImplementationRequestChain<>(
-                this,
-                coursePageServer,
-                coursePageImplementationId);
-        return builder.expectImplementation();
+        return courseImplementationRequestChain(coursePageImplementationId).expectImplementation();
+    }
+
+    private CourseImplementationRequestChain<StudentRequestChain> courseImplementationRequestChain(String coursePageImplementationId) {
+        return new CourseImplementationRequestChain<>(
+            this,
+            coursePageServer,
+            coursePageImplementationId);
     }
 
     public CourseImplementationActivityRequestChain<StudentRequestChain> activity(String responseFile) {

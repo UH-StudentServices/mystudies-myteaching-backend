@@ -70,6 +70,6 @@ public class CoursePageRestClientTest extends SpringTest {
         defaultTeacherRequestChain()
             .coursePageImplementation(TEACHER_COURSE_REALISATION_ID, "courses_with_moodle_url.json");
 
-        assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).moodleUrl).isEqualTo("http://example.com");
+        assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).moodleUrl).isEqualTo("http://moodle.helsinki.fi");
     }
 }

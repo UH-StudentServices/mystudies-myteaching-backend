@@ -47,8 +47,7 @@ public class CourseDtoTest {
             "name",
             "",
             "",
-            "",
-            "",
+            null,
             "",
             null,
             null,
@@ -56,7 +55,6 @@ public class CourseDtoTest {
             null,
             4,
             Lists.newArrayList(),
-            false,
             true,
             false);
     }
