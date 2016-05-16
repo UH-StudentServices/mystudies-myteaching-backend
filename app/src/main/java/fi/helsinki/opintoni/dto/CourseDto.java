@@ -27,10 +27,6 @@ import java.util.stream.Collectors;
 
 public class CourseDto {
 
-    public enum CourseMaterialType {
-        COURSE_PAGE, MOODLE
-    }
-
     public final String code;
     public final Integer typeCode;
     public final String name;
