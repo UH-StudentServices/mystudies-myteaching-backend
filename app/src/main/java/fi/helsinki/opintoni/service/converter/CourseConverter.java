@@ -108,6 +108,8 @@ public class CourseConverter {
     private CourseMaterialDto getCourseMaterial(CoursePageCourseImplementation coursePage) {
         if(coursePage.moodleUrl != null) {
             return new CourseMaterialDto(coursePage.moodleUrl, MOODLE);
+        } else if(coursePage.wikiUrl != null) {
+            return new CourseMaterialDto(coursePage.wikiUrl, WIKI);
         } else if(coursePage.hasMaterial && coursePage.url != null) {
             return new CourseMaterialDto(coursePageUriBuilder.getMaterialUri(coursePage), COURSE_PAGE);
         } else {

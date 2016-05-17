@@ -34,6 +34,7 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
 
     private static final String COURSE_PAGE_COURSE_MATERIAL_URL = "https://dev.student.helsinki.fi/tvt?group-imp-material";
     private static final String MOODLE_COURSE_MATERIAL_URL = "http://moodle.helsinki.fi";
+    private static final String WIKI_COURSE_MATERIAL_URL = "http://wiki.helsinki.fi";
 
     @Test
     public void thatStudentCoursesAreReturned() throws Exception {
@@ -45,13 +46,16 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
 
     @Test
     public void thatStudentCoursesAreReturnedWithMoodleMaterial() throws Exception {
-        defaultStudentRequestChain()
-            .enrollments()
-            .courseImplementation(TestConstants.STUDENT_COURSE_REALISATION_ID, "courses_with_moodle_url.json")
-            .and()
-            .defaultCourseUnitRealisation();
+        expectCourseRequestChainWithImplementation("courses_with_moodle_url.json");
 
         thatStudentCoursesAreReturned(false, MOODLE_COURSE_MATERIAL_URL, CourseMaterialType.MOODLE);
+    }
+
+    @Test
+    public void thatStudentCoursesAreReturnedWitWikiMaterial() throws Exception {
+        expectCourseRequestChainWithImplementation("courses_with_wiki_url.json");
+
+        thatStudentCoursesAreReturned(false, WIKI_COURSE_MATERIAL_URL, CourseMaterialType.WIKI);
     }
 
     @Test
@@ -60,6 +64,14 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
             .cancelledCourseUnitRealisation();
 
         thatStudentCoursesAreReturned(true, COURSE_PAGE_COURSE_MATERIAL_URL, CourseMaterialType.COURSE_PAGE);
+    }
+
+    private void expectCourseRequestChainWithImplementation(String responseFile) {
+        defaultStudentRequestChain()
+            .enrollments()
+            .courseImplementation(TestConstants.STUDENT_COURSE_REALISATION_ID, responseFile)
+            .and()
+            .defaultCourseUnitRealisation();
     }
 
     private StudentRequestChain expectCourseRequestChain() {
