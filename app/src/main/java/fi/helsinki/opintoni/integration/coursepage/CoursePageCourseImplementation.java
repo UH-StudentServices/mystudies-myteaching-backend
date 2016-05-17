@@ -34,4 +34,7 @@ public class CoursePageCourseImplementation {
 
     @JsonProperty("moodle_url")
     public String moodleUrl;
+
+    @JsonProperty("wiki_url")
+    public String wikiUrl;
 }
