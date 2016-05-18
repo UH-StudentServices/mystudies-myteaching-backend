@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service.converter;
 
 import fi.helsinki.opintoni.domain.UserSettings;
 import fi.helsinki.opintoni.dto.UserSettingsDto;
+import fi.helsinki.opintoni.integration.mece.JWTService;
 import fi.helsinki.opintoni.util.UriBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,9 +33,12 @@ public class UserSettingsConverter {
 
     private final UriBuilder uriBuilder;
 
+    private final JWTService jwtService;
+
     @Autowired
-    public UserSettingsConverter(UriBuilder uriBuilder) {
+    public UserSettingsConverter(UriBuilder uriBuilder, JWTService jwtService) {
         this.uriBuilder = uriBuilder;
+        this.jwtService = jwtService;
     }
 
     private enum BackgroundType {
@@ -51,6 +55,7 @@ public class UserSettingsConverter {
         userSettingsDto.showMyTeachingTour = userSettings.showMyTeachingTour;
         userSettingsDto.showPortfolioTour = userSettings.showPortfolioTour;
         userSettingsDto.showBanner = userSettings.showBanner;
+        userSettingsDto.meceJWTToken = jwtService.generateToken(userSettings.user.eduPersonPrincipalName);
         return userSettingsDto;
     }
 

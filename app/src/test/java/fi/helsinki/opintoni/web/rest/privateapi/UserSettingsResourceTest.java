@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.UserSettings;
+import fi.helsinki.opintoni.integration.mece.JWTService;
 import fi.helsinki.opintoni.repository.UserSettingsRepository;
 import fi.helsinki.opintoni.service.storage.FilesMemory;
 import fi.helsinki.opintoni.web.WebConstants;
@@ -47,11 +48,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class UserSettingsResourceTest extends SpringTest {
 
+    private static final String STUDENT_PRINCIPAL_NAME = "opiskelija@helsinki.fi";
     @Autowired
     private FilesMemory filesMemory;
 
     @Autowired
     private UserSettingsRepository userSettingsRepository;
+
+    @Autowired
+    private JWTService jwtService;
 
     @Test
     public void thatUserSettingsReturnCorrectResponse() throws Exception {
@@ -67,7 +72,8 @@ public class UserSettingsResourceTest extends SpringTest {
             .andExpect(jsonPath("$.showMyStudiesTour").value(true))
             .andExpect(jsonPath("$.showMyTeachingTour").value(true))
             .andExpect(jsonPath("$.showBanner").value(true))
-            .andExpect(jsonPath("$.showPortfolioTour").value(true));
+            .andExpect(jsonPath("$.showPortfolioTour").value(true))
+            .andExpect(jsonPath("$.meceJWTToken").value(jwtService.generateToken(STUDENT_PRINCIPAL_NAME)));
     }
 
     @Test
