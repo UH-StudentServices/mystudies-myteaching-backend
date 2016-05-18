@@ -58,8 +58,6 @@ portfolioUrl:
   student: http://local.student.helsinki.fi:3002/portfolio
   teacher: http://local.teacher.helsinki.fi:3002/portfolio
 
-embedlyApiKey: dd741e653b0e4841bc59a60650031057
-
 environment: local
 
 adminAccounts: opettaja@helsinki.fi, opiskelija@helsinki.fi

@@ -14,18 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
+package fi.helsinki.opintoni.integration.mece;
 
-package fi.helsinki.opintoni.dto;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
-public class UserSettingsDto {
+import java.security.Key;
 
-    public Long id;
-    public String backgroundUri;
-    public String backgroundType;
-    public String meceJWTToken;
-    public boolean hasAvatarImage;
-    public boolean showMyStudiesTour;
-    public boolean showMyTeachingTour;
-    public boolean showPortfolioTour;
-    public boolean showBanner;
+public class MeceJWTService implements JWTService {
+
+    private final Key mecePrivateSecret;
+
+    private final SignatureAlgorithm signatureAlgorithm;
+
+    public MeceJWTService(Key mecePrivateSecret, SignatureAlgorithm signatureAlgorithm) {
+        this.mecePrivateSecret = mecePrivateSecret;
+        this.signatureAlgorithm = signatureAlgorithm;
+    }
+
+    @Override
+    public String generateToken(final String username) {
+        return Jwts.builder().setSubject(username).signWith(signatureAlgorithm, mecePrivateSecret).compact();
+    }
 }

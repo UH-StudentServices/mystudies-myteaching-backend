@@ -355,3 +355,5 @@ locale.default: fi
 
 staticResourceCachingPeriod: 31536000
 
+meceSecretKey: W778UXMJ7PFQTKG2RM8NR2H7T3QE5ZTL
+

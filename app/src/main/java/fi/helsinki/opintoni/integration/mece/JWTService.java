@@ -14,18 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
+package fi.helsinki.opintoni.integration.mece;
 
-package fi.helsinki.opintoni.dto;
+public interface JWTService {
 
-public class UserSettingsDto {
+    String generateToken(final String username);
 
-    public Long id;
-    public String backgroundUri;
-    public String backgroundType;
-    public String meceJWTToken;
-    public boolean hasAvatarImage;
-    public boolean showMyStudiesTour;
-    public boolean showMyTeachingTour;
-    public boolean showPortfolioTour;
-    public boolean showBanner;
 }
