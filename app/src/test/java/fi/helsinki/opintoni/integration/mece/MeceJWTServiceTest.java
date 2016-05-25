@@ -22,7 +22,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 
 public class MeceJWTServiceTest {
@@ -44,7 +43,6 @@ public class MeceJWTServiceTest {
     }
 
     private Key getKey() {
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(MECE_PRIVATE_SECRET);
-        return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
+        return new SecretKeySpec(MECE_PRIVATE_SECRET.getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 }

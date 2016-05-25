@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 
 @Configuration
@@ -23,8 +22,7 @@ public class MeceConfiguration {
     }
 
     private Key getKey() {
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(appConfiguration.get("meceSecretKey"));
-        return new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS256.getJcaName());
+        return new SecretKeySpec(appConfiguration.get("meceSecretKey").getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 
 }
