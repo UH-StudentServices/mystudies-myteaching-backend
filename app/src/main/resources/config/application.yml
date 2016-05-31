@@ -265,6 +265,9 @@ leiki:
 flamma:
     base.url: https://flamma.helsinki.fi
 
+unisport:
+    userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
+
 search:
   maxSearchResults: 100
   maxCategoryResults: 10

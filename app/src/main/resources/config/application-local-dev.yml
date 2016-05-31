@@ -46,8 +46,6 @@ leiki:
 
 googleAnalyticsAccount: UA-61958961-1
 
-unisportMyReservationsUrl: https://unisport.fi/yol/web/<%= userLanguage %>/ext/opintoni/reservationList.do?mockData=true
-
 hostUrl: http://local.student.helsinki.fi:3000
 loginUrlTeacher: /locallog.html
 loginUrlStudent: /locallog.html

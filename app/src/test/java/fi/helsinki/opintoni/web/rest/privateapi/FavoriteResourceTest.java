@@ -67,7 +67,7 @@ public class FavoriteResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.id").value(any(Number.class)))
-            .andExpect(jsonPath("$.url").value("https://unisport.fi/yol/web/fi/shibbolethAuth.do"));
+            .andExpect(jsonPath("$.authorizationUrl").value("https://unisport.fi/ext/opintoni/authorization"));
     }
 
     @Test

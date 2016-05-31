@@ -19,11 +19,11 @@ package fi.helsinki.opintoni.dto;
 
 public class UnisportFavoriteDto  extends FavoriteDto {
 
-    public final String url;
+    public final String authorizationUrl;
 
-    public UnisportFavoriteDto(Long id, String type, String url) {
+    public UnisportFavoriteDto(Long id, String type, String authorizationUrl) {
         super(id, type);
-        this.url = url;
+        this.authorizationUrl = authorizationUrl;
     }
 
 }

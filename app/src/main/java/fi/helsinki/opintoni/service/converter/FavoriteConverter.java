@@ -79,7 +79,7 @@ public class FavoriteConverter {
         return new UnisportFavoriteDto(
             favorite.id,
             favorite.type.name(),
-            appConfiguration.get("unisportMyReservationsUrl")
+            appConfiguration.get("unisport.userAuthorizationUrl")
         );
     }
 

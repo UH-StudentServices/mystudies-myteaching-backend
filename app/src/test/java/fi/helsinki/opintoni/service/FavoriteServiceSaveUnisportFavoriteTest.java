@@ -25,6 +25,6 @@ public class FavoriteServiceSaveUnisportFavoriteTest extends AbstractFavoriteSer
     @Test
     public void shouldPersistUnisportFavorite() {
         UnisportFavoriteDto favorite = (UnisportFavoriteDto)favoriteService.insertUnisportFavorite(1L);
-        assertUnisportFavorite(favorite, 11L, "https://unisport.fi/yol/web/fi/shibbolethAuth.do");
+        assertUnisportFavorite(favorite, 11L, "https://unisport.fi/ext/opintoni/authorization");
     }
 }

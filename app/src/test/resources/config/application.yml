@@ -285,6 +285,9 @@ leiki:
 flamma:
     base.url: https://flamma.helsinki.fi
 
+unisport:
+    userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
+
 googleAnalyticsAccount: UA-123
 
 hostUrl: https://opi-1.student.helsinki.fi
