@@ -278,15 +278,17 @@ coursePage:
     client.implementation: rest
     defaultCourseImageUri: https://dev.student.helsinki.fi/default
 
+unisport:
+    userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
+    client.implementation: rest
+    base.url: https://unisport.fi
+
 leiki:
     base.url: http://suositukset.helsinki.fi
     client.implementation: rest
 
 flamma:
     base.url: https://flamma.helsinki.fi
-
-unisport:
-    userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
 
 googleAnalyticsAccount: UA-123
 

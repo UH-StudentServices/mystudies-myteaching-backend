@@ -40,6 +40,10 @@ coursePage:
     client.implementation: rest
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
+unisport:
+    client.implementation: rest
+    base.url: https://unisport.fi
+
 googleAnalyticsAccount: UA-55852460-2
 
 hostUrl: https://demo.student.helsinki.fi
