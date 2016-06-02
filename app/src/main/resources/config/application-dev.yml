@@ -43,6 +43,7 @@ coursePage:
 unisport:
     client.implementation: mock
     base.url: https://unisport.fi
+    jwt.secretKey: foobar123
 
 googleAnalyticsAccount: UA-55852460-3
 

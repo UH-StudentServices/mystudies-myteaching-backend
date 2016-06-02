@@ -2,12 +2,14 @@ package fi.helsinki.opintoni.server;
 
 
 import fi.helsinki.opintoni.config.AppConfiguration;
+import fi.helsinki.opintoni.integration.unisport.MockUnisportJWTService;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
 import static fi.helsinki.opintoni.sampledata.SampleDataFiles.toText;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -37,6 +39,7 @@ public class UnisportServer {
     public void expectUserReservations() {
         server.expect(requestTo(unisportBaseUrl + "/api/v1/fi/ext/opintoni/reservations"))
             .andExpect(method(HttpMethod.GET))
+            .andExpect(header("Authorization", MockUnisportJWTService.MOCK_JWT_TOKEN))
             .andRespond(
                 withSuccess(
                     toText("unisport/user-reservations.json"),

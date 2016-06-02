@@ -282,6 +282,9 @@ unisport:
     userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
     client.implementation: rest
     base.url: https://unisport.fi
+    jwt.secretKey: foobar123
+    jwt.service.implementation: mock
+    tokenValidForSeconds: 10
 
 leiki:
     base.url: http://suositukset.helsinki.fi

@@ -20,10 +20,9 @@ package fi.helsinki.opintoni.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
-import fi.helsinki.opintoni.integration.unisport.UnisportClient;
-import fi.helsinki.opintoni.integration.unisport.UnisportMockClient;
-import fi.helsinki.opintoni.integration.unisport.UnisportRestClient;
+import fi.helsinki.opintoni.integration.unisport.*;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +30,8 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
 import java.util.List;
 
 @Configuration
@@ -63,7 +64,7 @@ public class UnisportConfiguration {
 
     @Bean
     public UnisportClient unisportRestClient() {
-        return new UnisportRestClient(appConfiguration.get("unisport.base.url"), unisportRestTemplate());
+        return new UnisportRestClient(appConfiguration.get("unisport.base.url"), unisportRestTemplate(), unisportJWTService());
     }
 
     @Bean
@@ -74,5 +75,32 @@ public class UnisportConfiguration {
             .with("rest", unisportRestClient())
             .with("mock", unisportMockClient())
             .build();
+    }
+
+    @Bean
+    public ExpiringUnisportJWTService expiringUnisportJWTService() {
+        return new ExpiringUnisportJWTService(
+            getKey(),
+            SignatureAlgorithm.HS256,
+            appConfiguration.getInteger("unisport.tokenValidForSeconds"));
+    }
+
+    @Bean
+    MockUnisportJWTService mockUnisportJWTService() {
+        return new MockUnisportJWTService();
+    }
+
+    @Bean
+    public UnisportJWTService unisportJWTService() {
+        return NamedDelegatesProxy.builder(
+            UnisportJWTService.class,
+            () -> appConfiguration.get("unisport.jwt.service.implementation"))
+            .with("expiring", expiringUnisportJWTService())
+            .with("mock", mockUnisportJWTService())
+            .build();
+    }
+
+    private Key getKey() {
+        return new SecretKeySpec(appConfiguration.get("unisport.jwt.secretKey").getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 }
