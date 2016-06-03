@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public interface UnisportClient {
 
-    Optional<UnisportUser> getUnisportUserByPrincipal(String userName, Locale locale);
+    Optional<UnisportUser> getUnisportUserByPrincipal(String username);
 
     UnisportUserReservations getUserReservations(Long unisportUserId, Locale locale);
 

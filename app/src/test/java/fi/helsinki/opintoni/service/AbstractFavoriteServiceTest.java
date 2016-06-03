@@ -48,12 +48,11 @@ abstract class AbstractFavoriteServiceTest extends SpringTest {
         assertThat(rssFavoriteDto.url).isEqualTo(url);
     }
 
-    protected final void assertUnisportFavorite(FavoriteDto dto, Long id, String authorizationUrl) {
+    protected final void assertUnisportFavorite(FavoriteDto dto, Long id) {
         assertFavorite(dto, id, "UNISPORT");
         assertThat(dto, instanceOf(UnisportFavoriteDto.class));
 
         UnisportFavoriteDto unisportFavoriteDto = (UnisportFavoriteDto) dto;
-        assertThat(unisportFavoriteDto.authorizationUrl).isEqualTo(authorizationUrl);
     }
 
     protected final void assertLinkFavorite(FavoriteDto dto, Long id, String url, String title) {

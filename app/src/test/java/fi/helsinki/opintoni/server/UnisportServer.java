@@ -4,6 +4,7 @@ package fi.helsinki.opintoni.server;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.integration.unisport.MockUnisportJWTService;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
@@ -12,6 +13,7 @@ import static fi.helsinki.opintoni.sampledata.SampleDataFiles.toText;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 public class UnisportServer {
@@ -26,13 +28,21 @@ public class UnisportServer {
     }
 
     public void expectAuthorization() {
-        server.expect(requestTo(unisportBaseUrl + "/api/v1/fi/ext/opintoni/authorization?eppn=opiskelija@helsinki.fi"))
+        server.expect(requestTo(unisportBaseUrl + "/api/v1/en/ext/opintoni/authorization?eppn=opiskelija@helsinki.fi"))
             .andExpect(method(HttpMethod.GET))
             .andRespond(
                 withSuccess(
                     toText("unisport/user.json"),
                     MediaType.APPLICATION_JSON
                 )
+            );
+    }
+
+    public void expectAuthorizationFailWith404() {
+        server.expect(requestTo(unisportBaseUrl + "/api/v1/en/ext/opintoni/authorization?eppn=opettaja@helsinki.fi"))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(
+                withStatus(HttpStatus.NOT_FOUND)
             );
     }
 

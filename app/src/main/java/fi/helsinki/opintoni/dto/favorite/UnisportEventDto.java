@@ -15,12 +15,21 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.dto;
+package fi.helsinki.opintoni.dto.favorite;
 
-public class UnisportFavoriteDto  extends FavoriteDto {
+public class UnisportEventDto {
 
-    public UnisportFavoriteDto(Long id, String type) {
-        super(id, type);
+    public String url;
+    public String name;
+    public String venue;
+    public String startTime;
+    public String endTime;
+
+    public UnisportEventDto(String url, String name, String venue, String startTime, String endTime) {
+        this.url = url;
+        this.name = name;
+        this.venue = venue;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
-
 }

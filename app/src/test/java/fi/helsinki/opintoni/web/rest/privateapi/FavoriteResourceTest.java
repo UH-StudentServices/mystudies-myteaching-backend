@@ -28,8 +28,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Locale;
+
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
+import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -61,12 +64,37 @@ public class FavoriteResourceTest extends SpringTest {
 
     @Test
     public void thatUnisportFavoriteIsSaved() throws Exception {
+        unisportServer.expectAuthorization();
         mockMvc.perform(post("/api/private/v1/favorites/unisport").with(securityContext(studentSecurityContext()))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.id").value(any(Number.class)))
+            .andExpect(jsonPath("$.id").value(any(Number.class)));
+    }
+
+    @Test
+    public void thatUnisportReservationsAreReturned() throws Exception {
+        unisportServer.expectAuthorization();
+        unisportServer.expectUserReservations();
+
+        mockMvc.perform(get("/api/private/v1/favorites/unisport").with(securityContext(studentSecurityContext()))
+            .locale(new Locale("fi"))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.events[2].name").value("Testikurssin tapahtuma"));
+    }
+
+    @Test
+    public void thatUnisportAuthorizationUrlIsReturned() throws Exception {
+        unisportServer.expectAuthorizationFailWith404();
+
+        mockMvc.perform(get("/api/private/v1/favorites/unisport").with(securityContext(teacherSecurityContext()))
+            .locale(new Locale("fi"))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.authorizationUrl").value("https://unisport.fi/ext/opintoni/authorization"));
     }
 

@@ -29,17 +29,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UnisportRestClientTest extends SpringTest {
 
     private static final String STUDENT_PRINCIPAL = "opiskelija@helsinki.fi";
+    private static final String TEACHER_PRINCIPAL = "opettaja@helsinki.fi";
     private static final long UNISPORT_USER_ID = 123;
     private static final String UNISPORT_EVENT_NAME = "Testikurssin tapahtuma";
-    
+
+
     @Autowired
-    private UnisportClient unisportRestClient;
+    private UnisportRestClient unisportRestClient;
 
     @Test
     public void thatUnisportUserIsReturned() {
         unisportServer.expectAuthorization();
-        Optional<UnisportUser> userByPrincipal = unisportRestClient.getUnisportUserByPrincipal(STUDENT_PRINCIPAL, new Locale("fi"));
+        Optional<UnisportUser> userByPrincipal = unisportRestClient.getUnisportUserByPrincipal(STUDENT_PRINCIPAL);
         assertThat(userByPrincipal.get().user).isEqualTo(UNISPORT_USER_ID);
+    }
+
+    @Test
+    public void that404ForUnauthorizedIsHandled() {
+        unisportServer.expectAuthorizationFailWith404();
+        Optional<UnisportUser> userByPrincipal = unisportRestClient.getUnisportUserByPrincipal(TEACHER_PRINCIPAL);
+        assertThat(userByPrincipal.isPresent()).isFalse();
     }
 
     @Test

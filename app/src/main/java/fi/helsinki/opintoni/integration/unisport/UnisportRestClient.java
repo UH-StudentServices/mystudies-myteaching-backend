@@ -4,6 +4,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Locale;
@@ -23,15 +25,23 @@ public class UnisportRestClient implements UnisportClient {
     }
 
     @Override
-    public Optional<UnisportUser> getUnisportUserByPrincipal(String userName, Locale locale) {
-        return Optional.ofNullable(
-            restTemplate.exchange(
+    public Optional<UnisportUser> getUnisportUserByPrincipal(String username) {
+        UnisportUser unisportUser = null;
+        try {
+            unisportUser = restTemplate.exchange(
                 "{baseUrl}/api/v1/{locale}/ext/opintoni/authorization?eppn={userName}",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<UnisportUser>() {
                 },
-                baseUrl, locale.getLanguage(), userName).getBody());
+                baseUrl, new Locale("en"), username).getBody();
+
+        } catch (HttpStatusCodeException e) {
+            if(!e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+                throw e;
+            }
+        }
+        return Optional.ofNullable(unisportUser);
     }
 
     @Override

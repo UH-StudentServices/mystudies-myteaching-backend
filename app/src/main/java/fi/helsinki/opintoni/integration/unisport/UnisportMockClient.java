@@ -39,7 +39,7 @@ public class UnisportMockClient implements UnisportClient {
     private ObjectMapper objectMapper;
 
     @Override
-    public Optional<UnisportUser> getUnisportUserByPrincipal(String userName, Locale locale) {
+    public Optional<UnisportUser> getUnisportUserByPrincipal(String username) {
         return Optional.ofNullable(getResponse(userResource, new TypeReference<UnisportUser>() {
         }));
     }

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
 import fi.helsinki.opintoni.integration.unisport.*;
+import fi.helsinki.opintoni.service.converter.favorite.UnisportFavoriteConverter;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +99,11 @@ public class UnisportConfiguration {
             .with("expiring", expiringUnisportJWTService())
             .with("mock", mockUnisportJWTService())
             .build();
+    }
+
+    @Bean
+    UnisportFavoriteConverter unisportFavoriteConverter() {
+        return new UnisportFavoriteConverter(appConfiguration.get("unisport.userAuthorizationUrl"));
     }
 
     private Key getKey() {
