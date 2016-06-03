@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.EventDto;
+import fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
@@ -62,8 +63,10 @@ public class EnrollmentResourceGetTeacherEventsTest extends SpringTest {
             .andExpect(jsonPath("$[0].type").value(EventDto.Type.DEFAULT.name()))
             .andExpect(jsonPath("$[0].source").value(EventDto.Source.OODI.name()))
             .andExpect(jsonPath("$[0].courseTitle").value("Animal Biotechnology B (KEL/KEBIOT230)"))
-            .andExpect(jsonPath("$[0].courseMaterialUri").value("https://dev.student.helsinki" +
+            .andExpect(jsonPath("$[0].courseMaterial.courseMaterialUri").value("https://dev.student.helsinki" +
                 ".fi/tvt?group-imp-material"))
+            .andExpect(jsonPath("$[0].courseMaterial.courseMaterialType")
+                .value(CourseMaterialDto.CourseMaterialType.COURSE_PAGE.toString()))
             .andExpect(jsonPath("$[0].building.street").value("Viikinkaari 11"))
             .andExpect(jsonPath("$[0].building.zipCode").value("00790"))
             .andExpect(jsonPath("$[0].hasMaterial").value(true))

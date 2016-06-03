@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.service.converter;
 
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.CourseDto;
-import fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
@@ -27,14 +26,13 @@ import fi.helsinki.opintoni.integration.oodi.OodiEnrollment;
 import fi.helsinki.opintoni.integration.oodi.OodiTeacherCourse;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
+import fi.helsinki.opintoni.util.CourseMaterialDtoFactory;
 import fi.helsinki.opintoni.util.CoursePageUriBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 import java.util.stream.Collectors;
-
-import static fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto.CourseMaterialType.*;
 
 @Component
 public class CourseConverter {
@@ -44,18 +42,21 @@ public class CourseConverter {
     private final CoursePageUriBuilder coursePageUriBuilder;
     private final EventTypeResolver eventTypeResolver;
     private final LocalizedValueConverter localizedValueConverter;
+    private final CourseMaterialDtoFactory courseMaterialDtoFactory;
 
     @Autowired
     public CourseConverter(CoursePageClient coursePageClient,
                            OodiClient oodiClient,
                            CoursePageUriBuilder coursePageUriBuilder,
                            EventTypeResolver eventTypeResolver,
-                           LocalizedValueConverter localizedValueConverter) {
+                           LocalizedValueConverter localizedValueConverter,
+                           CourseMaterialDtoFactory courseMaterialDtoFactory) {
         this.coursePageClient = coursePageClient;
         this.oodiClient = oodiClient;
         this.coursePageUriBuilder = coursePageUriBuilder;
         this.eventTypeResolver = eventTypeResolver;
         this.localizedValueConverter = localizedValueConverter;
+        this.courseMaterialDtoFactory = courseMaterialDtoFactory;
     }
 
     public CourseDto toDto(OodiEnrollment oodiEnrollment, Locale locale) {
@@ -69,7 +70,7 @@ public class CourseConverter {
             localizedValueConverter.toLocalizedString(oodiEnrollment.name, locale),
             coursePageUriBuilder.getImageUri(coursePage),
             coursePageUriBuilder.getLocalizedUri(coursePage),
-            getCourseMaterial(coursePage),
+            courseMaterialDtoFactory.fromCoursePage(coursePage),
             oodiEnrollment.webOodiUri,
             oodiEnrollment.startDate,
             oodiEnrollment.endDate,
@@ -93,7 +94,7 @@ public class CourseConverter {
             localizedValueConverter.toLocalizedString(oodiTeacherCourse.realisationName, locale),
             coursePageUriBuilder.getImageUri(coursePage),
             coursePageUriBuilder.getLocalizedUri(coursePage),
-            getCourseMaterial(coursePage),
+            courseMaterialDtoFactory.fromCoursePage(coursePage),
             oodiTeacherCourse.webOodiUri,
             oodiTeacherCourse.startDate,
             oodiTeacherCourse.endDate,
@@ -104,19 +105,4 @@ public class CourseConverter {
             eventTypeResolver.isExam(oodiTeacherCourse.realisationTypeCode),
             courseUnitRealisation.isCancelled);
     }
-
-    private CourseMaterialDto getCourseMaterial(CoursePageCourseImplementation coursePage) {
-        if(coursePage == null) {
-            return null;
-        } else if(coursePage.moodleUrl != null) {
-            return new CourseMaterialDto(coursePage.moodleUrl, MOODLE);
-        } else if(coursePage.wikiUrl != null) {
-            return new CourseMaterialDto(coursePage.wikiUrl, WIKI);
-        } else if(coursePage.hasMaterial && coursePage.url != null) {
-            return new CourseMaterialDto(coursePageUriBuilder.getMaterialUri(coursePage), COURSE_PAGE);
-        } else {
-            return null;
-        }
-    }
-
 }
