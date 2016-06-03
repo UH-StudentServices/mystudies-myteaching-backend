@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.EventDto;
+import fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -27,7 +28,9 @@ import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securi
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
 
@@ -61,8 +64,10 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
             .andExpect(jsonPath("$[0].title").value("Formulat... Harjoitus (en)"))
             .andExpect(jsonPath("$[0].type").value(EventDto.Type.DEFAULT.name()))
             .andExpect(jsonPath("$[0].source").value(EventDto.Source.OODI.name()))
-            .andExpect(jsonPath("$[0].courseMaterialUri").value("https://dev.student.helsinki" +
+            .andExpect(jsonPath("$[0].courseMaterial.courseMaterialUri").value("https://dev.student.helsinki" +
                 ".fi/tvt?group-imp-material"))
+            .andExpect(jsonPath("$[0].courseMaterial.courseMaterialType")
+                .value(CourseMaterialDto.CourseMaterialType.COURSE_PAGE.toString()))
             .andExpect(jsonPath("$[0].building.street").value("Viikinkaari 11"))
             .andExpect(jsonPath("$[0].building.zipCode").value("00790"))
             .andExpect(jsonPath("$[0].hasMaterial").value(true))

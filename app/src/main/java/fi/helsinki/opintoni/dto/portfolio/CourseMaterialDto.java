@@ -13,5 +13,4 @@ public class CourseMaterialDto {
     public enum CourseMaterialType {
         COURSE_PAGE, MOODLE, WIKI
     }
-
 }

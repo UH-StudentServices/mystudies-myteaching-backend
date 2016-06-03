@@ -26,6 +26,7 @@ import fi.helsinki.opintoni.integration.oodi.OodiEvent;
 import fi.helsinki.opintoni.integration.oodi.OodiLocalizedValue;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.resolver.LocationResolver;
+import fi.helsinki.opintoni.util.CourseMaterialDtoFactory;
 import fi.helsinki.opintoni.util.CoursePageUriBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,18 +47,21 @@ public class EventConverter {
     private final LocationResolver locationResolver;
     private final CoursePageUriBuilder coursePageUriBuilder;
     private final LocalizedValueConverter localizedValueConverter;
+    private final CourseMaterialDtoFactory courseMaterialDtoFactory;
 
     @Autowired
     public EventConverter(CoursePageClient coursePageClient,
                           EventTypeResolver eventTypeResolver,
                           LocationResolver locationResolver,
                           CoursePageUriBuilder coursePageUriBuilder,
-                          LocalizedValueConverter localizedValueConverter) {
+                          LocalizedValueConverter localizedValueConverter,
+                          CourseMaterialDtoFactory courseMaterialDtoFactory) {
         this.coursePageClient = coursePageClient;
         this.eventTypeResolver = eventTypeResolver;
         this.locationResolver = locationResolver;
         this.coursePageUriBuilder = coursePageUriBuilder;
         this.localizedValueConverter = localizedValueConverter;
+        this.courseMaterialDtoFactory = courseMaterialDtoFactory;
     }
 
     public EventDto toDto(CoursePageEvent event) {
@@ -78,7 +82,7 @@ public class EventConverter {
             coursePage.title,
             coursePageUriBuilder.getLocalizedUri(coursePage),
             coursePageUriBuilder.getImageUri(coursePage),
-            coursePageUriBuilder.getMaterialUri(coursePage),
+            courseMaterialDtoFactory.fromCoursePage(coursePage),
             coursePage.moodleUrl,
             coursePage.hasMaterial);
     }
@@ -100,7 +104,7 @@ public class EventConverter {
             coursePage.title,
             coursePageUriBuilder.getLocalizedUri(coursePage),
             coursePageUriBuilder.getImageUri(coursePage),
-            coursePageUriBuilder.getMaterialUri(coursePage),
+            courseMaterialDtoFactory.fromCoursePage(coursePage),
             coursePage.moodleUrl,
             coursePage.hasMaterial,
             locationResolver.getBuilding(event));
