@@ -21,7 +21,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.security.Key;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 public class ExpiringUnisportJWTService implements UnisportJWTService {
@@ -42,15 +43,13 @@ public class ExpiringUnisportJWTService implements UnisportJWTService {
     public String generateToken(final Long unisportUserId) {
         return Jwts.builder()
             .setSubject(unisportUserId.toString())
-            .setExpiration(getExpirityTime())
+            .setExpiration(getExpirationTime())
             .signWith(signatureAlgorithm, unisportPrivateSecret)
             .compact();
     }
 
-    private Date getExpirityTime() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND, tokenValidForSeconds);
-        return calendar.getTime();
+    private Date getExpirationTime() {
+        return Date.from(LocalDateTime.now().plusSeconds(tokenValidForSeconds).toInstant(ZoneOffset.UTC));
     }
 
 }
