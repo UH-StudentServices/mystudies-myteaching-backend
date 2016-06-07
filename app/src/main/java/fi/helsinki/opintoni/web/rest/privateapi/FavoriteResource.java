@@ -23,11 +23,14 @@ import fi.helsinki.opintoni.domain.UnicafeFavorite;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.dto.FeedDto;
 import fi.helsinki.opintoni.dto.FindFeedDto;
+import fi.helsinki.opintoni.dto.favorite.UnisportReservationsDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import fi.helsinki.opintoni.service.FeedService;
+import fi.helsinki.opintoni.service.favorite.UnisportService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
+import fi.helsinki.opintoni.web.arguments.Username;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping(
@@ -46,14 +50,17 @@ public class FavoriteResource extends AbstractResource {
     private final FavoriteService favoriteService;
     private final PermissionChecker permissionChecker;
     private final FeedService feedService;
+    private final UnisportService unisportService;
 
     @Autowired
     public FavoriteResource(FavoriteService favoriteService,
                             PermissionChecker permissionChecker,
-                            FeedService feedService) {
+                            FeedService feedService,
+                            UnisportService unisportService) {
         this.favoriteService = favoriteService;
         this.permissionChecker = permissionChecker;
         this.feedService = feedService;
+        this.unisportService = unisportService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -115,6 +122,12 @@ public class FavoriteResource extends AbstractResource {
     @Timed
     public ResponseEntity<FavoriteDto> saveUnisportFavorite(@UserId Long userId) {
         return response(favoriteService.insertUnisportFavorite(userId));
+    }
+
+    @RequestMapping(value = "/unisport", method = RequestMethod.GET)
+    @Timed
+    public ResponseEntity<UnisportReservationsDto> getUnisportReservations(@Username String username, Locale locale) {
+        return response(unisportService.getReservations(username, locale));
     }
 
     @Timed

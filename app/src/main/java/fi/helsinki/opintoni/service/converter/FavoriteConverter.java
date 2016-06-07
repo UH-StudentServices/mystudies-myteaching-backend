@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.domain.*;
 import fi.helsinki.opintoni.dto.*;
+import fi.helsinki.opintoni.integration.unisport.UnisportClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,10 +32,12 @@ public class FavoriteConverter {
 
     private final ImmutableMap<Class<?>, Function<Favorite, FavoriteDto>> converters;
     private final AppConfiguration appConfiguration;
+    private final UnisportClient unisportClient;
 
     @Autowired
-    public FavoriteConverter(AppConfiguration appConfiguration) {
+    public FavoriteConverter(AppConfiguration appConfiguration, UnisportClient unisportClient) {
         this.appConfiguration = appConfiguration;
+        this.unisportClient = unisportClient;
         this.converters = ImmutableMap.of(
             TwitterFavorite.class, favorite -> toDto((TwitterFavorite) favorite),
             RssFavorite.class, favorite -> toDto((RssFavorite) favorite),
@@ -78,8 +81,7 @@ public class FavoriteConverter {
     private UnisportFavoriteDto toDto(UnisportFavorite favorite) {
         return new UnisportFavoriteDto(
             favorite.id,
-            favorite.type.name(),
-            appConfiguration.get("unisportMyReservationsUrl")
+            favorite.type.name()
         );
     }
 

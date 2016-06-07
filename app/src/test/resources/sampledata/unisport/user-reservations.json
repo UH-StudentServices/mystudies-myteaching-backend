@@ -1,0 +1,33 @@
+{
+  "reservations": [
+    {
+      "events": [
+        {
+          "url": "https://unisport.fi/.../reservable?id=456",
+          "name": "Testitapahtuma",
+          "venue": "Hallintorakennus",
+          "startTime": "2016-01-01T10:00",
+          "endTime": "2016-01-01T22:00"
+        }
+      ]
+    },
+    {
+      "events": [
+        {
+          "url": "https://unisport.fi/.../reservable?id=789",
+          "name": "Testikurssin tapahtuma",
+          "venue": "Hallintorakennus",
+          "startTime": "2016-02-02T10:00",
+          "endTime": "2016-02-02T22:00"
+        },
+        {
+          "url": "https://unisport.fi/.../reservable?id=789",
+          "name": "Testikurssin tapahtuma",
+          "venue": "Hallintorakennus",
+          "startTime": "2016-03-03T10:00",
+          "endTime": "2016-03-03T22:00"
+        }
+      ]
+    }
+  ]
+}

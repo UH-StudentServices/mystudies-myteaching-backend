@@ -15,12 +15,14 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.dto;
+package fi.helsinki.opintoni.integration.unisport;
 
-public class UnisportFavoriteDto  extends FavoriteDto {
+public class MockUnisportJWTService implements UnisportJWTService {
 
-    public UnisportFavoriteDto(Long id, String type) {
-        super(id, type);
+    public static final String MOCK_JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMDIwNDM4MTIifQ.qMawTWORtPkTjHcAdz_UPIvHrX2NPLzZxFWOQuus3co";
+
+    @Override
+    public String generateToken(Long unisportUserId) {
+        return MOCK_JWT_TOKEN;
     }
-
 }

@@ -27,6 +27,7 @@ import fi.helsinki.opintoni.service.UserService;
 import fi.helsinki.opintoni.web.arguments.StudentNumberArgumentResolver;
 import fi.helsinki.opintoni.web.arguments.TeacherNumberArgumentResolver;
 import fi.helsinki.opintoni.web.arguments.UserIdArgumentResolver;
+import fi.helsinki.opintoni.web.arguments.UsernameArgumentResolver;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
@@ -74,7 +75,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             new AuthenticationPrincipalArgumentResolver(),
             new StudentNumberArgumentResolver(securityUtils),
             new TeacherNumberArgumentResolver(securityUtils),
-            new UserIdArgumentResolver(userService, securityUtils)));
+            new UserIdArgumentResolver(userService, securityUtils),
+            new UsernameArgumentResolver(userService, securityUtils)));
     }
 
     @Override

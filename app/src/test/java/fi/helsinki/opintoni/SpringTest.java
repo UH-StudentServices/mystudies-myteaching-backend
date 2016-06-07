@@ -66,6 +66,7 @@ public abstract class SpringTest {
     protected WebPageServer webPageServer;
     protected LeikiServer leikiServer;
     protected FlammaServer flammaServer;
+    protected UnisportServer unisportServer;
 
     protected MockMvc mockMvc;
 
@@ -83,6 +84,8 @@ public abstract class SpringTest {
 
     @Autowired
     protected RestTemplate metaDataRestTemplate;
+
+    @Autowired RestTemplate unisportRestTemplate;
 
     @Autowired
     private Filter springSecurityFilterChain;
@@ -109,6 +112,7 @@ public abstract class SpringTest {
         leikiServer = new LeikiServer(appConfiguration, leikiRestTemplate);
         flammaServer = new FlammaServer(appConfiguration, flammaRestTemplate);
         webPageServer = new WebPageServer(metaDataRestTemplate);
+        unisportServer = new UnisportServer(appConfiguration, unisportRestTemplate);
         configureMockMvc();
     }
 

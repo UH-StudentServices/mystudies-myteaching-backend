@@ -40,9 +40,11 @@ coursePage:
     client.implementation: rest
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
-googleAnalyticsAccount: UA-55852460-2
+unisport:
+    client.implementation: rest
+    base.url: https://unisport.fi
 
-unisportMyReservationsUrl: https://unisport.fi/yol/web/<%= userLanguage %>/ext/opintoni/reservationList.do
+googleAnalyticsAccount: UA-55852460-2
 
 hostUrl: https://demo.student.helsinki.fi
 loginUrlTeacher: /saml/login/alias/teacher

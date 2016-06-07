@@ -15,12 +15,12 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.dto;
+package fi.helsinki.opintoni.integration.unisport;
 
-public class UnisportFavoriteDto  extends FavoriteDto {
+import java.util.List;
 
-    public UnisportFavoriteDto(Long id, String type) {
-        super(id, type);
-    }
+public class UnisportUserReservations {
+
+    public List<UnisportReservation> reservations;
 
 }

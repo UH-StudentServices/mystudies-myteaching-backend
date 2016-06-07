@@ -40,9 +40,12 @@ coursePage:
     client.implementation: mock
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
-googleAnalyticsAccount: UA-55852460-3
+unisport:
+    client.implementation: mock
+    base.url: https://unisport.fi
+    jwt.secretKey: foobar123
 
-unisportMyReservationsUrl: https://unisport.fi/yol/web/<%= userLanguage %>/ext/opintoni/reservationList.do?mockData=true
+googleAnalyticsAccount: UA-55852460-3
 
 hostUrl: https://opi-1.student.helsinki.fi
 loginUrlTeacher: /locallog.html
