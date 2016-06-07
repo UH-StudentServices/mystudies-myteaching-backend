@@ -44,6 +44,10 @@ unisport:
     client.implementation: rest
     base.url: https://unisport.fi
 
+recommendations:
+    maxRecommendations: 5
+    uidPrefix: opintohistoria_
+
 googleAnalyticsAccount: UA-55852460-2
 
 hostUrl: https://qa.student.helsinki.fi
