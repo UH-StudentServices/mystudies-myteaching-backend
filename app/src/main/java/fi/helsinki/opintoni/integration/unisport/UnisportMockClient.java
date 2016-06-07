@@ -40,13 +40,16 @@ public class UnisportMockClient implements UnisportClient {
 
     @Override
     public Optional<UnisportUser> getUnisportUserByPrincipal(String username) {
-        return Optional.ofNullable(getResponse(userResource, new TypeReference<UnisportUser>() {
-        }));
+        if(username.equals("opettaja@helsinki.fi")) {
+            return Optional.ofNullable(null);
+        } else {
+            return Optional.ofNullable(getResponse(userResource, new TypeReference<UnisportUser>() {}));
+        }
     }
 
     @Override
     public UnisportUserReservations getUserReservations(Long unisportUserId, Locale locale) {
-        return getResponse(userResource, new TypeReference<UnisportUserReservations>() {
+        return getResponse(userReservationsResource, new TypeReference<UnisportUserReservations>() {
         });
     }
 
