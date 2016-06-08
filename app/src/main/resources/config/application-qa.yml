@@ -45,6 +45,10 @@ unisport:
     base.url: https://unisport.fi
     jwt.secretKey: foobar123
 
+recommendations:
+    maxRecommendations: 5
+    uidPrefix: opintohistoria_
+
 googleAnalyticsAccount: UA-55852460-2
 
 hostUrl: https://qa.student.helsinki.fi
