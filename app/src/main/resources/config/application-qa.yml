@@ -43,10 +43,7 @@ coursePage:
 unisport:
     client.implementation: rest
     base.url: https://unisport.fi
-
-recommendations:
-    maxRecommendations: 5
-    uidPrefix: opintohistoria_
+    jwt.secretKey: foobar123
 
 googleAnalyticsAccount: UA-55852460-2
 
