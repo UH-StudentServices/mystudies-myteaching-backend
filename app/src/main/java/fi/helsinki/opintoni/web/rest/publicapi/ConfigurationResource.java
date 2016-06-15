@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = RestConstants.PUBLIC_API_V1, produces = WebConstants.APPLICATION_JAVASCRIPT_UTF8)
+@RequestMapping(value = RestConstants.PUBLIC_API_V1, produces = WebConstants.APPLICATION_JSON_UTF8)
 public class ConfigurationResource extends AbstractResource {
 
     private final String configuration;
@@ -55,6 +55,6 @@ public class ConfigurationResource extends AbstractResource {
         configuration.put("teacherAppUrl", appConfiguration.get("teacherAppUrl"));
         configuration.put("environment", appConfiguration.get("environment"));
 
-        return "window.configuration=" + configuration;
+        return configuration.toString();
     }
 }
