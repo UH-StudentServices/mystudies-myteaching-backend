@@ -33,6 +33,6 @@ public class ConfigurationResourceTest extends SpringTest {
     public void thatConfigurationIsReturned() throws Exception {
         mockMvc.perform(get("/api/public/v1/configuration").with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JAVASCRIPT_UTF8));
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8));
     }
 }
