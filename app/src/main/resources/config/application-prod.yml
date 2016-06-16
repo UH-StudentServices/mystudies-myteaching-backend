@@ -57,6 +57,9 @@ loginUrlStudent: /saml/login/alias/student
 logoutUrl: /saml/logout?local=true
 teacherAppUrl: https://teacher.helsinki.fi
 studentAppUrl: https://student.helsinki.fi
+portfolioUrl:
+  student: https://student.helsinki.fi/portfolio
+  teacher: https://teacher.helsinki.fi/portfolio
 
 embedlyApiKey: 2cb3558d787c40a9a7c334bc276297a6
 
