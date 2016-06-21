@@ -55,6 +55,7 @@ public class UserSettingsConverter {
         userSettingsDto.showMyTeachingTour = userSettings.showMyTeachingTour;
         userSettingsDto.showPortfolioTour = userSettings.showPortfolioTour;
         userSettingsDto.showBanner = userSettings.showBanner;
+        userSettingsDto.cookieConsent = userSettings.cookieConsent;
         userSettingsDto.meceJWTToken = jwtService.generateToken(userSettings.user.eduPersonPrincipalName);
         return userSettingsDto;
     }
