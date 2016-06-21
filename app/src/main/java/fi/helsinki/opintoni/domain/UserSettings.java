@@ -65,6 +65,9 @@ public class UserSettings extends AbstractAuditingEntity implements Ownership {
     @Column(name = "show_banner")
     public boolean showBanner;
 
+    @Column(name = "cookie_consent")
+    public boolean cookieConsent;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)

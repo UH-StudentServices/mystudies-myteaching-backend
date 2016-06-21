@@ -77,6 +77,7 @@ public class UserSettingsService {
         userSettings.showMyTeachingTour = request.showMyTeachingTour;
         userSettings.showPortfolioTour = request.showPortfolioTour;
         userSettings.showBanner = request.showBanner;
+        userSettings.cookieConsent = request.cookieConsent;
         return userSettingsConverter.toDto(userSettingsRepository.save(userSettings));
     }
 

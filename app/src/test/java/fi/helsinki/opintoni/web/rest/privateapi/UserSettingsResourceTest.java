@@ -73,6 +73,7 @@ public class UserSettingsResourceTest extends SpringTest {
             .andExpect(jsonPath("$.showMyTeachingTour").value(true))
             .andExpect(jsonPath("$.showBanner").value(true))
             .andExpect(jsonPath("$.showPortfolioTour").value(true))
+            .andExpect(jsonPath("$.cookieConsent").value(false))
             .andExpect(jsonPath("$.meceJWTToken").value(jwtService.generateToken(STUDENT_PRINCIPAL_NAME)));
     }
 
@@ -83,6 +84,7 @@ public class UserSettingsResourceTest extends SpringTest {
         request.showMyTeachingTour = false;
         request.showPortfolioTour = false;
         request.showBanner = false;
+        request.cookieConsent = true;
 
         mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID)
             .with(securityContext(studentSecurityContext()))
@@ -97,7 +99,8 @@ public class UserSettingsResourceTest extends SpringTest {
             .andExpect(jsonPath("$.showMyStudiesTour").value(false))
             .andExpect(jsonPath("$.showMyTeachingTour").value(false))
             .andExpect(jsonPath("$.showPortfolioTour").value(false))
-            .andExpect(jsonPath("$.showBanner").value(false));
+            .andExpect(jsonPath("$.showBanner").value(false))
+            .andExpect(jsonPath("$.cookieConsent").value(true));
     }
 
     @Test

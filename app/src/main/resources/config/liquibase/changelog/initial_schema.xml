@@ -1027,9 +1027,16 @@
             </column>
         </addColumn>
     </changeSet>
-    
+
     <changeSet id="drop visible items from rss favorite" author="Juho Rautio">
         <dropColumn tableName="rss_favorite" columnName="visible_items"></dropColumn>
     </changeSet>
 
+    <changeSet id="add cookie consent flag to user settings" author="Henri Heiskanen">
+        <addColumn tableName="user_settings">
+            <column name="cookie_consent" type="boolean" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

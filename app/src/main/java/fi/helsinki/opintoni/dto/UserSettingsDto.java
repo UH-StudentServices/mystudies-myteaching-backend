@@ -28,4 +28,5 @@ public class UserSettingsDto {
     public boolean showMyTeachingTour;
     public boolean showPortfolioTour;
     public boolean showBanner;
+    public boolean cookieConsent;
 }

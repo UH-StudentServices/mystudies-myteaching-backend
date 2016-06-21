@@ -84,4 +84,16 @@ public class UserSettingsServiceTest extends SpringTest {
 
         assertThat(userSettingsRepository.findOne(1L).showMyTeachingTour).isFalse();
     }
+
+    @Test
+    public void thatCookieConsentFlagIsFlipped() throws Exception {
+        assertThat(userSettingsRepository.findOne(1L).cookieConsent).isFalse();
+
+        UpdateUserSettingsRequest request = new UpdateUserSettingsRequest();
+        request.cookieConsent = true;
+
+        userSettingsService.update(1L, request);
+
+        assertThat(userSettingsRepository.findOne(1L).cookieConsent).isTrue();
+    }
 }
