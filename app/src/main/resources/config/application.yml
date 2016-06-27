@@ -238,6 +238,20 @@ userDefaults :
               url: https://opinder.helsinki.fi
               description: usefulLinks.opinder
               orderIndex: 2
+            - faculty: A30000
+              url:
+                fi: https://flamma.helsinki.fi/fi/HY291608
+                sv: https://flamma.helsinki.fi/sv/HY300404
+                en: https://flamma.helsinki.fi/en/HY317377
+              description: usefulLinks.forStudent
+              orderIndex: 1
+            - faculty: A30000
+              url:
+                fi: https://weboodi.helsinki.fi/hy/opasopiskopas.jsp?MD5avain=&Kieli=1&Organisaatio=1000000836&AukOrg=1000000836#1000000836
+                sv: https://weboodi.helsinki.fi/hy/opasopiskopas.jsp?MD5avain=&Kieli=2&Organisaatio=1000000836&AukOrg=1000000836#1000000836
+                en: https://weboodi.helsinki.fi/hy/opasopiskopas.jsp?MD5avain=&Kieli=6&Organisaatio=1000000836&AukOrg=1000000836#1000000836
+              description: usefulLinks.courseCatalogs
+              orderIndex: 2
             - faculty: default
               url: https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY034202
               description: usefulLinks.forStudent
