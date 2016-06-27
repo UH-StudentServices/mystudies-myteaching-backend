@@ -275,10 +275,6 @@ userDefaults :
                 en: https://weboodi.helsinki.fi/hy/opasopiskopas.jsp?MD5avain=&Kieli=6&Organisaatio=1000000836&AukOrg=1000000836#1000000836
               description: usefulLinks.courseCatalogs
               orderIndex: 2
-            - faculty: default
-              url: https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY034202
-              description: usefulLinks.forStudent
-              orderIndex: 1
 
 courses:
     examTypeCodes: 8,16,19,20,23,27

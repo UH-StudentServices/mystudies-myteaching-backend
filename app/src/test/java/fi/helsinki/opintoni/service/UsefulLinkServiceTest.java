@@ -51,7 +51,7 @@ public class UsefulLinkServiceTest extends SpringTest {
     private static final String MOCK_WEBPAGE_TITLE = "Helsinki University site title";
 
     private static final int USEFUL_LINKS_COUNT_FOR_DEFAULT_STUDENT = 7;
-    private static final int USEFUL_LINKS_COUNT_FOR_STUDENT_WITH_UNKNOWN_FACULTY = 6;
+    private static final int USEFUL_LINKS_COUNT_FOR_STUDENT_WITH_UNKNOWN_FACULTY = 5;
     private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_STUDENT = 2;
     private static final int USEFUL_LINKS_COUNT_FOR_DEFAULT_TEACHER = 7;
     private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_TEACHER = 2;
@@ -267,7 +267,7 @@ public class UsefulLinkServiceTest extends SpringTest {
 
     @Test
     @Transactional
-    public void thatDefaultFacultyLinkIsAddedWhenStudentHasUnknownFaculty() {
+    public void thatNoFacultySpecificLinkIsAddedWhenStudentHasUnknownFaculty() {
         configureStudentSecurityContext();
 
         defaultStudentRequestChain()
@@ -277,9 +277,6 @@ public class UsefulLinkServiceTest extends SpringTest {
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
 
         assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_STUDENT_WITH_UNKNOWN_FACULTY);
-        checkLinkURLAndDescription(usefulLinks.get(1),
-            "https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY034202",
-            "usefulLinks.forStudent");
     }
 
     private Locale englishLocale() {
