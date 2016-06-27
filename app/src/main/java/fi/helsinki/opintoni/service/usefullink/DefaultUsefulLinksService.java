@@ -28,8 +28,6 @@ import java.util.stream.Collectors;
 
 public class DefaultUsefulLinksService {
 
-    private static final String DEFAULT_FACULTY_IDENTIFIER = "default";
-
     protected List<UsefulLink> createUsefulLinks(List<Map<String, String>> usefulLinks, User user) {
         return usefulLinks.stream()
             .map(l -> usefulLinkFromDescriptor(l, user))
@@ -68,22 +66,7 @@ public class DefaultUsefulLinksService {
         return localizedUrl;
     }
 
-    protected List<UsefulLink> getFacultyUsefulLinks(String facultyCode, List<Map<String, String>> facultyLinkOptions,
-                                                     User user) {
-        List<UsefulLink> matchingFacultyLinks = getUsefulLinksByFaculty(facultyCode, facultyLinkOptions, user);
-
-        if(matchingFacultyLinks.isEmpty()) {
-            matchingFacultyLinks = getUsefulLinksByFaculty(DEFAULT_FACULTY_IDENTIFIER, facultyLinkOptions, user);
-
-            if(matchingFacultyLinks.isEmpty()) {
-                throw new IllegalStateException("Default faculty not configured");
-            }
-        }
-
-        return matchingFacultyLinks;
-    }
-
-    private List<UsefulLink> getUsefulLinksByFaculty(String facultyCode, List<Map<String, String>> facultyLinkOptions,
+    protected List<UsefulLink> getUsefulLinksByFaculty(String facultyCode, List<Map<String, String>> facultyLinkOptions,
                                                User user) {
         return facultyLinkOptions.stream()
             .filter(map -> map.get("faculty").equals(facultyCode))
