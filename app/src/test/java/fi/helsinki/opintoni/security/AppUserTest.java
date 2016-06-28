@@ -126,6 +126,7 @@ public class AppUserTest {
             .build();
 
         assertThat(isInRole(appUser, STUDENT)).isTrue();
+        assertThat(isInRole(appUser, TEACHER)).isTrue();
     }
 
     @Test
