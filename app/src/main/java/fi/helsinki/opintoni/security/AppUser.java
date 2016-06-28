@@ -219,7 +219,7 @@ public final class AppUser extends User {
         private Set<GrantedAuthority> getAuthorities() {
             Set<GrantedAuthority> authorities = new HashSet<>();
 
-            if (eduPersonAffiliations.contains(SAMLEduPersonAffiliation.STUDENT)) {
+            if (studentNumber.isPresent()) {
                 authorities.add(new SimpleGrantedAuthority(Role.STUDENT.name()));
             }
 

@@ -25,11 +25,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static fi.helsinki.opintoni.security.AppUser.Role;
+import static fi.helsinki.opintoni.security.AppUser.Role.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppUserTest {
 
     private static final String STUDENT_NUMBER = "123";
+    private static final String TEACHER_NUMBER = "321";
     private static final String EDU_PERSON_PRINCIPAL_NAME = "eduPersonPrincipalName";
 
     @Test(expected = BadCredentialsException.class)
@@ -76,7 +79,7 @@ public class AppUserTest {
             .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
             .build();
 
-        assertThat(isAdmin(appUser)).isFalse();
+        assertThat(isInRole(appUser, ADMIN)).isFalse();
     }
 
     @Test
@@ -85,10 +88,59 @@ public class AppUserTest {
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
             .studentNumber(STUDENT_NUMBER)
             .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
-            .role(AppUser.Role.ADMIN)
+            .role(ADMIN)
             .build();
 
-        assertThat(isAdmin(appUser)).isTrue();
+        assertThat(isInRole(appUser, ADMIN)).isTrue();
+    }
+
+    @Test
+    public void thatUserHasStudentRole() {
+        AppUser appUser = new AppUser.AppUserBuilder()
+            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
+            .studentNumber(STUDENT_NUMBER)
+            .build();
+
+        assertThat(isInRole(appUser, STUDENT)).isTrue();
+    }
+
+    @Test
+    public void thatUserHasTeacherRole() {
+        AppUser appUser = new AppUser.AppUserBuilder()
+            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
+            .teacherNumber(TEACHER_NUMBER)
+            .build();
+
+        assertThat(isInRole(appUser, TEACHER)).isTrue();
+    }
+
+    @Test
+    public void thatUserHasStudentAndTeacherRole() {
+        AppUser appUser = new AppUser.AppUserBuilder()
+            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
+            .studentNumber(STUDENT_NUMBER)
+            .teacherNumber(TEACHER_NUMBER)
+            .build();
+
+        assertThat(isInRole(appUser, STUDENT)).isTrue();
+        assertThat(isInRole(appUser, TEACHER)).isTrue();
+    }
+
+    @Test
+    public void thatUserDoesNotHaveTeacherRoleIfPrimaryAffiliationIsStudent() {
+        AppUser appUser = new AppUser.AppUserBuilder()
+            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
+            .eduPersonPrimaryAffiliation((SAMLEduPersonAffiliation.STUDENT))
+            .studentNumber(STUDENT_NUMBER)
+            .teacherNumber(TEACHER_NUMBER)
+            .build();
+
+        assertThat(isInRole(appUser, STUDENT)).isTrue();
+        assertThat(isInRole(appUser, TEACHER)).isFalse();
     }
 
     @Test
@@ -100,10 +152,10 @@ public class AppUserTest {
             .build();
     }
 
-    private boolean isAdmin(AppUser appUser) {
+    private boolean isInRole(AppUser appUser, Role role) {
         return appUser.getAuthorities()
             .stream()
-            .anyMatch(a -> a.getAuthority().equals(AppUser.Role.ADMIN.name()));
+            .anyMatch(a -> a.getAuthority().equals(role.name()));
     }
 
 }
