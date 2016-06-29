@@ -43,7 +43,7 @@ userDefaults :
                 fi: https://flamma.helsinki.fi/fi/HY034202
                 sv: https://flamma.helsinki.fi/sv/HY034202
                 en: https://flamma.helsinki.fi/en/HY034202
-              description: usefulLinks.studentServices
+              description: usefulLinks.generalInformation
               orderIndex: 0
             - url:
                 fi: https://flamma.helsinki.fi/fi/HY034217
