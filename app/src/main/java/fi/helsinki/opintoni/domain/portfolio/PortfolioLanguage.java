@@ -68,7 +68,7 @@ public enum PortfolioLanguage {
     @JsonCreator
     public static PortfolioLanguage of(String code) {
         return Optional.ofNullable(PORTFOLIO_LANG_MAP.get(code)).orElseThrow(() -> {
-           return new IllegalArgumentException(String.format("no corresponding language for code '%d'", code));
+           return new IllegalArgumentException(String.format("no corresponding language for code '%s'", code));
         });
     }
 }
