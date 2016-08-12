@@ -28,7 +28,11 @@ public class NewsConverter {
         NewsDto newsDto = new NewsDto();
         newsDto.title = atomFeedEntry.getTitle();
         newsDto.url = atomFeedEntry.getAlternateLinks().get(0).getHref();
-        newsDto.content = atomFeedEntry.getContents().get(0).getValue();
+        if (!atomFeedEntry.getContents().isEmpty()) {
+            newsDto.content = atomFeedEntry.getContents().get(0).getValue();
+        } else {
+            newsDto.content = "";
+        }
         return newsDto;
     }
 }

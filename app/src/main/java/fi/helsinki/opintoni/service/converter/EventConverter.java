@@ -121,9 +121,10 @@ public class EventConverter {
         String localizedRealisationRootName = localizedValueConverter.toLocalizedString(realisationRootName, locale);
 
         if(localizedRealisationRootName != null && !localizedRealisationRootName.equals(localizedRealisationName)) {
+            int rootNameLength = Math.min(REALISATION_ROOT_NAME_LENGTH, localizedRealisationRootName.length());
             return String.join(
                 REALISATION_NAME_DELIMITER,
-                localizedRealisationRootName.substring(0, REALISATION_ROOT_NAME_LENGTH),
+                localizedRealisationRootName.substring(0, rootNameLength),
                 localizedRealisationName);
         } else {
             return localizedRealisationName;
