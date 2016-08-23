@@ -189,7 +189,7 @@ public class FavoriteService {
                 favorites.add(createUnicafeFavorite(Integer.parseInt(favorite.get("restaurantId"))));
                 break;
             case RSS:
-                favorites.add(createRssFavorite(favorite.get("url"), Integer.parseInt(favorite.get("visibleItems"))));
+                favorites.add(createRssFavorite(favorite.get("url")));
                 break;
             case TWITTER:
                 favorites.add(createTwitterFavorite(favorite.get("value")));
@@ -220,7 +220,7 @@ public class FavoriteService {
         return unicafeFavorite;
     }
 
-    private Favorite createRssFavorite(String url, Integer visibleItems) {
+    private Favorite createRssFavorite(String url) {
         RssFavorite rssFavorite = new RssFavorite();
         rssFavorite.type = Favorite.Type.RSS;
         rssFavorite.url = url;
