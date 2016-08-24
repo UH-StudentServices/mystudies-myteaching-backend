@@ -61,6 +61,9 @@ portfolioUrl:
   student: http://local.student.helsinki.fi:3002/portfolio
   teacher: http://local.teacher.helsinki.fi:3002/portfolio
 
+mece:
+  domain: https://ohtu-testi.it.helsinki.fi
+
 environment: local
 
 adminAccounts: opettaja@helsinki.fi, opiskelija@helsinki.fi

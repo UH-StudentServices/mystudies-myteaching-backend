@@ -61,6 +61,9 @@ portfolioUrl:
   student: https://qa.student.helsinki.fi/portfolio
   teacher: https://qa.teacher.helsinki.fi/portfolio
 
+mece:
+  domain: https://ohtu-testi.it.helsinki.fi
+
 embedlyApiKey: 69bd6bec8cb649df9b7ae0bdc972b206
 
 environment: qa

@@ -23,6 +23,7 @@ public class UserSettingsDto {
     public String backgroundUri;
     public String backgroundType;
     public String meceJWTToken;
+    public String meceDomain;
     public boolean hasAvatarImage;
     public boolean showMyStudiesTour;
     public boolean showMyTeachingTour;
