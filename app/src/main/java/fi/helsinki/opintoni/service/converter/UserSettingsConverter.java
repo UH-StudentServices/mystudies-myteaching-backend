@@ -57,6 +57,7 @@ public class UserSettingsConverter {
         userSettingsDto.showBanner = userSettings.showBanner;
         userSettingsDto.cookieConsent = userSettings.cookieConsent;
         userSettingsDto.meceJWTToken = jwtService.generateToken(userSettings.user.eduPersonPrincipalName);
+        userSettingsDto.meceDomain = uriBuilder.getMeceDomain();
         return userSettingsDto;
     }
 

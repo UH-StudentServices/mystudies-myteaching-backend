@@ -57,6 +57,9 @@ portfolioUrl:
   student: https://demo.student.helsinki.fi/portfolio
   teacher: https://demo.teacher.helsinki.fi/portfolio
 
+mece:
+  domain: https://ohtu-testi.it.helsinki.fi
+
 embedlyApiKey: 69bd6bec8cb649df9b7ae0bdc972b206
 
 environment: demo
