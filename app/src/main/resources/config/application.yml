@@ -263,7 +263,6 @@ flamma:
     base.url: https://flamma.helsinki.fi
 
 unisport:
-    userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
     tokenValidForSeconds: 10
     jwt.service.implementation: expiring
 

@@ -43,7 +43,7 @@ coursePage:
 unisport:
     client.implementation: rest
     base.url: https://unisport.fi
-    jwt.secretKey: foobar123
+    userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
 
 recommendations:
     maxRecommendations: 5

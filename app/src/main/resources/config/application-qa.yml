@@ -42,8 +42,8 @@ coursePage:
 
 unisport:
     client.implementation: rest
-    base.url: https://unisport.fi
-    jwt.secretKey: foobar123
+    base.url: http://yol-test.it.helsinki.fi
+    userAuthorizationUrl: http://yol-test.it.helsinki.fi/ext/opintoni/authorization
 
 recommendations:
     maxRecommendations: 5

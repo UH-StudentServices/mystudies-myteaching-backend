@@ -44,6 +44,7 @@ unisport:
     client.implementation: mock
     base.url: https://unisport.fi
     jwt.secretKey: foobar123
+    userAuthorizationUrl: http://yol-test.it.helsinki.fi/ext/opintoni/authorization
 
 leiki:
     base.url: http://suositukset.student.helsinki.fi
