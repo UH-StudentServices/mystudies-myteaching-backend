@@ -107,6 +107,6 @@ public class UnisportConfiguration {
     }
 
     private Key getKey() {
-        return new SecretKeySpec(appConfiguration.get("unisport.jwt.secretKey").getBytes(), SignatureAlgorithm.HS256.getJcaName());
+        return new SecretKeySpec(appConfiguration.get("unisportApiKey").getBytes(), SignatureAlgorithm.HS256.getJcaName());
     }
 }
