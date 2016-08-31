@@ -72,4 +72,5 @@ public class PortfolioServiceTest extends SpringTest {
         assertThat(portfolio.visibility).isEqualTo(PortfolioVisibility.PRIVATE);
         assertThat(portfolio.portfolioRole).isEqualTo(PortfolioRole.TEACHER);
     }
+
 }
