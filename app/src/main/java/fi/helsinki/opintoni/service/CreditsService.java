@@ -17,32 +17,33 @@
 
 package fi.helsinki.opintoni.service;
 
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.dto.portfolio.CreditsDto;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiRoles;
+import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.converter.CreditsConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CreditsService extends DtoService {
 
     private final OodiClient oodiClient;
     private final CreditsConverter creditsConverter;
-    private final CreditsTransactionalService creditsTransactionalService;
+    private final PortfolioRepository portfolioRepository;
 
     @Autowired
     public CreditsService(OodiClient oodiClient,
-                          CreditsConverter creditsConverter, CreditsTransactionalService creditsTransactionalService) {
+                          CreditsConverter creditsConverter, PortfolioRepository portfolioRepository) {
         this.oodiClient = oodiClient;
         this.creditsConverter = creditsConverter;
-        this.creditsTransactionalService = creditsTransactionalService;
+        this.portfolioRepository = portfolioRepository;
     }
 
+
     public CreditsDto getCreditsByPortfolioId(Long portfolioId) {
-        Portfolio portfolio = creditsTransactionalService.findPortfolio(portfolioId);
-        String oodiPersonId = portfolio.user.oodiPersonId;
+        String oodiPersonId = getOodiPersonIdByPortfolioId(portfolioId);
 
         OodiRoles oodiRoles = oodiClient.getRoles(oodiPersonId);
 
@@ -50,5 +51,10 @@ public class CreditsService extends DtoService {
             () -> oodiClient.getStudentInfo(oodiRoles.studentNumber),
             creditsConverter::toDto
         );
+    }
+
+    @Transactional
+    private String getOodiPersonIdByPortfolioId(Long portfolioId) {
+        return portfolioRepository.findOne(portfolioId).user.oodiPersonId;
     }
 }
