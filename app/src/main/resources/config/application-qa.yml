@@ -42,8 +42,8 @@ coursePage:
 
 unisport:
     client.implementation: rest
-    base.url: http://yol-test.it.helsinki.fi
-    userAuthorizationUrl: http://yol-test.it.helsinki.fi/ext/opintoni/authorization
+    base.url: https://unisport.fi
+    userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
 
 recommendations:
     maxRecommendations: 5

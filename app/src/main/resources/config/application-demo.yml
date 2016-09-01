@@ -43,7 +43,7 @@ coursePage:
 unisport:
     client.implementation: rest
     base.url: https://unisport.fi
-    userAuthorizationUrl: http://yol-test.it.helsinki.fi/ext/opintoni/authorization
+    userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
 
 googleAnalyticsAccount: UA-55852460-2
 
