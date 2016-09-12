@@ -35,6 +35,7 @@ public class OodiMockClient implements OodiClient {
 
     private static final String COURSE_UNIT_REALISATION_ID = "101472950";
     private static final String CANCELLED_COURSE_UNIT_REALISATION_ID = "123456789";
+    private static final String POSITION_STUDYGROUPSET_COURSE_UNIT_REALISATION_ID = "109155866";
 
     @Value("classpath:sampledata/oodi/studentcourses.json")
     private Resource studentCourses;
@@ -63,6 +64,9 @@ public class OodiMockClient implements OodiClient {
     @Value("classpath:sampledata/oodi/courseunitrealisationcancelled.json")
     private Resource courseUnitRealisationCancelled;
 
+    @Value("classpath:sampledata/oodi/courseunitrealisation_position_studygroupset.json")
+    private Resource courseUnitRealisationPositionStudygroupset;
+
     @Value("classpath:sampledata/oodi/roles.json")
     private Resource roles;
 
@@ -77,7 +81,8 @@ public class OodiMockClient implements OodiClient {
     private void createCourseUnitRealisationsMap() {
         this.courseUnitRealisationsById = ImmutableMap.of(
             COURSE_UNIT_REALISATION_ID, courseUnitRealisation,
-            CANCELLED_COURSE_UNIT_REALISATION_ID, courseUnitRealisationCancelled);
+            CANCELLED_COURSE_UNIT_REALISATION_ID, courseUnitRealisationCancelled,
+            POSITION_STUDYGROUPSET_COURSE_UNIT_REALISATION_ID, courseUnitRealisationPositionStudygroupset);
     }
 
 

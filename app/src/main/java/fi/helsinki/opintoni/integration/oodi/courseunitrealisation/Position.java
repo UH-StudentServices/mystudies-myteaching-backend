@@ -17,33 +17,24 @@
 
 package fi.helsinki.opintoni.integration.oodi.courseunitrealisation;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.Lists;
-import fi.helsinki.opintoni.integration.DateFormatter;
+public enum Position {
 
-import java.util.List;
+    ROOT("root"),
+    STUDY_GROUP("studygroup"),
+    STUDY_GROUP_SET("studygroupset");
 
-public class OodiCourseUnitRealisation {
+    private String value;
 
-    @JsonProperty("course_id")
-    public Integer realisationId;
+    private Position(String value) {
+        this.value = value;
+    }
 
-    @JsonProperty("teachers")
-    public List<OodiCourseUnitRealisationTeacher> teachers = Lists.newArrayList();
-
-    @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT_OODI)
-    @JsonProperty("end_date")
-    public String endDate;
-
-    @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT_OODI)
-    @JsonProperty("start_date")
-    public String startDate;
-
-    @JsonProperty("cancelled")
-    public boolean isCancelled;
-
-    @JsonProperty("position")
-    public String position;
-
+    public static Position getByValue(String value) {
+        for (Position position : Position.values()) {
+            if(position.value.equals(value)) {
+                return position;
+            }
+        }
+        throw new IllegalArgumentException("Unknown Oodi course unit realisation position: " + value);
+    }
 }

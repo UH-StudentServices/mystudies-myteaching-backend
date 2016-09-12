@@ -55,6 +55,8 @@ public class CourseService {
     public List<CourseDto> getStudentCourses(String studentNumber, Locale locale) {
         return oodiClient.getEnrollments(studentNumber).stream()
             .map(c -> courseConverter.toDto(c, locale))
+            .filter(c -> c.isPresent())
+            .map(c -> c.get())
             .collect(Collectors.toList());
     }
 

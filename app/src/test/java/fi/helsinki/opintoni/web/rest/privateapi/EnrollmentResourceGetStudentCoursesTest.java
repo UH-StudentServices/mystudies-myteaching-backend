@@ -66,6 +66,20 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
         thatStudentCoursesAreReturned(true, COURSE_PAGE_COURSE_MATERIAL_URL, CourseMaterialType.COURSE_PAGE);
     }
 
+    @Test
+    public void thatRealisationPostionStudygroupsetIsNotReturned() throws Exception{
+        expectCourseRequestChain()
+            .positionStudygroupsetCourseUnitRealisation();
+
+        mockMvc.perform(get("/api/private/v1/students/enrollments/courses")
+            .with(securityContext(studentSecurityContext()))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+    }
+
     private void expectCourseRequestChainWithImplementation(String responseFile) {
         defaultStudentRequestChain()
             .enrollments()

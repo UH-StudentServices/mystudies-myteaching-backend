@@ -110,6 +110,10 @@ public class OodiServer {
         courseUnitRealisationRequest(realisationId, "oodi/cancelledcourseunitrealisation.json");
     }
 
+    public void expectPositionStudygroupsetCourseUnitRealisationRequest(String realisationId) {
+        courseUnitRealisationRequest(realisationId, "oodi/courseunitrealisation_position_studygroupset.json");
+    }
+
     private void courseUnitRealisationRequest(String realisationId, String fileName) {
         server.expect(requestTo(courseUnitRealisationUrl(realisationId)))
             .andExpect(method(HttpMethod.GET))
