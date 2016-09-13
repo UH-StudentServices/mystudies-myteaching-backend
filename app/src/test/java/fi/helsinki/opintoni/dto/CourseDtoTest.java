@@ -53,6 +53,7 @@ public class CourseDtoTest {
             null,
             realisationId,
             null,
+            null,
             4,
             Lists.newArrayList(),
             true,
