@@ -24,6 +24,7 @@
       "teaching_languages": "fi",
       "course_id": 123456789,
       "parent_id": null,
+      "root_id": 123456789,
       "type_code": 5,
       "image_uri": null,
       "weboodi_uri": "https://weboodi.helsinki.fi",

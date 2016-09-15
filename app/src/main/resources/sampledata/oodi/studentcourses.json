@@ -24,6 +24,7 @@
       "teaching_languages": "fi",
       "course_id": 123456789,
       "parent_id": null,
+      "root_id": 123456789,
       "type_code": 5,
       "image_uri": null,
       "weboodi_uri": "https://weboodi.helsinki.fi",
@@ -51,6 +52,7 @@
       "teaching_languages": "fi",
       "course_id": 123456790,
       "parent_id": 123456789,
+      "root_id": 123456789,
       "type_code": 5,
       "image_uri": null,
       "weboodi_uri": "https://weboodi.helsinki.fi",
@@ -78,6 +80,7 @@
       "teaching_languages": "fi",
       "course_id": 123456791,
       "parent_id": 123456789,
+      "root_id": 123456789,
       "type_code": 5,
       "image_uri": null,
       "weboodi_uri": "https://weboodi.helsinki.fi",
@@ -105,6 +108,7 @@
       "teaching_languages": "fi",
       "course_id": 123456788,
       "parent_id": null,
+      "root_id": 123456788,
       "type_code": 5,
       "image_uri": null,
       "weboodi_uri": "https://weboodi.helsinki.fi",
@@ -132,10 +136,86 @@
       "teaching_languages": "fi",
       "course_id": 123456787,
       "parent_id": null,
+      "root_id": 123456787,
       "type_code": 5,
       "image_uri": null,
       "weboodi_uri": "https://weboodi.helsinki.fi",
       "learningopportunity_id": "52734"
+    },
+    {
+      "weboodi_uri_fi": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=1&avattavaSivu=opettaptied&OpetTap=109155866",
+      "allow_publishing": "false",
+      "root_id": 109155865,
+      "name": [
+        {
+          "langcode": "fi",
+          "text": "Kokoava I"
+        }
+      ],
+      "weboodi_uri_sv": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=2&avattavaSivu=opettaptied&OpetTap=109155866",
+      "coursepage_uri": null,
+      "cancelled": "false",
+      "end_date": "2016-09-11T21:00:00.000Z",
+      "start_date": "2016-09-11T21:00:00.000Z",
+      "credits": 3,
+      "hidden": "true",
+      "parent_id": 109155865,
+      "weboodi_uri_en": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=6&avattavaSivu=opettaptied&OpetTap=109155866",
+      "teaching_languages": "fi",
+      "course_id": 109155866,
+      "type_code": 17,
+      "image_uri": null,
+      "learningopportunity_id": "64161"
+    },
+    {
+      "weboodi_uri_fi": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=1&avattavaSivu=opettaptied&OpetTap=109155867",
+      "allow_publishing": "false",
+      "root_id": 109155865,
+      "name": [
+        {
+          "langcode": "fi",
+          "text": "Ryhmä 4"
+        }
+      ],
+      "weboodi_uri_sv": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=2&avattavaSivu=opettaptied&OpetTap=109155867",
+      "coursepage_uri": null,
+      "cancelled": "false",
+      "end_date": "2016-09-11T21:00:00.000Z",
+      "start_date": "2016-09-11T21:00:00.000Z",
+      "credits": 3,
+      "hidden": "false",
+      "parent_id": 109155866,
+      "weboodi_uri_en": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=6&avattavaSivu=opettaptied&OpetTap=109155867",
+      "teaching_languages": "fi",
+      "course_id": 109155867,
+      "type_code": 17,
+      "image_uri": null,
+      "learningopportunity_id": "64161"
+    },
+    {
+      "weboodi_uri_fi": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=1&avattavaSivu=opettaptied&OpetTap=109155865",
+      "allow_publishing": "false",
+      "root_id": 109155865,
+      "name": [
+        {
+          "langcode": "fi",
+          "text": "P 1. Johdatus kasvatustieteisiin"
+        }
+      ],
+      "weboodi_uri_sv": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=2&avattavaSivu=opettaptied&OpetTap=109155865",
+      "coursepage_uri": null,
+      "cancelled": "false",
+      "end_date": "2017-03-11T22:00:00.000Z",
+      "start_date": "2016-09-04T21:00:00.000Z",
+      "credits": 3,
+      "hidden": "false",
+      "parent_id": null,
+      "weboodi_uri_en": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=6&avattavaSivu=opettaptied&OpetTap=109155865",
+      "teaching_languages": "fi",
+      "course_id": 109155865,
+      "type_code": 7,
+      "image_uri": null,
+      "learningopportunity_id": "64161"
     }
   ]
 }

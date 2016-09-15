@@ -25,6 +25,7 @@ import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiEnrollment;
 import fi.helsinki.opintoni.integration.oodi.OodiTeacherCourse;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
+import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.Position;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.util.CourseMaterialDtoFactory;
 import fi.helsinki.opintoni.util.CoursePageUriBuilder;
@@ -32,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -59,27 +61,35 @@ public class CourseConverter {
         this.courseMaterialDtoFactory = courseMaterialDtoFactory;
     }
 
-    public CourseDto toDto(OodiEnrollment oodiEnrollment, Locale locale) {
-        CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiEnrollment.realisationId);
+    public Optional<CourseDto> toDto(OodiEnrollment oodiEnrollment, Locale locale) {
+        CourseDto dto = null;
+
         OodiCourseUnitRealisation courseUnitRealisation =
             oodiClient.getCourseUnitRealisation(oodiEnrollment.realisationId);
 
-        return new CourseDto(
-            oodiEnrollment.learningOpportunityId,
-            oodiEnrollment.typeCode,
-            localizedValueConverter.toLocalizedString(oodiEnrollment.name, locale),
-            coursePageUriBuilder.getImageUri(coursePage),
-            coursePageUriBuilder.getLocalizedUri(coursePage),
-            courseMaterialDtoFactory.fromCoursePage(coursePage),
-            oodiEnrollment.webOodiUri,
-            oodiEnrollment.startDate,
-            oodiEnrollment.endDate,
-            oodiEnrollment.realisationId,
-            oodiEnrollment.parentId,
-            oodiEnrollment.credits,
-            courseUnitRealisation.teachers.stream().map(t -> t.fullName).collect(Collectors.toList()),
-            eventTypeResolver.isExam(oodiEnrollment.typeCode),
-            courseUnitRealisation.isCancelled);
+        if(!Position.getByValue(courseUnitRealisation.position).equals(Position.STUDY_GROUP_SET)) {
+            CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiEnrollment.realisationId);
+
+            dto = new CourseDto(
+                oodiEnrollment.learningOpportunityId,
+                oodiEnrollment.typeCode,
+                localizedValueConverter.toLocalizedString(oodiEnrollment.name, locale),
+                coursePageUriBuilder.getImageUri(coursePage),
+                coursePageUriBuilder.getLocalizedUri(coursePage),
+                courseMaterialDtoFactory.fromCoursePage(coursePage),
+                oodiEnrollment.webOodiUri,
+                oodiEnrollment.startDate,
+                oodiEnrollment.endDate,
+                oodiEnrollment.realisationId,
+                oodiEnrollment.parentId,
+                oodiEnrollment.rootId,
+                oodiEnrollment.credits,
+                courseUnitRealisation.teachers.stream().map(t -> t.fullName).collect(Collectors.toList()),
+                eventTypeResolver.isExam(oodiEnrollment.typeCode),
+                courseUnitRealisation.isCancelled);
+
+        }
+        return Optional.ofNullable(dto);
     }
 
     public CourseDto toDto(OodiTeacherCourse oodiTeacherCourse, Locale locale) {
@@ -100,6 +110,7 @@ public class CourseConverter {
             oodiTeacherCourse.endDate,
             oodiTeacherCourse.realisationId,
             oodiTeacherCourse.parentId,
+            oodiTeacherCourse.rootId,
             null,
             Lists.newArrayList(),
             eventTypeResolver.isExam(oodiTeacherCourse.realisationTypeCode),

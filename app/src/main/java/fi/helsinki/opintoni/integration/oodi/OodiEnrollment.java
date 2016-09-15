@@ -54,4 +54,7 @@ public class OodiEnrollment {
     @JsonProperty("parent_id")
     public String parentId;
 
+    @JsonProperty("root_id")
+    public String rootId;
+
 }

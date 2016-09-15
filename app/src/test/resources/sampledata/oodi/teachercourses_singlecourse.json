@@ -29,6 +29,7 @@
       "organisation_name": "Eksegetiikka",
       "show_hierarchy": 1,
       "course_id": 99903629,
+      "root_id": 99903629,
       "image_uri": null,
       "weboodi_uri": "https://weboodi.helsinki.fi/",
       "learningopportunity_id": "10440",

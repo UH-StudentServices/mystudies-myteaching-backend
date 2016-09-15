@@ -91,6 +91,11 @@ public class StudentRequestChain {
         return this;
     }
 
+    public StudentRequestChain positionStudygroupsetCourseUnitRealisation() {
+        oodiServer.expectPositionStudygroupsetCourseUnitRealisationRequest(TestConstants.STUDENT_COURSE_REALISATION_ID);
+        return this;
+    }
+
     public StudentRequestChain defaultOneOffEvents() {
         coursePageServer.expectStudentCourseImplementationEventsRequest(TestConstants.STUDENT_COURSE_REALISATION_ID);
         return this;
