@@ -67,7 +67,7 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
     }
 
     @Test
-    public void thatRealisationPostionStudygroupsetIsNotReturned() throws Exception{
+    public void thatRealisationPositionStudygroupsetIsNotReturned() throws Exception{
         expectCourseRequestChain()
             .positionStudygroupsetCourseUnitRealisation();
 
