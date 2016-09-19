@@ -74,7 +74,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .email("opettaja@mail.helsinki.fi")
             .commonName("Olli Opettaja")
-            .teacherNumber("010540")
+            .employeeNumber("010540")
             .oodiPersonId("1000")
             .role(AppUser.Role.ADMIN)
             .build();
@@ -111,7 +111,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .email("hybriduser@mail.helsinki.fi")
             .commonName("Hybrid User")
-            .teacherNumber("010540")
+            .employeeNumber("010540")
             .studentNumber("010189791")
             .oodiPersonId("1002")
             .build();
@@ -124,7 +124,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .email("testteachert@mail.helsinki.fi")
             .commonName("Test Teacher")
-            .teacherNumber("010540")
+            .employeeNumber("010540")
             .oodiPersonId("1003")
             .build();
     }
@@ -148,7 +148,7 @@ public class HardCodedUserDetailsService implements org.springframework.security
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .email("testhybriduser@mail.helsinki.fi")
             .commonName("Test Hybrid User")
-            .teacherNumber("010540")
+            .employeeNumber("010540")
             .studentNumber("010189791")
             .oodiPersonId("1005")
             .build();

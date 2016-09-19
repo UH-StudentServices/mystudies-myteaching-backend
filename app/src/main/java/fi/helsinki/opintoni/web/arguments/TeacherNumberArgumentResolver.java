@@ -57,7 +57,7 @@ public class TeacherNumberArgumentResolver implements HandlerMethodArgumentResol
             WebDataBinderFactory binderFactory) throws Exception {
 
         return securityUtils.getAppUser()
-            .flatMap(AppUser::getTeacherNumber)
+            .flatMap(AppUser::getEmployeeNumber)
             .orElseThrow(forbiddenException("Principal not found or user has no teacher number"));
     }
 }

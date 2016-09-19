@@ -44,7 +44,7 @@ public class UserNotificationServiceTest extends SpringTest {
             .activity("teachernotifications.json");
 
         List<UserNotificationDto> userNotifications = userNotificationService
-            .getUserNotifications(1L, Optional.empty(), Optional.of(TestConstants.TEACHER_NUMBER), Locale.ENGLISH);
+            .getUserNotifications(1L, Optional.empty(), Optional.of(TestConstants.EMPLOYEE_NUMBER), Locale.ENGLISH);
 
         assertThat(userNotifications).hasSize(2);
 

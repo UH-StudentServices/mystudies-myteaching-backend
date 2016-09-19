@@ -54,7 +54,7 @@ public class UserNotificationsResource extends AbstractResource {
                                                                           Locale locale) {
         return response(userNotificationService.getUserNotifications(userId,
             appUser.getStudentNumber(),
-            appUser.getTeacherNumber(),
+            appUser.getEmployeeNumber(),
             locale));
     }
 

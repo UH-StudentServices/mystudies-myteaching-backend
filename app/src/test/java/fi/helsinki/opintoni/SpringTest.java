@@ -152,7 +152,7 @@ public abstract class SpringTest {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(new TestingAuthenticationToken(
             new AppUser.AppUserBuilder()
-                .teacherNumber(TestConstants.TEACHER_NUMBER)
+                .employeeNumber(TestConstants.EMPLOYEE_NUMBER)
                 .eduPersonPrincipalName("opettaja@helsinki.fi")
                 .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.FACULTY))
                 .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
@@ -163,7 +163,7 @@ public abstract class SpringTest {
     }
 
     protected TeacherRequestChain defaultTeacherRequestChain() {
-        return new TeacherRequestChain(TestConstants.TEACHER_NUMBER, DateTimeUtil.getSemesterStartDateString(LocalDate.now()), oodiServer, coursePageServer);
+        return new TeacherRequestChain(TestConstants.EMPLOYEE_NUMBER, DateTimeUtil.getSemesterStartDateString(LocalDate.now()), oodiServer, coursePageServer);
     }
 
     protected TeacherRequestChain teacherRequestChain(String teacherNumber) {

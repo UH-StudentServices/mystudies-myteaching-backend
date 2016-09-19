@@ -55,7 +55,7 @@ public class CourseServiceTest extends SpringTest {
         expectTeacherCourses();
 
         Set<CourseDto> courseDtos = courseService
-            .getCourses(Optional.empty(), Optional.of(TestConstants.TEACHER_NUMBER), Locale.ENGLISH);
+            .getCourses(Optional.empty(), Optional.of(TestConstants.EMPLOYEE_NUMBER), Locale.ENGLISH);
 
         assertThat(courseDtos).hasSize(2);
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.TEACHER_COURSE_REALISATION_ID));
@@ -70,7 +70,7 @@ public class CourseServiceTest extends SpringTest {
         Set<CourseDto> courseDtos = courseService
             .getCourses(
                 Optional.of(TestConstants.STUDENT_NUMBER),
-                Optional.of(TestConstants.TEACHER_NUMBER),
+                Optional.of(TestConstants.EMPLOYEE_NUMBER),
                 Locale.ENGLISH);
 
         assertThat(courseDtos).hasSize(3);
