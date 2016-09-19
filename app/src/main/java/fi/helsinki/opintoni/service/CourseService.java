@@ -49,6 +49,8 @@ public class CourseService {
     public List<CourseDto> getTeacherCourses(String teacherNumber, Locale locale) {
         return oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
             .map(c -> courseConverter.toDto(c, locale))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
             .collect(Collectors.toList());
     }
 

@@ -92,28 +92,34 @@ public class CourseConverter {
         return Optional.ofNullable(dto);
     }
 
-    public CourseDto toDto(OodiTeacherCourse oodiTeacherCourse, Locale locale) {
+    public Optional<CourseDto> toDto(OodiTeacherCourse oodiTeacherCourse, Locale locale) {
+        CourseDto dto = null;
+
         CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiTeacherCourse.realisationId);
 
         OodiCourseUnitRealisation courseUnitRealisation =
             oodiClient.getCourseUnitRealisation(oodiTeacherCourse.realisationId);
 
-        return new CourseDto(
-            oodiTeacherCourse.basecode,
-            oodiTeacherCourse.realisationTypeCode,
-            localizedValueConverter.toLocalizedString(oodiTeacherCourse.realisationName, locale),
-            coursePageUriBuilder.getImageUri(coursePage),
-            coursePageUriBuilder.getLocalizedUri(coursePage),
-            courseMaterialDtoFactory.fromCoursePage(coursePage),
-            oodiTeacherCourse.webOodiUri,
-            oodiTeacherCourse.startDate,
-            oodiTeacherCourse.endDate,
-            oodiTeacherCourse.realisationId,
-            oodiTeacherCourse.parentId,
-            oodiTeacherCourse.rootId,
-            null,
-            Lists.newArrayList(),
-            eventTypeResolver.isExam(oodiTeacherCourse.realisationTypeCode),
-            courseUnitRealisation.isCancelled);
+        if(!Position.getByValue(courseUnitRealisation.position).equals(Position.STUDY_GROUP_SET)) {
+
+            dto = new CourseDto(
+                oodiTeacherCourse.basecode,
+                oodiTeacherCourse.realisationTypeCode,
+                localizedValueConverter.toLocalizedString(oodiTeacherCourse.realisationName, locale),
+                coursePageUriBuilder.getImageUri(coursePage),
+                coursePageUriBuilder.getLocalizedUri(coursePage),
+                courseMaterialDtoFactory.fromCoursePage(coursePage),
+                oodiTeacherCourse.webOodiUri,
+                oodiTeacherCourse.startDate,
+                oodiTeacherCourse.endDate,
+                oodiTeacherCourse.realisationId,
+                oodiTeacherCourse.parentId,
+                oodiTeacherCourse.rootId,
+                null,
+                Lists.newArrayList(),
+                eventTypeResolver.isExam(oodiTeacherCourse.realisationTypeCode),
+                courseUnitRealisation.isCancelled);
+        }
+        return Optional.ofNullable(dto);
     }
 }
