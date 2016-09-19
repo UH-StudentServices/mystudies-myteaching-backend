@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AppUserTest {
 
     private static final String STUDENT_NUMBER = "123";
-    private static final String TEACHER_NUMBER = "321";
+    private static final String EMPLOYEE_NUMBER = "321";
     private static final String EDU_PERSON_PRINCIPAL_NAME = "eduPersonPrincipalName";
 
     @Test(expected = BadCredentialsException.class)
@@ -110,7 +110,7 @@ public class AppUserTest {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
             .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
-            .teacherNumber(TEACHER_NUMBER)
+            .employeeNumber(EMPLOYEE_NUMBER)
             .build();
 
         assertThat(isInRole(appUser, TEACHER)).isTrue();
@@ -122,7 +122,7 @@ public class AppUserTest {
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
             .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
             .studentNumber(STUDENT_NUMBER)
-            .teacherNumber(TEACHER_NUMBER)
+            .employeeNumber(EMPLOYEE_NUMBER)
             .build();
 
         assertThat(isInRole(appUser, STUDENT)).isTrue();
@@ -130,17 +130,17 @@ public class AppUserTest {
     }
 
     @Test
-    public void thatUserDoesNotHaveTeacherRoleIfPrimaryAffiliationIsStudent() {
+    public void thatUserCanHaveTeacherRoleEvenIfPrimaryAffiliationIsStudent() {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
             .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
             .eduPersonPrimaryAffiliation((SAMLEduPersonAffiliation.STUDENT))
             .studentNumber(STUDENT_NUMBER)
-            .teacherNumber(TEACHER_NUMBER)
+            .employeeNumber(EMPLOYEE_NUMBER)
             .build();
 
         assertThat(isInRole(appUser, STUDENT)).isTrue();
-        assertThat(isInRole(appUser, TEACHER)).isFalse();
+        assertThat(isInRole(appUser, TEACHER)).isTrue();
     }
 
     @Test

@@ -43,7 +43,7 @@ public final class AppUser extends User {
     private final String preferredLanguage;
     private final Optional<String> teacherFacultyCode;
     private final Optional<String> studentNumber;
-    private final Optional<String> teacherNumber;
+    private final Optional<String> employeeNumber;
     private final Collection<GrantedAuthority> authorities;
 
     private AppUser(AppUserBuilder builder) {
@@ -57,7 +57,7 @@ public final class AppUser extends User {
         this.commonName = builder.commonName;
         this.studentNumber = builder.studentNumber;
         this.oodiPersonId = builder.oodiPersonId;
-        this.teacherNumber = builder.teacherNumber;
+        this.employeeNumber = builder.employeeNumber;
         this.authorities = builder.authorities;
         this.teacherFacultyCode = builder.teacherFacultyCode;
         this.preferredLanguage = builder.preferredLanguage;
@@ -75,8 +75,8 @@ public final class AppUser extends User {
         return studentNumber;
     }
 
-    public Optional<String> getTeacherNumber() {
-        return teacherNumber;
+    public Optional<String> getEmployeeNumber() {
+        return employeeNumber;
     }
 
     public String getOodiPersonId() {
@@ -120,7 +120,7 @@ public final class AppUser extends User {
             .append("eduPersonPrimaryAffiliation", eduPersonPrimaryAffiliation.getValue())
             .append("commonName", commonName)
             .append("studentNumber", studentNumber)
-            .append("teacherNumber", teacherNumber)
+            .append("employeeNumber", employeeNumber)
             .append("oodiPersonId", oodiPersonId)
             .toString();
     }
@@ -136,7 +136,7 @@ public final class AppUser extends User {
         private String preferredLanguage;
         private Optional<String> teacherFacultyCode = Optional.empty();
         private Optional<String> studentNumber = Optional.empty();
-        private Optional<String> teacherNumber = Optional.empty();
+        private Optional<String> employeeNumber = Optional.empty();
         private Collection<GrantedAuthority> authorities = Collections.emptyList();
         private Set<Role> roles = Sets.newHashSet();
 
@@ -175,8 +175,8 @@ public final class AppUser extends User {
             return this;
         }
 
-        public AppUserBuilder teacherNumber(String teacherNumber) {
-            this.teacherNumber = Optional.ofNullable(teacherNumber);
+        public AppUserBuilder employeeNumber(String employeeNumber) {
+            this.employeeNumber = Optional.ofNullable(employeeNumber);
             return this;
         }
 
@@ -196,7 +196,7 @@ public final class AppUser extends User {
         }
 
         public AppUser build() {
-            if (!teacherNumber.isPresent() && !studentNumber.isPresent()) {
+            if (!employeeNumber.isPresent() && !studentNumber.isPresent()) {
                 throw new BadCredentialsException("User does not have teacher nor student number");
             }
 
@@ -223,7 +223,7 @@ public final class AppUser extends User {
                 authorities.add(new SimpleGrantedAuthority(Role.STUDENT.name()));
             }
 
-            if (teacherNumber.isPresent() && !SAMLEduPersonAffiliation.STUDENT.equals(eduPersonPrimaryAffiliation)) {
+            if (employeeNumber.isPresent()) {
                 authorities.add(new SimpleGrantedAuthority(Role.TEACHER.name()));
             }
 

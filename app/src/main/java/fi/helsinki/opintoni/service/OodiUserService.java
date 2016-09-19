@@ -33,7 +33,7 @@ public class OodiUserService {
 
     public boolean isOpenUniversityUser(AppUser appUser) {
         if (appUser.isTeacher()) {
-            return oodiUserRoleService.isOpenUniversityTeacher(appUser.getTeacherNumber().get());
+            return oodiUserRoleService.isOpenUniversityTeacher(appUser.getEmployeeNumber().get());
         } else {
             return oodiUserRoleService.isOpenUniversityStudent(appUser.getStudentNumber().get());
         }

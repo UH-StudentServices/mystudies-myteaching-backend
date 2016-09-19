@@ -43,7 +43,7 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
     private static final String SAML_ATTRIBUTE_EMAIL = "urn:oid:0.9.2342.19200300.100.1.3";
     private static final String SAML_ATTRIBUTE_COMMON_NAME = "urn:oid:2.5.4.3";
     private static final String SAML_ATTRIBUTE_OODI_UID = "1.3.6.1.4.1.18869.1.1.1.32";
-    private static final String SAML_ATTRIBUTE_TEACHER_NUMBER = "urn:oid:2.16.840.1.113730.3.1.3";
+    private static final String SAML_ATTRIBUTE_EMPLOYEE_NUMBER = "urn:oid:2.16.840.1.113730.3.1.3";
     private static final String SAML_ATTRIBUTE_STUDENT_NUMBER = "urn:oid:1.3.6.1.4.1.25178.1.2.14";
     private static final String SAML_ATTRIBUTE_TEACHER_FACULTY_CODE = "urn:mace:funet.fi:helsinki.fi:hyAccountingCode";
     private static final String SAML_ATTRIBUTE_PREFERRED_LANGUAGE = "urn:oid:2.16.840.1.113730.3.1.39";
@@ -72,7 +72,7 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
             .commonName(credential.getAttributeAsString(SAML_ATTRIBUTE_COMMON_NAME))
             .oodiPersonId(credential.getAttributeAsString(SAML_ATTRIBUTE_OODI_UID))
             .studentNumber(getStudentNumber(credential))
-            .teacherNumber(credential.getAttributeAsString(SAML_ATTRIBUTE_TEACHER_NUMBER))
+            .employeeNumber(credential.getAttributeAsString(SAML_ATTRIBUTE_EMPLOYEE_NUMBER))
             .teacherFacultyCode(credential.getAttributeAsString(SAML_ATTRIBUTE_TEACHER_FACULTY_CODE))
             .preferredLanguage(credential.getAttributeAsString(SAML_ATTRIBUTE_PREFERRED_LANGUAGE));
 

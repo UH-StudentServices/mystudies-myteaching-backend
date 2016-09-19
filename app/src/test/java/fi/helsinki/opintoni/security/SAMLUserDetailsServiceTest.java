@@ -36,7 +36,7 @@ public class SAMLUserDetailsServiceTest {
     private static final String SAML_STUDENT_NUMBER = "urn:mace:terena" +
         ".org:schac:personalUniqueCode:int:studentID:helsinki.fi:011631484";
     private static final String SAML_STUDENT_NUMBER_FINAL = "011631484";
-    private static final String SAML_TEACHER_NUMBER = "teacherNumber";
+    private static final String SAML_EMPLOYEE_NUMBER = "employeeNumber";
     private static final String OODI_PERSON_ID = "1440748";
     private static final String SAML_PREFERRED_LANGUAGE = "fi";
     private static final String[] SAML_EDU_PERSON_AFFILIATION_MULTIVALUE = {"member", "student"};
@@ -61,7 +61,7 @@ public class SAMLUserDetailsServiceTest {
         assertThat(appUser.getPreferredLanguage()).isEqualTo(SAML_PREFERRED_LANGUAGE);
         assertThat(appUser.getEduPersonAffiliations().contains(SAMLEduPersonAffiliation.STUDENT)).isTrue();
         assertThat(appUser.getEduPersonPrimaryAffiliation()).isEqualTo(SAMLEduPersonAffiliation.STUDENT);
-        assertThat(appUser.getTeacherNumber().isPresent()).isFalse();
+        assertThat(appUser.getEmployeeNumber().isPresent()).isFalse();
         assertThat(appUser.getAuthorities()).hasSize(1);
 
         GrantedAuthority grantedAuthority = Iterables.getOnlyElement(appUser.getAuthorities());
@@ -78,7 +78,7 @@ public class SAMLUserDetailsServiceTest {
         assertThat(appUser.getEmail()).isEqualTo(SAML_EMAIL);
         assertThat(appUser.getCommonName()).isEqualTo(SAML_COMMON_NAME);
         assertThat(appUser.getOodiPersonId()).isEqualTo(OODI_PERSON_ID);
-        assertThat(appUser.getTeacherNumber().get()).isEqualTo(SAML_TEACHER_NUMBER);
+        assertThat(appUser.getEmployeeNumber().get()).isEqualTo(SAML_EMPLOYEE_NUMBER);
         assertThat(appUser.getPreferredLanguage()).isEqualTo(SAML_PREFERRED_LANGUAGE);
         assertThat(appUser.getEduPersonAffiliations().contains(SAMLEduPersonAffiliation.FACULTY)).isTrue();
         assertThat(appUser.getEduPersonPrimaryAffiliation()).isEqualTo(SAMLEduPersonAffiliation.FACULTY);
@@ -95,7 +95,7 @@ public class SAMLUserDetailsServiceTest {
 
         AppUser appUser = (AppUser) userDetailsService.loadUserBySAML(credential);
 
-        assertThat(appUser.getTeacherNumber().get()).isEqualTo(SAML_TEACHER_NUMBER);
+        assertThat(appUser.getEmployeeNumber().get()).isEqualTo(SAML_EMPLOYEE_NUMBER);
         assertThat(appUser.getStudentNumber().get()).isEqualTo(SAML_STUDENT_NUMBER_FINAL);
         assertThat(appUser.getAuthorities()).hasSize(2);
         assertThat(appUser.getAuthorities()).extracting("authority").contains(AppUser.Role.TEACHER.name());
@@ -135,7 +135,7 @@ public class SAMLUserDetailsServiceTest {
 
     private SAMLCredential samlTeacherCredential() {
         SAMLCredential credential = samlCommonCredential();
-        when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.3")).thenReturn(SAML_TEACHER_NUMBER);
+        when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.3")).thenReturn(SAML_EMPLOYEE_NUMBER);
         when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAML_EDU_PERSON_AFFILIATION_FACULTY);
         when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.5")).thenReturn(SAMLEduPersonAffiliation.FACULTY.getValue());
         return credential;
@@ -143,7 +143,7 @@ public class SAMLUserDetailsServiceTest {
 
     private SAMLCredential samlHybridCredential() {
         SAMLCredential credential = samlCommonCredential();
-        when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.3")).thenReturn(SAML_TEACHER_NUMBER);
+        when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.3")).thenReturn(SAML_EMPLOYEE_NUMBER);
         when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.25178.1.2.14")).thenReturn(SAML_STUDENT_NUMBER);
         when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAML_EDU_PERSON_AFFILIATION_HYBRID);
         when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.5")).thenReturn(SAMLEduPersonAffiliation.FACULTY.getValue());
