@@ -49,8 +49,6 @@ public class TeacherRequestChain {
             .and()
             .examCourseImplementation()
             .and()
-            .positionStudygroupsetCourseImplementation()
-            .and()
             .courseUnitRealisation(TEACHER_COURSE_REALISATION_ID)
             .cancelledCourseUnitRealisation(EXAM_TEACHER_COURSE_REALISATION_ID)
             .positionStudygroupsetCourseUnitRealisation(POSITION_STUDYGROUPSET_TEACHER_COURSE_REALISATION_ID);
@@ -72,10 +70,6 @@ public class TeacherRequestChain {
 
     public CourseImplementationRequestChain<TeacherRequestChain> examCourseImplementation() {
         return courseImplementation(EXAM_TEACHER_COURSE_REALISATION_ID);
-    }
-
-    public CourseImplementationRequestChain<TeacherRequestChain> positionStudygroupsetCourseImplementation() {
-        return courseImplementation(POSITION_STUDYGROUPSET_TEACHER_COURSE_REALISATION_ID);
     }
 
     public TeacherRequestChain courseUnitRealisation(String realisationId) {
