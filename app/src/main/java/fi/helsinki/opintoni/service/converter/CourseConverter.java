@@ -67,7 +67,7 @@ public class CourseConverter {
         OodiCourseUnitRealisation courseUnitRealisation =
             oodiClient.getCourseUnitRealisation(oodiEnrollment.realisationId);
 
-        if(!Position.getByValue(courseUnitRealisation.position).equals(Position.STUDY_GROUP_SET)) {
+        if(!isPositionStudygroupset(courseUnitRealisation)) {
             CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiEnrollment.realisationId);
 
             dto = new CourseDto(
@@ -92,28 +92,38 @@ public class CourseConverter {
         return Optional.ofNullable(dto);
     }
 
-    public CourseDto toDto(OodiTeacherCourse oodiTeacherCourse, Locale locale) {
-        CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiTeacherCourse.realisationId);
+    public Optional<CourseDto> toDto(OodiTeacherCourse oodiTeacherCourse, Locale locale) {
+        CourseDto dto = null;
 
         OodiCourseUnitRealisation courseUnitRealisation =
             oodiClient.getCourseUnitRealisation(oodiTeacherCourse.realisationId);
 
-        return new CourseDto(
-            oodiTeacherCourse.basecode,
-            oodiTeacherCourse.realisationTypeCode,
-            localizedValueConverter.toLocalizedString(oodiTeacherCourse.realisationName, locale),
-            coursePageUriBuilder.getImageUri(coursePage),
-            coursePageUriBuilder.getLocalizedUri(coursePage),
-            courseMaterialDtoFactory.fromCoursePage(coursePage),
-            oodiTeacherCourse.webOodiUri,
-            oodiTeacherCourse.startDate,
-            oodiTeacherCourse.endDate,
-            oodiTeacherCourse.realisationId,
-            oodiTeacherCourse.parentId,
-            oodiTeacherCourse.rootId,
-            null,
-            Lists.newArrayList(),
-            eventTypeResolver.isExam(oodiTeacherCourse.realisationTypeCode),
-            courseUnitRealisation.isCancelled);
+        if(!isPositionStudygroupset(courseUnitRealisation)) {
+            CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiTeacherCourse.realisationId);
+
+
+            dto = new CourseDto(
+                oodiTeacherCourse.basecode,
+                oodiTeacherCourse.realisationTypeCode,
+                localizedValueConverter.toLocalizedString(oodiTeacherCourse.realisationName, locale),
+                coursePageUriBuilder.getImageUri(coursePage),
+                coursePageUriBuilder.getLocalizedUri(coursePage),
+                courseMaterialDtoFactory.fromCoursePage(coursePage),
+                oodiTeacherCourse.webOodiUri,
+                oodiTeacherCourse.startDate,
+                oodiTeacherCourse.endDate,
+                oodiTeacherCourse.realisationId,
+                oodiTeacherCourse.parentId,
+                oodiTeacherCourse.rootId,
+                null,
+                Lists.newArrayList(),
+                eventTypeResolver.isExam(oodiTeacherCourse.realisationTypeCode),
+                courseUnitRealisation.isCancelled);
+        }
+        return Optional.ofNullable(dto);
+    }
+
+    private boolean isPositionStudygroupset(OodiCourseUnitRealisation courseUnitRealisation) {
+        return Position.getByValue(courseUnitRealisation.position).equals(Position.STUDY_GROUP_SET);
     }
 }

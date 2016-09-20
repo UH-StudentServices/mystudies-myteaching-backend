@@ -50,7 +50,8 @@ public class TeacherRequestChain {
             .examCourseImplementation()
             .and()
             .courseUnitRealisation(TEACHER_COURSE_REALISATION_ID)
-            .cancelledCourseUnitRealisation(EXAM_TEACHER_COURSE_REALISATION_ID);
+            .cancelledCourseUnitRealisation(EXAM_TEACHER_COURSE_REALISATION_ID)
+            .positionStudygroupsetCourseUnitRealisation(POSITION_STUDYGROUPSET_TEACHER_COURSE_REALISATION_ID);
     }
 
     public TeacherRequestChain courses(String responseFile) {
@@ -78,6 +79,11 @@ public class TeacherRequestChain {
 
     public TeacherRequestChain cancelledCourseUnitRealisation(String realisationId) {
         oodiServer.expectCancelledCourseUnitRealisationRequest(realisationId);
+        return this;
+    }
+
+    public TeacherRequestChain positionStudygroupsetCourseUnitRealisation(String realisationId) {
+        oodiServer.expectPositionStudygroupsetCourseUnitRealisationRequest(realisationId);
         return this;
     }
 
