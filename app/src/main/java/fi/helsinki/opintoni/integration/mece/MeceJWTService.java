@@ -29,22 +29,22 @@ public class MeceJWTService implements JWTService {
 
     private final SignatureAlgorithm signatureAlgorithm;
 
-    private final Integer expireTimeSeconds;
+    private final Integer expirationTimeSeconds;
 
-    public MeceJWTService(Key mecePrivateSecret, SignatureAlgorithm signatureAlgorithm, Integer expireTimeSeconds) {
+    public MeceJWTService(Key mecePrivateSecret, SignatureAlgorithm signatureAlgorithm, Integer expirationTimeSeconds) {
         this.mecePrivateSecret = mecePrivateSecret;
         this.signatureAlgorithm = signatureAlgorithm;
-        this.expireTimeSeconds = expireTimeSeconds;
+        this.expirationTimeSeconds = expirationTimeSeconds;
     }
 
     @Override
     public String generateToken(final String username) {
-        return Jwts.builder().setSubject(username).signWith(signatureAlgorithm, mecePrivateSecret).setExpiration(getExpireTime()).compact();
+        return Jwts.builder().setSubject(username).signWith(signatureAlgorithm, mecePrivateSecret).setExpiration(getExpirationTime()).compact();
     }
 
-    private Date getExpireTime() {
+    private Date getExpirationTime() {
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND, expireTimeSeconds);
+        calendar.add(Calendar.SECOND, expirationTimeSeconds);
         return calendar.getTime();
     }
 }
