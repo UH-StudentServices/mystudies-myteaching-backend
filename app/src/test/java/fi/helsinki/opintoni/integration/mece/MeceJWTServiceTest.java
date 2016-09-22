@@ -23,23 +23,27 @@ import org.junit.Test;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.util.Date;
 
 public class MeceJWTServiceTest {
 
     private static final String MECE_PRIVATE_SECRET = "FOOBAR";
     private static final String PRINCIPAL = "testuser";
+    private static final Integer EXPIRE_TIME_SECONDS = 1800;
 
     private MeceJWTService meceJWTService;
 
     @Before
     public void setup() {
-        meceJWTService = new MeceJWTService(getKey(), SignatureAlgorithm.HS256);
+        meceJWTService = new MeceJWTService(getKey(), SignatureAlgorithm.HS256, EXPIRE_TIME_SECONDS);
     }
 
     @Test
     public void shouldReturnValidTokenWithPrincipal() {
         String token = meceJWTService.generateToken(PRINCIPAL);
         assert Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token).getBody().getSubject().equals(PRINCIPAL);
+        assert Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token).getBody().getExpiration().after(new Date());
+
     }
 
     private Key getKey() {
