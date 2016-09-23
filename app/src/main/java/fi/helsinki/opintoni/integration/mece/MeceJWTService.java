@@ -20,7 +20,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.security.Key;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 public class MeceJWTService implements JWTService {
@@ -43,8 +44,6 @@ public class MeceJWTService implements JWTService {
     }
 
     private Date getExpirationTime() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND, expirationTimeSeconds);
-        return calendar.getTime();
+        return Date.from(LocalDateTime.now().plusSeconds(expirationTimeSeconds).atZone(ZoneId.systemDefault()).toInstant());
     }
 }
