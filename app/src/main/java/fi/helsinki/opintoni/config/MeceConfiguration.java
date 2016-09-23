@@ -18,7 +18,7 @@ public class MeceConfiguration {
 
     @Bean
     public JWTService getJWTService() {
-        return new MeceJWTService(getKey(), SignatureAlgorithm.HS256);
+        return new MeceJWTService(getKey(), SignatureAlgorithm.HS256, appConfiguration.getInteger("server.session.timeout"));
     }
 
     private Key getKey() {

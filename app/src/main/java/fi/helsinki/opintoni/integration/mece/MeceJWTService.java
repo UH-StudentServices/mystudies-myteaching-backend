@@ -20,6 +20,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 public class MeceJWTService implements JWTService {
 
@@ -27,13 +30,20 @@ public class MeceJWTService implements JWTService {
 
     private final SignatureAlgorithm signatureAlgorithm;
 
-    public MeceJWTService(Key mecePrivateSecret, SignatureAlgorithm signatureAlgorithm) {
+    private final Integer expirationTimeSeconds;
+
+    public MeceJWTService(Key mecePrivateSecret, SignatureAlgorithm signatureAlgorithm, Integer expirationTimeSeconds) {
         this.mecePrivateSecret = mecePrivateSecret;
         this.signatureAlgorithm = signatureAlgorithm;
+        this.expirationTimeSeconds = expirationTimeSeconds;
     }
 
     @Override
     public String generateToken(final String username) {
-        return Jwts.builder().setSubject(username).signWith(signatureAlgorithm, mecePrivateSecret).compact();
+        return Jwts.builder().setSubject(username).signWith(signatureAlgorithm, mecePrivateSecret).setExpiration(getExpirationTime()).compact();
+    }
+
+    private Date getExpirationTime() {
+        return Date.from(LocalDateTime.now().plusSeconds(expirationTimeSeconds).atZone(ZoneId.systemDefault()).toInstant());
     }
 }

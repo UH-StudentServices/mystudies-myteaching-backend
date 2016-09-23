@@ -1,6 +1,6 @@
 server:
     port: 8080
-    session-timeout: 1800 # Seconds
+    session.timeout: 1800 # Seconds
 
 spring:
     profiles:
