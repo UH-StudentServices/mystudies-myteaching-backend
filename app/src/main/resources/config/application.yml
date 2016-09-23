@@ -286,7 +286,7 @@ cache:
     timeToLiveSeconds: 3600
     studentEvents:
         timeToLiveSeconds: 3600
-        maxEntriesLocalHeap: 500
+        maxEntriesLocalHeap: 600
     studentEnrollments:
         timeToLiveSeconds: 1800
         maxEntriesLocalHeap: 500
@@ -298,13 +298,13 @@ cache:
         maxEntriesLocalHeap: 500
     coursePage:
         timeToLiveSeconds: 7200
-        maxEntriesLocalHeap: 7000
+        maxEntriesLocalHeap: 10000
     coursePageOneOffEvents:
         timeToLiveSeconds: 7200
-        maxEntriesLocalHeap: 5000
+        maxEntriesLocalHeap: 7000
     courseUniRealisations:
         timeToLiveSeconds: 28800
-        maxEntriesLocalHeap: 5000
+        maxEntriesLocalHeap: 10000
     studentNews:
         timeToLiveSeconds: 3600
         maxEntriesLocalHeap: 1
