@@ -90,6 +90,34 @@
       "name": [
         {
           "langcode": "fi",
+          "text": "Geenitekniikka tentti"
+        },
+        {
+          "langcode": "sv",
+          "text": "Genteknologi exam"
+        },
+        {
+          "langcode": "en",
+          "text": "Gene Technology exam"
+        }
+      ],
+      "coursepage_uri": null,
+      "end_date": "2040-08-03T22:00:00.000Z",
+      "start_date": "2040-01-04T22:00:00.000Z",
+      "credits": 3,
+      "teaching_languages": "fi",
+      "course_id": 123456791,
+      "parent_id": 123456789,
+      "root_id": 123456789,
+      "type_code": 28,
+      "image_uri": null,
+      "weboodi_uri": "https://weboodi.helsinki.fi",
+      "learningopportunity_id": "52736"
+    },
+    {
+      "name": [
+        {
+          "langcode": "fi",
           "text": "Geenitekniikka 2"
         },
         {

@@ -125,7 +125,8 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[0].teachers[0]").value("Rantala Kari A"))
             .andExpect(jsonPath("$[0].isCancelled").value(expectedCancellation))
             .andExpect(jsonPath("$[0].parentId").isEmpty())
-            .andExpect(jsonPath("$[0].rootId").value("123456789"));
+            .andExpect(jsonPath("$[0].rootId").value("123456789"))
+            .andExpect(jsonPath("$[0].isExam").value(true));
     }
 
 }
