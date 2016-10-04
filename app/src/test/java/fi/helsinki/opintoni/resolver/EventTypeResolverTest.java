@@ -36,6 +36,7 @@ public class EventTypeResolverTest extends SpringTest {
         assertThat(eventTypeResolver.isExam(20)).isTrue();
         assertThat(eventTypeResolver.isExam(23)).isTrue();
         assertThat(eventTypeResolver.isExam(27)).isTrue();
+        assertThat(eventTypeResolver.isExam(28)).isTrue();
         assertThat(eventTypeResolver.isExam(5)).isFalse();
     }
 }
