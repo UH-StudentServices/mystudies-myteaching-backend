@@ -52,6 +52,8 @@ public class JobSearchService {
     public JobSearchDto insert(Long portfolioId, JobSearchDto jobSearchDto) {
         JobSearch jobSearch = new JobSearch();
         jobSearch.contactEmail = jobSearchDto.contactEmail;
+        jobSearch.headline = jobSearchDto.headline;
+        jobSearch.text = jobSearchDto.text;
         jobSearch.portfolio = portfolioRepository.findOne(portfolioId);
         return jobSearchConverter.toDto(jobSearchRepository.save(jobSearch));
     }

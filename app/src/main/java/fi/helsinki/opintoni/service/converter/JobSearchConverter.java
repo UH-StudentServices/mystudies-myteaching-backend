@@ -28,6 +28,8 @@ public class JobSearchConverter {
 
         JobSearchDto jobSearchDto = new JobSearchDto();
         jobSearchDto.contactEmail = jobSearch.contactEmail;
+        jobSearchDto.headline = jobSearch.headline;
+        jobSearchDto.text = jobSearch.text;
         jobSearchDto.id = jobSearch.id;
 
         return jobSearchDto;

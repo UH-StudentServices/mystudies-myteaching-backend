@@ -22,9 +22,12 @@ import java.time.LocalDate;
 public class WorkExperienceDto {
     public Long id;
     public String employer;
+    public String employerUrl;
 
     public String jobTitle;
-    public LocalDate startDate;
 
+    public LocalDate startDate;
     public LocalDate endDate;
+
+    public String text;
 }

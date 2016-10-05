@@ -39,8 +39,10 @@ public class WorkExperienceServiceTest extends SpringTest {
         WorkExperienceDto workExperienceDto = new WorkExperienceDto();
         workExperienceDto.jobTitle = "Jobtitle";
         workExperienceDto.employer = "Employer name";
+        workExperienceDto.employerUrl = "www.employer.invalid";
         workExperienceDto.startDate = LocalDate.now();
         workExperienceDto.endDate = LocalDate.now();
+        workExperienceDto.text = "This is text chapter telling what the user has done at the Employer.";
 
         workExperienceService.insert(portfolioId, workExperienceDto);
 
@@ -51,7 +53,9 @@ public class WorkExperienceServiceTest extends SpringTest {
         assertThat(workExperienceDtos).hasSize(1);
         assertThat(savedWorkExperienceDto.jobTitle).isEqualTo(workExperienceDto.jobTitle);
         assertThat(savedWorkExperienceDto.employer).isEqualTo(workExperienceDto.employer);
+        assertThat(savedWorkExperienceDto.employerUrl).isEqualTo(workExperienceDto.employerUrl);
         assertThat(savedWorkExperienceDto.startDate).isEqualTo(workExperienceDto.startDate);
         assertThat(savedWorkExperienceDto.endDate).isEqualTo(workExperienceDto.endDate);
+        assertThat(savedWorkExperienceDto.text).isEqualTo(workExperienceDto.text);
     }
 }

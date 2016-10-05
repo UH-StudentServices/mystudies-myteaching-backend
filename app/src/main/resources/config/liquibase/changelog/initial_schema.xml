@@ -1060,4 +1060,19 @@
     <changeSet id="Drop existing teacher portfolios after introducing new grouping layer between portfolio and its contents" author="Henri Heiskanen">
         <sql>DELETE from portfolio WHERE portfolio_role = 'TEACHER'</sql>
     </changeSet>
+
+    <changeSet id="Add freetext and link url to work experience" author="Joonas Iivonen">
+        <addColumn tableName="work_experience">
+            <column name="employer_url" type="varchar(255)"/>
+            <column name="text" type="text"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Add freetext and headline to job search" author="Joonas Iivonen">
+        <addColumn tableName="job_search">
+            <column name="headline" type="varchar(255)"/>
+            <column name="text" type="text"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

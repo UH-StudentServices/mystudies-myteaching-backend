@@ -26,10 +26,13 @@ public class WorkExperienceConverter {
 
     public WorkExperienceDto toDto(WorkExperience workExperience) {
         WorkExperienceDto workExperienceDto = new WorkExperienceDto();
+
         workExperienceDto.employer = workExperience.employer;
+        workExperienceDto.employerUrl = workExperience.employerUrl;
         workExperienceDto.jobTitle = workExperience.jobTitle;
         workExperienceDto.startDate = workExperience.startDate;
         workExperienceDto.endDate = workExperience.endDate;
+        workExperienceDto.text = workExperience.text;
         workExperienceDto.id = workExperience.id;
 
         return workExperienceDto;

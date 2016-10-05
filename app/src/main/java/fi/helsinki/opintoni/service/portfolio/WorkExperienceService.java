@@ -53,9 +53,11 @@ public class WorkExperienceService extends DtoService {
     public WorkExperienceDto insert(Long portfolioId, WorkExperienceDto workExperienceDto) {
         WorkExperience workExperience = new WorkExperience();
         workExperience.employer = workExperienceDto.employer;
+        workExperience.employerUrl = workExperienceDto.employerUrl;
         workExperience.startDate = workExperienceDto.startDate;
         workExperience.endDate = workExperienceDto.endDate;
         workExperience.jobTitle = workExperienceDto.jobTitle;
+        workExperience.text = workExperienceDto.text;
         workExperience.portfolio = portfolioRepository.findOne(portfolioId);
         return workExperienceConverter.toDto(workExperienceRepository.save(workExperience));
     }
