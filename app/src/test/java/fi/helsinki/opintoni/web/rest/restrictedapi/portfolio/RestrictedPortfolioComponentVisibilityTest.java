@@ -34,12 +34,12 @@ public class RestrictedPortfolioComponentVisibilityTest extends RestrictedPortfo
 
     @Test
     public void thatPrivateAttainmentsAreNotReturned() throws Exception {
-        returnsForbidden(RESTRICTED_PORTFOLIO_API_PATH + "/attainment");
+        returnsForbidden(RESTRICTED_STUDENT_PORTFOLIO_API_PATH + "/attainment");
     }
 
     @Test
     public void thatPrivateCreditsAreNotReturned() throws Exception {
-        returnsForbidden(RESTRICTED_PORTFOLIO_API_PATH + "/credits");
+        returnsForbidden(RESTRICTED_STUDENT_PORTFOLIO_API_PATH + "/credits");
     }
 
     private void returnsForbidden(String url) throws Exception {

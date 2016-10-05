@@ -4,4 +4,5 @@ public class FreeTextContentDto {
     public Long id;
     public String title;
     public String text;
+    public String portfolioSection;
 }

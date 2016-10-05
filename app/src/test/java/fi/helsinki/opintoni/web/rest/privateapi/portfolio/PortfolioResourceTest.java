@@ -87,6 +87,8 @@ public class PortfolioResourceTest extends SpringTest {
 
     @Test
     public void thatTeacherPortfolioIsCreated() throws Exception {
+        deleteExistingTeacherPortfolio();
+
         createTeacherPortfolio(teacherSecurityContext())
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
@@ -106,6 +108,8 @@ public class PortfolioResourceTest extends SpringTest {
 
     @Test
     public void thatTeacherCannotCreateMultiplePortfolios() throws Exception {
+        deleteExistingTeacherPortfolio();
+
         createTeacherPortfolio(teacherSecurityContext())
             .andExpect(status().isOk());
 
@@ -182,4 +186,7 @@ public class PortfolioResourceTest extends SpringTest {
             .andExpect(jsonPath("$.visibility").value(updatedVisibility.name()));
     }
 
+    private void deleteExistingTeacherPortfolio() {
+        portfolioRepository.delete(4L);
+    }
 }

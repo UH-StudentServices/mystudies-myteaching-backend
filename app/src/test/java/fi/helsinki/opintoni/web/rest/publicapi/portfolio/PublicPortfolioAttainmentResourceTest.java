@@ -30,7 +30,7 @@ public class PublicPortfolioAttainmentResourceTest extends PublicPortfolioTest {
     public void thatAttainmentsAreReturned() throws Exception {
         defaultStudentRequestChain().roles().attainments();
 
-        mockMvc.perform(get(PUBLIC_PORTFOLIO_API_PATH + "/attainment"))
+        mockMvc.perform(get(PUBLIC_STUDENT_PORTFOLIO_API_PATH + "/attainment"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(2)));

@@ -2,3 +2,4 @@ id;user_id;visibility;path;owner_name;intro;created_by;summary;portfolio_role
 1;2;PRIVATE;pekka;Pekka;Introtext;system;null;STUDENT
 2;3;PRIVATE;olli-opiskelija;Olli Opiskelija;Introtext;system;Summary;STUDENT
 3;1;PRIVATE;test-test;Test Test;Introtext;system;null;STUDENT
+4;4;PRIVATE;opettaja;Olli Opettaja;Introtext;system;null;TEACHER

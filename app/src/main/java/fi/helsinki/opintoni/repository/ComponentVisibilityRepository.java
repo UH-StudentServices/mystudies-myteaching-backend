@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.repository;
 
 import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
+import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -30,4 +31,9 @@ public interface ComponentVisibilityRepository extends JpaRepository<ComponentVi
 
     Optional<ComponentVisibility> findByPortfolioIdAndComponent(Long portfolioId,
                                                                 PortfolioComponent component);
+
+    Optional<ComponentVisibility> findByPortfolioIdAndComponentAndTeacherPortfolioSection(
+        Long portfolioId,
+        PortfolioComponent component,
+        TeacherPortfolioSection teacherPortfolioSection);
 }

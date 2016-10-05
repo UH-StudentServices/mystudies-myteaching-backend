@@ -32,7 +32,7 @@ public class RestrictedPortfolioAttainmentResourceTest extends RestrictedPortfol
     public void thatAttainmentsAreReturned() throws Exception {
         defaultStudentRequestChain().roles().attainments();
 
-        mockMvc.perform(get(RESTRICTED_PORTFOLIO_API_PATH + "/attainment")
+        mockMvc.perform(get(RESTRICTED_STUDENT_PORTFOLIO_API_PATH + "/attainment")
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())

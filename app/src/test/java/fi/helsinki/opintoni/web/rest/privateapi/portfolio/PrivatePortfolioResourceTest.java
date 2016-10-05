@@ -26,6 +26,7 @@ import fi.helsinki.opintoni.dto.portfolio.KeywordDto;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficiencyDto;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.dto.portfolio.WorkExperienceDto;
+import fi.helsinki.opintoni.security.TestSecurityContext;
 import fi.helsinki.opintoni.service.portfolio.PortfolioService;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import fi.helsinki.opintoni.web.rest.RestConstants;
@@ -37,6 +38,7 @@ import org.springframework.http.MediaType;
 import java.util.List;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
+import static fi.helsinki.opintoni.security.TestSecurityContext.*;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.both;
@@ -53,6 +55,7 @@ public class PrivatePortfolioResourceTest extends SpringTest {
 
     private static final long PORTFOLIO_ID = 2L;
     private static final String STUDENT_PORTFOLIO_API_PATH = "/portfolio/student";
+    private static final String TEACHER_PORTFOLIO_API_PATH = "/portfolio/teacher";
     private static final String PORTFOLIO_UPDATE_API_PATH = "/portfolio/" + PORTFOLIO_ID;
     private static final String STUDENT_EMAIL = "olli.opiskelija@helsinki.fi";
 
@@ -67,7 +70,7 @@ public class PrivatePortfolioResourceTest extends SpringTest {
     }
 
     @Test
-    public void thatPortfolioContainsAllLocallyStoredComponents() throws Exception {
+    public void thatStudentPortfolioContainsAllLinkedComponents() throws Exception {
         mockMvc.perform(get(RestConstants.PRIVATE_API_V1 + STUDENT_PORTFOLIO_API_PATH)
             .with(securityContext(studentSecurityContext())))
             .andExpect(jsonPath("$.contactInformation").value(
@@ -124,6 +127,20 @@ public class PrivatePortfolioResourceTest extends SpringTest {
                 ),
                 hasItem(
                     hasEntry("id", 8)
+                )
+            )));
+    }
+
+    @Test
+    public void thatTeacherPortfolioContainsAllLinkedComponents() throws Exception {
+        mockMvc.perform(get(RestConstants.PRIVATE_API_V1 + TEACHER_PORTFOLIO_API_PATH)
+            .with(securityContext(teacherSecurityContext())))
+            .andExpect(jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
+                hasSize(1),
+                hasItem(
+                    both(hasEntry("title", "Otsikko 3"))
+                        .and(hasEntry("text", "Teksti 3"))
+                        .and(hasEntry("portfolioSection", "RESEARCH"))
                 )
             )));
     }

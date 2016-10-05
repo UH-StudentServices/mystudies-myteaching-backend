@@ -24,6 +24,7 @@ import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.repository.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
+import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,7 +32,9 @@ import java.util.Arrays;
 
 public abstract class RestrictedPortfolioTest extends SpringTest {
 
-    protected static final String RESTRICTED_PORTFOLIO_API_PATH = "/api/restricted/v1/portfolio/2";
+    protected static final String RESTRICTED_STUDENT_PORTFOLIO_API_PATH = RestConstants.RESTRICTED_API_V1 + "/portfolio/2";
+    protected static final long STUDENT_PORTFOLIO_ID = 2L;
+    protected static final long TEACHER_PORTFOLIO_ID = 4L;
 
     @Autowired
     private PortfolioRepository portfolioRepository;
@@ -40,10 +43,12 @@ public abstract class RestrictedPortfolioTest extends SpringTest {
     private ComponentVisibilityRepository componentVisibilityRepository;
 
     @Before
-    public void savePortfolioAsRestricted() {
-        Portfolio portfolio = portfolioRepository.findOne(2L);
-        portfolio.visibility = PortfolioVisibility.RESTRICTED;
-        portfolioRepository.save(portfolio);
+    public void saveStudentPortfolioAsRestricted() {
+        savePortfolioAsRestricted(STUDENT_PORTFOLIO_ID);
+    }
+
+    public void saveTeacherPortfolioAsRestricted() {
+        savePortfolioAsRestricted(TEACHER_PORTFOLIO_ID);
     }
 
     public void setPrivateVisibilitiesForEveryComponent() {
@@ -56,5 +61,11 @@ public abstract class RestrictedPortfolioTest extends SpringTest {
             componentVisibility.portfolio = portfolioRepository.findOne(2L);
             componentVisibilityRepository.save(componentVisibility);
         });
+    }
+
+    private void savePortfolioAsRestricted(long portfolioId) {
+        Portfolio portfolio = portfolioRepository.findOne(portfolioId);
+        portfolio.visibility = PortfolioVisibility.RESTRICTED;
+        portfolioRepository.save(portfolio);
     }
 }

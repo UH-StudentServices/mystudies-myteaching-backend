@@ -1,6 +1,7 @@
 package fi.helsinki.opintoni.service.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.FreeTextContent;
+import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;
 import fi.helsinki.opintoni.repository.portfolio.FreeTextContentRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
@@ -31,7 +32,6 @@ public class FreeTextContentService {
         this.portfolioRepository = portfolioRepository;
     }
 
-
     public List<FreeTextContentDto> findByPortfolioId(Long portfolioId) {
         return freeTextContentRepository
             .findByPortfolioId(portfolioId)
@@ -42,20 +42,29 @@ public class FreeTextContentService {
 
     public FreeTextContentDto insertFreeTextContent(Long portfolioId, FreeTextContentDto freeTextContentDto) {
         FreeTextContent freeTextContent = new FreeTextContent();
-        freeTextContent.title = freeTextContentDto.title;
-        freeTextContent.text = freeTextContentDto.text;
+        copyDtoProperties(freeTextContent, freeTextContentDto);
+
         freeTextContent.portfolio = portfolioRepository.findOne(portfolioId);
         return freeTextContentConverter.toDto(freeTextContentRepository.save(freeTextContent));
     }
 
     public FreeTextContentDto updateFreeTextContent(Long freeTextContentId, FreeTextContentDto freeTextContentDto) {
         FreeTextContent freeTextContent = freeTextContentRepository.findOne(freeTextContentId);
-        freeTextContent.title = freeTextContentDto.title;
-        freeTextContent.text = freeTextContentDto.text;
+        copyDtoProperties(freeTextContent, freeTextContentDto);
+
         return freeTextContentDto;
     }
 
     public void deleteFreeTextContent(Long freeTextContentId) {
         freeTextContentRepository.delete(freeTextContentId);
+    }
+
+    private void copyDtoProperties(FreeTextContent freeTextContent, FreeTextContentDto dto) {
+        freeTextContent.title = dto.title;
+        freeTextContent.text = dto.text;
+
+        if(dto.portfolioSection != null) {
+            freeTextContent.teacherPortfolioSection = TeacherPortfolioSection.valueOf(dto.portfolioSection);
+        }
     }
 }
