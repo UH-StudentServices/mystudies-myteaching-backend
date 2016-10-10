@@ -32,8 +32,12 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.List;
+
+import static java.nio.charset.StandardCharsets.*;
 
 @Configuration
 public class UnisportConfiguration {
@@ -107,6 +111,6 @@ public class UnisportConfiguration {
     }
 
     private Key getKey() {
-        return new SecretKeySpec(appConfiguration.get("unisportApiKey").getBytes(), SignatureAlgorithm.HS256.getJcaName());
+        return new SecretKeySpec(appConfiguration.get("unisportApiKey").getBytes(UTF_8), SignatureAlgorithm.HS256.getJcaName());
     }
 }

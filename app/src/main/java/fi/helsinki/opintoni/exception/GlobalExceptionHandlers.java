@@ -98,7 +98,7 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResources, headers, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
-    class CommonError {
+    static class CommonError {
         public final String error;
 
         public CommonError(String error) {
@@ -106,7 +106,7 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
         }
     }
 
-    class ValidationError {
+    static class ValidationError {
         public final String field;
         public final String errorCode;
 

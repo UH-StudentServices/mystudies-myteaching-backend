@@ -45,6 +45,7 @@ public class CoursePageRestClient implements CoursePageClient {
     }
 
     @Cacheable(CacheConstants.COURSE_PAGE_ONE_OFF_EVENTS)
+    @Override
     public List<CoursePageEvent> getEvents(String courseImplementationId) {
         ResponseEntity<List<CoursePageEvent>> responseEntity =
             restTemplate.exchange("{baseUrl}/events?course_implementation_id={courseImplementationId}", HttpMethod.GET,
@@ -58,6 +59,7 @@ public class CoursePageRestClient implements CoursePageClient {
     }
 
     @Cacheable(CacheConstants.COURSE_PAGE)
+    @Override
     public CoursePageCourseImplementation getCoursePage(String courseImplementationId) {
         return
             restTemplate.exchange(

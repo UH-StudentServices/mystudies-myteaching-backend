@@ -25,6 +25,8 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.util.Date;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class MeceJWTServiceTest {
 
     private static final String MECE_PRIVATE_SECRET = "FOOBAR";
@@ -47,6 +49,6 @@ public class MeceJWTServiceTest {
     }
 
     private Key getKey() {
-        return new SecretKeySpec(MECE_PRIVATE_SECRET.getBytes(), SignatureAlgorithm.HS256.getJcaName());
+        return new SecretKeySpec(MECE_PRIVATE_SECRET.getBytes(UTF_8), SignatureAlgorithm.HS256.getJcaName());
     }
 }

@@ -27,6 +27,6 @@ public class FavoriteServiceSaveUnicafeFavoriteTest extends AbstractFavoriteServ
     @Test
     public void shouldPersistUnicafeFavoriteCorrectly() {
         UnicafeFavoriteDto dto = (UnicafeFavoriteDto) favoriteService.insertUnicafeFavorite(1L, 3);
-        assertThat(dto.restaurantId).isEqualTo(new Integer(3));
+        assertThat(dto.restaurantId).isEqualTo(3);
     }
 }

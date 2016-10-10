@@ -63,6 +63,7 @@ public final class SecurityRequestPostProcessors {
             this.securityContext = securityContext;
         }
 
+        @Override
         public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
             save(this.securityContext, request);
             return request;

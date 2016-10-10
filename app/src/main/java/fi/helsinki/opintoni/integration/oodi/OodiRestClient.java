@@ -131,11 +131,12 @@ public class OodiRestClient implements OodiClient {
     public <T> T getSingleOodiData(String url, ParameterizedTypeReference<OodiSingleResponse<T>> typeReference,
                                    Class<T> clazz, Object... uriVariables) {
         T data;
+
         try {
             data = Optional
                 .ofNullable(restTemplate.exchange(url, HttpMethod.GET, null, typeReference, uriVariables).getBody())
                 .map(r -> r.data)
-                .orElse(clazz.newInstance());
+                .orElse(clazz.getConstructor().newInstance());
         } catch (Exception e) {
             LOGGER.error("Caught OodiIntegrationException", e);
             throw new OodiIntegrationException(e.getMessage(), e);

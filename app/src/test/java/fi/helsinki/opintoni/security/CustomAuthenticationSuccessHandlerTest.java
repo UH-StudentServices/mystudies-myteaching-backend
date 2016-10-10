@@ -146,7 +146,7 @@ public class CustomAuthenticationSuccessHandlerTest {
         return response;
     }
 
-    private class LastLoginCookieMatcher extends ArgumentMatcher<Cookie> {
+    private static class LastLoginCookieMatcher extends ArgumentMatcher<Cookie> {
 
         @Override
         public boolean matches(Object item) {
@@ -155,7 +155,7 @@ public class CustomAuthenticationSuccessHandlerTest {
         }
     }
 
-    private class LangCookieMatcher extends ArgumentMatcher<Cookie> {
+    private static class LangCookieMatcher extends ArgumentMatcher<Cookie> {
 
         @Override
         public boolean matches(Object item) {
@@ -164,7 +164,7 @@ public class CustomAuthenticationSuccessHandlerTest {
         }
     }
 
-    private class HasLoggedInCookieMatcher extends ArgumentMatcher<Cookie> {
+    private static class HasLoggedInCookieMatcher extends ArgumentMatcher<Cookie> {
 
         @Override
         public boolean matches(Object item) {
@@ -173,7 +173,7 @@ public class CustomAuthenticationSuccessHandlerTest {
         }
     }
 
-    private class UserMatcher extends ArgumentMatcher<User> {
+    private static class UserMatcher extends ArgumentMatcher<User> {
 
         @Override
         public boolean matches(Object argument) {

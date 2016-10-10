@@ -50,6 +50,7 @@ public class TodoItem extends AbstractAuditingEntity implements Ownership {
     @Enumerated(EnumType.STRING)
     public Status status = Status.OPEN;
 
+    @Override
     public Long getOwnerId() {
         return user.id;
     }
