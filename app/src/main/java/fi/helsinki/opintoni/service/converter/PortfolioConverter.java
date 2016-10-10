@@ -138,31 +138,29 @@ public class PortfolioConverter {
 
     private void fetchPublicComponentsForStudentPortfolio(Long portfolioId, PortfolioDto portfolioDto) {
         componentVisibilityService.findByPortfolioId(portfolioId).stream()
-            .filter(visibility -> {
-                return ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic() &&
-                    visibility.component != null;
-            })
+            .filter(visibility ->
+                ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic() && visibility.component != null
+            )
             .map(visibility -> PortfolioComponent.valueOf(visibility.component))
-            .forEach(component -> fetchComponentData(portfolioId, portfolioDto, component));;
+            .forEach(component -> fetchComponentData(portfolioId, portfolioDto, component));
     }
 
     private void fetchPublicComponentsForTeacherPortfolio(Long portfolioId, PortfolioDto portfolioDto) {
         List<ComponentVisibilityDto> visibilities = componentVisibilityService.findByPortfolioId(portfolioId);
         List<TeacherPortfolioSection> publicSections = visibilities.stream()
-            .filter(visibility -> {
-                return visibility.teacherPortfolioSection != null &&
+            .filter(visibility -> visibility.teacherPortfolioSection != null &&
                     visibility.component == null &&
-                    ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic();
-            })
+                    ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic()
+            )
             .map(visibility -> TeacherPortfolioSection.valueOf(visibility.teacherPortfolioSection))
             .collect(Collectors.toList());
 
         visibilities.stream()
-            .filter(visibility -> {
-                return ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic() &&
+            .filter(visibility ->
+                ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic() &&
                     visibility.component != null &&
-                    publicSections.contains(TeacherPortfolioSection.valueOf(visibility.teacherPortfolioSection));
-            })
+                    publicSections.contains(TeacherPortfolioSection.valueOf(visibility.teacherPortfolioSection))
+            )
             .map(visibility -> PortfolioComponent.valueOf(visibility.component))
             .forEach(component -> fetchComponentData(portfolioId, portfolioDto, component));
     }
