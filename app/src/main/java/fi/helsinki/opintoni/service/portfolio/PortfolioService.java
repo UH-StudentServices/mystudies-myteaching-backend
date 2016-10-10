@@ -142,7 +142,7 @@ public class PortfolioService {
     }
 
     private void insertTeacherPortfolioSectionVisibilities(Portfolio portfolio) {
-        List<ComponentVisibility> sectionVisibilities = Arrays.asList(TeacherPortfolioSection.values()).stream()
+        List<ComponentVisibility> sectionVisibilities = Arrays.stream(TeacherPortfolioSection.values())
             .map(section -> {
                 ComponentVisibility visibility = new ComponentVisibility();
                 visibility.teacherPortfolioSection = section;

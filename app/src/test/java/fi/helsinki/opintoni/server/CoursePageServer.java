@@ -100,7 +100,7 @@ public class CoursePageServer {
         builder.append(courseImplementationIds.get(0));
         courseImplementationIds.stream()
             .skip(1)
-            .forEach(i -> builder.append("," + i));
+            .forEach(i -> builder.append(",").append(i));
         return builder.toString();
     }
 }

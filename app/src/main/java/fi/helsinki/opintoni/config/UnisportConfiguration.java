@@ -20,7 +20,12 @@ package fi.helsinki.opintoni.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
-import fi.helsinki.opintoni.integration.unisport.*;
+import fi.helsinki.opintoni.integration.unisport.ExpiringUnisportJWTService;
+import fi.helsinki.opintoni.integration.unisport.MockUnisportJWTService;
+import fi.helsinki.opintoni.integration.unisport.UnisportClient;
+import fi.helsinki.opintoni.integration.unisport.UnisportJWTService;
+import fi.helsinki.opintoni.integration.unisport.UnisportMockClient;
+import fi.helsinki.opintoni.integration.unisport.UnisportRestClient;
 import fi.helsinki.opintoni.service.converter.favorite.UnisportFavoriteConverter;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -32,12 +37,10 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.List;
 
-import static java.nio.charset.StandardCharsets.*;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Configuration
 public class UnisportConfiguration {

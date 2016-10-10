@@ -36,7 +36,7 @@ public enum Language {
     }
 
     public static List<String> getCodes() {
-        return Arrays.asList(values()).stream()
+        return Arrays.stream(values())
             .map(Language::getCode)
             .collect(Collectors.toList());
     }

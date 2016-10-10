@@ -21,12 +21,11 @@ import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import org.junit.Test;
 import org.springframework.security.authentication.BadCredentialsException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static fi.helsinki.opintoni.security.AppUser.Role;
-import static fi.helsinki.opintoni.security.AppUser.Role.*;
+import static fi.helsinki.opintoni.security.AppUser.Role.ADMIN;
+import static fi.helsinki.opintoni.security.AppUser.Role.STUDENT;
+import static fi.helsinki.opintoni.security.AppUser.Role.TEACHER;
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppUserTest {
@@ -50,13 +49,11 @@ public class AppUserTest {
 
     @Test
     public void thatPreferredLanguageIsSet() {
-        List<SAMLEduPersonAffiliation> foo = new ArrayList<>();
-        foo.add(SAMLEduPersonAffiliation.STUDENT);
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
             .studentNumber(STUDENT_NUMBER)
             .preferredLanguage("fi")
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
+            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .build();
         assertThat(appUser.getPreferredLanguage()).isEqualTo("fi");
     }
@@ -66,7 +63,7 @@ public class AppUserTest {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
             .studentNumber(STUDENT_NUMBER)
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
+            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .build();
         assertThat(appUser.getPreferredLanguage()).isEqualTo("en");
     }
@@ -76,7 +73,7 @@ public class AppUserTest {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
             .studentNumber(STUDENT_NUMBER)
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
+            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .build();
 
         assertThat(isInRole(appUser, ADMIN)).isFalse();
@@ -87,7 +84,7 @@ public class AppUserTest {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
             .studentNumber(STUDENT_NUMBER)
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
+            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .role(ADMIN)
             .build();
 
@@ -98,7 +95,7 @@ public class AppUserTest {
     public void thatUserHasStudentRole() {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
+            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .studentNumber(STUDENT_NUMBER)
             .build();
 
@@ -109,7 +106,7 @@ public class AppUserTest {
     public void thatUserHasTeacherRole() {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
+            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.AFFILIATE))
             .employeeNumber(EMPLOYEE_NUMBER)
             .build();
 
@@ -120,7 +117,7 @@ public class AppUserTest {
     public void thatUserHasStudentAndTeacherRole() {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
+            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.AFFILIATE))
             .studentNumber(STUDENT_NUMBER)
             .employeeNumber(EMPLOYEE_NUMBER)
             .build();
@@ -133,7 +130,7 @@ public class AppUserTest {
     public void thatUserCanHaveTeacherRoleEvenIfPrimaryAffiliationIsStudent() {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
+            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.AFFILIATE))
             .eduPersonPrimaryAffiliation((SAMLEduPersonAffiliation.STUDENT))
             .studentNumber(STUDENT_NUMBER)
             .employeeNumber(EMPLOYEE_NUMBER)
@@ -141,15 +138,6 @@ public class AppUserTest {
 
         assertThat(isInRole(appUser, STUDENT)).isTrue();
         assertThat(isInRole(appUser, TEACHER)).isTrue();
-    }
-
-    @Test
-    public void thatMultiValueEduPersonAffiliationIsDetected() {
-        AppUser appUser = new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
-            .studentNumber(STUDENT_NUMBER)
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
-            .build();
     }
 
     private boolean isInRole(AppUser appUser, Role role) {

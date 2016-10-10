@@ -95,7 +95,7 @@ public class EventService {
     private CoursePageCourseImplementation getCoursePage(Map<String, CoursePageCourseImplementation> coursePages, String realisationId) {
         return Optional
             .ofNullable(coursePages.get(realisationId))
-            .orElseGet(() -> new CoursePageCourseImplementation());
+            .orElseGet(CoursePageCourseImplementation::new);
     }
 
     private String getRealisationId(OodiEvent oodiEvent) {

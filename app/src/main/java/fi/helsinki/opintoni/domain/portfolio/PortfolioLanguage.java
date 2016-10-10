@@ -44,9 +44,7 @@ public enum PortfolioLanguage {
     private static final Map<String, PortfolioLanguage> PORTFOLIO_LANG_MAP = new HashMap<>();
 
     static {
-        Arrays.asList(PortfolioLanguage.values()).forEach((lang) -> {
-            PORTFOLIO_LANG_MAP.put(lang.languageCode, lang);
-        });
+        Arrays.asList(PortfolioLanguage.values()).forEach((lang) -> PORTFOLIO_LANG_MAP.put(lang.languageCode, lang));
     }
 
     private String languageCode;
@@ -67,8 +65,7 @@ public enum PortfolioLanguage {
 
     @JsonCreator
     public static PortfolioLanguage of(String code) {
-        return Optional.ofNullable(PORTFOLIO_LANG_MAP.get(code)).orElseThrow(() -> {
-           return new IllegalArgumentException(String.format("no corresponding language for code '%s'", code));
-        });
+        return Optional.ofNullable(PORTFOLIO_LANG_MAP.get(code)).orElseThrow(() ->
+            new IllegalArgumentException(String.format("no corresponding language for code '%s'", code)));
     }
 }

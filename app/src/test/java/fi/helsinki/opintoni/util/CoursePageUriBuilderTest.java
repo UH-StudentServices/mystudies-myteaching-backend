@@ -26,7 +26,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNull;
 
 public class CoursePageUriBuilderTest extends SpringTest {
 

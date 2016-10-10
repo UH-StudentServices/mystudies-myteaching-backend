@@ -34,8 +34,12 @@ import org.springframework.web.bind.annotation.RestController;
     produces = WebConstants.APPLICATION_JSON_UTF8)
 public class PageMetaDataResource extends AbstractResource {
 
+    private final PageMetaDataClient pageMetaDataClient;
+
     @Autowired
-    private PageMetaDataClient pageMetaDataClient;
+    public PageMetaDataResource(PageMetaDataClient pageMetaDataClient) {
+        this.pageMetaDataClient = pageMetaDataClient;
+    }
 
     @RequestMapping(value = "/page-meta-data", method = RequestMethod.GET)
     public PageMetaData getPageMetaData(@RequestParam("url") String url) {

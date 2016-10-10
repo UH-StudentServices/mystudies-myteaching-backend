@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.service.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
@@ -28,12 +27,11 @@ import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.ComponentVisibilityService;
 import fi.helsinki.opintoni.service.converter.PortfolioConverter;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
 
 public class PortfolioServiceTest extends SpringTest {

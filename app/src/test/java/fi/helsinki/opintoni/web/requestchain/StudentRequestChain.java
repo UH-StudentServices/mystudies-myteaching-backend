@@ -21,7 +21,7 @@ import fi.helsinki.opintoni.server.CoursePageServer;
 import fi.helsinki.opintoni.server.OodiServer;
 import fi.helsinki.opintoni.web.TestConstants;
 
-import java.util.Arrays;
+import static java.util.Collections.singletonList;
 
 public class StudentRequestChain {
 
@@ -66,7 +66,7 @@ public class StudentRequestChain {
             new CourseImplementationActivityRequestChain<>(
                 this,
                 coursePageServer,
-                Arrays.asList(TestConstants.STUDENT_COURSE_REALISATION_ID)
+                singletonList(TestConstants.STUDENT_COURSE_REALISATION_ID)
             );
         return chain.activity(responseFile);
     }

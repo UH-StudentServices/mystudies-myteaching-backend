@@ -39,10 +39,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
+import static java.util.Collections.singletonList;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CustomAuthenticationSuccessHandlerTest {
@@ -74,7 +80,7 @@ public class CustomAuthenticationSuccessHandlerTest {
             .studentNumber("1234")
             .oodiPersonId(OODI_PERSON_ID)
             .preferredLanguage("fi")
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
+            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .build();
         when(authentication.getPrincipal()).thenReturn(appUser);
     }

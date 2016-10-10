@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.web.arguments;
 
 import fi.helsinki.opintoni.exception.http.ForbiddenException;
+import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.SecurityUtils;
 import fi.helsinki.opintoni.service.UserService;
 import org.springframework.core.MethodParameter;
@@ -59,7 +60,7 @@ public class UsernameArgumentResolver implements HandlerMethodArgumentResolver {
         WebDataBinderFactory binderFactory) throws Exception {
 
         return securityUtils.getAppUser()
-            .map(user -> user.getEduPersonPrincipalName())
+            .map(AppUser::getEduPersonPrincipalName)
             .orElseThrow(forbiddenException("Principal not found or user has no username"));
     }
 }

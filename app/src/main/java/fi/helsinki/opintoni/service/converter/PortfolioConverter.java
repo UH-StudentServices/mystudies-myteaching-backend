@@ -123,9 +123,8 @@ public class PortfolioConverter {
     }
 
     private void fetchAllComponents(Portfolio portfolio, PortfolioDto portfolioDto) {
-        Arrays.asList(PortfolioComponent.values()).stream().forEach(componentType -> {
-            fetchComponentData(portfolio.id, portfolioDto, componentType);
-        });
+        Arrays.stream(PortfolioComponent.values()).forEach(componentType ->
+            fetchComponentData(portfolio.id, portfolioDto, componentType));
     }
 
     private void fetchPublicComponents(Portfolio portfolio, PortfolioDto portfolioDto) {

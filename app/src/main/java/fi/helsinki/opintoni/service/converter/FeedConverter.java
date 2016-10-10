@@ -1,5 +1,6 @@
 package fi.helsinki.opintoni.service.converter;
 
+import com.rometools.rome.feed.synd.SyndContent;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import fi.helsinki.opintoni.dto.FeedDto;
@@ -19,7 +20,7 @@ public class FeedConverter {
     private LocalDateTime dateToLocalDateTime(Date date) {
         return Optional.ofNullable(date)
             .map(d -> LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()))
-            .orElseGet(() -> LocalDateTime.now());
+            .orElseGet(LocalDateTime::now);
     }
 
     private List<FeedEntryDto> getEntries(SyndFeed syndFeed, int limit) {
@@ -39,7 +40,7 @@ public class FeedConverter {
         feedEntryDto.link = syndEntry.getLink();
         feedEntryDto.date = dateToLocalDateTime(syndEntry.getPublishedDate());
         feedEntryDto.description = Optional.ofNullable(syndEntry.getDescription())
-            .map(e -> e.getValue())
+            .map(SyndContent::getValue)
             .orElse(null);
 
         return feedEntryDto;

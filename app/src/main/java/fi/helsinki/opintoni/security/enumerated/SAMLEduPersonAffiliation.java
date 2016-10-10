@@ -30,7 +30,7 @@ public enum SAMLEduPersonAffiliation {
 
     private String value;
 
-    private SAMLEduPersonAffiliation(String value) {
+    SAMLEduPersonAffiliation(String value) {
         this.value = value;
     }
 

@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.util;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNull;
 
 public class HtmlUtilsTest {
 

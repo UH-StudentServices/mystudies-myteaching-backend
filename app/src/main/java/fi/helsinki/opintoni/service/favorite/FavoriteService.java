@@ -204,7 +204,7 @@ public class FavoriteService {
 
         List<Map<String, String>> defaultFavorites = favoriteProperties.getDefaultFavorites();
 
-        defaultFavorites.stream().forEach(f -> createFavorite(f, favorites));
+        defaultFavorites.forEach(f -> createFavorite(f, favorites));
 
         IntStream.range(0, favorites.size())
             .forEach(index -> {

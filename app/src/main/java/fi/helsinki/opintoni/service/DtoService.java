@@ -31,7 +31,7 @@ public class DtoService {
                            Function<Long, Optional<T>> getter,
                            Function<T, R> converter) {
         return getter.apply(identifier)
-            .map(converter::apply)
+            .map(converter)
             .orElseThrow(notFoundException("Not found"));
     }
 
@@ -39,7 +39,7 @@ public class DtoService {
                                   Function<Long, List<T>> getter,
                                   Function<T, R> converter) {
         return getter.apply(identifier).stream()
-            .map(converter::apply)
+            .map(converter)
             .collect(Collectors.toList());
     }
 

@@ -101,7 +101,7 @@ public class CalendarService {
 
         studentEvents.addAll(teacherEvents);
 
-        studentEvents.stream().forEach(e -> {
+        studentEvents.forEach(e -> {
             VEvent event = eventDtoToVEvent(e);
             calendar.getComponents().add(event);
         });

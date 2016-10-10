@@ -22,7 +22,11 @@ import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
-import fi.helsinki.opintoni.server.*;
+import fi.helsinki.opintoni.server.CoursePageServer;
+import fi.helsinki.opintoni.server.FlammaServer;
+import fi.helsinki.opintoni.server.LeikiServer;
+import fi.helsinki.opintoni.server.OodiServer;
+import fi.helsinki.opintoni.server.UnisportServer;
 import fi.helsinki.opintoni.server.WebPageServer;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
@@ -53,6 +57,8 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.Filter;
 import java.time.LocalDate;
 import java.util.Arrays;
+
+import static java.util.Collections.singletonList;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TestApplication.class)
@@ -154,7 +160,7 @@ public abstract class SpringTest {
             new AppUser.AppUserBuilder()
                 .employeeNumber(TestConstants.EMPLOYEE_NUMBER)
                 .eduPersonPrincipalName("opettaja@helsinki.fi")
-                .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.FACULTY))
+                .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.FACULTY))
                 .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
                 .teacherFacultyCode("A10000")
                 .oodiPersonId("2222")

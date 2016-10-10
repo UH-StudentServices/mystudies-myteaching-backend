@@ -42,8 +42,12 @@ import java.util.Locale;
 @PublicVisibility(PortfolioComponent.ATTAINMENTS)
 public class RestrictedPortfolioAttainmentResource extends AbstractResource {
 
+    private final StudyAttainmentService studyAttainmentService;
+
     @Autowired
-    private StudyAttainmentService studyAttainmentService;
+    public RestrictedPortfolioAttainmentResource(StudyAttainmentService studyAttainmentService) {
+        this.studyAttainmentService = studyAttainmentService;
+    }
 
     @RequestMapping(method = RequestMethod.GET, produces = WebConstants.APPLICATION_JSON_UTF8)
     @Timed

@@ -53,6 +53,7 @@ public class UriBuilder {
         return getAbsoluteUrl("/assets/icons/avatar.png");
     }
 
+    @SuppressWarnings("SameReturnValue")
     public String getPortfolioDefaultUserAvatarUrl() {
         return "/portfolio/assets/icons/avatar.png";
     }
