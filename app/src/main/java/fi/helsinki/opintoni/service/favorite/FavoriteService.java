@@ -194,6 +194,8 @@ public class FavoriteService {
             case TWITTER:
                 favorites.add(createTwitterFavorite(favorite.get("value")));
                 break;
+            default:
+                throw new IllegalArgumentException("unexpected favorite type: " + favorite.get("type"));
         }
     }
 

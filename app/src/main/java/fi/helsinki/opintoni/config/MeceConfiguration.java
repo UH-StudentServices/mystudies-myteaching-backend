@@ -8,7 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
+
+import static java.nio.charset.StandardCharsets.*;
 
 @Configuration
 public class MeceConfiguration {
@@ -22,7 +25,7 @@ public class MeceConfiguration {
     }
 
     private Key getKey() {
-        return new SecretKeySpec(appConfiguration.get("meceSecretKey").getBytes(), SignatureAlgorithm.HS256.getJcaName());
+        return new SecretKeySpec(appConfiguration.get("meceSecretKey").getBytes(UTF_8), SignatureAlgorithm.HS256.getJcaName());
     }
 
 }

@@ -29,6 +29,7 @@ public class FreeTextContent extends AbstractAuditingEntity implements Ownership
     @NotBlank
     public String text;
 
+    @Override
     public Long getOwnerId() {
         return portfolio.getOwnerId();
     }

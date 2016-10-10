@@ -39,7 +39,7 @@ public class SAMLContextProviderReverseProxy extends SAMLContextProviderImpl {
         super.populateGenericContext(new ReverseProxyRequestWrapper(request), response, context);
     }
 
-    private class ReverseProxyRequestWrapper extends HttpServletRequestWrapper {
+    private static class ReverseProxyRequestWrapper extends HttpServletRequestWrapper {
 
         private ReverseProxyRequestWrapper(HttpServletRequest request) {
             super(request);

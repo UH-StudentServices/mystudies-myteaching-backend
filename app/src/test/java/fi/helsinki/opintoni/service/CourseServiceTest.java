@@ -83,7 +83,7 @@ public class CourseServiceTest extends SpringTest {
         return new CourseDtoRealisationIdMatcher(realisationId);
     }
 
-    class CourseDtoRealisationIdMatcher extends TypeSafeMatcher<Set<CourseDto>> {
+    static class CourseDtoRealisationIdMatcher extends TypeSafeMatcher<Set<CourseDto>> {
 
         private final String realisationId;
 

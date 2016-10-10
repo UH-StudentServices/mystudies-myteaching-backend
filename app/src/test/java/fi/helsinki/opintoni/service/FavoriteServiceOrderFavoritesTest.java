@@ -32,8 +32,8 @@ public class FavoriteServiceOrderFavoritesTest extends AbstractFavoriteServiceTe
         favoriteService.orderFavorites(1L, Arrays.asList(1L, 3L));
 
         final List<FavoriteDto> favorites = favoriteService.findByUserId(1L);
-        assertThat(favorites.get(0).id).isEqualTo(new Long(1));
-        assertThat(favorites.get(1).id).isEqualTo(new Long(3));
+        assertThat(favorites.get(0).id).isEqualTo(1L);
+        assertThat(favorites.get(1).id).isEqualTo(3L);
     }
 
     @Test
@@ -41,8 +41,8 @@ public class FavoriteServiceOrderFavoritesTest extends AbstractFavoriteServiceTe
         favoriteService.orderPortfolioFavorites(1L, Arrays.asList(5L, 4L));
 
         final List<FavoriteDto> favorites = favoriteService.findByUserIdForPortfolio(1L);
-        assertThat(favorites.get(0).id).isEqualTo(new Long(5));
-        assertThat(favorites.get(1).id).isEqualTo(new Long(4));
+        assertThat(favorites.get(0).id).isEqualTo(5L);
+        assertThat(favorites.get(1).id).isEqualTo(4L);
     }
 
 }

@@ -87,7 +87,7 @@ public class PortfolioKeywordRelationshipServiceTest extends SpringTest {
             .findByPortfolioIdOrderByOrderIndexAsc(PORTFOLIO_ID_WITH_EXISTING_KEYWORDS);
 
         assertThat(portfolioKeywordRelationships).hasSize(1);
-        assertThat(portfolioKeywordRelationships.get(0).id).isEqualTo(new Long(1));
+        assertThat(portfolioKeywordRelationships.get(0).id).isEqualTo(1L);
 
         portfolioKeywordRelationshipService.update(PORTFOLIO_ID_WITH_EXISTING_KEYWORDS, updateKeywordsRequest);
 
@@ -95,7 +95,7 @@ public class PortfolioKeywordRelationshipServiceTest extends SpringTest {
             .findByPortfolioIdOrderByOrderIndexAsc(PORTFOLIO_ID_WITH_EXISTING_KEYWORDS);
 
         assertThat(portfolioKeywordRelationships).hasSize(1);
-        assertThat(portfolioKeywordRelationships.get(0).id).isEqualTo(new Long(2));
+        assertThat(portfolioKeywordRelationships.get(0).id).isEqualTo(2L);
     }
 
     @Test
