@@ -1,3 +1,4 @@
-id;portfolio_id;title;text;created_by
-1;2;Otsikko;Teksti;system
-2;1;Otsikko 2;Teksti 2;system
+id;portfolio_id;title;text;created_by;teacher_portfolio_section
+1;2;Otsikko;Teksti;system;null
+2;1;Otsikko 2;Teksti 2;system;null
+3;4;Otsikko 3;Teksti 3;system;RESEARCH

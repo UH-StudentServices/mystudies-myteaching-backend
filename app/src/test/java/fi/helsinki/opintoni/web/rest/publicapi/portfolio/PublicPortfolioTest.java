@@ -22,16 +22,20 @@ import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
+import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import fi.helsinki.opintoni.repository.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
+import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
 
 public abstract class PublicPortfolioTest extends SpringTest {
+    protected static final String PUBLIC_STUDENT_PORTFOLIO_API_PATH = RestConstants.PUBLIC_API_V1 + "/portfolio/2";
 
-    protected static final String PUBLIC_PORTFOLIO_API_PATH = "/api/public/v1/portfolio/2";
+    protected static final long STUDENT_PORTFOLIO_ID = 2L;
+    protected static final long TEACHER_PORTFOLIO_ID = 4L;
 
     @Autowired
     private PortfolioRepository portfolioRepository;
@@ -40,21 +44,29 @@ public abstract class PublicPortfolioTest extends SpringTest {
     private ComponentVisibilityRepository componentVisibilityRepository;
 
     @Before
-    public void savePortfolioAsPublic() {
-        Portfolio portfolio = portfolioRepository.findOne(2L);
-        portfolio.visibility = PortfolioVisibility.PUBLIC;
-        portfolioRepository.save(portfolio);
+    public void saveStudentPortfolioAsPublic() {
+        savePortfolioAsPublic(STUDENT_PORTFOLIO_ID);
     }
 
-    public void setPrivateVisibilitiesForEveryComponent() {
+    public void saveTeacherPortfolioAsPublic() {
+        savePortfolioAsPublic(TEACHER_PORTFOLIO_ID);
+    }
+
+    public void setPrivateVisibilityForEveryStudentPortfolioComponent() {
         componentVisibilityRepository.deleteAll();
 
         Arrays.asList(PortfolioComponent.values()).forEach(component -> {
             ComponentVisibility componentVisibility = new ComponentVisibility();
             componentVisibility.component = component;
             componentVisibility.visibility = ComponentVisibility.Visibility.PRIVATE;
-            componentVisibility.portfolio = portfolioRepository.findOne(2L);
+            componentVisibility.portfolio = portfolioRepository.findOne(STUDENT_PORTFOLIO_ID);
             componentVisibilityRepository.save(componentVisibility);
         });
+    }
+
+    private void savePortfolioAsPublic(long portfolioId) {
+        Portfolio portfolio = portfolioRepository.findOne(portfolioId);
+        portfolio.visibility = PortfolioVisibility.PUBLIC;
+        portfolioRepository.save(portfolio);
     }
 }

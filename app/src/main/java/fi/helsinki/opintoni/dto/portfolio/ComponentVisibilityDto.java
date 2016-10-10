@@ -20,4 +20,5 @@ package fi.helsinki.opintoni.dto.portfolio;
 public class ComponentVisibilityDto {
     public String component;
     public String visibility;
+    public String teacherPortfolioSection;
 }

@@ -54,13 +54,19 @@ public class ComponentVisibilityService extends DtoService {
 
     public void update(Long portfolioId, UpdateComponentVisibilityRequest request) {
         ComponentVisibility componentVisibility = componentVisibilityRepository
-            .findByPortfolioIdAndComponent(portfolioId, request.component)
+            .findByPortfolioIdAndComponentAndTeacherPortfolioSection(portfolioId, request.component,
+                request.teacherPortfolioSection)
             .orElse(new ComponentVisibility());
 
         componentVisibility.component = request.component;
+        componentVisibility.teacherPortfolioSection = request.teacherPortfolioSection;
         componentVisibility.visibility = request.visibility;
         componentVisibility.portfolio = portfolioRepository.findOne(portfolioId);
 
         componentVisibilityRepository.save(componentVisibility);
+    }
+
+    public void save(List<ComponentVisibility> visibilities) {
+        componentVisibilityRepository.save(visibilities);
     }
 }

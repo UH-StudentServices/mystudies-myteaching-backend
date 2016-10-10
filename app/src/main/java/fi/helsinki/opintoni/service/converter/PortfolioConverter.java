@@ -20,7 +20,9 @@ package fi.helsinki.opintoni.service.converter;
 import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
+import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import fi.helsinki.opintoni.dto.UserSettingsDto;
+import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
@@ -37,10 +39,13 @@ import fi.helsinki.opintoni.service.portfolio.PortfolioFavoriteService;
 import fi.helsinki.opintoni.service.portfolio.PortfolioKeywordRelationshipService;
 import fi.helsinki.opintoni.service.portfolio.WorkExperienceService;
 import fi.helsinki.opintoni.util.UriBuilder;
+import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PortfolioConverter {
@@ -102,30 +107,60 @@ public class PortfolioConverter {
         portfolioDto.avatarUrl = avatarImageService.getPortfolioAvatarImageUrl(portfolio.getOwnerId());
         portfolioDto.componentVisibilities = componentVisibilityService.findByPortfolioId(portfolio.id);
 
-        fetchPortfolioComponents(portfolio.id, portfolioDto, componentFetchStrategy);
+        fetchPortfolioComponents(portfolio, portfolioDto, componentFetchStrategy);
 
         return portfolioDto;
     }
 
-    private void fetchPortfolioComponents(Long portfolioId,
+    private void fetchPortfolioComponents(Portfolio portfolio,
                                           PortfolioDto portfolioDto,
                                           ComponentFetchStrategy componentFetchStrategy) {
         if(componentFetchStrategy == ComponentFetchStrategy.ALL) {
-            fetchAllComponents(portfolioId, portfolioDto);
+            fetchAllComponents(portfolio, portfolioDto);
         } else if(componentFetchStrategy == ComponentFetchStrategy.PUBLIC) {
-            fetchPublicComponents(portfolioId, portfolioDto);
+            fetchPublicComponents(portfolio, portfolioDto);
         }
     }
 
-    private void fetchAllComponents(Long portfolioId, PortfolioDto portfolioDto) {
+    private void fetchAllComponents(Portfolio portfolio, PortfolioDto portfolioDto) {
         Arrays.asList(PortfolioComponent.values()).stream().forEach(componentType -> {
-            fetchComponentData(portfolioId, portfolioDto, componentType);
+            fetchComponentData(portfolio.id, portfolioDto, componentType);
         });
     }
 
-    private void fetchPublicComponents(Long portfolioId, PortfolioDto portfolioDto) {
+    private void fetchPublicComponents(Portfolio portfolio, PortfolioDto portfolioDto) {
+        if(portfolio.portfolioRole == PortfolioRole.TEACHER) {
+            fetchPublicComponentsForTeacherPortfolio(portfolio.id, portfolioDto);
+        } else {
+            fetchPublicComponentsForStudentPortfolio(portfolio.id, portfolioDto);
+        }
+    }
+
+    private void fetchPublicComponentsForStudentPortfolio(Long portfolioId, PortfolioDto portfolioDto) {
         componentVisibilityService.findByPortfolioId(portfolioId).stream()
-            .filter(visibility -> ComponentVisibility.Visibility.PUBLIC.toString().equals(visibility.visibility))
+            .filter(visibility ->
+                ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic() && visibility.component != null
+            )
+            .map(visibility -> PortfolioComponent.valueOf(visibility.component))
+            .forEach(component -> fetchComponentData(portfolioId, portfolioDto, component));
+    }
+
+    private void fetchPublicComponentsForTeacherPortfolio(Long portfolioId, PortfolioDto portfolioDto) {
+        List<ComponentVisibilityDto> visibilities = componentVisibilityService.findByPortfolioId(portfolioId);
+        List<TeacherPortfolioSection> publicSections = visibilities.stream()
+            .filter(visibility -> visibility.teacherPortfolioSection != null &&
+                    visibility.component == null &&
+                    ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic()
+            )
+            .map(visibility -> TeacherPortfolioSection.valueOf(visibility.teacherPortfolioSection))
+            .collect(Collectors.toList());
+
+        visibilities.stream()
+            .filter(visibility ->
+                ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic() &&
+                    visibility.component != null &&
+                    publicSections.contains(TeacherPortfolioSection.valueOf(visibility.teacherPortfolioSection))
+            )
             .map(visibility -> PortfolioComponent.valueOf(visibility.component))
             .forEach(component -> fetchComponentData(portfolioId, portfolioDto, component));
     }

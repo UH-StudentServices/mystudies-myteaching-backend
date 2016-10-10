@@ -32,17 +32,17 @@ public class PublicPortfolioComponentVisibilityTest extends PublicPortfolioTest 
 
     @Before
     public void init() {
-        setPrivateVisibilitiesForEveryComponent();
+        setPrivateVisibilityForEveryStudentPortfolioComponent();
     }
 
     @Test
     public void thatPrivateAttainmentsAreNotReturned() throws Exception {
-        returnsForbidden(PUBLIC_PORTFOLIO_API_PATH + "/attainment");
+        returnsForbidden(PUBLIC_STUDENT_PORTFOLIO_API_PATH + "/attainment");
     }
 
     @Test
     public void thatPrivateCreditsAreNotReturned() throws Exception {
-        returnsForbidden(PUBLIC_PORTFOLIO_API_PATH + "/credits");
+        returnsForbidden(PUBLIC_STUDENT_PORTFOLIO_API_PATH + "/credits");
     }
 
     private void returnsForbidden(String url) throws Exception {

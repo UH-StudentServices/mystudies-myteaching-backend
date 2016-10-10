@@ -19,10 +19,10 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentvisibility;
 
 import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
+import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 
 public class UpdateComponentVisibilityRequest {
-
     public PortfolioComponent component;
     public ComponentVisibility.Visibility visibility;
-
+    public TeacherPortfolioSection teacherPortfolioSection;
 }

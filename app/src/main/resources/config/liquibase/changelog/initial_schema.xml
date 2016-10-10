@@ -1039,4 +1039,29 @@
             </column>
         </addColumn>
     </changeSet>
+
+    <changeSet id="add portfolio section information to free_text_content" author="Henri Heiskanen">
+        <addColumn tableName="free_text_content">
+            <column name="teacher_portfolio_section" type="varchar(255)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Drop non-null constraint on component in component_visibility" author="Henri Heiskanen">
+        <dropNotNullConstraint tableName="component_visibility" columnName="component" columnDataType="varchar(255)"/>
+    </changeSet>
+
+    <changeSet id="Add teacher portfolio section to component_visibility" author="Henri Heiskanen">
+        <addColumn tableName="component_visibility">
+            <column name="teacher_portfolio_section" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Add compound unique constraint to component_visibility" author="Henri Heiskanen">
+        <addUniqueConstraint tableName="component_visibility" columnNames="portfolio_id, component, teacher_portfolio_section"/>
+    </changeSet>
+
+    <changeSet id="Drop existing teacher portfolios after introducing new grouping layer between portfolio and its contents" author="Henri Heiskanen">
+        <sql>DELETE from portfolio WHERE portfolio_role = 'TEACHER'</sql>
+    </changeSet>
 </databaseChangeLog>

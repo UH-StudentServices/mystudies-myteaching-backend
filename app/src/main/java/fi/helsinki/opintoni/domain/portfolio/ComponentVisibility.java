@@ -41,12 +41,16 @@ public class ComponentVisibility extends AbstractAuditingEntity implements Owner
 
     @NotNull
     @ManyToOne
+    @JoinColumn(name = "portfolio_id")
     public Portfolio portfolio;
 
-    @NotNull
     @Column(name = "component")
     @Enumerated(EnumType.STRING)
     public PortfolioComponent component;
+
+    @Column(name = "teacher_portfolio_section")
+    @Enumerated(EnumType.STRING)
+    public TeacherPortfolioSection teacherPortfolioSection;
 
     @NotNull
     @Column(name = "visibility")

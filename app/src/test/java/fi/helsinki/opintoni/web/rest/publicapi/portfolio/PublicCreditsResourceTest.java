@@ -29,7 +29,7 @@ public class PublicCreditsResourceTest extends PublicPortfolioTest {
     public void thatCreditsAreReturned() throws Exception {
         defaultStudentRequestChain().roles().info();
 
-        mockMvc.perform(get(PUBLIC_PORTFOLIO_API_PATH + "/credits"))
+        mockMvc.perform(get(PUBLIC_STUDENT_PORTFOLIO_API_PATH + "/credits"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.totalCredits").value(196));
     }

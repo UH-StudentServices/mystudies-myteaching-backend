@@ -19,6 +19,10 @@ public class FreeTextContent extends AbstractAuditingEntity implements Ownership
     @JoinColumn(name = "portfolio_id")
     public Portfolio portfolio;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "teacher_portfolio_section")
+    public TeacherPortfolioSection teacherPortfolioSection;
+
     @NotBlank
     public String title;
 

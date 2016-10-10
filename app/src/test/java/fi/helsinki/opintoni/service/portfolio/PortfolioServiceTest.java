@@ -18,15 +18,21 @@
 package fi.helsinki.opintoni.service.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
+import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
+import fi.helsinki.opintoni.repository.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
+import fi.helsinki.opintoni.service.ComponentVisibilityService;
 import fi.helsinki.opintoni.service.converter.PortfolioConverter;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -36,7 +42,17 @@ public class PortfolioServiceTest extends SpringTest {
     private PortfolioService portfolioService;
 
     @Autowired
+    private ComponentVisibilityService componentVisibilityService;
+
+    @Autowired
+    private ComponentVisibilityRepository componentVisibilityRepository;
+
+    @Autowired
     private PortfolioRepository portfolioRepository;
+
+    private static final int TEACHER_PORTFOLIO_SECTION_COUNT = TeacherPortfolioSection.values().length;
+    private static final String PUBLIC_VISIBILITY = "PUBLIC";
+    private static final String PRIVATE_VISIBILITY = "PRIVATE";
 
     @Test
     public void thatPortfolioIsFoundByPath() {
@@ -63,7 +79,10 @@ public class PortfolioServiceTest extends SpringTest {
     }
 
     @Test
-    public void thatPortfolioIsCreated() {
+    public void thatTeacherPortfolioAndComponentVisibilitiesAreCreated() {
+        deleteExistingTeacherPortfolio();
+        componentVisibilityRepository.deleteAll();
+
         assertThat(portfolioRepository.findByUserId(4L).count()).isZero();
 
         portfolioService.insert(4L, "Olli Opettaja", PortfolioRole.TEACHER);
@@ -71,6 +90,17 @@ public class PortfolioServiceTest extends SpringTest {
         Portfolio portfolio = portfolioRepository.findByUserId(4L).findFirst().get();
         assertThat(portfolio.visibility).isEqualTo(PortfolioVisibility.PRIVATE);
         assertThat(portfolio.portfolioRole).isEqualTo(PortfolioRole.TEACHER);
+        assertThat(componentVisibilityService.findByPortfolioId(portfolio.id))
+            .hasSize(TEACHER_PORTFOLIO_SECTION_COUNT)
+            .extracting("teacherPortfolioSection", "visibility")
+            .contains(
+                tuple("BASIC_INFORMATION", PUBLIC_VISIBILITY),
+                tuple("RESEARCH", PRIVATE_VISIBILITY),
+                tuple("TEACHING", PRIVATE_VISIBILITY),
+                tuple("ADMINISTRATION", PRIVATE_VISIBILITY));
     }
 
+    private void deleteExistingTeacherPortfolio() {
+        portfolioRepository.delete(4L);
+    }
 }

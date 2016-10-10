@@ -5,12 +5,14 @@ import org.junit.Test;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
+import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class RestrictedPortfolioResourceTest extends RestrictedPortfolioTest {
     private static final String STUDENT_PORTFOLIO_PATH = "/portfolio/student/olli-opiskelija";
+    private static final String TEACHER_PORTFOLIO_PATH = "/portfolio/teacher/opettaja";
 
     @Test
     public void thatPortfolioIsReturned() throws Exception {
@@ -21,7 +23,7 @@ public class RestrictedPortfolioResourceTest extends RestrictedPortfolioTest {
     }
 
     @Test
-    public void thatPortfolioContainsNoLocallyStoredPrivateComponents() throws Exception {
+    public void thatStudentPortfolioContainsNoLinkedPrivateComponents() throws Exception {
         setPrivateVisibilitiesForEveryComponent();
 
         mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + STUDENT_PORTFOLIO_PATH)
@@ -36,5 +38,15 @@ public class RestrictedPortfolioResourceTest extends RestrictedPortfolioTest {
             .andExpect(jsonPath("$.keywords").isEmpty())
             .andExpect(jsonPath("$.summary").isEmpty())
             .andExpect(jsonPath("$.favorites").isEmpty());
+    }
+
+    @Test
+    public void thatTeacherPortfolioDoesNotContainComponentsLinkedToPrivateSections() throws Exception {
+        saveTeacherPortfolioAsRestricted();
+
+        mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + TEACHER_PORTFOLIO_PATH)
+            .with(securityContext(teacherSecurityContext())))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.freeTextContent").isEmpty());
     }
 }

@@ -17,12 +17,15 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
+import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
+import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
+import fi.helsinki.opintoni.service.ComponentVisibilityService;
 import fi.helsinki.opintoni.service.converter.PortfolioConverter;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.summary.UpdateSummaryRequest;
@@ -30,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,18 +51,21 @@ public class PortfolioService {
     private final PortfolioPathGenerator portfolioPathGenerator;
     private final PortfolioConverter portfolioConverter;
     private final PortfolioStudyAttainmentWhitelistService whitelistService;
+    private final ComponentVisibilityService componentVisibilityService;
 
     @Autowired
     public PortfolioService(PortfolioRepository portfolioRepository,
                             UserRepository userRepository,
                             PortfolioPathGenerator portfolioPathGenerator,
                             PortfolioConverter portfolioConverter,
-                            PortfolioStudyAttainmentWhitelistService whitelistService) {
+                            PortfolioStudyAttainmentWhitelistService whitelistService,
+                            ComponentVisibilityService componentVisibilityService) {
         this.portfolioRepository = portfolioRepository;
         this.userRepository = userRepository;
         this.portfolioPathGenerator = portfolioPathGenerator;
         this.portfolioConverter = portfolioConverter;
         this.whitelistService = whitelistService;
+        this.componentVisibilityService = componentVisibilityService;
     }
 
     public PortfolioDto insert(Long userId, String name, PortfolioRole portfolioRole) {
@@ -74,6 +82,10 @@ public class PortfolioService {
         portfolio.visibility = PortfolioVisibility.PRIVATE;
         portfolio.portfolioRole = portfolioRole;
         Portfolio inserted = portfolioRepository.save(portfolio);
+
+        if(portfolioRole == PortfolioRole.TEACHER) {
+            insertTeacherPortfolioSectionVisibilities(portfolio);
+        }
 
         whitelistService.insert(inserted);
 
@@ -127,5 +139,21 @@ public class PortfolioService {
         Portfolio portfolio = portfolioRepository.findOne(portfolioId);
         portfolio.summary = request.summary;
         portfolioRepository.save(portfolio);
+    }
+
+    private void insertTeacherPortfolioSectionVisibilities(Portfolio portfolio) {
+        List<ComponentVisibility> sectionVisibilities = Arrays.asList(TeacherPortfolioSection.values()).stream()
+            .map(section -> {
+                ComponentVisibility visibility = new ComponentVisibility();
+                visibility.teacherPortfolioSection = section;
+                visibility.visibility = section == TeacherPortfolioSection.BASIC_INFORMATION ?
+                    ComponentVisibility.Visibility.PUBLIC :
+                    ComponentVisibility.Visibility.PRIVATE;
+                visibility.portfolio = portfolio;
+
+                return visibility;
+            }).collect(Collectors.toList());
+
+        componentVisibilityService.save(sectionVisibilities);
     }
 }

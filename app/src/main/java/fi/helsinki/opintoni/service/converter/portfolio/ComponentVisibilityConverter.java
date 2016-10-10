@@ -26,8 +26,16 @@ public class ComponentVisibilityConverter {
 
     public ComponentVisibilityDto toDto(ComponentVisibility componentVisibility) {
         ComponentVisibilityDto componentVisibilityDto = new ComponentVisibilityDto();
-        componentVisibilityDto.component = componentVisibility.component.name();
-        componentVisibilityDto.visibility = componentVisibility.visibility.name();
+        componentVisibilityDto.visibility = componentVisibility.visibility.toString();
+
+        if(componentVisibility.component != null) {
+            componentVisibilityDto.component = componentVisibility.component.toString();
+        }
+
+        if(componentVisibility.teacherPortfolioSection != null) {
+            componentVisibilityDto.teacherPortfolioSection = componentVisibility.teacherPortfolioSection.toString();
+        }
+
         return componentVisibilityDto;
     }
 }
