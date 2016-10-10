@@ -33,6 +33,7 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
 
     private final String PARENT_REALISATION_ID = "99903630";
     private final String ROOT_REALISATION_ID = "99903629";
+    private final String STUDY_GROUP_WITHOUT_PARENT_TITLE = "Realisat... Study subgroup name";
 
     @Test
     public void thatTeacherCoursesAreReturned() throws Exception {
@@ -64,7 +65,8 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[1].code").value("10442"))
             .andExpect(jsonPath("$[1].isExam").value(true))
             .andExpect(jsonPath("$[1].isCancelled").value(true))
-            .andExpect(jsonPath("$[1].parentId").value(PARENT_REALISATION_ID));
+            .andExpect(jsonPath("$[1].parentId").value(PARENT_REALISATION_ID))
+            .andExpect(jsonPath("$[2].name").value(STUDY_GROUP_WITHOUT_PARENT_TITLE));
     }
 
     private void expectTeacherCourses() {

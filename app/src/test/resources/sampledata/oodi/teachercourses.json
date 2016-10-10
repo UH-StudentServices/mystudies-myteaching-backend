@@ -106,6 +106,27 @@
       "learningopportunity_id": "10442",
       "teacher_id": "010540",
       "organisation_code": "H1003"
+    },
+    {
+      "realisation_root_name": [
+        {
+          "langcode": "fi",
+          "text": "Realisation root name"
+        }
+      ],
+      "realisation_name": [
+        {
+          "langcode": "fi",
+          "text": "Study subgroup name"
+        }
+      ],
+      "realisation_type_code": 17,
+      "end_date": "2030-04-26T21:00:00.000Z",
+      "start_date": "2015-10-25T22:00:00.000Z",
+      "course_id": 1234567,
+      "parent_id": 7654321,
+      "root_id": 7654321,
+      "learningopportunity_id": "453421"
     }
   ]
 }

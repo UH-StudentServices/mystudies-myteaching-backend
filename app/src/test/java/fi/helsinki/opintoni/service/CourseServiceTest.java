@@ -57,7 +57,7 @@ public class CourseServiceTest extends SpringTest {
         Set<CourseDto> courseDtos = courseService
             .getCourses(Optional.empty(), Optional.of(TestConstants.EMPLOYEE_NUMBER), Locale.ENGLISH);
 
-        assertThat(courseDtos).hasSize(2);
+        assertThat(courseDtos).hasSize(3);
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.TEACHER_COURSE_REALISATION_ID));
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID));
     }
@@ -73,7 +73,7 @@ public class CourseServiceTest extends SpringTest {
                 Optional.of(TestConstants.EMPLOYEE_NUMBER),
                 Locale.ENGLISH);
 
-        assertThat(courseDtos).hasSize(3);
+        assertThat(courseDtos).hasSize(4);
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.STUDENT_COURSE_REALISATION_ID));
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.TEACHER_COURSE_REALISATION_ID));
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID));

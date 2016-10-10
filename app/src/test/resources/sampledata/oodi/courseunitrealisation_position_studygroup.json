@@ -1,0 +1,22 @@
+{
+  "data": {
+    "position" : "studygroup",
+    "realisation_name": [
+      {
+        "langcode": "fi",
+        "text": "Studygroup name"
+      }
+    ],
+    "realisation_root_name": [
+      {
+        "langcode": "fi",
+        "text": "Realisation root name"
+      }
+    ],
+    "languages": [
+      {
+        "langcode": "fi"
+      }
+    ]
+  }
+}
