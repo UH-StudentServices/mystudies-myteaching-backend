@@ -49,9 +49,12 @@ public class TeacherRequestChain {
             .and()
             .examCourseImplementation()
             .and()
+            .courseImplementationWithRealisationId(POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID)
+            .and()
             .courseUnitRealisation(TEACHER_COURSE_REALISATION_ID)
             .cancelledCourseUnitRealisation(EXAM_TEACHER_COURSE_REALISATION_ID)
-            .positionStudygroupsetCourseUnitRealisation(POSITION_STUDYGROUPSET_TEACHER_COURSE_REALISATION_ID);
+            .positionStudygroupsetCourseUnitRealisation(POSITION_STUDYGROUPSET_TEACHER_COURSE_REALISATION_ID)
+            .positionStudygroupCourseUnitRealisation(POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID);
     }
 
     public TeacherRequestChain courses(String responseFile) {
@@ -72,6 +75,10 @@ public class TeacherRequestChain {
         return courseImplementation(EXAM_TEACHER_COURSE_REALISATION_ID);
     }
 
+    public CourseImplementationRequestChain<TeacherRequestChain> courseImplementationWithRealisationId(String realisationId) {
+        return courseImplementation(realisationId);
+    }
+
     public TeacherRequestChain courseUnitRealisation(String realisationId) {
         oodiServer.expectCourseUnitRealisationRequest(realisationId);
         return this;
@@ -84,6 +91,11 @@ public class TeacherRequestChain {
 
     public TeacherRequestChain positionStudygroupsetCourseUnitRealisation(String realisationId) {
         oodiServer.expectPositionStudygroupsetCourseUnitRealisationRequest(realisationId);
+        return this;
+    }
+
+    public TeacherRequestChain positionStudygroupCourseUnitRealisation(String realisationId) {
+        oodiServer.expectPositionStudygroupCourseUnitRealisationRequest(realisationId);
         return this;
     }
 
@@ -114,7 +126,7 @@ public class TeacherRequestChain {
             new CourseImplementationActivityRequestChain<>(
                 this,
                 coursePageServer,
-                Arrays.asList(EXAM_TEACHER_COURSE_REALISATION_ID, TEACHER_COURSE_REALISATION_ID)
+                Arrays.asList(EXAM_TEACHER_COURSE_REALISATION_ID, TEACHER_COURSE_REALISATION_ID, POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID)
             );
         return chain.activity(responseFile);
     }

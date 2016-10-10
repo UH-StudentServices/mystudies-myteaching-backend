@@ -23,7 +23,6 @@ import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
 import fi.helsinki.opintoni.integration.oodi.OodiEvent;
-import fi.helsinki.opintoni.integration.oodi.OodiLocalizedValue;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.resolver.LocationResolver;
 import fi.helsinki.opintoni.util.CourseMaterialDtoFactory;
@@ -31,7 +30,6 @@ import fi.helsinki.opintoni.util.CoursePageUriBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -39,15 +37,13 @@ import java.util.stream.Collectors;
 @Component
 public class EventConverter {
 
-    private static final int REALISATION_ROOT_NAME_LENGTH = 8;
-    private static final String REALISATION_NAME_DELIMITER = "... ";
-
     private final CoursePageClient coursePageClient;
     private final EventTypeResolver eventTypeResolver;
     private final LocationResolver locationResolver;
     private final CoursePageUriBuilder coursePageUriBuilder;
     private final LocalizedValueConverter localizedValueConverter;
     private final CourseMaterialDtoFactory courseMaterialDtoFactory;
+    private final EnrollmentNameConverter enrollmentNameConverter;
 
     @Autowired
     public EventConverter(CoursePageClient coursePageClient,
@@ -55,13 +51,15 @@ public class EventConverter {
                           LocationResolver locationResolver,
                           CoursePageUriBuilder coursePageUriBuilder,
                           LocalizedValueConverter localizedValueConverter,
-                          CourseMaterialDtoFactory courseMaterialDtoFactory) {
+                          CourseMaterialDtoFactory courseMaterialDtoFactory,
+                          EnrollmentNameConverter enrollmentNameConverter) {
         this.coursePageClient = coursePageClient;
         this.eventTypeResolver = eventTypeResolver;
         this.locationResolver = locationResolver;
         this.coursePageUriBuilder = coursePageUriBuilder;
         this.localizedValueConverter = localizedValueConverter;
         this.courseMaterialDtoFactory = courseMaterialDtoFactory;
+        this.enrollmentNameConverter = enrollmentNameConverter;
     }
 
     public EventDto toDto(CoursePageEvent event) {
@@ -100,7 +98,7 @@ public class EventConverter {
             event.endDate,
             event.realisationId,
             getLocations(event),
-            getEventName(event.realisationName, event.realisationRootName, locale),
+            enrollmentNameConverter.getRealisationNameWithRootName(event.realisationName, event.realisationRootName, locale),
             coursePage.title,
             coursePageUriBuilder.getLocalizedUri(coursePage),
             coursePageUriBuilder.getImageUri(coursePage),
@@ -115,20 +113,4 @@ public class EventConverter {
             .filter(Objects::nonNull)
             .collect(Collectors.joining(", "));
     }
-
-    private String getEventName(List<OodiLocalizedValue> realisationName, List<OodiLocalizedValue> realisationRootName, Locale locale) {
-        String localizedRealisationName = localizedValueConverter.toLocalizedString(realisationName, locale);
-        String localizedRealisationRootName = localizedValueConverter.toLocalizedString(realisationRootName, locale);
-
-        if(localizedRealisationRootName != null && !localizedRealisationRootName.equals(localizedRealisationName)) {
-            int rootNameLength = Math.min(REALISATION_ROOT_NAME_LENGTH, localizedRealisationRootName.length());
-            return String.join(
-                REALISATION_NAME_DELIMITER,
-                localizedRealisationRootName.substring(0, rootNameLength),
-                localizedRealisationName);
-        } else {
-            return localizedRealisationName;
-        }
-    }
-
 }

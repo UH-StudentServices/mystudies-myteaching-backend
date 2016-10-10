@@ -45,6 +45,7 @@ public class CourseConverter {
     private final EventTypeResolver eventTypeResolver;
     private final LocalizedValueConverter localizedValueConverter;
     private final CourseMaterialDtoFactory courseMaterialDtoFactory;
+    private final EnrollmentNameConverter enrollmentNameConverter;
 
     @Autowired
     public CourseConverter(CoursePageClient coursePageClient,
@@ -52,13 +53,15 @@ public class CourseConverter {
                            CoursePageUriBuilder coursePageUriBuilder,
                            EventTypeResolver eventTypeResolver,
                            LocalizedValueConverter localizedValueConverter,
-                           CourseMaterialDtoFactory courseMaterialDtoFactory) {
+                           CourseMaterialDtoFactory courseMaterialDtoFactory,
+                           EnrollmentNameConverter enrollmentNameConverter) {
         this.coursePageClient = coursePageClient;
         this.oodiClient = oodiClient;
         this.coursePageUriBuilder = coursePageUriBuilder;
         this.eventTypeResolver = eventTypeResolver;
         this.localizedValueConverter = localizedValueConverter;
         this.courseMaterialDtoFactory = courseMaterialDtoFactory;
+        this.enrollmentNameConverter = enrollmentNameConverter;
     }
 
     public Optional<CourseDto> toDto(OodiEnrollment oodiEnrollment, Locale locale) {
@@ -92,7 +95,7 @@ public class CourseConverter {
         return Optional.ofNullable(dto);
     }
 
-    public Optional<CourseDto> toDto(OodiTeacherCourse oodiTeacherCourse, Locale locale) {
+    public Optional<CourseDto> toDto(OodiTeacherCourse oodiTeacherCourse, Locale locale, boolean isChildCourseWithoutRoot) {
         CourseDto dto = null;
 
         OodiCourseUnitRealisation courseUnitRealisation =
@@ -101,11 +104,15 @@ public class CourseConverter {
         if(!isPositionStudygroupset(courseUnitRealisation)) {
             CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiTeacherCourse.realisationId);
 
-
             dto = new CourseDto(
                 oodiTeacherCourse.basecode,
                 oodiTeacherCourse.realisationTypeCode,
-                localizedValueConverter.toLocalizedString(oodiTeacherCourse.realisationName, locale),
+                isChildCourseWithoutRoot ?
+                    enrollmentNameConverter.getRealisationNameWithRootName(
+                        oodiTeacherCourse.realisationName,
+                        oodiTeacherCourse.realisationRootName,
+                        locale) :
+                    localizedValueConverter.toLocalizedString(oodiTeacherCourse.realisationName, locale),
                 coursePageUriBuilder.getImageUri(coursePage),
                 coursePageUriBuilder.getLocalizedUri(coursePage),
                 courseMaterialDtoFactory.fromCoursePage(coursePage),

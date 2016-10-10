@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.dto.CourseDto;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
+import fi.helsinki.opintoni.integration.oodi.OodiTeacherCourse;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.service.converter.CourseConverter;
 import fi.helsinki.opintoni.util.DateTimeUtil;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,8 +49,15 @@ public class CourseService {
     }
 
     public List<CourseDto> getTeacherCourses(String teacherNumber, Locale locale) {
-        return oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
-            .map(c -> courseConverter.toDto(c, locale))
+        List<OodiTeacherCourse> oodiTeacherCourses = oodiClient
+            .getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()));
+
+          Map<String, OodiTeacherCourse> coursesByRealisationIds = oodiTeacherCourses.stream()
+              .collect(Collectors.toMap(c -> c.realisationId, Function.identity()));
+
+        return oodiTeacherCourses
+            .stream()
+            .map(c -> courseConverter.toDto(c, locale, isChildCourseWithoutRoot(c, coursesByRealisationIds)))
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toList());
@@ -85,6 +94,11 @@ public class CourseService {
         );
 
         return courseDtos;
+    }
+
+    private boolean isChildCourseWithoutRoot(OodiTeacherCourse oodiTeacherCourse, Map<String, OodiTeacherCourse> coursesByRealisationIds) {
+        return !oodiTeacherCourse.realisationId.equals(oodiTeacherCourse.rootId) &&
+            !coursesByRealisationIds.containsKey(oodiTeacherCourse.rootId);
     }
 
 }
