@@ -37,11 +37,15 @@ import java.util.Optional;
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final TimeService timeService;
 
     @Autowired
-    private TimeService timeService;
+    public CustomAuthenticationSuccessHandler(UserService userService, TimeService timeService) {
+        this.userService = userService;
+        this.timeService = timeService;
+    }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,

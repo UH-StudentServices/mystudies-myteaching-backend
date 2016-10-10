@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.dto.favorite.UnisportReservationsDto;
 import fi.helsinki.opintoni.integration.unisport.UnisportEvent;
 import fi.helsinki.opintoni.integration.unisport.UnisportUserReservations;
 
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class UnisportFavoriteConverter {
@@ -35,7 +36,7 @@ public class UnisportFavoriteConverter {
     public UnisportReservationsDto toDto(UnisportUserReservations unisportUserReservations) {
         return new UnisportReservationsDto(unisportUserReservations.reservations.stream()
             .map(r -> r.events)
-            .flatMap(l -> l.stream())
+            .flatMap(Collection::stream)
             .map(this::toDto)
             .collect(Collectors.toList()));
     }

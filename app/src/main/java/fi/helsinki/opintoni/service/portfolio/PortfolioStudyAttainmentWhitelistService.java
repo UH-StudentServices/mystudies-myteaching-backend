@@ -37,17 +37,24 @@ import java.util.stream.Collectors;
 @Transactional
 public class PortfolioStudyAttainmentWhitelistService extends DtoService {
 
-    @Autowired
-    private PortfolioStudyAttainmentWhitelistEntryRepository entryRepository;
+    private final PortfolioStudyAttainmentWhitelistEntryRepository entryRepository;
+
+    private final PortfolioStudyAttainmentWhitelistRepository whitelistRepository;
+
+    private final StudyAttainmentWhitelistConverter whitelistConverter;
+
+    private final PortfolioRepository portfolioRepository;
 
     @Autowired
-    private PortfolioStudyAttainmentWhitelistRepository whitelistRepository;
-
-    @Autowired
-    private StudyAttainmentWhitelistConverter whitelistConverter;
-
-    @Autowired
-    private PortfolioRepository portfolioRepository;
+    public PortfolioStudyAttainmentWhitelistService(PortfolioStudyAttainmentWhitelistEntryRepository entryRepository,
+                                                    PortfolioStudyAttainmentWhitelistRepository whitelistRepository,
+                                                    StudyAttainmentWhitelistConverter whitelistConverter,
+                                                    PortfolioRepository portfolioRepository) {
+        this.entryRepository = entryRepository;
+        this.whitelistRepository = whitelistRepository;
+        this.whitelistConverter = whitelistConverter;
+        this.portfolioRepository = portfolioRepository;
+    }
 
     public StudyAttainmentWhitelistDto get(Long portfolioId) {
         return getDto(portfolioId,

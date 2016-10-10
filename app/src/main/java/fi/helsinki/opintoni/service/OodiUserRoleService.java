@@ -42,8 +42,7 @@ public class OodiUserRoleService {
     @Cacheable(CacheConstants.IS_OPEN_UNIVERSITY_TEACHER)
     public boolean isOpenUniversityTeacher(String teacherNumber) {
         List<OodiTeacherCourse> oodiTeacherCourses = oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()));
-        return oodiTeacherCourses.isEmpty() ?
-            false :
+        return !oodiTeacherCourses.isEmpty() &&
             oodiTeacherCourses
                 .stream()
                 .map(course -> course.basecode)
@@ -53,8 +52,7 @@ public class OodiUserRoleService {
     @Cacheable(CacheConstants.IS_OPEN_UNIVERSITY_STUDENT)
     public boolean isOpenUniversityStudent(String studentNumber) {
         List<OodiEnrollment> oodiEnrollments = oodiClient.getEnrollments(studentNumber);
-        return oodiEnrollments.isEmpty() ?
-            false :
+        return !oodiEnrollments.isEmpty() &&
             oodiEnrollments
                 .stream()
                 .map(enrollment -> enrollment.learningOpportunityId)

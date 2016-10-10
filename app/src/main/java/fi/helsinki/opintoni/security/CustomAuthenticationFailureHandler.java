@@ -31,8 +31,12 @@ import java.io.IOException;
 @Component
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
+    private final AppConfiguration appConfiguration;
+
     @Autowired
-    private AppConfiguration appConfiguration;
+    public CustomAuthenticationFailureHandler(AppConfiguration appConfiguration) {
+        this.appConfiguration = appConfiguration;
+    }
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,

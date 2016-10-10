@@ -25,10 +25,8 @@ import fi.helsinki.opintoni.web.TestConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
-
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNull;
 
 public class FacultyConverterTest extends SpringTest {
 
@@ -87,7 +85,7 @@ public class FacultyConverterTest extends SpringTest {
             .oodiPersonId("123")
             .employeeNumber(TestConstants.EMPLOYEE_NUMBER)
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.FACULTY))
+            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.FACULTY))
             .eduPersonPrincipalName("eduPersonPrincipalName")
             .teacherFacultyCode("A90000")
             .build();
@@ -98,7 +96,7 @@ public class FacultyConverterTest extends SpringTest {
             .oodiPersonId("123")
             .studentNumber(TestConstants.STUDENT_NUMBER)
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
+            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .eduPersonPrincipalName("eduPersonPrincipalName")
             .build();
     }

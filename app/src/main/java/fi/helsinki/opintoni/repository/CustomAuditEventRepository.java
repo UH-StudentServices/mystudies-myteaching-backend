@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.repository;
 import fi.helsinki.opintoni.config.audit.AuditEventConverter;
 import fi.helsinki.opintoni.domain.PersistentAuditEvent;
 import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.context.annotation.Bean;
@@ -37,8 +38,12 @@ import java.util.List;
 @Repository
 public class CustomAuditEventRepository {
 
-    @Inject
-    private PersistenceAuditEventRepository persistenceAuditEventRepository;
+    private final PersistenceAuditEventRepository persistenceAuditEventRepository;
+
+    @Autowired
+    public CustomAuditEventRepository(PersistenceAuditEventRepository persistenceAuditEventRepository) {
+        this.persistenceAuditEventRepository = persistenceAuditEventRepository;
+    }
 
     @Bean
     public AuditEventRepository auditEventRepository() {

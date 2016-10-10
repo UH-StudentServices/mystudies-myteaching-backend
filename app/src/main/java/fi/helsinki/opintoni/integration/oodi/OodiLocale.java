@@ -14,7 +14,7 @@ public enum OodiLocale {
 
     private final String localeString;
 
-    private OodiLocale(String localeString) {
+    OodiLocale(String localeString) {
         this.localeString = localeString;
     }
 

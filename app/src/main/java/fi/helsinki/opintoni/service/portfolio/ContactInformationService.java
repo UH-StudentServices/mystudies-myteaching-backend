@@ -82,7 +82,7 @@ public class ContactInformationService {
 
     private void updateSomeLinks(UpdateContactInformationWithSomeLinksRequest request, Portfolio portfolio) {
         someLinkRepository.delete(someLinkRepository.findByPortfolioId(portfolio.id));
-        request.someLinks.stream().forEach(link -> {
+        request.someLinks.forEach(link -> {
             SomeLink someLink = new SomeLink();
             someLink.portfolio = portfolio;
             someLink.type = SomeLink.Type.valueOf(link.type);

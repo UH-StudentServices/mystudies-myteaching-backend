@@ -30,7 +30,11 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -43,14 +47,20 @@ import java.util.Locale;
 )
 public class PrivatePortfolioAttainmentResource extends AbstractResource {
 
-    @Autowired
-    private PortfolioStudyAttainmentWhitelistService whitelistService;
+    private final PortfolioStudyAttainmentWhitelistService whitelistService;
+
+    private final PermissionChecker permissionChecker;
+
+    private final StudyAttainmentService studyAttainmentService;
 
     @Autowired
-    private PermissionChecker permissionChecker;
-
-    @Autowired
-    private StudyAttainmentService studyAttainmentService;
+    public PrivatePortfolioAttainmentResource(PortfolioStudyAttainmentWhitelistService whitelistService,
+                                              PermissionChecker permissionChecker,
+                                              StudyAttainmentService studyAttainmentService) {
+        this.whitelistService = whitelistService;
+        this.permissionChecker = permissionChecker;
+        this.studyAttainmentService = studyAttainmentService;
+    }
 
     @RequestMapping(method = RequestMethod.POST, value = "/whitelist")
     @Timed

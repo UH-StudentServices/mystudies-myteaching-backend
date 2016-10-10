@@ -30,11 +30,11 @@ import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserServiceTest extends SpringTest {
 
@@ -97,7 +97,7 @@ public class UserServiceTest extends SpringTest {
             .oodiPersonId("111")
             .eduPersonPrincipalName("newUser")
             .studentNumber("123")
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
+            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .build();
     }
 

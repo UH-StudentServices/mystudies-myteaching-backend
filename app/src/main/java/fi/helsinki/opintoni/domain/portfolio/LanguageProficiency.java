@@ -18,9 +18,8 @@ public enum LanguageProficiency {
     private static final Map<Integer, LanguageProficiency> PROFICIENCY_VALUE_MAP = new HashMap<>();
 
     static {
-        Arrays.asList(LanguageProficiency.values()).forEach((languageProficiency) -> {
-            PROFICIENCY_VALUE_MAP.put(languageProficiency.proficiency, languageProficiency);
-        });
+        Arrays.asList(LanguageProficiency.values()).forEach((languageProficiency) ->
+            PROFICIENCY_VALUE_MAP.put(languageProficiency.proficiency, languageProficiency));
     }
 
     private int proficiency;
@@ -41,10 +40,8 @@ public enum LanguageProficiency {
 
     @JsonCreator
     public static LanguageProficiency of(int proficiency) {
-        return Optional.ofNullable(PROFICIENCY_VALUE_MAP.get(proficiency)).orElseThrow(() -> {
-            return new IllegalArgumentException(
-                String.format("no corresponding language proficiency for '%d'", proficiency)
-            );
-        });
+        return Optional.ofNullable(PROFICIENCY_VALUE_MAP.get(proficiency)).orElseThrow(() -> new IllegalArgumentException(
+            String.format("no corresponding language proficiency for '%d'", proficiency)
+        ));
     }
 }

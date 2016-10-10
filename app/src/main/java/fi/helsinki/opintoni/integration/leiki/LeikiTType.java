@@ -29,7 +29,7 @@ public enum LeikiTType {
 
     private Locale locale;
 
-    private LeikiTType(String value, Locale locale) {
+    LeikiTType(String value, Locale locale) {
         this.value = value;
         this.locale = locale;
     }

@@ -59,9 +59,7 @@ public class DefaultUsefulLinksService {
     private LocalizedText createLocalizedUrl(Map<String, String> properties) {
         LocalizedText localizedUrl = new LocalizedText();
 
-        Language.getCodes()
-            .stream()
-            .forEach(code -> localizedUrl.put(Language.fromCode(code), properties.get("url." + code)));
+        Language.getCodes().forEach(code -> localizedUrl.put(Language.fromCode(code), properties.get("url." + code)));
 
         return localizedUrl;
     }

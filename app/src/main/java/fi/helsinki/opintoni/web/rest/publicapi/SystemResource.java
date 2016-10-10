@@ -41,6 +41,7 @@ public class SystemResource {
 
     public static class HealthStatus {
 
+        @SuppressWarnings("SameReturnValue")
         public String getStatus() {
             return "ok";
         }

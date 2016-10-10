@@ -18,12 +18,16 @@
 package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.dto.*;
+import fi.helsinki.opintoni.dto.FavoriteDto;
+import fi.helsinki.opintoni.dto.LinkFavoriteDto;
+import fi.helsinki.opintoni.dto.RssFavoriteDto;
+import fi.helsinki.opintoni.dto.TwitterFavoriteDto;
+import fi.helsinki.opintoni.dto.UnisportFavoriteDto;
 import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertThat;
 
 abstract class AbstractFavoriteServiceTest extends SpringTest {
@@ -51,8 +55,6 @@ abstract class AbstractFavoriteServiceTest extends SpringTest {
     protected final void assertUnisportFavorite(FavoriteDto dto, Long id) {
         assertFavorite(dto, id, "UNISPORT");
         assertThat(dto, instanceOf(UnisportFavoriteDto.class));
-
-        UnisportFavoriteDto unisportFavoriteDto = (UnisportFavoriteDto) dto;
     }
 
     protected final void assertLinkFavorite(FavoriteDto dto, Long id, String url, String title) {

@@ -29,8 +29,12 @@ import java.util.List;
 @Component
 public class PermissionChecker {
 
+    private final CommonRepository commonRepository;
+
     @Autowired
-    private CommonRepository commonRepository;
+    public PermissionChecker(CommonRepository commonRepository) {
+        this.commonRepository = commonRepository;
+    }
 
     public void verifyPermission(Long userId, Long entityId, Class<? extends Ownership> entityClass) {
         Ownership ownership = commonRepository.find(entityClass, entityId);

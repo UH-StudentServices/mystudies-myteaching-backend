@@ -26,7 +26,6 @@ import fi.helsinki.opintoni.dto.portfolio.KeywordDto;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficiencyDto;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.dto.portfolio.WorkExperienceDto;
-import fi.helsinki.opintoni.security.TestSecurityContext;
 import fi.helsinki.opintoni.service.portfolio.PortfolioService;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import fi.helsinki.opintoni.web.rest.RestConstants;
@@ -38,8 +37,8 @@ import org.springframework.http.MediaType;
 import java.util.List;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
-import static fi.helsinki.opintoni.security.TestSecurityContext.*;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
+import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.hasEntry;

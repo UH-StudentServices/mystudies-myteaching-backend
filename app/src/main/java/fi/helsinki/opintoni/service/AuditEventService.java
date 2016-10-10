@@ -21,11 +21,11 @@ import fi.helsinki.opintoni.config.audit.AuditEventConverter;
 import fi.helsinki.opintoni.domain.PersistentAuditEvent;
 import fi.helsinki.opintoni.repository.PersistenceAuditEventRepository;
 import org.joda.time.LocalDateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -39,11 +39,16 @@ import java.util.List;
 @Transactional
 public class AuditEventService {
 
-    @Inject
-    private PersistenceAuditEventRepository persistenceAuditEventRepository;
+    private final PersistenceAuditEventRepository persistenceAuditEventRepository;
 
-    @Inject
-    private AuditEventConverter auditEventConverter;
+    private final AuditEventConverter auditEventConverter;
+
+    @Autowired
+    public AuditEventService(PersistenceAuditEventRepository persistenceAuditEventRepository,
+                             AuditEventConverter auditEventConverter) {
+        this.persistenceAuditEventRepository = persistenceAuditEventRepository;
+        this.auditEventConverter = auditEventConverter;
+    }
 
     public List<AuditEvent> findAll() {
         return auditEventConverter.convertToAuditEvent(persistenceAuditEventRepository.findAll());
