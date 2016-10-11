@@ -21,7 +21,7 @@ userDefaults :
         - type: TWITTER
           value: helsinkiuni
         - type: RSS
-          url: https://university.helsinki.fi/fi/feeds/news/rss
+          url: https://www.helsinki.fi/fi/feeds/news/rss
         - type: RSS
           url: http://helsinginyliopisto.etapahtuma.fi/Default.aspx?tabid=959&format=atom
     defaultUsefulLinks :
