@@ -41,7 +41,7 @@ public class PrivateJobSearchResourcePermissionTest extends SpringTest {
 
     @Test
     public void thatUserCannotDeleteJobSearchFromPortfolioSheDoesNotOwn() throws Exception {
-        mockMvc.perform(delete(RESOURCE_URL + "/1").with(securityContext
+        mockMvc.perform(delete(RESOURCE_URL).with(securityContext
             (teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)

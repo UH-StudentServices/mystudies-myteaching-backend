@@ -58,13 +58,11 @@ public class PrivateJobSearchResource extends AbstractResource {
         return response(jobSearchService.insert(portfolioId, jobSearchDto));
     }
 
-    @RequestMapping(
-        method = RequestMethod.DELETE,
-        value = "/{jobSearchId}")
+    @RequestMapping(method = RequestMethod.DELETE)
     public ResponseEntity<Void> insert(@UserId Long userId,
-                                       @PathVariable Long jobSearchId) {
-        permissionChecker.verifyPermission(userId, jobSearchId, JobSearch.class);
-        jobSearchService.delete(jobSearchId);
+                                       @PathVariable Long portfolioId) {
+        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
+        jobSearchService.delete(portfolioId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
