@@ -1057,10 +1057,6 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="Add compound unique constraint to component_visibility" author="Henri Heiskanen">
-        <addUniqueConstraint tableName="component_visibility" columnNames="portfolio_id, component, teacher_portfolio_section"/>
-    </changeSet>
-
     <changeSet id="Drop existing teacher portfolios after introducing new grouping layer between portfolio and its contents" author="Henri Heiskanen">
         <sql>DELETE from portfolio WHERE portfolio_role = 'TEACHER'</sql>
     </changeSet>
