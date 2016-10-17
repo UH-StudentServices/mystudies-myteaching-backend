@@ -70,11 +70,6 @@ public class PrivateJobSearchResourceTest extends SpringTest {
     }
 
     @Test
-    public void thatItIsNotPossibleToSaveMultipleJobSearches() throws Exception {
-        saveJobSearch(status().isInternalServerError());
-    }
-
-    @Test
     public void thatJobSearchIsDeleted() throws Exception {
         deleteJobSearch();
 
