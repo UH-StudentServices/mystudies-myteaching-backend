@@ -14,16 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.workExperience;
 
-package fi.helsinki.opintoni.dto.portfolio;
 
 import java.time.LocalDate;
 
-public class WorkExperienceDto {
-    public Long id;
+public class UpdateWorkExperience {
     public String employer;
     public String employerUrl;
-
     public String jobTitle;
 
     public LocalDate startDate;

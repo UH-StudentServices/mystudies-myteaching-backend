@@ -19,10 +19,12 @@ package fi.helsinki.opintoni.service.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.portfolio.WorkExperienceDto;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.workExperience.UpdateWorkExperience;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,13 +38,15 @@ public class WorkExperienceServiceTest extends SpringTest {
     public void thatWorkExperienceIsSaved() {
         Long portfolioId = 3L;
 
-        WorkExperienceDto workExperienceDto = new WorkExperienceDto();
+        UpdateWorkExperience workExperienceDto = new UpdateWorkExperience();
         workExperienceDto.jobTitle = "Jobtitle";
         workExperienceDto.employer = "Employer name";
+        workExperienceDto.employerUrl = "www.employer.invalid";
         workExperienceDto.startDate = LocalDate.now();
         workExperienceDto.endDate = LocalDate.now();
+        workExperienceDto.text = "This is text chapter telling what the user has done at the Employer.";
 
-        workExperienceService.insert(portfolioId, workExperienceDto);
+        workExperienceService.updateWorkExperiences(portfolioId, Arrays.asList(workExperienceDto));
 
         List<WorkExperienceDto> workExperienceDtos = workExperienceService.findByPortfolioId(portfolioId);
 
@@ -51,7 +55,9 @@ public class WorkExperienceServiceTest extends SpringTest {
         assertThat(workExperienceDtos).hasSize(1);
         assertThat(savedWorkExperienceDto.jobTitle).isEqualTo(workExperienceDto.jobTitle);
         assertThat(savedWorkExperienceDto.employer).isEqualTo(workExperienceDto.employer);
+        assertThat(savedWorkExperienceDto.employerUrl).isEqualTo(workExperienceDto.employerUrl);
         assertThat(savedWorkExperienceDto.startDate).isEqualTo(workExperienceDto.startDate);
         assertThat(savedWorkExperienceDto.endDate).isEqualTo(workExperienceDto.endDate);
+        assertThat(savedWorkExperienceDto.text).isEqualTo(workExperienceDto.text);
     }
 }

@@ -38,16 +38,4 @@ public class PrivateWorkExperienceResourcePermissionTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
     }
-
-    @Test
-    public void thatUserCannotDeleteWorkExperienceFromPortfolioSheDoesNotOwn() throws Exception {
-        mockMvc.perform(delete(RESOURCE_URL + "/1").with(securityContext
-            (teacherSecurityContext()))
-            .characterEncoding("UTF-8")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNotFound());
-    }
-
-
 }

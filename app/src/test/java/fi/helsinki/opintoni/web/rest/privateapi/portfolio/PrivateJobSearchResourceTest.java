@@ -55,7 +55,7 @@ public class PrivateJobSearchResourceTest extends SpringTest {
     }
 
     private void deleteJobSearch() throws Exception {
-        mockMvc.perform(delete(RESOURCE_URL + "/1").with(securityContext(studentSecurityContext()))
+        mockMvc.perform(delete(RESOURCE_URL).with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
@@ -67,11 +67,6 @@ public class PrivateJobSearchResourceTest extends SpringTest {
         saveJobSearch(status().isOk());
 
         assertThat(jobSearchService.findByPortfolioId(PORTFOLIO_ID).contactEmail).isEqualTo(CONTACT_EMAIL);
-    }
-
-    @Test
-    public void thatItIsNotPossibleToSaveMultipleJobSearches() throws Exception {
-        saveJobSearch(status().isInternalServerError());
     }
 
     @Test

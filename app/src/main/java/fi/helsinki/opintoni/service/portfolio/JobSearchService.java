@@ -26,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 public class JobSearchService {
@@ -50,13 +52,27 @@ public class JobSearchService {
     }
 
     public JobSearchDto insert(Long portfolioId, JobSearchDto jobSearchDto) {
-        JobSearch jobSearch = new JobSearch();
+        Optional<JobSearch> jobSearchOptional = jobSearchRepository.findByPortfolioId(portfolioId);
+        JobSearch jobSearch;
+
+        if (jobSearchOptional.isPresent()) {
+            jobSearch = jobSearchOptional.get();
+        } else {
+            jobSearch = new JobSearch();
+            jobSearch.portfolio = portfolioRepository.findOne(portfolioId);
+        }
         jobSearch.contactEmail = jobSearchDto.contactEmail;
-        jobSearch.portfolio = portfolioRepository.findOne(portfolioId);
+        jobSearch.headline = jobSearchDto.headline;
+        jobSearch.text = jobSearchDto.text;
+
         return jobSearchConverter.toDto(jobSearchRepository.save(jobSearch));
     }
 
-    public void delete(Long jobSearchId) {
-        jobSearchRepository.delete(jobSearchId);
+    public void delete(Long portfolioId) {
+        Optional<JobSearch> jobSearchOptional = jobSearchRepository.findByPortfolioId(portfolioId);
+        if (jobSearchOptional.isPresent()) {
+            JobSearch jobSearch = jobSearchOptional.get();
+            jobSearchRepository.delete(jobSearch.id);
+        }
     }
 }

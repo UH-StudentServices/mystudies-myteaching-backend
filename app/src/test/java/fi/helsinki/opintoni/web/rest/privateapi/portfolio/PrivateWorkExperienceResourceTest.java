@@ -29,8 +29,6 @@ import java.time.LocalDate;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,29 +50,21 @@ public class PrivateWorkExperienceResourceTest extends SpringTest {
         workExperienceDto.startDate = LocalDate.of(2016, 6, 6);
         workExperienceDto.endDate = LocalDate.of(2016, 7, 6);
 
+        WorkExperienceDto[] dtoArray = {workExperienceDto};
+
         mockMvc.perform(post(RESOURCE_URL).with(securityContext(studentSecurityContext()))
-            .content(WebTestUtils.toJsonBytes(workExperienceDto))
+            .content(WebTestUtils.toJsonBytes(dtoArray))
             .contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.jobTitle").value(workExperienceDto.jobTitle))
-            .andExpect(jsonPath("$.employer").value(workExperienceDto.employer))
-            .andExpect(jsonPath("$.startDate[0]").value(workExperienceDto.startDate.getYear()))
-            .andExpect(jsonPath("$.startDate[1]").value(workExperienceDto.startDate.getMonthValue()))
-            .andExpect(jsonPath("$.startDate[2]").value(workExperienceDto.startDate.getDayOfMonth()))
-            .andExpect(jsonPath("$.endDate[0]").value(workExperienceDto.endDate.getYear()))
-            .andExpect(jsonPath("$.endDate[1]").value(workExperienceDto.endDate.getMonthValue()))
-            .andExpect(jsonPath("$.endDate[2]").value(workExperienceDto.endDate.getDayOfMonth()));
-    }
-
-    @Test
-    public void thatPortfolioWorkExperienceIsDeleted() throws Exception {
-        mockMvc.perform(delete(RESOURCE_URL + "/1").with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
-
-        assertThat(workExperienceService.findByPortfolioId(PORTFOLIO_ID)).isEmpty();
+            .andExpect(jsonPath("$[0].jobTitle").value(workExperienceDto.jobTitle))
+            .andExpect(jsonPath("$[0].employer").value(workExperienceDto.employer))
+            .andExpect(jsonPath("$[0].startDate[0]").value(workExperienceDto.startDate.getYear()))
+            .andExpect(jsonPath("$[0].startDate[1]").value(workExperienceDto.startDate.getMonthValue()))
+            .andExpect(jsonPath("$[0].startDate[2]").value(workExperienceDto.startDate.getDayOfMonth()))
+            .andExpect(jsonPath("$[0].endDate[0]").value(workExperienceDto.endDate.getYear()))
+            .andExpect(jsonPath("$[0].endDate[1]").value(workExperienceDto.endDate.getMonthValue()))
+            .andExpect(jsonPath("$[0].endDate[2]").value(workExperienceDto.endDate.getDayOfMonth()));
     }
 }

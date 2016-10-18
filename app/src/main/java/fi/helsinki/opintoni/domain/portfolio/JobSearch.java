@@ -23,6 +23,7 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "job_search")
@@ -40,6 +41,11 @@ public class JobSearch extends AbstractAuditingEntity implements Ownership {
     @Email
     @Column(name = "contact_email", nullable = false)
     public String contactEmail;
+
+    @Size(max = 255)
+    public String headline;
+
+    public String text;
 
     @Override
     public Long getOwnerId() {

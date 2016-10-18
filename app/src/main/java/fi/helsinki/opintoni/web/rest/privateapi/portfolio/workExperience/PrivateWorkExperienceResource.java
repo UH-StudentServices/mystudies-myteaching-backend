@@ -36,7 +36,8 @@ import java.util.List;
 @RestController
 @RequestMapping(
     value = RestConstants.PRIVATE_API_V1 + "/portfolio/{portfolioId:" + RestConstants.MATCH_NUMBER + "}/workexperience",
-    produces = WebConstants.APPLICATION_JSON_UTF8)
+    produces = WebConstants.APPLICATION_JSON_UTF8
+)
 public class PrivateWorkExperienceResource extends AbstractResource {
 
     private final WorkExperienceService workExperienceService;
@@ -51,21 +52,10 @@ public class PrivateWorkExperienceResource extends AbstractResource {
 
     @RequestMapping(method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<WorkExperienceDto> insert(@UserId Long userId,
-                                                    @PathVariable Long portfolioId,
-                                                    @RequestBody WorkExperienceDto workExperienceDto) {
+    public ResponseEntity<List<WorkExperienceDto>> update(@UserId Long userId,
+                                                  @PathVariable Long portfolioId,
+                                                  @RequestBody List<UpdateWorkExperience> updateWorkExperiences) {
         permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
-        return response(workExperienceService.insert(portfolioId, workExperienceDto));
-    }
-
-    @RequestMapping(
-        method = RequestMethod.DELETE,
-        value = "/{workExperienceId}")
-    @Timed
-    public ResponseEntity<List<WorkExperienceDto>> delete(@UserId Long userId,
-                                                          @PathVariable Long portfolioId,
-                                                          @PathVariable Long workExperienceId) {
-        permissionChecker.verifyPermission(userId, workExperienceId, WorkExperience.class);
-        return response(workExperienceService.delete(workExperienceId, portfolioId));
+        return response(workExperienceService.updateWorkExperiences(portfolioId, updateWorkExperiences));
     }
 }

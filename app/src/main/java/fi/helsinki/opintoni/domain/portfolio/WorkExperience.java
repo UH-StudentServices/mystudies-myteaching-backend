@@ -39,6 +39,10 @@ public class WorkExperience extends AbstractAuditingEntity implements Ownership 
     @Size(max = 255)
     public String employer;
 
+    @Size(max = 255)
+    @Column(name = "employer_url")
+    public String employerUrl;
+
     @NotEmpty
     @Size(max = 255)
     @Column(name = "job_title", nullable = false)
@@ -52,6 +56,8 @@ public class WorkExperience extends AbstractAuditingEntity implements Ownership 
     @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDate")
     @Column(name = "end_date")
     public LocalDate endDate;
+
+    public String text;
 
     @NotNull
     @ManyToOne

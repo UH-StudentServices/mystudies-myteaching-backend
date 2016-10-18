@@ -19,5 +19,7 @@ package fi.helsinki.opintoni.dto.portfolio;
 
 public class JobSearchDto {
     public String contactEmail;
+    public String headline;
+    public String text;
     public Long id;
 }
