@@ -31,12 +31,15 @@ import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityC
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivateJobSearchResourceTest extends SpringTest {
 
     private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/jobsearch";
     private static final String CONTACT_EMAIL = "olli.opiskelija@helsinki.fi";
+    private static final String HEADLINE = "Haen kesätöitä";
+    private static final String TEXT = "Lorem ipsum";
     private static final long PORTFOLIO_ID = 2L;
 
     @Autowired
@@ -45,12 +48,17 @@ public class PrivateJobSearchResourceTest extends SpringTest {
     private void saveJobSearch(ResultMatcher expectedResult) throws Exception {
         JobSearchDto jobSearchDto = new JobSearchDto();
         jobSearchDto.contactEmail = CONTACT_EMAIL;
+        jobSearchDto.headline = HEADLINE;
+        jobSearchDto.text = TEXT;
 
         mockMvc.perform(post(RESOURCE_URL).with(securityContext(studentSecurityContext()))
             .content(WebTestUtils.toJsonBytes(jobSearchDto))
             .contentType(MediaType.APPLICATION_JSON)
             .characterEncoding("UTF-8")
             .accept(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("contactEmail").value(jobSearchDto.contactEmail))
+            .andExpect(jsonPath("headline").value(jobSearchDto.headline))
+            .andExpect(jsonPath("text").value(jobSearchDto.text))
             .andExpect(expectedResult);
     }
 
