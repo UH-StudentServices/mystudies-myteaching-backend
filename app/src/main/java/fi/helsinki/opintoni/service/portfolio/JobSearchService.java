@@ -69,10 +69,9 @@ public class JobSearchService {
     }
 
     public void delete(Long portfolioId) {
-        Optional<JobSearch> jobSearchOptional = jobSearchRepository.findByPortfolioId(portfolioId);
-        if (jobSearchOptional.isPresent()) {
-            JobSearch jobSearch = jobSearchOptional.get();
+        jobSearchRepository.findByPortfolioId(portfolioId).map(jobSearch -> {
             jobSearchRepository.delete(jobSearch.id);
-        }
+            return true;
+        });
     }
 }

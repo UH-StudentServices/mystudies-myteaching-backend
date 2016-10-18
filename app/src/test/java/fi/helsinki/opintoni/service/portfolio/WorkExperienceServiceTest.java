@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,7 +46,7 @@ public class WorkExperienceServiceTest extends SpringTest {
         workExperienceDto.endDate = LocalDate.now();
         workExperienceDto.text = "This is text chapter telling what the user has done at the Employer.";
 
-        workExperienceService.updateWorkExperiences(portfolioId, Arrays.asList(workExperienceDto));
+        workExperienceService.updateWorkExperiences(portfolioId, Collections.singletonList(workExperienceDto));
 
         List<WorkExperienceDto> workExperienceDtos = workExperienceService.findByPortfolioId(portfolioId);
 
