@@ -66,5 +66,9 @@ public class FreeTextContentService {
         if(dto.portfolioSection != null) {
             freeTextContent.teacherPortfolioSection = TeacherPortfolioSection.valueOf(dto.portfolioSection);
         }
+
+        if(dto.instanceName != null) {
+            freeTextContent.instanceName = dto.instanceName;
+        }
     }
 }

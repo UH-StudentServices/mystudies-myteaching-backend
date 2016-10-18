@@ -27,6 +27,7 @@ public class ComponentVisibilityConverter {
     public ComponentVisibilityDto toDto(ComponentVisibility componentVisibility) {
         ComponentVisibilityDto componentVisibilityDto = new ComponentVisibilityDto();
         componentVisibilityDto.visibility = componentVisibility.visibility.toString();
+        componentVisibilityDto.instanceName = componentVisibility.instanceName;
 
         if(componentVisibility.component != null) {
             componentVisibilityDto.component = componentVisibility.component.toString();

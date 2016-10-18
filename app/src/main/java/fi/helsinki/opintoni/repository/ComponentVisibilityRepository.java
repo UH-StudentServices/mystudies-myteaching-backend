@@ -32,8 +32,9 @@ public interface ComponentVisibilityRepository extends JpaRepository<ComponentVi
     Optional<ComponentVisibility> findByPortfolioIdAndComponent(Long portfolioId,
                                                                 PortfolioComponent component);
 
-    Optional<ComponentVisibility> findByPortfolioIdAndComponentAndTeacherPortfolioSection(
+    Optional<ComponentVisibility> findByPortfolioIdAndComponentAndTeacherPortfolioSectionAndInstanceName(
         Long portfolioId,
         PortfolioComponent component,
-        TeacherPortfolioSection teacherPortfolioSection);
+        TeacherPortfolioSection teacherPortfolioSection,
+        String instanceName);
 }

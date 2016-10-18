@@ -52,6 +52,9 @@ public class ComponentVisibility extends AbstractAuditingEntity implements Owner
     @Enumerated(EnumType.STRING)
     public TeacherPortfolioSection teacherPortfolioSection;
 
+    @Column(name = "instance_name")
+    public String instanceName;
+
     @NotNull
     @Column(name = "visibility")
     @Enumerated(EnumType.STRING)

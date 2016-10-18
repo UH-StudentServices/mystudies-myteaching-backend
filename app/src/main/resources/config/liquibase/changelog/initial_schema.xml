@@ -1075,4 +1075,22 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="add instance name to free_text_content" author="Henri Heiskanen">
+        <addColumn tableName="free_text_content">
+            <column name="instance_name" type="varchar(255)">
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Add instance name to component_visibility" author="Henri Heiskanen">
+        <addColumn tableName="component_visibility">
+            <column name="instance_name" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Add compound unique constraint to component_visibility" author="Henri Heiskanen">
+        <addUniqueConstraint tableName="component_visibility"
+                             columnNames="portfolio_id, component, teacher_portfolio_section, instance_name"
+                             constraintName="unique_component_visibility_per_instance_per_section"/>
+    </changeSet>
 </databaseChangeLog>

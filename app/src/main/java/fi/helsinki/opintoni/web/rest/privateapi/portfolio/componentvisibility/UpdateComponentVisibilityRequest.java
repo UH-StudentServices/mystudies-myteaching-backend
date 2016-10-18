@@ -25,4 +25,5 @@ public class UpdateComponentVisibilityRequest {
     public PortfolioComponent component;
     public ComponentVisibility.Visibility visibility;
     public TeacherPortfolioSection teacherPortfolioSection;
+    public String instanceName;
 }

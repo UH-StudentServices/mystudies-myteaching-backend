@@ -23,6 +23,9 @@ public class FreeTextContent extends AbstractAuditingEntity implements Ownership
     @Column(name = "teacher_portfolio_section")
     public TeacherPortfolioSection teacherPortfolioSection;
 
+    @Column(name = "instance_name")
+    public String instanceName;
+
     @NotBlank
     public String title;
 

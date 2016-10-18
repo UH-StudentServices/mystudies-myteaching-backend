@@ -24,6 +24,7 @@ public class PrivateFreeTextContentResourceTest extends SpringTest {
     private static final String API_PATH_FREETEXTCONTENT_ID = "/1";
     private static final String NEW_TITLE = "Uusi otsikko";
     private static final String NEW_TEXT = "Uusi teksti";
+    private static final String INSTANCE_NAME = "Testi-ID";
 
     @Test
     public void thatFreeTextContentIsInserted() throws Exception {
@@ -46,6 +47,7 @@ public class PrivateFreeTextContentResourceTest extends SpringTest {
         freeTextContentDto.title = NEW_TITLE;
         freeTextContentDto.text = NEW_TEXT;
         freeTextContentDto.portfolioSection = TeacherPortfolioSection.BASIC_INFORMATION.toString();
+        freeTextContentDto.instanceName = INSTANCE_NAME;
 
         mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + TEACHER_API_PATH)
             .with(securityContext(teacherSecurityContext()))
@@ -54,7 +56,8 @@ public class PrivateFreeTextContentResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title").value(NEW_TITLE))
             .andExpect(jsonPath("$.text").value(NEW_TEXT))
-            .andExpect(jsonPath("$.portfolioSection").value(TeacherPortfolioSection.BASIC_INFORMATION.toString()));
+            .andExpect(jsonPath("$.portfolioSection").value(TeacherPortfolioSection.BASIC_INFORMATION.toString()))
+            .andExpect(jsonPath("$.instanceName").value(INSTANCE_NAME));
     }
 
    @Test
