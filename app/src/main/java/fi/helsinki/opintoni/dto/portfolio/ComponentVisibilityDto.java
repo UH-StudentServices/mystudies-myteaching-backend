@@ -21,4 +21,5 @@ public class ComponentVisibilityDto {
     public String component;
     public String visibility;
     public String teacherPortfolioSection;
+    public String instanceName;
 }

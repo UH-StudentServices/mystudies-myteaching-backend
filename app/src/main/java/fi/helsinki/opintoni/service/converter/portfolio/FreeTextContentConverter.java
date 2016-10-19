@@ -11,6 +11,7 @@ public class FreeTextContentConverter {
         freeTextContentDto.id = freeTextContent.id;
         freeTextContentDto.title = freeTextContent.title;
         freeTextContentDto.text = freeTextContent.text;
+        freeTextContentDto.instanceName = freeTextContent.instanceName;
 
         if(freeTextContent.teacherPortfolioSection != null) {
             freeTextContentDto.portfolioSection = freeTextContent.teacherPortfolioSection.toString();

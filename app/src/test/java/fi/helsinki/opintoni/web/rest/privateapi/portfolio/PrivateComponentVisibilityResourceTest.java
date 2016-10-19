@@ -53,7 +53,7 @@ public class PrivateComponentVisibilityResourceTest extends SpringTest {
     public void thatComponentVisibilityIsCreatedForComponent() throws Exception {
         componentVisibilityRepository.deleteAll();
 
-        UpdateComponentVisibilityRequest request = setComponentVisibility(PortfolioComponent.ATTAINMENTS, null,
+        UpdateComponentVisibilityRequest request = setComponentVisibility(PortfolioComponent.ATTAINMENTS, null, null,
             Visibility.PRIVATE);
 
         mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + STUDENT_API_PATH)
@@ -71,9 +71,10 @@ public class PrivateComponentVisibilityResourceTest extends SpringTest {
     @Test
     public void thatComponentVisibilityIsCreatedForSectionBoundComponent() throws Exception {
         componentVisibilityRepository.deleteAll();
+        final String instanceName = "Testi-ID";
 
         UpdateComponentVisibilityRequest request = setComponentVisibility(PortfolioComponent.FREE_TEXT_CONTENT,
-            TeacherPortfolioSection.RESEARCH, Visibility.PRIVATE);
+            TeacherPortfolioSection.RESEARCH, instanceName, Visibility.PRIVATE);
 
         mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + TEACHER_API_PATH)
             .with(securityContext(teacherSecurityContext()))
@@ -81,12 +82,13 @@ public class PrivateComponentVisibilityResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        ComponentVisibility permission = getByIdAndComponentAndSection(TEACHER_PORTFOLIO_ID,
-            PortfolioComponent.FREE_TEXT_CONTENT, TeacherPortfolioSection.RESEARCH).get();
+        ComponentVisibility permission = getByIdAndComponentAndSectionAndInstance(TEACHER_PORTFOLIO_ID,
+            PortfolioComponent.FREE_TEXT_CONTENT, TeacherPortfolioSection.RESEARCH, instanceName).get();
 
         assertThat(permission.visibility).isEqualTo(Visibility.PRIVATE);
         assertThat(permission.component).isEqualTo(PortfolioComponent.FREE_TEXT_CONTENT);
         assertThat(permission.teacherPortfolioSection).isEqualTo(TeacherPortfolioSection.RESEARCH);
+        assertThat(permission.instanceName).isEqualTo(instanceName);
     }
 
     @Test
@@ -94,7 +96,7 @@ public class PrivateComponentVisibilityResourceTest extends SpringTest {
         assertThat(getByIdAndComponent(STUDENT_PORTFOLIO_ID, PortfolioComponent.WORK_EXPERIENCE).isPresent()).isTrue();
 
         UpdateComponentVisibilityRequest request =
-            setComponentVisibility(PortfolioComponent.WORK_EXPERIENCE, null, Visibility.PRIVATE);
+            setComponentVisibility(PortfolioComponent.WORK_EXPERIENCE, null, null, Visibility.PRIVATE);
 
         mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + STUDENT_API_PATH)
             .with(securityContext(studentSecurityContext()))
@@ -112,19 +114,23 @@ public class PrivateComponentVisibilityResourceTest extends SpringTest {
         return componentVisibilityRepository.findByPortfolioIdAndComponent(id, component);
     }
 
-    private Optional<ComponentVisibility> getByIdAndComponentAndSection(Long id,
-                                                                        PortfolioComponent component,
-                                                                        TeacherPortfolioSection section) {
-        return componentVisibilityRepository.findByPortfolioIdAndComponentAndTeacherPortfolioSection(id, component, section);
+    private Optional<ComponentVisibility> getByIdAndComponentAndSectionAndInstance(Long id,
+                                                                                   PortfolioComponent component,
+                                                                                   TeacherPortfolioSection section,
+                                                                                   String instance) {
+        return componentVisibilityRepository
+            .findByPortfolioIdAndComponentAndTeacherPortfolioSectionAndInstanceName(id, component, section, instance);
     }
 
     private UpdateComponentVisibilityRequest setComponentVisibility(PortfolioComponent component,
                                                                     TeacherPortfolioSection section,
+                                                                    String instance,
                                                                     Visibility visibility) {
         UpdateComponentVisibilityRequest request = new UpdateComponentVisibilityRequest();
         request.component = component;
         request.visibility = visibility;
         request.teacherPortfolioSection = section;
+        request.instanceName = instance;
 
         return request;
     }
