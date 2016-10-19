@@ -55,7 +55,7 @@ public class WorkExperienceService extends DtoService {
     public List<WorkExperienceDto> updateWorkExperiences(Long portfolioId, List<UpdateWorkExperience> updateWorkExperiences) {
         Portfolio portfolio = portfolioRepository.findOne(portfolioId);
 
-        workExperienceRepository.delete(workExperienceRepository.findByPortfolioId(portfolio.id));
+        workExperienceRepository.deleteByPortfolioId(portfolio.id);
 
         updateWorkExperiences.forEach(updateWorkExperience -> {
             WorkExperience workExperience = new WorkExperience();

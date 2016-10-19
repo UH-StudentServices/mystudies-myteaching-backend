@@ -47,6 +47,8 @@ public class PrivateWorkExperienceResourceTest extends SpringTest {
         WorkExperienceDto workExperienceDto = new WorkExperienceDto();
         workExperienceDto.employer = "Helsingin Yliopisto";
         workExperienceDto.jobTitle = "Toimitusjohtaja";
+        workExperienceDto.employerUrl = "http://www.helsinki.fi/";
+        workExperienceDto.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
         workExperienceDto.startDate = LocalDate.of(2016, 6, 6);
         workExperienceDto.endDate = LocalDate.of(2016, 7, 6);
 
@@ -60,6 +62,8 @@ public class PrivateWorkExperienceResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].jobTitle").value(workExperienceDto.jobTitle))
             .andExpect(jsonPath("$[0].employer").value(workExperienceDto.employer))
+            .andExpect(jsonPath("$[0].employerUrl").value(workExperienceDto.employerUrl))
+            .andExpect(jsonPath("$[0].text").value(workExperienceDto.text))
             .andExpect(jsonPath("$[0].startDate[0]").value(workExperienceDto.startDate.getYear()))
             .andExpect(jsonPath("$[0].startDate[1]").value(workExperienceDto.startDate.getMonthValue()))
             .andExpect(jsonPath("$[0].startDate[2]").value(workExperienceDto.startDate.getDayOfMonth()))

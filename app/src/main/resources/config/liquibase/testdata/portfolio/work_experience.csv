@@ -1,2 +1,2 @@
-id;portfolio_id;employer;job_title;start_date;end_date;created_by
-1;2;HY;Harjoittelija;2015-06-06;2015-07-06;system
+id;portfolio_id;employer;job_title;employer_url;text;start_date;end_date;created_by
+1;2;HY;Harjoittelija;http://www.helsinki.fi/;Lorem ipsum;2015-06-06;2015-07-06;system
