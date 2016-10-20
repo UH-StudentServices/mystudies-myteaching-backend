@@ -72,12 +72,6 @@
             <column name="created_date" type="timestamp"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/user_notifications.csv"
-                  separator=";"
-                  tableName="user_notification">
-            <column name="created_date" type="timestamp"/>
-        </loadData>
-        <loadData encoding="UTF-8"
                   file="config/liquibase/testdata/portfolio/portfolios.csv"
                   separator=";"
                   tableName="portfolio">

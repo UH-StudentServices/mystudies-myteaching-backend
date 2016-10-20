@@ -19,7 +19,9 @@ package fi.helsinki.opintoni.server;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.sampledata.SampleDataFiles;
-import fi.helsinki.opintoni.service.UserNotificationServiceTest;
+import org.apache.commons.lang.StringUtils;
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeMatcher;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -78,7 +80,7 @@ public class CoursePageServer {
 
     public void expectCourseImplementationActivityRequest(List<String> courseImplementationIds, String responseFile) {
         server.expect(
-            requestTo(new UserNotificationServiceTest.ActivityUrlMatcher(coursePageBaseUrl, courseImplementationIdsToString(courseImplementationIds))))
+            requestTo(new ActivityUrlMatcher(coursePageBaseUrl, courseImplementationIdsToString(courseImplementationIds))))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(
                     SampleDataFiles.toText("coursepage/" + responseFile),
@@ -102,5 +104,29 @@ public class CoursePageServer {
             .skip(1)
             .forEach(i -> builder.append(",").append(i));
         return builder.toString();
+    }
+
+    public static class ActivityUrlMatcher extends TypeSafeMatcher<String> {
+
+        private final String courseRealisationId;
+        private final String urlTemplate;
+
+        public ActivityUrlMatcher(String coursePageBaseUrl, String courseRealisationId) {
+            this.courseRealisationId = courseRealisationId;
+            this.urlTemplate = coursePageBaseUrl + "/course_implementation_activity" +
+                "?course_implementation_id=%s&timestamp=";
+        }
+
+        @Override
+        public boolean matchesSafely(String url) {
+            return StringUtils.contains(
+                url,
+                String.format(urlTemplate, courseRealisationId));
+        }
+
+        @Override
+        public void describeTo(Description description) {
+            description.appendText(String.format("url containing " + urlTemplate, courseRealisationId));
+        }
     }
 }
