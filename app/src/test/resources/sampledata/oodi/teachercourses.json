@@ -35,7 +35,8 @@
       "weboodi_uri": "https://weboodi.helsinki.fi/",
       "learningopportunity_id": "10440",
       "teacher_id": "010540",
-      "organisation_code": "H1001"
+      "organisation_code": "H1001",
+      "teacher_role": "official"
     },
     {
       "realisation_name": [

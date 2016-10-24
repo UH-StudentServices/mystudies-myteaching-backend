@@ -31,9 +31,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
 
-    private final String PARENT_REALISATION_ID = "99903630";
-    private final String ROOT_REALISATION_ID = "99903629";
-    private final String STUDY_GROUP_WITHOUT_PARENT_TITLE = "Realisat... Study subgroup name";
+    private static final String PARENT_REALISATION_ID = "99903630";
+    private static final String ROOT_REALISATION_ID = "99903629";
+    private static final String STUDY_GROUP_WITHOUT_PARENT_TITLE = "Realisat... Study subgroup name";
+    private static final String OFFICIAL_ROLE_NAME = "official";
 
     @Test
     public void thatTeacherCoursesAreReturned() throws Exception {
@@ -62,6 +63,7 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[0].isCancelled").value(false))
             .andExpect(jsonPath("$[0].realisationId").value(ROOT_REALISATION_ID))
             .andExpect(jsonPath("$[0].parentId").isEmpty())
+            .andExpect(jsonPath("$[0].teacherRole").value(OFFICIAL_ROLE_NAME))
             .andExpect(jsonPath("$[1].code").value("10442"))
             .andExpect(jsonPath("$[1].isExam").value(true))
             .andExpect(jsonPath("$[1].isCancelled").value(true))

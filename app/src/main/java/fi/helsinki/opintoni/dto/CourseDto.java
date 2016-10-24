@@ -43,6 +43,7 @@ public class CourseDto {
     public final List<String> teachers;
     public final boolean isExam;
     public final boolean isCancelled;
+    public final String teacherRole;
 
     public CourseDto(String code,
                      Integer typeCode,
@@ -59,7 +60,8 @@ public class CourseDto {
                      Integer credits,
                      List<String> teachers,
                      boolean isExam,
-                     boolean isCancelled) {
+                     boolean isCancelled,
+                     String teacherRole) {
         this.typeCode = typeCode;
         this.code = code;
         this.name = name;
@@ -76,6 +78,7 @@ public class CourseDto {
         this.teachers = teachers;
         this.isExam = isExam;
         this.isCancelled = isCancelled;
+        this.teacherRole = teacherRole;
     }
 
     @Override
@@ -96,6 +99,7 @@ public class CourseDto {
             .append("teachers", teachers.stream().collect(Collectors.joining(", ")))
             .append("isExam", isExam)
             .append("isCancelled", isCancelled)
+            .append("teacherRole", teacherRole)
             .toString();
     }
 
