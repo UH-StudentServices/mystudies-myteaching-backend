@@ -89,7 +89,8 @@ public class CourseConverter {
                 oodiEnrollment.credits,
                 courseUnitRealisation.teachers.stream().map(t -> t.fullName).collect(Collectors.toList()),
                 eventTypeResolver.isExam(oodiEnrollment.typeCode),
-                courseUnitRealisation.isCancelled);
+                courseUnitRealisation.isCancelled,
+                null);
 
         }
         return Optional.ofNullable(dto);
@@ -125,7 +126,8 @@ public class CourseConverter {
                 null,
                 Lists.newArrayList(),
                 eventTypeResolver.isExam(oodiTeacherCourse.realisationTypeCode),
-                courseUnitRealisation.isCancelled);
+                courseUnitRealisation.isCancelled,
+                oodiTeacherCourse.teacherRole);
         }
         return Optional.ofNullable(dto);
     }

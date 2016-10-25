@@ -57,6 +57,7 @@ public class CourseDtoTest {
             4,
             Lists.newArrayList(),
             true,
-            false);
+            false,
+            null);
     }
 }

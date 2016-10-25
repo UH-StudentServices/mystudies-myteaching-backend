@@ -58,4 +58,7 @@ public class OodiTeacherCourse {
 
     @JsonProperty("realisation_root_name")
     public List<OodiLocalizedValue> realisationRootName = Lists.newArrayList();
+
+    @JsonProperty("teacher_role")
+    public String teacherRole;
 }
