@@ -32,7 +32,7 @@ metrics:
     jmx.enabled: false
 
 oodi:
-    base.url: https://oprek4.it.helsinki.fi:30039
+    base.url: https://esbmt2.it.helsinki.fi:443/doo-oodi/dev/testdb/
     client.implementation: mock
 
 coursePage:

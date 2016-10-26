@@ -32,7 +32,7 @@ metrics:
     jmx.enabled: true
 
 oodi:
-    base.url: https://oprek4.it.helsinki.fi:30040
+    base.url: https://esbmt1.it.helsinki.fi:443/doo-oodi/v1/productiondb/
     client.implementation: rest
 
 coursePage:
