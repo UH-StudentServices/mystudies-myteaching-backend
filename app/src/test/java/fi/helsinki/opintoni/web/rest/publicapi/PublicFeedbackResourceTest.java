@@ -56,9 +56,9 @@ public class PublicFeedbackResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        assertThat(feedbackRepository.findAll()).hasSize(3);
+        assertThat(feedbackRepository.findAll()).hasSize(4);
 
-        Feedback feedback = feedbackRepository.findAll().get(2);
+        Feedback feedback = feedbackRepository.findAll().get(3);
 
         assertThat(feedback.content).isEqualTo(request.content);
         assertThat(feedback.email).isEqualTo(request.email);
