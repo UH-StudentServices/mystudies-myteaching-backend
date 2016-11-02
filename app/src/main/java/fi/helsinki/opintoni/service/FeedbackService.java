@@ -56,7 +56,7 @@ public class FeedbackService {
     }
 
     public List<FeedbackDto> getAllFeedback() {
-        return feedbackRepository.findAll()
+        return feedbackRepository.findAllByOrderByCreatedDateDesc()
             .stream()
             .map(feedbackConverter::toDto)
             .collect(Collectors.toList());

@@ -38,6 +38,13 @@ public class FeedbackResourceTest extends SpringTest {
     private static final Integer FEEDBACK_ID_INT = 1;
     private static final boolean FEEDBACK_PROCESSED = true;
     private static final String FEEDBACK_COMMENT = "Testikommentti";
+    private static final String FEEDBACK_CONTENT_1 = "Feedback 1";
+    private static final String FEEDBACK_CONTENT_2 = "Feedback 2";
+    private static final String FEEDBACK_CONTENT_3 = "Feedback 3";
+    private static final String FEEDBACK_CSV_CONTENT =
+        ",\"Feedback 2\",\"16.10.2015 12:00\",,2,,false\n" +
+        "\"Testikommentti 1\",\"Feedback 1\",\"13.10.2015 11:30\",\"teppo.testaaja@helsinki.fi\",1,\"{\"\"browser\"\": \"\"Chrome\"\"}\",false\n" +
+        ",\"Feedback 3\",\"10.10.2015 12:00\",,3,,false\n";
 
     @Test
     public void thatFeedbackIsDownloadedAsCsv() throws Exception {
@@ -46,20 +53,22 @@ public class FeedbackResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(header().string("Content-Type", "text/csv;charset=UTF-8"))
             .andExpect(header().string("Content-Disposition", "attachment; filename=feedback.csv"))
-            .andExpect(content().string("\"Testikommentti 1\",\"Feedback 1\",\"13.10.2015 11:30\",\"teppo.testaaja@helsinki.fi\",1,\"{\"\"browser\"\": \"\"Chrome\"\"}\",false\n" +
-                ",\"Feedback 2\",\"16.10.2015 12:00\",,2,,false\n"));
+            .andExpect(content().string(FEEDBACK_CSV_CONTENT));
     }
 
     @Test
-    public void thatFeedbackIsReturned() throws Exception {
+    public void thatFeedbackIsReturnedAndOrderedDescendingByCreationDate() throws Exception {
         mockMvc.perform(get(RestConstants.ADMIN_API_V1 + "/feedback")
             .with(securityContext(teacherSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$[0].content").value("Feedback 1"))
-            .andExpect(jsonPath("$[0].email").value("teppo.testaaja@helsinki.fi"))
-            .andExpect(jsonPath("$[0].created").value("13.10.2015 11:30"))
-            .andExpect(jsonPath("$[0].processed").value(false));
+            .andExpect(jsonPath("$[0].content").value(FEEDBACK_CONTENT_2))
+            .andExpect(jsonPath("$[1].content").value(FEEDBACK_CONTENT_1))
+            .andExpect(jsonPath("$[1].email").value("teppo.testaaja@helsinki.fi"))
+            .andExpect(jsonPath("$[1].created").value("13.10.2015 11:30"))
+            .andExpect(jsonPath("$[1].processed").value(false))
+            .andExpect(jsonPath("$[2].content").value(FEEDBACK_CONTENT_3));
+
     }
 
     @Test
@@ -78,9 +87,9 @@ public class FeedbackResourceTest extends SpringTest {
 
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$[0].id").value(FEEDBACK_ID_INT))
-            .andExpect(jsonPath("$[0].processed").value(FEEDBACK_PROCESSED))
-            .andExpect(jsonPath("$[0].comment").value(FEEDBACK_COMMENT));
+            .andExpect(jsonPath("$[1].id").value(FEEDBACK_ID_INT))
+            .andExpect(jsonPath("$[1].processed").value(FEEDBACK_PROCESSED))
+            .andExpect(jsonPath("$[1].comment").value(FEEDBACK_COMMENT));
     }
 
     private FeedbackDto feedbackDto() {
