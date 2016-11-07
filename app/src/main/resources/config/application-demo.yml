@@ -48,8 +48,8 @@ unisport:
 googleAnalyticsAccount: UA-55852460-2
 
 hostUrl: https://demo.student.helsinki.fi
-loginUrlTeacher: /saml/login/alias/teacher
-loginUrlStudent: /saml/login/alias/student
+loginUrlTeacher: https://demo.teacher.helsinki.fi/info/local-login
+loginUrlStudent: https://demo.student.helsinki.fi/info/local-login
 logoutUrl: /saml/logout?local=true
 teacherAppUrl: https://demo.teacher.helsinki.fi
 studentAppUrl: https://demo.student.helsinki.fi

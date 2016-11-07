@@ -54,8 +54,8 @@ leiki:
 googleAnalyticsAccount: UA-55852460-3
 
 hostUrl: http://local.student.helsinki.fi:3000
-loginUrlTeacher: /locallog.html
-loginUrlStudent: /locallog.html
+loginUrlTeacher: http://local.teacher.helsinki.fi:3000/info/local-login
+loginUrlStudent: http://local.student.helsinki.fi:3000/info/local-login
 logoutUrl: /logout
 teacherAppUrl: http://local.teacher.helsinki.fi:3000
 studentAppUrl: http://local.student.helsinki.fi:3000
