@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.config;
 
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -27,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 @Component
 @PropertySource(value = {
@@ -50,11 +51,11 @@ public class AppConfiguration {
     }
 
     public List<Integer> getIntegerValues(String key) {
-        return Lists.newArrayList(environment.getProperty(key, Integer[].class));
+        return newArrayList(environment.getProperty(key, Integer[].class));
     }
 
     public List<String> getStringValues(String key) {
-        return Lists.newArrayList(environment.getProperty(key, String[].class));
+        return newArrayList(environment.getProperty(key, String[].class));
     }
 
     public int getInteger(String key) {

@@ -73,7 +73,6 @@ import java.util.*;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Profile({
     Constants.SPRING_PROFILE_QA,
-    Constants.SPRING_PROFILE_DEMO,
     Constants.SPRING_PROFILE_PRODUCTION
 })
 public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
