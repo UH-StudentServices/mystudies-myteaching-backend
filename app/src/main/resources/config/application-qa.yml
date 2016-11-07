@@ -49,7 +49,10 @@ recommendations:
     maxRecommendations: 5
     uidPrefix: opintohistoria_
 
-googleAnalyticsAccount: UA-55852460-2
+googleAnalyticsAccount:
+    main: UA-55852460-2
+    student: UA-55852460-9
+    teacher: UA-55852460-9
 
 hostUrl: https://qa.student.helsinki.fi
 loginUrlTeacher: /saml/login/alias/teacher
