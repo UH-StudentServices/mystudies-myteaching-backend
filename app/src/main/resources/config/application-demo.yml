@@ -50,7 +50,7 @@ googleAnalyticsAccount: UA-55852460-2
 hostUrl: https://demo.student.helsinki.fi
 loginUrlTeacher: https://demo.teacher.helsinki.fi/info/local-login
 loginUrlStudent: https://demo.student.helsinki.fi/info/local-login
-logoutUrl: /saml/logout?local=true
+logoutUrl: /logout
 teacherAppUrl: https://demo.teacher.helsinki.fi
 studentAppUrl: https://demo.student.helsinki.fi
 portfolioUrl:
