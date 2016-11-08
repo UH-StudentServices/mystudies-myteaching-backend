@@ -45,7 +45,10 @@ unisport:
     base.url: https://unisport.fi
     userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
 
-googleAnalyticsAccount: UA-55852460-2
+googleAnalyticsAccount:
+    main: UA-55852460-2
+    student: UA-55852460-9
+    teacher: UA-55852460-9
 
 hostUrl: https://demo.student.helsinki.fi
 loginUrlTeacher: https://demo.teacher.helsinki.fi/info/local-login

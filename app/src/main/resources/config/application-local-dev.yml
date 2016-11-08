@@ -51,7 +51,10 @@ leiki:
     base.url: http://suositukset.student.helsinki.fi
     client.implementation: mock
 
-googleAnalyticsAccount: UA-55852460-3
+googleAnalyticsAccount:
+    main: UA-55852460-3
+    student: UA-55852460-9
+    teacher: UA-55852460-9
 
 hostUrl: http://local.student.helsinki.fi:3000
 loginUrlTeacher: http://local.teacher.helsinki.fi:3000/info/local-login

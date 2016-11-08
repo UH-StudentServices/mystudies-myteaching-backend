@@ -47,7 +47,10 @@ unisport:
 
 unisportApiKey: foobar123
 
-googleAnalyticsAccount: UA-55852460-3
+googleAnalyticsAccount:
+    main: UA-55852460-3
+    student: UA-55852460-9
+    teacher: UA-55852460-9
 
 hostUrl: https://opi-1.student.helsinki.fi
 loginUrlTeacher: https://opi-1.teacher.helsinki.fi/info/local-login
