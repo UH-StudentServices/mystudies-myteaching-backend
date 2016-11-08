@@ -57,7 +57,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             syncUserWithDatabase(appUser);
 
             addLanguageCookie(appUser, response);
-            addLastLoginCookie(response);
             addHasLoggedInCookie(response);
 
             response.sendRedirect("/");
@@ -94,11 +93,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     private void addLanguageCookie(AppUser appUser, HttpServletResponse response) {
         Cookie cookie = new Cookie(Constants.NG_TRANSLATE_LANG_KEY, "%22" + appUser.getPreferredLanguage() + "%22");
-        addCookie(response, cookie);
-    }
-
-    private void addLastLoginCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie(Constants.OPINTONI_LAST_LOGIN, timeService.nowUTCAsString());
         addCookie(response, cookie);
     }
 
