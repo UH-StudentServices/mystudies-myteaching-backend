@@ -33,10 +33,6 @@ public class TimeService {
 
     public static final ZoneId HELSINKI_ZONE_ID = ZoneId.of("Europe/Helsinki");
 
-    public LocalDateTime weekAgo() {
-        return LocalDateTime.now().minusWeeks(1);
-    }
-
     public DateTime monthsAgo(int months) {
         return DateTime.now().minusMonths(months);
     }
@@ -46,12 +42,11 @@ public class TimeService {
         return utc.format(DateTimeFormatter.ISO_INSTANT);
     }
 
-    public LocalDateTime endOfDayHelsinki(LocalDateTime fromLocalDateTime) {
-        ZonedDateTime zonedDateTime = fromLocalDateTime.atZone(HELSINKI_ZONE_ID)
+    public LocalDateTime endOfDay(LocalDateTime fromLocalDateTime) {
+        return fromLocalDateTime
             .withHour(23)
             .withMinute(59)
             .withSecond(59);
-        return LocalDateTime.ofInstant(zonedDateTime.toInstant(), ZoneId.of("UTC"));
     }
 
     public String toHelsinkiTimeFromUTC(DateTime dateTime) {

@@ -30,11 +30,12 @@ public class TimeServiceTest {
 
     @Test
     public void thatEndOfDayIsReturned() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        LocalDateTime localDateTime = LocalDateTime.parse("2015-05-01T11:00:00Z", dateTimeFormatter);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
-        LocalDateTime endOfDay = timeService.endOfDayHelsinki(localDateTime);
+        LocalDateTime localDateTime = LocalDateTime.of(2015, 5, 1, 15, 0);
 
-        assertThat(endOfDay.format(dateTimeFormatter)).isEqualTo("2015-05-01T20:59:59Z");
+        LocalDateTime endOfDay = timeService.endOfDay(localDateTime);
+
+        assertThat(endOfDay.format(dateTimeFormatter)).isEqualTo("2015-05-01T23:59:59");
     }
 }

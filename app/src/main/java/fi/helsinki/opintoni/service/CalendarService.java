@@ -22,7 +22,6 @@ import fi.helsinki.opintoni.domain.CalendarFeed;
 import fi.helsinki.opintoni.dto.CalendarFeedDto;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.exception.http.CalendarFeedNotFoundException;
-import fi.helsinki.opintoni.integration.DateFormatter;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiRoles;
 import fi.helsinki.opintoni.util.TimeZoneUtils;
@@ -35,13 +34,10 @@ import net.fortuna.ical4j.model.property.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
+import static fi.helsinki.opintoni.service.TimeService.HELSINKI_ZONE_ID;
 
 @Service
 public class CalendarService {
@@ -133,24 +129,23 @@ public class CalendarService {
     }
 
     private DateTime convertStartDateToCalDate(EventDto eventDto) {
-        return calDateTimeAsUtc(eventDto.startDate);
+        return calDateTimeFromLocalDateTime(eventDto.startDate);
     }
 
-    private DateTime calDateTimeAsUtc(LocalDateTime localDateTime) {
-        String utc = localDateTime.format(DateTimeFormatter.ofPattern(DateFormatter.UTC_TIME_FORMAT));
-        try {
-            return new DateTime(utc, DateFormatter.UTC_TIME_FORMAT, true);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+    private DateTime calDateTimeFromLocalDateTime(LocalDateTime localDateTime) {
+        DateTime dateTime = new DateTime(Date.from(localDateTime.atZone(HELSINKI_ZONE_ID).toInstant()));
+
+        dateTime.setTimeZone(new net.fortuna.ical4j.model.TimeZone((timeZoneUtils.getHelsinkiTimeZone())));
+
+        return dateTime;
     }
 
     private DateTime convertEndDateToCalDate(EventDto eventDto) {
         if (eventDto.endDate == null) {
-            LocalDateTime endOfDayHelsinki = timeService.endOfDayHelsinki(eventDto.startDate);
-            return calDateTimeAsUtc(endOfDayHelsinki);
+            LocalDateTime endOfDay = timeService.endOfDay(eventDto.startDate);
+            return calDateTimeFromLocalDateTime(endOfDay);
         }
 
-        return calDateTimeAsUtc(eventDto.endDate);
+        return calDateTimeFromLocalDateTime(eventDto.endDate);
     }
 }

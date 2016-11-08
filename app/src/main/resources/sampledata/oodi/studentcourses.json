@@ -18,8 +18,8 @@
         }
       ],
       "coursepage_uri": null,
-      "end_date": "2016-08-03T22:00:00.000Z",
-      "start_date": "2016-01-04T22:00:00.000Z",
+      "end_date": "2030-08-03T22:00:00.000Z",
+      "start_date": "2030-01-04T22:00:00.000Z",
       "credits": 3,
       "teaching_languages": "fi",
       "course_id": 123456789,
@@ -46,8 +46,8 @@
         }
       ],
       "coursepage_uri": null,
-      "end_date": "2016-08-03T22:00:00.000Z",
-      "start_date": "2016-01-04T22:00:00.000Z",
+      "end_date": "2030-08-03T22:00:00.000Z",
+      "start_date": "2030-01-04T22:00:00.000Z",
       "credits": 3,
       "teaching_languages": "fi",
       "course_id": 123456790,
@@ -74,8 +74,8 @@
         }
       ],
       "coursepage_uri": null,
-      "end_date": "2016-08-03T22:00:00.000Z",
-      "start_date": "2016-01-04T22:00:00.000Z",
+      "end_date": "2030-08-03T22:00:00.000Z",
+      "start_date": "2030-01-04T22:00:00.000Z",
       "credits": 3,
       "teaching_languages": "fi",
       "course_id": 123456791,
@@ -102,17 +102,45 @@
         }
       ],
       "coursepage_uri": null,
-      "end_date": "2040-08-03T22:00:00.000Z",
-      "start_date": "2040-01-04T22:00:00.000Z",
+      "end_date": "2030-01-03T12:00:00.000Z",
+      "start_date": "2030-01-03T10:00:00.000Z",
       "credits": 3,
       "teaching_languages": "fi",
-      "course_id": 123456791,
-      "parent_id": 123456789,
-      "root_id": 123456789,
+      "course_id": 123456792,
+      "parent_id": null,
+      "root_id": 123456792,
       "type_code": 28,
       "image_uri": null,
       "weboodi_uri": "https://weboodi.helsinki.fi",
       "learningopportunity_id": "52736"
+    },
+    {
+      "name": [
+        {
+          "langcode": "fi",
+          "text": "Geenitekniikka alitentti"
+        },
+        {
+          "langcode": "sv",
+          "text": "Genteknologi sub exam"
+        },
+        {
+          "langcode": "en",
+          "text": "Gene Technology sub exam"
+        }
+      ],
+      "coursepage_uri": null,
+      "end_date": "2030-01-04T12:00:00.000Z",
+      "start_date": "2030-01-03T10:00:00.000Z",
+      "credits": 3,
+      "teaching_languages": "fi",
+      "course_id": 123456793,
+      "parent_id": 123456792,
+      "root_id": 123456792,
+      "type_code": 28,
+      "image_uri": null,
+      "weboodi_uri": "https://weboodi.helsinki.fi",
+      "learningopportunity_id": "52737"
     },
     {
       "name": [

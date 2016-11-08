@@ -17,9 +17,9 @@
 
 package fi.helsinki.opintoni.integration.coursepage;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import fi.helsinki.opintoni.integration.DateFormatter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import fi.helsinki.opintoni.util.LocalDateTimeDeserializer;
 
 import java.time.LocalDateTime;
 
@@ -35,7 +35,7 @@ public class CoursePageNotification {
     @JsonProperty("oodi_uid")
     public String oodiPersonId;
 
-    @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     public LocalDateTime timestamp;
 
 }
