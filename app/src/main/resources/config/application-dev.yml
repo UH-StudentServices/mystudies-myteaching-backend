@@ -32,7 +32,7 @@ metrics:
     jmx.enabled: true
 
 oodi:
-    base.url: https://oprek4.it.helsinki.fi:30039
+    base.url: https://esbmt2.it.helsinki.fi:443/doo-oodi/dev/testdb
     client.implementation: mock
 
 coursePage:
@@ -50,8 +50,8 @@ unisportApiKey: foobar123
 googleAnalyticsAccount: UA-55852460-3
 
 hostUrl: https://opi-1.student.helsinki.fi
-loginUrlTeacher: /locallog.html
-loginUrlStudent: /locallog.html
+loginUrlTeacher: https://opi-1.teacher.helsinki.fi/info/local-login
+loginUrlStudent: https://opi-1.student.helsinki.fi/info/local-login
 logoutUrl: /logout
 teacherAppUrl: https://opi-1.teacher.helsinki.fi
 studentAppUrl: https://opi-1.student.helsinki.fi

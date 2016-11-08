@@ -32,7 +32,7 @@ metrics:
     jmx.enabled: true
 
 oodi:
-    base.url: https://oprek2.it.helsinki.fi:30039
+    base.url: https://esbmt2.it.helsinki.fi:443/doo-oodi/dev/testdb
     client.implementation: rest
 
 coursePage:
@@ -48,9 +48,9 @@ unisport:
 googleAnalyticsAccount: UA-55852460-2
 
 hostUrl: https://demo.student.helsinki.fi
-loginUrlTeacher: /saml/login/alias/teacher
-loginUrlStudent: /saml/login/alias/student
-logoutUrl: /saml/logout?local=true
+loginUrlTeacher: https://demo.teacher.helsinki.fi/info/local-login
+loginUrlStudent: https://demo.student.helsinki.fi/info/local-login
+logoutUrl: /logout
 teacherAppUrl: https://demo.teacher.helsinki.fi
 studentAppUrl: https://demo.student.helsinki.fi
 portfolioUrl:

@@ -37,11 +37,6 @@ public class TimeService {
         return DateTime.now().minusMonths(months);
     }
 
-    public String nowUTCAsString() {
-        ZonedDateTime utc = ZonedDateTime.now(ZoneOffset.UTC);
-        return utc.format(DateTimeFormatter.ISO_INSTANT);
-    }
-
     public LocalDateTime endOfDay(LocalDateTime fromLocalDateTime) {
         return fromLocalDateTime
             .withHour(23)
