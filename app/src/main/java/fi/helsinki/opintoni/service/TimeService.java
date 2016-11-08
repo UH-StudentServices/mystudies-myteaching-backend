@@ -23,9 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
 @Service
@@ -33,17 +31,8 @@ public class TimeService {
 
     public static final ZoneId HELSINKI_ZONE_ID = ZoneId.of("Europe/Helsinki");
 
-    public LocalDateTime weekAgo() {
-        return LocalDateTime.now().minusWeeks(1);
-    }
-
     public DateTime monthsAgo(int months) {
         return DateTime.now().minusMonths(months);
-    }
-
-    public String nowUTCAsString() {
-        ZonedDateTime utc = ZonedDateTime.now(ZoneOffset.UTC);
-        return utc.format(DateTimeFormatter.ISO_INSTANT);
     }
 
     public LocalDateTime endOfDayHelsinki(LocalDateTime fromLocalDateTime) {

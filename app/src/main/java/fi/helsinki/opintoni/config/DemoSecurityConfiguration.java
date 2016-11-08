@@ -1,20 +1,3 @@
-/*
- * This file is part of MystudiesMyteaching application.
- *
- * MystudiesMyteaching application is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * MystudiesMyteaching application is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package fi.helsinki.opintoni.config;
 
 import fi.helsinki.opintoni.security.AuthFailureHandler;
@@ -38,23 +21,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Profile({
-    Constants.SPRING_PROFILE_TEST,
-    Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT,
-    Constants.SPRING_PROFILE_DEVELOPMENT
+    Constants.SPRING_PROFILE_DEMO
 })
-public class LocalSecurityConfiguration extends WebSecurityConfigurerAdapter implements NonfederatedSecurityConfiguration {
-
-    private static final int MAX_CONCURRENT_SESSIONS = 1;
-
+public class DemoSecurityConfiguration extends WebSecurityConfigurerAdapter implements NonfederatedSecurityConfiguration {
     @Autowired
-    @Qualifier("localUserDetailsService")
+    @Qualifier("demoUserDetailsService")
     private UserDetailsService userDetailsService;
+
     @Autowired
     private HttpAuthenticationEntryPoint authenticationEntryPoint;
+
     @Autowired
     private CustomAuthenticationSuccessHandler authSuccessHandler;
+
     @Autowired
     private AuthFailureHandler authFailureHandler;
+
     @Autowired
     private LocalLogoutSuccessHandler localLogoutSuccessHandler;
 
@@ -64,17 +46,13 @@ public class LocalSecurityConfiguration extends WebSecurityConfigurerAdapter imp
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        useNonfederatedSecurityConfiguration(http, authenticationEntryPoint,
-            authSuccessHandler, authFailureHandler, localLogoutSuccessHandler);
-
-        http
-            .sessionManagement()
-            .maximumSessions(MAX_CONCURRENT_SESSIONS);
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(RestConstants.PUBLIC_API_V1 + "/images/**");
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(RestConstants.PUBLIC_API_V1 + "/images/**");
+    protected void configure(HttpSecurity http) throws Exception {
+        useNonfederatedSecurityConfiguration(http, authenticationEntryPoint,
+            authSuccessHandler, authFailureHandler, localLogoutSuccessHandler);
     }
 }
