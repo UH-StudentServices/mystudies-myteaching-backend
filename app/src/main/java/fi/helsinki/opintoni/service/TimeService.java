@@ -23,7 +23,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
 
 @Service
@@ -35,12 +37,11 @@ public class TimeService {
         return DateTime.now().minusMonths(months);
     }
 
-    public LocalDateTime endOfDayHelsinki(LocalDateTime fromLocalDateTime) {
-        ZonedDateTime zonedDateTime = fromLocalDateTime.atZone(HELSINKI_ZONE_ID)
+    public LocalDateTime endOfDay(LocalDateTime fromLocalDateTime) {
+        return fromLocalDateTime
             .withHour(23)
             .withMinute(59)
             .withSecond(59);
-        return LocalDateTime.ofInstant(zonedDateTime.toInstant(), ZoneId.of("UTC"));
     }
 
     public String toHelsinkiTimeFromUTC(DateTime dateTime) {

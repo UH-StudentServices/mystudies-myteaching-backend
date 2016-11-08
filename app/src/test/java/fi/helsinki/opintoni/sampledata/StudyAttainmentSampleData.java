@@ -23,11 +23,11 @@ import java.util.Collections;
 import java.util.List;
 
 public class StudyAttainmentSampleData {
-    public static final String ATTAINMENT_DATE = "01.01.2016";
+    public static final String ATTAINMENT_DATE = "02.01.2016";
     public static final Integer ATTAINMENT_DATE_YEAR = 2016;
     public static final Integer ATTAINMENT_DATE_MONTH = 1;
-    public static final Integer ATTAINMENT_DATE_DAY = 1;
-    public static final Integer ATTAINMENT_DATE_HOUR = 22;
+    public static final Integer ATTAINMENT_DATE_DAY = 2;
+    public static final Integer ATTAINMENT_DATE_HOUR = 0;
     public static final Integer ATTAINMENT_DATE_MINUTE = 0;
     public static final Integer CREDITS = 6;
     public static final String GRADE = "5";

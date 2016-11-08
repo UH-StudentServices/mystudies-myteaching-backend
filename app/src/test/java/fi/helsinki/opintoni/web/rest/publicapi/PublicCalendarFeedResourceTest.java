@@ -55,36 +55,36 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
         List<String> expectedIcalEvents = newArrayList(
             eventToString(
                 "BEGIN:VEVENT",
-                "DTSTART:20141027T121500Z",
-                "DTEND:20141027T134500Z",
+                "DTSTART;TZID=Europe/Helsinki:20141027T141500",
+                "DTEND;TZID=Europe/Helsinki:20141027T154500",
                 "SUMMARY:Formulat... Harjoitus (en)\\, Animal Biotechnology B (KEL/KEBIOT230)",
                 "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11",
                 "UID:"),
             eventToString(
                 "BEGIN:VEVENT",
-                "DTSTART:20141028T140000Z",
-                "DTEND:20141128T140000Z",
+                "DTSTART;TZID=Europe/Helsinki:20141028T160000",
+                "DTEND;TZID=Europe/Helsinki:20141128T160000",
                 "SUMMARY:Title: Test 04159adb2253\\, Animal Biotechnology B (KEL/KEBIOT230)",
                 "LOCATION:Place: Test 04156f654df1",
                 "UID:"),
             eventToString(
                 "BEGIN:VEVENT",
-                "DTSTART:20150831T090000Z",
-                "DTEND:20150831T120000Z",
+                "DTSTART;TZID=Europe/Helsinki:20150831T120000",
+                "DTEND;TZID=Europe/Helsinki:20150831T150000",
                 "SUMMARY:Formulat... Harjoitus (en)\\, Animal Biotechnology B (KEL/KEBIOT230)",
                 "LOCATION:Arppeanumin auditorio\\, Viikinkaari 11",
                 "UID:"),
             eventToString(
                 "BEGIN:VEVENT",
-                "DTSTART:20401028T110000Z",
-                "DTEND:20401128T140000Z",
+                "DTSTART;TZID=Europe/Helsinki:20401028T130000",
+                "DTEND;TZID=Europe/Helsinki:20401128T160000",
                 "SUMMARY:Tentti\\, Animal Biotechnology B (KEL/KEBIOT230)",
                 "LOCATION:Tenttisali",
                 "UID:"),
             eventToString(
                 "BEGIN:VEVENT",
-                "DTSTART:20401028T110000Z",
-                "DTEND:20401028T215959Z",
+                "DTSTART;TZID=Europe/Helsinki:20401028T130000",
+                "DTEND;TZID=Europe/Helsinki:20401028T235959",
                 "SUMMARY:Ei päättymisaikaa\\, Animal Biotechnology B (KEL/KEBIOT230)",
                 "LOCATION:Paikka X"
             )

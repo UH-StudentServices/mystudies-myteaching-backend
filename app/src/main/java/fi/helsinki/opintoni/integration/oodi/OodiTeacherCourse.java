@@ -17,10 +17,10 @@
 
 package fi.helsinki.opintoni.integration.oodi;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.Lists;
-import fi.helsinki.opintoni.integration.DateFormatter;
+import fi.helsinki.opintoni.util.LocalDateTimeDeserializer;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,11 +30,11 @@ public class OodiTeacherCourse {
     @JsonProperty("learningopportunity_id")
     public String basecode;
 
-    @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT_OODI)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonProperty("start_date")
     public LocalDateTime startDate;
 
-    @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT_OODI)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonProperty("end_date")
     public LocalDateTime endDate;
 

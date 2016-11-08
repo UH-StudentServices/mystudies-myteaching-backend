@@ -17,28 +17,15 @@
 
 package fi.helsinki.opintoni.integration.oodi.courseunitrealisation;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
-import fi.helsinki.opintoni.integration.DateFormatter;
 
 import java.util.List;
 
 public class OodiCourseUnitRealisation {
 
-    @JsonProperty("course_id")
-    public Integer realisationId;
-
     @JsonProperty("teachers")
     public List<OodiCourseUnitRealisationTeacher> teachers = Lists.newArrayList();
-
-    @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT_OODI)
-    @JsonProperty("end_date")
-    public String endDate;
-
-    @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT_OODI)
-    @JsonProperty("start_date")
-    public String startDate;
 
     @JsonProperty("cancelled")
     public boolean isCancelled;

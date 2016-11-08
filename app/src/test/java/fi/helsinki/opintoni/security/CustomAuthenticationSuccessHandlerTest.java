@@ -127,16 +127,6 @@ public class CustomAuthenticationSuccessHandlerTest {
     }
 
     @Test
-    public void thatLastLoginCookieIsAdded() throws Exception {
-        HttpServletResponse response = mockResponse();
-        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
-
-        handler.onAuthenticationSuccess(mock(HttpServletRequest.class), response, authentication);
-
-        verify(response, times(1)).addCookie(argThat(new LastLoginCookieMatcher()));
-    }
-
-    @Test
     public void thatHasLoggedInCookieIsAdded() throws IOException, ServletException {
         HttpServletResponse response = mockResponse();
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());

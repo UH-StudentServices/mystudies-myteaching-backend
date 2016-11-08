@@ -17,10 +17,10 @@
 
 package fi.helsinki.opintoni.integration.oodi;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.Lists;
-import fi.helsinki.opintoni.integration.DateFormatter;
+import fi.helsinki.opintoni.util.LocalDateTimeDeserializer;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,11 +42,11 @@ public class OodiEvent {
     @JsonProperty("realisation_root_name")
     public List<OodiLocalizedValue> realisationRootName = Lists.newArrayList();
 
-    @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT_OODI)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonProperty("end_date")
     public LocalDateTime endDate;
 
-    @JsonFormat(pattern = DateFormatter.UTC_TIME_FORMAT_OODI)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonProperty("start_date")
     public LocalDateTime startDate;
 
