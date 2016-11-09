@@ -77,8 +77,8 @@ public class DemoUserDetailsService implements UserDetailsService {
     private UserDetails newOpenUniStudent() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("doo_11@helsinki.fi")
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
+            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.AFFILIATE)
             .email("doo_11@example.com")
             .commonName("Kaisa Rajamäki")
             .studentNumber("010094899")
