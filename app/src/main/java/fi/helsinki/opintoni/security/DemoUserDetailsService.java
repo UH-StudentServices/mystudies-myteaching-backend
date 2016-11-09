@@ -20,10 +20,10 @@ import static java.util.Collections.singletonList;
 })
 public class DemoUserDetailsService implements UserDetailsService {
     private final ImmutableMap<String, Supplier<UserDetails>> USER_CONF = ImmutableMap.of(
-        "doo_8", this::newTeacher,
-        "doo_9", this::newStudent,
-        "doo_10", this::newHybrid,
-        "doo_11", this::newOpenUniStudent
+        "e_jukola", this::newTeacher,
+        "v_jukola", this::newStudent,
+        "j_jukola", this::newHybrid,
+        "k_rajama", this::newOpenUniStudent
     );
 
     @Override
