@@ -46,7 +46,6 @@ public class DemoUserDetailsService implements UserDetailsService {
             .commonName("Eero Jukola")
             .employeeNumber("007505")
             .oodiPersonId("109155648")
-            .role(AppUser.Role.ADMIN)
             .build();
     }
 
