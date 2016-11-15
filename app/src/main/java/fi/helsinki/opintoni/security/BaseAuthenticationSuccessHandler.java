@@ -40,7 +40,7 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
     private TimeService timeService;
 
     @Autowired
-    public void injectServices(UserService userService, TimeService timeService) {
+    public void initialize(UserService userService, TimeService timeService) {
         this.userService = userService;
         this.timeService = timeService;
     }
