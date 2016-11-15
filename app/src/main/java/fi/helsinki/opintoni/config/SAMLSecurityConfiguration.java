@@ -91,7 +91,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private Environment environment;
 
     @Autowired
-    private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
+    private FederatedAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Autowired
     private CustomAuthenticationFailureHandler authenticationFailureHandler;

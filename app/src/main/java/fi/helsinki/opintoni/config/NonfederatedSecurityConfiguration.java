@@ -1,10 +1,10 @@
 package fi.helsinki.opintoni.config;
 
-import fi.helsinki.opintoni.security.AuthFailureHandler;
-import fi.helsinki.opintoni.security.CustomAuthenticationSuccessHandler;
-import fi.helsinki.opintoni.security.HttpAuthenticationEntryPoint;
-import fi.helsinki.opintoni.security.LocalLogoutSuccessHandler;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 public interface NonfederatedSecurityConfiguration {
 
@@ -12,10 +12,10 @@ public interface NonfederatedSecurityConfiguration {
 
 
     default void useNonfederatedSecurityConfiguration(HttpSecurity http,
-                                                      HttpAuthenticationEntryPoint authenticationEntryPoint,
-                                                      CustomAuthenticationSuccessHandler authSuccessHandler,
-                                                      AuthFailureHandler authFailureHandler,
-                                                      LocalLogoutSuccessHandler localLogoutSuccessHandler) throws Exception {
+                                                      AuthenticationEntryPoint authenticationEntryPoint,
+                                                      AuthenticationSuccessHandler authSuccessHandler,
+                                                      SimpleUrlAuthenticationFailureHandler authFailureHandler,
+                                                      LogoutSuccessHandler localLogoutSuccessHandler) throws Exception {
         http
             .csrf()
             .disable();

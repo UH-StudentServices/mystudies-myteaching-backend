@@ -25,7 +25,6 @@ import fi.helsinki.opintoni.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -34,15 +33,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-@Component
-public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public abstract class BaseAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final UserService userService;
+    private UserService userService;
 
-    private final TimeService timeService;
+    private TimeService timeService;
 
     @Autowired
-    public CustomAuthenticationSuccessHandler(UserService userService, TimeService timeService) {
+    public void injectServices(UserService userService, TimeService timeService) {
         this.userService = userService;
         this.timeService = timeService;
     }
@@ -59,13 +57,15 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             addLanguageCookie(appUser, response);
             addHasLoggedInCookie(response);
 
-            response.sendRedirect("/");
-
+            handleAuthSuccess(response);
         } catch (OodiIntegrationException e) {
-            response.sendRedirect("/error/maintenance");
+            handleAuthFailure(response);
         }
-
     }
+
+    protected abstract void handleAuthSuccess(HttpServletResponse response) throws IOException;
+
+    protected abstract void handleAuthFailure(HttpServletResponse response) throws IOException;
 
     private void syncUserWithDatabase(AppUser appUser) {
         Optional<User> user = getUserFromDb(appUser);
@@ -107,5 +107,4 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         cookie.setPath("/");
         response.addCookie(cookie);
     }
-
 }

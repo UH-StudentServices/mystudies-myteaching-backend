@@ -18,8 +18,9 @@
 package fi.helsinki.opintoni.config;
 
 import fi.helsinki.opintoni.security.AuthFailureHandler;
-import fi.helsinki.opintoni.security.CustomAuthenticationSuccessHandler;
+import fi.helsinki.opintoni.security.BaseAuthenticationSuccessHandler;
 import fi.helsinki.opintoni.security.HttpAuthenticationEntryPoint;
+import fi.helsinki.opintoni.security.LocalAuthenticationSuccessHandler;
 import fi.helsinki.opintoni.security.LocalLogoutSuccessHandler;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class LocalSecurityConfiguration extends WebSecurityConfigurerAdapter imp
     @Autowired
     private HttpAuthenticationEntryPoint authenticationEntryPoint;
     @Autowired
-    private CustomAuthenticationSuccessHandler authSuccessHandler;
+    private LocalAuthenticationSuccessHandler authSuccessHandler;
     @Autowired
     private AuthFailureHandler authFailureHandler;
     @Autowired
