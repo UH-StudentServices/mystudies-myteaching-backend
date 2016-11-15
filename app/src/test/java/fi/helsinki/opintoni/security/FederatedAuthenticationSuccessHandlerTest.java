@@ -51,7 +51,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CustomAuthenticationSuccessHandlerTest {
+public class FederatedAuthenticationSuccessHandlerTest {
 
     private static final String EDU_PRINCIPAL_NAME = "eduPrincipalName";
     private static final String OODI_PERSON_ID = "oodiPersonId";
@@ -71,7 +71,7 @@ public class CustomAuthenticationSuccessHandlerTest {
     private TimeService timeService;
 
     @InjectMocks
-    private CustomAuthenticationSuccessHandler handler;
+    private FederatedAuthenticationSuccessHandler handler;
 
     @Before
     public void init() {
@@ -140,15 +140,6 @@ public class CustomAuthenticationSuccessHandlerTest {
         HttpServletResponse response = mock(HttpServletResponse.class);
         when(response.getWriter()).thenReturn(mock(PrintWriter.class));
         return response;
-    }
-
-    private static class LastLoginCookieMatcher extends ArgumentMatcher<Cookie> {
-
-        @Override
-        public boolean matches(Object item) {
-            Cookie cookie = (Cookie) item;
-            return Constants.OPINTONI_LAST_LOGIN.equals(cookie.getName());
-        }
     }
 
     private static class LangCookieMatcher extends ArgumentMatcher<Cookie> {
