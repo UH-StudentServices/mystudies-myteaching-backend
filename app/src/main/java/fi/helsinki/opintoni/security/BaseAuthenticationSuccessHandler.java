@@ -96,6 +96,8 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         addCookie(response, cookie);
     }
 
+    // NOTE: This cookie is relied on by courses.helsinki.fi for automatic user login
+    // and should thus not be removed without consulting the course page team first.
     private void addHasLoggedInCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie(Constants.OPINTONI_HAS_LOGGED_IN, Boolean.TRUE.toString());
         cookie.setMaxAge(Integer.MAX_VALUE);
