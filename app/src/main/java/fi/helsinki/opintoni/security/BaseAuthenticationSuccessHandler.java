@@ -31,6 +31,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 
 public abstract class BaseAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -54,7 +55,10 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         try {
             syncUserWithDatabase(appUser);
 
-            addLanguageCookie(appUser, response);
+            if (!hasLanguageCookie(request)) {
+                addLanguageCookie(appUser, response);
+            }
+
             addHasLoggedInCookie(response);
 
             handleAuthSuccess(response);
@@ -89,6 +93,13 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
             user.oodiPersonId = appUser.getOodiPersonId();
             userService.save(user);
         }
+    }
+
+    private boolean hasLanguageCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+
+        return cookies != null && Arrays.stream(cookies)
+            .anyMatch(cookie -> Constants.NG_TRANSLATE_LANG_KEY.equals(cookie.getName()));
     }
 
     private void addLanguageCookie(AppUser appUser, HttpServletResponse response) {
