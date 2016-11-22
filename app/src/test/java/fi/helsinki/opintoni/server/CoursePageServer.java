@@ -21,6 +21,7 @@ import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.sampledata.SampleDataFiles;
 import org.apache.commons.lang.StringUtils;
 import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -29,6 +30,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -59,6 +61,15 @@ public class CoursePageServer {
             );
     }
 
+    public void expectCourseImplementationChangesRequest() {
+        server.expect(requestTo(courseImplementationChangesUrlMatcher()))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(
+                SampleDataFiles.toText("coursepage/course_implementation_changes.json"),
+                MediaType.APPLICATION_JSON
+            ));
+    }
+
     public void expectStudentCourseImplementationEventsRequest(String courseImplementationId) {
         server.expect(requestTo(eventsUrl(courseImplementationId)))
             .andExpect(method(HttpMethod.GET))
@@ -77,7 +88,6 @@ public class CoursePageServer {
             );
     }
 
-
     public void expectCourseImplementationActivityRequest(List<String> courseImplementationIds, String responseFile) {
         server.expect(
             requestTo(new ActivityUrlMatcher(coursePageBaseUrl, courseImplementationIdsToString(courseImplementationIds))))
@@ -91,6 +101,10 @@ public class CoursePageServer {
     private String courseImplementationUrl(String courseImplementationId) {
         return coursePageBaseUrl + "/course_implementations?course_implementation_id=" +
             courseImplementationId;
+    }
+
+    private Matcher<String> courseImplementationChangesUrlMatcher() {
+        return startsWith(coursePageBaseUrl + "/course_implementation/changes/since/");
     }
 
     private String eventsUrl(String courseImplementationId) {

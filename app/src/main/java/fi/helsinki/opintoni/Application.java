@@ -29,6 +29,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -38,6 +39,7 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 
 @ComponentScan
+@EnableScheduling
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
 public class Application {
 

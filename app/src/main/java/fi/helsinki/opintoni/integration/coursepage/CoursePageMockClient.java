@@ -24,6 +24,7 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -44,10 +45,11 @@ public class CoursePageMockClient implements CoursePageClient {
 
     private final ObjectMapper objectMapper;
 
+    private static final long TEST_COURSE_IMPLEMENTATION_ID = 123456789L;
+
     public CoursePageMockClient(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
-
 
     @Override
     public List<CoursePageEvent> getEvents(String courseImplementationId) {
@@ -68,6 +70,11 @@ public class CoursePageMockClient implements CoursePageClient {
                                                                    Locale locale) {
         return getResponse(notifications, new TypeReference<List<CoursePageNotification>>() {
         });
+    }
+
+    @Override
+    public List<Long> getUpdatedCourseImplementationIds(long timestamp) {
+        return Collections.singletonList(TEST_COURSE_IMPLEMENTATION_ID);
     }
 
     public <T> T getResponse(Resource resource, TypeReference<T> typeReference) {

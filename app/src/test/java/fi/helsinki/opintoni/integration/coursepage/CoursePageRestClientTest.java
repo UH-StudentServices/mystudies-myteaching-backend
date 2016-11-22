@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static fi.helsinki.opintoni.web.TestConstants.TEACHER_COURSE_REALISATION_ID;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CoursePageRestClientTest extends SpringTest {
 
@@ -71,5 +71,16 @@ public class CoursePageRestClientTest extends SpringTest {
             .coursePageImplementation(TEACHER_COURSE_REALISATION_ID, "courses_with_moodle_url.json");
 
         assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).moodleUrl).isEqualTo("http://moodle.helsinki.fi");
+    }
+
+    @Test
+    public void thatCourseImplementationsAreCached() {
+        defaultTeacherRequestChain().defaultCourseImplementation();
+
+        CoursePageCourseImplementation implementations = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID);
+        CoursePageCourseImplementation cachedImplementations =
+            coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID);
+
+        assertThat(implementations).isSameAs(cachedImplementations);
     }
 }

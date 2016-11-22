@@ -19,6 +19,8 @@ package fi.helsinki.opintoni.integration.coursepage;
 
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.integration.DateFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -35,9 +37,10 @@ import java.util.stream.Collectors;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class CoursePageRestClient implements CoursePageClient {
-
     private final String baseUrl;
     private final RestTemplate restTemplate;
+
+    private static final Logger log = LoggerFactory.getLogger(CoursePageRestClient.class);
 
     public CoursePageRestClient(String baseUrl, RestTemplate restTemplate) {
         this.baseUrl = baseUrl;
@@ -58,9 +61,11 @@ public class CoursePageRestClient implements CoursePageClient {
             .orElse(newArrayList());
     }
 
-    @Cacheable(CacheConstants.COURSE_PAGE)
+    @Cacheable(value = CacheConstants.COURSE_PAGE, key = "#courseImplementationId")
     @Override
     public CoursePageCourseImplementation getCoursePage(String courseImplementationId) {
+        log.info("fetching course impl with id {}", courseImplementationId);
+
         return
             restTemplate.exchange(
                 "{baseUrl}/course_implementations?course_implementation_id={courseImplementationId}",
@@ -95,4 +100,12 @@ public class CoursePageRestClient implements CoursePageClient {
             .orElse(newArrayList());
     }
 
+    @Override
+    public List<Long> getUpdatedCourseImplementationIds(long timestamp) {
+        ResponseEntity<List<Long>> response = restTemplate.exchange(
+            "{baseUrl}/course_implementation/changes/since/{timestamp}", HttpMethod.GET, null,
+            new ParameterizedTypeReference<List<Long>>() {}, baseUrl, timestamp);
+
+        return Optional.ofNullable(response.getBody()).orElse(newArrayList());
+    }
 }

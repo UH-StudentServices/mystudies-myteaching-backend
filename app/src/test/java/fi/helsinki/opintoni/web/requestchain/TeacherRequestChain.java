@@ -109,7 +109,6 @@ public class TeacherRequestChain {
         return builder.expectImplementation();
     }
 
-
     public CourseImplementationRequestChain<TeacherRequestChain> coursePageImplementation(
         String courseImplementationId, String responseFile) {
         CourseImplementationRequestChain<TeacherRequestChain> builder =
@@ -118,7 +117,6 @@ public class TeacherRequestChain {
                 coursePageServer,
                 courseImplementationId);
         return builder.expectImplementation(responseFile);
-
     }
 
     public CourseImplementationActivityRequestChain<TeacherRequestChain> activity(String responseFile) {
