@@ -35,7 +35,7 @@ import static java.util.Collections.singletonList;
     Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT,
     Constants.SPRING_PROFILE_DEVELOPMENT
 })
-public class HardCodedUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+public class DevUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     private static final String USERNAME_STUDENT = "opiskelija";
     private static final String USERNAME_MAG = "mag_simp";
