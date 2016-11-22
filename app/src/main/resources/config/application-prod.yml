@@ -47,7 +47,7 @@ unisport:
     userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
 
 recommendations:
-    maxRecommendations: 5
+    maxRecommendations: 20
     uidPrefix: opintohistoria_
 
 googleAnalyticsAccount:

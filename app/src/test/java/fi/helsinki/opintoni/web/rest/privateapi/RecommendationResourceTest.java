@@ -51,7 +51,7 @@ public class RecommendationResourceTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(2)))
+            .andExpect(jsonPath("$", hasSize(20)))
             .andExpect(jsonPath("$[0].title").value(expectedTitle))
             .andExpect(jsonPath("$[0].link").value(expectedLink));
     }
