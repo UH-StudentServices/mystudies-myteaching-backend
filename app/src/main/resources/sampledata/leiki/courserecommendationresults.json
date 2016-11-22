@@ -1,55 +1,793 @@
 {
-  "status": "ok",
-  "data": {
-    "items": [
-      {
-        "ID": "courses.helsinki.fi/fi/400583",
-        "feedID": "kurssit_archive",
-        "feedName": "Kurssit (arkisto)",
-        "title": "Henkilökohtainen opintosuunnitelma (HOPS) (ENG321)",
-        "link": "https://dev.student.helsinki.fi/590155/107694052",
-        "date": "2015-08-31T14:01:08",
-        "relevance": 0,
-        "popularity": 0,
-        "tags": [
-          {
-            "name": "lang_en",
-            "values": [
-              "Henkilökohtainen opintosuunnitelma (HOPS) (ENG321) (en)"
-            ]
-          },
-          {
-            "name": "lang_sv",
-            "values": [
-              "Henkilökohtainen opintosuunnitelma (HOPS) (ENG321) (sv)"
-            ]
-          }
+    "status": "ok",
+    "data": {
+        "items": [
+            {
+                "ID": "courses.helsinki.fi/fi/400583",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Henkilökohtainen opintosuunnitelma (HOPS) (ENG321)",
+                "link": "https://dev.student.helsinki.fi/590155/107694052",
+                "date": "2015-08-31T14:01:08",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Henkilökohtainen opintosuunnitelma (HOPS) (ENG321) (en)"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Henkilökohtainen opintosuunnitelma (HOPS) (ENG321) (sv)"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/400581",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Seminaari (ENG320)",
+                "link": "https://dev.student.helsinki.fi/590155/107694052",
+                "date": "2015-08-31T14:01:08",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Seminaari (ENG320) (en)"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Seminaari (ENG320) (sv)"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30001",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Päihdelääketiede",
+                "link": "http://courses.helsinki.fi/fi/30001",
+                "date": "2016-04-29T09:35:37",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Substance Abuce Medicine"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Berusningsmedel medicin"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/300011",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Tutkielma",
+                "link": "http://courses.helsinki.fi/fi/300011",
+                "date": "2016-04-29T09:35:37",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Thesis"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Avhandling"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30043",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Lastenpsykiatria ja nuorisopsykiatria",
+                "link": "http://courses.helsinki.fi/fi/30043",
+                "date": "2016-04-29T09:35:41",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Child Psychiatry and Adolescent Psychiatry"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Barnpsykiatri och ungdomspsykiatri"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30046",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Lasten ja nuorten terveys ja sairaudet",
+                "link": "http://courses.helsinki.fi/fi/30046",
+                "date": "2016-04-29T09:35:41",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Pediatrics"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Pediatrik"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30061",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Oikeuslääketiede",
+                "link": "http://courses.helsinki.fi/fi/30061",
+                "date": "2016-04-29T09:35:43",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Forensic Medicine"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Rättsmedicin"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30079",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Synnytys- ja naistentautioppi",
+                "link": "http://courses.helsinki.fi/fi/30079",
+                "date": "2016-04-29T09:35:44",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Gynaecology and Obstetrics"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Obstetrik och gynekologi"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30111",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Sisätautien amanuenssipalvelu",
+                "link": "http://courses.helsinki.fi/fi/30111",
+                "date": "2016-04-29T09:35:47",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Department of Medicine, Amanuensis Service"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Amanuenstjänstgöring i inre medicin"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30126",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Elvytystentti",
+                "link": "http://courses.helsinki.fi/fi/30126",
+                "date": "2016-04-29T09:35:48",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Examination  on Resuscitation Skills"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Återupplivningstent"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30179",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Sisätautien kertauskurssi",
+                "link": "http://courses.helsinki.fi/fi/30179",
+                "date": "2016-04-29T09:35:52",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Repetition Course in Internal Medicine"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Repetitionskurs i inremedicin"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30256",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Neurobiologia",
+                "link": "http://courses.helsinki.fi/fi/30256",
+                "date": "2016-04-29T09:35:57",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Neurobiology"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Neurobiologi"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30263",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Infektiosairaudet ja kliininen mikrobiologia",
+                "link": "http://courses.helsinki.fi/fi/30263",
+                "date": "2016-04-29T09:35:58",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Infectious Diseases and Clinical Microbiology"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Infektionssjukdomar och klinisk mikrobiologi"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30303",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Geriatria",
+                "link": "http://courses.helsinki.fi/fi/30303",
+                "date": "2016-04-29T09:36:01",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Geriatrics"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Geriatri"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30375",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Kansanterveystieteen tentti L6",
+                "link": "http://courses.helsinki.fi/fi/30375",
+                "date": "2016-04-29T09:36:06",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Examination in Public Health M6"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Tent i folkhälsovetenskap M6"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/30401",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Kirjallinen kypsyysnäyte, suomi",
+                "link": "http://courses.helsinki.fi/fi/30401",
+                "date": "2016-04-29T09:36:07",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Maturity Test"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Skriftligt mogenhetsprov"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/31034",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Valinnaisia opintoja",
+                "link": "http://courses.helsinki.fi/fi/31034",
+                "date": "2016-04-29T09:36:25",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Elective Studies"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Valbara studier"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/350134",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Suusairauksien teemapäivä",
+                "link": "http://courses.helsinki.fi/fi/350134",
+                "date": "2016-04-29T09:36:54",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "sys_f_defaultlang",
+                        "values": [
+                            "true"
+                        ]
+                    },
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Special subject day on oral and maxillofacial problems"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Tema:Oral- och maxillofacialkirurgiska problem"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/35030",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Lasten, nuorten sekä heidän perheidensä kohtaaminen",
+                "link": "http://courses.helsinki.fi/fi/35030",
+                "date": "2016-04-29T09:37:03",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Encountering a child, an adolenscent and his or her family"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Patientmöte med barn, ungdomar och familjer"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            },
+            {
+                "ID": "courses.helsinki.fi/fi/992911",
+                "feedID": "kurssit_archive",
+                "feedName": "Kurssit (arkisto)",
+                "title": "Toisen kotimaisen kielen suullinen taito, ruotsi",
+                "link": "http://courses.helsinki.fi/fi/992911",
+                "date": "2016-04-29T10:00:26",
+                "relevance": 0,
+                "popularity": 0,
+                "tags": [
+                    {
+                        "name": "lang_en",
+                        "values": [
+                            "Oral Skills in the Second Official Language, Swedish"
+                        ]
+                    },
+                    {
+                        "name": "sys_f_lang",
+                        "values": [
+                            "fi"
+                        ]
+                    },
+                    {
+                        "name": "lang_sv",
+                        "values": [
+                            "Muntlig färdighet i andra inhemska språket, svenska"
+                        ]
+                    },
+                    {
+                        "name": "article_type",
+                        "values": [
+                            "article"
+                        ]
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "ID": "courses.helsinki.fi/fi/400581",
-        "feedID": "kurssit_archive",
-        "feedName": "Kurssit (arkisto)",
-        "title": "Seminaari (ENG320)",
-        "link": "https://dev.student.helsinki.fi/590155/107694052",
-        "date": "2015-08-31T14:01:08",
-        "relevance": 0,
-        "popularity": 0,
-        "tags": [
-          {
-            "name": "lang_en",
-            "values": [
-              "Seminaari (ENG320) (en)"
-            ]
-          },
-          {
-            "name": "lang_sv",
-            "values": [
-              "Seminaari (ENG320) (sv)"
-            ]
-          }
-        ]
-      }
-    ]
-  }
+    }
 }

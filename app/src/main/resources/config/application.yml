@@ -271,7 +271,7 @@ search:
   maxCategoryResults: 10
 
 recommendations:
-  maxRecommendations: 5
+  maxRecommendations: 20
   uidPrefix: opintohistoriatesti_
 
 cookieDomain: helsinki.fi
