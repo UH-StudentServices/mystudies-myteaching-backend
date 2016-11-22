@@ -184,6 +184,10 @@ public abstract class SpringTest {
         return new StudentRequestChain(studentNumber, oodiServer, coursePageServer);
     }
 
+    protected void expectCourseImplementationChangesRequest() {
+        coursePageServer.expectCourseImplementationChangesRequest();
+    }
+
     protected String getRemoteMockApiUrl(String path) {
         return StringUtil
             .format("http://%s:%s%s/%s",

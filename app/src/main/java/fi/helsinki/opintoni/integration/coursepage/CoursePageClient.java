@@ -31,4 +31,6 @@ public interface CoursePageClient {
                                                             Locale locale);
 
     CoursePageCourseImplementation getCoursePage(String courseImplementationId);
+
+    List<Long> getUpdatedCourseImplementationIds(long timestamp);
 }
