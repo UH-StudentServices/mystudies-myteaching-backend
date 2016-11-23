@@ -28,6 +28,11 @@ spring:
             hibernate.generate_statistics: ${jpa.properties.hibernate.generate_statistics}
             hibernate.cache.region.factory_class: ${jpa.properties.hibernate.cache.region.factory_class}
 
+logging:
+    level:
+        org.springframework.security.saml: ERROR
+        org.opensaml: FATAL
+
 metrics:
     jmx.enabled: true
 
