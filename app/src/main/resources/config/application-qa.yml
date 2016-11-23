@@ -39,7 +39,6 @@ coursePage:
     base.url: https://dev.courses.helsinki.fi/api/v1
     client.implementation: rest
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
-    checkUpdates.interval.seconds: 60
 
 unisport:
     client.implementation: rest
