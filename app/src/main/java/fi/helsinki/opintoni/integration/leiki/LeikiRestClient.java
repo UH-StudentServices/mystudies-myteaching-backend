@@ -17,12 +17,12 @@
 
 package fi.helsinki.opintoni.integration.leiki;
 
-import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -30,9 +30,11 @@ import java.net.URI;
 import java.util.List;
 import java.util.Locale;
 
+import static com.google.common.collect.Lists.newArrayList;
+
 public class LeikiRestClient implements LeikiClient {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(LeikiRestClient.class);
+    private final static Logger log = LoggerFactory.getLogger(LeikiRestClient.class);
 
     private final String baseUrl;
     private final int maxSearchResults;
@@ -65,8 +67,7 @@ public class LeikiRestClient implements LeikiClient {
             .queryParam("fulltext", "true")
             .queryParam("partialsearchpriority", "ontology").build().encode().toUri();
 
-        return getLeikiItemsData(uri, new ParameterizedTypeReference<LeikiResponse<LeikiSearchHit>>() {
-        });
+        return getLeikiItemsData(uri, new ParameterizedTypeReference<LeikiResponse<LeikiSearchHit>>() {});
     }
 
     @Override
@@ -80,8 +81,7 @@ public class LeikiRestClient implements LeikiClient {
             .queryParam("format", "json")
             .queryParam("max", maxCategoryResults).build().encode().toUri();
 
-        return getLeikiCategoryData(uri, new ParameterizedTypeReference<LeikiCategoryResponse<LeikiCategoryHit>>() {
-        });
+        return getLeikiCategoryData(uri, new ParameterizedTypeReference<LeikiCategoryResponse<LeikiCategoryHit>>() {});
     }
 
     @Override
@@ -100,33 +100,40 @@ public class LeikiRestClient implements LeikiClient {
             .encode()
             .toUri();
 
+        return getLeikiItemsData(uri, new ParameterizedTypeReference<LeikiResponse<LeikiCourseRecommendation>>() {});
+    }
+
+    private <T> List<T> getLeikiItemsData(URI uri,
+                                          ParameterizedTypeReference<LeikiResponse<T>> typeReference) {
         try {
-            return getLeikiItemsData(uri, new ParameterizedTypeReference<LeikiResponse<LeikiCourseRecommendation>>() {});
-        } catch(Exception e) {
-            LOGGER.error("Caught exception when fetching Leiki course recommendations", e);
-            return Lists.newArrayList();
+            LeikiData<T> leikiData = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                null,
+                typeReference).getBody().data;
+
+            return leikiData.items != null ? leikiData.items : newArrayList();
+        } catch (RestClientException e) {
+            log.error("Leiki client threw exception: ", e);
+
+            return newArrayList();
         }
     }
 
-    public <T> List<T> getLeikiItemsData(URI uri,
-                                         ParameterizedTypeReference<LeikiResponse<T>> typeReference) {
-        LeikiData<T> leikiData = restTemplate.exchange(
-            uri,
-            HttpMethod.GET,
-            null,
-            typeReference).getBody().data;
+    private <T> List<T> getLeikiCategoryData(URI uri,
+                                             ParameterizedTypeReference<LeikiCategoryResponse<T>> typeReference) {
+        try {
+            LeikiCategoryData<T> leikiCategoryData = restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                null,
+                typeReference).getBody().data;
 
-        return leikiData.items != null ? leikiData.items : Lists.newArrayList();
-    }
+            return leikiCategoryData.matches.get(0).match;
+        } catch (RestClientException e) {
+            log.error("Leiki client threw exception: ", e);
 
-    public <T> List<T> getLeikiCategoryData(URI uri,
-                                            ParameterizedTypeReference<LeikiCategoryResponse<T>> typeReference) {
-        LeikiCategoryData<T> leikiCategoryData = restTemplate.exchange(
-            uri,
-            HttpMethod.GET,
-            null,
-            typeReference).getBody().data;
-
-        return leikiCategoryData.matches.get(0).match;
+            return newArrayList();
+        }
     }
 }
