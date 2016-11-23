@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.apache.commons.collections.CollectionUtils.isNotEmpty;
 
 public class LeikiRestClient implements LeikiClient {
 
@@ -129,7 +130,9 @@ public class LeikiRestClient implements LeikiClient {
                 null,
                 typeReference).getBody().data;
 
-            return leikiCategoryData.matches.get(0).match;
+            return isNotEmpty(leikiCategoryData.matches) ?
+                leikiCategoryData.matches.get(0).match :
+                newArrayList();
         } catch (RestClientException e) {
             log.error("Leiki client threw exception: ", e);
 
