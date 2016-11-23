@@ -115,7 +115,7 @@ public class LeikiRestClient implements LeikiClient {
 
             return leikiData.items != null ? leikiData.items : newArrayList();
         } catch (RestClientException e) {
-            log.error("Leiki client threw exception: ", e);
+            log.error("Leiki client threw exception: ", e.getMessage());
 
             return newArrayList();
         }
@@ -134,7 +134,7 @@ public class LeikiRestClient implements LeikiClient {
                 leikiCategoryData.matches.get(0).match :
                 newArrayList();
         } catch (RestClientException e) {
-            log.error("Leiki client threw exception: ", e);
+            log.error("Leiki client threw exception: ", e.getMessage());
 
             return newArrayList();
         }
