@@ -41,8 +41,7 @@ public class GlobalExceptionHandlersTest extends SpringTest {
     public void thatNotFoundIsReturned() throws Exception {
         mockMvc.perform(get("/notfound").with(securityContext(studentSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNotFound())
-            .andExpect(jsonPath("$.error").value("Not found"));
+            .andExpect(status().isNotFound());
     }
 
     @Test

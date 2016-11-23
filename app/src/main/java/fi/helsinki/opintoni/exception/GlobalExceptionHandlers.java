@@ -47,8 +47,8 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
     private final static Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandlers.class);
 
     @ExceptionHandler(value = NotFoundException.class)
-    public ResponseEntity<CommonError> handleNotFound() throws Exception {
-        return new ResponseEntity<>(new CommonError("Not found"), HttpStatus.NOT_FOUND);
+    public ResponseEntity handleNotFound() throws Exception {
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = {ForbiddenException.class, AccessDeniedException.class})
