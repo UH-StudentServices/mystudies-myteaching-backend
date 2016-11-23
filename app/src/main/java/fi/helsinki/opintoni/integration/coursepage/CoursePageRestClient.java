@@ -64,7 +64,7 @@ public class CoursePageRestClient implements CoursePageClient {
     @Cacheable(value = CacheConstants.COURSE_PAGE, key = "#courseImplementationId")
     @Override
     public CoursePageCourseImplementation getCoursePage(String courseImplementationId) {
-        log.info("fetching course impl with id {}", courseImplementationId);
+        log.trace("fetching course impl with id {}", courseImplementationId);
 
         return
             restTemplate.exchange(

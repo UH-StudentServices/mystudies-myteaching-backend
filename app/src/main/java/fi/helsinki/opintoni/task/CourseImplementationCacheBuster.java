@@ -32,7 +32,7 @@ public class CourseImplementationCacheBuster {
     private void evictStaleCacheEntries(List<Long> updatedCourses) {
         Cache courseImplementationCache = cacheManager.getCache(CacheConstants.COURSE_PAGE);
         updatedCourses.stream().forEach(id -> {
-            log.info("evicting cache entry for course impl with id {}", id);
+            log.trace("evicting cache entry for course impl with id {}", id);
             courseImplementationCache.evict(id.toString());
         });
     }
