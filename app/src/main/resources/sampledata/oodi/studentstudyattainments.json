@@ -41,8 +41,8 @@
     },
     {
       "attainment_status_code": 4,
-      "attainment_date": "2015-10-01T22:00:00.000Z",
-      "studyattainment_id": 2,
+      "attainment_date": "2016-01-01T22:00:00.000Z",
+      "studyattainment_id": 1,
       "attainment_lang": null,
       "person_id": 40442047,
       "attainment_status": "Suoritettu",
@@ -63,15 +63,89 @@
       "learningopportunity_name": [
         {
           "langcode": "fi",
-          "text": "Formulointi II"
+          "text": "Formulointi III"
         },
         {
           "langcode": "sv",
-          "text": "Formulering II"
+          "text": "Formulering III"
         },
         {
           "langcode": "en",
-          "text": "Formulation II"
+          "text": "Formulation III"
+        }
+      ],
+      "learningopportunity_id": "123456789"
+    },
+    {
+      "attainment_status_code": 4,
+      "attainment_date": "2016-01-01T22:00:00.000Z",
+      "studyattainment_id": 1,
+      "attainment_lang": null,
+      "person_id": 40442047,
+      "attainment_status": "Suoritettu",
+      "textual_assessment": null,
+      "teachers": [
+        {
+          "teacher_id": "059240",
+          "person_id": 47501681,
+          "short_name": "Opettaja Olli",
+          "last_names": "Opettaja",
+          "first_names": "Olli"
+        }
+      ],
+      "studyright_id": null,
+      "grade": "Hyv.",
+      "credits": 7,
+      "expiry_date": null,
+      "learningopportunity_name": [
+        {
+          "langcode": "fi",
+          "text": "Syventävä harjoittelu"
+        },
+        {
+          "langcode": "sv",
+          "text": "Fördjupat praktikum"
+        },
+        {
+          "langcode": "en",
+          "text": "Advanced Teaching Practice"
+        }
+      ],
+      "learningopportunity_id": "123456789"
+    },
+    {
+      "attainment_status_code": 4,
+      "attainment_date": "2015-10-01T22:00:00.000Z",
+      "studyattainment_id": 2,
+      "attainment_lang": null,
+      "person_id": 40442047,
+      "attainment_status": "Suoritettu",
+      "textual_assessment": null,
+      "teachers": [
+        {
+          "teacher_id": "059240",
+          "person_id": 47501681,
+          "short_name": "Opettaja Olli",
+          "last_names": "Opettaja",
+          "first_names": "Olli"
+        }
+      ],
+      "studyright_id": null,
+      "grade": "MCLA",
+      "credits": 40,
+      "expiry_date": null,
+      "learningopportunity_name": [
+        {
+          "langcode": "fi",
+          "text": "S 4. Pro gradu -tutkielma ja sen tekemistä tukevat seminaarit"
+        },
+        {
+          "langcode": "sv",
+          "text": "Pro gradu -avhandlingen och seminarier som stöder forskningsprocessen "
+        },
+        {
+          "langcode": "en",
+          "text": "Master's thesis and seminars"
         }
       ],
       "learningopportunity_id": "987654321"
