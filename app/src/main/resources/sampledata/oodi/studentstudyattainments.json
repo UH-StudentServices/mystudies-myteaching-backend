@@ -42,7 +42,7 @@
     {
       "attainment_status_code": 4,
       "attainment_date": "2016-01-01T22:00:00.000Z",
-      "studyattainment_id": 1,
+      "studyattainment_id": 2,
       "attainment_lang": null,
       "person_id": 40442047,
       "attainment_status": "Suoritettu",
@@ -74,12 +74,56 @@
           "text": "Formulation III"
         }
       ],
-      "learningopportunity_id": "123456789"
+      "learningopportunity_id": "123456788"
     },
     {
       "attainment_status_code": 4,
       "attainment_date": "2016-01-01T22:00:00.000Z",
-      "studyattainment_id": 1,
+      "studyattainment_id": 3,
+      "attainment_lang": null,
+      "person_id": 40442047,
+      "attainment_status": "Suoritettu",
+      "textual_assessment": null,
+      "teachers": [
+        {
+          "teacher_id": "059240",
+          "person_id": 47501681,
+          "short_name": "Opettaja Olli",
+          "last_names": "Opettaja",
+          "first_names": "Olli"
+        },
+        {
+          "teacher_id": "059241",
+          "person_id": 47501682,
+          "short_name": "Snape Severus",
+          "last_names": "Snape",
+          "first_names": "Severus"
+        }
+      ],
+      "studyright_id": null,
+      "grade": "HT",
+      "credits": 13,
+      "expiry_date": null,
+      "learningopportunity_name": [
+        {
+          "langcode": "fi",
+          "text": "Puolustus pimeitä taitoja vastaan"
+        },
+        {
+          "langcode": "sv",
+          "text": "Försvar mot Svartkonster"
+        },
+        {
+          "langcode": "en",
+          "text": "Defence Against the Dark Arts"
+        }
+      ],
+      "learningopportunity_id": "123456787"
+    },
+    {
+      "attainment_status_code": 4,
+      "attainment_date": "2016-01-01T22:00:00.000Z",
+      "studyattainment_id": 4,
       "attainment_lang": null,
       "person_id": 40442047,
       "attainment_status": "Suoritettu",
@@ -111,12 +155,12 @@
           "text": "Advanced Teaching Practice"
         }
       ],
-      "learningopportunity_id": "123456789"
+      "learningopportunity_id": "123456786"
     },
     {
       "attainment_status_code": 4,
       "attainment_date": "2015-10-01T22:00:00.000Z",
-      "studyattainment_id": 2,
+      "studyattainment_id": 5,
       "attainment_lang": null,
       "person_id": 40442047,
       "attainment_status": "Suoritettu",
