@@ -305,6 +305,10 @@ leiki:
 flamma:
     base.url: https://flamma.helsinki.fi
 
+publicWww:
+    base.url: https://www.helsinki.fi
+    path: fi/feeds/filtered-news/rss/11405/all
+
 googleAnalyticsAccount: UA-123
 
 hostUrl: https://opi-1.student.helsinki.fi

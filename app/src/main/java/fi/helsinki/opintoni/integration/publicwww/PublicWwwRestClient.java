@@ -15,51 +15,36 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.flamma;
+package fi.helsinki.opintoni.integration.publicwww;
 
-import com.google.common.collect.ImmutableMap;
 import com.rometools.rome.feed.atom.Feed;
+import fi.helsinki.opintoni.config.AppConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Locale;
-
-public class FlammaRestClient {
-
+public class PublicWwwRestClient {
     private final String baseUrl;
     private final RestTemplate restTemplate;
 
-    private final ImmutableMap<String, String> studentFeedsByLocale;
-    private final ImmutableMap<String, String> teacherFeedsByLocale;
+    @Autowired
+    private AppConfiguration appConfiguration;
 
-    public FlammaRestClient(String baseUrl, RestTemplate restTemplate) {
+    public PublicWwwRestClient(String baseUrl, RestTemplate restTemplate) {
         this.baseUrl = baseUrl;
         this.restTemplate = restTemplate;
-
-        studentFeedsByLocale = ImmutableMap.of(
-            "fi", "atom-tiedotteet-opiskelijalle.xml",
-            "sv", "atom-tiedotteet-opiskelijalle-sv.xml",
-            "en", "atom-tiedotteet-opiskelijalle-en.xml");
-        teacherFeedsByLocale = ImmutableMap.of(
-            "fi", "atom-tiedotteet-opetusasiat.xml",
-            "sv", "atom-tiedotteet-opetusasiat-sv.xml",
-            "en", "atom-tiedotteet-opetusasiat-en.xml");
     }
 
-    public Feed getStudentFeed(Locale locale) {
-        String uri = getFeedUri(studentFeedsByLocale.get(locale.getLanguage()));
+    public Feed getStudentOpenUniversityFeed() {
+        String uri = getFeedUri();
         return restTemplate.getForObject(uri, Feed.class);
     }
 
-    public Feed getTeacherFeed(Locale locale) {
-        String uri = getFeedUri(teacherFeedsByLocale.get(locale.getLanguage()));
-        return restTemplate.getForObject(uri, Feed.class);
-    }
-
-    private String getFeedUri(String pathSegment) {
+    private String getFeedUri() {
         return UriComponentsBuilder.fromHttpUrl(baseUrl)
-            .path("infotaulu")
-            .pathSegment(pathSegment)
+            .path(appConfiguration.get("publicWww.path"))
             .toUriString();
     }
+
 }
+
