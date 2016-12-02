@@ -131,7 +131,7 @@ public class NewsResourceTest extends SpringTest {
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(1)))
             .andExpect(jsonPath("$[0].title").value("Otsikko"))
-            .andExpect(jsonPath("$[0].url").value("https://flamma.helsinki.fi/portal/units/avoin"))
+            .andExpect(jsonPath("$[0].url").value("https://www.helsinki.fi/fi/uutiset/otsikko"))
             .andExpect(jsonPath("$[0].content").value("Sisältö"));
     }
 
