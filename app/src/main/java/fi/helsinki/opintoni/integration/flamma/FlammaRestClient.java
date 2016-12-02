@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.feed.AtomFeedHttpMessageConverter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -66,12 +67,26 @@ public class FlammaRestClient {
 
     public Feed getStudentFeed(Locale locale) {
         String uri = getFeedUri(studentFeedsByLocale.get(locale.getLanguage()));
-        return restTemplate.getForObject(uri, Feed.class);
+
+        try {
+            return restTemplate.getForObject(uri, Feed.class);
+        } catch (RestClientException e) {
+            log.error("Flamma REST client students threw exception: {}", e.getMessage());
+
+            return new Feed("atom_0.3");
+        }
     }
 
     public Feed getTeacherFeed(Locale locale) {
         String uri = getFeedUri(teacherFeedsByLocale.get(locale.getLanguage()));
-        return restTemplate.getForObject(uri, Feed.class);
+
+        try {
+            return restTemplate.getForObject(uri, Feed.class);
+        } catch (RestClientException e) {
+            log.error("Flamma REST client for teachers threw exception: {}", e.getMessage());
+
+            return new Feed("atom_0.3");
+        }
     }
 
     private RestTemplate createRestTemplate() {
