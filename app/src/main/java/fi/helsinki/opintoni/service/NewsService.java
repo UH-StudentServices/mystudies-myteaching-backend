@@ -41,6 +41,8 @@ public class NewsService {
     private final PublicWwwRestClient publicWwwRestClient;
     private final NewsConverter newsConverter;
 
+    private static final int MAX_NEWS = 4;
+
     @Autowired
     public NewsService(FlammaRestClient flammaRestClient, PublicWwwRestClient publicWwwRestClient, NewsConverter newsConverter) {
         this.flammaRestClient = flammaRestClient;
@@ -60,19 +62,19 @@ public class NewsService {
 
     @Cacheable(CacheConstants.STUDENT_OPEN_UNIVERSITY_NEWS)
     public List<NewsDto> getStudentOpenUniversityNews() {
-        return getRssNews(() -> publicWwwRestClient.getStudentOpenUniversityFeed());
+        return getRssNews(publicWwwRestClient::getStudentOpenUniversityFeed);
     }
 
     private List<NewsDto> getAtomNews(Supplier<Feed> feedSupplier) {
         return feedSupplier.get().getEntries().stream()
-            .limit(4)
+            .limit(MAX_NEWS)
             .map(newsConverter::toDtoFromAtom)
             .collect(Collectors.toList());
     }
 
     private List<NewsDto> getRssNews(Supplier<Channel> channelSupplier) {
         return channelSupplier.get().getItems().stream()
-            .limit(4)
+            .limit(MAX_NEWS)
             .map(newsConverter::toDtoFromRss)
             .collect(Collectors.toList());
     }
