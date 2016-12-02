@@ -18,13 +18,14 @@
 package fi.helsinki.opintoni.service.converter;
 
 import com.rometools.rome.feed.atom.Entry;
+import com.rometools.rome.feed.rss.Item;
 import fi.helsinki.opintoni.dto.NewsDto;
 import org.springframework.stereotype.Component;
 
 @Component
 public class NewsConverter {
 
-    public NewsDto toDto(Entry atomFeedEntry) {
+    public NewsDto toDtoFromAtom(Entry atomFeedEntry) {
         NewsDto newsDto = new NewsDto();
         newsDto.title = atomFeedEntry.getTitle();
         newsDto.url = atomFeedEntry.getAlternateLinks().get(0).getHref();
@@ -35,4 +36,17 @@ public class NewsConverter {
         }
         return newsDto;
     }
+
+    public NewsDto toDtoFromRss(Item rssFeedItem) {
+        NewsDto newsDto = new NewsDto();
+        newsDto.title = rssFeedItem.getTitle();
+        newsDto.url = rssFeedItem.getLink();
+        if (rssFeedItem.getDescription() != null && rssFeedItem.getDescription().getValue() != null) {
+            newsDto.content = rssFeedItem.getDescription().getValue();
+        } else {
+            newsDto.content = "";
+        }
+        return newsDto;
+    }
+
 }

@@ -17,13 +17,13 @@
 
 package fi.helsinki.opintoni.integration.publicwww;
 
-import com.rometools.rome.feed.atom.Feed;
+import com.rometools.rome.feed.rss.Channel;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.feed.AtomFeedHttpMessageConverter;
+import org.springframework.http.converter.feed.RssChannelHttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -51,20 +51,20 @@ public class PublicWwwRestClient {
         return restTemplate;
     }
 
-    public Feed getStudentOpenUniversityFeed() {
+    public Channel getStudentOpenUniversityFeed() {
         String uri = getFeedUri();
 
         try {
-            return restTemplate.getForObject(uri, Feed.class);
+            return restTemplate.getForObject(uri, Channel.class);
         } catch (RestClientException e) {
             log.error("Public WWW client threw exception: ", e.getMessage());
 
-            return new Feed("atom_0.3");
+            return new Channel("rss_2.0");
         }
     }
 
     private RestTemplate createRestTemplate() {
-        final AtomFeedHttpMessageConverter converter = new AtomFeedHttpMessageConverter();
+        final RssChannelHttpMessageConverter converter = new RssChannelHttpMessageConverter();
         converter.setSupportedMediaTypes(Collections.singletonList(MediaType.TEXT_XML));
 
         return new RestTemplate(Collections.singletonList(converter));

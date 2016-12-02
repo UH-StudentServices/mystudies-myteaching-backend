@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service;
 
 
 import com.rometools.rome.feed.atom.Feed;
+import com.rometools.rome.feed.rss.Channel;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.dto.NewsDto;
 import fi.helsinki.opintoni.integration.flamma.FlammaRestClient;
@@ -40,6 +41,8 @@ public class NewsService {
     private final PublicWwwRestClient publicWwwRestClient;
     private final NewsConverter newsConverter;
 
+    private static final int MAX_NEWS = 4;
+
     @Autowired
     public NewsService(FlammaRestClient flammaRestClient, PublicWwwRestClient publicWwwRestClient, NewsConverter newsConverter) {
         this.flammaRestClient = flammaRestClient;
@@ -49,23 +52,30 @@ public class NewsService {
 
     @Cacheable(CacheConstants.STUDENT_NEWS)
     public List<NewsDto> getStudentNews(Locale locale) {
-        return getNews(() -> flammaRestClient.getStudentFeed(locale));
+        return getAtomNews(() -> flammaRestClient.getStudentFeed(locale));
     }
 
     @Cacheable(CacheConstants.TEACHER_NEWS)
     public List<NewsDto> getTeacherNews(Locale locale) {
-        return getNews(() -> flammaRestClient.getTeacherFeed(locale));
+        return getAtomNews(() -> flammaRestClient.getTeacherFeed(locale));
     }
 
     @Cacheable(CacheConstants.STUDENT_OPEN_UNIVERSITY_NEWS)
     public List<NewsDto> getStudentOpenUniversityNews() {
-        return getNews(() -> publicWwwRestClient.getStudentOpenUniversityFeed());
+        return getRssNews(publicWwwRestClient::getStudentOpenUniversityFeed);
     }
 
-    private List<NewsDto> getNews(Supplier<Feed> feedSupplier) {
+    private List<NewsDto> getAtomNews(Supplier<Feed> feedSupplier) {
         return feedSupplier.get().getEntries().stream()
-            .limit(4)
-            .map(newsConverter::toDto)
+            .limit(MAX_NEWS)
+            .map(newsConverter::toDtoFromAtom)
+            .collect(Collectors.toList());
+    }
+
+    private List<NewsDto> getRssNews(Supplier<Channel> channelSupplier) {
+        return channelSupplier.get().getItems().stream()
+            .limit(MAX_NEWS)
+            .map(newsConverter::toDtoFromRss)
             .collect(Collectors.toList());
     }
 
