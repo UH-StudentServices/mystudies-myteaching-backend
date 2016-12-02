@@ -33,45 +33,45 @@ public class FlammaServer {
     private final MockRestServiceServer server;
     private final String flammaBaseUrl;
 
-    public FlammaServer(AppConfiguration appConfiguration,
-                        RestTemplate flammaRestTemplate) {
-        this.server = MockRestServiceServer.createServer(flammaRestTemplate);
+    private static final String STUDENT_NEWS_PATH_FI = "/infotaulu/atom-tiedotteet-opiskelijalle.xml";
+    private static final String STUDENT_NEWS_FILE_FI = "flamma/studentnews.xml";
+
+    private static final String STUDENT_NEWS_PATH_EN = "/infotaulu/atom-tiedotteet-opiskelijalle-en.xml";
+    private static final String STUDENT_NEWS_FILE_EN = "flamma/englishstudentnews.xml";
+
+    private static final String TEACHER_NEWS_PATH_FI = "/infotaulu/atom-tiedotteet-opetusasiat.xml";
+    private static final String TEACHER_NEWS_FILE_FI = "flamma/teachernews.xml";
+
+    private static final String TEACHER_NEWS_PATH_EN = "/infotaulu/atom-tiedotteet-opetusasiat-en.xml";
+    private static final String TEACHER_NEWS_FILE_EN = "flamma/englishteachernews.xml";
+
+    public FlammaServer(AppConfiguration appConfiguration, RestTemplate restTemplate) {
+        this.server = MockRestServiceServer.createServer(restTemplate);
         this.flammaBaseUrl = appConfiguration.get("flamma.base.url");
     }
 
     public void expectStudentNews() {
-        server.expect(requestTo(flammaBaseUrl + "/infotaulu/atom-tiedotteet-opiskelijalle.xml"))
+        server.expect(requestTo(flammaBaseUrl + STUDENT_NEWS_PATH_FI))
             .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(toText("flamma/studentnews.xml"), MediaType.TEXT_XML));
+            .andRespond(withSuccess(toText(STUDENT_NEWS_FILE_FI), MediaType.TEXT_XML));
     }
 
     public void expectEnglishStudentNews() {
-        server.expect(requestTo(flammaBaseUrl + "/infotaulu/atom-tiedotteet-opiskelijalle-en.xml"))
+        server.expect(requestTo(flammaBaseUrl + STUDENT_NEWS_PATH_EN))
             .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(toText("flamma/englishstudentnews.xml"), MediaType.TEXT_XML));
+            .andRespond(withSuccess(toText(STUDENT_NEWS_FILE_EN), MediaType.TEXT_XML));
     }
 
     public void expectTeacherNews() {
-        server.expect(requestTo(flammaBaseUrl + "/infotaulu/atom-tiedotteet-opetusasiat.xml"))
+        server.expect(requestTo(flammaBaseUrl + TEACHER_NEWS_PATH_FI))
             .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(toText("flamma/teachernews.xml"), MediaType.TEXT_XML));
+            .andRespond(withSuccess(toText(TEACHER_NEWS_FILE_FI), MediaType.TEXT_XML));
     }
 
     public void expectEnglishTeacherNews() {
-        server.expect(requestTo(flammaBaseUrl + "/infotaulu/atom-tiedotteet-opetusasiat-en.xml"))
+        server.expect(requestTo(flammaBaseUrl + TEACHER_NEWS_PATH_EN))
             .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(toText("flamma/englishteachernews.xml"), MediaType.TEXT_XML));
+            .andRespond(withSuccess(toText(TEACHER_NEWS_FILE_EN), MediaType.TEXT_XML));
     }
 
-    public void expectStudentOpenUniversityNews() {
-        server.expect(requestTo(flammaBaseUrl + "/infotaulu/atom-tiedotteet-avoin.xml"))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(toText("flamma/studentopenuniversitynews.xml"), MediaType.TEXT_XML));
-    }
-
-    public void expectEnglishStudentOpenUniversityNews() {
-        server.expect(requestTo(flammaBaseUrl + "/infotaulu/atom-tiedotteet-avoin-en.xml"))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(toText("flamma/englishstudentopenuniversitynews.xml"), MediaType.TEXT_XML));
-    }
 }

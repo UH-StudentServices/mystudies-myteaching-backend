@@ -38,7 +38,8 @@ public class NewsResourceTest extends SpringTest {
     public void thatStudentNewsAreReturned() throws Exception {
         flammaServer.expectStudentNews();
 
-        mockMvc.perform(get("/api/private/v1/news/student").with(securityContext(studentSecurityContext()))
+        mockMvc.perform(get("/api/private/v1/news/student")
+            .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .locale(new Locale("fi"))
@@ -59,7 +60,8 @@ public class NewsResourceTest extends SpringTest {
     public void thatTeacherNewsAreReturned() throws Exception {
         flammaServer.expectTeacherNews();
 
-        mockMvc.perform(get("/api/private/v1/news/teacher").with(securityContext(teacherSecurityContext()))
+        mockMvc.perform(get("/api/private/v1/news/teacher")
+            .with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .locale(new Locale("fi"))
@@ -80,7 +82,8 @@ public class NewsResourceTest extends SpringTest {
     public void thatEnglishStudentNewsAreReturned() throws Exception {
         flammaServer.expectEnglishStudentNews();
 
-        mockMvc.perform(get("/api/private/v1/news/student").with(securityContext(studentSecurityContext()))
+        mockMvc.perform(get("/api/private/v1/news/student")
+            .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .locale(new Locale("en"))
@@ -98,7 +101,8 @@ public class NewsResourceTest extends SpringTest {
     public void thatEnglishTeacherNewsAreReturned() throws Exception {
         flammaServer.expectEnglishTeacherNews();
 
-        mockMvc.perform(get("/api/private/v1/news/teacher").with(securityContext(teacherSecurityContext()))
+        mockMvc.perform(get("/api/private/v1/news/teacher")
+            .with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .locale(new Locale("en"))
@@ -114,7 +118,7 @@ public class NewsResourceTest extends SpringTest {
 
     @Test
     public void thatStudentOpenUniversityNewsAreReturned() throws Exception {
-        flammaServer.expectStudentOpenUniversityNews();
+        publicWwwServer.expectStudentOpenUniversityNews();
 
         mockMvc.perform(get("/api/private/v1/news/student/openuniversity")
             .with(securityContext(studentSecurityContext()))
@@ -129,25 +133,6 @@ public class NewsResourceTest extends SpringTest {
             .andExpect(jsonPath("$[0].title").value("Otsikko"))
             .andExpect(jsonPath("$[0].url").value("https://flamma.helsinki.fi/portal/units/avoin"))
             .andExpect(jsonPath("$[0].content").value("Sisältö"));
-    }
-
-    @Test
-    public void thatEnglishStudentOpenUniversityNewsAreReturned() throws Exception {
-        flammaServer.expectEnglishStudentOpenUniversityNews();
-
-        mockMvc.perform(get("/api/private/v1/news/student/openuniversity")
-            .with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .contentType(MediaType.APPLICATION_JSON)
-            .locale(new Locale("en"))
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(1)))
-            .andExpect(jsonPath("$[0].title").value("Title"))
-            .andExpect(jsonPath("$[0].url").value("https://flamma.helsinki.fi/portal/units/avoin"))
-            .andExpect(jsonPath("$[0].content").value("Content"));
     }
 
 }

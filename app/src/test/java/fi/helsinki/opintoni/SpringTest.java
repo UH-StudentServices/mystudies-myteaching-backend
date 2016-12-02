@@ -20,14 +20,11 @@ package fi.helsinki.opintoni;
 import com.google.common.truth.StringUtil;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.config.Constants;
+import fi.helsinki.opintoni.integration.flamma.FlammaRestClient;
+import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
-import fi.helsinki.opintoni.server.CoursePageServer;
-import fi.helsinki.opintoni.server.FlammaServer;
-import fi.helsinki.opintoni.server.LeikiServer;
-import fi.helsinki.opintoni.server.OodiServer;
-import fi.helsinki.opintoni.server.UnisportServer;
-import fi.helsinki.opintoni.server.WebPageServer;
+import fi.helsinki.opintoni.server.*;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
@@ -72,6 +69,7 @@ public abstract class SpringTest {
     protected WebPageServer webPageServer;
     protected LeikiServer leikiServer;
     protected FlammaServer flammaServer;
+    protected PublicWwwServer publicWwwServer;
     protected UnisportServer unisportServer;
 
     protected MockMvc mockMvc;
@@ -86,7 +84,10 @@ public abstract class SpringTest {
     protected RestTemplate leikiRestTemplate;
 
     @Autowired
-    protected RestTemplate flammaRestTemplate;
+    protected FlammaRestClient flammaRestClient;
+
+    @Autowired
+    protected PublicWwwRestClient publicWwwRestClient;
 
     @Autowired
     protected RestTemplate metaDataRestTemplate;
@@ -116,7 +117,8 @@ public abstract class SpringTest {
         oodiServer = new OodiServer(appConfiguration, oodiRestTemplate);
         coursePageServer = new CoursePageServer(appConfiguration, coursePageRestTemplate);
         leikiServer = new LeikiServer(appConfiguration, leikiRestTemplate);
-        flammaServer = new FlammaServer(appConfiguration, flammaRestTemplate);
+        flammaServer = new FlammaServer(appConfiguration, flammaRestClient.getRestTemplate());
+        publicWwwServer = new PublicWwwServer(appConfiguration, publicWwwRestClient.getRestTemplate());
         webPageServer = new WebPageServer(metaDataRestTemplate);
         unisportServer = new UnisportServer(appConfiguration, unisportRestTemplate);
         configureMockMvc();

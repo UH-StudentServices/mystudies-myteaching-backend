@@ -22,6 +22,7 @@ import com.rometools.rome.feed.atom.Feed;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.dto.NewsDto;
 import fi.helsinki.opintoni.integration.flamma.FlammaRestClient;
+import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.service.converter.NewsConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,11 +37,13 @@ import java.util.stream.Collectors;
 public class NewsService {
 
     private final FlammaRestClient flammaRestClient;
+    private final PublicWwwRestClient publicWwwRestClient;
     private final NewsConverter newsConverter;
 
     @Autowired
-    public NewsService(FlammaRestClient flammaRestClient, NewsConverter newsConverter) {
+    public NewsService(FlammaRestClient flammaRestClient, PublicWwwRestClient publicWwwRestClient, NewsConverter newsConverter) {
         this.flammaRestClient = flammaRestClient;
+        this.publicWwwRestClient = publicWwwRestClient;
         this.newsConverter = newsConverter;
     }
 
@@ -55,8 +58,8 @@ public class NewsService {
     }
 
     @Cacheable(CacheConstants.STUDENT_OPEN_UNIVERSITY_NEWS)
-    public List<NewsDto> getStudentOpenUniversityNews(Locale locale) {
-        return getNews(() -> flammaRestClient.getStudentOpenUniversityFeed(locale));
+    public List<NewsDto> getStudentOpenUniversityNews() {
+        return getNews(() -> publicWwwRestClient.getStudentOpenUniversityFeed());
     }
 
     private List<NewsDto> getNews(Supplier<Feed> feedSupplier) {

@@ -15,9 +15,8 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.flamma;
+package fi.helsinki.opintoni.integration.publicwww;
 
-import com.google.common.collect.ImmutableMap;
 import com.rometools.rome.feed.atom.Feed;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import org.slf4j.Logger;
@@ -26,15 +25,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.feed.AtomFeedHttpMessageConverter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
-import java.util.Locale;
 
 @Component
-public class FlammaRestClient {
-    private final static Logger log = LoggerFactory.getLogger(FlammaRestClient.class);
+public class PublicWwwRestClient {
+    private final static Logger log = LoggerFactory.getLogger(PublicWwwRestClient.class);
 
     private final String baseUrl;
     private final RestTemplate restTemplate;
@@ -42,36 +41,26 @@ public class FlammaRestClient {
     @Autowired
     private AppConfiguration appConfiguration;
 
-    private final ImmutableMap<String, String> studentFeedsByLocale;
-    private final ImmutableMap<String, String> teacherFeedsByLocale;
-
     @Autowired
-    public FlammaRestClient(AppConfiguration appConfiguration) {
-        this.baseUrl = appConfiguration.get("flamma.base.url");
+    public PublicWwwRestClient(AppConfiguration appConfiguration) {
+        this.baseUrl = appConfiguration.get("publicWww.base.url");
         this.restTemplate = createRestTemplate();
-
-        studentFeedsByLocale = ImmutableMap.of(
-            "fi", "atom-tiedotteet-opiskelijalle.xml",
-            "sv", "atom-tiedotteet-opiskelijalle-sv.xml",
-            "en", "atom-tiedotteet-opiskelijalle-en.xml");
-        teacherFeedsByLocale = ImmutableMap.of(
-            "fi", "atom-tiedotteet-opetusasiat.xml",
-            "sv", "atom-tiedotteet-opetusasiat-sv.xml",
-            "en", "atom-tiedotteet-opetusasiat-en.xml");
     }
 
     public RestTemplate getRestTemplate() {
         return restTemplate;
     }
 
-    public Feed getStudentFeed(Locale locale) {
-        String uri = getFeedUri(studentFeedsByLocale.get(locale.getLanguage()));
-        return restTemplate.getForObject(uri, Feed.class);
-    }
+    public Feed getStudentOpenUniversityFeed() {
+        String uri = getFeedUri();
 
-    public Feed getTeacherFeed(Locale locale) {
-        String uri = getFeedUri(teacherFeedsByLocale.get(locale.getLanguage()));
-        return restTemplate.getForObject(uri, Feed.class);
+        try {
+            return restTemplate.getForObject(uri, Feed.class);
+        } catch (RestClientException e) {
+            log.error("Public WWW client threw exception: ", e.getMessage());
+
+            return new Feed("atom_0.3");
+        }
     }
 
     private RestTemplate createRestTemplate() {
@@ -81,10 +70,11 @@ public class FlammaRestClient {
         return new RestTemplate(Collections.singletonList(converter));
     }
 
-    private String getFeedUri(String pathSegment) {
+    private String getFeedUri() {
         return UriComponentsBuilder.fromHttpUrl(baseUrl)
-            .path("infotaulu")
-            .pathSegment(pathSegment)
+            .path(appConfiguration.get("publicWww.path"))
             .toUriString();
     }
+
 }
+
