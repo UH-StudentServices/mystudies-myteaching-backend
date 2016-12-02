@@ -135,23 +135,4 @@ public class NewsResourceTest extends SpringTest {
             .andExpect(jsonPath("$[0].content").value("Sisältö"));
     }
 
-    @Test
-    public void thatEnglishStudentOpenUniversityNewsAreReturned() throws Exception {
-        publicWwwServer.expectEnglishStudentOpenUniversityNews();
-
-        mockMvc.perform(get("/api/private/v1/news/student/openuniversity")
-            .with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .contentType(MediaType.APPLICATION_JSON)
-            .locale(new Locale("en"))
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(1)))
-            .andExpect(jsonPath("$[0].title").value("Title"))
-            .andExpect(jsonPath("$[0].url").value("https://flamma.helsinki.fi/portal/units/avoin"))
-            .andExpect(jsonPath("$[0].content").value("Content"));
-    }
-
 }

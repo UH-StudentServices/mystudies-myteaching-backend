@@ -19,25 +19,55 @@ package fi.helsinki.opintoni.integration.publicwww;
 
 import com.rometools.rome.feed.atom.Feed;
 import fi.helsinki.opintoni.config.AppConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.feed.AtomFeedHttpMessageConverter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Collections;
+
+@Component
 public class PublicWwwRestClient {
+    private final static Logger log = LoggerFactory.getLogger(PublicWwwRestClient.class);
+
     private final String baseUrl;
     private final RestTemplate restTemplate;
 
     @Autowired
     private AppConfiguration appConfiguration;
 
-    public PublicWwwRestClient(String baseUrl, RestTemplate restTemplate) {
-        this.baseUrl = baseUrl;
-        this.restTemplate = restTemplate;
+    @Autowired
+    public PublicWwwRestClient(AppConfiguration appConfiguration) {
+        this.baseUrl = appConfiguration.get("publicWww.base.url");
+        this.restTemplate = initializeRestTemplate();
+    }
+
+    public RestTemplate getRestTemplate() {
+        return restTemplate;
     }
 
     public Feed getStudentOpenUniversityFeed() {
         String uri = getFeedUri();
-        return restTemplate.getForObject(uri, Feed.class);
+
+        try {
+            return restTemplate.getForObject(uri, Feed.class);
+        } catch (RestClientException e) {
+            log.error("Public WWW client threw exception: ", e.getMessage());
+
+            return new Feed("atom_0.3");
+        }
+    }
+
+    private RestTemplate initializeRestTemplate() {
+        final AtomFeedHttpMessageConverter converter = new AtomFeedHttpMessageConverter();
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.TEXT_XML));
+
+        return new RestTemplate(Collections.singletonList(converter));
     }
 
     private String getFeedUri() {

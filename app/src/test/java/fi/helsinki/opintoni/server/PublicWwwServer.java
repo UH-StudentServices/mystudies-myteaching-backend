@@ -31,24 +31,19 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 public class PublicWwwServer {
 
     private final MockRestServiceServer server;
-    private final String publicWwwBaseUrl;
+    private final String publicWwwUrl;
+    private static final String publicWwwPath = "/fi/feeds/filtered-news/rss/11405/all";
+    private static final String openUniNewsFile = "flamma/studentopenuniversitynews.xml";
 
-    public PublicWwwServer(AppConfiguration appConfiguration,
-                           RestTemplate publicWwwRestTemplate) {
-        this.server = MockRestServiceServer.createServer(publicWwwRestTemplate);
-        this.publicWwwBaseUrl = appConfiguration.get("publicWww.base.url");
+    public PublicWwwServer(AppConfiguration appConfiguration, RestTemplate restTemplate) {
+        this.server = MockRestServiceServer.createServer(restTemplate);
+        this.publicWwwUrl = appConfiguration.get("publicWww.base.url") + publicWwwPath;
     }
 
     public void expectStudentOpenUniversityNews() {
-        server.expect(requestTo(publicWwwBaseUrl + "/fi/feeds/filtered-news/rss/11405/all"))
+        server.expect(requestTo(publicWwwUrl))
             .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(toText("flamma/studentopenuniversitynews.xml"), MediaType.TEXT_XML));
-    }
-
-    public void expectEnglishStudentOpenUniversityNews() {
-        server.expect(requestTo(publicWwwBaseUrl + "/fi/feeds/filtered-news/rss/11405/all"))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(toText("flamma/englishstudentopenuniversitynews.xml"), MediaType.TEXT_XML));
+            .andRespond(withSuccess(toText(openUniNewsFile), MediaType.TEXT_XML));
     }
 
 }
