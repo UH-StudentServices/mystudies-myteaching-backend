@@ -19,22 +19,36 @@ package fi.helsinki.opintoni.integration.flamma;
 
 import com.google.common.collect.ImmutableMap;
 import com.rometools.rome.feed.atom.Feed;
+import fi.helsinki.opintoni.config.AppConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.feed.AtomFeedHttpMessageConverter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Collections;
 import java.util.Locale;
 
+@Component
 public class FlammaRestClient {
+    private final static Logger log = LoggerFactory.getLogger(FlammaRestClient.class);
 
     private final String baseUrl;
     private final RestTemplate restTemplate;
 
+    @Autowired
+    private AppConfiguration appConfiguration;
+
     private final ImmutableMap<String, String> studentFeedsByLocale;
     private final ImmutableMap<String, String> teacherFeedsByLocale;
 
-    public FlammaRestClient(String baseUrl, RestTemplate restTemplate) {
-        this.baseUrl = baseUrl;
-        this.restTemplate = restTemplate;
+    @Autowired
+    public FlammaRestClient(AppConfiguration appConfiguration) {
+        this.baseUrl = appConfiguration.get("flamma.base.url");
+        this.restTemplate = initializeRestTemplate();
 
         studentFeedsByLocale = ImmutableMap.of(
             "fi", "atom-tiedotteet-opiskelijalle.xml",
@@ -46,6 +60,10 @@ public class FlammaRestClient {
             "en", "atom-tiedotteet-opetusasiat-en.xml");
     }
 
+    public RestTemplate getRestTemplate() {
+        return restTemplate;
+    }
+
     public Feed getStudentFeed(Locale locale) {
         String uri = getFeedUri(studentFeedsByLocale.get(locale.getLanguage()));
         return restTemplate.getForObject(uri, Feed.class);
@@ -54,6 +72,13 @@ public class FlammaRestClient {
     public Feed getTeacherFeed(Locale locale) {
         String uri = getFeedUri(teacherFeedsByLocale.get(locale.getLanguage()));
         return restTemplate.getForObject(uri, Feed.class);
+    }
+
+    private RestTemplate initializeRestTemplate() {
+        final AtomFeedHttpMessageConverter converter = new AtomFeedHttpMessageConverter();
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.TEXT_XML));
+
+        return new RestTemplate(Collections.singletonList(converter));
     }
 
     private String getFeedUri(String pathSegment) {

@@ -20,6 +20,7 @@ package fi.helsinki.opintoni;
 import com.google.common.truth.StringUtil;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.config.Constants;
+import fi.helsinki.opintoni.integration.flamma.FlammaRestClient;
 import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
@@ -83,7 +84,7 @@ public abstract class SpringTest {
     protected RestTemplate leikiRestTemplate;
 
     @Autowired
-    protected RestTemplate flammaRestTemplate;
+    protected FlammaRestClient flammaRestClient;
 
     @Autowired
     protected PublicWwwRestClient publicWwwRestClient;
@@ -116,7 +117,7 @@ public abstract class SpringTest {
         oodiServer = new OodiServer(appConfiguration, oodiRestTemplate);
         coursePageServer = new CoursePageServer(appConfiguration, coursePageRestTemplate);
         leikiServer = new LeikiServer(appConfiguration, leikiRestTemplate);
-        flammaServer = new FlammaServer(appConfiguration, flammaRestTemplate);
+        flammaServer = new FlammaServer(appConfiguration, flammaRestClient.getRestTemplate());
         publicWwwServer = new PublicWwwServer(appConfiguration, publicWwwRestClient.getRestTemplate());
         webPageServer = new WebPageServer(metaDataRestTemplate);
         unisportServer = new UnisportServer(appConfiguration, unisportRestTemplate);
