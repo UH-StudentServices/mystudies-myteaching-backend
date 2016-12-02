@@ -32,18 +32,19 @@ public class PublicWwwServer {
 
     private final MockRestServiceServer server;
     private final String publicWwwUrl;
-    private static final String publicWwwPath = "/fi/feeds/filtered-news/rss/11405/all";
-    private static final String openUniNewsFile = "flamma/studentopenuniversitynews.xml";
+
+    private static final String PUBLIC_WWW_PATH = "/fi/feeds/filtered-news/rss/11405/all";
+    private static final String OPEN_UNI_NEWS_FILE = "flamma/studentopenuniversitynews.xml";
 
     public PublicWwwServer(AppConfiguration appConfiguration, RestTemplate restTemplate) {
         this.server = MockRestServiceServer.createServer(restTemplate);
-        this.publicWwwUrl = appConfiguration.get("publicWww.base.url") + publicWwwPath;
+        this.publicWwwUrl = appConfiguration.get("publicWww.base.url") + PUBLIC_WWW_PATH;
     }
 
     public void expectStudentOpenUniversityNews() {
         server.expect(requestTo(publicWwwUrl))
             .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(toText(openUniNewsFile), MediaType.TEXT_XML));
+            .andRespond(withSuccess(toText(OPEN_UNI_NEWS_FILE), MediaType.TEXT_XML));
     }
 
 }

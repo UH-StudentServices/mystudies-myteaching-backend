@@ -48,7 +48,7 @@ public class FlammaRestClient {
     @Autowired
     public FlammaRestClient(AppConfiguration appConfiguration) {
         this.baseUrl = appConfiguration.get("flamma.base.url");
-        this.restTemplate = initializeRestTemplate();
+        this.restTemplate = createRestTemplate();
 
         studentFeedsByLocale = ImmutableMap.of(
             "fi", "atom-tiedotteet-opiskelijalle.xml",
@@ -74,7 +74,7 @@ public class FlammaRestClient {
         return restTemplate.getForObject(uri, Feed.class);
     }
 
-    private RestTemplate initializeRestTemplate() {
+    private RestTemplate createRestTemplate() {
         final AtomFeedHttpMessageConverter converter = new AtomFeedHttpMessageConverter();
         converter.setSupportedMediaTypes(Collections.singletonList(MediaType.TEXT_XML));
 

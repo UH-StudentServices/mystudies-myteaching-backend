@@ -44,7 +44,7 @@ public class PublicWwwRestClient {
     @Autowired
     public PublicWwwRestClient(AppConfiguration appConfiguration) {
         this.baseUrl = appConfiguration.get("publicWww.base.url");
-        this.restTemplate = initializeRestTemplate();
+        this.restTemplate = createRestTemplate();
     }
 
     public RestTemplate getRestTemplate() {
@@ -63,7 +63,7 @@ public class PublicWwwRestClient {
         }
     }
 
-    private RestTemplate initializeRestTemplate() {
+    private RestTemplate createRestTemplate() {
         final AtomFeedHttpMessageConverter converter = new AtomFeedHttpMessageConverter();
         converter.setSupportedMediaTypes(Collections.singletonList(MediaType.TEXT_XML));
 
