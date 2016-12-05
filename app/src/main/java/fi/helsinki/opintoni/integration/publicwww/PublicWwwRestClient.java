@@ -65,8 +65,6 @@ public class PublicWwwRestClient {
 
     private RestTemplate createRestTemplate() {
         final RssChannelHttpMessageConverter converter = new RssChannelHttpMessageConverter();
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.TEXT_XML));
-
         return new RestTemplate(Collections.singletonList(converter));
     }
 

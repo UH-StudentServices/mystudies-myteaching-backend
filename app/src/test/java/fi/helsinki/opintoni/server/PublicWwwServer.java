@@ -44,7 +44,7 @@ public class PublicWwwServer {
     public void expectStudentOpenUniversityNews() {
         server.expect(requestTo(publicWwwUrl))
             .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(toText(OPEN_UNI_NEWS_FILE), MediaType.TEXT_XML));
+            .andRespond(withSuccess(toText(OPEN_UNI_NEWS_FILE), new MediaType("application", "rss+xml")));
     }
 
 }
