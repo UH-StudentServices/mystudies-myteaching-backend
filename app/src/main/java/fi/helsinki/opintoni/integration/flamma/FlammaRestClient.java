@@ -67,26 +67,12 @@ public class FlammaRestClient {
 
     public Feed getStudentFeed(Locale locale) {
         String uri = getFeedUri(studentFeedsByLocale.get(locale.getLanguage()));
-
-        try {
-            return restTemplate.getForObject(uri, Feed.class);
-        } catch (RestClientException e) {
-            log.error("Flamma REST client students threw exception: {}", e.getMessage());
-
-            return new Feed("atom_0.3");
-        }
+        return getFeed(uri);
     }
 
     public Feed getTeacherFeed(Locale locale) {
         String uri = getFeedUri(teacherFeedsByLocale.get(locale.getLanguage()));
-
-        try {
-            return restTemplate.getForObject(uri, Feed.class);
-        } catch (RestClientException e) {
-            log.error("Flamma REST client for teachers threw exception: {}", e.getMessage());
-
-            return new Feed("atom_0.3");
-        }
+        return getFeed(uri);
     }
 
     private RestTemplate createRestTemplate() {
@@ -101,5 +87,14 @@ public class FlammaRestClient {
             .path("infotaulu")
             .pathSegment(pathSegment)
             .toUriString();
+    }
+
+    private Feed getFeed(String uri) {
+        try {
+            return restTemplate.getForObject(uri, Feed.class);
+        } catch (RestClientException e) {
+            log.error("Flamma REST client with uri {} threw exception: {}", uri, e.getMessage());
+            return new Feed("atom_0.3");
+        }
     }
 }
