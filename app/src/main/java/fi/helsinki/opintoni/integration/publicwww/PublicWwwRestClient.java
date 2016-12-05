@@ -57,7 +57,7 @@ public class PublicWwwRestClient {
         try {
             return restTemplate.getForObject(uri, Channel.class);
         } catch (RestClientException e) {
-            log.error("Public WWW client threw exception: ", e.getMessage());
+            log.error("Public WWW client threw exception: {}", e.getMessage());
 
             return new Channel("rss_2.0");
         }
