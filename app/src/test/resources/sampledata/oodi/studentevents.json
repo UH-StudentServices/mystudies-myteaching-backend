@@ -49,8 +49,8 @@
       "building_zipcode" : "00790",
       "room_name_short": "Päärakennus, sali 1",
       "realisation_type_code": 17,
-      "end_date": "2014-10-27T13:45:00.000Z",
-      "start_date": "2014-10-27T12:15:00.000Z",
+      "end_date": "2016-12-09T13:45:00.000Z",
+      "start_date": "2016-12-09T12:15:00.000Z",
       "course_id": 123456789,
       "simple_type_code": 1,
       "realisation_name": [
@@ -90,8 +90,49 @@
       "building_zipcode" : "00790",
       "room_name_short": "Päärakennus, sali 1",
       "realisation_type_code": 17,
-      "end_date": "2014-10-27T13:45:00.000Z",
-      "start_date": "2014-10-27T12:15:00.000Z",
+      "end_date": "2016-12-09T13:45:00.000Z",
+      "start_date": "2016-12-09T12:15:00.000Z",
+      "course_id": 123456789,
+      "simple_type_code": 1,
+      "realisation_name": [
+        {
+          "langcode": "fi",
+          "text": "Harjoitus"
+        },
+        {
+          "langcode": "sv",
+          "text": "Harjoitus (sv)"
+        },
+        {
+          "langcode": "en",
+          "text": "Harjoitus (en)"
+        }
+      ],
+      "realisation_root_name": [
+        {
+          "langcode": "fi",
+          "text": "Formulointi IIII"
+        },
+        {
+          "langcode": "sv",
+          "text": "Formulering IIII"
+        },
+        {
+          "langcode": "en",
+          "text": "Formulation IIII"
+        }
+      ],
+      "learningopportunity_id": "1234567890",
+      "cancelled" : "true"
+    },
+    {
+      "weekday_code": 3,
+      "building_address1": "Viikinkaari 11",
+      "building_zipcode" : "00790",
+      "room_name_short": "Päärakennus, sali 2",
+      "realisation_type_code": 17,
+      "end_date": "2016-12-09T13:45:00.000Z",
+      "start_date": "2016-12-09T12:15:00.000Z",
       "course_id": 123456789,
       "simple_type_code": 1,
       "realisation_name": [
