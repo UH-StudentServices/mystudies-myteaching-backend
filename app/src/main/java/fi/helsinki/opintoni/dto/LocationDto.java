@@ -37,4 +37,8 @@ public class LocationDto {
         this.streetAddress = null;
         this.zipCode = null;
     }
+
+    public String getLocationString() {
+        return this.locationString;
+    }
 }

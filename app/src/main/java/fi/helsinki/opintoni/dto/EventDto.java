@@ -21,6 +21,10 @@ import fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class EventDto implements Comparable<EventDto> {
 
@@ -45,7 +49,7 @@ public class EventDto implements Comparable<EventDto> {
     public final String courseImageUri;
     public final CourseMaterialDto courseMaterial;
     public final String moodleUri;
-    public final LocationDto location;
+    public final List<LocationDto> locations;
     public final boolean hasMaterial;
 
     public EventDto(Type type,
@@ -73,7 +77,7 @@ public class EventDto implements Comparable<EventDto> {
         this.courseMaterial = courseMaterialDto;
         this.moodleUri = moodleUri;
         this.hasMaterial = hasMaterial;
-        this.location = location;
+        this.locations = Collections.singletonList(location);
     }
 
     @Override
@@ -82,7 +86,7 @@ public class EventDto implements Comparable<EventDto> {
             .append("realisationId", realisationId)
             .append("endDate", endDate)
             .append("startDate", startDate)
-            .append("locationString", location.locationString)
+            .append("locationString", this.getLocationsAsString())
             .append("title", title)
             .append("courseImageUri", courseImageUri)
             .append("moodleUri", moodleUri)
@@ -93,6 +97,13 @@ public class EventDto implements Comparable<EventDto> {
     @Override
     public final int compareTo(EventDto o) {
         return startDate.compareTo(o.startDate);
+    }
+
+    public String getLocationsAsString() {
+        return locations.stream()
+            .map(LocationDto::getLocationString)
+            .filter(Objects::nonNull)
+            .collect(Collectors.joining(", "));
     }
 
 }
