@@ -30,14 +30,14 @@ public class EventDto implements Comparable<EventDto> {
     }
 
     public enum Type {
-        DEFAULT, EXAM
+        DEFAULT,
+        EXAM
     }
 
     public final Type type;
     public final Source source;
     public final LocalDateTime startDate;
     public final LocalDateTime endDate;
-    public final String locations;
     public final Integer realisationId;
     public final String title;
     public final String courseTitle;
@@ -45,7 +45,7 @@ public class EventDto implements Comparable<EventDto> {
     public final String courseImageUri;
     public final CourseMaterialDto courseMaterial;
     public final String moodleUri;
-    public final BuildingDto building;
+    public final LocationDto location;
     public final boolean hasMaterial;
 
     public EventDto(Type type,
@@ -53,7 +53,6 @@ public class EventDto implements Comparable<EventDto> {
                     LocalDateTime startDate,
                     LocalDateTime endDate,
                     Integer realisationId,
-                    String locations,
                     String title,
                     String courseTitle,
                     String courseUri,
@@ -61,12 +60,11 @@ public class EventDto implements Comparable<EventDto> {
                     CourseMaterialDto courseMaterialDto,
                     String moodleUri,
                     boolean hasMaterial,
-                    BuildingDto building) {
+                    LocationDto location) {
         this.type = type;
         this.source = source;
         this.realisationId = realisationId;
         this.endDate = endDate;
-        this.locations = locations;
         this.startDate = startDate;
         this.title = title;
         this.courseTitle = courseTitle;
@@ -75,38 +73,8 @@ public class EventDto implements Comparable<EventDto> {
         this.courseMaterial = courseMaterialDto;
         this.moodleUri = moodleUri;
         this.hasMaterial = hasMaterial;
-        this.building = building;
+        this.location = location;
     }
-
-    public EventDto(Type type,
-                    Source source,
-                    LocalDateTime startDate,
-                    LocalDateTime endDate,
-                    Integer realisationId,
-                    String locations,
-                    String title,
-                    String courseTitle,
-                    String courseUri,
-                    String courseImageUri,
-                    CourseMaterialDto courseMaterialDto,
-                    String moodleUri,
-                    boolean hasMaterial) {
-        this(type,
-            source,
-            startDate,
-            endDate,
-            realisationId,
-            locations,
-            title,
-            courseTitle,
-            courseUri,
-            courseImageUri,
-            courseMaterialDto,
-            moodleUri,
-            hasMaterial,
-            null);
-    }
-
 
     @Override
     public String toString() {
@@ -114,7 +82,7 @@ public class EventDto implements Comparable<EventDto> {
             .append("realisationId", realisationId)
             .append("endDate", endDate)
             .append("startDate", startDate)
-            .append("locations", locations)
+            .append("locationString", location.locationString)
             .append("title", title)
             .append("courseImageUri", courseImageUri)
             .append("moodleUri", moodleUri)

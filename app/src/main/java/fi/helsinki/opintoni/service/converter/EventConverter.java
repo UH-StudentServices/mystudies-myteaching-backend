@@ -75,14 +75,14 @@ public class EventConverter {
             event.begin,
             event.end,
             event.courseImplementationId,
-            event.where,
             event.title,
             coursePage.title,
             coursePageUriBuilder.getLocalizedUri(coursePage),
             coursePageUriBuilder.getImageUri(coursePage),
             courseMaterialDtoFactory.fromCoursePage(coursePage),
             coursePage.moodleUrl,
-            coursePage.hasMaterial);
+            coursePage.hasMaterial,
+            locationResolver.getLocation(event));
     }
 
     public EventDto toDto(OodiEvent event, Locale locale) {
@@ -97,7 +97,6 @@ public class EventConverter {
             event.startDate,
             event.endDate,
             event.realisationId,
-            getLocations(event),
             enrollmentNameConverter.getRealisationNameWithRootName(event.realisationName, event.realisationRootName, locale),
             coursePage.title,
             coursePageUriBuilder.getLocalizedUri(coursePage),
@@ -105,12 +104,7 @@ public class EventConverter {
             courseMaterialDtoFactory.fromCoursePage(coursePage),
             coursePage.moodleUrl,
             coursePage.hasMaterial,
-            locationResolver.getBuilding(event));
+            locationResolver.getLocation(event));
     }
 
-    private String getLocations(OodiEvent event) {
-        return Lists.newArrayList(event.roomName, event.buildingStreet).stream()
-            .filter(Objects::nonNull)
-            .collect(Collectors.joining(", "));
-    }
 }
