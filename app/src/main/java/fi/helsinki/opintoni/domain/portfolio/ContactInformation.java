@@ -46,6 +46,6 @@ public class ContactInformation extends AbstractAuditingEntity implements Owners
 
     @Override
     public Long getOwnerId() {
-        return portfolio.user.id;
+        return portfolio.getOwnerId();
     }
 }
