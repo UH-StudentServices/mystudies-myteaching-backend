@@ -23,7 +23,7 @@ public enum Position {
     STUDY_GROUP("studygroup"),
     STUDY_GROUP_SET("studygroupset");
 
-    private String value;
+    private final String value;
 
     Position(String value) {
         this.value = value;
