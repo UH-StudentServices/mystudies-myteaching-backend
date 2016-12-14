@@ -15,17 +15,23 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.domain.portfolio;
+package fi.helsinki.opintoni.service.converter;
 
-public enum PortfolioComponent {
-    STUDIES,
-    DEGREES,
-    ATTAINMENTS,
-    CONTACT_INFORMATION,
-    WORK_EXPERIENCE,
-    SAMPLES,
-    FAVORITES,
-    CREDITS,
-    FREE_TEXT_CONTENT,
-    LANGUAGE_PROFICIENCIES
+import fi.helsinki.opintoni.domain.portfolio.Sample;
+import fi.helsinki.opintoni.dto.portfolio.SampleDto;
+import org.springframework.stereotype.Component;
+
+@Component
+public class SampleConverter {
+
+    public SampleDto toDto(Sample sample) {
+        SampleDto sampleDto = new SampleDto();
+
+        sampleDto.description = sample.description;
+        sampleDto.title = sample.title;
+        sampleDto.url = sample.url;
+        sampleDto.id = sample.id;
+
+        return sampleDto;
+    }
 }

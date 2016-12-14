@@ -17,28 +17,11 @@
 
 package fi.helsinki.opintoni.dto.portfolio;
 
-import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
-import fi.helsinki.opintoni.dto.FavoriteDto;
-
-import java.util.List;
-
-public class PortfolioDto {
+public class SampleDto {
     public Long id;
     public String url;
-    public String intro;
-    public String ownerName;
-    public String backgroundUri;
-    public PortfolioVisibility visibility;
-    public String avatarUrl;
-    public List<ComponentVisibilityDto> componentVisibilities;
-    public List<LanguageProficiencyDto> languageProficiencies;
-    public List<FreeTextContentDto> freeTextContent;
-    public List<FavoriteDto> favorites;
-    public List<WorkExperienceDto> workExperience;
-    public List<SampleDto> samples;
-    public JobSearchDto jobSearch;
-    public ContactInformationDto contactInformation;
-    public List<DegreeDto> degrees;
-    public List<KeywordDto> keywords;
-    public SummaryDto summary;
+
+    public String title;
+
+    public String description;
 }

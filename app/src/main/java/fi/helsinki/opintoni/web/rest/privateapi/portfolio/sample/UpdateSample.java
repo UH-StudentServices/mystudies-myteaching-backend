@@ -14,18 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.sample;
 
-package fi.helsinki.opintoni.domain.portfolio;
 
-public enum PortfolioComponent {
-    STUDIES,
-    DEGREES,
-    ATTAINMENTS,
-    CONTACT_INFORMATION,
-    WORK_EXPERIENCE,
-    SAMPLES,
-    FAVORITES,
-    CREDITS,
-    FREE_TEXT_CONTENT,
-    LANGUAGE_PROFICIENCIES
+public class UpdateSample {
+    public String url;
+
+    public String title;
+
+    public String description;
 }
