@@ -22,7 +22,6 @@ import fi.helsinki.opintoni.domain.portfolio.Sample;
 import fi.helsinki.opintoni.dto.portfolio.SampleDto;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.repository.portfolio.SampleRepository;
-import fi.helsinki.opintoni.service.DtoService;
 import fi.helsinki.opintoni.service.converter.SampleConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.sample.UpdateSample;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class SampleService extends DtoService {
+public class SampleService {
 
     private final SampleRepository sampleRepository;
     private final PortfolioRepository portfolioRepository;
@@ -49,7 +48,8 @@ public class SampleService extends DtoService {
     }
 
     public List<SampleDto> findByPortfolioId(Long portfolioId) {
-        return getDtos(portfolioId, sampleRepository::findByPortfolioId, sampleConverter::toDto);
+        List<Sample> samples = sampleRepository.findByPortfolioId(portfolioId);
+        return samples.stream().map(sampleConverter::toDto).collect(Collectors.toList());
     }
 
     public List<SampleDto> updateSamples(Long portfolioId, List<UpdateSample> updateSamples) {
@@ -67,8 +67,6 @@ public class SampleService extends DtoService {
             sampleRepository.save(sample);
         });
 
-        return getDtos(portfolioId,
-            sampleRepository::findByPortfolioId,
-            sampleConverter::toDto);
+        return findByPortfolioId(portfolioId);
     }
 }

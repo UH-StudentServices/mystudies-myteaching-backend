@@ -21,7 +21,6 @@ import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.Sample;
 import fi.helsinki.opintoni.dto.portfolio.SampleDto;
-import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.portfolio.SampleService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
@@ -41,13 +40,10 @@ import java.util.List;
 public class PrivateSampleResource extends AbstractResource {
 
     private final SampleService sampleService;
-    private final PermissionChecker permissionChecker;
 
     @Autowired
-    public PrivateSampleResource(SampleService sampleService,
-                                 PermissionChecker permissionChecker) {
+    public PrivateSampleResource(SampleService sampleService) {
         this.sampleService = sampleService;
-        this.permissionChecker = permissionChecker;
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -55,7 +51,6 @@ public class PrivateSampleResource extends AbstractResource {
     public ResponseEntity<List<SampleDto>> update(@UserId Long userId,
                                                   @PathVariable Long portfolioId,
                                                   @RequestBody List<UpdateSample> updateSamples) {
-        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
         return response(sampleService.updateSamples(portfolioId, updateSamples));
     }
 }
