@@ -19,30 +19,37 @@ package fi.helsinki.opintoni.domain.portfolio;
 
 import fi.helsinki.opintoni.domain.AbstractAuditingEntity;
 import fi.helsinki.opintoni.domain.Ownership;
-import org.hibernate.validator.constraints.Email;
+import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "contact_information")
-public class ContactInformation extends AbstractAuditingEntity implements Ownership {
+@Table(name = "sample")
+public class Sample extends AbstractAuditingEntity implements Ownership {
 
     @Id
     @GeneratedValue
     public Long id;
 
+    @Size(max = 255)
+    @Column(name = "url")
+    public String url;
+
+    @NotEmpty
+    @Size(max = 255)
+    @Column(name = "title", nullable = false)
+    public String title;
+
+    public String description;
+
     @NotNull
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "portfolio_id")
     public Portfolio portfolio;
-
-    @Column(name = "phone_number")
-    public String phoneNumber;
-
-    @Email
-    @Column(name = "email")
-    public String email;
 
     @Override
     public Long getOwnerId() {

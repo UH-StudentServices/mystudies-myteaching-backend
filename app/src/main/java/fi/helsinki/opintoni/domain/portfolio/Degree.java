@@ -54,6 +54,6 @@ public class Degree extends AbstractAuditingEntity implements Ownership {
 
     @Override
     public Long getOwnerId() {
-        return portfolio.user.id;
+        return portfolio.getOwnerId();
     }
 }

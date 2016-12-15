@@ -14,27 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.sample;
 
-package fi.helsinki.opintoni.integration.oodi.courseunitrealisation;
 
-public enum Position {
+public class UpdateSample {
+    public String url;
 
-    ROOT("root"),
-    STUDY_GROUP("studygroup"),
-    STUDY_GROUP_SET("studygroupset");
+    public String title;
 
-    private final String value;
-
-    Position(String value) {
-        this.value = value;
-    }
-
-    public static Position getByValue(String value) {
-        for (Position position : Position.values()) {
-            if(position.value.equals(value)) {
-                return position;
-            }
-        }
-        throw new IllegalArgumentException("Unknown Oodi course unit realisation position: " + value);
-    }
+    public String description;
 }

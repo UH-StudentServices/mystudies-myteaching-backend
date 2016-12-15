@@ -15,37 +15,23 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.domain.portfolio;
+package fi.helsinki.opintoni.service.converter;
 
-import fi.helsinki.opintoni.domain.AbstractAuditingEntity;
-import fi.helsinki.opintoni.domain.Ownership;
-import org.hibernate.validator.constraints.Email;
+import fi.helsinki.opintoni.domain.portfolio.Sample;
+import fi.helsinki.opintoni.dto.portfolio.SampleDto;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+@Component
+public class SampleConverter {
 
-@Entity
-@Table(name = "contact_information")
-public class ContactInformation extends AbstractAuditingEntity implements Ownership {
+    public SampleDto toDto(Sample sample) {
+        SampleDto sampleDto = new SampleDto();
 
-    @Id
-    @GeneratedValue
-    public Long id;
+        sampleDto.description = sample.description;
+        sampleDto.title = sample.title;
+        sampleDto.url = sample.url;
+        sampleDto.id = sample.id;
 
-    @NotNull
-    @OneToOne
-    @JoinColumn(name = "portfolio_id")
-    public Portfolio portfolio;
-
-    @Column(name = "phone_number")
-    public String phoneNumber;
-
-    @Email
-    @Column(name = "email")
-    public String email;
-
-    @Override
-    public Long getOwnerId() {
-        return portfolio.getOwnerId();
+        return sampleDto;
     }
 }

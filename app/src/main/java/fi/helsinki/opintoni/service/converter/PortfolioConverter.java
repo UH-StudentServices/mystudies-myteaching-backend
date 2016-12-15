@@ -38,6 +38,7 @@ import fi.helsinki.opintoni.service.portfolio.LanguageProficiencyService;
 import fi.helsinki.opintoni.service.portfolio.PortfolioFavoriteService;
 import fi.helsinki.opintoni.service.portfolio.PortfolioKeywordRelationshipService;
 import fi.helsinki.opintoni.service.portfolio.WorkExperienceService;
+import fi.helsinki.opintoni.service.portfolio.SampleService;
 import fi.helsinki.opintoni.util.UriBuilder;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,7 @@ public class PortfolioConverter {
     private final CreditsService creditsService;
     private final PortfolioFavoriteService favoriteService;
     private final WorkExperienceService workExperienceService;
+    private final SampleService sampleService;
     private final JobSearchService jobSearchService;
     private final ContactInformationService contactInformationService;
     private final DegreeService degreeService;
@@ -75,6 +77,7 @@ public class PortfolioConverter {
                               CreditsService creditsService,
                               PortfolioFavoriteService favoriteService,
                               WorkExperienceService workExperienceService,
+                              SampleService sampleService,
                               JobSearchService jobSearchService,
                               ContactInformationService contactInformationService,
                               DegreeService degreeService,
@@ -89,6 +92,7 @@ public class PortfolioConverter {
         this.creditsService = creditsService;
         this.favoriteService = favoriteService;
         this.workExperienceService = workExperienceService;
+        this.sampleService = sampleService;
         this.jobSearchService = jobSearchService;
         this.contactInformationService = contactInformationService;
         this.degreeService = degreeService;
@@ -178,6 +182,9 @@ public class PortfolioConverter {
             case WORK_EXPERIENCE:
                 portfolioDto.workExperience = workExperienceService.findByPortfolioId(portfolioId);
                 portfolioDto.jobSearch = jobSearchService.findByPortfolioId(portfolioId);
+                break;
+            case SAMPLES:
+                portfolioDto.samples = sampleService.findByPortfolioId(portfolioId);
                 break;
             case CONTACT_INFORMATION:
                 portfolioDto.contactInformation = contactInformationService.findByPortfolioId(portfolioId);

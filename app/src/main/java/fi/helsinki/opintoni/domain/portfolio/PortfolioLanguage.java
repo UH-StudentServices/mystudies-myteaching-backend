@@ -47,7 +47,7 @@ public enum PortfolioLanguage {
         Arrays.asList(PortfolioLanguage.values()).forEach((lang) -> PORTFOLIO_LANG_MAP.put(lang.languageCode, lang));
     }
 
-    private String languageCode;
+    private final String languageCode;
 
     PortfolioLanguage(String languageCode) {
         this.languageCode = languageCode;

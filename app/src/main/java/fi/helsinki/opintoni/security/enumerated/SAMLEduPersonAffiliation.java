@@ -28,7 +28,7 @@ public enum SAMLEduPersonAffiliation {
     AFFILIATE("affiliate"),
     ALUM("alum");
 
-    private String value;
+    private final String value;
 
     SAMLEduPersonAffiliation(String value) {
         this.value = value;

@@ -22,7 +22,7 @@ public enum LanguageProficiency {
             PROFICIENCY_VALUE_MAP.put(languageProficiency.proficiency, languageProficiency));
     }
 
-    private int proficiency;
+    private final int proficiency;
 
     LanguageProficiency(int proficiency) {
         this.proficiency = proficiency;

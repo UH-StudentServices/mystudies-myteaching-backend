@@ -5,7 +5,7 @@ public enum PortfolioRole {
     STUDENT("student"),
     TEACHER("teacher");
 
-    private String role;
+    private final String role;
 
     PortfolioRole(String role) {
         this.role = role;

@@ -15,37 +15,16 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.domain.portfolio;
+package fi.helsinki.opintoni.repository.portfolio;
 
-import fi.helsinki.opintoni.domain.AbstractAuditingEntity;
-import fi.helsinki.opintoni.domain.Ownership;
-import org.hibernate.validator.constraints.Email;
+import fi.helsinki.opintoni.domain.portfolio.Sample;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
-@Entity
-@Table(name = "contact_information")
-public class ContactInformation extends AbstractAuditingEntity implements Ownership {
+public interface SampleRepository extends JpaRepository<Sample, Long> {
 
-    @Id
-    @GeneratedValue
-    public Long id;
+    void deleteByPortfolioId(Long portfolioId);
 
-    @NotNull
-    @OneToOne
-    @JoinColumn(name = "portfolio_id")
-    public Portfolio portfolio;
-
-    @Column(name = "phone_number")
-    public String phoneNumber;
-
-    @Email
-    @Column(name = "email")
-    public String email;
-
-    @Override
-    public Long getOwnerId() {
-        return portfolio.getOwnerId();
-    }
+    List<Sample> findByPortfolioId(Long portfolioId);
 }

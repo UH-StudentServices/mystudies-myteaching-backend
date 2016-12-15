@@ -25,9 +25,9 @@ public enum LeikiTType {
     SV("kaikki_sv", Locale.forLanguageTag("sv")),
     EN("kaikki_en", Locale.forLanguageTag("en"));
 
-    private String value;
+    private final String value;
 
-    private Locale locale;
+    private final Locale locale;
 
     LeikiTType(String value, Locale locale) {
         this.value = value;
