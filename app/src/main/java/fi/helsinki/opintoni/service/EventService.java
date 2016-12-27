@@ -88,6 +88,29 @@ public class EventService {
 
         return Stream
             .concat(oodiEventDtos, coursePageEventDtos)
+            .collect(Collectors.groupingBy((EventDto dto) -> EventDto.getRealisationIdAndTimes(dto),
+                Collectors.collectingAndThen(
+                    Collectors.reducing((a,b) ->
+                        new EventDto(
+                            a.type,
+                            a.source,
+                            a.startDate,
+                            a.endDate,
+                            a.realisationId,
+                            a.title,
+                            a.courseTitle,
+                            a.courseUri,
+                            a.courseImageUri,
+                            a.courseMaterial,
+                            a.moodleUri,
+                            a.hasMaterial,
+                            a.locations,
+                            b.locations
+                        )
+                    ),
+                    Optional::get
+                )
+            )).values().stream()
             .sorted()
             .collect(Collectors.toList());
     }

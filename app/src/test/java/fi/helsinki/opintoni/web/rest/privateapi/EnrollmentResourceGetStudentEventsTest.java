@@ -45,18 +45,18 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(7)))
+            .andExpect(jsonPath("$", hasSize(5)))
             .andExpect(jsonPath("$[0].realisationId").value(123456789))
             .andExpect(jsonPath("$[0].endDate").isArray())
             .andExpect(jsonPath("$[0].endDate[0]").value(2016))
             .andExpect(jsonPath("$[0].endDate[1]").value(12))
-            .andExpect(jsonPath("$[0].endDate[2]").value(9))
+            .andExpect(jsonPath("$[0].endDate[2]").value(19))
             .andExpect(jsonPath("$[0].endDate[3]").value(15))
             .andExpect(jsonPath("$[0].endDate[4]").value(45))
             .andExpect(jsonPath("$[0].startDate").isArray())
             .andExpect(jsonPath("$[0].startDate[0]").value(2016))
             .andExpect(jsonPath("$[0].startDate[1]").value(12))
-            .andExpect(jsonPath("$[0].startDate[2]").value(9))
+            .andExpect(jsonPath("$[0].startDate[2]").value(19))
             .andExpect(jsonPath("$[0].startDate[3]").value(14))
             .andExpect(jsonPath("$[0].startDate[4]").value(15))
             .andExpect(jsonPath("$[0].title").value("Formulat... Harjoitus II (en)"))
@@ -71,9 +71,9 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
             .andExpect(jsonPath("$[0].locations[0].streetAddress").value("Viikinkaari 11"))
             .andExpect(jsonPath("$[0].locations[0].zipCode").value("00790"))
             .andExpect(jsonPath("$[0].hasMaterial").value(true))
-            .andExpect(jsonPath("$[3].title").value("Test exam 04159adb2253"))
+            .andExpect(jsonPath("$[3].title").value("Ei päättymisaikaa"))
             .andExpect(jsonPath("$[3].source").value(EventDto.Source.COURSE_PAGE.name()))
-            .andExpect(jsonPath("$[3].type").value(EventDto.Type.EXAM.name()));
+            .andExpect(jsonPath("$[3].type").value(EventDto.Type.DEFAULT.name()));
     }
 
     private void expectEvents() {

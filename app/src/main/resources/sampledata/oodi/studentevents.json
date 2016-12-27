@@ -49,8 +49,8 @@
             "building_zipcode" : "00790",
             "room_name_short": "Päärakennus, sali 1",
             "realisation_type_code": 17,
-            "end_date": "2016-12-16T13:45:00.000Z",
-            "start_date": "2016-12-16T12:15:00.000Z",
+            "end_date": "2016-12-31T13:45:00.000Z",
+            "start_date": "2016-12-31T12:15:00.000Z",
             "course_id": 1234,
             "simple_type_code": 1,
             "realisation_name": [
@@ -88,10 +88,51 @@
             "weekday_code": 3,
             "building_address1": "Viikinkaari 11",
             "building_zipcode" : "00790",
+            "room_name_short": "Päärakennus, sali 2",
+            "realisation_type_code": 17,
+            "end_date": "2016-12-31T13:45:00.000Z",
+            "start_date": "2016-12-31T12:15:00.000Z",
+            "course_id": 1234,
+            "simple_type_code": 1,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Harjoitus IIb"
+                },
+                {
+                    "langcode": "sv",
+                    "text": "Harjoitus IIb (sv)"
+                },
+                {
+                    "langcode": "en",
+                    "text": "Harjoitus IIb (en)"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Formulointi II"
+                },
+                {
+                    "langcode": "sv",
+                    "text": "Formulering II"
+                },
+                {
+                    "langcode": "en",
+                    "text": "Formulation II"
+                }
+            ],
+            "learningopportunity_id": "123456789",
+            "cancelled" : "false"
+        },
+        {
+            "weekday_code": 3,
+            "building_address1": "Viikinkaari 11",
+            "building_zipcode" : "00790",
             "room_name_short": "Päärakennus, sali 1",
             "realisation_type_code": 17,
-            "end_date": "2016-12-16T13:45:00.000Z",
-            "start_date": "2016-12-16T12:15:00.000Z",
+            "end_date": "2016-12-30T13:45:00.000Z",
+            "start_date": "2016-12-30T12:15:00.000Z",
             "course_id": 12345,
             "simple_type_code": 1,
             "realisation_name": [
@@ -131,8 +172,8 @@
             "building_zipcode" : "00790",
             "room_name_short": "Päärakennus, sali 2",
             "realisation_type_code": 17,
-            "end_date": "2016-12-16T13:45:00.000Z",
-            "start_date": "2016-12-16T12:15:00.000Z",
+            "end_date": "2016-12-30T13:45:00.000Z",
+            "start_date": "2016-12-30T12:15:00.000Z",
             "course_id": 12345,
             "simple_type_code": 1,
             "realisation_name": [
@@ -147,6 +188,47 @@
                 {
                     "langcode": "en",
                     "text": "Harjoitus IV g2 (en)"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Formulointi IIII"
+                },
+                {
+                    "langcode": "sv",
+                    "text": "Formulering IIII"
+                },
+                {
+                    "langcode": "en",
+                    "text": "Formulation IIII"
+                }
+            ],
+            "learningopportunity_id": "1234567890",
+            "cancelled" : "false"
+        },
+        {
+            "weekday_code": 3,
+            "building_address1": "Fabianinkatu 33",
+            "building_zipcode" : "00790",
+            "room_name_short": "Päärakennus, sali 3",
+            "realisation_type_code": 17,
+            "end_date": "2016-12-30T13:45:00.000Z",
+            "start_date": "2016-12-30T12:15:00.000Z",
+            "course_id": 12345,
+            "simple_type_code": 1,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Harjoitus IV r3"
+                },
+                {
+                    "langcode": "sv",
+                    "text": "Harjoitus IV g3 (sv)"
+                },
+                {
+                    "langcode": "en",
+                    "text": "Harjoitus IV g3 (en)"
                 }
             ],
             "realisation_root_name": [

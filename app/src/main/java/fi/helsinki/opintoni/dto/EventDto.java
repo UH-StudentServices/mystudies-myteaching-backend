@@ -21,6 +21,7 @@ import fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -80,6 +81,36 @@ public class EventDto implements Comparable<EventDto> {
         this.locations = Collections.singletonList(location);
     }
 
+    public EventDto(Type type,
+                    Source source,
+                    LocalDateTime startDate,
+                    LocalDateTime endDate,
+                    Integer realisationId,
+                    String title,
+                    String courseTitle,
+                    String courseUri,
+                    String courseImageUri,
+                    CourseMaterialDto courseMaterialDto,
+                    String moodleUri,
+                    boolean hasMaterial,
+                    List<LocationDto> locationsA,
+                    List<LocationDto> locationsB) {
+        this.type = type;
+        this.source = source;
+        this.realisationId = realisationId;
+        this.endDate = endDate;
+        this.startDate = startDate;
+        this.title = title;
+        this.courseTitle = courseTitle;
+        this.courseUri = courseUri;
+        this.courseImageUri = courseImageUri;
+        this.courseMaterial = courseMaterialDto;
+        this.moodleUri = moodleUri;
+        this.hasMaterial = hasMaterial;
+        this.locations = new ArrayList<LocationDto>(locationsA);
+        this.locations.addAll(locationsB);
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -97,6 +128,20 @@ public class EventDto implements Comparable<EventDto> {
     @Override
     public final int compareTo(EventDto o) {
         return startDate.compareTo(o.startDate);
+    }
+
+    public static String getRealisationIdAndTimes(EventDto dto) {
+        String result = "";
+        if (dto.realisationId != null) {
+            result += dto.realisationId;
+        }
+        if (dto.startDate != null) {
+            result += dto.startDate;
+        }
+        if (dto.endDate != null) {
+            result += dto.endDate;
+        }
+        return result;
     }
 
     public String getLocationsAsString() {

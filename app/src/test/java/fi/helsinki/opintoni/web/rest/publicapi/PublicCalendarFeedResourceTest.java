@@ -55,10 +55,10 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
         List<String> expectedIcalEvents = newArrayList(
             eventToString(
                 "BEGIN:VEVENT",
-                "DTSTART;TZID=Europe/Helsinki:20161209T141500",
-                "DTEND;TZID=Europe/Helsinki:20161209T154500",
+                "DTSTART;TZID=Europe/Helsinki:20161219T141500",
+                "DTEND;TZID=Europe/Helsinki:20161219T154500",
                 "SUMMARY:Formulat... Harjoitus II (en)\\, Animal Biotechnology B (KEL/KEBIOT230)",
-                "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11",
+                "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11\\, Päärakennus\\, sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11",
                 "UID:"),
             eventToString(
                 "BEGIN:VEVENT",
