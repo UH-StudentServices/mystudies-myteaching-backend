@@ -27,13 +27,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LocationResolverTest extends SpringTest {
+    private static String room = "Huone";
+    private static String street = "Osoite";
+    private static String zip = "1345";
 
     @Autowired
     private LocationResolver locationResolver;
 
     @Test
     public void thatLocationIsReturnedWhenStreetIsNull() {
-        String room = "Huone";
         OodiEvent oodiEvent = oodiEventWithLocation(room, null, null);
 
         LocationDto locationDto = locationResolver.getLocation(oodiEvent);
@@ -44,7 +46,6 @@ public class LocationResolverTest extends SpringTest {
 
     @Test
     public void thatLocationIsReturnedWhenRoomIsNull() {
-        String street = "Osoite";
         OodiEvent oodiEvent = oodiEventWithLocation(null, street, null);
 
         LocationDto locationDto = locationResolver.getLocation(oodiEvent);
@@ -66,10 +67,6 @@ public class LocationResolverTest extends SpringTest {
 
     @Test
     public void thatLocationIsReturnedFromOodi() {
-        String room = "Huone";
-        String street = "Osoite";
-        String zip = "1345";
-
         OodiEvent oodiEvent = oodiEventWithLocation(room, street, zip);
 
         LocationDto locationDto = locationResolver.getLocation(oodiEvent);
@@ -91,14 +88,12 @@ public class LocationResolverTest extends SpringTest {
 
     @Test
     public void thatLocationIsReturnedFromCoursePage() {
-        String where = "Luentosali 2";
-        coursePageEventStringTest(where);
+        coursePageEventStringTest("Luentosali 2");
     }
 
     @Test
     public void thatEmptyLocationIsReturnedFromCoursePageWithEmptyWhere() {
-        String where = "";
-        coursePageEventStringTest(where);
+        coursePageEventStringTest("");
     }
 
     @Test
