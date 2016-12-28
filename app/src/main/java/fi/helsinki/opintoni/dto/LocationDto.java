@@ -17,13 +17,28 @@
 
 package fi.helsinki.opintoni.dto;
 
-public class BuildingDto {
+public class LocationDto {
 
-    public String street;
+    public String locationString;
+    public String roomName;
+    public String streetAddress;
     public String zipCode;
 
-    public BuildingDto(String street, String zipCode) {
-        this.street = street;
+    public LocationDto(String locationString, String roomName, String streetAddress, String zipCode) {
+        this.locationString = locationString;
+        this.roomName = roomName;
+        this.streetAddress = streetAddress;
         this.zipCode = zipCode;
+    }
+
+    public LocationDto(String where) {
+        this.locationString = where;
+        this.roomName = where;
+        this.streetAddress = null;
+        this.zipCode = null;
+    }
+
+    public String getLocationString() {
+        return this.locationString;
     }
 }

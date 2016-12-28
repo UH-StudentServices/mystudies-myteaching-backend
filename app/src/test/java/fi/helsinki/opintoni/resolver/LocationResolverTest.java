@@ -18,7 +18,8 @@
 package fi.helsinki.opintoni.resolver;
 
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.dto.BuildingDto;
+import fi.helsinki.opintoni.dto.LocationDto;
+import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
 import fi.helsinki.opintoni.integration.oodi.OodiEvent;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,58 +27,97 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LocationResolverTest extends SpringTest {
+    private static String room = "Huone";
+    private static String street = "Osoite";
+    private static String zip = "1345";
 
     @Autowired
     private LocationResolver locationResolver;
 
     @Test
-    public void thatNullIsReturnedWithNullBuildingId() {
-        BuildingDto buildingDto = locationResolver.getBuilding(new OodiEvent());
-        assertThat(buildingDto).isNull();
+    public void thatLocationIsReturnedWhenStreetIsNull() {
+        OodiEvent oodiEvent = oodiEventWithLocation(room, null, null);
+
+        LocationDto locationDto = locationResolver.getLocation(oodiEvent);
+        assertThat(locationDto).isNotNull();
+        assertThat(locationDto.locationString).isEqualTo(room);
+        assertThat(locationDto.streetAddress).isNull();
     }
 
     @Test
-    public void thatNullIsReturnedWhenAddressIsBlank() {
-        OodiEvent oodiEvent = oodiEventWithBuilding(null, "12345");
+    public void thatLocationIsReturnedWhenRoomIsNull() {
+        OodiEvent oodiEvent = oodiEventWithLocation(null, street, null);
 
-        BuildingDto buildingDto = locationResolver.getBuilding(oodiEvent);
-        assertThat(buildingDto).isNull();
+        LocationDto locationDto = locationResolver.getLocation(oodiEvent);
+        assertThat(locationDto).isNotNull();
+        assertThat(locationDto.locationString).isEqualTo(street);
+        assertThat(locationDto.streetAddress).isEqualTo(street);
     }
 
     @Test
-    public void thatBuildingDtoIsReturnedWhenZipCodeIsBlankButAddressIsNot() {
-        String street = "Osoite";
-        OodiEvent oodiEvent = oodiEventWithBuilding(street, null);
+    public void thatEmptyLocationStringIsReturnedWhenEventFieldsAreNull() {
+        OodiEvent oodiEvent = oodiEventWithLocation(null, null, null);
 
-        BuildingDto buildingDto = locationResolver.getBuilding(oodiEvent);
-        assertThat(buildingDto).isNotNull();
-        assertThat(buildingDto.street).isEqualTo(street);
+        LocationDto locationDto = locationResolver.getLocation(oodiEvent);
+        assertThat(locationDto.locationString).isEqualTo("");
+        assertThat(locationDto.roomName).isNull();
+        assertThat(locationDto.streetAddress).isNull();
+        assertThat(locationDto.zipCode).isNull();
     }
 
     @Test
-    public void thatNullIsReturnedWhenZipCodeAndAddressAreBlank() {
-        OodiEvent oodiEvent = oodiEventWithBuilding(null, null);
+    public void thatLocationIsReturnedFromOodi() {
+        OodiEvent oodiEvent = oodiEventWithLocation(room, street, zip);
 
-        BuildingDto buildingDto = locationResolver.getBuilding(oodiEvent);
-        assertThat(buildingDto).isNull();
+        LocationDto locationDto = locationResolver.getLocation(oodiEvent);
+        assertThat(locationDto.locationString).isEqualTo(room + ", " + street);
+        assertThat(locationDto.roomName).isEqualTo(room);
+        assertThat(locationDto.streetAddress).isEqualTo(street);
+        assertThat(locationDto.zipCode).isEqualTo(zip);
+    }
+
+    private void coursePageEventStringTest(String where) {
+        CoursePageEvent coursePageEvent = coursePageEventWithWhere(where);
+
+        LocationDto locationDto = locationResolver.getLocation(coursePageEvent);
+        assertThat(locationDto.locationString).isEqualTo(where);
+        assertThat(locationDto.roomName).isEqualTo(where);
+        assertThat(locationDto.streetAddress).isNull();
+        assertThat(locationDto.zipCode).isNull();
     }
 
     @Test
-    public void thatBuildingUriIsReturned() {
-        String street = "Osoite";
-        String zip = "1345";
-
-        OodiEvent oodiEvent = oodiEventWithBuilding(street, zip);
-
-        BuildingDto buildingDto = locationResolver.getBuilding(oodiEvent);
-        assertThat(buildingDto.street).isEqualTo(street);
-        assertThat(buildingDto.zipCode).isEqualTo(zip);
+    public void thatLocationIsReturnedFromCoursePage() {
+        coursePageEventStringTest("Luentosali 2");
     }
 
-    private OodiEvent oodiEventWithBuilding(String street, String zip) {
+    @Test
+    public void thatEmptyLocationIsReturnedFromCoursePageWithEmptyWhere() {
+        coursePageEventStringTest("");
+    }
+
+    @Test
+    public void thatEmptyLocationIsReturnedFromCoursePageWithNull() {
+        CoursePageEvent coursePageEvent = coursePageEventWithWhere(null);
+
+        LocationDto locationDto = locationResolver.getLocation(coursePageEvent);
+        assertThat(locationDto.locationString).isEqualTo("");
+        assertThat(locationDto.roomName).isEqualTo("");
+        assertThat(locationDto.streetAddress).isNull();
+        assertThat(locationDto.zipCode).isNull();
+    }
+
+    private OodiEvent oodiEventWithLocation(String roomName, String street, String zip) {
         OodiEvent oodiEvent = new OodiEvent();
+        oodiEvent.roomName = roomName;
         oodiEvent.buildingStreet = street;
         oodiEvent.buildingZipCode = zip;
         return oodiEvent;
+    }
+
+    private CoursePageEvent coursePageEventWithWhere(String where) {
+        CoursePageEvent coursePageEvent = new CoursePageEvent();
+        coursePageEvent.where = where;
+        return coursePageEvent;
     }
 }

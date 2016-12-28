@@ -17,17 +17,42 @@
 
 package fi.helsinki.opintoni.resolver;
 
-import fi.helsinki.opintoni.dto.BuildingDto;
+import com.google.common.collect.Lists;
+import fi.helsinki.opintoni.dto.LocationDto;
+import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
 import fi.helsinki.opintoni.integration.oodi.OodiEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 @Component
 public class LocationResolver {
-    public BuildingDto getBuilding(OodiEvent oodiEvent) {
-        if (oodiEvent.buildingStreet == null) {
-            return null;
-        } else {
-            return new BuildingDto(oodiEvent.buildingStreet, oodiEvent.buildingZipCode);
-        }
+
+    private String getLocationString(OodiEvent event) {
+        return Lists.newArrayList(event.roomName, event.buildingStreet).stream()
+            .filter(Objects::nonNull)
+            .collect(Collectors.joining(", "));
     }
+
+    public LocationDto getLocation(OodiEvent oodiEvent) {
+        return new LocationDto(
+            getLocationString(oodiEvent),
+            oodiEvent.roomName,
+            oodiEvent.buildingStreet,
+            oodiEvent.buildingZipCode
+        );
+    }
+
+    public LocationDto getLocation(CoursePageEvent coursePageEvent) {
+        String where;
+        if (coursePageEvent.where != null) {
+            where = coursePageEvent.where;
+        } else {
+            where = "";
+        }
+
+        return new LocationDto(where);
+    }
+
 }
