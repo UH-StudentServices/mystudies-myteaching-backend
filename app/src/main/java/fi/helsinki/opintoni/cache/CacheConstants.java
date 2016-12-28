@@ -35,7 +35,7 @@ public class CacheConstants {
 
     public static final String STUDENT_NEWS = "studentNews";
     public static final String TEACHER_NEWS = "teacherNews";
-    public static final String STUDENT_OPEN_UNIVERSITY_NEWS = "studentOpenUniversityNews";
+    public static final String OPEN_UNIVERSITY_NEWS = "openUniversityNews";
 
     public static final String IS_OPEN_UNIVERSITY_STUDENT = "isOpenUniversityStudent";
     public static final String IS_OPEN_UNIVERSITY_TEACHER = "isOpenUniversityTeacher";
@@ -55,7 +55,7 @@ public class CacheConstants {
         .add(COURSE_UNIT_REALISATIONS)
         .add(STUDENT_NEWS)
         .add(TEACHER_NEWS)
-        .add(STUDENT_OPEN_UNIVERSITY_NEWS)
+        .add(OPEN_UNIVERSITY_NEWS)
         .add(IS_OPEN_UNIVERSITY_STUDENT)
         .add(IS_OPEN_UNIVERSITY_TEACHER)
         .add(EUROPE_HELSINKI_TIMEZONE)

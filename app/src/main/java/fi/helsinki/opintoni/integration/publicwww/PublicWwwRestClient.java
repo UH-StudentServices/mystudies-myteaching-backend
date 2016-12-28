@@ -51,7 +51,7 @@ public class PublicWwwRestClient {
         return restTemplate;
     }
 
-    public Channel getStudentOpenUniversityFeed() {
+    public Channel getOpenUniversityFeed() {
         String uri = getFeedUri();
 
         try {

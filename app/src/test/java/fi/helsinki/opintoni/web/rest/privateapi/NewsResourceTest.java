@@ -120,7 +120,7 @@ public class NewsResourceTest extends SpringTest {
     public void thatStudentOpenUniversityNewsAreReturned() throws Exception {
         publicWwwServer.expectStudentOpenUniversityNews();
 
-        mockMvc.perform(get("/api/private/v1/news/student/openuniversity")
+        mockMvc.perform(get("/api/private/v1/news/openuniversity")
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
