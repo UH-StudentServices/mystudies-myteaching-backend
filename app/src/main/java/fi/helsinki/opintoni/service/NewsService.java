@@ -60,9 +60,9 @@ public class NewsService {
         return getAtomNews(() -> flammaRestClient.getTeacherFeed(locale));
     }
 
-    @Cacheable(CacheConstants.STUDENT_OPEN_UNIVERSITY_NEWS)
-    public List<NewsDto> getStudentOpenUniversityNews() {
-        return getRssNews(publicWwwRestClient::getStudentOpenUniversityFeed);
+    @Cacheable(CacheConstants.OPEN_UNIVERSITY_NEWS)
+    public List<NewsDto> getOpenUniversityNews() {
+        return getRssNews(publicWwwRestClient::getOpenUniversityFeed);
     }
 
     private List<NewsDto> getAtomNews(Supplier<Feed> feedSupplier) {

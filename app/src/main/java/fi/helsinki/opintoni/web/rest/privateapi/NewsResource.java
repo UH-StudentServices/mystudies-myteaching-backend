@@ -57,9 +57,8 @@ public class NewsResource extends AbstractResource {
         return response(newsService.getTeacherNews(locale));
     }
 
-    @StudentRoleRequired
-    @RequestMapping(value = "/student/openuniversity")
-    public ResponseEntity<List<NewsDto>> getStudentOpenUniversityNews() {
-        return response(newsService.getStudentOpenUniversityNews());
+    @RequestMapping(value = "/openuniversity")
+    public ResponseEntity<List<NewsDto>> getOpenUniversityNews() {
+        return response(newsService.getOpenUniversityNews());
     }
 }
