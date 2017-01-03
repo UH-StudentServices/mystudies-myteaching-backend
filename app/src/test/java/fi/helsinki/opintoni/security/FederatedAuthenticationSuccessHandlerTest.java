@@ -134,7 +134,10 @@ public class FederatedAuthenticationSuccessHandlerTest {
         HttpServletResponse response = mockResponse();
 
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
-        verify(response, times(0)).addCookie(any());
+
+        handler.onAuthenticationSuccess(request, response, authentication);
+
+        verify(response, times(0)).addCookie(argThat(new LangCookieMatcher()));
     }
 
     @Test
