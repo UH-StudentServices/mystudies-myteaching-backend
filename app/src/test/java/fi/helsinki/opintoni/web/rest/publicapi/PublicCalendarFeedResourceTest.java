@@ -21,10 +21,10 @@ import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
+import org.hamcrest.core.StringContains;
+import org.hamcrest.core.StringEndsWith;
+import org.hamcrest.core.StringStartsWith;
 import org.junit.Test;
-import org.mockito.internal.matchers.Contains;
-import org.mockito.internal.matchers.EndsWith;
-import org.mockito.internal.matchers.StartsWith;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -105,11 +105,11 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
     private List<Matcher<String>> contentMatchers(String expectedICalStart, String expectedICalEnd, List<String> expectedIcalEvents) {
         List<Matcher<String>> matchers = newArrayList();
 
-        matchers.add(new StartsWith(expectedICalStart));
-        matchers.add(new EndsWith(expectedICalEnd));
+        matchers.add(new StringStartsWith(expectedICalStart));
+        matchers.add(new StringEndsWith(expectedICalEnd));
 
         matchers.addAll(expectedIcalEvents.stream()
-            .map(Contains::new)
+            .map(StringContains::containsString)
             .collect(Collectors.toList()));
 
         return matchers;

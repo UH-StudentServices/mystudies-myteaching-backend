@@ -30,7 +30,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.ServletException;
@@ -38,7 +38,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Optional;
 
 import static java.util.Collections.singletonList;
@@ -135,7 +134,10 @@ public class FederatedAuthenticationSuccessHandlerTest {
         HttpServletResponse response = mockResponse();
 
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
-        verify(response, times(0)).addCookie(any());
+
+        handler.onAuthenticationSuccess(request, response, authentication);
+
+        verify(response, times(0)).addCookie(argThat(new LangCookieMatcher()));
     }
 
     @Test
@@ -150,33 +152,29 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
     private HttpServletResponse mockResponse() throws IOException {
         HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(mock(PrintWriter.class));
         return response;
     }
 
-    private static class LangCookieMatcher extends ArgumentMatcher<Cookie> {
+    private static class LangCookieMatcher implements ArgumentMatcher<Cookie> {
 
         @Override
-        public boolean matches(Object item) {
-            Cookie cookie = (Cookie) item;
+        public boolean matches(Cookie cookie) {
             return Constants.NG_TRANSLATE_LANG_KEY.equals(cookie.getName()) && "%22fi%22".equals(cookie.getValue());
         }
     }
 
-    private static class HasLoggedInCookieMatcher extends ArgumentMatcher<Cookie> {
+    private static class HasLoggedInCookieMatcher implements ArgumentMatcher<Cookie> {
 
         @Override
-        public boolean matches(Object item) {
-            Cookie cookie = (Cookie) item;
+        public boolean matches(Cookie cookie) {
             return Constants.OPINTONI_HAS_LOGGED_IN.equals(cookie.getName()) && "true".equals(cookie.getValue());
         }
     }
 
-    private static class UserMatcher extends ArgumentMatcher<User> {
+    private static class UserMatcher implements ArgumentMatcher<User> {
 
         @Override
-        public boolean matches(Object argument) {
-            User user = (User) argument;
+        public boolean matches(User user) {
             return user.oodiPersonId.equals(OODI_PERSON_ID);
         }
     }
