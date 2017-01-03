@@ -46,6 +46,10 @@ coursePage:
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
     checkUpdates.interval.seconds: 60
 
+optime:
+    base.url: https://esbmt2.it.helsinki.fi/devel/optime
+    client.implementation: rest
+
 unisport:
     client.implementation: rest
     base.url: https://unisport.fi

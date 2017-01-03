@@ -30,9 +30,9 @@ public class AppConfigurationTest {
     @Before
     public void setUp() {
         appConfiguration = new AppConfiguration(
-                new MockEnvironment()
-                        .withProperty("url", "http://www.mysite.com")
-                        .withProperty("enabled", "true"));
+            new MockEnvironment()
+                .withProperty("url", "http://www.mysite.com")
+                .withProperty("enabled", "true"));
 
         appConfiguration.override("url", "http://www.radiogaga.com");
     }
