@@ -18,13 +18,12 @@
 package fi.helsinki.opintoni.service.storage;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
-import org.hamcrest.Description;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,17 +66,11 @@ public class FileSystemFileStorageTest {
         verify(fileService, times(1)).remove(argThat(new FileMatcher()));
     }
 
-    class FileMatcher extends ArgumentMatcher<File> {
+    class FileMatcher implements ArgumentMatcher<File> {
 
         @Override
-        public boolean matches(Object argument) {
-            File file = (File) argument;
+        public boolean matches(File file) {
             return file.getAbsolutePath().equals("/images/" + FILENAME);
-        }
-
-        @Override
-        public void describeTo(Description description) {
-            description.appendText("/images/" + FILENAME);
         }
     }
 }
