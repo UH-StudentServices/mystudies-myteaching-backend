@@ -18,7 +18,7 @@
 package fi.helsinki.opintoni.config;
 
 import com.codahale.metrics.MetricRegistry;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import liquibase.integration.spring.SpringLiquibase;
@@ -104,7 +104,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
     }
 
     @Bean
-    public Hibernate4Module hibernate4Module() {
-        return new Hibernate4Module();
+    public Hibernate5Module hibernate4Module() {
+        return new Hibernate5Module();
     }
 }

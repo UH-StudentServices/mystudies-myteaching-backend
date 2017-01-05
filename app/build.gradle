@@ -150,7 +150,7 @@ dependencies {
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-json-org', version: jackson_version
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hppc', version: jackson_version
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda', version: jackson_version
-    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate4', version: jackson_version
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate5', version: jackson_version
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: jackson_version
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: jackson_version
 
@@ -165,7 +165,11 @@ dependencies {
     compile group: 'joda-time', name: 'joda-time', version: joda_time_version
     compile group: 'joda-time', name: 'joda-time-hibernate', version: joda_time_hibernate_version
     compile group: 'org.apache.geronimo.javamail', name: 'geronimo-javamail_1.4_mail', version: geronimo_javamail_1_4_mail_version
-    compile group: 'org.hibernate', name: 'hibernate-core', version: hibernate_entitymanager_version
+    compile (group: 'org.hibernate', name: 'hibernate-core', version: hibernate_entitymanager_version) {
+        exclude(group: 'dom4j', module: 'dom4j')
+    }
+    compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: hibernate_entitymanager_version
+    compile group: 'dom4j', name: 'dom4j', version: dom4j_version
     compile group: 'org.hibernate', name: 'hibernate-envers', version: hibernate_entitymanager_version
     compile group: 'org.hibernate', name: 'hibernate-ehcache', version: hibernate_entitymanager_version
     compile group: 'org.hibernate', name: 'hibernate-validator', version: hibernate_validator_version
@@ -184,13 +188,10 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-undertow', version: spring_boot_version
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: spring_boot_version
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-cloudfoundry-connector', version: spring_cloud_version
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-spring-service-connector', version: spring_cloud_version
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-localconfig-connector', version: spring_cloud_version
     compile(group: 'org.springframework', name: 'spring-context-support') {
         exclude(module: 'quartz')
     }
+    compile group: 'org.springframework', name: 'spring-orm', version: spring_orm_version
 
     compile 'org.apache.tomcat:tomcat-catalina-jmx-remote:8.0.22'
     compile group: 'com.google.guava', name: 'guava', version: '18.0'
