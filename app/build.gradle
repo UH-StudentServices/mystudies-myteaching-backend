@@ -188,8 +188,6 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-undertow', version: spring_boot_version
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-spring-service-connector', version: spring_cloud_version
-    compile group: 'org.springframework.cloud', name: 'spring-cloud-localconfig-connector', version: spring_cloud_version
     compile(group: 'org.springframework', name: 'spring-context-support') {
         exclude(module: 'quartz')
     }
