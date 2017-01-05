@@ -155,7 +155,7 @@ dependencies {
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: jackson_version
 
     compile group: 'com.ryantenney.metrics', name: 'metrics-spring', version: metrics_spring_version
-    compile(group: 'com.zaxxer', name: 'HikariCP', version: HikariCP_version) {
+    compile(group: 'com.zaxxer', name: 'HikariCP', version: hikari_version) {
         exclude(module: 'tools')
     }
     compile group: 'org.apache.commons', name: 'commons-lang3', version: commons_lang_version
@@ -208,7 +208,7 @@ dependencies {
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: httpclient_version
     compile group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-csv', version: jackson_dataformat_csv_version
     compile group: 'com.rometools', name: 'rome-fetcher', version: '1.5.1'
-    compile group: 'com.github.slugify', name: 'slugify', version: com_github_slugify_version
+    compile group: 'com.github.slugify', name: 'slugify', version: slugify_version
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: io_jsonwebtoken_version
 
     compile group: 'org.slf4j', name:'jcl-over-slf4j', version: '1.7.7'
