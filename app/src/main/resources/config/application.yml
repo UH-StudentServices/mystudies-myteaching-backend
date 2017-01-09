@@ -17,6 +17,8 @@ spring:
 hibernate:
     connection:
         handling_mode: DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION
+    id:
+        new_generator_mappings: false
 
 userDefaults :
     defaultFavorites:
