@@ -104,7 +104,7 @@ public class DatabaseConfiguration implements EnvironmentAware {
     }
 
     @Bean
-    public Hibernate5Module hibernate4Module() {
+    public Hibernate5Module hibernate5Module() {
         return new Hibernate5Module();
     }
 }
