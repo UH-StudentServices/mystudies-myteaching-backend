@@ -23,7 +23,6 @@ import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
 import fi.helsinki.opintoni.integration.optime.OptimeClient;
 import fi.helsinki.opintoni.integration.optime.OptimeMockClient;
 import fi.helsinki.opintoni.integration.optime.OptimeRestClient;
-import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,12 +57,11 @@ public class OptimeConfiguration {
 
     @Bean
     public OptimeClient optimeClient() {
-        return NamedDelegatesProxy.builder(
-            OptimeClient.class,
-            () -> appConfiguration.get("optime.client.implementation"))
-            .with("rest", optimeRestClient())
-            .with("mock", optimeMockClient())
-            .build();
+        if (appConfiguration.get("optime.client.implementation").equals("rest")) {
+            return optimeRestClient();
+        } else {
+            return optimeMockClient();
+        }
     }
 
 }
