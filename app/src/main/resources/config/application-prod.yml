@@ -47,7 +47,7 @@ coursePage:
     checkUpdates.interval.seconds: 60
 
 optime:
-    base.url: https://esbmt1.it.helsinki.fi/optime
+    base.url: https://esbmt1.it.helsinki.fi
     client.implementation: rest
 
 unisport:
