@@ -45,6 +45,10 @@ coursePage:
     client.implementation: rest
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
+optime:
+    base.url: https://esbmt2.it.helsinki.fi/devel/optime
+    client.implementation: rest
+
 unisport:
     client.implementation: rest
     base.url: https://unisport.fi
