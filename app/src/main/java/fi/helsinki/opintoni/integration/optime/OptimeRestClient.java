@@ -28,7 +28,7 @@ public class OptimeRestClient implements OptimeClient {
     private final String baseUrl;
     private final RestTemplate restTemplate;
 
-    private static final Logger log = LoggerFactory.getLogger(CoursePageRestClient.class);
+    private static final Logger log = LoggerFactory.getLogger(OptimeRestClient.class);
 
     public OptimeRestClient(String baseUrl, RestTemplate restTemplate) {
         this.baseUrl = baseUrl;
