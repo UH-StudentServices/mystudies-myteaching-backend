@@ -302,6 +302,10 @@ leiki:
     base.url: http://suositukset.helsinki.fi
     client.implementation: rest
 
+esb:
+    base.url: https://esbmt2.it.helsinki.fi
+    client.implementation: rest
+
 flamma:
     base.url: https://flamma.helsinki.fi
 

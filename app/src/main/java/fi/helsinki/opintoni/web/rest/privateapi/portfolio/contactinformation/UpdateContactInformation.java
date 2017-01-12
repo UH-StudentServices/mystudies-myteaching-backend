@@ -15,55 +15,23 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.domain.portfolio;
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation;
 
-import fi.helsinki.opintoni.domain.AbstractAuditingEntity;
-import fi.helsinki.opintoni.domain.Ownership;
+import com.google.common.collect.Lists;
 import org.hibernate.validator.constraints.Email;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
-@Entity
-@Table(name = "contact_information")
-public class ContactInformation extends AbstractAuditingEntity implements Ownership {
-
-    @Id
-    @GeneratedValue
-    public Long id;
-
-    @NotNull
-    @OneToOne
-    @JoinColumn(name = "portfolio_id")
-    public Portfolio portfolio;
-
-    @Column(name = "phone_number")
-    public String phoneNumber;
+public class UpdateContactInformation {
 
     @Email
-    @Column(name = "email")
     public String email;
-
-    @Column(name = "work_number")
+    public String phoneNumber;
     public String workNumber;
-
-    @Column(name = "work_mobile")
     public String workMobile;
-
     public String title;
     public String faculty;
-
-    @Column(name = "financial_unit")
     public String financialUnit;
-
-    @Column(name = "work_address")
     public String workAddress;
-
-    @Column(name = "work_postcode")
     public String workPostcode;
-
-    @Override
-    public Long getOwnerId() {
-        return portfolio.getOwnerId();
-    }
 }

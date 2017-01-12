@@ -27,16 +27,27 @@ import org.springframework.stereotype.Component;
 public class ContactInformationConverter {
 
     private final SomeLinkService someLinkService;
+    private final LocalizedValueConverter localizedValueConverter;
 
     @Autowired
-    public ContactInformationConverter(SomeLinkService someLinkService) {
+    public ContactInformationConverter(SomeLinkService someLinkService,
+                                       LocalizedValueConverter localizedValueConverter) {
         this.someLinkService = someLinkService;
+        this.localizedValueConverter = localizedValueConverter;
     }
 
     public ContactInformationDto toDto(ContactInformation contactInformation) {
         ContactInformationDto contactInformationDto = new ContactInformationDto();
         contactInformationDto.email = contactInformation.email;
         contactInformationDto.phoneNumber = contactInformation.phoneNumber;
+        contactInformationDto.workNumber = contactInformation.workNumber;
+        contactInformationDto.workMobile = contactInformation.workMobile;
+        contactInformationDto.title = contactInformation.title;
+        contactInformationDto.faculty = contactInformation.faculty;
+        contactInformationDto.financialUnit = contactInformation.financialUnit;
+        contactInformationDto.workAddress = contactInformation.workAddress;
+        contactInformationDto.workPostcode = contactInformation.workPostcode;
+
         contactInformationDto.someLinks = someLinkService.findByPortfolioId(contactInformation.portfolio.id);
         return contactInformationDto;
     }

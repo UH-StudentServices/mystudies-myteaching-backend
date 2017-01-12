@@ -46,6 +46,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -129,6 +130,22 @@ public class PrivatePortfolioResourceTest extends SpringTest {
                     hasEntry("id", 8)
                 )
             )));
+    }
+
+    @Test
+    public void thatTeacherPortfolioIsCreated() throws Exception {
+        esbServer.expectEmployeeContactInformationRequest("010540");
+
+        mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + TEACHER_PORTFOLIO_API_PATH)
+            .with(securityContext(teacherSecurityContext("testteacher", "password"))))
+            .andExpect(jsonPath("$.contactInformation.email").value("olli.opettaja@helsinki.fi"))
+            .andExpect(jsonPath("$.contactInformation.workNumber").value("54321"))
+            .andExpect(jsonPath("$.contactInformation.workMobile").value("12345678"))
+            .andExpect(jsonPath("$.contactInformation.title").value("universitetslektor"))
+            .andExpect(jsonPath("$.contactInformation.faculty").value("Käyttäytymistieteellinen tiedekunta"))
+            .andExpect(jsonPath("$.contactInformation.financialUnit").value("OIKTDK, Faculty of Law"))
+            .andExpect(jsonPath("$.contactInformation.workAddress").value("PL 9 (Siltavuorenpenger 1A)"))
+            .andExpect(jsonPath("$.contactInformation.workPostcode").value("00014 HELSINGIN YLIOPISTO"));
     }
 
     @Test

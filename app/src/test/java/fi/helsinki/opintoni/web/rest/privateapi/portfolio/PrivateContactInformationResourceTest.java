@@ -32,13 +32,14 @@ import org.springframework.http.MediaType;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
+import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PrivateContactInformationResourceTest extends SpringTest {
+public class PrivateContactInformationResourceTest extends AbstractPortfolioResourceTest {
 
     @Autowired
     private ContactInformationRepository contactInformationRepository;
@@ -76,6 +77,24 @@ public class PrivateContactInformationResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.email").value("email@helsinki.fi"))
             .andExpect(jsonPath("$.phoneNumber").value("987654321"));
+    }
+
+    @Test
+    public void thatTeacherContactInformationIsReset() throws Exception {
+
+        expectEmployeeContactInformationRequestToESB();
+
+        mockMvc.perform(post("/api/private/v1/portfolio/4/contactinformation/teacher/reset")
+            .with(securityContext(teacherSecurityContext("opettaja", "password"))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.email").value("olli.opettaja@helsinki.fi"))
+            .andExpect(jsonPath("$.workNumber").value("54321"))
+            .andExpect(jsonPath("$.workMobile").value("12345678"))
+            .andExpect(jsonPath("$.title").value("universitetslektor"))
+            .andExpect(jsonPath("$.faculty").value("Käyttäytymistieteellinen tiedekunta"))
+            .andExpect(jsonPath("$.financialUnit").value("OIKTDK, Faculty of Law"))
+            .andExpect(jsonPath("$.workAddress").value("PL 9 (Siltavuorenpenger 1A)"))
+            .andExpect(jsonPath("$.workPostcode").value("00014 HELSINGIN YLIOPISTO"));
     }
 
     @Test

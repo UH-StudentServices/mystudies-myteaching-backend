@@ -25,6 +25,7 @@ import fi.helsinki.opintoni.repository.portfolio.ContactInformationRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.repository.portfolio.SomeLinkRepository;
 import fi.helsinki.opintoni.service.converter.ContactInformationConverter;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation.UpdateContactInformation;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation.UpdateContactInformationWithSomeLinksRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,25 +63,44 @@ public class ContactInformationService {
 
         Portfolio portfolio = portfolioRepository.findOne(portfolioId);
 
-        ContactInformation contactInformation = insertOrUpdateContactInformation(request, portfolio);
-        updateSomeLinks(request, portfolio);
+        ContactInformation contactInformation = insertOrUpdateContactInformation(portfolio, request);
+        updateSomeLinks(portfolio, request);
+
+        return contactInformationConverter.toDto(contactInformation);
+    }
+
+    public ContactInformationDto updateContactInformation(
+        Long portfolioId,
+        UpdateContactInformation request) {
+
+        Portfolio portfolio = portfolioRepository.findOne(portfolioId);
+
+        ContactInformation contactInformation = insertOrUpdateContactInformation(portfolio, request);
 
         return contactInformationConverter.toDto(contactInformation);
     }
 
     private ContactInformation insertOrUpdateContactInformation(
-        UpdateContactInformationWithSomeLinksRequest request,
-        Portfolio portfolio) {
+        Portfolio portfolio,
+        UpdateContactInformation request) {
 
         ContactInformation contactInformation = contactInformationRepository.findByPortfolioId(portfolio.id)
             .orElse(new ContactInformation());
         contactInformation.portfolio = portfolio;
         contactInformation.email = request.email;
         contactInformation.phoneNumber = request.phoneNumber;
+        contactInformation.workNumber = request.workNumber;
+        contactInformation.workMobile = request.workMobile;
+        contactInformation.title = request.title;
+        contactInformation.faculty = request.faculty;
+        contactInformation.financialUnit = request.financialUnit;
+        contactInformation.workAddress = request.workAddress;
+        contactInformation.workPostcode = request.workPostcode;
+
         return contactInformationRepository.save(contactInformation);
     }
 
-    private void updateSomeLinks(UpdateContactInformationWithSomeLinksRequest request, Portfolio portfolio) {
+    private void updateSomeLinks(Portfolio portfolio, UpdateContactInformationWithSomeLinksRequest request) {
         someLinkRepository.delete(someLinkRepository.findByPortfolioId(portfolio.id));
         request.someLinks.forEach(link -> {
             SomeLink someLink = new SomeLink();

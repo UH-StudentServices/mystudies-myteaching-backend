@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 
-import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
@@ -27,19 +26,15 @@ import fi.helsinki.opintoni.web.WebTestUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.test.web.servlet.ResultActions;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class PortfolioResourceTest extends SpringTest {
+public class PortfolioResourceTest extends AbstractPortfolioResourceTest {
 
-    private static final String PORTFOLIO_API_URL = "/api/private/v1/portfolio";
-    private static final String STUDENT_PORTFOLIO_API_URL = PORTFOLIO_API_URL + "/student";
-    private static final String TEACHER_PORTFOLIO_API_URL = PORTFOLIO_API_URL + "/teacher";
     private static final String EXPECTED_STUDENT_PORTFOLIO_URL = "/portfolio/olli-opiskelija";
     private static final String EXPECTED_TEACHER_PORTFOLIO_URL = "/portfolio/olli-opettaja";
     private static final String EXPECTED_HYBRID_USER_STUDENT_PORTFOLIO_URL = "/portfolio/hybrid-user";
@@ -50,21 +45,6 @@ public class PortfolioResourceTest extends SpringTest {
 
     private void deleteExistingStudentPortfolio() {
         portfolioRepository.delete(2L);
-    }
-
-    private ResultActions createStudentPortfolio(SecurityContext securityContext) throws Exception {
-        return createPortfolio(securityContext, STUDENT_PORTFOLIO_API_URL);
-    }
-
-    private ResultActions createTeacherPortfolio(SecurityContext securityContext) throws Exception {
-        return createPortfolio(securityContext, TEACHER_PORTFOLIO_API_URL);
-    }
-
-    private ResultActions createPortfolio(SecurityContext securityContext, String apiUrl) throws Exception {
-        return mockMvc.perform(post(apiUrl)
-            .with(securityContext(securityContext))
-            .characterEncoding("UTF-8")
-            .accept(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -87,6 +67,8 @@ public class PortfolioResourceTest extends SpringTest {
 
     @Test
     public void thatTeacherPortfolioIsCreated() throws Exception {
+        expectEmployeeContactInformationRequestToESB();
+
         deleteExistingTeacherPortfolio();
 
         createTeacherPortfolio(teacherSecurityContext())
@@ -108,6 +90,8 @@ public class PortfolioResourceTest extends SpringTest {
 
     @Test
     public void thatTeacherCannotCreateMultiplePortfolios() throws Exception {
+        expectEmployeeContactInformationRequestToESB();
+
         deleteExistingTeacherPortfolio();
 
         createTeacherPortfolio(teacherSecurityContext())
@@ -128,6 +112,8 @@ public class PortfolioResourceTest extends SpringTest {
 
     @Test
     public void thatHybridUserCannotCreateMultipleTeacherPortfolios() throws Exception {
+        expectEmployeeContactInformationRequestToESB();
+
         createTeacherPortfolio(hybridUserSecurityContext())
             .andExpect(status().isOk());
 
@@ -137,6 +123,9 @@ public class PortfolioResourceTest extends SpringTest {
 
     @Test
     public void thatHybridUserCanCreateStudentAndTeacherPortfolios() throws Exception {
+
+        expectEmployeeContactInformationRequestToESB();
+
         createStudentPortfolio(hybridUserSecurityContext())
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))

@@ -1120,4 +1120,15 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
     </changeSet>
+    <changeSet id="Add fields to contact information" author="Marko Rautajoki">
+        <addColumn tableName="contact_information">
+            <column name="work_number" type="varchar(255)"/>
+            <column name="work_mobile" type="varchar(255)"/>
+            <column name="title" type="varchar(255)"/>
+            <column name="faculty" type="varchar(255)"/>
+            <column name="financial_unit" type="varchar(255)"/>
+            <column name="work_address" type="varchar(255)"/>
+            <column name="work_postcode" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

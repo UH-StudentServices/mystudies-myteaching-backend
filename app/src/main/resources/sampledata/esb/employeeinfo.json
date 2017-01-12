@@ -1,0 +1,59 @@
+{
+    "firstName": "Olli",
+    "lastName": "Opettaja",
+    "personnelNumber": "1233456",
+    "records": [
+        {
+            "email": "olli.opettaja@helsinki.fi",
+            "ocOrganisations": [
+                {
+                    "code": "600",
+                    "name": {
+                        "en": "Käyttäytymistieteellinen tiedekunta",
+                        "fi": "Käyttäytymistieteellinen tiedekunta",
+                        "sv": "Käyttäytymistieteellinen tiedekunta"
+                    },
+                    "type": "FACULTY"
+                },
+                {
+                    "code": "630",
+                    "name": {
+                        "en": "Käyttäytymistieteiden laitos",
+                        "fi": "Käyttäytymistieteiden laitos",
+                        "sv": "Käyttäytymistieteiden laitos"
+                    },
+                    "type": "DEPARTMENT"
+                },
+                {
+                    "code": "6301",
+                    "name": {
+                        "en": "Kasvatustieteet",
+                        "fi": "Kasvatustieteet",
+                        "sv": "Kasvatustieteet"
+                    },
+                    "type": "UNIT"
+                }
+            ],
+            "hrOrganisations": [
+                {
+                    "code": "H200",
+                    "name": {
+                        "en": "OIKTDK, Faculty of Law",
+                        "fi": "OIKTDK, Oikeustieteellinen tiedekunta (OIKTDK)",
+                        "sv": "OIKTDK, Juridiska fakulteten"
+                    },
+                    "type": "FINANCIAL_UNIT"
+                }
+            ],
+            "recordType": "Y",
+            "title": "universitetslektor",
+            "workAddress": "PL 9 (Siltavuorenpenger 1A)",
+            "workMobile": "12345678",
+            "workNumber": "54321",
+            "workPostcode": "00014 HELSINGIN YLIOPISTO"
+        },
+        {
+            "recordType": "H"
+        }
+    ]
+}

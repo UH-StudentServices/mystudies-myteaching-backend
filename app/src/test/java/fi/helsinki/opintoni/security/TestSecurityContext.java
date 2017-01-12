@@ -30,8 +30,12 @@ public class TestSecurityContext {
     }
 
     public static SecurityContext teacherSecurityContext() {
+        return teacherSecurityContext("opettaja", "password");
+    }
+
+    public static SecurityContext teacherSecurityContext(String username, String password) {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("opettaja", "password"));
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(username, password));
         return securityContext;
     }
 

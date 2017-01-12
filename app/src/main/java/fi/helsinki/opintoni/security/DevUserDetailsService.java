@@ -121,10 +121,10 @@ public class DevUserDetailsService implements org.springframework.security.core.
 
     private UserDetails createTestTeacher() {
         return new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName("testteachert@helsinki.fi")
+            .eduPersonPrincipalName("testteacher@helsinki.fi")
             .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.FACULTY))
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
-            .email("testteachert@mail.helsinki.fi")
+            .email("testteacher@mail.helsinki.fi")
             .commonName("Test Teacher")
             .employeeNumber("010540")
             .oodiPersonId("1003")

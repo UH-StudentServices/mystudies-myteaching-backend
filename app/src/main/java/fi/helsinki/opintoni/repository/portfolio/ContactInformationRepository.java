@@ -24,6 +24,7 @@ import java.util.Optional;
 
 public interface ContactInformationRepository extends JpaRepository<ContactInformation, Long> {
 
-    Optional<ContactInformation> findByPortfolioId(Long portfolioId);
+    Optional<ContactInformation> findByPortfolioId(long portfolioId);
+    void deleteByPortfolioId(long portfolioId);
 
 }

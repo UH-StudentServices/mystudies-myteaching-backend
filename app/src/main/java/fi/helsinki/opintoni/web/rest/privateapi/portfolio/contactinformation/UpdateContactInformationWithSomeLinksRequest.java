@@ -18,16 +18,9 @@
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation;
 
 import com.google.common.collect.Lists;
-import org.hibernate.validator.constraints.Email;
 
 import java.util.List;
 
-public class UpdateContactInformationWithSomeLinksRequest {
-
-    @Email
-    public String email;
-
-    public String phoneNumber;
-
+public class UpdateContactInformationWithSomeLinksRequest extends UpdateContactInformation {
     public List<UpdateSomeLink> someLinks = Lists.newArrayList();
 }
