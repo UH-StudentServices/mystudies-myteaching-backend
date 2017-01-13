@@ -49,6 +49,10 @@ optime:
     base.url: https://esbmt2.it.helsinki.fi/devel
     client.implementation: rest
 
+esb:
+    base.url: https://esbmt2.it.helsinki.fi/devel
+    client.implementation: rest
+
 unisport:
     client.implementation: rest
     base.url: https://unisport.fi

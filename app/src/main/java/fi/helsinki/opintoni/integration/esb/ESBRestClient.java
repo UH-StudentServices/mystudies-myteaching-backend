@@ -7,7 +7,9 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Optional;
+import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public class ESBRestClient implements ESBClient {
 
@@ -22,18 +24,19 @@ public class ESBRestClient implements ESBClient {
     }
 
     @Override
-    public Optional<ESBEmployeeInfo> getEmployeeInfo(String employeeNumber) {
+    public List<ESBEmployeeInfo> getEmployeeInfo(String employeeNumber) {
         try {
-            return Optional.ofNullable(restTemplate.exchange(
-                "{baseUrl}/person/v2/employeeList",
+            return restTemplate.exchange(
+                "{baseUrl}/person/v2/employee/{employeeNumber}",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<ESBEmployeeInfo>() {
+                new ParameterizedTypeReference<List<ESBEmployeeInfo>>() {
                 },
-                baseUrl).getBody());
+                baseUrl,
+                employeeNumber).getBody();
         } catch (Exception e) {
             LOGGER.error("Error when fetching employee info from ESB", e);
-            return Optional.empty();
+            return newArrayList();
         }
     }
 }

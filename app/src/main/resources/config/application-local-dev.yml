@@ -44,6 +44,10 @@ optime:
     base.url: https://mock.optime.helsinki.fi/path
     client.implementation: mock
 
+esb:
+    base.url: https://esbmt2.it.helsinki.fi/devel
+    client.implementation: mock
+
 unisport:
     client.implementation: mock
     base.url: https://unisport.fi
@@ -53,10 +57,6 @@ unisportApiKey: foobar123
 
 leiki:
     base.url: http://suositukset.student.helsinki.fi
-    client.implementation: mock
-
-esb:
-    base.url: https://esbmt2.it.helsinki.fi
     client.implementation: mock
 
 googleAnalyticsAccount:

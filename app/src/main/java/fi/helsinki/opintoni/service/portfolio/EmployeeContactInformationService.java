@@ -53,7 +53,10 @@ public class EmployeeContactInformationService {
     }
 
     private ContactInformation fetchEmployeeContactInformation(String employeeNumber, Locale locale) {
-        Optional<ESBEmployeeInfo> esbEmployeeInfoOptional = esbClient.getEmployeeInfo(employeeNumber);
+        Optional<ESBEmployeeInfo> esbEmployeeInfoOptional = esbClient
+            .getEmployeeInfo(employeeNumber).stream()
+            .findFirst();
+
         return esbEmployeeInfoOptional
             .map(esbEmployeeInfo -> getContactInformation(esbEmployeeInfo, locale))
             .orElseGet(ContactInformation::new);

@@ -1,4 +1,4 @@
-{
+[{
     "firstName": "Olli",
     "lastName": "Opettaja",
     "personnelNumber": "1233456",
@@ -56,4 +56,4 @@
             "recordType": "H"
         }
     ]
-}
+}]

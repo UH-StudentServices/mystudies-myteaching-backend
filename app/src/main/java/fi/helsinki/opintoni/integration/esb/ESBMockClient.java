@@ -1,11 +1,12 @@
 package fi.helsinki.opintoni.integration.esb;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.List;
 
 public class ESBMockClient implements ESBClient {
 
@@ -19,9 +20,9 @@ public class ESBMockClient implements ESBClient {
     }
 
     @Override
-    public Optional<ESBEmployeeInfo> getEmployeeInfo(String employeeNumber) {
+    public List<ESBEmployeeInfo> getEmployeeInfo(String employeeNumber) {
         try {
-            return Optional.of(objectMapper.readValue(employeeInfo.getInputStream(), ESBEmployeeInfo.class));
+            return objectMapper.readValue(employeeInfo.getInputStream(), new TypeReference<List<ESBEmployeeInfo>>() {});
         } catch (IOException e) {
             throw new RuntimeException();
         }

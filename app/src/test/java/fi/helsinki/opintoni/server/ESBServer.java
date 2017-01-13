@@ -40,7 +40,7 @@ public class ESBServer {
     }
 
     public void expectEmployeeContactInformationRequest(String employeeNumber) {
-        server.expect(requestTo(baseUrl + "/person/v2/employeeList"))
+        server.expect(requestTo(String.format("%s/person/v2/employee/%s", baseUrl, employeeNumber)))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(SampleDataFiles.toText("esb/employeeinfo.json"), MediaType.APPLICATION_JSON));
     }

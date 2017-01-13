@@ -307,7 +307,7 @@ leiki:
     client.implementation: rest
 
 esb:
-    base.url: https://esbmt2.it.helsinki.fi
+    base.url: https://esbmt2.it.helsinki.fi/devel
     client.implementation: rest
 
 flamma:
