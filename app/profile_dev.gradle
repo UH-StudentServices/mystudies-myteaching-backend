@@ -19,6 +19,8 @@ apply plugin: 'spring-boot'
 
 dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: spring_boot_version
+  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: tomcat_version
+  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el', version: tomcat_version
 }
 
 bootRun {

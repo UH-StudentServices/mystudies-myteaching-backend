@@ -40,6 +40,10 @@ coursePage:
     client.implementation: mock
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
+optime:
+    base.url: https://mock.optime.helsinki.fi/path
+    client.implementation: mock
+
 unisport:
     client.implementation: mock
     base.url: https://unisport.fi

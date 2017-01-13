@@ -40,15 +40,17 @@ coursePage:
     client.implementation: rest
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
+optime:
+    base.url: https://esbmt2.it.helsinki.fi/devel
+    client.implementation: rest
+
 unisport:
     client.implementation: rest
     base.url: https://unisport.fi
     userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
 
 googleAnalyticsAccount:
-    main: UA-55852460-2
-    student: UA-55852460-9
-    teacher: UA-55852460-9
+    main: UA-55852460-10
 
 hostUrl: https://demo.student.helsinki.fi
 loginUrlTeacher: https://demo.teacher.helsinki.fi/info/local-login

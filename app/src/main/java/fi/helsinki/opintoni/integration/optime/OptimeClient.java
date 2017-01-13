@@ -15,22 +15,10 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-apply plugin: 'spring-boot'
-apply plugin: 'com.moowork.node'
+package fi.helsinki.opintoni.integration.optime;
 
+public interface OptimeClient {
 
-dependencies {
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: spring_boot_version
-    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: tomcat_version
-    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-el', version: tomcat_version
-}
+    OptimeStaffInformation getStaffInformation(String staffId);
 
-bootRun {
-  args = ["--spring.profiles.active=prod"]
-}
-
-task setProdProperties(dependsOn: bootRun) << {
-    doFirst {
-        System.setProperty('spring.profiles.active', 'prod')
-    }
 }
