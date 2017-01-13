@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation;
 
 import com.google.common.collect.Lists;
+import fi.helsinki.opintoni.domain.portfolio.ContactInformation;
 import org.hibernate.validator.constraints.Email;
 
 import java.util.List;
@@ -34,4 +35,21 @@ public class UpdateContactInformation {
     public String financialUnit;
     public String workAddress;
     public String workPostcode;
+
+    public List<UpdateSomeLink> someLinks = Lists.newArrayList();
+
+    public UpdateContactInformation(ContactInformation contactInformation) {
+        this.email = contactInformation.email;
+        this.phoneNumber = contactInformation.phoneNumber;
+        this.workNumber = contactInformation.workNumber;
+        this.workMobile = contactInformation.workMobile;
+        this.title = contactInformation.title;
+        this.faculty = contactInformation.faculty;
+        this.financialUnit = contactInformation.financialUnit;
+        this.workAddress = contactInformation.workAddress;
+        this.workPostcode = contactInformation.workPostcode;
+    }
+
+    public UpdateContactInformation() {
+    }
 }

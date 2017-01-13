@@ -1,5 +1,6 @@
 package fi.helsinki.opintoni.service.portfolio;
 
+import fi.helsinki.opintoni.domain.portfolio.ContactInformation;
 import fi.helsinki.opintoni.dto.portfolio.ContactInformationDto;
 import fi.helsinki.opintoni.integration.esb.ESBClient;
 import fi.helsinki.opintoni.integration.esb.ESBEmployeeInfo;
@@ -42,21 +43,26 @@ public class EmployeeContactInformationService {
     }
 
     public ContactInformationDto fetchAndSaveEmployeeContactInformation(long portfolioId, String employeeNumber, Locale locale) {
-        UpdateContactInformation contactInformation = fetchEmployeeContactInformation(employeeNumber, locale);
-        return contactInformationService.updateContactInformation(portfolioId, contactInformation);
+        ContactInformation contactInformation = fetchEmployeeContactInformation(employeeNumber, locale);
+        return contactInformationService.updateContactInformation(portfolioId, new UpdateContactInformation(contactInformation));
     }
 
-    private UpdateContactInformation fetchEmployeeContactInformation(String employeeNumber, Locale locale) {
+    public ContactInformationDto fetchEmployeeContactInformation(long portfolioId, String employeeNumber, Locale locale) {
+        ContactInformation contactInformation = fetchEmployeeContactInformation(employeeNumber, locale);
+        return contactInformationConverter.toDto(contactInformation, portfolioId);
+    }
+
+    private ContactInformation fetchEmployeeContactInformation(String employeeNumber, Locale locale) {
         Optional<ESBEmployeeInfo> esbEmployeeInfoOptional = esbClient.getEmployeeInfo(employeeNumber);
         return esbEmployeeInfoOptional
             .map(esbEmployeeInfo -> getContactInformation(esbEmployeeInfo, locale))
-            .orElseGet(UpdateContactInformation::new);
+            .orElseGet(ContactInformation::new);
     }
 
-    private UpdateContactInformation getContactInformation(ESBEmployeeInfo esbEmployeeInfo, Locale locale) {
+    private ContactInformation getContactInformation(ESBEmployeeInfo esbEmployeeInfo, Locale locale) {
         return findPrimaryOrFirstRecord(esbEmployeeInfo.records)
             .map(record -> {
-                UpdateContactInformation contactInformation = new UpdateContactInformation();
+                ContactInformation contactInformation = new ContactInformation();
 
                 contactInformation.email = record.email;
                 contactInformation.workNumber = record.workNumber;
@@ -68,7 +74,7 @@ public class EmployeeContactInformationService {
                 contactInformation.workPostcode = record.workPostcode;
                 return contactInformation;
             })
-            .orElseGet(UpdateContactInformation::new);
+            .orElseGet(ContactInformation::new);
     }
 
     private String findOrganizationNameByType(List<ESBEmployeeInfoOrganization> organizations, String type, Locale locale) {

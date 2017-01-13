@@ -58,21 +58,21 @@ public class PrivateContactInformationResource extends AbstractResource {
     public ResponseEntity<ContactInformationDto> update(
         @UserId Long userId,
         @PathVariable Long portfolioId,
-        @Valid @RequestBody UpdateContactInformationWithSomeLinksRequest request) {
+        @Valid @RequestBody UpdateContactInformation request) {
 
         return response(contactInformationService.updateContactInformationWithSomeLinks(portfolioId, request));
     }
 
     @TeacherRoleRequired
-    @RequestMapping(value = "/teacher/reset", method = RequestMethod.POST)
-    public ResponseEntity<ContactInformationDto> resetEmployeeContactInformation(
+    @RequestMapping(value = "/teacher", method = RequestMethod.GET)
+    public ResponseEntity<ContactInformationDto> getEmployeeContactInformation(
         @PathVariable Long portfolioId,
         @AuthenticationPrincipal AppUser appUser,
         Locale locale) {
 
         ContactInformationDto contactInformationDto = appUser
             .getEmployeeNumber()
-            .map(employeeNumber -> employeeContactInformationService.fetchAndSaveEmployeeContactInformation(portfolioId, employeeNumber, locale))
+            .map(employeeNumber -> employeeContactInformationService.fetchEmployeeContactInformation(portfolioId, employeeNumber, locale))
             .orElseThrow(() -> new NotFoundException("No employee number found."));
 
         return response(contactInformationDto);

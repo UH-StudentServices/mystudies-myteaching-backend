@@ -26,7 +26,6 @@ import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.repository.portfolio.SomeLinkRepository;
 import fi.helsinki.opintoni.service.converter.ContactInformationConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation.UpdateContactInformation;
-import fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation.UpdateContactInformationWithSomeLinksRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +58,7 @@ public class ContactInformationService {
 
     public ContactInformationDto updateContactInformationWithSomeLinks(
         Long portfolioId,
-        UpdateContactInformationWithSomeLinksRequest request) {
+        UpdateContactInformation request) {
 
         Portfolio portfolio = portfolioRepository.findOne(portfolioId);
 
@@ -100,7 +99,7 @@ public class ContactInformationService {
         return contactInformationRepository.save(contactInformation);
     }
 
-    private void updateSomeLinks(Portfolio portfolio, UpdateContactInformationWithSomeLinksRequest request) {
+    private void updateSomeLinks(Portfolio portfolio, UpdateContactInformation request) {
         someLinkRepository.delete(someLinkRepository.findByPortfolioId(portfolio.id));
         request.someLinks.forEach(link -> {
             SomeLink someLink = new SomeLink();

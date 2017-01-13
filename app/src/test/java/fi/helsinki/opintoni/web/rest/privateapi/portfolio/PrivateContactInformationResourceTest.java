@@ -18,13 +18,12 @@
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import com.google.common.collect.Lists;
-import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.SomeLink;
 import fi.helsinki.opintoni.repository.portfolio.ContactInformationRepository;
 import fi.helsinki.opintoni.repository.portfolio.SomeLinkRepository;
 import fi.helsinki.opintoni.web.WebTestUtils;
-import fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation.UpdateContactInformationWithSomeLinksRequest;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation.UpdateContactInformation;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.contactinformation.UpdateSomeLink;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +34,7 @@ import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityC
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,7 +49,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
 
     @Test
     public void thatContactInformationIsUpdated() throws Exception {
-        UpdateContactInformationWithSomeLinksRequest request = new UpdateContactInformationWithSomeLinksRequest();
+        UpdateContactInformation request = new UpdateContactInformation();
         request.email = "newemail@helsinki.fi";
         request.phoneNumber = "123456789";
 
@@ -66,7 +66,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
     public void thatContactInformationIsCreated() throws Exception {
         contactInformationRepository.delete(1L);
 
-        UpdateContactInformationWithSomeLinksRequest request = new UpdateContactInformationWithSomeLinksRequest();
+        UpdateContactInformation request = new UpdateContactInformation();
         request.email = "email@helsinki.fi";
         request.phoneNumber = "987654321";
 
@@ -84,7 +84,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
 
         expectEmployeeContactInformationRequestToESB();
 
-        mockMvc.perform(post("/api/private/v1/portfolio/4/contactinformation/teacher/reset")
+        mockMvc.perform(get("/api/private/v1/portfolio/4/contactinformation/teacher")
             .with(securityContext(teacherSecurityContext("opettaja", "password"))))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.email").value("olli.opettaja@helsinki.fi"))
@@ -99,7 +99,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
 
     @Test
     public void thatSomeLinksAreCreated() throws Exception {
-        UpdateContactInformationWithSomeLinksRequest request = new UpdateContactInformationWithSomeLinksRequest();
+        UpdateContactInformation request = new UpdateContactInformation();
 
         UpdateSomeLink facebook = new UpdateSomeLink();
         facebook.type = "FACEBOOK";
@@ -128,7 +128,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
         persistSomeLink(2L);
         assertThat(someLinkRepository.findByPortfolioId(2L).isEmpty()).isFalse();
 
-        UpdateContactInformationWithSomeLinksRequest request = new UpdateContactInformationWithSomeLinksRequest();
+        UpdateContactInformation request = new UpdateContactInformation();
 
         mockMvc.perform(post("/api/private/v1/portfolio/2/contactinformation")
             .with(securityContext(studentSecurityContext()))
