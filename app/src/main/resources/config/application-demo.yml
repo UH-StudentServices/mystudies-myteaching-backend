@@ -50,9 +50,7 @@ unisport:
     userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
 
 googleAnalyticsAccount:
-    main: UA-55852460-2
-    student: UA-55852460-9
-    teacher: UA-55852460-9
+    main: UA-55852460-10
 
 hostUrl: https://demo.student.helsinki.fi
 loginUrlTeacher: https://demo.teacher.helsinki.fi/info/local-login
