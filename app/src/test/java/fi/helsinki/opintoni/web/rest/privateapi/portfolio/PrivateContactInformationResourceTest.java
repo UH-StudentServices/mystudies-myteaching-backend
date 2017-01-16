@@ -85,7 +85,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
         expectEmployeeContactInformationRequestToESB();
 
         mockMvc.perform(get("/api/private/v1/portfolio/4/contactinformation/teacher")
-            .with(securityContext(teacherSecurityContext("opettaja", "password"))))
+            .with(securityContext(teacherSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.email").value("olli.opettaja@helsinki.fi"))
             .andExpect(jsonPath("$.workNumber").value("54321"))

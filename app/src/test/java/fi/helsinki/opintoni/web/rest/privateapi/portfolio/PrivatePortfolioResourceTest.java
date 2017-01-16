@@ -39,6 +39,7 @@ import java.util.List;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
+import static fi.helsinki.opintoni.security.TestSecurityContext.teacherWithoutPortfolioSecurityContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.hasEntry;
@@ -137,7 +138,7 @@ public class PrivatePortfolioResourceTest extends SpringTest {
         esbServer.expectEmployeeContactInformationRequest("010540");
 
         mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + TEACHER_PORTFOLIO_API_PATH)
-            .with(securityContext(teacherSecurityContext("testteacher", "password"))))
+            .with(securityContext(teacherWithoutPortfolioSecurityContext())))
             .andExpect(jsonPath("$.contactInformation.email").value("olli.opettaja@helsinki.fi"))
             .andExpect(jsonPath("$.contactInformation.workNumber").value("54321"))
             .andExpect(jsonPath("$.contactInformation.workMobile").value("12345678"))
