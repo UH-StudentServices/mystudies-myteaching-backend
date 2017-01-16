@@ -33,11 +33,25 @@ public class ContactInformationConverter {
         this.someLinkService = someLinkService;
     }
 
-    public ContactInformationDto toDto(ContactInformation contactInformation) {
+    public ContactInformationDto toDto(ContactInformation contactInformation, long portfolioId) {
         ContactInformationDto contactInformationDto = new ContactInformationDto();
         contactInformationDto.email = contactInformation.email;
         contactInformationDto.phoneNumber = contactInformation.phoneNumber;
-        contactInformationDto.someLinks = someLinkService.findByPortfolioId(contactInformation.portfolio.id);
+        contactInformationDto.workNumber = contactInformation.workNumber;
+        contactInformationDto.workMobile = contactInformation.workMobile;
+        contactInformationDto.title = contactInformation.title;
+        contactInformationDto.faculty = contactInformation.faculty;
+        contactInformationDto.financialUnit = contactInformation.financialUnit;
+        contactInformationDto.workAddress = contactInformation.workAddress;
+        contactInformationDto.workPostcode = contactInformation.workPostcode;
+
+        contactInformationDto.someLinks = someLinkService.findByPortfolioId(portfolioId);
         return contactInformationDto;
     }
+
+    public ContactInformationDto toDto(ContactInformation contactInformation) {
+        return toDto(contactInformation, contactInformation.portfolio.id);
+    }
+
+
 }

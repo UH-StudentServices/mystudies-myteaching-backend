@@ -44,6 +44,10 @@ optime:
     base.url: https://optime.example.com
     client.implementation: mock
 
+esb:
+    base.url: https://esbmt2.it.helsinki.fi/devel
+    client.implementation: mock
+
 unisport:
     client.implementation: mock
     base.url: https://unisport.fi

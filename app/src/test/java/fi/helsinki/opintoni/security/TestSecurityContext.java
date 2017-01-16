@@ -23,21 +23,35 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class TestSecurityContext {
 
+    private static String STUDENT_USERNAME = "opiskelija";
+    private static String TEACHER_USERNAME = "opettaja";
+    private static String PASSWORD = "password";
+    private static String HYBRID_USER_USERNAME = "hybriduser";
+    private static String TEACHER_WITHOUT_PORTFOLIO_USERNAME = "testteacher";
+
     public static SecurityContext studentSecurityContext() {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("opiskelija", "password"));
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(STUDENT_USERNAME, PASSWORD));
         return securityContext;
     }
 
     public static SecurityContext teacherSecurityContext() {
+        return teacherSecurityContext(TEACHER_USERNAME, PASSWORD);
+    }
+
+    public static SecurityContext teacherWithoutPortfolioSecurityContext() {
+        return teacherSecurityContext(TEACHER_WITHOUT_PORTFOLIO_USERNAME, PASSWORD);
+    }
+
+    public static SecurityContext teacherSecurityContext(String username, String password) {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("opettaja", "password"));
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(username, password));
         return securityContext;
     }
 
     public static SecurityContext hybridUserSecurityContext() {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken("hybriduser", "password"));
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(HYBRID_USER_USERNAME, PASSWORD));
         return securityContext;
     }
 

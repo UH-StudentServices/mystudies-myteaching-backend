@@ -44,6 +44,24 @@ public class ContactInformation extends AbstractAuditingEntity implements Owners
     @Column(name = "email")
     public String email;
 
+    @Column(name = "work_number")
+    public String workNumber;
+
+    @Column(name = "work_mobile")
+    public String workMobile;
+
+    public String title;
+    public String faculty;
+
+    @Column(name = "financial_unit")
+    public String financialUnit;
+
+    @Column(name = "work_address")
+    public String workAddress;
+
+    @Column(name = "work_postcode")
+    public String workPostcode;
+
     @Override
     public Long getOwnerId() {
         return portfolio.getOwnerId();

@@ -25,6 +25,13 @@ public class ContactInformationDto {
 
     public String email;
     public String phoneNumber;
+    public String workNumber;
+    public String workMobile;
+    public String title;
+    public String faculty;
+    public String financialUnit;
+    public String workAddress;
+    public String workPostcode;
 
     public List<SomeLinkDto> someLinks = Lists.newArrayList();
 }

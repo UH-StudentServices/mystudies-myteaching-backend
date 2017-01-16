@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 @Component
@@ -24,6 +25,20 @@ public class LocalizedValueConverter {
             .orElseGet(() -> getDefaultLocalization(oodiLocalizedValues)
             .orElseGet(() -> getFirstLocalization(oodiLocalizedValues)
             .orElse(null)));
+    }
+
+    public String toLocalizedString(Map<String, String> localizedValues, Locale locale) {
+        String currentLocale = locale.toString();
+
+        if(localizedValues == null) {
+            return null;
+        } else if(localizedValues.containsKey(currentLocale)) {
+            return localizedValues.get(currentLocale);
+        } else if(localizedValues.containsKey(defaultLocale)) {
+            return localizedValues.get(defaultLocale);
+        } else {
+            return localizedValues.entrySet().iterator().next().getValue();
+        }
     }
 
     private Optional<String> getLocalization(List<OodiLocalizedValue> oodiLocalizedValues, Locale locale) {

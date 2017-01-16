@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.authorization.StudentRoleRequired;
 import fi.helsinki.opintoni.security.authorization.TeacherRoleRequired;
 import fi.helsinki.opintoni.service.converter.PortfolioConverter;
+import fi.helsinki.opintoni.service.portfolio.EmployeePortfolioService;
 import fi.helsinki.opintoni.service.portfolio.PortfolioService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
@@ -35,6 +36,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Locale;
 
 @RestController
 @RequestMapping(
@@ -42,10 +44,12 @@ import javax.validation.Valid;
     produces = WebConstants.APPLICATION_JSON_UTF8)
 public class PrivatePortfolioResource extends AbstractResource {
     private final PortfolioService portfolioService;
+    private final EmployeePortfolioService employeePortfolioService;
 
     @Autowired
-    public PrivatePortfolioResource(PortfolioService portfolioService) {
+    public PrivatePortfolioResource(PortfolioService portfolioService, EmployeePortfolioService employeePortfolioService) {
         this.portfolioService = portfolioService;
+        this.employeePortfolioService = employeePortfolioService;
     }
 
     @RequestMapping(value = "/{portfolioRole}", method = RequestMethod.GET)
@@ -71,11 +75,12 @@ public class PrivatePortfolioResource extends AbstractResource {
     @Timed
     @TeacherRoleRequired
     public ResponseEntity<PortfolioDto> insertTeacherPortfolio(@UserId Long userId,
-                                                               @AuthenticationPrincipal AppUser appUser) {
-        return response(portfolioService.insert(
+                                                               @AuthenticationPrincipal AppUser appUser,
+                                                               Locale locale) {
+        return response(employeePortfolioService.insert(
             userId,
-            appUser.getCommonName(),
-            PortfolioRole.TEACHER));
+            appUser,
+            locale));
     }
 
     @RequestMapping(value = "/{portfolioRole}/{path:.*}", method = RequestMethod.GET)

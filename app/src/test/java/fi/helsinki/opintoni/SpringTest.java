@@ -72,6 +72,7 @@ public abstract class SpringTest {
     protected FlammaServer flammaServer;
     protected PublicWwwServer publicWwwServer;
     protected UnisportServer unisportServer;
+    protected ESBServer esbServer;
 
     protected MockMvc mockMvc;
 
@@ -89,6 +90,9 @@ public abstract class SpringTest {
 
     @Autowired
     protected FlammaRestClient flammaRestClient;
+
+    @Autowired
+    protected RestTemplate esbRestTemplate;
 
     @Autowired
     protected PublicWwwRestClient publicWwwRestClient;
@@ -126,6 +130,7 @@ public abstract class SpringTest {
         publicWwwServer = new PublicWwwServer(appConfiguration, publicWwwRestClient.getRestTemplate());
         webPageServer = new WebPageServer(metaDataRestTemplate);
         unisportServer = new UnisportServer(appConfiguration, unisportRestTemplate);
+        esbServer = new ESBServer(appConfiguration, esbRestTemplate);
         configureMockMvc();
     }
 
