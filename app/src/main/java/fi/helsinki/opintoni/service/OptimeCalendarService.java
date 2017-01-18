@@ -18,7 +18,7 @@
 package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.dto.OptimeCalendarDto;
-import fi.helsinki.opintoni.integration.optime.OptimeClient;
+import fi.helsinki.opintoni.integration.esb.ESBClient;
 import fi.helsinki.opintoni.service.converter.OptimeCalendarConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,17 +26,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class OptimeCalendarService {
 
-    private final OptimeClient optimeClient;
+    private final ESBClient esbClient;
     private final OptimeCalendarConverter calendarConverter;
 
     @Autowired
-    public OptimeCalendarService(OptimeClient optimeClient, OptimeCalendarConverter calendarConverter) {
-        this.optimeClient = optimeClient;
+    public OptimeCalendarService(ESBClient esbClient, OptimeCalendarConverter calendarConverter) {
+        this.esbClient = esbClient;
         this.calendarConverter = calendarConverter;
     }
 
     public OptimeCalendarDto getOptimeCalendar(String staffId) {
-        return calendarConverter.toDto(optimeClient.getStaffInformation(staffId));
+        return esbClient.getStaffInformation(staffId)
+            .map(calendarConverter::toDto)
+            .orElseGet(OptimeCalendarDto::new);
     }
 
 }

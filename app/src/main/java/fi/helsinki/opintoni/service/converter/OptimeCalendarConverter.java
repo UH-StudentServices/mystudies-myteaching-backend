@@ -18,7 +18,7 @@
 package fi.helsinki.opintoni.service.converter;
 
 import fi.helsinki.opintoni.dto.OptimeCalendarDto;
-import fi.helsinki.opintoni.integration.optime.OptimeStaffInformation;
+import fi.helsinki.opintoni.integration.esb.OptimeStaffInformation;
 import org.springframework.stereotype.Component;
 
 @Component

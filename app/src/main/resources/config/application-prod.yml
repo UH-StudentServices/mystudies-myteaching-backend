@@ -46,10 +46,6 @@ coursePage:
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
     checkUpdates.interval.seconds: 60
 
-optime:
-    base.url: https://esbmt1.it.helsinki.fi
-    client.implementation: rest
-
 esb:
     base.url: https://esbmt1.it.helsinki.fi
     client.implementation: rest
