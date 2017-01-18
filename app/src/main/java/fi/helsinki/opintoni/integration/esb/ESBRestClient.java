@@ -39,4 +39,18 @@ public class ESBRestClient implements ESBClient {
             return newArrayList();
         }
     }
+
+    @Override
+    public OptimeStaffInformation getStaffInformation(String staffId) {
+        LOGGER.trace("fetching Optime information with id {}", staffId);
+
+        return
+            restTemplate.exchange(
+                "{baseUrl}/optime/staff/{staffId}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<OptimeStaffInformation>() {
+                },
+                baseUrl, staffId).getBody();
+    }
 }

@@ -13,6 +13,9 @@ public class ESBMockClient implements ESBClient {
     @Value("classpath:sampledata/esb/employeeinfo.json")
     private Resource employeeInfo;
 
+    @Value("classpath:sampledata/esb/staff.json")
+    private Resource staff;
+
     private final ObjectMapper objectMapper;
 
     public ESBMockClient(ObjectMapper objectMapper) {
@@ -24,7 +27,16 @@ public class ESBMockClient implements ESBClient {
         try {
             return objectMapper.readValue(employeeInfo.getInputStream(), new TypeReference<List<ESBEmployeeInfo>>() {});
         } catch (IOException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public OptimeStaffInformation getStaffInformation(String staffId) {
+        try {
+            return objectMapper.readValue(staff.getInputStream(), new TypeReference<OptimeStaffInformation>() {});
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

@@ -66,7 +66,6 @@ public abstract class SpringTest {
 
     private OodiServer oodiServer;
     private CoursePageServer coursePageServer;
-    protected OptimeServer optimeServer;
     protected WebPageServer webPageServer;
     protected LeikiServer leikiServer;
     protected FlammaServer flammaServer;
@@ -81,9 +80,6 @@ public abstract class SpringTest {
 
     @Autowired
     protected RestTemplate coursePageRestTemplate;
-
-    @Autowired
-    protected RestTemplate optimeRestTemplate;
 
     @Autowired
     protected RestTemplate leikiRestTemplate;
@@ -124,7 +120,6 @@ public abstract class SpringTest {
     public void initRestServer() {
         oodiServer = new OodiServer(appConfiguration, oodiRestTemplate);
         coursePageServer = new CoursePageServer(appConfiguration, coursePageRestTemplate);
-        optimeServer = new OptimeServer(appConfiguration, optimeRestTemplate);
         leikiServer = new LeikiServer(appConfiguration, leikiRestTemplate);
         flammaServer = new FlammaServer(appConfiguration, flammaRestClient.getRestTemplate());
         publicWwwServer = new PublicWwwServer(appConfiguration, publicWwwRestClient.getRestTemplate());

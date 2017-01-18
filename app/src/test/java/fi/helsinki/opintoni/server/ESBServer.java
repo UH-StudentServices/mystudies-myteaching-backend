@@ -45,4 +45,20 @@ public class ESBServer {
             .andRespond(withSuccess(SampleDataFiles.toText("esb/employeeinfo.json"), MediaType.APPLICATION_JSON));
     }
 
+    public void expectTeacherCalendarRequest(String teacherNumber) {
+        server.expect(requestTo(optimeTeacherRequestUrl(teacherNumber)))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(SampleDataFiles.toText("esb/calendar.json"), MediaType.APPLICATION_JSON));
+    }
+
+    public void expectFailedTeacherCalendarRequest(String teacherNumber) {
+        server.expect(requestTo(optimeTeacherRequestUrl(teacherNumber)))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(SampleDataFiles.toText("esb/calendar-empty.json"), MediaType.APPLICATION_JSON));
+    }
+
+    private String optimeTeacherRequestUrl(String teacherNumber) {
+        return String.format("%s/optime/staff/%s", baseUrl, teacherNumber);
+    }
+
 }

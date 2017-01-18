@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface ESBClient {
     List<ESBEmployeeInfo> getEmployeeInfo(String employeeNumber);
+
+    OptimeStaffInformation getStaffInformation(String staffId);
 }

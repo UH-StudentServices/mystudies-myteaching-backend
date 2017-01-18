@@ -45,10 +45,6 @@ coursePage:
     client.implementation: rest
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
-optime:
-    base.url: https://esbmt2.it.helsinki.fi/devel
-    client.implementation: rest
-
 esb:
     base.url: https://esbmt2.it.helsinki.fi/devel
     client.implementation: rest
