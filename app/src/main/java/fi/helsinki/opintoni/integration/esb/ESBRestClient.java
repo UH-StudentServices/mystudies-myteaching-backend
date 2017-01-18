@@ -25,6 +25,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -58,16 +59,19 @@ public class ESBRestClient implements ESBClient {
     }
 
     @Override
-    public OptimeStaffInformation getStaffInformation(String staffId) {
-        LOGGER.trace("fetching Optime information with id {}", staffId);
-
-        return
-            restTemplate.exchange(
-                "{baseUrl}/optime/staff/{staffId}",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<OptimeStaffInformation>() {
-                },
-                baseUrl, staffId).getBody();
+    public Optional<OptimeStaffInformation> getStaffInformation(String staffId) {
+        try {
+            return
+                Optional.ofNullable(restTemplate.exchange(
+                    "{baseUrl}/optime/staff/{staffId}",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<OptimeStaffInformation>() {
+                    },
+                    baseUrl, staffId).getBody());
+        } catch (Exception e) {
+            LOGGER.error("Error when fetching Optime staff information info from ESB", e);
+            return Optional.empty();
+        }
     }
 }

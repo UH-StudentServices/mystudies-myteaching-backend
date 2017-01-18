@@ -18,9 +18,10 @@
 package fi.helsinki.opintoni.integration.esb;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ESBClient {
     List<ESBEmployeeInfo> getEmployeeInfo(String employeeNumber);
 
-    OptimeStaffInformation getStaffInformation(String staffId);
+    Optional<OptimeStaffInformation> getStaffInformation(String staffId);
 }

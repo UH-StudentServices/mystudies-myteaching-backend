@@ -36,7 +36,9 @@ public class OptimeCalendarService {
     }
 
     public OptimeCalendarDto getOptimeCalendar(String staffId) {
-        return calendarConverter.toDto(esbClient.getStaffInformation(staffId));
+        return esbClient.getStaffInformation(staffId)
+            .map(calendarConverter::toDto)
+            .orElseGet(OptimeCalendarDto::new);
     }
 
 }

@@ -24,6 +24,7 @@ import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class ESBMockClient implements ESBClient {
 
@@ -49,9 +50,9 @@ public class ESBMockClient implements ESBClient {
     }
 
     @Override
-    public OptimeStaffInformation getStaffInformation(String staffId) {
+    public Optional<OptimeStaffInformation> getStaffInformation(String staffId) {
         try {
-            return objectMapper.readValue(staff.getInputStream(), new TypeReference<OptimeStaffInformation>() {});
+            return Optional.of(objectMapper.readValue(staff.getInputStream(), new TypeReference<OptimeStaffInformation>() {}));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
