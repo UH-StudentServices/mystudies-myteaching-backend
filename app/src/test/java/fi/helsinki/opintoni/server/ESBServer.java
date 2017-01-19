@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
+import static fi.helsinki.opintoni.service.portfolio.EmployeeContactInformationService.EMPLOYEE_NUMBER_PREFIX;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -40,7 +41,10 @@ public class ESBServer {
     }
 
     public void expectEmployeeContactInformationRequest(String employeeNumber) {
-        server.expect(requestTo(String.format("%s/person/v2/employee/%s", baseUrl, employeeNumber)))
+        server.expect(requestTo(String.format("%s/person/v2/employee/%s%s",
+            baseUrl,
+            EMPLOYEE_NUMBER_PREFIX,
+            employeeNumber)))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(SampleDataFiles.toText("esb/employeeinfo.json"), MediaType.APPLICATION_JSON));
     }

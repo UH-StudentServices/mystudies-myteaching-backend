@@ -39,6 +39,7 @@ public class EmployeeContactInformationService {
     public static final String FINANCIAL_UNIT_TYPE = "FINANCIAL_UNIT";
     public static final String FACULTY_TYPE = "FACULTY";
     public static final String PRIMARY_RECORD_TYPE = "Y";
+    public static final String EMPLOYEE_NUMBER_PREFIX = "9";
 
     private final ESBClient esbClient;
     private final ContactInformationConverter contactInformationConverter;
@@ -71,12 +72,16 @@ public class EmployeeContactInformationService {
 
     private ContactInformation fetchEmployeeContactInformation(String employeeNumber, Locale locale) {
         Optional<ESBEmployeeInfo> esbEmployeeInfoOptional = esbClient
-            .getEmployeeInfo(employeeNumber).stream()
+            .getEmployeeInfo(getPrefixedEmployeeNumber(employeeNumber)).stream()
             .findFirst();
 
         return esbEmployeeInfoOptional
             .map(esbEmployeeInfo -> getContactInformation(esbEmployeeInfo, locale))
             .orElseGet(ContactInformation::new);
+    }
+
+    private String getPrefixedEmployeeNumber(String employeeNumber) {
+        return EMPLOYEE_NUMBER_PREFIX + employeeNumber;
     }
 
     private ContactInformation getContactInformation(ESBEmployeeInfo esbEmployeeInfo, Locale locale) {
