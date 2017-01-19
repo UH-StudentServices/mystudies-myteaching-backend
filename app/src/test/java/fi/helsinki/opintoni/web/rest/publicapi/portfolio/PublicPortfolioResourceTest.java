@@ -66,4 +66,22 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.freeTextContent").isEmpty());
     }
+
+    @Test
+    public void thatPrivatePortfolioIsNotFoundFromPublicApi() throws Exception {
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + TEACHER_PORTFOLIO_PATH)
+            .with(securityContext(studentSecurityContext())))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void thatPublicTeacherPortfolioContainsPublicContactInformation() throws Exception {
+        saveTeacherPortfolioAsPublic();
+
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + TEACHER_PORTFOLIO_PATH)
+            .with(securityContext(studentSecurityContext())))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.contactInformation.email")
+                .value("olli.opettaja@helsinki.fi"));
+    }
 }
