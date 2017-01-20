@@ -27,6 +27,13 @@ spring:
             hibernate.cache.use_query_cache: ${jpa.properties.hibernate.cache.use_query_cache}
             hibernate.generate_statistics: ${jpa.properties.hibernate.generate_statistics}
             hibernate.cache.region.factory_class: ${jpa.properties.hibernate.cache.region.factory_class}
+    mail:
+        host: smtp.helsinki.fi
+        port: 25
+        properties.mail.smtp.starttls.enable: true
+
+feedback:
+    efecte.address: doo-opintoni@helsinki.fi
 
 logging:
     level:
