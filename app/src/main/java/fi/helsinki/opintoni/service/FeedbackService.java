@@ -17,6 +17,8 @@
 
 package fi.helsinki.opintoni.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import fi.helsinki.opintoni.domain.Feedback;
@@ -47,6 +49,7 @@ import java.util.Locale;
 @Service
 @Transactional
 public class FeedbackService {
+    private static final Logger log = LoggerFactory.getLogger(FeedbackService.class);
     private static final String DOO_PROJECT_EMAIL = "doo-projekti@helsinki.fi";
     private static final String NO_REPLY_EMAIL = "noreply@helsinki.fi";
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -121,6 +124,7 @@ public class FeedbackService {
             mailSender.send(message);
         } catch (MailException ex) {
             // TODO: Check whether we can report this error e.g. 500 status
+            log.error("Mail error sending feedback", ex);
             throw new RuntimeException(ex);
         }
     }
