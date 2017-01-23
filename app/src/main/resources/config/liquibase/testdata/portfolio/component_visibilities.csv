@@ -12,3 +12,4 @@ id;portfolio_id;component;teacher_portfolio_section;visibility;created_by
 11;4;null;RESEARCH;PRIVATE;system
 12;4;null;TEACHING;PRIVATE;system
 13;4;null;ADMINISTRATION;PRIVATE;system
+14;4;CONTACT_INFORMATION;null;PUBLIC;system

@@ -148,21 +148,42 @@ public class PortfolioConverter {
             .forEach(component -> fetchComponentData(portfolioId, portfolioDto, component));
     }
 
-    private void fetchPublicComponentsForTeacherPortfolio(Long portfolioId, PortfolioDto portfolioDto) {
-        List<ComponentVisibilityDto> visibilities = componentVisibilityService.findByPortfolioId(portfolioId);
-        List<TeacherPortfolioSection> publicSections = visibilities.stream()
+    private List<TeacherPortfolioSection> getPublicTeacherPortfolioSections(List<ComponentVisibilityDto> visibilities) {
+        return visibilities.stream()
             .filter(visibility -> visibility.teacherPortfolioSection != null &&
-                    visibility.component == null &&
-                    ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic()
+                visibility.component == null &&
+                ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic()
             )
             .map(visibility -> TeacherPortfolioSection.valueOf(visibility.teacherPortfolioSection))
             .collect(Collectors.toList());
+    }
+
+    private boolean isPublicTeacherPortfolioComponent(ComponentVisibilityDto visibility) {
+
+        return ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic() &&
+            visibility.component != null;
+    }
+
+    private boolean isInsidePublicTeacherPortfolioSection(ComponentVisibilityDto visibility,
+                                                         List<TeacherPortfolioSection> publicSections) {
+        return visibility.teacherPortfolioSection != null &&
+            publicSections.contains(TeacherPortfolioSection.valueOf(visibility.teacherPortfolioSection));
+    }
+
+    private boolean isNotInsideTeacherPortfolioSection(ComponentVisibilityDto visibility) {
+        return visibility.teacherPortfolioSection == null;
+    }
+
+    private void fetchPublicComponentsForTeacherPortfolio(Long portfolioId, PortfolioDto portfolioDto) {
+        List<ComponentVisibilityDto> visibilities = componentVisibilityService.findByPortfolioId(portfolioId);
+
+        List<TeacherPortfolioSection> publicSections = getPublicTeacherPortfolioSections(visibilities);
 
         visibilities.stream()
             .filter(visibility ->
-                ComponentVisibility.Visibility.valueOf(visibility.visibility).isPublic() &&
-                    visibility.component != null &&
-                    publicSections.contains(TeacherPortfolioSection.valueOf(visibility.teacherPortfolioSection))
+                    isPublicTeacherPortfolioComponent(visibility) &&
+                        (isInsidePublicTeacherPortfolioSection(visibility, publicSections) ||
+                            isNotInsideTeacherPortfolioSection(visibility))
             )
             .map(visibility -> PortfolioComponent.valueOf(visibility.component))
             .forEach(component -> fetchComponentData(portfolioId, portfolioDto, component));
