@@ -63,7 +63,8 @@ public class UriBuilder {
     }
 
     public String getPortfolioUrl(Portfolio portfolio) {
-        return appConfiguration.get("portfolioUrl." + portfolio.portfolioRole.getRole()) + "/" + portfolio.path;
+        return String.join("/", appConfiguration.get("portfolioUrl." + portfolio.portfolioRole.getRole()),
+            portfolio.language.getCode(), portfolio.path);
     }
 
     public String getMeceDomain() { return appConfiguration.get("mece.domain"); }

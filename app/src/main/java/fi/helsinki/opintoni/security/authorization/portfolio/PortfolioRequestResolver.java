@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.security.authorization.portfolio;
 
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.service.converter.PortfolioConverter;
 import fi.helsinki.opintoni.service.portfolio.PortfolioService;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
@@ -34,6 +35,11 @@ public class PortfolioRequestResolver {
 
     private final PortfolioService portfolioService;
 
+    private static final String PATH = "path";
+    private static final String PORTFOLIO_ID = "portfolioId";
+    private static final String PORTFOLIO_ROLE = "portfolioRole";
+    private static final String LANG = "lang";
+
     @Autowired
     public PortfolioRequestResolver(PortfolioService portfolioService) {
         this.portfolioService = portfolioService;
@@ -42,9 +48,9 @@ public class PortfolioRequestResolver {
     public Optional<PortfolioDto> resolve(HttpServletRequest request) {
         Map<String, String> templateVariables = getTemplateVariables(request);
 
-        if (templateVariables.containsKey("path")) {
+        if (templateVariables.containsKey(PATH)) {
             return getPortfolioDtoByPath(templateVariables);
-        } else if (templateVariables.containsKey("portfolioId")) {
+        } else if (templateVariables.containsKey(PORTFOLIO_ID)) {
             return getPortfolioDtoById(templateVariables);
         }
 
@@ -57,14 +63,15 @@ public class PortfolioRequestResolver {
     }
 
     private Optional<PortfolioDto> getPortfolioDtoById(Map<String, String> templateVariables) {
-        return Optional.ofNullable(portfolioService.findById(Long.valueOf(templateVariables.get("portfolioId"))));
+        return Optional.ofNullable(portfolioService.findById(Long.valueOf(templateVariables.get(PORTFOLIO_ID))));
     }
 
     private Optional<PortfolioDto> getPortfolioDtoByPath(Map<String, String> templateVariables) {
-        return Optional.ofNullable(portfolioService
-            .findByPath(
-                templateVariables.get("path"),
-                PortfolioRole.fromValue(templateVariables.get("portfolioRole")), PortfolioConverter.ComponentFetchStrategy.NONE));
+        return Optional.ofNullable(
+            portfolioService.findByPathAndLangAndRole(templateVariables.get(PATH),  Language.fromCode(templateVariables.get(LANG)),
+            PortfolioRole.fromValue(templateVariables.get(PORTFOLIO_ROLE)),
+            PortfolioConverter.ComponentFetchStrategy.NONE)
+        );
     }
 
 }

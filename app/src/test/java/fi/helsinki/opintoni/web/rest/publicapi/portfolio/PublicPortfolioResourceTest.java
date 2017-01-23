@@ -29,8 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PublicPortfolioResourceTest extends PublicPortfolioTest {
 
-    private static final String STUDENT_PORTFOLIO_PATH = "/portfolio/student/olli-opiskelija";
-    private static final String TEACHER_PORTFOLIO_PATH = "/portfolio/teacher/opettaja";
+    private static final String STUDENT_PORTFOLIO_PATH = "/portfolio/student/en/olli-opiskelija";
+    private static final String TEACHER_PORTFOLIO_PATH = "/portfolio/teacher/fi/opettaja";
 
     @Test
     public void thatPortfolioIsReturned() throws Exception {

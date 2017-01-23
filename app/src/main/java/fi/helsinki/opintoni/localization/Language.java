@@ -17,8 +17,12 @@
 
 package fi.helsinki.opintoni.localization;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public enum Language {
@@ -31,6 +35,7 @@ public enum Language {
         this.code = code;
     }
 
+    @JsonValue
     public String getCode() {
         return code;
     }
@@ -41,7 +46,9 @@ public enum Language {
             .collect(Collectors.toList());
     }
 
+    @JsonCreator
     public static Language fromCode(String code) {
-        return Language.valueOf(code.toUpperCase());
+        return Optional.ofNullable(Language.valueOf(code.toUpperCase())).orElseThrow(
+            () -> new IllegalArgumentException(String.format("no corresponding language for code '%s'", code)));
     }
 }

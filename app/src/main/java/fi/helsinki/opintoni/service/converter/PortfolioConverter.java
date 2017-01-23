@@ -103,6 +103,7 @@ public class PortfolioConverter {
     public PortfolioDto toDto(Portfolio portfolio, ComponentFetchStrategy componentFetchStrategy) {
         PortfolioDto portfolioDto = new PortfolioDto();
         portfolioDto.id = portfolio.id;
+        portfolioDto.lang = portfolio.language.getCode();
         portfolioDto.url = uriBuilder.getPortfolioUrl(portfolio);
         portfolioDto.intro = portfolio.intro;
         portfolioDto.ownerName = portfolio.ownerName;

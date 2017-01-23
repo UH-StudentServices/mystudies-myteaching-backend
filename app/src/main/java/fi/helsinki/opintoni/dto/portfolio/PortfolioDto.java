@@ -24,6 +24,7 @@ import java.util.List;
 
 public class PortfolioDto {
     public Long id;
+    public String lang;
     public String url;
     public String intro;
     public String ownerName;

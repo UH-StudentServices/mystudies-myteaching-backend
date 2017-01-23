@@ -35,10 +35,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PortfolioResourceTest extends AbstractPortfolioResourceTest {
 
-    private static final String EXPECTED_STUDENT_PORTFOLIO_URL = "/portfolio/olli-opiskelija";
-    private static final String EXPECTED_TEACHER_PORTFOLIO_URL = "/portfolio/olli-opettaja";
-    private static final String EXPECTED_HYBRID_USER_STUDENT_PORTFOLIO_URL = "/portfolio/hybrid-user";
-    private static final String EXPECTED_HYBRID_USER_TEACHER_PORTFOLIO_URL = "/portfolio/hybrid-user";
+    private static final String EXPECTED_STUDENT_PORTFOLIO_URL = "/portfolio/en/olli-opiskelija";
+    private static final String EXPECTED_TEACHER_PORTFOLIO_URL = "/portfolio/en/olli-opettaja";
+    private static final String EXPECTED_HYBRID_USER_STUDENT_PORTFOLIO_URL = "/portfolio/en/hybrid-user";
+    private static final String EXPECTED_HYBRID_USER_TEACHER_PORTFOLIO_URL = "/portfolio/en/hybrid-user";
 
     @Autowired
     private PortfolioRepository portfolioRepository;
@@ -49,7 +49,7 @@ public class PortfolioResourceTest extends AbstractPortfolioResourceTest {
 
     @Test
     public void thatNotFoundIsReturned() throws Exception {
-        mockMvc.perform(get(PORTFOLIO_API_URL).with(securityContext(teacherSecurityContext()))
+        mockMvc.perform(get(PRIVATE_PORTFOLIO_API_PATH).with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
@@ -139,7 +139,7 @@ public class PortfolioResourceTest extends AbstractPortfolioResourceTest {
 
     @Test
     public void thatPortfolioIsFoundByPath() throws Exception {
-        mockMvc.perform(get(STUDENT_PORTFOLIO_API_URL + "/olli-opiskelija").with(securityContext
+        mockMvc.perform(get(STUDENT_PORTFOLIO_API_URL + "/en/olli-opiskelija").with(securityContext
             (studentSecurityContext()))
             .characterEncoding("UTF-8")
             .accept(MediaType.APPLICATION_JSON))
@@ -163,7 +163,7 @@ public class PortfolioResourceTest extends AbstractPortfolioResourceTest {
         portfolioDto.intro = updatedIntro;
         portfolioDto.visibility = updatedVisibility;
 
-        mockMvc.perform(put(PORTFOLIO_API_URL + "/2").with(securityContext(studentSecurityContext()))
+        mockMvc.perform(put(PRIVATE_PORTFOLIO_API_PATH + "/2").with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .content(WebTestUtils.toJsonBytes(portfolioDto))

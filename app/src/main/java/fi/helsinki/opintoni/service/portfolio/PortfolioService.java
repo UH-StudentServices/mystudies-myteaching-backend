@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.ComponentVisibilityService;
@@ -37,9 +38,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.StringJoiner;
 
 import static fi.helsinki.opintoni.exception.http.NotFoundException.notFoundException;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 
 
 @Service
@@ -68,7 +72,7 @@ public class PortfolioService {
         this.componentVisibilityService = componentVisibilityService;
     }
 
-    public PortfolioDto insert(Long userId, String name, PortfolioRole portfolioRole) {
+    public PortfolioDto insert(Long userId, String name, PortfolioRole portfolioRole, Language lang) {
         String portfolioPath = portfolioRepository
             .findByUserId(userId)
             .findFirst()
@@ -76,6 +80,7 @@ public class PortfolioService {
             .orElse(portfolioPathGenerator.create(name));
 
         Portfolio portfolio = new Portfolio();
+        portfolio.language = lang;
         portfolio.user = userRepository.findOne(userId);
         portfolio.path = portfolioPath;
         portfolio.ownerName = name;
@@ -93,14 +98,17 @@ public class PortfolioService {
     }
 
     public PortfolioDto get(Long userId, PortfolioRole portfolioRole) {
-        return convertPortfolioToDto(portfolioRepository
-            .findByUserIdAndPortfolioRole(userId, portfolioRole), PortfolioConverter.ComponentFetchStrategy.ALL);
+        return convertPortfolioToDto(
+            portfolioRepository.findByUserIdAndPortfolioRole(userId, portfolioRole).findFirst(),
+            PortfolioConverter.ComponentFetchStrategy.ALL);
     }
 
-    public PortfolioDto findByPath(String path, PortfolioRole portfolioRole,
-                                   PortfolioConverter.ComponentFetchStrategy componentFetchStrategy) {
+    public PortfolioDto findByPathAndLangAndRole(String path,
+                                                 Language lang,
+                                                 PortfolioRole portfolioRole,
+                                                 PortfolioConverter.ComponentFetchStrategy componentFetchStrategy) {
         return convertPortfolioToDto(portfolioRepository
-            .findByPathAndPortfolioRole(path, portfolioRole), componentFetchStrategy);
+            .findByPathAndPortfolioRoleAndLanguage(path, portfolioRole, lang), componentFetchStrategy);
     }
 
     public PortfolioDto findById(Long portfolioId) {
@@ -115,12 +123,19 @@ public class PortfolioService {
             .orElseThrow(notFoundException("Portfolio not found"));
     }
 
-    public Map<String, String> getUserPortfolioPath(Long userId) {
+    public Map<String, Map<String, List<String>>> getUserPortfolioPathsByRoleAndLang(Long userId) {
         return portfolioRepository
             .findByUserId(userId)
-            .collect(Collectors.toMap(
+            .collect(groupingBy(
                 portfolio -> portfolio.portfolioRole.getRole(),
-                portfolio -> portfolio.path));
+                groupingBy(
+                    portfolio -> portfolio.language.getCode(),
+                    mapping(
+                        PortfolioService::portfolioPath,
+                        toList()
+                    )
+                )
+            ));
     }
 
     public PortfolioDto update(Long portfolioId, PortfolioDto portfolioDto) {
@@ -152,8 +167,15 @@ public class PortfolioService {
                 visibility.portfolio = portfolio;
 
                 return visibility;
-            }).collect(Collectors.toList());
+            }).collect(toList());
 
         componentVisibilityService.save(sectionVisibilities);
+    }
+
+    private static String portfolioPath(Portfolio portfolio) {
+        return new StringJoiner("/", "/", "")
+            .add(portfolio.language.getCode())
+            .add(portfolio.path)
+            .toString();
     }
 }
