@@ -28,7 +28,6 @@ public class SessionDto {
     public String username;
     public String name;
     public String email;
-    public String language;
     public String avatarUrl;
     public FacultyDto faculty;
     public Map<String, Map<String, List<String>>> portfolioPathsByRoleAndLang;
@@ -41,7 +40,6 @@ public class SessionDto {
             .append("username", username)
             .append("name", name)
             .append("email", email)
-            .append("language", language)
             .append("avatarUrl", avatarUrl)
             .append("roles", roles)
             .toString();

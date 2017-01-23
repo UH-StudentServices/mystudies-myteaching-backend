@@ -54,7 +54,6 @@ public class SessionConverter {
         sessionDto.username = appUser.getUsername();
         sessionDto.name = appUser.getCommonName();
         sessionDto.email = appUser.getEmail();
-        sessionDto.language = "fi";
         sessionDto.avatarUrl = avatarImageService.getAvatarImageUrl(userId);
         sessionDto.portfolioPathsByRoleAndLang = portfolioService.getUserPortfolioPathsByRoleAndLang(userId);
         sessionDto.roles = convertAuthoritiesToText(appUser);
