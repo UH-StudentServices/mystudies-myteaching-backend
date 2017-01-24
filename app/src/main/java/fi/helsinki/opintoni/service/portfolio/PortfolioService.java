@@ -22,7 +22,6 @@ import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
-import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
@@ -144,10 +143,6 @@ public class PortfolioService {
         portfolio.ownerName = portfolioDto.ownerName;
         portfolio.intro = portfolioDto.intro;
         return portfolioConverter.toDto(portfolioRepository.save(portfolio), PortfolioConverter.ComponentFetchStrategy.NONE);
-    }
-
-    public SummaryDto getSummary(Long portfolioId) {
-        return new SummaryDto(portfolioRepository.findOne(portfolioId).summary);
     }
 
     public void updateSummary(Long portfolioId, UpdateSummaryRequest request) {
