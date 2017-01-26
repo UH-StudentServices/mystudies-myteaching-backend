@@ -84,6 +84,7 @@ public class FeedbackService {
     }
 
     public void insertFeedback(InsertFeedbackRequest request) throws Exception {
+        log.error("Inserting feedback, content=\"" + request.content + "\"");
         String timestamp = ZonedDateTime.now(ZoneId.of("Europe/Helsinki")).format(TIMESTAMP_FORMATTER);
         String faculty = request.metadata.findValue("faculty").textValue();
         String state = request.metadata.findValue("state").textValue();
@@ -121,11 +122,16 @@ public class FeedbackService {
         message.setSubject(messageSource.getMessage("subject." + state, null, "Palaute", locale));
         message.setText(body);
         try {
+            log.error("Sending mail");
             mailSender.send(message);
+            log.error("Mail sent OK");
         } catch (MailException ex) {
             // TODO: Check whether we can report this error e.g. 500 status
             log.error("Mail error sending feedback", ex);
             throw new RuntimeException(ex);
+        } catch (Exception ex) {
+            log.error("Unexpected error sending message", ex);
+            throw ex;
         }
     }
 
