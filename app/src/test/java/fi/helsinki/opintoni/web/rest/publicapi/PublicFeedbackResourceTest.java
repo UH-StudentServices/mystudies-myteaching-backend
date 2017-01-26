@@ -49,6 +49,8 @@ public class PublicFeedbackResourceTest extends SpringTest {
     private static final String FEEDBACK_CONTENT = "Content";
     private static final String FEEDBACK_SENDER = "teppo.testaaja@helsinki.fi";
     private static final String FEEDBACK_NO_SENDER = "doo-projekti@helsinki.fi";
+    private static final String FEEDBACK_NO_REPLY = "noreply@helsinki.fi";
+    private static final String REPLY_TO_HEADER = "Reply-To";
     private static final String FEEDBACK_RECIPIENT = "opetusteknologia@helsinki.fi";
     private static final String FEEDBACK_CONTENT_TYPE = "text/plain; charset=UTF-8";
     private static final String FEEDBACK_USER_AGENT = "test-user-agent";
@@ -95,7 +97,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        checkReceivedMessages(FEEDBACK_SENDER, FEEDBACK_SUBJECT_FI, FEEDBACK_CONTENT_PATTERN_FI);
+        checkReceivedMessages(FEEDBACK_SENDER, null, FEEDBACK_SUBJECT_FI, FEEDBACK_CONTENT_PATTERN_FI);
     }
 
     @Test
@@ -111,7 +113,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        checkReceivedMessages(FEEDBACK_NO_SENDER, FEEDBACK_SUBJECT_FI, FEEDBACK_CONTENT_PATTERN_FI);
+        checkReceivedMessages(FEEDBACK_NO_SENDER, FEEDBACK_NO_REPLY, FEEDBACK_SUBJECT_FI, FEEDBACK_CONTENT_PATTERN_FI);
     }
 
     @Test
@@ -127,7 +129,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        checkReceivedMessages(FEEDBACK_SENDER, FEEDBACK_SUBJECT_SV, FEEDBACK_CONTENT_PATTERN_SV);
+        checkReceivedMessages(FEEDBACK_SENDER, null, FEEDBACK_SUBJECT_SV, FEEDBACK_CONTENT_PATTERN_SV);
     }
 
     @Test
@@ -143,25 +145,63 @@ public class PublicFeedbackResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        checkReceivedMessages(FEEDBACK_SENDER, FEEDBACK_SUBJECT_EN, FEEDBACK_CONTENT_PATTERN_EN);
+        checkReceivedMessages(FEEDBACK_SENDER, null, FEEDBACK_SUBJECT_EN, FEEDBACK_CONTENT_PATTERN_EN);
     }
 
-    private void checkReceivedMessages(String expectedSender, String expectedSubject, String expectedContent)
+    private void checkReceivedMessages(String expectedSender,
+                                       String expectedReplyTo,
+                                       String expectedSubject,
+                                       String expectedContentPattern)
             throws MessagingException, IOException {
         MimeMessage[] messages = greenMail.getReceivedMessages();
         assertThat(messages).hasSize(1);
         MimeMessage message = messages[0];
+        checkBCC(message);
+        checkCC(message);
+        checkTo(message);
+        checkFrom(message, expectedSender);
+        checkReplyTo(message, expectedReplyTo);
+        checkSubject(message, expectedSubject);
+        checkContent(message, expectedContentPattern);
+    }
+
+    private void checkBCC(MimeMessage message) throws MessagingException {
         assertThat(message.getRecipients(Message.RecipientType.BCC)).isNull();
+    }
+
+    private void checkCC(MimeMessage message) throws MessagingException {
         assertThat(message.getRecipients(Message.RecipientType.CC)).isNull();
+    }
+
+    private void checkTo(MimeMessage message) throws MessagingException {
         Address[] recipients = message.getRecipients(Message.RecipientType.TO);
         assertThat(recipients).hasSize(1);
         assertThat(recipients[0].toString()).isEqualTo(FEEDBACK_RECIPIENT);
+    }
+
+    private void checkFrom(MimeMessage message, String expectedSender) throws MessagingException {
         Address[] from = message.getFrom();
         assertThat(from).hasSize(1);
         assertThat(from[0].toString()).isEqualTo(expectedSender);
+    }
+
+    private void checkReplyTo(MimeMessage message, String expectedReplyTo) throws MessagingException {
+        if (expectedReplyTo == null) {
+            assertThat(message.getHeader(REPLY_TO_HEADER)).isNull();
+        } else {
+            Address[] replyTo = message.getReplyTo();
+            assertThat(replyTo).hasSize(1);
+            assertThat(replyTo[0].toString()).isEqualTo(expectedReplyTo);
+        }
+    }
+
+    private void checkSubject(MimeMessage message, String expectedSubject) throws MessagingException {
         assertThat(message.getSubject()).isEqualTo(expectedSubject);
+    }
+
+    private void checkContent(MimeMessage message, String expectedContentPattern) throws MessagingException, IOException {
         assertThat(message.getContentType()).isEqualTo(FEEDBACK_CONTENT_TYPE);
-        assertThat((String)(message.getContent())).matches(expectedContent);
+        assertThat((String)(message.getContent())).matches(expectedContentPattern);
     }
 
     private JsonNode getMetadata(String lang) {

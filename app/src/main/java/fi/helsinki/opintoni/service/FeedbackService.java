@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import fi.helsinki.opintoni.domain.Feedback;
 import fi.helsinki.opintoni.dto.FeedbackDto;
@@ -50,73 +49,53 @@ import java.util.Locale;
 @Transactional
 public class FeedbackService {
     private static final Logger log = LoggerFactory.getLogger(FeedbackService.class);
-    private static final String DOO_PROJECT_EMAIL = "doo-projekti@helsinki.fi";
-    private static final String NO_REPLY_EMAIL = "noreply@helsinki.fi";
+    private static final ZoneId HELSINKI_ZONE_ID = ZoneId.of("Europe/Helsinki");
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    private static final Map<String, Locale> NAMES_TO_LOCALES = new HashMap<>();
-    private static Locale finnishLocale = new Locale("fi", "FI");
+    private static final Map<String, Locale> CODES_TO_LOCALES = new HashMap<>();
     static {
-        NAMES_TO_LOCALES.put("fi", finnishLocale);
-        NAMES_TO_LOCALES.put("sv", new Locale("sv", "FI"));
-        NAMES_TO_LOCALES.put("en", new Locale("en", "FI"));
+        CODES_TO_LOCALES.put("fi", new Locale("fi", "FI"));
+        CODES_TO_LOCALES.put("sv", new Locale("sv", "FI"));
+        CODES_TO_LOCALES.put("en", new Locale("en", "FI"));
     }
 
+    private final MailSender mailSender;
+    private final MessageSource messageSource;
     private final FeedbackRepository feedbackRepository;
-    private final ObjectMapper objectMapper;
     private final FeedbackConverter feedbackConverter;
+    private final String efecteEmailAddress;
+    private final String anonymousFeedbackFromAddress;
+    private final String anonymousFeedbackReplyToAddress;
+
 
     @Autowired
-    private MailSender mailSender;
-
-    @Autowired
-    private MessageSource messageSource;
-
-    @Value("${feedback.efecte.address}")
-    private String efecteEmailAddress;
-
-    @Autowired
-    public FeedbackService(FeedbackRepository feedbackRepository,
-                           ObjectMapper objectMapper,
+    public FeedbackService(MailSender mailSender,
+                           MessageSource messageSource,
+                           @Value("${feedback.efecte.address}") String efecteEmailAddress,
+                           @Value("${feedback.anonymous.fromAddress}") String anonymousFeedbackFromAddress,
+                           @Value("${feedback.anonymous.replyToAddress}") String anonymousFeedbackReplyToAddress,
+                           FeedbackRepository feedbackRepository,
                            FeedbackConverter feedbackConverter) {
+        this.mailSender = mailSender;
+        this.messageSource = messageSource;
+        this.efecteEmailAddress = efecteEmailAddress;
+        this.anonymousFeedbackFromAddress = anonymousFeedbackFromAddress;
+        this.anonymousFeedbackReplyToAddress = anonymousFeedbackReplyToAddress;
         this.feedbackRepository = feedbackRepository;
-        this.objectMapper = objectMapper;
         this.feedbackConverter = feedbackConverter;
     }
 
     public void insertFeedback(InsertFeedbackRequest request) throws Exception {
-        String timestamp = ZonedDateTime.now(ZoneId.of("Europe/Helsinki")).format(TIMESTAMP_FORMATTER);
-        JsonNode facultyNode = request.metadata.findValue("faculty");
-        String faculty = facultyNode == null ? null : facultyNode.textValue();
-        String state = request.metadata.findValue("state").textValue();
-        String userAgent = request.metadata.findValue("userAgent").textValue();
-        JsonNode langNode = request.metadata.findValue("lang");
-        String lang = langNode == null ? "fi" : langNode.textValue();
-        Locale locale = NAMES_TO_LOCALES.get(lang);
-        StringBuilder bodyBuilder = new StringBuilder();
-        bodyBuilder.append(request.content);
-        bodyBuilder.append("\n\n");
-        bodyBuilder.append(messageSource.getMessage("label.timestamp", null, locale));
-        bodyBuilder.append(": ");
-        bodyBuilder.append(timestamp);
-        bodyBuilder.append("\n");
-        if (faculty != null) {
-            bodyBuilder.append(messageSource.getMessage("label.faculty", null, locale));
-            bodyBuilder.append(": ");
-            bodyBuilder.append(messageSource.getMessage("faculty." + faculty, null, faculty, locale));
-            bodyBuilder.append("\n");
-        }
-        bodyBuilder.append(messageSource.getMessage("label.state", null, locale));
-        bodyBuilder.append(": ");
-        bodyBuilder.append(messageSource.getMessage("state." + state, null, state, locale));
-        bodyBuilder.append("\n");
-        bodyBuilder.append(messageSource.getMessage("label.userAgent", null, locale));;
-        bodyBuilder.append(": ");
-        bodyBuilder.append(userAgent);
-        String body = bodyBuilder.toString();
+        String content = request.content;
+        String timestamp = createTimestamp();
+        String state = getState(request);
+        String faculty = getFaculty(request);
+        String userAgent = getUserAgent(request);
+        Locale locale = getLocale(request);
+        String body = buildMessageBody(content, timestamp, faculty, state, userAgent, locale);
         SimpleMailMessage message = new SimpleMailMessage();
         if ((request.email == null) || (request.email.length() == 0)) {
-            message.setFrom(DOO_PROJECT_EMAIL);
-            message.setReplyTo(NO_REPLY_EMAIL);
+            message.setFrom(anonymousFeedbackFromAddress);
+            message.setReplyTo(anonymousFeedbackReplyToAddress);
         } else {
             message.setFrom(request.email);
         }
@@ -143,5 +122,66 @@ public class FeedbackService {
         feedback.processed = feedbackDto.processed;
         feedback.comment = feedbackDto.comment;
         return getAllFeedback();
+    }
+
+    private String createTimestamp() {
+        ZonedDateTime helsinkiNow = ZonedDateTime.now(HELSINKI_ZONE_ID);
+        return helsinkiNow.format(TIMESTAMP_FORMATTER);
+    }
+
+    private String getState(InsertFeedbackRequest request) {
+        return request.metadata.findValue("state").textValue();
+    }
+
+    private String getFaculty(InsertFeedbackRequest request) {
+        JsonNode facultyNode = request.metadata.findValue("faculty");
+        return facultyNode == null ? null : facultyNode.textValue();
+    }
+
+    private String getUserAgent(InsertFeedbackRequest request) {
+        return request.metadata.findValue("userAgent").textValue();
+    }
+
+    private Locale getLocale(InsertFeedbackRequest request) {
+        JsonNode langNode = request.metadata.findValue("lang");
+        String langCode = langNode == null ? "fi" : langNode.textValue();
+        return CODES_TO_LOCALES.get(langCode);
+    }
+
+    private String buildMessageBody(String content,
+                                    String timestamp,
+                                    String faculty,
+                                    String state,
+                                    String userAgent,
+                                    Locale locale) {
+        String timestampLine = getTimestampLine(timestamp, locale);
+        String stateLine = getStateLine(state, locale);
+        String userAgentLine = getUserAgentLine(userAgent, locale);
+        if (faculty == null) {
+            return String.join("\n", content, "", timestampLine, stateLine, userAgentLine);
+        } else {
+            String facultyLine = getFacultyLine(faculty, locale);
+            return String.join("\n", content, "", timestampLine, facultyLine, stateLine, userAgentLine);
+        }
+    }
+
+    private String getTimestampLine(String timestamp, Locale locale) {
+        return getNameValueLine("timestamp", timestamp, locale);
+    }
+
+    private String getFacultyLine(String faculty, Locale locale) {
+        return getNameValueLine("faculty", messageSource.getMessage("faculty." + faculty, null, faculty, locale), locale);
+    }
+
+    private String getStateLine(String state, Locale locale) {
+        return getNameValueLine("state", messageSource.getMessage("state." + state, null, state, locale), locale);
+    }
+
+    private String getUserAgentLine(String userAgent, Locale locale) {
+        return getNameValueLine("userAgent", userAgent, locale);
+    }
+
+    private String getNameValueLine(String name, String value, Locale locale) {
+        return messageSource.getMessage("label." + name, null, locale) + ": " + value;
     }
 }

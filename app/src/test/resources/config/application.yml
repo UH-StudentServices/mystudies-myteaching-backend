@@ -40,6 +40,9 @@ spring:
 
 feedback:
     efecte.address: opetusteknologia@helsinki.fi
+    anonymous:
+        fromAddress: doo-projekti@helsinki.fi
+        replyToAddress: noreply@helsinki.fi
 
 metrics:
     jmx.enabled: false
