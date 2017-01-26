@@ -86,7 +86,7 @@ public class FeedbackService {
     public void insertFeedback(InsertFeedbackRequest request) throws Exception {
         String timestamp = ZonedDateTime.now(ZoneId.of("Europe/Helsinki")).format(TIMESTAMP_FORMATTER);
         JsonNode facultyNode = request.metadata.findValue("faculty");
-        String faculty = facultyCode == null ? null : facultyNode.textValue();
+        String faculty = facultyNode == null ? null : facultyNode.textValue();
         String state = request.metadata.findValue("state").textValue();
         String userAgent = request.metadata.findValue("userAgent").textValue();
         JsonNode langNode = request.metadata.findValue("lang");
