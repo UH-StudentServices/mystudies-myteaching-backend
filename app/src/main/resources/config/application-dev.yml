@@ -33,7 +33,7 @@ spring:
         properties.mail.smtp.starttls.enable: true
 
 feedback:
-    efecte.address: david.price@helsinki.fi
+    efecte.address: doo-opintoni@helsinki.fi
 
 metrics:
     jmx.enabled: true
