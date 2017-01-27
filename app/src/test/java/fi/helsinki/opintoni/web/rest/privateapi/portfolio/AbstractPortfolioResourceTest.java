@@ -28,6 +28,7 @@ public abstract class AbstractPortfolioResourceTest extends SpringTest {
             .cookie(localeCookie(Language.EN))
             .with(securityContext(securityContext))
             .characterEncoding("UTF-8")
+            .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON));
     }
 

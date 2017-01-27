@@ -63,7 +63,6 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
     private static final String STUDENT_PORTFOLIO_PATH = "/portfolio/en/olli-opiskelija";
     private static final String TEACHER_PORTFOLIO_PATH = "/portfolio/en/olli-opettaja";
     private static final String HYBRID_USER_PORTFOLIO_PATH = "/portfolio/en/hybrid-user";
-    private static final String ANOTHER_USERS_PRIVATE_PORTFOLIO_PATH = "/student/en/test-test";
     private static final String STUDENT_EMAIL = "olli.opiskelija@helsinki.fi";
 
     @Autowired
@@ -169,15 +168,6 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
             .andExpect(jsonPath("$.componentVisibilities").isArray())
             .andExpect(jsonPath("$.componentVisibilities[0].component").value("WORK_EXPERIENCE"))
             .andExpect(jsonPath("$.componentVisibilities[0].visibility").value("PUBLIC"));
-    }
-
-    @Test
-    public void thatAnotherUsersPrivatePortfolioIsNotFound() throws Exception {
-        mockMvc.perform(get(PRIVATE_PORTFOLIO_API_PATH + ANOTHER_USERS_PRIVATE_PORTFOLIO_PATH)
-            .with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNotFound());
     }
 
     @Test
