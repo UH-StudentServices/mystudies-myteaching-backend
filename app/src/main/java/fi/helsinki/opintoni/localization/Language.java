@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -50,5 +51,9 @@ public enum Language {
     public static Language fromCode(String code) {
         return Optional.ofNullable(Language.valueOf(code.toUpperCase())).orElseThrow(
             () -> new IllegalArgumentException(String.format("no corresponding language for code '%s'", code)));
+    }
+
+    public Locale toLocale() {
+        return Locale.forLanguageTag(String.format("%s-FI", code));
     }
 }

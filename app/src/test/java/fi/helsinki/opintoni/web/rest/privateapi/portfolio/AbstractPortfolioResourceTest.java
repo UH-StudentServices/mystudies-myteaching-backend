@@ -17,6 +17,7 @@ public abstract class AbstractPortfolioResourceTest extends SpringTest {
     protected static final String PRIVATE_PORTFOLIO_API_PATH = "/api/private/v1/portfolio";
     protected static final String STUDENT_PORTFOLIO_API_URL = PRIVATE_PORTFOLIO_API_PATH + "/student";
     protected static final String TEACHER_PORTFOLIO_API_URL = PRIVATE_PORTFOLIO_API_PATH + "/teacher";
+    protected static final String SESSION_LANG = Language.EN.getCode();
 
     private static final String EMPLOYEE_NUMBER = "010540";
     private static final String ENCODED_DOUBLE_QUOTE = "%22";
@@ -35,6 +36,14 @@ public abstract class AbstractPortfolioResourceTest extends SpringTest {
 
     protected ResultActions createTeacherPortfolio(SecurityContext securityContext) throws Exception {
         return createPortfolio(securityContext, TEACHER_PORTFOLIO_API_URL);
+    }
+
+    protected ResultActions createStudentPortfolio(SecurityContext securityContext, Language lang) throws Exception {
+        return createPortfolio(securityContext, String.join("/", STUDENT_PORTFOLIO_API_URL, lang.getCode()));
+    }
+
+    protected ResultActions createTeacherPortfolio(SecurityContext securityContext, Language lang) throws Exception {
+        return createPortfolio(securityContext, String.join("/", TEACHER_PORTFOLIO_API_URL, lang.getCode()));
     }
 
     protected void expectEmployeeContactInformationRequestToESB() {

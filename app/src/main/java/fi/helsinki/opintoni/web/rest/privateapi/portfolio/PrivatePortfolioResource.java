@@ -67,26 +67,51 @@ public class PrivatePortfolioResource extends AbstractResource {
     @RequestMapping(value = "/student", method = RequestMethod.POST)
     @Timed
     @StudentRoleRequired
-    public ResponseEntity<PortfolioDto> insertStudentPortfolio(@UserId Long userId,
-                                                               @AuthenticationPrincipal AppUser appUser,
-                                                               Locale langCode) {
+    public ResponseEntity<PortfolioDto> createStudentPortfolioInSessionLang(@UserId Long userId,
+                                                                            @AuthenticationPrincipal AppUser appUser,
+                                                                            Locale locale) {
         return response(portfolioService.insert(
             userId,
             appUser.getCommonName(),
             PortfolioRole.STUDENT,
-            Language.fromCode(langCode.toString())));
+            Language.fromCode(locale.getLanguage())));
     }
 
     @RequestMapping(value = "/teacher", method = RequestMethod.POST)
     @Timed
     @TeacherRoleRequired
-    public ResponseEntity<PortfolioDto> insertTeacherPortfolio(@UserId Long userId,
-                                                               @AuthenticationPrincipal AppUser appUser,
-                                                               Locale locale) {
+    public ResponseEntity<PortfolioDto> createTeacherPortfolioInSessionLang(@UserId Long userId,
+                                                                            @AuthenticationPrincipal AppUser appUser,
+                                                                            Locale locale) {
         return response(employeePortfolioService.insert(
             userId,
             appUser,
             locale));
+    }
+
+    @RequestMapping(value = "/student/{lang}", method = RequestMethod.POST)
+    @Timed
+    @StudentRoleRequired
+    public ResponseEntity<PortfolioDto> insertStudentPortfolio(@UserId Long userId,
+                                                               @AuthenticationPrincipal AppUser appUser,
+                                                               @PathVariable("lang") String langCode) {
+        return response(portfolioService.insert(
+            userId,
+            appUser.getCommonName(),
+            PortfolioRole.STUDENT,
+            Language.fromCode(langCode)));
+    }
+
+    @RequestMapping(value = "/teacher/{lang}", method = RequestMethod.POST)
+    @Timed
+    @TeacherRoleRequired
+    public ResponseEntity<PortfolioDto> insertTeacherPortfolio(@UserId Long userId,
+                                                               @AuthenticationPrincipal AppUser appUser,
+                                                               @PathVariable("lang") String langCode) {
+        return response(employeePortfolioService.insert(
+            userId,
+            appUser,
+            Language.fromCode(langCode).toLocale()));
     }
 
     @RequestMapping(value = "/{portfolioRole}/{lang}/{path:.*}", method = RequestMethod.GET)

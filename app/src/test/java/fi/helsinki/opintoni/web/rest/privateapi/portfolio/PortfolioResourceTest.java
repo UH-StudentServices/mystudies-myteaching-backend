@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.WebTestUtils;
@@ -43,10 +44,6 @@ public class PortfolioResourceTest extends AbstractPortfolioResourceTest {
     @Autowired
     private PortfolioRepository portfolioRepository;
 
-    private void deleteExistingStudentPortfolio() {
-        portfolioRepository.delete(2L);
-    }
-
     @Test
     public void thatNotFoundIsReturned() throws Exception {
         mockMvc.perform(get(PRIVATE_PORTFOLIO_API_PATH).with(securityContext(teacherSecurityContext()))
@@ -56,17 +53,18 @@ public class PortfolioResourceTest extends AbstractPortfolioResourceTest {
     }
 
     @Test
-    public void thatStudentPortfolioIsCreated() throws Exception {
-        deleteExistingStudentPortfolio();
+    public void thatStudentPortfolioIsCreatedInSessionLang() throws Exception {
+        deleteExistingStudentPortfolios();
 
         createStudentPortfolio(studentSecurityContext())
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.url").value(EXPECTED_STUDENT_PORTFOLIO_URL));
+            .andExpect(jsonPath("$.url").value(EXPECTED_STUDENT_PORTFOLIO_URL))
+            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
     }
 
     @Test
-    public void thatTeacherPortfolioIsCreated() throws Exception {
+    public void thatTeacherPortfolioIsCreatedInSessionLang() throws Exception {
         expectEmployeeContactInformationRequestToESB();
 
         deleteExistingTeacherPortfolio();
@@ -74,22 +72,55 @@ public class PortfolioResourceTest extends AbstractPortfolioResourceTest {
         createTeacherPortfolio(teacherSecurityContext())
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.url").value(EXPECTED_TEACHER_PORTFOLIO_URL));
+            .andExpect(jsonPath("$.url").value(EXPECTED_TEACHER_PORTFOLIO_URL))
+            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
     }
 
     @Test
-    public void thatStudentCannotCreateMultiplePortfolios() throws Exception {
-        deleteExistingStudentPortfolio();
+    public void thatStudentCanCreateMultiplePortfoliosInDifferentLangs() throws Exception {
+        deleteExistingStudentPortfolios();
+
+        createStudentPortfolio(studentSecurityContext())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+
+        createStudentPortfolio(studentSecurityContext(), Language.FI)
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.lang").value(Language.FI.getCode()));
+    }
+
+    @Test
+    public void thatStudentCannotCreateMultiplePortfoliosInSameLang() throws Exception {
+        deleteExistingStudentPortfolios();
 
         createStudentPortfolio(studentSecurityContext())
             .andExpect(status().isOk());
 
         createStudentPortfolio(studentSecurityContext())
             .andExpect(status().isInternalServerError());
+
+        createStudentPortfolio(studentSecurityContext(), Language.EN)
+            .andExpect(status().isInternalServerError());
     }
 
     @Test
-    public void thatTeacherCannotCreateMultiplePortfolios() throws Exception {
+    public void thatTeacherCanCreateMultiplePortfoliosInDifferentLangs() throws Exception {
+        expectEmployeeContactInformationRequestToESB();
+        expectEmployeeContactInformationRequestToESB();
+
+        deleteExistingTeacherPortfolio();
+
+        createTeacherPortfolio(teacherSecurityContext())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+
+        createTeacherPortfolio(teacherSecurityContext(), Language.FI)
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.lang").value(Language.FI.getCode()));
+    }
+
+    @Test
+    public void thatTeacherCannotCreateMultiplePortfoliosInSameLang() throws Exception {
         expectEmployeeContactInformationRequestToESB();
 
         deleteExistingTeacherPortfolio();
@@ -99,19 +130,67 @@ public class PortfolioResourceTest extends AbstractPortfolioResourceTest {
 
         createTeacherPortfolio(teacherSecurityContext())
             .andExpect(status().isInternalServerError());
+
+        createTeacherPortfolio(teacherSecurityContext(), Language.EN)
+            .andExpect(status().isInternalServerError());
     }
 
     @Test
-    public void thatHybridUserCannotCreateMultipleStudentPortfolios() throws Exception {
+    public void thatHybridUserCanCreateStudentAndTeacherPortfoliosInSessionLang() throws Exception {
+        expectEmployeeContactInformationRequestToESB();
+
+        createStudentPortfolio(hybridUserSecurityContext())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.url").value(EXPECTED_HYBRID_USER_STUDENT_PORTFOLIO_URL))
+            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+
+        createTeacherPortfolio(hybridUserSecurityContext())
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.url").value(EXPECTED_HYBRID_USER_TEACHER_PORTFOLIO_URL))
+            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+    }
+
+    @Test
+    public void thatHybridUserCanCreateMultipleStudentPortfoliosInDifferentLangs() throws Exception {
+        createStudentPortfolio(hybridUserSecurityContext())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+
+        createStudentPortfolio(hybridUserSecurityContext(), Language.FI)
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.lang").value(Language.FI.getCode()));
+    }
+
+    @Test
+    public void thatHybridUserCannotCreateMultipleStudentPortfoliosInSameLang() throws Exception {
         createStudentPortfolio(hybridUserSecurityContext())
             .andExpect(status().isOk());
 
         createStudentPortfolio(hybridUserSecurityContext())
             .andExpect(status().isInternalServerError());
+
+        createStudentPortfolio(hybridUserSecurityContext(), Language.EN)
+            .andExpect(status().isInternalServerError());
     }
 
     @Test
-    public void thatHybridUserCannotCreateMultipleTeacherPortfolios() throws Exception {
+    public void thatHybridUserCanCreateMultipleTeacherPortfoliosInDifferentLangs() throws Exception {
+        expectEmployeeContactInformationRequestToESB();
+        expectEmployeeContactInformationRequestToESB();
+
+        createTeacherPortfolio(hybridUserSecurityContext())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+
+        createTeacherPortfolio(hybridUserSecurityContext(), Language.FI)
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.lang").value(Language.FI.getCode()));
+    }
+
+    @Test
+    public void thatHybridUserCannotCreateMultipleTeacherPortfoliosInSameLang() throws Exception {
         expectEmployeeContactInformationRequestToESB();
 
         createTeacherPortfolio(hybridUserSecurityContext())
@@ -119,22 +198,9 @@ public class PortfolioResourceTest extends AbstractPortfolioResourceTest {
 
         createTeacherPortfolio(hybridUserSecurityContext())
             .andExpect(status().isInternalServerError());
-    }
 
-    @Test
-    public void thatHybridUserCanCreateStudentAndTeacherPortfolios() throws Exception {
-
-        expectEmployeeContactInformationRequestToESB();
-
-        createStudentPortfolio(hybridUserSecurityContext())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.url").value(EXPECTED_HYBRID_USER_STUDENT_PORTFOLIO_URL));
-
-        createTeacherPortfolio(hybridUserSecurityContext())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.url").value(EXPECTED_HYBRID_USER_TEACHER_PORTFOLIO_URL));
+        createTeacherPortfolio(hybridUserSecurityContext(), Language.EN)
+            .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -173,6 +239,11 @@ public class PortfolioResourceTest extends AbstractPortfolioResourceTest {
             .andExpect(jsonPath("$.ownerName").value(updatedOwnerName))
             .andExpect(jsonPath("$.intro").value(updatedIntro))
             .andExpect(jsonPath("$.visibility").value(updatedVisibility.name()));
+    }
+
+    private void deleteExistingStudentPortfolios() {
+        portfolioRepository.delete(2L);
+        portfolioRepository.delete(5L);
     }
 
     private void deleteExistingTeacherPortfolio() {

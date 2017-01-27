@@ -25,7 +25,7 @@ public class EmployeePortfolioService {
     public PortfolioDto insert(Long userId, AppUser appUser, Locale locale) {
 
         PortfolioDto portfolioDto = portfolioService.insert(userId, appUser.getCommonName(), PortfolioRole.TEACHER,
-            Language.fromCode(locale.toString()));
+            Language.fromCode(locale.getLanguage()));
 
         ContactInformationDto contactInformationDto = appUser.getEmployeeNumber()
             .map(employeeNumber -> employeeContactInformationService.fetchAndSaveEmployeeContactInformation(portfolioDto.id, employeeNumber, locale))
