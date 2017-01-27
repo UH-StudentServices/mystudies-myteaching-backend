@@ -35,7 +35,7 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-
+import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -205,11 +205,11 @@ public class PublicFeedbackResourceTest extends SpringTest {
     }
 
     private JsonNode getMetadata(String lang) {
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("userAgent", FEEDBACK_USER_AGENT);
-        metadata.put("faculty", FEEDBACK_FACULTY);
-        metadata.put("state", FEEDBACK_STATE);
-        metadata.put("lang", lang);
+        ImmutableMap<String, String> metadata = ImmutableMap.of(
+            "userAgent", FEEDBACK_USER_AGENT,
+            "faculty", FEEDBACK_FACULTY,
+            "state", FEEDBACK_STATE,
+            "lang", lang);
         return new ObjectMapper().valueToTree(metadata);
     }
 }

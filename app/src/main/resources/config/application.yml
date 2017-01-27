@@ -10,10 +10,6 @@ async:
     maxPoolSize: 50
     queueCapacity: 10000
 
-spring:
-    messageSource:
-        cacheSeconds: 1
-
 feedback:
     anonymous:
         fromAddress: doo-projekti@helsinki.fi

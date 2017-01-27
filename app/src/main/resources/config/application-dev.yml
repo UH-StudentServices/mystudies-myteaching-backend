@@ -30,7 +30,6 @@ spring:
     mail:
         host: smtp.helsinki.fi
         port: 25
-        smtp.starttls.enable: true
 
 feedback:
     efecte.address: doo-opintoni@helsinki.fi

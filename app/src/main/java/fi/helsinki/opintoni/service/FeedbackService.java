@@ -43,20 +43,23 @@ import java.time.ZonedDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import com.google.common.collect.ImmutableMap;
+import fi.helsinki.opintoni.localization.Language;
 
 
 @Service
 @Transactional
 public class FeedbackService {
     private static final Logger log = LoggerFactory.getLogger(FeedbackService.class);
-    private static final ZoneId HELSINKI_ZONE_ID = ZoneId.of("Europe/Helsinki");
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    private static final Map<String, Locale> CODES_TO_LOCALES = new HashMap<>();
-    static {
-        CODES_TO_LOCALES.put("fi", new Locale("fi", "FI"));
-        CODES_TO_LOCALES.put("sv", new Locale("sv", "FI"));
-        CODES_TO_LOCALES.put("en", new Locale("en", "FI"));
-    }
+    private static final String DEFAULT_LANG = Language.FI.getCode();
+    private static final String COUNTRY_FINLAND_CODE = "FI";
+    private static final String FIELD_TIMESTAMP = "timestamp";
+    private static final String FIELD_FACULTY = "faculty";
+    private static final String FIELD_STATE = "state";
+    private static final String FIELD_USER_AGENT = "userAgent";
+    private static final String FIELD_LANG = "lang";
+    private static final String DEFAULT_SUBJECT = "Palaute";
 
     private final MailSender mailSender;
     private final MessageSource messageSource;
@@ -84,7 +87,7 @@ public class FeedbackService {
         this.feedbackConverter = feedbackConverter;
     }
 
-    public void insertFeedback(InsertFeedbackRequest request) throws Exception {
+    public void insertFeedback(InsertFeedbackRequest request) throws MailException {
         String content = request.content;
         String timestamp = createTimestamp();
         String state = getState(request);
@@ -93,21 +96,16 @@ public class FeedbackService {
         Locale locale = getLocale(request);
         String body = buildMessageBody(content, timestamp, faculty, state, userAgent, locale);
         SimpleMailMessage message = new SimpleMailMessage();
-        if ((request.email == null) || (request.email.length() == 0)) {
+        if ((request.email == null) || request.email.isEmpty()) {
             message.setFrom(anonymousFeedbackFromAddress);
             message.setReplyTo(anonymousFeedbackReplyToAddress);
         } else {
             message.setFrom(request.email);
         }
         message.setTo(efecteEmailAddress);
-        message.setSubject(messageSource.getMessage("subject." + state, null, "Palaute", locale));
+        message.setSubject(messageSource.getMessage("feedback.subject." + state, null, DEFAULT_SUBJECT, locale));
         message.setText(body);
-        try {
-            mailSender.send(message);
-        } catch (MailException ex) {
-            log.error("Mail error sending feedback", ex);
-            throw new RuntimeException(ex);
-        }
+        mailSender.send(message);
     }
 
     public List<FeedbackDto> getAllFeedback() {
@@ -125,27 +123,30 @@ public class FeedbackService {
     }
 
     private String createTimestamp() {
-        ZonedDateTime helsinkiNow = ZonedDateTime.now(HELSINKI_ZONE_ID);
+        ZonedDateTime helsinkiNow = ZonedDateTime.now(TimeService.HELSINKI_ZONE_ID);
         return helsinkiNow.format(TIMESTAMP_FORMATTER);
     }
 
     private String getState(InsertFeedbackRequest request) {
-        return request.metadata.findValue("state").textValue();
+        return getMetadataValue(request, FIELD_STATE, null);
     }
 
     private String getFaculty(InsertFeedbackRequest request) {
-        JsonNode facultyNode = request.metadata.findValue("faculty");
-        return facultyNode == null ? null : facultyNode.textValue();
+        return getMetadataValue(request, FIELD_FACULTY, null);
     }
 
     private String getUserAgent(InsertFeedbackRequest request) {
-        return request.metadata.findValue("userAgent").textValue();
+        return getMetadataValue(request, FIELD_USER_AGENT, null);
     }
 
     private Locale getLocale(InsertFeedbackRequest request) {
-        JsonNode langNode = request.metadata.findValue("lang");
-        String langCode = langNode == null ? "fi" : langNode.textValue();
-        return CODES_TO_LOCALES.get(langCode);
+        String langCode = getMetadataValue(request, FIELD_LANG, DEFAULT_LANG);
+        return new Locale(langCode, COUNTRY_FINLAND_CODE);
+    }
+
+    private String getMetadataValue(InsertFeedbackRequest request, String key, String defaultValue) {
+        JsonNode node = request.metadata.findValue(key);
+        return node == null ? defaultValue : node.textValue();
     }
 
     private String buildMessageBody(String content,
@@ -166,22 +167,22 @@ public class FeedbackService {
     }
 
     private String getTimestampLine(String timestamp, Locale locale) {
-        return getNameValueLine("timestamp", timestamp, locale);
+        return getNameValueLine(FIELD_TIMESTAMP, timestamp, locale);
     }
 
     private String getFacultyLine(String faculty, Locale locale) {
-        return getNameValueLine("faculty", messageSource.getMessage("faculty." + faculty, null, faculty, locale), locale);
+        return getNameValueLine(FIELD_FACULTY, messageSource.getMessage("faculty." + faculty, null, faculty, locale), locale);
     }
 
     private String getStateLine(String state, Locale locale) {
-        return getNameValueLine("state", messageSource.getMessage("state." + state, null, state, locale), locale);
+        return getNameValueLine(FIELD_STATE, messageSource.getMessage("state." + state, null, state, locale), locale);
     }
 
     private String getUserAgentLine(String userAgent, Locale locale) {
-        return getNameValueLine("userAgent", userAgent, locale);
+        return getNameValueLine(FIELD_USER_AGENT, userAgent, locale);
     }
 
     private String getNameValueLine(String name, String value, Locale locale) {
-        return messageSource.getMessage("label." + name, null, locale) + ": " + value;
+        return messageSource.getMessage("feedback.label." + name, null, locale) + ": " + value;
     }
 }
