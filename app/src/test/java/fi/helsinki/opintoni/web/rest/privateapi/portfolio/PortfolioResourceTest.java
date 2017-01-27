@@ -40,13 +40,15 @@ public class PortfolioResourceTest extends AbstractPortfolioResourceTest {
     private static final String EXPECTED_TEACHER_PORTFOLIO_URL = "/portfolio/en/olli-opettaja";
     private static final String EXPECTED_HYBRID_USER_STUDENT_PORTFOLIO_URL = "/portfolio/en/hybrid-user";
     private static final String EXPECTED_HYBRID_USER_TEACHER_PORTFOLIO_URL = "/portfolio/en/hybrid-user";
+    private static final String ANOTHER_USERS_PRIVATE_PORTFOLIO_PATH = "/student/en/test-test";
 
     @Autowired
     private PortfolioRepository portfolioRepository;
 
     @Test
-    public void thatNotFoundIsReturned() throws Exception {
-        mockMvc.perform(get(PRIVATE_PORTFOLIO_API_PATH).with(securityContext(teacherSecurityContext()))
+    public void thatAnotherUsersPrivatePortfolioIsNotFound() throws Exception {
+        mockMvc.perform(get(PRIVATE_PORTFOLIO_API_PATH + ANOTHER_USERS_PRIVATE_PORTFOLIO_PATH)
+            .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
