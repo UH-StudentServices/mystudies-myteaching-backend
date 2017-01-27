@@ -32,7 +32,7 @@ spring:
         port: 25
 
 feedback:
-    efecte.address: doo-opintoni@helsinki.fi
+    efecte.address: david.price@helsinki.fi
 
 metrics:
     jmx.enabled: true
