@@ -20,7 +20,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class InsertFeedbackRequest {
+public class SendFeedbackRequest {
 
     @NotEmpty
     public String content;

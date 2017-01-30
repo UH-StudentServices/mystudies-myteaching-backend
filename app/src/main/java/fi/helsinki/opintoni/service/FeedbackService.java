@@ -24,7 +24,7 @@ import fi.helsinki.opintoni.domain.Feedback;
 import fi.helsinki.opintoni.dto.FeedbackDto;
 import fi.helsinki.opintoni.repository.FeedbackRepository;
 import fi.helsinki.opintoni.service.converter.FeedbackConverter;
-import fi.helsinki.opintoni.web.rest.privateapi.InsertFeedbackRequest;
+import fi.helsinki.opintoni.web.rest.privateapi.SendFeedbackRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -87,7 +87,7 @@ public class FeedbackService {
         this.feedbackConverter = feedbackConverter;
     }
 
-    public void insertFeedback(InsertFeedbackRequest request) throws MailException {
+    public void sendFeedback(SendFeedbackRequest request) throws MailException {
         String content = request.content;
         String timestamp = createTimestamp();
         String state = getState(request);
@@ -127,24 +127,24 @@ public class FeedbackService {
         return helsinkiNow.format(TIMESTAMP_FORMATTER);
     }
 
-    private String getState(InsertFeedbackRequest request) {
+    private String getState(SendFeedbackRequest request) {
         return getMetadataValue(request, FIELD_STATE, null);
     }
 
-    private String getFaculty(InsertFeedbackRequest request) {
+    private String getFaculty(SendFeedbackRequest request) {
         return getMetadataValue(request, FIELD_FACULTY, null);
     }
 
-    private String getUserAgent(InsertFeedbackRequest request) {
+    private String getUserAgent(SendFeedbackRequest request) {
         return getMetadataValue(request, FIELD_USER_AGENT, null);
     }
 
-    private Locale getLocale(InsertFeedbackRequest request) {
+    private Locale getLocale(SendFeedbackRequest request) {
         String langCode = getMetadataValue(request, FIELD_LANG, DEFAULT_LANG);
         return new Locale(langCode, COUNTRY_FINLAND_CODE);
     }
 
-    private String getMetadataValue(InsertFeedbackRequest request, String key, String defaultValue) {
+    private String getMetadataValue(SendFeedbackRequest request, String key, String defaultValue) {
         JsonNode node = request.metadata.findValue(key);
         return node == null ? defaultValue : node.textValue();
     }

@@ -23,7 +23,7 @@ import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.Feedback;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-import fi.helsinki.opintoni.web.rest.privateapi.InsertFeedbackRequest;
+import fi.helsinki.opintoni.web.rest.privateapi.SendFeedbackRequest;
 import org.junit.Test;
 import org.junit.Rule;
 import com.icegreen.greenmail.junit.GreenMailRule;
@@ -86,7 +86,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
 
     @Test
     public void thatFeedbackIsSent() throws Exception {
-        InsertFeedbackRequest request = new InsertFeedbackRequest();
+        SendFeedbackRequest request = new SendFeedbackRequest();
         request.content = FEEDBACK_CONTENT;
         request.email = FEEDBACK_SENDER;
         request.metadata = getMetadata(FEEDBACK_LANG_FI);
@@ -102,7 +102,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
 
     @Test
     public void thatAnonymousFeedbackIsSent() throws Exception {
-        InsertFeedbackRequest request = new InsertFeedbackRequest();
+        SendFeedbackRequest request = new SendFeedbackRequest();
         request.content = FEEDBACK_CONTENT;
         request.email = "";
         request.metadata = getMetadata(FEEDBACK_LANG_FI);
@@ -118,7 +118,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
 
     @Test
     public void thatSwedishFeedbackIsSent() throws Exception {
-        InsertFeedbackRequest request = new InsertFeedbackRequest();
+        SendFeedbackRequest request = new SendFeedbackRequest();
         request.content = FEEDBACK_CONTENT;
         request.email = FEEDBACK_SENDER;
         request.metadata = getMetadata(FEEDBACK_LANG_SV);
@@ -134,7 +134,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
 
     @Test
     public void thatEnglishFeedbackIsSent() throws Exception {
-        InsertFeedbackRequest request = new InsertFeedbackRequest();
+        SendFeedbackRequest request = new SendFeedbackRequest();
         request.content = FEEDBACK_CONTENT;
         request.email = FEEDBACK_SENDER;
         request.metadata = getMetadata(FEEDBACK_LANG_EN);
