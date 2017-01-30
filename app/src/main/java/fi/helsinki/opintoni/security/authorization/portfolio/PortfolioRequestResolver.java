@@ -68,9 +68,12 @@ public class PortfolioRequestResolver {
 
     private Optional<PortfolioDto> getPortfolioDtoByPath(Map<String, String> templateVariables) {
         return Optional.ofNullable(
-            portfolioService.findByPathAndLangAndRole(templateVariables.get(PATH),  Language.fromCode(templateVariables.get(LANG)),
-            PortfolioRole.fromValue(templateVariables.get(PORTFOLIO_ROLE)),
-            PortfolioConverter.ComponentFetchStrategy.NONE)
+            portfolioService.findByPathAndLangAndRole(
+                templateVariables.get(PATH),
+                Language.fromCode(templateVariables.get(LANG)),
+                PortfolioRole.fromValue(templateVariables.get(PORTFOLIO_ROLE)),
+                PortfolioConverter.ComponentFetchStrategy.NONE
+            )
         );
     }
 
