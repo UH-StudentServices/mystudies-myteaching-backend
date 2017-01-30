@@ -1135,10 +1135,15 @@
 
     <changeSet id="Add language to portfolio" author="Henri Heiskanen">
         <addColumn tableName="portfolio">
-            <column name="language" type="varchar(2)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="language" type="varchar(2)"/>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="Add not-null constraint, default value to portfolio language" author="Henri Heiskanen">
+        <addNotNullConstraint tableName="portfolio"
+                              columnName="language"
+                              columnDataType="varchar(2)"
+                              defaultNullValue="fi"/>
     </changeSet>
 
     <changeSet id="Drop compound unique constraint from portfolio" author="Henri Heiskanen">
@@ -1150,11 +1155,5 @@
         <addUniqueConstraint tableName="portfolio"
                              columnNames="user_id, portfolio_role, language"
                              constraintName="unique_portfolio_per_user_per_role_per_lang"/>
-    </changeSet>
-
-    <changeSet id="Set lang to fi for all existing portfolios" author="Henri Heiskanen">
-        <sql>
-            UPDATE portfolio SET language = 'fi'
-        </sql>
     </changeSet>
 </databaseChangeLog>
