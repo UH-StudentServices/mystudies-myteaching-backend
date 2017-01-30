@@ -17,14 +17,20 @@
 
 package fi.helsinki.opintoni;
 
-import com.google.common.truth.StringUtil;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.integration.flamma.FlammaRestClient;
 import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
-import fi.helsinki.opintoni.server.*;
+import fi.helsinki.opintoni.server.CoursePageServer;
+import fi.helsinki.opintoni.server.ESBServer;
+import fi.helsinki.opintoni.server.FlammaServer;
+import fi.helsinki.opintoni.server.LeikiServer;
+import fi.helsinki.opintoni.server.OodiServer;
+import fi.helsinki.opintoni.server.PublicWwwServer;
+import fi.helsinki.opintoni.server.UnisportServer;
+import fi.helsinki.opintoni.server.WebPageServer;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
@@ -196,8 +202,7 @@ public abstract class SpringTest {
     }
 
     protected String getRemoteMockApiUrl(String path) {
-        return StringUtil
-            .format("http://%s:%s%s/%s",
+        return String.format("http://%s:%s%s/%s",
                 environment.getProperty("server.address"),
                 environment.getProperty("server.port"),
                 RestConstants.PUBLIC_API_V1,

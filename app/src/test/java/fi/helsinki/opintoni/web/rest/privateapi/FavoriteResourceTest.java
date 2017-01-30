@@ -17,11 +17,11 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
-import com.google.common.truth.StringUtil;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.sampledata.RSSFeedSampleData;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.WebTestUtils;
+import org.jsoup.helper.StringUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -142,7 +142,7 @@ public class FavoriteResourceTest extends SpringTest {
     public void thatRSSFeedIsReturned() throws Exception {
         String feedUrl = getMockFeedApiUrl();
 
-        String requestUrl = StringUtil.format("/api/private/v1/favorites/rss?url=%s&limit=3", feedUrl);
+        String requestUrl = String.format("/api/private/v1/favorites/rss?url=%s&limit=3", feedUrl);
 
         mockMvc.perform(get(requestUrl).with(securityContext(studentSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
@@ -187,7 +187,7 @@ public class FavoriteResourceTest extends SpringTest {
     }
 
     private ResultActions findRssFeed(String feedUrl) throws Exception{
-        String requestUrl = StringUtil.format(
+        String requestUrl = String.format(
             "/api/private/v1/favorites/rss/find?url=%s",
             feedUrl);
 
