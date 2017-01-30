@@ -183,6 +183,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-loader-tools', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: spring_boot_version
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: spring_boot_version
@@ -192,6 +193,7 @@ dependencies {
         exclude(module: 'quartz')
     }
     compile group: 'org.springframework', name: 'spring-orm', version: spring_orm_version
+    compile group: 'javax.mail', name: 'mail', version: javax_mail_version
 
     compile 'org.apache.tomcat:tomcat-catalina-jmx-remote:8.0.22'
     compile group: 'com.google.guava', name: 'guava', version: '18.0'
@@ -222,6 +224,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: junit_version
     testCompile group: 'org.mockito', name: 'mockito-core', version: mockito_version
     testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: hamcrest_version
+    testCompile group: 'com.icegreen', name: 'greenmail', version: greenmail_version
 }
 
 

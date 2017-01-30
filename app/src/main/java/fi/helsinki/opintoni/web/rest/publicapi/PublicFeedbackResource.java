@@ -21,7 +21,7 @@ import fi.helsinki.opintoni.service.FeedbackService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-import fi.helsinki.opintoni.web.rest.privateapi.InsertFeedbackRequest;
+import fi.helsinki.opintoni.web.rest.privateapi.SendFeedbackRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,9 +45,9 @@ public class PublicFeedbackResource extends AbstractResource {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Boolean> insertFeedback(@RequestBody @Valid InsertFeedbackRequest request) throws Exception {
+    public ResponseEntity<Boolean> sendFeedback(@RequestBody @Valid SendFeedbackRequest request) throws Exception {
 
-        feedbackService.insertFeedback(request);
+        feedbackService.sendFeedback(request);
         return response(Boolean.TRUE);
     }
 
