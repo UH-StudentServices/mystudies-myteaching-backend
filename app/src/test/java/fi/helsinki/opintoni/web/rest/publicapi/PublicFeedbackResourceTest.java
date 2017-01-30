@@ -62,7 +62,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
     private static final String FEEDBACK_SUBJECT_FI = "Palaute Opintoni-sivulta";
     private static final String FEEDBACK_CONTENT_PATTERN_FI =
         "Content\r\n\r\n" +
-        "Aikaleimä: \\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d\r\n" +
+        "Aikaleima: \\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d\r\n" +
         "Tiedekunta: Valtiotieteellinen tiedekunta\r\n" +
         "Tila: opintoni\r\n" +
         "User-Agent: test-user-agent\r\n";
