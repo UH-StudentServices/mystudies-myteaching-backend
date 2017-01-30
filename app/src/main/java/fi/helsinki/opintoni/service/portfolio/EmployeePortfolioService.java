@@ -2,6 +2,7 @@ package fi.helsinki.opintoni.service.portfolio;
 
 import fi.helsinki.opintoni.dto.portfolio.ContactInformationDto;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,8 @@ public class EmployeePortfolioService {
 
     public PortfolioDto insert(Long userId, AppUser appUser, Locale locale) {
 
-        PortfolioDto portfolioDto = portfolioService.insert(userId, appUser.getCommonName(), PortfolioRole.TEACHER);
+        PortfolioDto portfolioDto = portfolioService.insert(userId, appUser.getCommonName(), PortfolioRole.TEACHER,
+            Language.fromCode(locale.getLanguage()));
 
         ContactInformationDto contactInformationDto = appUser.getEmployeeNumber()
             .map(employeeNumber -> employeeContactInformationService.fetchAndSaveEmployeeContactInformation(portfolioDto.id, employeeNumber, locale))

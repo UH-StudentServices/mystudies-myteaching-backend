@@ -23,11 +23,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public class TestSecurityContext {
 
-    private static String STUDENT_USERNAME = "opiskelija";
-    private static String TEACHER_USERNAME = "opettaja";
-    private static String PASSWORD = "password";
-    private static String HYBRID_USER_USERNAME = "hybriduser";
-    private static String TEACHER_WITHOUT_PORTFOLIO_USERNAME = "testteacher";
+    private static final String STUDENT_USERNAME = "opiskelija";
+    private static final String TEACHER_USERNAME = "opettaja";
+    private static final String PASSWORD = "password";
+    private static final String HYBRID_USER_USERNAME = "hybriduser";
+    private static final String TEACHER_WITHOUT_PORTFOLIO_USERNAME = "testteacher";
 
     public static SecurityContext studentSecurityContext() {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();

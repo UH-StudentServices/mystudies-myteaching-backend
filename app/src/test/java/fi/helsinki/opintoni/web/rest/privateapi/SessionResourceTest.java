@@ -24,9 +24,12 @@ import org.springframework.http.MediaType;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SessionResourceTest extends SpringTest {
 
@@ -43,7 +46,8 @@ public class SessionResourceTest extends SpringTest {
             .andExpect(jsonPath("$.name").value("Olli Opiskelija"))
             .andExpect(jsonPath("$.roles", hasItem("STUDENT")))
             .andExpect(jsonPath("$.openUniversity").value(false))
-            .andExpect(jsonPath("$.portfolioPath.student").value("olli-opiskelija"))
+            .andExpect(jsonPath("$.portfolioPathsByRoleAndLang.student.en").value(contains("/en/olli-opiskelija")))
+            .andExpect(jsonPath("$.portfolioPathsByRoleAndLang.student.fi").value(contains("/fi/olli-opiskelija")))
             .andExpect(jsonPath("$.faculty.code").value("H70"))
             .andExpect(jsonPath("$.faculty.uri").value("https://flamma.helsinki.fi/portal/units/valt"));
     }

@@ -20,11 +20,22 @@ package fi.helsinki.opintoni.domain.portfolio;
 import fi.helsinki.opintoni.domain.AbstractAuditingEntity;
 import fi.helsinki.opintoni.domain.Ownership;
 import fi.helsinki.opintoni.domain.User;
+import fi.helsinki.opintoni.domain.converter.portfolio.LanguageConverter;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -35,6 +46,10 @@ public class Portfolio extends AbstractAuditingEntity implements Ownership {
     @Id
     @GeneratedValue
     public Long id;
+
+    @NotNull
+    @Convert(converter = LanguageConverter.class)
+    public Language language;
 
     @Column(name = "path")
     @NotBlank
@@ -86,5 +101,4 @@ public class Portfolio extends AbstractAuditingEntity implements Ownership {
             .append("portfolioRole", portfolioRole.name())
             .toString();
     }
-
 }

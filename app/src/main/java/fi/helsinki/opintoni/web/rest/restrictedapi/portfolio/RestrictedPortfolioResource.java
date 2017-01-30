@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.web.rest.restrictedapi.portfolio;
 
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.service.converter.PortfolioConverter;
 import fi.helsinki.opintoni.service.portfolio.PortfolioService;
 import fi.helsinki.opintoni.web.WebConstants;
@@ -44,11 +45,14 @@ public class RestrictedPortfolioResource extends AbstractResource {
         this.portfolioService = portfolioService;
     }
 
-    @RequestMapping(value = "/{portfolioRole}/{path:.*}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{portfolioRole}/{lang}/{path:.*}", method = RequestMethod.GET)
     public ResponseEntity<PortfolioDto> getByPath(
-        @PathVariable("path") String path,
-        @PathVariable("portfolioRole") String portfolioRole) {
-        return response(portfolioService.findByPath(path, PortfolioRole.fromValue(portfolioRole),
+        @PathVariable("portfolioRole") String portfolioRole,
+        @PathVariable("lang") String portfolioLang,
+        @PathVariable("path") String path) {
+        return response(portfolioService.findByPathAndLangAndRole(path,
+            Language.fromCode(portfolioLang),
+            PortfolioRole.fromValue(portfolioRole),
             PortfolioConverter.ComponentFetchStrategy.PUBLIC));
     }
 

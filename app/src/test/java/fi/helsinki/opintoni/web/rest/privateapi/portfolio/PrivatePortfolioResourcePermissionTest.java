@@ -17,8 +17,8 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
-import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -26,31 +26,27 @@ import org.springframework.http.MediaType;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
-import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_API_V1;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PrivatePortfolioResourcePermissionTest extends SpringTest {
+public class PrivatePortfolioResourcePermissionTest extends AbstractPortfolioResourceTest {
 
-    private static final String PORTFOLIO_PATH = PRIVATE_API_V1 + "/portfolio";
-    private static final String STUDENT_PORTFOLIO_PATH = PRIVATE_API_V1 + "/portfolio/student";
-    private static final String TEACHER_PORTFOLIO_PATH = PRIVATE_API_V1 + "/portfolio/teacher";
-    private static final String STUDENT_PORTFOLIO_USERNAME= "olli.opiskelija";
-    private static final String PORTFOLIO_ID = "1";
+    private static final String ANOTHER_USERS_PRIVATE_PORTFOLIO_PATH = "/en/test-test";
 
     @Test
-    public void thatUserCannotLoadPortfolioFromPrivateApiThatSheDoesNotOwn() throws Exception {
-        mockMvc.perform(get(STUDENT_PORTFOLIO_PATH + "/" + STUDENT_PORTFOLIO_USERNAME)
-            .with(securityContext(teacherSecurityContext()))
+    public void thatAnotherUsersPrivatePortfolioIsNotFound() throws Exception {
+        mockMvc.perform(get(STUDENT_PORTFOLIO_API_PATH + ANOTHER_USERS_PRIVATE_PORTFOLIO_PATH)
+            .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
-            .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
     }
 
     @Test
     public void thatUserCannotUpdatePortfolioThatSheDoesNotOwn() throws Exception {
-        mockMvc.perform(put(PORTFOLIO_PATH + "/" + PORTFOLIO_ID).with(securityContext(studentSecurityContext()))
+        mockMvc.perform(put(PRIVATE_PORTFOLIO_API_PATH + "/1")
+            .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .content(WebTestUtils.toJsonBytes(new PortfolioDto()))
@@ -60,21 +56,19 @@ public class PrivatePortfolioResourcePermissionTest extends SpringTest {
 
     @Test
     public void thatStudentCannotCreateTeacherPortfolio() throws Exception {
-        mockMvc.perform(post(TEACHER_PORTFOLIO_PATH)
-            .with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
+        createTeacherPortfolio(studentSecurityContext())
+            .andExpect(status().isForbidden());
+
+        createTeacherPortfolio(studentSecurityContext(), Language.FI)
             .andExpect(status().isForbidden());
     }
 
     @Test
     public void thatTeacherCannotCreateStudentPortfolio() throws Exception {
-        mockMvc.perform(post(STUDENT_PORTFOLIO_PATH)
-            .with(securityContext(teacherSecurityContext()))
-            .characterEncoding("UTF-8")
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
+        createStudentPortfolio(teacherSecurityContext())
+            .andExpect(status().isForbidden());
+
+        createStudentPortfolio(teacherSecurityContext(), Language.FI)
             .andExpect(status().isForbidden());
     }
 }

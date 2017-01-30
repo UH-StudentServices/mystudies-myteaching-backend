@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.dto;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,10 +28,9 @@ public class SessionDto {
     public String username;
     public String name;
     public String email;
-    public String language;
     public String avatarUrl;
     public FacultyDto faculty;
-    public Map<String, String> portfolioPath;
+    public Map<String, Map<String, List<String>>> portfolioPathsByRoleAndLang;
     public Set<String> roles;
     public boolean openUniversity;
 
@@ -40,7 +40,6 @@ public class SessionDto {
             .append("username", username)
             .append("name", name)
             .append("email", email)
-            .append("language", language)
             .append("avatarUrl", avatarUrl)
             .append("roles", roles)
             .toString();
