@@ -40,14 +40,14 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter implements Envi
         this.propertyResolver = new RelaxedPropertyResolver(environment, "spring.messageSource.");
     }
 
-    @Bean(name = "localeResolver")
+    @Bean
     public LocaleResolver localeResolver() {
         AngularCookieLocaleResolver cookieLocaleResolver = new AngularCookieLocaleResolver();
         cookieLocaleResolver.setCookieName(Constants.NG_TRANSLATE_LANG_KEY);
         return cookieLocaleResolver;
     }
 
-    @Bean(name = "messageSource")
+    @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("locale/messages");
