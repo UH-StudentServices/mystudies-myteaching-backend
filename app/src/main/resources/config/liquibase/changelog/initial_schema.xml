@@ -1120,6 +1120,7 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
     </changeSet>
+
     <changeSet id="Add fields to contact information" author="Marko Rautajoki">
         <addColumn tableName="contact_information">
             <column name="work_number" type="varchar(255)"/>
@@ -1130,5 +1131,30 @@
             <column name="work_address" type="varchar(255)"/>
             <column name="work_postcode" type="varchar(255)"/>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="Add language to portfolio" author="Henri Heiskanen">
+        <addColumn tableName="portfolio">
+            <column name="language" type="varchar(2)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Drop compound unique constraint from portfolio" author="Henri Heiskanen">
+        <dropUniqueConstraint tableName="portfolio"
+                              constraintName="portfolio_unique_user_id_portfolio_role"/>
+    </changeSet>
+
+    <changeSet id="Add compound unique constraint to portfolio" author="Henri Heiskanen">
+        <addUniqueConstraint tableName="portfolio"
+                             columnNames="user_id, portfolio_role, language"
+                             constraintName="unique_portfolio_per_user_per_role_per_lang"/>
+    </changeSet>
+
+    <changeSet id="Set lang to fi for all existing portfolios" author="Henri Heiskanen">
+        <sql>
+            UPDATE portfolio SET language = 'fi'
+        </sql>
     </changeSet>
 </databaseChangeLog>

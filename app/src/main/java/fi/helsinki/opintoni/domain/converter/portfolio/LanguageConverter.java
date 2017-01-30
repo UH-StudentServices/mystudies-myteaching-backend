@@ -15,13 +15,22 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.dto;
+package fi.helsinki.opintoni.domain.converter.portfolio;
 
-import java.time.LocalDateTime;
+import fi.helsinki.opintoni.localization.Language;
 
-public class FeedEntryDto {
-    public String title;
-    public String link;
-    public String description;
-    public LocalDateTime date;
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
+
+@Converter
+public class LanguageConverter implements AttributeConverter<Language, String> {
+    @Override
+    public String convertToDatabaseColumn(Language lang) {
+        return lang.getCode();
+    }
+
+    @Override
+    public Language convertToEntityAttribute(String langCode) {
+        return Language.fromCode(langCode);
+    }
 }

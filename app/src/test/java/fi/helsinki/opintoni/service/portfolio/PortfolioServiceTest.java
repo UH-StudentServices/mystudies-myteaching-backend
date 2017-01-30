@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.ComponentVisibilityService;
@@ -54,8 +55,9 @@ public class PortfolioServiceTest extends SpringTest {
 
     @Test
     public void thatPortfolioIsFoundByPath() {
-        PortfolioDto portfolioDto = portfolioService.findByPath("pekka", PortfolioRole.STUDENT, PortfolioConverter.ComponentFetchStrategy.PUBLIC);
-        assertThat(portfolioDto.url).isEqualTo("/portfolio/pekka");
+        PortfolioDto portfolioDto = portfolioService.findByPathAndLangAndRole("pekka", Language.FI,
+            PortfolioRole.STUDENT, PortfolioConverter.ComponentFetchStrategy.PUBLIC);
+        assertThat(portfolioDto.url).isEqualTo("/portfolio/fi/pekka");
     }
 
     @Test
@@ -83,7 +85,7 @@ public class PortfolioServiceTest extends SpringTest {
 
         assertThat(portfolioRepository.findByUserId(4L).count()).isZero();
 
-        portfolioService.insert(4L, "Olli Opettaja", PortfolioRole.TEACHER);
+        portfolioService.insert(4L, "Olli Opettaja", PortfolioRole.TEACHER, Language.FI);
 
         Portfolio portfolio = portfolioRepository.findByUserId(4L).findFirst().get();
         assertThat(portfolio.visibility).isEqualTo(PortfolioVisibility.PRIVATE);
