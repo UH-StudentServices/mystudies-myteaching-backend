@@ -25,10 +25,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 
-public class OodiStudyAttainment {
+// DELETE CLASS WHEN OODI RETURNS LOCALIZED GRADES
+public class OodiOldStudyAttainment {
 
     public List<OodiTeacher> teachers = new ArrayList<>();
-    public List<OodiLocalizedValue> grade = new ArrayList<>();
+    public String grade;
     public Integer credits;
 
     @JsonProperty("studyattainment_id")

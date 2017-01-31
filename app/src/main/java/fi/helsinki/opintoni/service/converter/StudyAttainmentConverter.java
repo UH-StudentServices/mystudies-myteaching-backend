@@ -45,7 +45,7 @@ public class StudyAttainmentConverter {
                 .map(this::convertOodiTeacherToDto)
                 .collect(Collectors.toList()),
             oodiStudyAttainment.attainmentDate,
-            oodiStudyAttainment.grade,
+            localizedValueConverter.toLocalizedString(oodiStudyAttainment.grade, locale),
             oodiStudyAttainment.credits
         );
     }

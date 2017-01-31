@@ -26,8 +26,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
-
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 public class OodiRestClient implements OodiClient {
@@ -60,9 +62,11 @@ public class OodiRestClient implements OodiClient {
 
     @Override
     public List<OodiStudyAttainment> getStudyAttainments(String studentNumber) {
-        return getOodiData("{baseUrl}/students/{studentNumber}/studyattainments",
-            new ParameterizedTypeReference<OodiResponse<OodiStudyAttainment>>() {
-            }, baseUrl, studentNumber);
+        return getOodiStudyAttainmentData("{baseUrl}/students/{studentNumber}/studyattainments", baseUrl, studentNumber);
+        // REPLACE OLD CODE WHEN OODI RETURNS LOCALIZED GRADES
+        // return getOodiData("{baseUrl}/students/{studentNumber}/studyattainments",
+        //     new ParameterizedTypeReference<OodiResponse<OodiStudyAttainment>>() {
+        //     }, baseUrl, studentNumber);
     }
 
     @Override
@@ -142,5 +146,47 @@ public class OodiRestClient implements OodiClient {
             throw new OodiIntegrationException(e.getMessage(), e);
         }
         return data;
+    }
+
+    // DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
+    public List<OodiStudyAttainment> getOodiStudyAttainmentData(String url, Object... uriVariables) {
+        List<OodiStudyAttainment> data;
+        try {
+            List<OodiOldStudyAttainment> oldData = Optional
+                .ofNullable(restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<OodiResponse<OodiOldStudyAttainment>>(){}, uriVariables).getBody())
+                .map(r -> r.data)
+                .orElse(Lists.newArrayList());
+            data = oldData.stream().map(this::convertFromOld).collect(Collectors.toList());
+        } catch (HttpMessageNotReadableException e) {
+            // Didn't match expected (old) format, try fetching again and parsing with new format
+            try {
+                data = Optional
+                    .ofNullable(restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<OodiResponse<OodiStudyAttainment>>(){}, uriVariables).getBody())
+                    .map(r -> r.data)
+                    .orElse(Lists.newArrayList());
+            } catch (Exception f) {
+                LOGGER.error("Caught OodiIntegrationException", e);
+                throw new OodiIntegrationException(e.getMessage(), e);
+            }
+        } catch (Exception e) {
+            LOGGER.error("Caught OodiIntegrationException", e);
+            throw new OodiIntegrationException(e.getMessage(), e);
+        }
+        return data;
+    }
+
+    // DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
+    private OodiStudyAttainment convertFromOld(OodiOldStudyAttainment old) {
+        OodiStudyAttainment converted = new OodiStudyAttainment();
+        converted.teachers = old.teachers;
+        converted.credits = old.credits;
+        converted.studyAttainmentId = old.studyAttainmentId;
+        converted.learningOpportunityName = old.learningOpportunityName;
+        converted.attainmentDate = old.attainmentDate;
+        converted.grade = new ArrayList<OodiLocalizedValue>();
+        converted.grade.add(new OodiLocalizedValue(OodiLocale.FI, old.grade));
+        converted.grade.add(new OodiLocalizedValue(OodiLocale.SV, old.grade));
+        converted.grade.add(new OodiLocalizedValue(OodiLocale.EN, old.grade));
+        return converted;
     }
 }
