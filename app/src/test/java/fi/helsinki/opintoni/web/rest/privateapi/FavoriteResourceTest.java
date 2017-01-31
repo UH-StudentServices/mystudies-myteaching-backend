@@ -21,7 +21,6 @@ import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.sampledata.RSSFeedSampleData;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.WebTestUtils;
-import org.jsoup.helper.StringUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
