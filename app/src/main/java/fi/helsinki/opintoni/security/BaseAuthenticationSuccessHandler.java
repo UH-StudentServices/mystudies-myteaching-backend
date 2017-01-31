@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.integration.oodi.OodiIntegrationException;
 import fi.helsinki.opintoni.service.TimeService;
 import fi.helsinki.opintoni.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -40,10 +41,13 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
 
     private TimeService timeService;
 
+    private Environment env;
+
     @Autowired
-    public void initialize(UserService userService, TimeService timeService) {
+    public void initialize(UserService userService, TimeService timeService, Environment env) {
         this.userService = userService;
         this.timeService = timeService;
+        this.env = env;
     }
 
     @Override
@@ -59,7 +63,9 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
                 addLanguageCookie(appUser, response);
             }
 
-            addHasLoggedInCookie(response);
+            if(!env.acceptsProfiles(Constants.SPRING_PROFILE_DEMO)) {
+                addHasLoggedInCookie(response);
+            }
 
             handleAuthSuccess(response);
         } catch (OodiIntegrationException e) {
