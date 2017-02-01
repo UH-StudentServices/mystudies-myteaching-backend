@@ -63,7 +63,7 @@ public class OodiRestClient implements OodiClient {
     @Override
     public List<OodiStudyAttainment> getStudyAttainments(String studentNumber) {
         return getOodiStudyAttainmentData("{baseUrl}/students/{studentNumber}/studyattainments", baseUrl, studentNumber);
-        // REPLACE OLD CODE WHEN OODI RETURNS LOCALIZED GRADES
+        //TODO: REPLACE OLD CODE WHEN OODI RETURNS LOCALIZED GRADES
         // return getOodiData("{baseUrl}/students/{studentNumber}/studyattainments",
         //     new ParameterizedTypeReference<OodiResponse<OodiStudyAttainment>>() {
         //     }, baseUrl, studentNumber);
@@ -148,7 +148,7 @@ public class OodiRestClient implements OodiClient {
         return data;
     }
 
-    // DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
+    //TODO: DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
     public List<OodiStudyAttainment> getOodiStudyAttainmentData(String url, Object... uriVariables) {
         List<OodiStudyAttainment> data;
         try {
@@ -165,17 +165,15 @@ public class OodiRestClient implements OodiClient {
                     .map(r -> r.data)
                     .orElse(Lists.newArrayList());
             } catch (Exception f) {
-                LOGGER.error("Caught OodiIntegrationException", e);
-                throw new OodiIntegrationException(e.getMessage(), e);
+                throwOodiIntegrationException(f);
             }
         } catch (Exception e) {
-            LOGGER.error("Caught OodiIntegrationException", e);
-            throw new OodiIntegrationException(e.getMessage(), e);
+            throwOodiIntegrationException(e);
         }
         return data;
     }
 
-    // DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
+    //TODO: DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
     private OodiStudyAttainment convertFromOld(OodiOldStudyAttainment old) {
         OodiStudyAttainment converted = new OodiStudyAttainment();
         converted.teachers = old.teachers;
@@ -188,5 +186,11 @@ public class OodiRestClient implements OodiClient {
         converted.grade.add(new OodiLocalizedValue(OodiLocale.SV, old.grade));
         converted.grade.add(new OodiLocalizedValue(OodiLocale.EN, old.grade));
         return converted;
+    }
+
+    //TODO: DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
+    private void throwOodiIntegrationException(Exception e) {
+        LOGGER.error("Caught OodiIntegrationException", e);
+        throw new OodiIntegrationException(e.getMessage(), e);
     }
 }

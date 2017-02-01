@@ -59,7 +59,7 @@ public class StudyAttainmentServiceTest extends SpringTest {
         assertStudyAttainmentDto(studyAttainmentDto);
     }
 
-    // DELETE TEST WHEN OODI RETURNS LOCALIZED GRADES
+    //TODO: DELETE TEST WHEN OODI RETURNS LOCALIZED GRADES
     @Test
     public void thatOldStudyAttainmentsByStudentNumberAreReturned() throws IOException {
         defaultStudentRequestChain().oldAttainments();
@@ -131,7 +131,7 @@ public class StudyAttainmentServiceTest extends SpringTest {
                 .collect(Collectors.toList()));
     }
 
-    // DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
+    //TODO: DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
     private void assertOldStudyAttainmentDto(StudyAttainmentDto studyAttainmentDto) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 

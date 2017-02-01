@@ -106,7 +106,7 @@ public class StudentRequestChain {
         return this;
     }
 
-    // DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
+    //TODO: DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
     public StudentRequestChain oldAttainments() {
         oodiServer.expectOldStudentStudyAttainmentsRequest(studentNumber);
         return this;

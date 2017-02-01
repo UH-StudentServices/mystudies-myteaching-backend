@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 
-// DELETE CLASS WHEN OODI RETURNS LOCALIZED GRADES
+//TODO: DELETE CLASS WHEN OODI RETURNS LOCALIZED GRADES
 public class OodiOldStudyAttainment {
 
     public List<OodiTeacher> teachers = new ArrayList<>();
