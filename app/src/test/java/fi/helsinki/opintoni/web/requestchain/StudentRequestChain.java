@@ -106,6 +106,12 @@ public class StudentRequestChain {
         return this;
     }
 
+    //TODO: DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
+    public StudentRequestChain oldAttainments() {
+        oodiServer.expectOldStudentStudyAttainmentsRequest(studentNumber);
+        return this;
+    }
+
     public StudentRequestChain roles() {
         oodiServer.expectRolesRequest(TestConstants.STUDENT_OODI_PERSON_ID);
         return this;

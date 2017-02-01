@@ -20,20 +20,7 @@
         }
       ],
       "studyright_id": null,
-      "grade": [
-        {
-          "langcode": "fi",
-          "text": "Hyl."
-        },
-        {
-          "langcode": "sv",
-          "text": "Avv."
-        },
-        {
-          "langcode": "en",
-          "text": "Rej."
-        }
-      ],
+      "grade": "5",
       "credits": 6,
       "expiry_date": null,
       "learningopportunity_name": [

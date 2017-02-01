@@ -59,6 +59,21 @@ public class StudyAttainmentServiceTest extends SpringTest {
         assertStudyAttainmentDto(studyAttainmentDto);
     }
 
+    //TODO: DELETE TEST WHEN OODI RETURNS LOCALIZED GRADES
+    @Test
+    public void thatOldStudyAttainmentsByStudentNumberAreReturned() throws IOException {
+        defaultStudentRequestChain().oldAttainments();
+
+        int limitStudyAttainments = 1;
+
+        List<StudyAttainmentDto> studyAttainments = studyAttainmentService.getStudyAttainments(
+            TestConstants.STUDENT_NUMBER, limitStudyAttainments, Locale.ENGLISH);
+        assertThat(studyAttainments.size()).isEqualTo(limitStudyAttainments);
+
+        StudyAttainmentDto studyAttainmentDto = Iterables.getOnlyElement(studyAttainments);
+        assertOldStudyAttainmentDto(studyAttainmentDto);
+    }
+
     @Test
     public void thatStudyAttainmentsAreOrderedByDate() throws IOException {
         defaultStudentRequestChain().attainments();
@@ -105,6 +120,24 @@ public class StudyAttainmentServiceTest extends SpringTest {
         assertThat(studyAttainmentDto.attainmentDate.format(formatter)).isEqualTo(ATTAINMENT_DATE);
         assertThat(studyAttainmentDto.credits).isEqualTo(CREDITS);
         assertThat(studyAttainmentDto.grade).isEqualTo(GRADE);
+        assertThat(studyAttainmentDto.learningOpportunityName).isEqualTo(LEARNING_OPPORTINITY_NAME);
+        assertThat(
+            TEACHERS.stream()
+                .map(t1 -> t1.shortName)
+                .collect(Collectors.toList()))
+            .isEqualTo(
+            studyAttainmentDto.teachers.stream()
+                .map(t2 -> t2.shortName)
+                .collect(Collectors.toList()));
+    }
+
+    //TODO: DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
+    private void assertOldStudyAttainmentDto(StudyAttainmentDto studyAttainmentDto) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+        assertThat(studyAttainmentDto.attainmentDate.format(formatter)).isEqualTo(ATTAINMENT_DATE);
+        assertThat(studyAttainmentDto.credits).isEqualTo(CREDITS);
+        assertThat(studyAttainmentDto.grade).isEqualTo("5");
         assertThat(studyAttainmentDto.learningOpportunityName).isEqualTo(LEARNING_OPPORTINITY_NAME);
         assertThat(
             TEACHERS.stream()
