@@ -28,7 +28,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
@@ -150,7 +150,7 @@ public class OodiRestClient implements OodiClient {
 
     //TODO: DELETE METHOD WHEN OODI RETURNS LOCALIZED GRADES
     public List<OodiStudyAttainment> getOodiStudyAttainmentData(String url, Object... uriVariables) {
-        List<OodiStudyAttainment> data;
+        List<OodiStudyAttainment> data = null;
         try {
             List<OodiOldStudyAttainment> oldData = Optional
                 .ofNullable(restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<OodiResponse<OodiOldStudyAttainment>>(){}, uriVariables).getBody())
@@ -181,10 +181,10 @@ public class OodiRestClient implements OodiClient {
         converted.studyAttainmentId = old.studyAttainmentId;
         converted.learningOpportunityName = old.learningOpportunityName;
         converted.attainmentDate = old.attainmentDate;
-        converted.grade = new ArrayList<OodiLocalizedValue>();
-        converted.grade.add(new OodiLocalizedValue(OodiLocale.FI, old.grade));
-        converted.grade.add(new OodiLocalizedValue(OodiLocale.SV, old.grade));
-        converted.grade.add(new OodiLocalizedValue(OodiLocale.EN, old.grade));
+        converted.grade = Arrays.asList(
+            new OodiLocalizedValue(OodiLocale.FI, old.grade),
+            new OodiLocalizedValue(OodiLocale.SV, old.grade),
+            new OodiLocalizedValue(OodiLocale.EN, old.grade));
         return converted;
     }
 
