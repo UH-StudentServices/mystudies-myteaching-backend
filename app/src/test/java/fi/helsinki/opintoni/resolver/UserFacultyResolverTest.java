@@ -32,7 +32,7 @@ public class UserFacultyResolverTest extends SpringTest {
     @Test
     public void thatStudentFacultyIsResolved() {
         configureStudentSecurityContext();
-        defaultStudentRequestChain().studyRights();
+        defaultStudentRequestChain().enrollments().studyRights();
 
         String faculty = userFacultyResolver.getStudentFacultyCode(TestConstants.STUDENT_NUMBER);
 
@@ -42,11 +42,21 @@ public class UserFacultyResolverTest extends SpringTest {
     @Test
     public void thatDefaultStudentFacultyIsResolved() {
         configureStudentSecurityContext();
-        defaultStudentRequestChain().studyRights("studentstudyrightswithnopriorityfaculty.json");
+        defaultStudentRequestChain().enrollments().studyRights("studentstudyrightswithnopriorityfaculty.json");
 
         String faculty = userFacultyResolver.getStudentFacultyCode(TestConstants.STUDENT_NUMBER);
 
         assertThat(faculty).isEqualTo("default");
+    }
+
+    @Test
+    public void thatOpenUniversityFacultyIsReturned() {
+        configureStudentSecurityContext();
+        defaultStudentRequestChain().enrollments("enrollmentsopenuniversity.json");
+
+        String faculty = userFacultyResolver.getStudentFacultyCode(TestConstants.STUDENT_NUMBER);
+
+        assertThat(faculty).isEqualTo("A93000");
     }
 
 }

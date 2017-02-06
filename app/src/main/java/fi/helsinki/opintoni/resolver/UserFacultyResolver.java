@@ -21,6 +21,8 @@ import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiStudyRight;
 import fi.helsinki.opintoni.security.AppUser;
+import fi.helsinki.opintoni.service.OodiUserRoleService;
+import static fi.helsinki.opintoni.service.converter.FacultyConverter.OPEN_UNIVERSITY_FACULTY_CODE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,12 +32,15 @@ import java.util.List;
 public class UserFacultyResolver {
 
     private final OodiClient oodiClient;
+    private final OodiUserRoleService oodiUserRoleService;
     private final AppConfiguration appConfiguration;
 
     @Autowired
     public UserFacultyResolver(OodiClient oodiClient,
+                               OodiUserRoleService oodiUserRoleService,
                                AppConfiguration appConfiguration) {
         this.oodiClient = oodiClient;
+        this.oodiUserRoleService = oodiUserRoleService;
         this.appConfiguration = appConfiguration;
     }
 
@@ -45,6 +50,9 @@ public class UserFacultyResolver {
     }
 
     public String getStudentFacultyCode(String studentNumber) {
+        if (oodiUserRoleService.isOpenUniversityStudent(studentNumber)) {
+            return OPEN_UNIVERSITY_FACULTY_CODE;
+        }
         List<OodiStudyRight> studyRights = oodiClient.getStudentStudyRights(studentNumber);
         return studyRights.stream()
             .filter(studyRight -> studyRight.priority == 1)
