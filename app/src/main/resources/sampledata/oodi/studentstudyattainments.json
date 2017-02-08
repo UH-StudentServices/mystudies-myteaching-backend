@@ -20,7 +20,20 @@
         }
       ],
       "studyright_id": null,
-      "grade": "5",
+      "grade": [
+        {
+          "langcode": "fi",
+          "text": "5"
+        },
+        {
+          "langcode": "sv",
+          "text": "5"
+        },
+        {
+          "langcode": "en",
+          "text": "5"
+        }
+      ],
       "credits": 6,
       "expiry_date": null,
       "learningopportunity_name": [
@@ -57,7 +70,20 @@
         }
       ],
       "studyright_id": null,
-      "grade": "5",
+      "grade": [
+        {
+          "langcode": "fi",
+          "text": "5"
+        },
+        {
+          "langcode": "sv",
+          "text": "5"
+        },
+        {
+          "langcode": "en",
+          "text": "5"
+        }
+      ],
       "credits": 6,
       "expiry_date": null,
       "learningopportunity_name": [
@@ -101,7 +127,20 @@
         }
       ],
       "studyright_id": null,
-      "grade": "HT",
+      "grade": [
+        {
+          "langcode": "fi",
+          "text": "HT"
+        },
+        {
+          "langcode": "sv",
+          "text": "GK"
+        },
+        {
+          "langcode": "en",
+          "text": "GK"
+        }
+      ],
       "credits": 13,
       "expiry_date": null,
       "learningopportunity_name": [
@@ -138,7 +177,20 @@
         }
       ],
       "studyright_id": null,
-      "grade": "Hyv.",
+      "grade": [
+        {
+          "langcode": "fi",
+          "text": "Hyv."
+        },
+        {
+          "langcode": "sv",
+          "text": "Acc."
+        },
+        {
+          "langcode": "en",
+          "text": "Acc."
+        }
+      ],
       "credits": 7,
       "expiry_date": null,
       "learningopportunity_name": [
@@ -175,7 +227,20 @@
         }
       ],
       "studyright_id": null,
-      "grade": "MCLA",
+      "grade": [
+        {
+          "langcode": "fi",
+          "text": "MCLA"
+        },
+        {
+          "langcode": "sv",
+          "text": "MCLA"
+        },
+        {
+          "langcode": "en",
+          "text": "MCLA"
+        }
+      ],
       "credits": 40,
       "expiry_date": null,
       "learningopportunity_name": [

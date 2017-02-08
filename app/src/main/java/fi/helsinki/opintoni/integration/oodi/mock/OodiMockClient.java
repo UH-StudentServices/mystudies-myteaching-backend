@@ -24,6 +24,7 @@ import fi.helsinki.opintoni.integration.oodi.*;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import static fi.helsinki.opintoni.security.DevUserDetailsService.STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -39,6 +40,9 @@ public class OodiMockClient implements OodiClient {
 
     @Value("classpath:sampledata/oodi/studentcourses.json")
     private Resource studentCourses;
+
+    @Value("classpath:sampledata/oodi/studentcoursesopenuniversity.json")
+    private Resource openUniversityStudentCourses;
 
     @Value("classpath:sampledata/oodi/studentevents.json")
     private Resource studentEvents;
@@ -92,8 +96,13 @@ public class OodiMockClient implements OodiClient {
 
     @Override
     public List<OodiEnrollment> getEnrollments(String studentNumber) {
-        return getOodiResponse(studentCourses, new TypeReference<OodiResponse<OodiEnrollment>>() {
-        });
+        if (studentNumber.equals(STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT)) {
+            return getOodiResponse(openUniversityStudentCourses, new TypeReference<OodiResponse<OodiEnrollment>>() {
+            });
+        } else {
+            return getOodiResponse(studentCourses, new TypeReference<OodiResponse<OodiEnrollment>>() {
+            });
+        }
     }
 
     @Override

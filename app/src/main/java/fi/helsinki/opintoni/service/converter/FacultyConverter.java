@@ -28,6 +28,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class FacultyConverter {
 
+    public static final String OPEN_UNIVERSITY_FACULTY_CODE = "A93000";
+
     private final OodiUserService oodiUserService;
     private final AppConfiguration appConfiguration;
     private final UserFacultyResolver userFacultyResolver;
@@ -59,7 +61,7 @@ public class FacultyConverter {
     }
 
     private FacultyDto createOpenUniversityFaculty() {
-        String openUniversityCode = "A93000";
+        String openUniversityCode = OPEN_UNIVERSITY_FACULTY_CODE;
         return new FacultyDto(openUniversityCode, getFacultyUri(openUniversityCode));
     }
 
