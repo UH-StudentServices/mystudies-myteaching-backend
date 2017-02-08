@@ -96,7 +96,7 @@ public class OodiMockClient implements OodiClient {
 
     @Override
     public List<OodiEnrollment> getEnrollments(String studentNumber) {
-        if (studentNumber == STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT) {
+        if (studentNumber.equals(STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT)) {
             return getOodiResponse(openUniversityStudentCourses, new TypeReference<OodiResponse<OodiEnrollment>>() {
             });
         } else {
