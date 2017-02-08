@@ -166,7 +166,7 @@ public class DevUserDetailsService implements org.springframework.security.core.
 
     private UserDetails createTestOpenUniStudent() {
         return new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName("testopenunistudent@mail.helsinki.fi")
+            .eduPersonPrincipalName("testopenunistudent@helsinki.fi")
             .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.AFFILIATE)
             .email("testopenunistudent@mail.helsinki.fi")
