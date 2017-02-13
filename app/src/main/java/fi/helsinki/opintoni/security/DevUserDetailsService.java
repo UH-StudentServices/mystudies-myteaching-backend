@@ -45,7 +45,9 @@ public class DevUserDetailsService implements org.springframework.security.core.
     private static final String USERNAME_TEST_TEACHER = "testteacher";
     private static final String USERNAME_TEST_HYBRID = "testhybriduser";
     private static final String USERNAME_TEST_OPEN_UNI_STUDENT = "testopenunistudent";
+    private static final String USERNAME_TEST_NEW_STUDENT = "testnewstudent";
     public static final String STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT = "010189792";
+    public static final String STUDENT_NUMBER_TEST_NEW_STUDENT = "010189793";
 
     @Override
     @Transactional
@@ -68,6 +70,8 @@ public class DevUserDetailsService implements org.springframework.security.core.
             return createTestHybridUser();
         } else if (USERNAME_TEST_OPEN_UNI_STUDENT.equals(lowercaseLogin)) {
             return createTestOpenUniStudent();
+        } else if (USERNAME_TEST_NEW_STUDENT.equals(lowercaseLogin)) {
+            return createTestNewStudent();
         }
 
         throw new UsernameNotFoundException("User " + lowercaseLogin + " was not found.");
@@ -173,6 +177,18 @@ public class DevUserDetailsService implements org.springframework.security.core.
             .commonName("Test Open Uni Student")
             .studentNumber(STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT)
             .oodiPersonId("1006")
+            .build();
+    }
+
+    private UserDetails createTestNewStudent() {
+        return new AppUser.AppUserBuilder()
+            .eduPersonPrincipalName("testnewstudent@helsinki.fi")
+            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
+            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
+            .email("testnewstudent@mail.helsinki.fi")
+            .commonName("Test New Student")
+            .studentNumber(STUDENT_NUMBER_TEST_NEW_STUDENT)
+            .oodiPersonId("1007")
             .build();
     }
 }
