@@ -37,7 +37,8 @@ import static java.util.Collections.singletonList;
 })
 public class DemoUserDetailsService implements UserDetailsService {
     private final ImmutableMap<String, Supplier<UserDetails>> USER_CONF = ImmutableMap.of(
-        "e_jukola", this::newTeacher,
+        "e_jukola", this::eeroJukola,
+        "t_jukola", this::timoJukola,
         "v_jukola", this::newStudent,
         "j_jukola", this::newHybrid,
         "k_rajama", this::newOpenUniStudent
@@ -54,16 +55,41 @@ public class DemoUserDetailsService implements UserDetailsService {
         }
     }
 
-    private UserDetails newTeacher() {
+    private UserDetails eeroJukola() {
+        return newTeacher(
+            "doo_8@helsinki.fi",
+            "H30",
+            "doo_8@example.com",
+            "Eero Jukola",
+            "007505",
+            "109155648");
+    }
+
+    private UserDetails timoJukola() {
+        return newTeacher(
+            "doo_5@helsinki.fi",
+            "H30",
+            "doo_5@example.com",
+            "Timo Jukola",
+            "007504",
+            "109155647");
+    }
+
+    private UserDetails newTeacher(String eduPersonPrincipalName,
+                                   String teacherFacultyCode,
+                                   String email,
+                                   String commonName,
+                                   String employeeNumber,
+                                   String oodiPersonId) {
         return new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName("doo_8@helsinki.fi")
+            .eduPersonPrincipalName(eduPersonPrincipalName)
             .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.FACULTY))
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
-            .teacherFacultyCode("H30")
-            .email("doo_8@example.com")
-            .commonName("Eero Jukola")
-            .employeeNumber("007505")
-            .oodiPersonId("109155648")
+            .teacherFacultyCode(teacherFacultyCode)
+            .email(email)
+            .commonName(commonName)
+            .employeeNumber(employeeNumber)
+            .oodiPersonId(oodiPersonId)
             .build();
     }
 
