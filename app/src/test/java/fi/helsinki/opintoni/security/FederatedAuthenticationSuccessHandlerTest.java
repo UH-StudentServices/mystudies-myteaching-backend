@@ -131,7 +131,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
     @Test
     public void thatExistingLanguageCookieIsNotOverridden() throws Exception {
-        Cookie[] cookies = {new Cookie(Constants.NG_TRANSLATE_LANG_KEY, "%22en%22")};
+        Cookie[] cookies = {new Cookie(Constants.NG_TRANSLATE_LANG_KEY, "en")};
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getCookies()).thenReturn(cookies);
 
@@ -163,7 +163,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
         @Override
         public boolean matches(Cookie cookie) {
-            return Constants.NG_TRANSLATE_LANG_KEY.equals(cookie.getName()) && "%22fi%22".equals(cookie.getValue());
+            return Constants.NG_TRANSLATE_LANG_KEY.equals(cookie.getName()) && "fi".equals(cookie.getValue());
         }
     }
 

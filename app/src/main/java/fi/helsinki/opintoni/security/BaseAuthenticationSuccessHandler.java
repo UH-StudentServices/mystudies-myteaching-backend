@@ -109,7 +109,7 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
     }
 
     private void addLanguageCookie(AppUser appUser, HttpServletResponse response) {
-        Cookie cookie = new Cookie(Constants.NG_TRANSLATE_LANG_KEY, "%22" + appUser.getPreferredLanguage() + "%22");
+        Cookie cookie = new Cookie(Constants.NG_TRANSLATE_LANG_KEY, appUser.getPreferredLanguage());
         addCookie(response, cookie);
     }
 

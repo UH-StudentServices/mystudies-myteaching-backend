@@ -38,7 +38,6 @@ public abstract class AbstractPortfolioResourceTest extends SpringTest {
     protected static final String SESSION_LANG = Language.EN.getCode();
 
     private static final String EMPLOYEE_NUMBER = "010540";
-    private static final String ENCODED_DOUBLE_QUOTE = "%22";
 
     protected ResultActions createPortfolio(SecurityContext securityContext, String apiUrl) throws Exception {
         return mockMvc.perform(post(apiUrl)
@@ -70,6 +69,6 @@ public abstract class AbstractPortfolioResourceTest extends SpringTest {
     }
 
     private static Cookie localeCookie(Language lang) {
-        return new Cookie(Constants.NG_TRANSLATE_LANG_KEY, ENCODED_DOUBLE_QUOTE + lang.getCode() + ENCODED_DOUBLE_QUOTE);
+        return new Cookie(Constants.NG_TRANSLATE_LANG_KEY, lang.getCode());
     }
 }
