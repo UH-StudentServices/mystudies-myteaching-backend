@@ -181,7 +181,8 @@ public class PortfolioConverter {
         return visibility.teacherPortfolioSection == null;
     }
 
-    private boolean isPublicVisibility(ComponentVisibilityDto visibility, List<TeacherPortfolioSection> publicSections) {
+    private boolean isVisiblePublicTeacherPortfolioComponent(ComponentVisibilityDto visibility,
+                                                             List<TeacherPortfolioSection> publicSections) {
         return isPublicTeacherPortfolioComponent(visibility) &&
                     (isInsidePublicTeacherPortfolioSection(visibility, publicSections) ||
                      isNotInsideTeacherPortfolioSection(visibility));
@@ -204,7 +205,7 @@ public class PortfolioConverter {
 
         List<ComponentVisibilityDto> publicFreeTextContentVisibilities = new ArrayList<ComponentVisibilityDto>();
         for (ComponentVisibilityDto visibility : visibilities) {
-            if (isPublicVisibility(visibility, publicSections)) {
+            if (isVisiblePublicTeacherPortfolioComponent(visibility, publicSections)) {
                 if (isFreeTextContent(visibility)) {
                     publicFreeTextContentVisibilities.add(visibility);
                 } else {
