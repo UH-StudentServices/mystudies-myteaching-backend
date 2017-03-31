@@ -25,6 +25,7 @@ import fi.helsinki.opintoni.dto.UserSettingsDto;
 import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
+import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.AvatarImageService;
 import fi.helsinki.opintoni.service.ComponentVisibilityService;
@@ -46,6 +47,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Component
@@ -165,6 +167,10 @@ public class PortfolioConverter {
             visibility.component != null;
     }
 
+    private boolean isFreeTextContent(ComponentVisibilityDto visibility) {
+        return PortfolioComponent.valueOf(visibility.component) == PortfolioComponent.FREE_TEXT_CONTENT;
+    }
+
     private boolean isInsidePublicTeacherPortfolioSection(ComponentVisibilityDto visibility,
                                                          List<TeacherPortfolioSection> publicSections) {
         return visibility.teacherPortfolioSection != null &&
@@ -175,20 +181,42 @@ public class PortfolioConverter {
         return visibility.teacherPortfolioSection == null;
     }
 
+    private boolean isPublicVisibility(ComponentVisibilityDto visibility, List<TeacherPortfolioSection> publicSections) {
+        return isPublicTeacherPortfolioComponent(visibility) &&
+                    (isInsidePublicTeacherPortfolioSection(visibility, publicSections) ||
+                     isNotInsideTeacherPortfolioSection(visibility));
+    }
+
+    private FreeTextContentDto getFreeTextContent(List<FreeTextContentDto> freeTextContents, ComponentVisibilityDto visibility) {
+        for (FreeTextContentDto freeTextContent : freeTextContents) {
+            if (visibility.teacherPortfolioSection.equals(freeTextContent.portfolioSection) &&
+                visibility.instanceName.equals(freeTextContent.instanceName)) {
+                return freeTextContent;
+            }
+        }
+        return null;
+    }
+
     private void fetchPublicComponentsForTeacherPortfolio(Long portfolioId, PortfolioDto portfolioDto) {
         List<ComponentVisibilityDto> visibilities = componentVisibilityService.findByPortfolioId(portfolioId);
 
         List<TeacherPortfolioSection> publicSections = getPublicTeacherPortfolioSections(visibilities);
 
-        visibilities.stream()
-            .filter(visibility ->
-                    isPublicTeacherPortfolioComponent(visibility) &&
-                        (isInsidePublicTeacherPortfolioSection(visibility, publicSections) ||
-                            isNotInsideTeacherPortfolioSection(visibility))
-            )
-            .map(visibility -> PortfolioComponent.valueOf(visibility.component))
-            .forEach(component -> fetchComponentData(portfolioId, portfolioDto, component));
-    }
+        List<ComponentVisibilityDto> publicFreeTextContentVisibilities = new ArrayList<ComponentVisibilityDto>();
+        for (ComponentVisibilityDto visibility : visibilities) {
+            if (isPublicVisibility(visibility, publicSections)) {
+                if (isFreeTextContent(visibility)) {
+                    publicFreeTextContentVisibilities.add(visibility);
+                } else {
+                    fetchComponentData(portfolioId, portfolioDto, PortfolioComponent.valueOf(visibility.component));
+                }
+            }
+        }
+
+        if (!publicFreeTextContentVisibilities.isEmpty()) {
+            fetchFreeTextContextData(portfolioId, portfolioDto, publicFreeTextContentVisibilities);
+        }
+   }
 
     private void fetchComponentData(Long portfolioId, PortfolioDto portfolioDto, PortfolioComponent component) {
         switch(component) {
@@ -224,6 +252,21 @@ public class PortfolioConverter {
                 // Do not eagerly fetch components that involve external API calls
                 break;
         }
+    }
+
+    private void fetchFreeTextContextData(Long portfolioId, PortfolioDto portfolioDto, List<ComponentVisibilityDto> visibilities) {
+            List<FreeTextContentDto> allFreeTextContents = freeTextContentService.findByPortfolioId(portfolioId);
+            List<FreeTextContentDto> publicFreeTextContents = new ArrayList<FreeTextContentDto>();
+            for (ComponentVisibilityDto visibility : visibilities) {
+                FreeTextContentDto freeTextContent = getFreeTextContent(allFreeTextContents, visibility);
+                if (freeTextContent != null) {
+                    publicFreeTextContents.add(freeTextContent);
+                }
+            }
+            if (!publicFreeTextContents.isEmpty()) {
+                portfolioDto.freeTextContent = publicFreeTextContents;
+            }
+
     }
 
     private String getBackgroundUri(Portfolio portfolio) {
