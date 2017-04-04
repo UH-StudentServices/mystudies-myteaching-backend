@@ -13,3 +13,4 @@ id;portfolio_id;component;teacher_portfolio_section;visibility;created_by
 12;4;null;TEACHING;PRIVATE;system
 13;4;null;ADMINISTRATION;PRIVATE;system
 14;4;CONTACT_INFORMATION;null;PUBLIC;system
+15;4;FREE_TEXT_CONTENT;null;PUBLIC;system
