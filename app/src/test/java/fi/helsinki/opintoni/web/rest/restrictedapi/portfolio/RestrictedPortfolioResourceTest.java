@@ -17,12 +17,20 @@
 
 package fi.helsinki.opintoni.web.rest.restrictedapi.portfolio;
 
+import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;
 import fi.helsinki.opintoni.web.rest.RestConstants;
+import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import java.util.List;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
+import static org.hamcrest.Matchers.both;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -64,6 +72,11 @@ public class RestrictedPortfolioResourceTest extends RestrictedPortfolioTest {
         mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + TEACHER_PORTFOLIO_PATH)
             .with(securityContext(teacherSecurityContext())))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.freeTextContent").isEmpty());
+            .andExpect(jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
+                hasSize(1),
+                hasItem(
+                    both(hasEntry("title", "Globaali tekstikenttä")).and(hasEntry("text", "bla bla bla"))
+                )
+            )));
     }
 }

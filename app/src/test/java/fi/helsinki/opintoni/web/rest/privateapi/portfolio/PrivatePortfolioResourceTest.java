@@ -146,11 +146,15 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
         mockMvc.perform(get(TEACHER_PORTFOLIO_API_PATH + "/fi/opettaja")
             .with(securityContext(teacherSecurityContext())))
             .andExpect(jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
-                hasSize(1),
+                hasSize(2),
                 hasItem(
-                    both(hasEntry("title", "Otsikko 3"))
-                        .and(hasEntry("text", "Teksti 3"))
+                    both(hasEntry("title", "Tekstikenttä osion sisällä"))
+                        .and(hasEntry("text", "bla bla bla"))
                         .and(hasEntry("portfolioSection", "RESEARCH"))
+                ),
+                hasItem(
+                    both(hasEntry("title", "Globaali tekstikenttä"))
+                        .and(hasEntry("text", "bla bla bla"))
                 )
             )));
     }

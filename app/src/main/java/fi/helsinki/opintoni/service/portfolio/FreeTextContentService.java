@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.FreeTextContent;
 import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
+import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
 import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;
 import fi.helsinki.opintoni.repository.portfolio.FreeTextContentRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
@@ -28,7 +29,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -54,7 +56,15 @@ public class FreeTextContentService {
             .findByPortfolioId(portfolioId)
             .stream()
             .map(freeTextContentConverter::toDto)
-            .collect(Collectors.toList());
+            .collect(toList());
+    }
+
+    public List<FreeTextContentDto> findByPortfolioIdAndComponentVisibilities(Long portfolioId,
+                                                                              List<ComponentVisibilityDto> componentVisibilities) {
+        return componentVisibilities.stream()
+            .map(v -> findByPortfolioIdAndComponentVisibility(portfolioId, v))
+            .flatMap(List::stream)
+            .collect(toList());
     }
 
     public FreeTextContentDto insertFreeTextContent(Long portfolioId, FreeTextContentDto freeTextContentDto) {
@@ -87,5 +97,17 @@ public class FreeTextContentService {
         if(dto.instanceName != null) {
             freeTextContent.instanceName = dto.instanceName;
         }
+    }
+
+    private List<FreeTextContentDto> findByPortfolioIdAndComponentVisibility(Long portfolioId, ComponentVisibilityDto componentVisibility) {
+        TeacherPortfolioSection teacherPortfolioSection = componentVisibility.teacherPortfolioSection != null ?
+            TeacherPortfolioSection.valueOf(componentVisibility.teacherPortfolioSection) :
+            null;
+
+        return freeTextContentRepository
+            .findByPortfolioIdAndTeacherPortfolioSectionAndInstanceName(portfolioId, teacherPortfolioSection, componentVisibility.instanceName)
+            .stream()
+            .map(freeTextContentConverter::toDto)
+            .collect(toList());
     }
 }
