@@ -1,3 +1,12 @@
+server:
+    port: 8080
+    session:
+        timeout: 1800 # Seconds
+        cookie:
+            http-only: true
+            path: /
+            domain: .helsinki.fi
+
 # Disable the spring security default configuration from spring-boot-actuator
 management.security.enabled: true
 security.basic.enabled: false
@@ -282,8 +291,6 @@ search:
 recommendations:
   maxRecommendations: 20
   uidPrefix: opintohistoriatesti_
-
-cookieDomain: helsinki.fi
 
 httpClient:
   readTimeout: 15000

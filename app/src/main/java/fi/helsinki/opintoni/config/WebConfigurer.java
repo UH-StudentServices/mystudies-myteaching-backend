@@ -124,13 +124,7 @@ public class WebConfigurer implements org.springframework.boot.web.servlet.Servl
             Constants.SPRING_PROFILE_DEMO,
             Constants.SPRING_PROFILE_PRODUCTION)) {
             initMetrics(servletContext, dispatcherTypes);
-
-            // Forces browser to send cookies with HTTPS connection only
-            servletContext.getSessionCookieConfig().setSecure(true);
         }
-
-        servletContext.getSessionCookieConfig().setName(Constants.SESSION_COOKIE_NAME);
-        servletContext.getSessionCookieConfig().setDomain(appConfiguration.get("cookieDomain"));
 
         log.info("Web application fully configured");
     }

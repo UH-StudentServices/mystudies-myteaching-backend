@@ -1,6 +1,4 @@
-server:
-    port: 8080
-    session.timeout: 1800 # Seconds
+server.session.cookie.name: OO_LOCAL_SESSION_ID
 
 spring:
     profiles:

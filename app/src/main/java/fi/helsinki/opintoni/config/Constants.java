@@ -19,8 +19,7 @@ package fi.helsinki.opintoni.config;
 
 public final class Constants {
 
-    private Constants() {
-    }
+    private Constants() {}
 
     public static final String SPRING_PROFILE_LOCAL_DEVELOPMENT = "local-dev";
     public static final String SPRING_PROFILE_DEVELOPMENT = "dev";
@@ -31,8 +30,6 @@ public final class Constants {
     public static final String SYSTEM_ACCOUNT = "system";
 
     public static final String NG_TRANSLATE_LANG_KEY = "OO_LANGUAGE";
-    public static final String OPINTONI_LAST_LOGIN = "OPINTONI_LAST_LOGIN";
-    public static final String SESSION_COOKIE_NAME = "OPINTONI_JSESSIONID";
     public static final String OPINTONI_HAS_LOGGED_IN = "OPINTONI_HAS_LOGGED_IN";
 
     public static final String ADMIN_ROLE_REQUIRED = "hasAuthority('ADMIN')";
