@@ -1,0 +1,125 @@
+{
+    "md5": "b91ad7c81315fb51c08a8ee07502e5bf",
+    "status": 200,
+    "elapsed": 0.059466923,
+    "data": {
+        "disciplines": [],
+        "learningopportunity_type_code": 2,
+        "last_changed": "2016-12-28T10:54:08.000Z",
+        "faculties": [],
+        "credit_points_max": 5,
+        "end_date": "2112-12-20T22:00:00.000Z",
+        "start_date": "2011-07-31T21:00:00.000Z",
+        "hidden": "false",
+        "learningopportunity_internal": 84719996,
+        "credit_points_min": 5,
+        "organisations": [
+            {
+                "code": "464",
+                "percentage": 100,
+                "start_date": "1899-12-31T22:00:00.000Z",
+                "end_date": "2112-12-20T22:00:00.000Z",
+                "name": [
+                    {
+                        "langcode": "fi",
+                        "text": "Alue- ja kulttuurintutkimus"
+                    },
+                    {
+                        "langcode": "sv",
+                        "text": "Region- och kulturstudier"
+                    },
+                    {
+                        "langcode": "en",
+                        "text": "Area and Cultural Studies"
+                    }
+                ]
+            }
+        ],
+        "materials": [],
+        "languages": [
+            {
+                "langcode": "fi"
+            }
+        ],
+        "descriptions": [
+            {
+                "texts": [
+                    {
+                        "langcode": "fi",
+                        "text": "<p>Opiskelija oppii syvällisemmin ymmärtämään VIE-alueen historiografian erityispiirteitä ja menneisyyden tutkimuksen hermeneutiikkaa ja pystyy kriittisesti analysoimaan erilaisia historiaa koskevia näkemyksiä</p>"
+                    }
+                ],
+                "id": "1"
+            },
+            {
+                "texts": [
+                    {
+                        "langcode": "fi",
+                        "text": "<p>Perehdytään syvällisemmin VIE-tutkimuksen historian tulkintojen problematiikkaan (esim. normannistikiista, ”totalitaristisen koulukunnan” ja ”revisionistisen koulukunnan” argumentteihin tai venäläisiin ja ulkomaisiin tulkintoihin yhteisestä historiasta)</p>"
+                    }
+                ],
+                "id": "2"
+            },
+            {
+                "texts": [
+                    {
+                        "langcode": "fi",
+                        "text": "<p>Sovitaan erikseen. Esim. <strong>Nicholas Riasanovsky</strong>: The Image of Peter the Great in Russian History and Thought</p>"
+                    }
+                ],
+                "id": "4"
+            },
+            {
+                "texts": [
+                    {
+                        "langcode": "fi",
+                        "text": "<p>yliopistonlehtori Arto Luukkanen</p>"
+                    }
+                ],
+                "id": "6"
+            },
+            {
+                "texts": [
+                    {
+                        "langcode": "fi",
+                        "text": "<p>Mieluiten aineopintojen lopussa; ennen siirtymistä syventäviin opintoihin</p>"
+                    }
+                ],
+                "id": "8"
+            },
+            {
+                "texts": [
+                    {
+                        "langcode": "fi",
+                        "text": "<p>Pää- ja sivuaineopiskelijat</p>"
+                    }
+                ],
+                "id": "9"
+            },
+            {
+                "texts": [
+                    {
+                        "langcode": "fi",
+                        "text": "<p>Luennot ja/tai kirjallisuus.</p>"
+                    }
+                ],
+                "id": "51218103"
+            }
+        ],
+        "learningopportunity_id": "405438",
+        "names": [
+            {
+                "langcode": "fi",
+                "text": "VIE-alueen historian tulkinnat (B)"
+            },
+            {
+                "langcode": "sv",
+                "text": "Historiska tolkningar om Ryssland och Östeuropa (B)"
+            },
+            {
+                "langcode": "en",
+                "text": "Historical Interpretations of Russia and Eastern Europe (B)"
+            }
+        ]
+    }
+}

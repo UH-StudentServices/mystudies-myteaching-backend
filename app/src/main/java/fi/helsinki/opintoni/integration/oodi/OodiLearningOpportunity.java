@@ -17,29 +17,16 @@
 
 package fi.helsinki.opintoni.integration.oodi;
 
-import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public interface OodiClient {
+public class OodiLearningOpportunity {
 
-    List<OodiEnrollment> getEnrollments(String studentNumber);
+    @JsonProperty("learningopportunity_id")
+    public String learningOpportunityId;
 
-    List<OodiEvent> getStudentEvents(String studentNumber);
-
-    List<OodiEvent> getTeacherEvents(String teacherNumber);
-
-    List<OodiStudyAttainment> getStudyAttainments(String studentNumber);
-
-    List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString);
-
-    List<OodiStudyRight> getStudentStudyRights(String studentNumber);
-
-    OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId);
-
-    OodiStudentInfo getStudentInfo(String studentNumber);
-
-    OodiRoles getRoles(String oodiPersonId);
-
-    OodiLearningOpportunity getLearningOpportunity(String learningOpportunityId);
+    @JsonProperty("names")
+    public List<OodiLocalizedValue> learningOpportunityName = new ArrayList<>();
 }

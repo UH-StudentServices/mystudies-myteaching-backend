@@ -39,6 +39,9 @@ public class OodiMockClient implements OodiClient {
     private static final String CANCELLED_COURSE_UNIT_REALISATION_ID = "123456789";
     private static final String POSITION_STUDYGROUPSET_COURSE_UNIT_REALISATION_ID = "109155866";
 
+    private static final String LEARNING_OPPORTUNITY_A_ID = "405437";
+    private static final String LEARNING_OPPORTUNITY_B_ID = "405438";
+
     @Value("classpath:sampledata/oodi/studentcourses.json")
     private Resource studentCourses;
 
@@ -81,9 +84,17 @@ public class OodiMockClient implements OodiClient {
     @Value("classpath:sampledata/oodi/studentinfo.json")
     private Resource studentInfo;
 
+    @Value("classpath:sampledata/oodi/learningopportunity_a.json")
+    private Resource learningOpportunityA;
+
+    @Value("classpath:sampledata/oodi/learningopportunity_b.json")
+    private Resource learningOpportunityB;
+
     private final ObjectMapper objectMapper;
 
     private Map<String, Resource> courseUnitRealisationsById;
+
+    private Map<String, Resource> learningOpportunityById;
 
     @PostConstruct
     private void createCourseUnitRealisationsMap() {
@@ -91,6 +102,13 @@ public class OodiMockClient implements OodiClient {
             COURSE_UNIT_REALISATION_ID, courseUnitRealisation,
             CANCELLED_COURSE_UNIT_REALISATION_ID, courseUnitRealisationCancelled,
             POSITION_STUDYGROUPSET_COURSE_UNIT_REALISATION_ID, courseUnitRealisationPositionStudygroupset);
+    }
+
+    @PostConstruct
+    private void createLearningOpportunityMap() {
+        this.learningOpportunityById = ImmutableMap.of(
+            LEARNING_OPPORTUNITY_A_ID, learningOpportunityA,
+            LEARNING_OPPORTUNITY_B_ID, learningOpportunityB);
     }
 
 
@@ -166,6 +184,17 @@ public class OodiMockClient implements OodiClient {
     public OodiRoles getRoles(String oodiPersonId) {
         return getSingleOodiResponse(roles,
             new TypeReference<OodiSingleResponse<OodiRoles>>() {
+            });
+    }
+
+    @Override
+    public OodiLearningOpportunity getLearningOpportunity(String learningOpportunityId) {
+        Resource learningOpportunityResponse = Optional
+            .ofNullable(learningOpportunityById.get(learningOpportunityId))
+            .orElse(learningOpportunityA);
+
+        return getSingleOodiResponse(learningOpportunityResponse,
+            new TypeReference<OodiSingleResponse<OodiLearningOpportunity>>() {
             });
     }
 

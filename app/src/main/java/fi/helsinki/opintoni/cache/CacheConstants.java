@@ -32,6 +32,7 @@ public class CacheConstants {
 
     public static final String BUILDINGS = "buildings";
     public static final String COURSE_UNIT_REALISATIONS = "courseUniRealisations";
+    public static final String LEARNING_OPPORTUNITIES = "learningOpportunities";
 
     public static final String STUDENT_NEWS = "studentNews";
     public static final String TEACHER_NEWS = "teacherNews";
@@ -53,6 +54,7 @@ public class CacheConstants {
         .add(COURSE_PAGE_ONE_OFF_EVENTS)
         .add(BUILDINGS)
         .add(COURSE_UNIT_REALISATIONS)
+        .add(LEARNING_OPPORTUNITIES)
         .add(STUDENT_NEWS)
         .add(TEACHER_NEWS)
         .add(OPEN_UNIVERSITY_NEWS)

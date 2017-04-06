@@ -153,6 +153,15 @@ public class OodiServer {
             );
     }
 
+    public void expectCourseNameRequest(String learningOpportunityId, String responseFile) {
+        server.expect(requestTo(learningOpportunityUrl(learningOpportunityId)))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(
+                SampleDataFiles.toText("oodi/" + responseFile),
+                MediaType.APPLICATION_JSON)
+            );
+    }
+
     public void expectStudentInfo(String studentNumber) {
         server.expect(requestTo(studentInfoUrl(studentNumber)))
             .andExpect(method(HttpMethod.GET))
@@ -214,6 +223,10 @@ public class OodiServer {
 
     private String courseUnitRealisationUrl(String realisationId) {
         return oodiBaseUrl + "/courseunitrealisations/" + realisationId;
+    }
+
+    private String learningOpportunityUrl(String learningOpportunityId) {
+        return oodiBaseUrl + "/learningopportunities/" + learningOpportunityId;
     }
 
     private String rolesUrl(String oodiPersonId) {

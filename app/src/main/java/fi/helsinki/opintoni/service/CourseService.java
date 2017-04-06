@@ -18,10 +18,12 @@
 package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.dto.CourseDto;
+import fi.helsinki.opintoni.dto.LearningOpportunityDto;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiTeacherCourse;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.service.converter.CourseConverter;
+import fi.helsinki.opintoni.service.converter.LearningOpportunityConverter;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,14 +39,17 @@ public class CourseService {
 
     private final OodiClient oodiClient;
     private final CourseConverter courseConverter;
+    private final LearningOpportunityConverter learningOpportunityConverter;
     private final EventTypeResolver eventTypeResolver;
 
     @Autowired
     public CourseService(OodiClient oodiClient,
                          CourseConverter courseConverter,
+                         LearningOpportunityConverter learningOpportunityConverter,
                          EventTypeResolver eventTypeResolver) {
         this.oodiClient = oodiClient;
         this.courseConverter = courseConverter;
+        this.learningOpportunityConverter = learningOpportunityConverter;
         this.eventTypeResolver = eventTypeResolver;
     }
 
@@ -94,6 +99,14 @@ public class CourseService {
         );
 
         return courseDtos;
+    }
+
+    public List<LearningOpportunityDto> getLearningOpportunities(List<String> learningOpportunityIds, Locale locale) {
+        return learningOpportunityIds
+            .stream()
+            .map(id -> oodiClient.getLearningOpportunity(id))
+            .map(l -> learningOpportunityConverter.toDto(l, locale))
+            .collect(Collectors.toList());
     }
 
     private boolean isChildCourseWithoutRoot(OodiTeacherCourse oodiTeacherCourse, Map<String, OodiTeacherCourse> coursesByRealisationIds) {
