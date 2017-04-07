@@ -115,6 +115,15 @@ public class OodiRestClient implements OodiClient {
             baseUrl, teacherNumber);
     }
 
+    @Override
+    @Cacheable(CacheConstants.LEARNING_OPPORTUNITIES)
+    public OodiLearningOpportunity getLearningOpportunity(String learningOpportunityId) {
+        return getSingleOodiData("{baseUrl}/learningopportunities/{learningOpportunityId}",
+            new ParameterizedTypeReference<OodiSingleResponse<OodiLearningOpportunity>>() {
+            }, OodiLearningOpportunity.class, baseUrl, learningOpportunityId);
+    }
+
+
     public <T> List<T> getOodiData(String url,
                                    ParameterizedTypeReference<OodiResponse<T>> typeReference,
                                    Object... uriVariables) {

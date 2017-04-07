@@ -35,6 +35,7 @@ import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
 import fi.helsinki.opintoni.web.requestchain.TeacherRequestChain;
+import fi.helsinki.opintoni.web.requestchain.OodiCourseNamesRequestChain;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
@@ -195,6 +196,10 @@ public abstract class SpringTest {
 
     protected StudentRequestChain studentRequestChain(String studentNumber) {
         return new StudentRequestChain(studentNumber, oodiServer, coursePageServer);
+    }
+
+    protected OodiCourseNamesRequestChain defaultOodiCourseNamesRequestChain() {
+        return  new OodiCourseNamesRequestChain(oodiServer);
     }
 
     protected void expectCourseImplementationChangesRequest() {
