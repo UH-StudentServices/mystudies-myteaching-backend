@@ -1,6 +1,8 @@
 server:
-    port: 8080
-    session.timeout: 1800 # Seconds
+    session:
+        cookie:
+            name: OO_DEMO_SESSION_ID
+            secure: true
 
 spring:
     profiles:
