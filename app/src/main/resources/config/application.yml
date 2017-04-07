@@ -5,7 +5,7 @@ server:
         cookie:
             http-only: true
             path: /
-            domain: .helsinki.fi
+            domain: helsinki.fi
 
 # Disable the spring security default configuration from spring-boot-actuator
 management.security.enabled: true
