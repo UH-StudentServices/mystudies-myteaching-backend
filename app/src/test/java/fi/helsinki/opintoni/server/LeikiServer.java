@@ -24,6 +24,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
@@ -76,9 +78,12 @@ public class LeikiServer {
     }
 
     private String courseRecommendationsUrl(String studentNumber) {
+        LocalDate today = LocalDate.now();
+
         return String.format("%s/focus/api?method=getsocial&"
             + "similaritylimit=99&format=json&t_type=kurssit&max=20&uid=opintohistoriatesti_%s"
-            + "&showtags=true&unreadonly=true", leikiBaseUrl, studentNumber);
+            + "&showtags=true&unreadonly=true&startdate=%sT00:00:00%%2B0300&enddate=2222-12-31T00:00:00%%2B0300",
+            leikiBaseUrl, studentNumber, today.toString());
     }
 
 }
