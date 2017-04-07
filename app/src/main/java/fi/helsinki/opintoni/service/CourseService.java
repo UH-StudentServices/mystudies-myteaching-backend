@@ -104,7 +104,7 @@ public class CourseService {
     public List<LearningOpportunityDto> getLearningOpportunities(List<String> learningOpportunityIds, Locale locale) {
         return learningOpportunityIds
             .stream()
-            .map(id -> oodiClient.getLearningOpportunity(id))
+            .map(oodiClient::getLearningOpportunity)
             .map(l -> learningOpportunityConverter.toDto(l, locale))
             .collect(Collectors.toList());
     }

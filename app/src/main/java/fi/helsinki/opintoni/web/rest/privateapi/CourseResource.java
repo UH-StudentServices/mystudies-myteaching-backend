@@ -35,7 +35,7 @@ import java.util.Locale;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.PRIVATE_API_V1,
+    value = RestConstants.PRIVATE_API_V1 + "/courses",
     produces = WebConstants.APPLICATION_JSON_UTF8)
 public class CourseResource extends AbstractResource {
 
@@ -46,7 +46,7 @@ public class CourseResource extends AbstractResource {
         this.courseService = courseService;
     }
 
-    @RequestMapping(value = "/courses/names", method = RequestMethod.GET)
+    @RequestMapping(value = "/names", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<List<LearningOpportunityDto>> getCourseNames(@RequestParam(value="learningOpportunities") List<String> learningOpportunities, Locale locale) {
         return response(courseService.getLearningOpportunities(learningOpportunities, locale));
