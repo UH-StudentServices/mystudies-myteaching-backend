@@ -27,7 +27,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Locale;
 
@@ -88,7 +90,7 @@ public class LeikiRestClient implements LeikiClient {
 
     @Override
     public List<LeikiCourseRecommendation> getCourseRecommendations(String studentNumber) {
-        LocalDate today = LocalDate.now();
+        ZonedDateTime today = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS);
 
         URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
             .path("/focus/api")
@@ -100,7 +102,7 @@ public class LeikiRestClient implements LeikiClient {
             .queryParam("uid", recommendationUidPrefix + studentNumber)
             .queryParam("showtags", "true")
             .queryParam("unreadonly", "true")
-            .queryParam("startdate", today.toString() + "T00:00:00+0300")
+            .queryParam("startdate", today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")))
             .queryParam("enddate", "2222-12-31T00:00:00+0300")
             .build()
             .encode()

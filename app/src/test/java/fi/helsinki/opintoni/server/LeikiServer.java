@@ -23,8 +23,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalDate;
+import java.net.URI;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -60,30 +64,68 @@ public class LeikiServer {
             .andRespond(withServerError());
     }
 
-    private void expextResults(String requestUrl, String responseFile) {
+    private void expextResults(URI requestUrl, String responseFile) {
         server.expect(requestTo(requestUrl))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(SampleDataFiles.toText("leiki/" + responseFile), MediaType.APPLICATION_JSON));
     }
 
-    private String searchCategoryUrl(String searchTerm) {
-        return String.format("%s/focus/api?method=searchcategories&autocomplete=occurred"
-            + "&lang=en&text=%s&format=json&max=10", leikiBaseUrl, searchTerm);
+    private URI searchCategoryUrl(String searchTerm) {
+        URI uri = UriComponentsBuilder.fromHttpUrl(leikiBaseUrl)
+            .path("/focus/api")
+            .queryParam("method", "searchcategories")
+            .queryParam("autocomplete", "occurred")
+            .queryParam("lang", "en")
+            .queryParam("text", searchTerm)
+            .queryParam("format", "json")
+            .queryParam("max", "10")
+            .build()
+            .encode()
+            .toUri();
+
+        return uri;
     }
 
-    private String searchUrl(String searchTerm) {
-        return String.format("%s/focus/api?method=searchc&sourceallmatch&instancesearch"
-            + "&lang=en&query=%s&format=json&t_type=kaikki_en&max=100&fulltext=true"
-            + "&partialsearchpriority=ontology", leikiBaseUrl, searchTerm);
+    private URI searchUrl(String searchTerm) {
+        URI uri = UriComponentsBuilder.fromHttpUrl(leikiBaseUrl)
+            .path("/focus/api")
+            .queryParam("method", "searchc")
+            .queryParam("sourceallmatch")
+            .queryParam("instancesearch")
+            .queryParam("lang", "en")
+            .queryParam("query", searchTerm)
+            .queryParam("format", "json")
+            .queryParam("t_type", "kaikki_en")
+            .queryParam("max", "100")
+            .queryParam("fulltext", "true")
+            .queryParam("partialsearchpriority", "ontology")
+            .build()
+            .encode()
+            .toUri();
+
+        return uri;
     }
 
-    private String courseRecommendationsUrl(String studentNumber) {
-        LocalDate today = LocalDate.now();
+    private URI courseRecommendationsUrl(String studentNumber) {
+        ZonedDateTime today = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS);
 
-        return String.format("%s/focus/api?method=getsocial&"
-            + "similaritylimit=99&format=json&t_type=kurssit&max=20&uid=opintohistoriatesti_%s"
-            + "&showtags=true&unreadonly=true&startdate=%sT00:00:00%%2B0300&enddate=2222-12-31T00:00:00%%2B0300",
-            leikiBaseUrl, studentNumber, today.toString());
+        URI uri = UriComponentsBuilder.fromHttpUrl(leikiBaseUrl)
+            .path("/focus/api")
+            .queryParam("method", "getsocial")
+            .queryParam("similaritylimit", "99")
+            .queryParam("format", "json")
+            .queryParam("t_type", "kurssit")
+            .queryParam("max", "20")
+            .queryParam("uid", "opintohistoriatesti_" + studentNumber)
+            .queryParam("showtags", "true")
+            .queryParam("unreadonly", "true")
+            .queryParam("startdate", today.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")))
+            .queryParam("enddate", "2222-12-31T00:00:00+0300")
+            .build()
+            .encode()
+            .toUri();
+
+        return uri;
     }
 
 }
