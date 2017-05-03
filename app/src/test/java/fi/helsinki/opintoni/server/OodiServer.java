@@ -82,23 +82,6 @@ public class OodiServer {
                     SampleDataFiles.toText("oodi/studyattainments.json"),
                     MediaType.APPLICATION_JSON)
             );
-    //TODO: DELETE SECOND CALL WHEN OODI RETURNS LOCALIZED GRADES
-        server.expect(requestTo(studyAttainmentsUrl(studentNumber)))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(
-                    SampleDataFiles.toText("oodi/studyattainments.json"),
-                    MediaType.APPLICATION_JSON)
-            );
-    }
-
-    //TODO: DELETE METHOD AND studyattainments_old.json WHEN OODI RETURNS LOCALIZED GRADES
-    public void expectOldStudentStudyAttainmentsRequest(String studentNumber) {
-        server.expect(requestTo(studyAttainmentsUrl(studentNumber)))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(
-                    SampleDataFiles.toText("oodi/studyattainments_old.json"),
-                    MediaType.APPLICATION_JSON)
-            );
     }
 
     public void expectStudentStudyRightsRequest(String studentNumber) {
