@@ -33,6 +33,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -84,7 +85,8 @@ public class PrivatePortfolioAttainmentResource extends AbstractResource {
     @Timed
     public ResponseEntity<List<StudyAttainmentDto>> getWhitelistedAttainmentsByPortfolioId(
         @PathVariable Long portfolioId,
-        Locale locale) {
+        @RequestParam(value = "lang", defaultValue = "fi") String langCode) {
+        Locale locale = Locale.forLanguageTag(langCode);
         return response(studyAttainmentService.getWhitelistedAttainmentsByPortfolioId(portfolioId, locale));
     }
 
