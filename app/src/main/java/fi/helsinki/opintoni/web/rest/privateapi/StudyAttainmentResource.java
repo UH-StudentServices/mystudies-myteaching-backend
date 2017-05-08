@@ -54,8 +54,17 @@ public class StudyAttainmentResource extends AbstractResource {
     public ResponseEntity<List<StudyAttainmentDto>> getStudyAttainments(
             @StudentNumber String studentNumber,
             @RequestParam(value = "limit", defaultValue = "8") int limit,
-            Locale locale) {
+            @RequestParam(value = "lang", required = false) String langParam,
+            Locale locale
+            ) {
+        Locale queryLocale;
 
-        return response(studyAttainmentService.getStudyAttainments(studentNumber, limit, locale));
+        if (langParam == null) {
+            queryLocale = locale;
+        } else {
+            queryLocale = Locale.forLanguageTag(langParam);
+        }
+
+        return response(studyAttainmentService.getStudyAttainments(studentNumber, limit, queryLocale));
     }
 }
