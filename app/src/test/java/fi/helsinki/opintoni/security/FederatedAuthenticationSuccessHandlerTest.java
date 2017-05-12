@@ -120,28 +120,13 @@ public class FederatedAuthenticationSuccessHandlerTest {
     }
 
     @Test
-    public void thatLanguageCookieIsAddedOnFirstLogin() throws Exception {
+    public void thatLanguageCookieIsAdded() throws Exception {
         HttpServletResponse response = mockResponse();
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
 
         handler.onAuthenticationSuccess(mock(HttpServletRequest.class), response, authentication);
 
         verify(response, times(1)).addCookie(argThat(new LangCookieMatcher()));
-    }
-
-    @Test
-    public void thatExistingLanguageCookieIsNotOverridden() throws Exception {
-        Cookie[] cookies = {new Cookie(Constants.NG_TRANSLATE_LANG_KEY, "en")};
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getCookies()).thenReturn(cookies);
-
-        HttpServletResponse response = mockResponse();
-
-        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
-
-        handler.onAuthenticationSuccess(request, response, authentication);
-
-        verify(response, times(0)).addCookie(argThat(new LangCookieMatcher()));
     }
 
     @Test
