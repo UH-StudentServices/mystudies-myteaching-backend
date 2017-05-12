@@ -59,9 +59,7 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         try {
             syncUserWithDatabase(appUser);
 
-            if (!hasLanguageCookie(request)) {
-                addLanguageCookie(appUser, response);
-            }
+            addLanguageCookie(appUser, response);
 
             if(!env.acceptsProfiles(Constants.SPRING_PROFILE_DEMO)) {
                 addHasLoggedInCookie(response);
@@ -99,13 +97,6 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
             user.oodiPersonId = appUser.getOodiPersonId();
             userService.save(user);
         }
-    }
-
-    private boolean hasLanguageCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-
-        return cookies != null && Arrays.stream(cookies)
-            .anyMatch(cookie -> Constants.NG_TRANSLATE_LANG_KEY.equals(cookie.getName()));
     }
 
     private void addLanguageCookie(AppUser appUser, HttpServletResponse response) {
