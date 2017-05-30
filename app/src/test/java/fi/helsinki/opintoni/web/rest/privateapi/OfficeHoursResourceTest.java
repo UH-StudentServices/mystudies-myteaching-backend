@@ -21,17 +21,23 @@ import fi.helsinki.opintoni.SpringTest;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
+import static fi.helsinki.opintoni.web.WebTestUtils.toJsonBytes;
 
+import fi.helsinki.opintoni.dto.OfficeHoursDto;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class OfficeHoursResourceTest extends SpringTest {
+
+    private static final String NEW_OFFICE_HOURS = "uudet ajat";
 
     @Test
     public void thatOfficeHoursReturnCorrectResponse() throws Exception {
@@ -43,4 +49,32 @@ public class OfficeHoursResourceTest extends SpringTest {
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.description").value(OFFICE_HOURS));
     }
+
+    @Test
+    public void thatOfficeHoursAreUpdated() throws Exception {
+        OfficeHoursDto request = new OfficeHoursDto();
+        request.description = NEW_OFFICE_HOURS;
+
+        mockMvc.perform(post("/api/private/v1/officehours")
+            .with(securityContext(teacherSecurityContext()))
+            .characterEncoding("UTF-8")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJsonBytes(request))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.description").value(NEW_OFFICE_HOURS));
+    }
+
+    @Test
+    public void thatOfficeHoursAreDeleted() throws Exception {
+        mockMvc.perform(delete("/api/private/v1/officehours")
+            .with(securityContext(teacherSecurityContext()))
+            .characterEncoding("UTF-8")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.description").doesNotExist());
+    }
+
 }
