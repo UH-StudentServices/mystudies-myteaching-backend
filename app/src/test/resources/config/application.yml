@@ -298,6 +298,10 @@ coursePage:
     client.implementation: rest
     defaultCourseImageUri: https://dev.student.helsinki.fi/default
 
+guide:
+    base.url: http://mock.guide.student.helsinki.fi
+    client.implementation: rest
+
 optime:
     base.url: https://mock.optime.helsinki.fi/path
     client.implementation: rest

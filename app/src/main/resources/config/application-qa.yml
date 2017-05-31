@@ -53,6 +53,10 @@ coursePage:
     client.implementation: rest
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
+guide:
+    base.url: https://dev.guide.student.helsinki.fi/api/v1
+    client.implementation: rest
+
 esb:
     base.url: https://esbmt2.it.helsinki.fi/devel
     client.implementation: rest
