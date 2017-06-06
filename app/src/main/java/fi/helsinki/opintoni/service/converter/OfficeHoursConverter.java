@@ -17,18 +17,32 @@
 
 package fi.helsinki.opintoni.service.converter;
 
+import fi.helsinki.opintoni.domain.DegreeProgramme;
 import fi.helsinki.opintoni.domain.OfficeHours;
+import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class OfficeHoursConverter {
 
-    public OfficeHoursDto toDto(OfficeHours officeHours) {
+    public OfficeHoursDto toDto(OfficeHours officeHours, List<DegreeProgramme> degreeProgrammes) {
         OfficeHoursDto officeHoursDto = new OfficeHoursDto();
         if (officeHours != null) {
             officeHoursDto.id = officeHours.id;
             officeHoursDto.description = officeHours.description;
+
+            officeHoursDto.degreeProgrammes = degreeProgrammes.stream()
+                .map(degreeProgramme -> {
+                    DegreeProgrammeDto degreeProgrammeDto = new DegreeProgrammeDto();
+                    degreeProgrammeDto.code = degreeProgramme.degreeCode;
+                    return degreeProgrammeDto;
+                })
+                .collect(Collectors.toList());
         }
 
         return officeHoursDto;

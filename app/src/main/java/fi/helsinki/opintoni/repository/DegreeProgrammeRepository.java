@@ -15,32 +15,16 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.domain;
+package fi.helsinki.opintoni.repository;
 
-import org.hibernate.validator.constraints.NotBlank;
+import fi.helsinki.opintoni.domain.DegreeProgramme;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
+import java.util.List;
 
-@Entity
-@Table(name = "degree_programme")
-public class DegreeProgramme extends AbstractAuditingEntity implements Ownership {
+public interface DegreeProgrammeRepository extends JpaRepository<DegreeProgramme, Long> {
 
-    @Id
-    @GeneratedValue
-    public Long id;
+    void deleteByUserId(Long userId);
 
-    @NotBlank
-    @Size(max = 16)
-    @Column(name = "degree_code")
-    public String degreeCode;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
-    public User user;
-
-    @Override
-    public Long getOwnerId() {
-        return user.id;
-    }
+    List<DegreeProgramme> findByUserId(Long userId);
 }

@@ -17,8 +17,12 @@
 
 package fi.helsinki.opintoni.service;
 
+import com.google.common.collect.Lists;
+import fi.helsinki.opintoni.domain.DegreeProgramme;
 import fi.helsinki.opintoni.domain.OfficeHours;
+import fi.helsinki.opintoni.domain.portfolio.Degree;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
+import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.OfficeHoursConverter;
@@ -26,16 +30,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 public class OfficeHoursService {
-    public final OfficeHoursRepository officeHoursRepository;
+    private final OfficeHoursRepository officeHoursRepository;
+    private final DegreeProgrammeRepository degreeProgrammeRepository;
     private final UserRepository userRepository;
     private final OfficeHoursConverter officeHoursConverter;
 
+
     @Autowired
-    public OfficeHoursService(OfficeHoursRepository officeHoursRepository, UserRepository userRepository, OfficeHoursConverter officeHoursConverter) {
+    public OfficeHoursService(OfficeHoursRepository officeHoursRepository,
+                              DegreeProgrammeRepository degreeProgrammeRepository,
+                              UserRepository userRepository,
+                              OfficeHoursConverter officeHoursConverter) {
         this.officeHoursRepository = officeHoursRepository;
+        this.degreeProgrammeRepository = degreeProgrammeRepository;
         this.userRepository = userRepository;
         this.officeHoursConverter = officeHoursConverter;
     }
@@ -48,7 +61,22 @@ public class OfficeHoursService {
         }
 
         officeHours.description = officeHoursDto.description;
-        return officeHoursConverter.toDto(officeHoursRepository.save(officeHours));
+        officeHours = officeHoursRepository.save(officeHours);
+
+        List<DegreeProgramme> degreeProgrammes = officeHoursDto.degreeProgrammes.stream()
+            .distinct()
+            .map(degreeProgrammeDto -> {
+                DegreeProgramme degreeProgramme = new DegreeProgramme();
+                degreeProgramme.user = userRepository.findOne(userId);
+                degreeProgramme.degreeCode = degreeProgrammeDto.code;
+                return degreeProgramme;
+            })
+            .collect(Collectors.toList());
+
+        degreeProgrammeRepository.deleteByUserId(userId);
+        degreeProgrammes = degreeProgrammeRepository.save(degreeProgrammes);
+
+        return officeHoursConverter.toDto(officeHours, degreeProgrammes);
     }
 
     public OfficeHoursDto delete(final Long userId) {
@@ -58,11 +86,16 @@ public class OfficeHoursService {
             officeHours.user = userRepository.findOne(userId);
         }
 
+        degreeProgrammeRepository.deleteByUserId(userId);
+
         officeHours.description = null;
-        return officeHoursConverter.toDto(officeHoursRepository.save(officeHours));
+        return officeHoursConverter.toDto(officeHoursRepository.save(officeHours), Lists.newArrayList());
     }
 
     public OfficeHoursDto getByUserId(final Long userId) {
-        return officeHoursConverter.toDto(officeHoursRepository.findByUserId(userId));
+        OfficeHours officeHours = officeHoursRepository.findByUserId(userId);
+        List<DegreeProgramme> degreeProgrammes = degreeProgrammeRepository.findByUserId(userId);
+
+        return officeHoursConverter.toDto(officeHours, degreeProgrammes);
     }
 }

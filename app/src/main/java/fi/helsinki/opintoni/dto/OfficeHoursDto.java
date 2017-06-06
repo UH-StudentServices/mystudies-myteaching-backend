@@ -19,9 +19,13 @@ package fi.helsinki.opintoni.dto;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.util.List;
+
 public class OfficeHoursDto {
     public Long id;
 
     @NotBlank
     public String description;
+
+    public List<DegreeProgrammeDto> degreeProgrammes;
 }

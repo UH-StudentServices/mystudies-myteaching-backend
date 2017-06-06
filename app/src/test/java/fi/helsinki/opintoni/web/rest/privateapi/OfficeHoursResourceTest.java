@@ -17,17 +17,20 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
+import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.SpringTest;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static fi.helsinki.opintoni.web.WebTestUtils.toJsonBytes;
 
+import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -38,6 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class OfficeHoursResourceTest extends SpringTest {
 
     private static final String NEW_OFFICE_HOURS = "uudet ajat";
+    private static final String DEGREE_CODE_1 = "KH50_004";
+    private static final String DEGREE_CODE_2 = "KH80_001";
 
     @Test
     public void thatOfficeHoursReturnCorrectResponse() throws Exception {
@@ -55,6 +60,12 @@ public class OfficeHoursResourceTest extends SpringTest {
         OfficeHoursDto request = new OfficeHoursDto();
         request.description = NEW_OFFICE_HOURS;
 
+        DegreeProgrammeDto programme1 = new DegreeProgrammeDto();
+        DegreeProgrammeDto programme2 = new DegreeProgrammeDto();
+        programme1.code = DEGREE_CODE_1;
+        programme2.code = DEGREE_CODE_2;
+        request.degreeProgrammes = Lists.newArrayList(programme1, programme2);
+
         mockMvc.perform(post("/api/private/v1/officehours")
             .with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
@@ -63,7 +74,11 @@ public class OfficeHoursResourceTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.description").value(NEW_OFFICE_HOURS));
+            .andExpect(jsonPath("$.description").value(NEW_OFFICE_HOURS))
+            .andExpect(jsonPath("$.degreeProgrammes").isArray())
+            .andExpect(jsonPath("$.degreeProgrammes", hasSize(2)))
+            .andExpect(jsonPath("$.degreeProgrammes[0].code").value(DEGREE_CODE_1))
+            .andExpect(jsonPath("$.degreeProgrammes[1].code").value(DEGREE_CODE_2));
     }
 
     @Test
