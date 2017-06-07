@@ -20,8 +20,8 @@ package fi.helsinki.opintoni.service;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.domain.DegreeProgramme;
 import fi.helsinki.opintoni.domain.OfficeHours;
-import fi.helsinki.opintoni.domain.portfolio.Degree;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
+import fi.helsinki.opintoni.dto.PublicOfficeHoursDto;
 import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
@@ -51,6 +51,10 @@ public class OfficeHoursService {
         this.degreeProgrammeRepository = degreeProgrammeRepository;
         this.userRepository = userRepository;
         this.officeHoursConverter = officeHoursConverter;
+    }
+
+    private int comparePublicOfficeHoursDtos(PublicOfficeHoursDto p1, PublicOfficeHoursDto p2) {
+        return p1.name.compareTo(p2.name);
     }
 
     public OfficeHoursDto update(final Long userId, final OfficeHoursDto officeHoursDto) {
@@ -98,4 +102,27 @@ public class OfficeHoursService {
 
         return officeHoursConverter.toDto(officeHours, degreeProgrammes);
     }
+
+    public List<PublicOfficeHoursDto> getAll() {
+        List<OfficeHours> allOfficeHours = officeHoursRepository.findAll();
+
+        return allOfficeHours.stream()
+            .map(officeHours -> {
+                List<DegreeProgramme> degreeProgrammes = degreeProgrammeRepository.findByUserId(officeHours.getOwnerId());
+                List<String> degreeProgrammeCodes = degreeProgrammes.stream()
+                    .map(degreeProgramme -> {
+                        return degreeProgramme.degreeCode;
+                    })
+                    .collect(Collectors.toList());
+
+                PublicOfficeHoursDto officeHoursDto = new PublicOfficeHoursDto();
+                officeHoursDto.degreeProgrammes = degreeProgrammeCodes;
+                officeHoursDto.officeHours = officeHours.description;
+
+                return officeHoursDto;
+            })
+            .sorted(this::comparePublicOfficeHoursDtos)
+            .collect(Collectors.toList());
+    }
+
 }
