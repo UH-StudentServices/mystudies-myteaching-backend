@@ -30,6 +30,9 @@ public class OfficeHours extends AbstractAuditingEntity implements Ownership {
     @GeneratedValue
     public Long id;
 
+    @Column(name = "name")
+    public String name;
+
     @Column(name = "description")
     public String description;
 

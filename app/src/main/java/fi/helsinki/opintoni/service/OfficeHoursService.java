@@ -65,6 +65,7 @@ public class OfficeHoursService {
         }
 
         officeHours.description = officeHoursDto.description;
+        officeHours.name = officeHoursDto.name;
         officeHours = officeHoursRepository.save(officeHours);
 
         List<DegreeProgramme> degreeProgrammes = officeHoursDto.degreeProgrammes.stream()
@@ -118,6 +119,7 @@ public class OfficeHoursService {
                 PublicOfficeHoursDto officeHoursDto = new PublicOfficeHoursDto();
                 officeHoursDto.degreeProgrammes = degreeProgrammeCodes;
                 officeHoursDto.officeHours = officeHours.description;
+                officeHoursDto.name = officeHours.name;
 
                 return officeHoursDto;
             })

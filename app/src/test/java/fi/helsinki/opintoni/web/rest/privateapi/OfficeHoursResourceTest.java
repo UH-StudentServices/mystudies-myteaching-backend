@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.SpringTest;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHER_NAME;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static fi.helsinki.opintoni.web.WebTestUtils.toJsonBytes;
@@ -52,13 +53,15 @@ public class OfficeHoursResourceTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.description").value(OFFICE_HOURS));
+            .andExpect(jsonPath("$.description").value(OFFICE_HOURS))
+            .andExpect(jsonPath("$.name").value(TEACHER_NAME));
     }
 
     @Test
     public void thatOfficeHoursAreUpdated() throws Exception {
         OfficeHoursDto request = new OfficeHoursDto();
         request.description = NEW_OFFICE_HOURS;
+        request.name = TEACHER_NAME;
 
         DegreeProgrammeDto programme1 = new DegreeProgrammeDto();
         DegreeProgrammeDto programme2 = new DegreeProgrammeDto();
@@ -75,6 +78,7 @@ public class OfficeHoursResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.description").value(NEW_OFFICE_HOURS))
+            .andExpect(jsonPath("$.name").value(TEACHER_NAME))
             .andExpect(jsonPath("$.degreeProgrammes").isArray())
             .andExpect(jsonPath("$.degreeProgrammes", hasSize(2)))
             .andExpect(jsonPath("$.degreeProgrammes[0].code").value(DEGREE_CODE_1))

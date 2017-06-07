@@ -35,6 +35,7 @@ public class OfficeHoursConverter {
         if (officeHours != null) {
             officeHoursDto.id = officeHours.id;
             officeHoursDto.description = officeHours.description;
+            officeHoursDto.name = officeHours.name;
 
             officeHoursDto.degreeProgrammes = degreeProgrammes.stream()
                 .map(degreeProgramme -> {

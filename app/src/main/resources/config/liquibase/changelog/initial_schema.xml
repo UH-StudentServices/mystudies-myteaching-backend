@@ -1165,8 +1165,8 @@
             <column name="user_id" type="bigint">
                 <constraints nullable="false" foreignKeyName="fk_office_hours_user" references="user_account(id)"/>
             </column>
-            <column name="description" type="text">
-            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="text"/>
             <column name="created_by" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>

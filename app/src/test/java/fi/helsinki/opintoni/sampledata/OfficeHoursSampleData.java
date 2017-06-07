@@ -18,5 +18,6 @@
 package fi.helsinki.opintoni.sampledata;
 
 public class OfficeHoursSampleData {
+    public static final String TEACHER_NAME = "Leena Lehtori";
     public static final String OFFICE_HOURS = "Vastaanotto maanantaisin klo 10.00";
 }

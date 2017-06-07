@@ -25,6 +25,9 @@ public class OfficeHoursDto {
     public Long id;
 
     @NotBlank
+    public String name;
+
+    @NotBlank
     public String description;
 
     public List<DegreeProgrammeDto> degreeProgrammes;
