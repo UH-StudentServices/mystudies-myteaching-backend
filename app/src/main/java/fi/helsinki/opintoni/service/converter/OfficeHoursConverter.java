@@ -38,11 +38,7 @@ public class OfficeHoursConverter {
             officeHoursDto.name = officeHours.name;
 
             officeHoursDto.degreeProgrammes = degreeProgrammes.stream()
-                .map(degreeProgramme -> {
-                    DegreeProgrammeDto degreeProgrammeDto = new DegreeProgrammeDto();
-                    degreeProgrammeDto.code = degreeProgramme.degreeCode;
-                    return degreeProgrammeDto;
-                })
+                .map(degreeProgramme -> new DegreeProgrammeDto(degreeProgramme.degreeCode))
                 .collect(Collectors.toList());
         }
 

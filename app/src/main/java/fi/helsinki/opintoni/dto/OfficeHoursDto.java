@@ -17,17 +17,16 @@
 
 package fi.helsinki.opintoni.dto;
 
-import org.hibernate.validator.constraints.NotBlank;
-
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class OfficeHoursDto {
     public Long id;
 
-    @NotBlank
+    @NotNull
     public String name;
 
-    @NotBlank
+    @NotNull
     public String description;
 
     public List<DegreeProgrammeDto> degreeProgrammes;

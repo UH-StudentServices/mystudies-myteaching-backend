@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.integration.guide.GuideClient;
 import fi.helsinki.opintoni.integration.guide.GuideMockClient;
 import fi.helsinki.opintoni.integration.guide.GuideRestClient;
@@ -46,7 +45,7 @@ public class GuideConfiguration {
         final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
         RestTemplate restTemplate =  new RestTemplate(Collections.singletonList(converter));
-        restTemplate.setInterceptors(Lists.newArrayList(new LoggingInterceptor()));
+        restTemplate.setInterceptors(Collections.singletonList(new LoggingInterceptor()));
         return restTemplate;
     }
 

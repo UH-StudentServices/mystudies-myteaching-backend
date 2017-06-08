@@ -108,6 +108,7 @@ public class OfficeHoursService {
         List<OfficeHours> allOfficeHours = officeHoursRepository.findAll();
 
         return allOfficeHours.stream()
+            .filter(officeHours -> officeHours.description != null)
             .map(officeHours -> {
                 List<DegreeProgramme> degreeProgrammes = degreeProgrammeRepository.findByUserId(officeHours.getOwnerId());
                 List<String> degreeProgrammeCodes = degreeProgrammes.stream()

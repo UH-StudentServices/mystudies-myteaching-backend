@@ -24,6 +24,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -45,13 +46,19 @@ public class GuideRestClient implements GuideClient {
     @Cacheable(CacheConstants.GUIDE_DEGREE_PROGRAMMES)
     @Override
     public List<GuideDegreeProgramme> getDegreeProgrammes() {
-        ResponseEntity<List<GuideDegreeProgramme>> responseEntity =
-            restTemplate.exchange("{baseUrl}/degree-programme?_format=json", HttpMethod.GET,
-           null,
-            new ParameterizedTypeReference<List<GuideDegreeProgramme>>() {},
-            baseUrl);
-        return Optional.ofNullable(responseEntity.getBody())
-            .orElse(newArrayList());
+        try {
+            ResponseEntity<List<GuideDegreeProgramme>> responseEntity =
+                restTemplate.exchange("{baseUrl}/degree-programme?_format=json",
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<GuideDegreeProgramme>>() {},
+                    baseUrl);
+            return Optional.ofNullable(responseEntity.getBody())
+                .orElse(newArrayList());
+        } catch (RestClientException e) {
+            log.error("Guide REST client to get Degree Programmes threw exception: {}", e.getMessage());
+            return newArrayList();
+        }
     }
 
 }

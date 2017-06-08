@@ -20,4 +20,10 @@ package fi.helsinki.opintoni.dto;
 public class DegreeProgrammeDto {
     public String code;
     public String name;
+
+    public DegreeProgrammeDto() {}
+
+    public DegreeProgrammeDto(String code) {
+        this.code = code;
+    }
 }
