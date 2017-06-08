@@ -1,0 +1,82 @@
+[
+    {
+        "code": "KH50_004",
+        "name": {
+            "en": "Bachelor's Programme for Teachers of Mathematics, Physics and Chemistry",
+            "fi": "Matematiikan, fysiikan ja kemian opettajan kandiohjelma",
+            "sv": "Kandidatprogrammet för ämneslärare i matematik, fysik och kemi"
+        }
+    },
+    {
+        "code": "KH80_001",
+        "name": {
+            "en": "Bachelor's Programme in Agricultural Sciences",
+            "fi": "Maataloustieteiden kandiohjelma",
+            "sv": "Kandidatprogrammet i lantbruksvetenskaper"
+        }
+    },
+    {
+        "code": "KH40_002",
+        "name": {
+            "en": "Bachelor's Programme in Art Studies",
+            "fi": "Taiteiden tutkimuksen kandiohjelma",
+            "sv": "Kandidatprogrammet i konstforskning"
+        }
+    },
+    {
+        "code": "KH57_001",
+        "name": {
+            "en": "Bachelor's Programme in Biology",
+            "fi": "Biologian kandiohjelma",
+            "sv": "Kandidatprogrammet i biologi"
+        }
+    },
+    {
+        "code": "KH50_003",
+        "name": {
+            "en": "Bachelor's Programme in Chemistry",
+            "fi": "Kemian kandiohjelma",
+            "sv": "Kandidatprogrammet i kemi"
+        }
+    },
+    {
+        "code": "KH50_005",
+        "name": {
+            "en": "Bachelor's Programme in Computer Science",
+            "fi": "Tietojenkäsittelytieteen kandiohjelma",
+            "sv": "Kandidatprogrammet i datavetenskap"
+        }
+    },
+    {
+        "code": "KH40_005",
+        "name": {
+            "en": "Bachelor's Programme in Cultural Studies",
+            "fi": "Kulttuurien tutkimuksen kandiohjelma",
+            "sv": "Kandidatprogrammet i kulturforskning"
+        }
+    },
+    {
+        "code": "KH70_004",
+        "name": {
+            "en": "Bachelor's Programme in Economics",
+            "fi": "Bachelor's Programme in Economics",
+            "sv": "Kandidatprogrammet i ekonomi"
+        }
+    },
+    {
+        "code": "KH60_001",
+        "name": {
+            "en": "Bachelor's Programme in Education",
+            "fi": "Kasvatustieteiden kandiohjelma",
+            "sv": "Kandidatprogrammet i pedagogik"
+        }
+    },
+    {
+        "code": "SH60_035",
+        "name": {
+            "en": "Bachelor's Programme in Education: Class Teacher (KLU, in Swedish)",
+            "fi": "Kandidatprogrammet i pedagogik: klasslärare (KLU)",
+            "sv": "Kandidatprogrammet i pedagogik: klasslärare (KLU)"
+        }
+    }
+]

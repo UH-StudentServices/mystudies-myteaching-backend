@@ -23,14 +23,7 @@ import fi.helsinki.opintoni.integration.flamma.FlammaRestClient;
 import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
-import fi.helsinki.opintoni.server.CoursePageServer;
-import fi.helsinki.opintoni.server.ESBServer;
-import fi.helsinki.opintoni.server.FlammaServer;
-import fi.helsinki.opintoni.server.LeikiServer;
-import fi.helsinki.opintoni.server.OodiServer;
-import fi.helsinki.opintoni.server.PublicWwwServer;
-import fi.helsinki.opintoni.server.UnisportServer;
-import fi.helsinki.opintoni.server.WebPageServer;
+import fi.helsinki.opintoni.server.*;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
@@ -73,6 +66,7 @@ public abstract class SpringTest {
 
     private OodiServer oodiServer;
     private CoursePageServer coursePageServer;
+    protected GuideServer guideServer;
     protected WebPageServer webPageServer;
     protected LeikiServer leikiServer;
     protected FlammaServer flammaServer;
@@ -87,6 +81,9 @@ public abstract class SpringTest {
 
     @Autowired
     protected RestTemplate coursePageRestTemplate;
+
+    @Autowired
+    protected RestTemplate guideRestTemplate;
 
     @Autowired
     protected RestTemplate leikiRestTemplate;
@@ -127,6 +124,7 @@ public abstract class SpringTest {
     public void initRestServer() {
         oodiServer = new OodiServer(appConfiguration, oodiRestTemplate);
         coursePageServer = new CoursePageServer(appConfiguration, coursePageRestTemplate);
+        guideServer = new GuideServer(appConfiguration, guideRestTemplate);
         leikiServer = new LeikiServer(appConfiguration, leikiRestTemplate);
         flammaServer = new FlammaServer(appConfiguration, flammaRestClient.getRestTemplate());
         publicWwwServer = new PublicWwwServer(appConfiguration, publicWwwRestClient.getRestTemplate());

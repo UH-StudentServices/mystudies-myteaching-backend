@@ -1156,4 +1156,45 @@
                              columnNames="user_id, portfolio_role, language"
                              constraintName="unique_portfolio_per_user_per_role_per_lang"/>
     </changeSet>
+
+    <changeSet id="Add Office Hours and Degree Programmes" author="Joonas Iivonen">
+        <createTable tableName="office_hours">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_office_hours_user" references="user_account(id)"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="text"/>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <createTable tableName="degree_programme">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_degree_programme_user" references="user_account(id)"/>
+            </column>
+            <column name="degree_code" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
