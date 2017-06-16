@@ -38,7 +38,7 @@ public class OodiUserRoleServiceTest {
     private static final String TEACHER_NUMBER = "321";
     private static final List<String> USER_ENROLLMENTS = newArrayList("123", "456");
     private static final List<String> USER_ENROLLMENTS_SOME_OPEN_UNIVERSITY = newArrayList("123", "A456");
-    private static final List<String> USER_ENROLLMENTS_OPEN_UNIVERSITY = newArrayList("A123", "A456");
+    private static final List<String> USER_ENROLLMENTS_OPEN_UNIVERSITY = newArrayList("A123", "a456");
 
     private final OodiClient oodiClient = mock(OodiClient.class);
     private final OodiUserRoleService oodiUserRoleService = new OodiUserRoleService(oodiClient);
