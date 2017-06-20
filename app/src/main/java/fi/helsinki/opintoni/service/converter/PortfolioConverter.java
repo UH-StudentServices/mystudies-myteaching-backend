@@ -27,18 +27,9 @@ import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.AvatarImageService;
-import fi.helsinki.opintoni.service.ComponentVisibilityService;
 import fi.helsinki.opintoni.service.CreditsService;
 import fi.helsinki.opintoni.service.UserSettingsService;
-import fi.helsinki.opintoni.service.portfolio.ContactInformationService;
-import fi.helsinki.opintoni.service.portfolio.DegreeService;
-import fi.helsinki.opintoni.service.portfolio.FreeTextContentService;
-import fi.helsinki.opintoni.service.portfolio.JobSearchService;
-import fi.helsinki.opintoni.service.portfolio.LanguageProficiencyService;
-import fi.helsinki.opintoni.service.portfolio.PortfolioFavoriteService;
-import fi.helsinki.opintoni.service.portfolio.PortfolioKeywordRelationshipService;
-import fi.helsinki.opintoni.service.portfolio.WorkExperienceService;
-import fi.helsinki.opintoni.service.portfolio.SampleService;
+import fi.helsinki.opintoni.service.portfolio.*;
 import fi.helsinki.opintoni.util.UriBuilder;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +45,7 @@ public class PortfolioConverter {
 
     private final UriBuilder uriBuilder;
     private final ComponentVisibilityService componentVisibilityService;
+    private final ComponentOrderService componentOrderService;
     private final UserSettingsService userSettingsService;
     private final AvatarImageService avatarImageService;
     private final LanguageProficiencyService languageProficiencyService;
@@ -71,6 +63,7 @@ public class PortfolioConverter {
     @Autowired
     public PortfolioConverter(UriBuilder uriBuilder,
                               ComponentVisibilityService componentVisibilityService,
+                              ComponentOrderService componentOrderService,
                               UserSettingsService userSettingsService,
                               AvatarImageService avatarImageService,
                               LanguageProficiencyService languageProficiencyService,
@@ -86,6 +79,7 @@ public class PortfolioConverter {
                               PortfolioRepository portfolioRepository) {
         this.uriBuilder = uriBuilder;
         this.componentVisibilityService = componentVisibilityService;
+        this.componentOrderService = componentOrderService;
         this.userSettingsService = userSettingsService;
         this.avatarImageService = avatarImageService;
         this.languageProficiencyService = languageProficiencyService;
@@ -112,6 +106,7 @@ public class PortfolioConverter {
         portfolioDto.visibility = portfolio.visibility;
         portfolioDto.avatarUrl = avatarImageService.getPortfolioAvatarImageUrl(portfolio.getOwnerId());
         portfolioDto.componentVisibilities = componentVisibilityService.findByPortfolioId(portfolio.id);
+        portfolioDto.componentOrders = componentOrderService.findByPortfolioId(portfolio.id);
 
         fetchPortfolioComponents(portfolio, portfolioDto, componentFetchStrategy);
 

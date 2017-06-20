@@ -18,7 +18,7 @@
 package fi.helsinki.opintoni.security.authorization.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
-import fi.helsinki.opintoni.repository.ComponentVisibilityRepository;
+import fi.helsinki.opintoni.repository.portfolio.ComponentVisibilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

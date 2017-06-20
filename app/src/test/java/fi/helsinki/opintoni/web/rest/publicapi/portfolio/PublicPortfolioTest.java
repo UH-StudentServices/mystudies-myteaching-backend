@@ -22,7 +22,7 @@ import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
-import fi.helsinki.opintoni.repository.ComponentVisibilityRepository;
+import fi.helsinki.opintoni.repository.portfolio.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.junit.Before;

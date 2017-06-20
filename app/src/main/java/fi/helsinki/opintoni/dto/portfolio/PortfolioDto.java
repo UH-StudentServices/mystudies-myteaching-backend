@@ -32,6 +32,7 @@ public class PortfolioDto {
     public PortfolioVisibility visibility;
     public String avatarUrl;
     public List<ComponentVisibilityDto> componentVisibilities;
+    public List<ComponentOrderDto> componentOrders;
     public List<LanguageProficiencyDto> languageProficiencies;
     public List<FreeTextContentDto> freeTextContent;
     public List<FavoriteDto> favorites;

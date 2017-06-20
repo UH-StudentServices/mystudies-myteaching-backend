@@ -25,7 +25,6 @@ import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
-import fi.helsinki.opintoni.service.ComponentVisibilityService;
 import fi.helsinki.opintoni.service.converter.PortfolioConverter;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.summary.UpdateSummaryRequest;
@@ -142,6 +141,7 @@ public class PortfolioService {
         portfolio.visibility = portfolioDto.visibility;
         portfolio.ownerName = portfolioDto.ownerName;
         portfolio.intro = portfolioDto.intro;
+
         return portfolioConverter.toDto(portfolioRepository.save(portfolio), PortfolioConverter.ComponentFetchStrategy.NONE);
     }
 

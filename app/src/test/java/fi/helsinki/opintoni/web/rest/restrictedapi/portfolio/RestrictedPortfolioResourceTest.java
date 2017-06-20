@@ -17,6 +17,8 @@
 
 package fi.helsinki.opintoni.web.rest.restrictedapi.portfolio;
 
+import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
+import fi.helsinki.opintoni.dto.portfolio.ComponentOrderDto;
 import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.hamcrest.Matchers;
@@ -27,9 +29,7 @@ import java.util.List;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
-import static org.hamcrest.Matchers.both;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -78,5 +78,27 @@ public class RestrictedPortfolioResourceTest extends RestrictedPortfolioTest {
                     both(hasEntry("title", "Globaali tekstikenttä")).and(hasEntry("text", "bla bla bla"))
                 )
             )));
+    }
+
+    @Test
+    public void thatStudentPortfolioContainsComponentOrderInfo() throws Exception {
+        mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + STUDENT_PORTFOLIO_PATH)
+            .with(securityContext(studentSecurityContext())))
+            .andExpect(status().isOk())
+            .andExpect((jsonPath("$.componentOrders").value(Matchers.<List<ComponentOrderDto>>allOf(
+                hasSize(3),
+                hasItem(
+                    both(hasEntry("component", PortfolioComponent.STUDIES.toString()))
+                        .and(hasEntry("orderValue", 1))
+                ),
+                hasItem(
+                    both(hasEntry("component", PortfolioComponent.DEGREES.toString()))
+                        .and(hasEntry("orderValue", 2))
+                ),
+                hasItem(
+                    both(hasEntry("component", PortfolioComponent.ATTAINMENTS.toString()))
+                        .and(hasEntry("orderValue", 3))
+                )
+            ))));
     }
 }

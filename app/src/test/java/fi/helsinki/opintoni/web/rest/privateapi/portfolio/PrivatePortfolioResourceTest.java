@@ -18,20 +18,15 @@
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 
+import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.dto.FavoriteDto;
-import fi.helsinki.opintoni.dto.portfolio.DegreeDto;
-import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;
-import fi.helsinki.opintoni.dto.portfolio.KeywordDto;
-import fi.helsinki.opintoni.dto.portfolio.LanguageProficiencyDto;
-import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
-import fi.helsinki.opintoni.dto.portfolio.WorkExperienceDto;
+import fi.helsinki.opintoni.dto.portfolio.*;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.portfolio.PortfolioService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.WebTestUtils;
-import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,23 +35,12 @@ import org.springframework.http.MediaType;
 import java.util.List;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
-import static fi.helsinki.opintoni.security.TestSecurityContext.hybridUserSecurityContext;
-import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
-import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
-import static fi.helsinki.opintoni.security.TestSecurityContext.teacherWithoutPortfolioSecurityContext;
+import static fi.helsinki.opintoni.security.TestSecurityContext.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.both;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isOneOf;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest {
 
@@ -171,7 +155,22 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
             ))
             .andExpect(jsonPath("$.componentVisibilities").isArray())
             .andExpect(jsonPath("$.componentVisibilities[0].component").value("WORK_EXPERIENCE"))
-            .andExpect(jsonPath("$.componentVisibilities[0].visibility").value("PUBLIC"));
+            .andExpect(jsonPath("$.componentVisibilities[0].visibility").value("PUBLIC"))
+            .andExpect(jsonPath("$.componentOrders").value(Matchers.<List<ComponentOrderDto>>allOf(
+                hasSize(3),
+                hasItem(
+                    both(hasEntry("component", PortfolioComponent.STUDIES.toString()))
+                        .and(hasEntry("orderValue", 1))
+                ),
+                hasItem(
+                    both(hasEntry("component", PortfolioComponent.DEGREES.toString()))
+                        .and(hasEntry("orderValue", 2))
+                ),
+                hasItem(
+                    both(hasEntry("component", PortfolioComponent.ATTAINMENTS.toString()))
+                        .and(hasEntry("orderValue", 3))
+                )
+            )));
     }
 
     @Test
