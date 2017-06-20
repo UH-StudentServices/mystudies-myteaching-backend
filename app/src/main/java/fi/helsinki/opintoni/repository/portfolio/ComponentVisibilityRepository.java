@@ -15,7 +15,7 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.repository;
+package fi.helsinki.opintoni.repository.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;

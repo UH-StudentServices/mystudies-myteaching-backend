@@ -15,46 +15,46 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentvisibility;
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentOrder;
 
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
+import fi.helsinki.opintoni.dto.portfolio.ComponentOrderDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
-import fi.helsinki.opintoni.service.portfolio.ComponentVisibilityService;
+import fi.helsinki.opintoni.service.portfolio.ComponentOrderService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
+import fi.helsinki.opintoni.web.rest.AbstractResource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.List;
 
 import static fi.helsinki.opintoni.web.rest.RestConstants.MATCH_NUMBER;
 import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_API_V1;
 
 @RestController
 @RequestMapping(
-    value = PRIVATE_API_V1 + "/portfolio/{portfolioId:" + MATCH_NUMBER + "}/componentvisibility",
+    value = PRIVATE_API_V1 + "/portfolio/{portfolioId:" + MATCH_NUMBER + "}/component-orders",
     produces = WebConstants.APPLICATION_JSON_UTF8
 )
-public class PrivateComponentVisibilityResource {
+public class PrivateComponentOrderResource extends AbstractResource {
 
+    private final ComponentOrderService componentOrderService;
     private final PermissionChecker permissionChecker;
-    private final ComponentVisibilityService componentVisibilityService;
 
     @Autowired
-    public PrivateComponentVisibilityResource(PermissionChecker permissionChecker,
-                                              ComponentVisibilityService componentVisibilityService) {
+    public PrivateComponentOrderResource(ComponentOrderService componentOrderService, PermissionChecker permissionChecker) {
+        this.componentOrderService = componentOrderService;
         this.permissionChecker = permissionChecker;
-        this.componentVisibilityService = componentVisibilityService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> update(@UserId Long userId,
-                                       @PathVariable Long portfolioId,
-                                       @Valid @RequestBody UpdateComponentVisibilityRequest request) {
+    public ResponseEntity<List<ComponentOrderDto>> update(@UserId Long userId,
+                                                          @PathVariable Long portfolioId,
+                                                          @RequestBody UpdateComponentOrderingRequest request) {
         permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
-        componentVisibilityService.update(portfolioId, request);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+        return response(componentOrderService.update(portfolioId, request.componentOrders));
     }
 }

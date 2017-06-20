@@ -21,7 +21,7 @@ import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
-import fi.helsinki.opintoni.repository.ComponentVisibilityRepository;
+import fi.helsinki.opintoni.repository.portfolio.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentvisibility.UpdateComponentVisibilityRequest;

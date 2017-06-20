@@ -1197,4 +1197,36 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="Add table to keep track of portfolio component ordering" author="Henri Heiskanen">
+        <createTable tableName="component_order">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_component_order_portfolio"
+                             references="portfolio(id)"
+                             deleteCascade="true"/>
+            </column>
+            <column name="component" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="instance_name" type="varchar(255)">
+            </column>
+            <column name="order_value" type="smallint">
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <addUniqueConstraint tableName="component_order"
+                             columnNames="portfolio_id, order_value"
+                             constraintName="unique_component_order_value_per_portfolio_id"/>
+    </changeSet>
 </databaseChangeLog>

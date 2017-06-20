@@ -133,6 +133,12 @@
             <column name="created_date" type="timestamp"/>
         </loadData>
         <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/component_orders.csv"
+                  separator=";"
+                  tableName="component_order">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
                   file="config/liquibase/testdata/calendar_feeds.csv"
                   separator=";"
                   tableName="calendar_feed">

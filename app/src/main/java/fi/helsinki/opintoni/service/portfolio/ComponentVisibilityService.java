@@ -15,12 +15,13 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.service;
+package fi.helsinki.opintoni.service.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
-import fi.helsinki.opintoni.repository.ComponentVisibilityRepository;
+import fi.helsinki.opintoni.repository.portfolio.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
+import fi.helsinki.opintoni.service.DtoService;
 import fi.helsinki.opintoni.service.converter.portfolio.ComponentVisibilityConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentvisibility.UpdateComponentVisibilityRequest;
 import org.springframework.beans.factory.annotation.Autowired;
