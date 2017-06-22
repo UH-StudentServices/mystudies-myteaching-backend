@@ -37,4 +37,8 @@ public interface ComponentVisibilityRepository extends JpaRepository<ComponentVi
         PortfolioComponent component,
         TeacherPortfolioSection teacherPortfolioSection,
         String instanceName);
+
+    Long deleteByPortfolioIdAndComponentAndInstanceName(Long portfolioId,
+                                                        PortfolioComponent component,
+                                                        String instanceName);
 }

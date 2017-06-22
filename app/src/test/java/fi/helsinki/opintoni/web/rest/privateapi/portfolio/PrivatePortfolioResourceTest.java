@@ -90,9 +90,12 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
             )))
             .andExpect(jsonPath("$.jobSearch").value(hasEntry("contactEmail", STUDENT_EMAIL)))
             .andExpect(jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
-                hasSize(1),
+                hasSize(2),
                 hasItem(
                     both(hasEntry("title", "Otsikko")).and(hasEntry("text", "Teksti"))
+                ),
+                hasItem(
+                    both(hasEntry("title", "Otsikko 2")).and(hasEntry("text", "Teksti 2"))
                 )
             )))
             .andExpect(jsonPath("$.languageProficiencies").value(Matchers.<List<LanguageProficiencyDto>>allOf(

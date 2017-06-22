@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.service.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.FreeTextContent;
+import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
 import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.stream.Collectors.toList;
 
@@ -39,16 +41,19 @@ public class FreeTextContentService {
     private final FreeTextContentRepository freeTextContentRepository;
     private final FreeTextContentConverter freeTextContentConverter;
     private final PortfolioRepository portfolioRepository;
+    private final ComponentVisibilityService componentVisibilityService;
 
     @Autowired
     public FreeTextContentService(
         FreeTextContentRepository freeTextContentRepository,
         FreeTextContentConverter freeTextContentConverter,
-        PortfolioRepository portfolioRepository) {
+        PortfolioRepository portfolioRepository,
+        ComponentVisibilityService componentVisibilityService) {
 
         this.freeTextContentRepository = freeTextContentRepository;
         this.freeTextContentConverter = freeTextContentConverter;
         this.portfolioRepository = portfolioRepository;
+        this.componentVisibilityService = componentVisibilityService;
     }
 
     public List<FreeTextContentDto> findByPortfolioId(Long portfolioId) {
@@ -82,8 +87,11 @@ public class FreeTextContentService {
         return freeTextContentDto;
     }
 
-    public void deleteFreeTextContent(Long freeTextContentId) {
+    public void deleteFreeTextContent(Long freeTextContentId, Long portfolioId, String instanceName) {
         freeTextContentRepository.delete(freeTextContentId);
+
+        componentVisibilityService.deleteByPortfolioIdAndComponentAndInstanceName(portfolioId,
+            PortfolioComponent.FREE_TEXT_CONTENT, instanceName);
     }
 
     private void copyDtoProperties(FreeTextContent freeTextContent, FreeTextContentDto dto) {
@@ -94,9 +102,7 @@ public class FreeTextContentService {
             freeTextContent.teacherPortfolioSection = TeacherPortfolioSection.valueOf(dto.portfolioSection);
         }
 
-        if(dto.instanceName != null) {
-            freeTextContent.instanceName = dto.instanceName;
-        }
+        freeTextContent.instanceName = dto.instanceName != null ? dto.instanceName : UUID.randomUUID().toString();
     }
 
     private List<FreeTextContentDto> findByPortfolioIdAndComponentVisibility(Long portfolioId, ComponentVisibilityDto componentVisibility) {

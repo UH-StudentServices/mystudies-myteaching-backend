@@ -86,7 +86,7 @@ public class PortfolioService {
         portfolio.portfolioRole = portfolioRole;
         Portfolio inserted = portfolioRepository.save(portfolio);
 
-        if(portfolioRole == PortfolioRole.TEACHER) {
+        if (portfolioRole == PortfolioRole.TEACHER) {
             insertTeacherPortfolioSectionVisibilities(portfolio);
         }
 

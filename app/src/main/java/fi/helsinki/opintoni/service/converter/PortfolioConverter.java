@@ -129,32 +129,25 @@ public class PortfolioConverter {
     }
 
     private void fetchPublicComponents(Portfolio portfolio, PortfolioDto portfolioDto) {
+        List<ComponentVisibilityDto> visibilities = componentVisibilityService.findByPortfolioId(portfolio.id);
+        Map<String, List<ComponentVisibilityDto>> visibilitiesByComponentType;
+
         if(portfolio.portfolioRole == PortfolioRole.TEACHER) {
-            fetchPublicComponentsForTeacherPortfolio(portfolio.id, portfolioDto);
+            List<TeacherPortfolioSection> publicSections = getPublicTeacherPortfolioSections(visibilities);
+
+            visibilitiesByComponentType = visibilities.stream()
+                .filter(visibility -> isVisiblePublicTeacherPortfolioComponent(visibility, publicSections))
+                .collect(Collectors.groupingBy(v -> v.component));
         } else {
-            fetchPublicComponentsForStudentPortfolio(portfolio.id, portfolioDto);
+            visibilitiesByComponentType = visibilities.stream()
+                .filter(this::isPublicPortfolioComponent)
+                .collect(Collectors.groupingBy(v -> v.component));
         }
-    }
-
-    private void fetchPublicComponentsForStudentPortfolio(Long portfolioId, PortfolioDto portfolioDto) {
-        componentVisibilityService.findByPortfolioId(portfolioId).stream()
-            .filter(this::isPublicPortfolioComponent)
-            .forEach(visibility -> fetchComponentData(portfolioId, portfolioDto, visibility.component, null));
-    }
-
-    private void fetchPublicComponentsForTeacherPortfolio(Long portfolioId, PortfolioDto portfolioDto) {
-        List<ComponentVisibilityDto> visibilities = componentVisibilityService.findByPortfolioId(portfolioId);
-
-        List<TeacherPortfolioSection> publicSections = getPublicTeacherPortfolioSections(visibilities);
-
-        Map<String, List<ComponentVisibilityDto>> visibilitiesByComponentType = visibilities.stream()
-            .filter(visibility -> isVisiblePublicTeacherPortfolioComponent(visibility, publicSections))
-            .collect(Collectors.groupingBy(v -> v.component));
 
         visibilitiesByComponentType
             .entrySet()
             .stream()
-            .forEach(e -> fetchComponentData(portfolioId, portfolioDto, e.getKey(), e.getValue()));
+            .forEach(e -> fetchComponentData(portfolio.id, portfolioDto, e.getKey(), e.getValue()));
     }
 
     private List<TeacherPortfolioSection> getPublicTeacherPortfolioSections(List<ComponentVisibilityDto> visibilities) {

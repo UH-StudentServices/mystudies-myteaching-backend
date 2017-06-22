@@ -40,6 +40,8 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
     private static final String STUDENT_PORTFOLIO_PATH = "/portfolio/student/en/olli-opiskelija";
     private static final String TEACHER_PORTFOLIO_PATH = "/portfolio/teacher/fi/opettaja";
 
+    private static final String PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME = "4c024239-8dab-4ea0-a686-fe373b040f48";
+
     @Test
     public void thatPortfolioIsReturned() throws Exception {
         mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PORTFOLIO_PATH))
@@ -116,6 +118,19 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
                 hasItem(
                     both(hasEntry("component", PortfolioComponent.ATTAINMENTS.toString()))
                         .and(hasEntry("orderValue", 3))
+                )
+            ))));
+    }
+
+    @Test
+    public void thatStudentPortfolioOnlyContainsPublicFreeTextContentItems() throws Exception {
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PORTFOLIO_PATH)
+            .with(securityContext(studentSecurityContext())))
+            .andExpect(status().isOk())
+            .andExpect((jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
+                hasSize(1),
+                hasItem(
+                    hasEntry("instanceName", PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME)
                 )
             ))));
     }
