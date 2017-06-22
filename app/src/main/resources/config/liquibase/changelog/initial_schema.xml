@@ -1229,4 +1229,28 @@
                              columnNames="portfolio_id, order_value"
                              constraintName="unique_component_order_value_per_portfolio_id"/>
     </changeSet>
+
+    <changeSet id="Assign UUIDs to student portfolio free_text_content entries without pre-existing instance name" author="Henri Heiskanen">
+        <sql dbms="postgresql">
+            CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+            UPDATE free_text_content
+            SET instance_name = uuid_generate_v4()
+            WHERE teacher_portfolio_section IS NULL AND instance_name IS NULL;
+        </sql>
+    </changeSet>
+
+    <changeSet id="Set instance name on previously unnamed teacher portfolio free_text_content entries and matching visibilities" author="Henri Heiskanen">
+        <sql>
+            UPDATE free_text_content
+            SET instance_name = 'GENERAL'
+            WHERE teacher_portfolio_section IS NOT NULL AND instance_name IS NULL;
+        </sql>
+
+        <sql>
+            UPDATE component_visibility
+            SET instance_name = 'GENERAL'
+            WHERE teacher_portfolio_section IS NOT NULL AND instance_name IS NULL;
+        </sql>
+    </changeSet>
 </databaseChangeLog>
