@@ -1232,8 +1232,6 @@
 
     <changeSet id="Assign UUIDs to student portfolio free_text_content entries without pre-existing instance name" author="Henri Heiskanen">
         <sql dbms="postgresql">
-            CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
             UPDATE free_text_content
             SET instance_name = uuid_generate_v4()
             WHERE teacher_portfolio_section IS NULL AND instance_name IS NULL;
