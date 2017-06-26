@@ -1251,4 +1251,37 @@
             WHERE teacher_portfolio_section IS NOT NULL AND instance_name IS NULL AND component = 'FREE_TEXT_CONTENT';
         </sql>
     </changeSet>
+
+    <changeSet id="Add component heading table" author="Joonas Iivonen">
+        <createTable tableName="component_heading">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_component_heading_portfolio"
+                             references="portfolio(id)"
+                             deleteCascade="true"/>
+            </column>
+            <column name="component" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="heading" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <addUniqueConstraint tableName="component_heading"
+                             columnNames="portfolio_id, component"
+                             constraintName="unique_component_heading"/>
+    </changeSet>
+
 </databaseChangeLog>
