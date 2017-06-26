@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.service.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
+import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
 import fi.helsinki.opintoni.repository.portfolio.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
@@ -70,5 +71,11 @@ public class ComponentVisibilityService extends DtoService {
 
     public void save(List<ComponentVisibility> visibilities) {
         componentVisibilityRepository.save(visibilities);
+    }
+
+    public void deleteByPortfolioIdAndComponentAndInstanceName(Long portfolioId,
+                                                               PortfolioComponent component,
+                                                               String instanceName) {
+        componentVisibilityRepository.deleteByPortfolioIdAndComponentAndInstanceName(portfolioId, component, instanceName);
     }
 }

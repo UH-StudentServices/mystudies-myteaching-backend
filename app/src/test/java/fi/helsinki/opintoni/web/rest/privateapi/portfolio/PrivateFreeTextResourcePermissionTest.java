@@ -33,21 +33,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivateFreeTextResourcePermissionTest extends SpringTest {
 
-    private static final String API_PATH_OWN_PORTFOLIO = "/portfolio/2/freetextcontent";
+    private static final String RESOURCE_PATH_SEGMENT = "freetextcontent";
+    private static final String ANOTHER_USERS_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME = "4c024239-8dab-4ea0-a686-fe373b040f49";
 
-    private static final String API_PATH_TO_OTHER_USERS_PORTFOLIO = "/portfolio/1/freetextcontent";
-    private static final String API_PATH_OHTER_USERS_FREETEXTCONTENT_ID = "/2";
+    private static final Long USERS_PORTFOLIO_ID = 2L;
+    private static final Long ANOTHER_USERS_PORTFOLIO_ID = 1L;
+
+    private static final Long ANOTHER_USERS_FREE_TEXT_CONTENT_ITEM_ID = 2L;
 
     @Test
-    public void thatUserCannotInsertFreeTextContentToPortfolioSheDoesNowOwn() throws Exception {
-        mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + API_PATH_TO_OTHER_USERS_PORTFOLIO)
+    public void thatUserCannotInsertFreeTextContentItemToAnotherUsersPortfolio() throws Exception {
+        mockMvc.perform(post(resourcePath(ANOTHER_USERS_PORTFOLIO_ID))
             .with(securityContext(teacherSecurityContext())))
             .andExpect(status().isNotFound());
     }
 
     @Test
-    public void thatUserCannotUpdateFreeTextContentOfPortfolioSheDoesNowOwn() throws Exception {
-        mockMvc.perform(put(RestConstants.PRIVATE_API_V1 + API_PATH_TO_OTHER_USERS_PORTFOLIO + API_PATH_OHTER_USERS_FREETEXTCONTENT_ID)
+    public void thatUserCannotUpdateFreeTextContentItemInAnotherUsersPortfolio() throws Exception {
+        mockMvc.perform(put(resourcePath(ANOTHER_USERS_PORTFOLIO_ID, ANOTHER_USERS_FREE_TEXT_CONTENT_ITEM_ID))
             .content(WebTestUtils.toJsonBytes(new FreeTextContentDto()))
             .contentType(MediaType.APPLICATION_JSON)
             .with(securityContext(teacherSecurityContext())))
@@ -55,15 +58,16 @@ public class PrivateFreeTextResourcePermissionTest extends SpringTest {
     }
 
     @Test
-    public void thatUserCannotDeleteFreeTextContentFromPortfolioSheDoesNowOwn() throws Exception {
-        mockMvc.perform(delete(RestConstants.PRIVATE_API_V1 + API_PATH_TO_OTHER_USERS_PORTFOLIO + API_PATH_OHTER_USERS_FREETEXTCONTENT_ID)
+    public void thatUserCannotDeleteFreeTextContentItemPartOfAnotherUsersPortfolio() throws Exception {
+        mockMvc.perform(delete(resourcePath(ANOTHER_USERS_PORTFOLIO_ID, ANOTHER_USERS_FREE_TEXT_CONTENT_ITEM_ID))
+            .param("instanceName", ANOTHER_USERS_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME)
             .with(securityContext(teacherSecurityContext())))
             .andExpect(status().isNotFound());
     }
 
     @Test
-    public void thatUserCannotUpdateFreeTextContentSheDoesNowOwn() throws Exception {
-        mockMvc.perform(put(RestConstants.PRIVATE_API_V1 + API_PATH_OWN_PORTFOLIO + API_PATH_OHTER_USERS_FREETEXTCONTENT_ID)
+    public void thatUserCannotUpdateFreeTextContentItemSheDoesNowOwn() throws Exception {
+        mockMvc.perform(put(resourcePath(USERS_PORTFOLIO_ID, ANOTHER_USERS_FREE_TEXT_CONTENT_ITEM_ID))
             .content(WebTestUtils.toJsonBytes(new FreeTextContentDto()))
             .contentType(MediaType.APPLICATION_JSON)
             .with(securityContext(studentSecurityContext())))
@@ -71,9 +75,18 @@ public class PrivateFreeTextResourcePermissionTest extends SpringTest {
     }
 
     @Test
-    public void thatUserCannotDeleteFreeTextContentSheDoesNowOwn() throws Exception {
-        mockMvc.perform(delete(RestConstants.PRIVATE_API_V1 + API_PATH_OWN_PORTFOLIO + API_PATH_OHTER_USERS_FREETEXTCONTENT_ID)
+    public void thatUserCannotDeleteFreeTextContentItemSheDoesNowOwn() throws Exception {
+        mockMvc.perform(delete(resourcePath(USERS_PORTFOLIO_ID, ANOTHER_USERS_FREE_TEXT_CONTENT_ITEM_ID))
+            .param("instanceName", ANOTHER_USERS_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isForbidden());
+    }
+
+    private String resourcePath(Long portfolioId) {
+        return String.join("/", RestConstants.PRIVATE_API_V1, "portfolio", portfolioId.toString(), RESOURCE_PATH_SEGMENT);
+    }
+
+    private String resourcePath(Long portfolioId, Long freeTextContentItemId) {
+        return String.join("/", resourcePath(portfolioId), freeTextContentItemId.toString());
     }
 }

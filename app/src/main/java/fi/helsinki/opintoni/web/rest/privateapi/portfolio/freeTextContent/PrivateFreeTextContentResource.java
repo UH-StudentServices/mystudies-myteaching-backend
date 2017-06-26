@@ -27,11 +27,7 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static fi.helsinki.opintoni.web.rest.RestConstants.MATCH_NUMBER;
 import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_API_V1;
@@ -72,9 +68,12 @@ public class PrivateFreeTextContentResource extends AbstractResource {
         method = RequestMethod.DELETE,
         value = "/{freeTextContentId}")
     public ResponseEntity deleteFreeTextContent(@UserId Long userId,
-                                                @PathVariable Long freeTextContentId) {
+                                                @PathVariable Long portfolioId,
+                                                @PathVariable Long freeTextContentId,
+                                                @RequestParam(value = "instanceName") String instanceName) {
         permissionChecker.verifyPermission(userId, freeTextContentId, FreeTextContent.class);
-        freeTextContentService.deleteFreeTextContent(freeTextContentId);
+        freeTextContentService.deleteFreeTextContent(freeTextContentId, portfolioId, instanceName);
+
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
