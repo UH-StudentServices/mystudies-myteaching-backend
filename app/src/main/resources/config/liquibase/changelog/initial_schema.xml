@@ -1248,7 +1248,7 @@
         <sql>
             UPDATE component_visibility
             SET instance_name = 'GENERAL'
-            WHERE teacher_portfolio_section IS NOT NULL AND instance_name IS NULL;
+            WHERE teacher_portfolio_section IS NOT NULL AND instance_name IS NULL AND component = 'FREE_TEXT_CONTENT';
         </sql>
     </changeSet>
 </databaseChangeLog>
