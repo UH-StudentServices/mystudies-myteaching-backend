@@ -17,10 +17,7 @@
 
 package fi.helsinki.opintoni.service.converter;
 
-import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
-import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
-import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
+import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.UserSettingsDto;
 import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
@@ -46,6 +43,7 @@ public class PortfolioConverter {
     private final UriBuilder uriBuilder;
     private final ComponentVisibilityService componentVisibilityService;
     private final ComponentOrderService componentOrderService;
+    private final ComponentHeadingService componentHeadingService;
     private final UserSettingsService userSettingsService;
     private final AvatarImageService avatarImageService;
     private final LanguageProficiencyService languageProficiencyService;
@@ -64,6 +62,7 @@ public class PortfolioConverter {
     public PortfolioConverter(UriBuilder uriBuilder,
                               ComponentVisibilityService componentVisibilityService,
                               ComponentOrderService componentOrderService,
+                              ComponentHeadingService componentHeadingService,
                               UserSettingsService userSettingsService,
                               AvatarImageService avatarImageService,
                               LanguageProficiencyService languageProficiencyService,
@@ -80,6 +79,7 @@ public class PortfolioConverter {
         this.uriBuilder = uriBuilder;
         this.componentVisibilityService = componentVisibilityService;
         this.componentOrderService = componentOrderService;
+        this.componentHeadingService = componentHeadingService;
         this.userSettingsService = userSettingsService;
         this.avatarImageService = avatarImageService;
         this.languageProficiencyService = languageProficiencyService;
@@ -107,6 +107,7 @@ public class PortfolioConverter {
         portfolioDto.avatarUrl = avatarImageService.getPortfolioAvatarImageUrl(portfolio.getOwnerId());
         portfolioDto.componentVisibilities = componentVisibilityService.findByPortfolioId(portfolio.id);
         portfolioDto.componentOrders = componentOrderService.findByPortfolioId(portfolio.id);
+        portfolioDto.headings = componentHeadingService.findByPortfolioId(portfolio.id);
 
         fetchPortfolioComponents(portfolio, portfolioDto, componentFetchStrategy);
 
