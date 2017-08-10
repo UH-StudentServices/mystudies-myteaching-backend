@@ -17,18 +17,19 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
-import com.google.common.collect.ImmutableList;
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.domain.portfolio.ComponentHeading;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.dto.portfolio.ComponentHeadingDto;
-import fi.helsinki.opintoni.dto.portfolio.ComponentOrderDto;
 import fi.helsinki.opintoni.repository.portfolio.ComponentHeadingRepository;
+import fi.helsinki.opintoni.service.portfolio.ComponentHeadingService;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-import fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentOrder.UpdateComponentOrderingRequest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+
+import java.util.List;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
@@ -46,8 +47,11 @@ public class PrivateComponentHeadingResourceTest extends SpringTest {
     @Autowired
     private ComponentHeadingRepository componentHeadingRepository;
 
+    @Autowired
+    private ComponentHeadingService componentHeadingService;
+
     @Test
-    public void thatComponentHeadingIsUpdated() throws Exception {
+    public void thatComponentHeadingCanBeAdded() throws Exception {
         ComponentHeadingDto componentHeadingDto = new ComponentHeadingDto();
         componentHeadingDto.component = PortfolioComponent.STUDIES;
         componentHeadingDto.heading = "Test heading";
@@ -61,8 +65,15 @@ public class PrivateComponentHeadingResourceTest extends SpringTest {
             .andExpect(status().isOk());
 
         assertThat(componentHeadingRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID)).hasSize(1);
+    }
 
-        // Adding a modified heading for component adds a new entry into headings list
+    @Test
+    public void thatComponentHeadingsAreSeparateEntries() throws Exception {
+        ComponentHeadingDto componentHeadingDto = new ComponentHeadingDto();
+        componentHeadingDto.component = PortfolioComponent.STUDIES;
+        componentHeadingDto.heading = "Test heading";
+
+        componentHeadingService.upsert(STUDENT_PORTFOLIO_ID, componentHeadingDto);
 
         componentHeadingDto.component = PortfolioComponent.DEGREES;
         componentHeadingDto.heading = "Another test heading";
@@ -74,11 +85,17 @@ public class PrivateComponentHeadingResourceTest extends SpringTest {
             .andExpect(status().isOk());
 
         assertThat(componentHeadingRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID)).hasSize(2);
+    }
 
-        // Changing heading for existing component heading doesn't create new entry into list
+    @Test
+    public void thatComponentHeadingCanBeUpdated() throws Exception {
+        ComponentHeadingDto componentHeadingDto = new ComponentHeadingDto();
+        componentHeadingDto.component = PortfolioComponent.STUDIES;
+        componentHeadingDto.heading = "Test heading";
 
-        componentHeadingDto.component = PortfolioComponent.DEGREES;
-        componentHeadingDto.heading = "Changed heading";
+        componentHeadingService.upsert(STUDENT_PORTFOLIO_ID, componentHeadingDto);
+
+        componentHeadingDto.heading = "Changed test heading";
 
         mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + STUDENT_API_PATH_SEGMENT)
             .with(securityContext(studentSecurityContext()))
@@ -86,9 +103,9 @@ public class PrivateComponentHeadingResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        assertThat(componentHeadingRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID)).hasSize(2);
-
-
+        List<ComponentHeading> componentHeadings = componentHeadingRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID);
+        assertThat(componentHeadings.get(0).heading).isEqualTo(componentHeadingDto.heading);
+        assertThat(componentHeadings).hasSize(1);
     }
 
     @Test
@@ -98,34 +115,19 @@ public class PrivateComponentHeadingResourceTest extends SpringTest {
         componentHeadingDto.heading = "Test heading";
 
         // Have two edited headings
-
-        mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + STUDENT_API_PATH_SEGMENT)
-            .with(securityContext(studentSecurityContext()))
-            .content(WebTestUtils.toJsonBytes(componentHeadingDto))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+        componentHeadingService.upsert(STUDENT_PORTFOLIO_ID, componentHeadingDto);
 
         componentHeadingDto.component = PortfolioComponent.DEGREES;
         componentHeadingDto.heading = "Another heading";
 
-        mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + STUDENT_API_PATH_SEGMENT)
-            .with(securityContext(studentSecurityContext()))
-            .content(WebTestUtils.toJsonBytes(componentHeadingDto))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
-
-        assertThat(componentHeadingRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID)).hasSize(2);
+        componentHeadingService.upsert(STUDENT_PORTFOLIO_ID, componentHeadingDto);
 
         // Deleting a heading deletes only one element from the list
-
         String componentPath = STUDENT_API_PATH_SEGMENT + "/" + PortfolioComponent.STUDIES.toString();
 
         mockMvc.perform(delete(RestConstants.PRIVATE_API_V1 + componentPath)
             .with(securityContext(studentSecurityContext())));
 
         assertThat(componentHeadingRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID)).hasSize(1);
-
     }
-
-
 }

@@ -18,11 +18,14 @@
 package fi.helsinki.opintoni.web.rest.publicapi.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
+import fi.helsinki.opintoni.dto.portfolio.ComponentHeadingDto;
 import fi.helsinki.opintoni.dto.portfolio.ComponentOrderDto;
 import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;
+import fi.helsinki.opintoni.service.portfolio.ComponentHeadingService;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -39,8 +42,12 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
 
     private static final String STUDENT_PORTFOLIO_PATH = "/portfolio/student/en/olli-opiskelija";
     private static final String TEACHER_PORTFOLIO_PATH = "/portfolio/teacher/fi/opettaja";
+    private static final long STUDENT_PORTFOLIO_ID = 2L;
 
     private static final String PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME = "4c024239-8dab-4ea0-a686-fe373b040f48";
+
+    @Autowired
+    private ComponentHeadingService componentHeadingService;
 
     @Test
     public void thatPortfolioIsReturned() throws Exception {
@@ -134,4 +141,47 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
                 )
             ))));
     }
+
+    @Test
+    public void thatStudentPortfolioHasHeadingsModifiedByUser() throws Exception {
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PORTFOLIO_PATH)
+            .with(securityContext(studentSecurityContext())))
+            .andExpect(status().isOk())
+            .andExpect((jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
+                hasSize(1),
+                hasItem(
+                    hasEntry("instanceName", PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME)
+                )
+            ))));
+    }
+    @Test
+    public void thatWeCanGetAListOfHeadings() throws Exception {
+        ComponentHeadingDto componentHeadingDto = new ComponentHeadingDto();
+        componentHeadingDto.component = PortfolioComponent.STUDIES;
+        componentHeadingDto.heading = "Test heading";
+
+        // Have two edited headings
+        componentHeadingService.upsert(STUDENT_PORTFOLIO_ID, componentHeadingDto);
+
+        componentHeadingDto.component = PortfolioComponent.DEGREES;
+        componentHeadingDto.heading = "Another heading";
+
+        componentHeadingService.upsert(STUDENT_PORTFOLIO_ID, componentHeadingDto);
+
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PORTFOLIO_PATH)
+            .with(securityContext(studentSecurityContext())))
+            .andExpect(status().isOk())
+            .andExpect((jsonPath("$.headings").value(Matchers.<List<ComponentHeadingDto>>allOf(
+                hasSize(2),
+                hasItem(
+                    both(hasEntry("component", PortfolioComponent.STUDIES.toString()))
+                        .and(hasEntry("heading", "Test heading"))
+                ),
+                hasItem(
+                    both(hasEntry("component", PortfolioComponent.DEGREES.toString()))
+                        .and(hasEntry("heading", "Another heading"))
+                )
+            ))));
+    }
+
 }
