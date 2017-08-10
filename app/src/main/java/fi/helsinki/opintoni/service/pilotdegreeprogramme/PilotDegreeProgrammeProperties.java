@@ -15,34 +15,25 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.dto;
+package fi.helsinki.opintoni.service.pilotdegreeprogramme;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-public class SessionDto {
+@Component
+@ConfigurationProperties
+public class PilotDegreeProgrammeProperties {
 
-    public String username;
-    public String name;
-    public String email;
-    public String avatarUrl;
-    public FacultyDto faculty;
-    public Map<String, Map<String, List<String>>> portfolioPathsByRoleAndLang;
-    public Set<String> roles;
-    public boolean openUniversity;
-    public boolean pilotDegreeProgramme;
+    private List<String> pilotDegreeProgrammes = new ArrayList<>();
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-            .append("username", username)
-            .append("name", name)
-            .append("email", email)
-            .append("avatarUrl", avatarUrl)
-            .append("roles", roles)
-            .toString();
+    public List<String> getPilotDegreeProgrammes() {
+        return pilotDegreeProgrammes;
+    }
+
+    public void setPilotDegreeProgrammes(List<String> pilotDegreeProgrammes) {
+        this.pilotDegreeProgrammes = pilotDegreeProgrammes;
     }
 }
