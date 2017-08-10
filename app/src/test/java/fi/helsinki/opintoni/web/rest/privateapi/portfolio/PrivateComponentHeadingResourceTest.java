@@ -53,30 +53,11 @@ public class PrivateComponentHeadingResourceTest extends SpringTest {
     @Test
     public void thatComponentHeadingCanBeAdded() throws Exception {
         ComponentHeadingDto componentHeadingDto = new ComponentHeadingDto();
-        componentHeadingDto.component = PortfolioComponent.STUDIES;
-        componentHeadingDto.heading = "Test heading";
+        componentHeadingDto.component = PortfolioComponent.ATTAINMENTS;
+        componentHeadingDto.heading = "Third heading";
 
-        // Adding new modified heading adds a new entry into headings list
-
-        mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + STUDENT_API_PATH_SEGMENT)
-            .with(securityContext(studentSecurityContext()))
-            .content(WebTestUtils.toJsonBytes(componentHeadingDto))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
-
-        assertThat(componentHeadingRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID)).hasSize(1);
-    }
-
-    @Test
-    public void thatComponentHeadingsAreSeparateEntries() throws Exception {
-        ComponentHeadingDto componentHeadingDto = new ComponentHeadingDto();
-        componentHeadingDto.component = PortfolioComponent.STUDIES;
-        componentHeadingDto.heading = "Test heading";
-
-        componentHeadingService.upsert(STUDENT_PORTFOLIO_ID, componentHeadingDto);
-
-        componentHeadingDto.component = PortfolioComponent.DEGREES;
-        componentHeadingDto.heading = "Another test heading";
+        // Adding new modified heading adds a new entry into headings list, there are already 2 headings,
+        // defined by component_headings.csv
 
         mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + STUDENT_API_PATH_SEGMENT)
             .with(securityContext(studentSecurityContext()))
@@ -84,19 +65,16 @@ public class PrivateComponentHeadingResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        assertThat(componentHeadingRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID)).hasSize(2);
+        assertThat(componentHeadingRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID)).hasSize(3);
     }
 
     @Test
     public void thatComponentHeadingCanBeUpdated() throws Exception {
         ComponentHeadingDto componentHeadingDto = new ComponentHeadingDto();
         componentHeadingDto.component = PortfolioComponent.STUDIES;
-        componentHeadingDto.heading = "Test heading";
-
-        componentHeadingService.upsert(STUDENT_PORTFOLIO_ID, componentHeadingDto);
-
         componentHeadingDto.heading = "Changed test heading";
 
+        // There are already headings for STUDIES and DEGREES
         mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + STUDENT_API_PATH_SEGMENT)
             .with(securityContext(studentSecurityContext()))
             .content(WebTestUtils.toJsonBytes(componentHeadingDto))
@@ -105,24 +83,14 @@ public class PrivateComponentHeadingResourceTest extends SpringTest {
 
         List<ComponentHeading> componentHeadings = componentHeadingRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID);
         assertThat(componentHeadings.get(0).heading).isEqualTo(componentHeadingDto.heading);
-        assertThat(componentHeadings).hasSize(1);
+        assertThat(componentHeadings).hasSize(2);
     }
 
     @Test
     public void thatComponentHeadingIsDeleted() throws Exception {
-        ComponentHeadingDto componentHeadingDto = new ComponentHeadingDto();
-        componentHeadingDto.component = PortfolioComponent.STUDIES;
-        componentHeadingDto.heading = "Test heading";
-
-        // Have two edited headings
-        componentHeadingService.upsert(STUDENT_PORTFOLIO_ID, componentHeadingDto);
-
-        componentHeadingDto.component = PortfolioComponent.DEGREES;
-        componentHeadingDto.heading = "Another heading";
-
-        componentHeadingService.upsert(STUDENT_PORTFOLIO_ID, componentHeadingDto);
 
         // Deleting a heading deletes only one element from the list
+        // Remember that we have headings for STUDIES and DEGREES
         String componentPath = STUDENT_API_PATH_SEGMENT + "/" + PortfolioComponent.STUDIES.toString();
 
         mockMvc.perform(delete(RestConstants.PRIVATE_API_V1 + componentPath)

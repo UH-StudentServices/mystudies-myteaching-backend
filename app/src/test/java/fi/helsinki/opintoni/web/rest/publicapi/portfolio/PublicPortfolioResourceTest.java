@@ -143,31 +143,7 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
     }
 
     @Test
-    public void thatStudentPortfolioHasHeadingsModifiedByUser() throws Exception {
-        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PORTFOLIO_PATH)
-            .with(securityContext(studentSecurityContext())))
-            .andExpect(status().isOk())
-            .andExpect((jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
-                hasSize(1),
-                hasItem(
-                    hasEntry("instanceName", PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME)
-                )
-            ))));
-    }
-    @Test
-    public void thatWeCanGetAListOfHeadings() throws Exception {
-        ComponentHeadingDto componentHeadingDto = new ComponentHeadingDto();
-        componentHeadingDto.component = PortfolioComponent.STUDIES;
-        componentHeadingDto.heading = "Test heading";
-
-        // Have two edited headings
-        componentHeadingService.upsert(STUDENT_PORTFOLIO_ID, componentHeadingDto);
-
-        componentHeadingDto.component = PortfolioComponent.DEGREES;
-        componentHeadingDto.heading = "Another heading";
-
-        componentHeadingService.upsert(STUDENT_PORTFOLIO_ID, componentHeadingDto);
-
+    public void thatAllHeadingsForPublicComponentsAreReturned() throws Exception {
         mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PORTFOLIO_PATH)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
@@ -183,5 +159,4 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
                 )
             ))));
     }
-
 }
