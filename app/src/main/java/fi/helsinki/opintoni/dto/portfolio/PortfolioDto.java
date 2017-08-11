@@ -30,6 +30,7 @@ public class PortfolioDto {
     public String ownerName;
     public String backgroundUri;
     public PortfolioVisibility visibility;
+    public List<ComponentHeadingDto> headings;
     public String avatarUrl;
     public List<ComponentVisibilityDto> componentVisibilities;
     public List<ComponentOrderDto> componentOrders;
