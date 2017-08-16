@@ -18,6 +18,12 @@
 package fi.helsinki.opintoni.integration.oodi;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 public class OodiStudyRight {
 
@@ -26,4 +32,35 @@ public class OodiStudyRight {
     @JsonProperty("faculty_code")
     public String faculty;
 
+    public List<Element> elements = new ArrayList<>();
+
+    public List<String> getElementCodes() {
+        return this.elements.stream()
+            .map(element -> element.code)
+            .collect(toList());
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+            .add("priority", priority)
+            .add("faculty", faculty)
+            .add("elements", elements)
+            .toString();
+    }
+
+    public static class Element {
+
+        @JsonProperty("element_id")
+        public Integer id;
+        public String code;
+
+        @Override
+        public String toString() {
+            return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("code", code)
+                .toString();
+        }
+    }
 }
