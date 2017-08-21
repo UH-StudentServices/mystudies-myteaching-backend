@@ -26,6 +26,7 @@ import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.OfficeHoursConverter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +55,20 @@ public class OfficeHoursService {
     }
 
     private int comparePublicOfficeHoursDtos(PublicOfficeHoursDto p1, PublicOfficeHoursDto p2) {
-        return p1.name.compareTo(p2.name);
+        String p1ToBeSorted = convertToSortableName(p1.name);
+        String p2ToBeSorted = convertToSortableName(p2.name);
+        return p1ToBeSorted.compareTo(p2ToBeSorted);
+    }
+
+    private static String convertToSortableName(String name){
+        String sortableName = name;
+        for(int i=name.length()-1;i>=0; i--){
+            if(name.charAt(i)== ' '){
+                sortableName = name.substring(i+1, name.length()) + name.substring(0, i);
+                break;
+            }
+        }
+        return sortableName;
     }
 
     public OfficeHoursDto update(final Long userId, final OfficeHoursDto officeHoursDto) {
