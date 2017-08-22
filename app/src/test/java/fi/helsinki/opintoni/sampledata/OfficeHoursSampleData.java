@@ -17,11 +17,9 @@
 
 package fi.helsinki.opintoni.sampledata;
 
-import java.lang.reflect.Array;
-
 public class OfficeHoursSampleData {
     public static final String TEACHER_NAME = "Leena Lehtori";
-    public static final String[] TEACHER_NAME_ARRAY = {"Barry von Hertzen", "Garry von Hertzen", "Harry von Hertzen", "Leena Lehtori"};
+    public static final String[] TEACHER_NAME_ARRAY = {"Leena von Ahteritohtori", "Hertzen", "Barry von Hertzen",  "Harry von Hertzen", "Leena Lehtori", "Leena von Tohtori"};
 
     public static final String OFFICE_HOURS = "Vastaanotto maanantaisin klo 10.00";
 }
