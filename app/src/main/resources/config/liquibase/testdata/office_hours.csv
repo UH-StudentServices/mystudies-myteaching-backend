@@ -1,2 +1,7 @@
 id;user_id;name;description;created_by
 1;4;Leena Lehtori;Vastaanotto maanantaisin klo 10.00;system
+2;3;Harry von Hertzen;Vastaanotto maanantaisin klo 11.00;system
+3;2;Barry von Hertzen;Vastaanotto maanantaisin klo 12.00;system
+4;1;Hertzen;Vastaanotto maanantaisin klo 13.00;system
+5;5;Leena von Tohtori;Vastaanotto maanantaisin klo 13.00;system
+6;6;Leena von Ahteritohtori;Vastaanotto maanantaisin klo 13.00;system

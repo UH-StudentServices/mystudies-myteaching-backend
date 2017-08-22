@@ -48,7 +48,7 @@ public class PublicOfficeHoursResource extends AbstractResource {
 
     @RequestMapping(method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<List<PublicOfficeHoursDto>> getAllOfficeHours() throws Exception {
+    public ResponseEntity<List<PublicOfficeHoursDto>> getAllOfficeHours() {
         return response(officeHoursService.getAll());
     }
 }

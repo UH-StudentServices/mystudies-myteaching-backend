@@ -54,7 +54,18 @@ public class OfficeHoursService {
     }
 
     private int comparePublicOfficeHoursDtos(PublicOfficeHoursDto p1, PublicOfficeHoursDto p2) {
-        return p1.name.compareTo(p2.name);
+        String p1ToBeSorted = convertToSortableName(p1.name);
+        String p2ToBeSorted = convertToSortableName(p2.name);
+        return p1ToBeSorted.compareTo(p2ToBeSorted);
+    }
+
+    private static String convertToSortableName(String name){
+        String[] parts = name.trim().split(" ");
+        String sortableString = parts[parts.length-1];
+        for (int i=0; i<parts.length-1;i++) {
+            sortableString = sortableString + parts[i];
+        }
+        return sortableString;
     }
 
     public OfficeHoursDto update(final Long userId, final OfficeHoursDto officeHoursDto) {
