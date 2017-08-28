@@ -30,61 +30,65 @@ public class CoursePageUriLocalizerTest extends SpringTest {
     private static final String LOCALE_EN = "en";
     private static final String LOCALE_SV = "sv";
 
+    private static final String URL_EN = "http://courses.helsinki.fi/filk-001/32112";
+    private static final String URL_FI ="http://courses.helsinki.fi/fi/filk-001/32112";
+    private static final String URL_SV ="http://courses.helsinki.fi/sv/filk-001/32112";
+
     @Autowired
     private CoursePageUriLocalizer coursePageUriLocalizer;
 
     @Test
     public void thatEnglishUriGetsLocalizedToFinnish() {
         setLocale(LOCALE_FI);
-        assertThat(coursePageUriLocalizer.localize("http://courses.helsinki.fi/30250")).isEqualTo("http://courses.helsinki.fi/fi/30250");
+        assertThat(coursePageUriLocalizer.localize(URL_EN)).isEqualTo(URL_FI);
     }
 
     @Test
     public void thatEnglishUriGetsLocalizedToSwedish() {
         setLocale(LOCALE_SV);
-        assertThat(coursePageUriLocalizer.localize("http://courses.helsinki.fi/30250")).isEqualTo("http://courses.helsinki.fi/sv/30250");
+        assertThat(coursePageUriLocalizer.localize(URL_EN)).isEqualTo(URL_SV);
     }
 
     @Test
     public void thatEnglishUriGetsLocalizedToEnglish() {
         setLocale(LOCALE_EN);
-        assertThat(coursePageUriLocalizer.localize("http://courses.helsinki.fi/30250")).isEqualTo("http://courses.helsinki.fi/30250");
+        assertThat(coursePageUriLocalizer.localize(URL_EN)).isEqualTo(URL_EN);
     }
 
     @Test
     public void thatFinnishUriGetsLocalizedToEnglish() {
         setLocale(LOCALE_EN);
-        assertThat(coursePageUriLocalizer.localize("http://courses.helsinki.fi/fi/30250")).isEqualTo("http://courses.helsinki.fi/30250");
+        assertThat(coursePageUriLocalizer.localize(URL_FI)).isEqualTo(URL_EN);
     }
 
     @Test
     public void thatFinnishUriGetsLocalizedToSwedish() {
         setLocale(LOCALE_SV);
-        assertThat(coursePageUriLocalizer.localize("http://courses.helsinki.fi/fi/30250")).isEqualTo("http://courses.helsinki.fi/sv/30250");
+        assertThat(coursePageUriLocalizer.localize(URL_FI)).isEqualTo(URL_SV);
     }
 
     @Test
     public void thatFinnishUriGetsLocalizedToFinnish() {
         setLocale(LOCALE_FI);
-        assertThat(coursePageUriLocalizer.localize("http://courses.helsinki.fi/fi/30250")).isEqualTo("http://courses.helsinki.fi/fi/30250");
+        assertThat(coursePageUriLocalizer.localize(URL_FI)).isEqualTo(URL_FI);
     }
 
     @Test
     public void thatSwedishUriGetsLocalizedToEnglish() {
         setLocale(LOCALE_EN);
-        assertThat(coursePageUriLocalizer.localize("http://courses.helsinki.fi/sv/30250")).isEqualTo("http://courses.helsinki.fi/30250");
+        assertThat(coursePageUriLocalizer.localize(URL_SV)).isEqualTo(URL_EN);
     }
 
     @Test
     public void thatSwedishUriGetsLocalizedToSwedish() {
         setLocale(LOCALE_SV);
-        assertThat(coursePageUriLocalizer.localize("http://courses.helsinki.fi/sv/30250")).isEqualTo("http://courses.helsinki.fi/sv/30250");
+        assertThat(coursePageUriLocalizer.localize(URL_SV)).isEqualTo(URL_SV);
     }
 
     @Test
     public void thatSwedishUriGetsLocalizedToFinnish() {
         setLocale(LOCALE_FI);
-        assertThat(coursePageUriLocalizer.localize("http://courses.helsinki.fi/sv/30250")).isEqualTo("http://courses.helsinki.fi/fi/30250");
+        assertThat(coursePageUriLocalizer.localize(URL_SV)).isEqualTo(URL_FI);
     }
 
     private void setLocale(String localeName) {
