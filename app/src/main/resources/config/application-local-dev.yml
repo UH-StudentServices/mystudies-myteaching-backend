@@ -90,6 +90,3 @@ feed.client.implementation: mock
 meceSecretKey: W778UXMJ7PFQTKG2RM8NR2H7T3QE5ZTL
 
 embedlyApiKey: dd741e653b0e4841bc59a60650031057
-
-pilotDegreeProgrammes:
-    - A2004

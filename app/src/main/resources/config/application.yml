@@ -376,3 +376,7 @@ facultyLinks:
 feed.client.implementation: remote
 
 locale.default: fi
+
+pilotDegreeProgrammes:
+    - KH50_005
+    - KH40_006
