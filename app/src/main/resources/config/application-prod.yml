@@ -35,7 +35,7 @@ spring:
         port: 25
 
 feedback:
-    efecte.address: opetusteknologia@helsinki.fi
+    efecte.address: neu-tuki@helsinki.fi
 
 logging:
     level:
