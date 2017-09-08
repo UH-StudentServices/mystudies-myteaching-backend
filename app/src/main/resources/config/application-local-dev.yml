@@ -30,7 +30,7 @@ spring:
         port: 2525
 
 feedback:
-    efecte.address: opetusteknologia@helsinki.fi
+    efecte.address: doo-opintoni@helsinki.fi
 
 metrics:
     jmx.enabled: false
