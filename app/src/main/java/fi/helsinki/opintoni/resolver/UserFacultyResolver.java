@@ -62,7 +62,7 @@ public class UserFacultyResolver {
     }
 
     private String getDefaultFacultyCode() {
-        return appConfiguration.get("userDefaults.facultyUsefulLinks.defaultFacultyCode");
+        return appConfiguration.get("userDefaults.defaultFacultyCode");
     }
 
     public String getFacultyCode(AppUser appUser) {

@@ -20,11 +20,9 @@ package fi.helsinki.opintoni.dto;
 public class FacultyDto {
 
     public String code;
-    public String uri;
 
-    public FacultyDto(String code, String uri) {
+    public FacultyDto(String code) {
         this.code = code;
-        this.uri = uri;
     }
 
 }

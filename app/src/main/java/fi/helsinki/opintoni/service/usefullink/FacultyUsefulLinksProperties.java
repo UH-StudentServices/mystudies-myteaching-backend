@@ -27,17 +27,7 @@ import java.util.Map;
 @Component
 @ConfigurationProperties(prefix = "userDefaults.facultyUsefulLinks")
 public class FacultyUsefulLinksProperties {
-
-    private List<Map<String, String>> studentFacultyLinks = new ArrayList<>();
     private List<Map<String, String>> teacherFacultyLinks = new ArrayList<>();
-
-    public List<Map<String, String>> getStudentFacultyLinks() {
-        return studentFacultyLinks;
-    }
-
-    public void setStudentFacultyLinks(List<Map<String, String>> studentFacultyLinks) {
-        this.studentFacultyLinks = studentFacultyLinks;
-    }
 
     public List<Map<String, String>> getTeacherFacultyLinks() {
         return teacherFacultyLinks;

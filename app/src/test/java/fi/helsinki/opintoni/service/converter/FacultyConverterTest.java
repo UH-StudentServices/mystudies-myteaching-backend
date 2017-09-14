@@ -40,7 +40,6 @@ public class FacultyConverterTest extends SpringTest {
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createTeacher());
 
         assertThat(facultyDto.code).isEqualTo("A93000");
-        assertThat(facultyDto.uri).isEqualTo("https://flamma.helsinki.fi/portal/units/avoin");
     }
 
     @Test
@@ -50,7 +49,6 @@ public class FacultyConverterTest extends SpringTest {
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createStudent());
 
         assertThat(facultyDto.code).isEqualTo("A93000");
-        assertThat(facultyDto.uri).isEqualTo("https://flamma.helsinki.fi/portal/units/avoin");
     }
 
     @Test
@@ -67,7 +65,6 @@ public class FacultyConverterTest extends SpringTest {
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createTeacher());
 
         assertThat(facultyDto.code).isEqualTo("A90000");
-        assertThat(facultyDto.uri).isEqualTo("https://flamma.helsinki.fi/portal/units/vetmed");
     }
 
     @Test
@@ -77,7 +74,6 @@ public class FacultyConverterTest extends SpringTest {
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createStudent());
 
         assertThat(facultyDto.code).isEqualTo("H70");
-        assertThat(facultyDto.uri).isEqualTo("https://flamma.helsinki.fi/portal/units/valt");
     }
 
     private AppUser createTeacher() {

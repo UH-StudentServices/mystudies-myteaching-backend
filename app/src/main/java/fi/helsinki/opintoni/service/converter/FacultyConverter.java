@@ -57,16 +57,11 @@ public class FacultyConverter {
         if (userFacultyResolver.isUnknownFaculty(facultyCode)) {
             return null;
         }
-        return new FacultyDto(facultyCode, getFacultyUri(facultyCode));
+        return new FacultyDto(facultyCode);
     }
 
     private FacultyDto createOpenUniversityFaculty() {
         String openUniversityCode = OPEN_UNIVERSITY_FACULTY_CODE;
-        return new FacultyDto(openUniversityCode, getFacultyUri(openUniversityCode));
+        return new FacultyDto(openUniversityCode);
     }
-
-    private String getFacultyUri(String facultyCode) {
-        return appConfiguration.get("facultyLinks." + facultyCode);
-    }
-
 }
