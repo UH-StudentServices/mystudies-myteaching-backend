@@ -27,13 +27,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DefaultUsefulLinksService {
-
-    protected List<UsefulLink> createUsefulLinks(List<Map<String, String>> usefulLinks, User user) {
-        return usefulLinks.stream()
-            .map(l -> usefulLinkFromDescriptor(l, user))
-            .collect(Collectors.toList());
-    }
-
     protected List<UsefulLink> createLocalizedUsefulLinks(List<Map<String, String>> usefulLinks, User user) {
         return usefulLinks.stream()
             .map(l -> usefulLinkFromDescriptor(l, user))

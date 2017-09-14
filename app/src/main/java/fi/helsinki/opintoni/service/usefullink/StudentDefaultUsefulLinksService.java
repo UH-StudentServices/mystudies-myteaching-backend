@@ -32,41 +32,27 @@ import java.util.Map;
 public class StudentDefaultUsefulLinksService extends DefaultUsefulLinksService {
 
     private final UsefulLinkTransactionalService usefulLinkTransactionalService;
-    private final UserFacultyResolver userFacultyResolver;
     private final OodiUserRoleService oodiUserRoleService;
     private final List<Map<String, String>> defaultUsefulLinks;
     private final List<Map<String, String>> openUniversityDefaultUsefulLinks;
-    private final List<Map<String, String>> facultyLinkOptions;
 
     @Autowired
     public StudentDefaultUsefulLinksService(UsefulLinkTransactionalService usefulLinkTransactionalService,
                                             UsefulLinksProperties usefulLinksProperties,
-                                            FacultyUsefulLinksProperties facultyLinksProperties,
-                                            UserFacultyResolver userFacultyResolver,
                                             OodiUserRoleService oodiUserRoleService) {
         this.usefulLinkTransactionalService = usefulLinkTransactionalService;
-        this.userFacultyResolver = userFacultyResolver;
         this.oodiUserRoleService = oodiUserRoleService;
         this.defaultUsefulLinks = usefulLinksProperties.getStudentDefaultUsefulLinks();
         this.openUniversityDefaultUsefulLinks = usefulLinksProperties.getStudentOpenUniversityDefaultUsefulLinks();
-        this.facultyLinkOptions = facultyLinksProperties.getStudentFacultyLinks();
     }
 
     public void createDefaultLinks(User user, AppUser appUser) {
-        List<UsefulLink> usefulLinks = oodiUserRoleService.isOpenUniversityStudent(appUser.getStudentNumber().get())
-            ? createLocalizedUsefulLinks(openUniversityDefaultUsefulLinks, user)
-            : createUsefulLinksByStudentNumber(user, appUser.getStudentNumber().get());
+        List<Map<String, String>> usefulLinksPropertiesForUser =
+            oodiUserRoleService.isOpenUniversityStudent(appUser.getStudentNumber().get()) ?
+            openUniversityDefaultUsefulLinks : defaultUsefulLinks;
+
+        List<UsefulLink> usefulLinks = createLocalizedUsefulLinks(usefulLinksPropertiesForUser, user);
 
         usefulLinkTransactionalService.save(usefulLinks);
     }
-
-    private List<UsefulLink> createUsefulLinksByStudentNumber(User user, String studentNumber) {
-        List<UsefulLink> usefulLinks = createUsefulLinks(defaultUsefulLinks, user);
-
-        String facultyCode = userFacultyResolver.getStudentFacultyCode(studentNumber);
-        usefulLinks.addAll(getUsefulLinksByFaculty(facultyCode, facultyLinkOptions, user));
-
-        return usefulLinks;
-    }
-
 }

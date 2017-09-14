@@ -51,7 +51,6 @@ public class SessionResourceTest extends SpringTest {
             .andExpect(jsonPath("$.portfolioPathsByRoleAndLang.student.en").value(contains("/en/olli-opiskelija")))
             .andExpect(jsonPath("$.portfolioPathsByRoleAndLang.student.fi").value(contains("/fi/olli-opiskelija")))
             .andExpect(jsonPath("$.faculty.code").value("H70"))
-            .andExpect(jsonPath("$.faculty.uri").value("https://flamma.helsinki.fi/portal/units/valt"))
             .andExpect(jsonPath("$.pilotDegreeProgramme").value(true));
     }
 
@@ -69,7 +68,6 @@ public class SessionResourceTest extends SpringTest {
             .andExpect(jsonPath("$.roles", hasItem("TEACHER")))
             .andExpect(jsonPath("$.openUniversity").value(true))
             .andExpect(jsonPath("$.faculty.code").value("A93000"))
-            .andExpect(jsonPath("$.faculty.uri").value("https://flamma.helsinki.fi/portal/units/avoin"))
             .andExpect(jsonPath("$.pilotDegreeProgramme").value(false));
     }
 

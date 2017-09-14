@@ -50,11 +50,10 @@ public class UsefulLinkServiceTest extends SpringTest {
     private static final String MOCK_WEBPAGE_URL = "http://www.helsinki.fi";
     private static final String MOCK_WEBPAGE_TITLE = "Helsinki University site title";
 
-    private static final int USEFUL_LINKS_COUNT_FOR_DEFAULT_STUDENT = 7;
-    private static final int USEFUL_LINKS_COUNT_FOR_STUDENT_WITH_UNKNOWN_FACULTY = 5;
+    private static final int USEFUL_LINKS_COUNT_FOR_DEFAULT_STUDENT = 2;
     private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_STUDENT = 2;
-    private static final int USEFUL_LINKS_COUNT_FOR_DEFAULT_TEACHER = 7;
-    private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_TEACHER = 2;
+    private static final int USEFUL_LINKS_COUNT_FOR_DEFAULT_TEACHER = 8;
+    private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_TEACHER = 3;
 
     @Autowired
     RestTemplate linkUrlLoaderRestTemplate;
@@ -140,24 +139,9 @@ public class UsefulLinkServiceTest extends SpringTest {
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
         assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_DEFAULT_STUDENT);
         checkLinkURLAndDescription(usefulLinks.get(0),
-            "https://flamma.helsinki.fi/en/HY034202",
-            "usefulLinks.generalInformation");
+            "http://helsinki.fi/office365",
+            "usefulLinks.email");
         checkLinkURLAndDescription(usefulLinks.get(1),
-            "https://flamma.helsinki.fi/fi/HY286484",
-            "usefulLinks.forStudent");
-        checkLinkURLAndDescription(usefulLinks.get(2),
-            "https://opinder.helsinki.fi",
-            "usefulLinks.opinder");
-        checkLinkURLAndDescription(usefulLinks.get(3),
-            "https://flamma.helsinki.fi/en/HY034217",
-            "usefulLinks.healthAndWellbeing");
-        checkLinkURLAndDescription(usefulLinks.get(4),
-            "https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY034234",
-            "usefulLinks.studyingAndTrainingAbroad");
-        checkLinkURLAndDescription(usefulLinks.get(5),
-            "http://www.aarresaari.net/index.php?32&uniid=7&lang_id=1",
-            "usefulLinks.rekryNet");
-        checkLinkURLAndDescription(usefulLinks.get(6),
             "https://helsinkifi-my.sharepoint.com/",
             "usefulLinks.oneDrive");
     }
@@ -191,6 +175,9 @@ public class UsefulLinkServiceTest extends SpringTest {
             "https://www.researchgate.net/",
             "usefulLinks.researchGate");
         checkLinkURLAndDescription(usefulLinks.get(6),
+            "http://www.helsinki.fi/optime",
+            "usefulLinks.optimePortal");
+        checkLinkURLAndDescription(usefulLinks.get(7),
             "https://helsinkifi-my.sharepoint.com/",
             "usefulLinks.oneDrive");
     }
@@ -263,20 +250,9 @@ public class UsefulLinkServiceTest extends SpringTest {
         checkLinkURLAndDescription(usefulLinks.get(1),
             "https://flamma.helsinki.fi/fi/HY311747",
             "usefulLinks.teachingPracticesInOpenUniversity");
-    }
-
-    @Test
-    @Transactional
-    public void thatNoFacultySpecificLinkIsAddedWhenStudentHasUnknownFaculty() {
-        configureStudentSecurityContext();
-
-        defaultStudentRequestChain()
-            .enrollments()
-            .studyRights("studentstudyrightswithunknownfaculty.json");
-
-        List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
-
-        assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_STUDENT_WITH_UNKNOWN_FACULTY);
+        checkLinkURLAndDescription(usefulLinks.get(2),
+            "http://www.helsinki.fi/optime",
+            "usefulLinks.optimePortal");
     }
 
     private Locale englishLocale() {
