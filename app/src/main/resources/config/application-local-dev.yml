@@ -31,8 +31,8 @@ spring:
 
 feedback:
     recipient:
-        student: neu-tuki@helsinki.fi
-        teacher: opetusteknologia@helsinki.fi
+        student: studentfeedback@localhost
+        teacher: teacherfeedback@localhost
 
 metrics:
     jmx.enabled: false

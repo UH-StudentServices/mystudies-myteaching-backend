@@ -20,6 +20,10 @@ async:
     queueCapacity: 10000
 
 feedback:
+    recipient:
+        student: neu-tuki@helsinki.fi
+        teacher: opetusteknologia@helsinki.fi
+
     anonymous:
         fromAddress: doo-projekti@helsinki.fi
         replyToAddress: noreply@helsinki.fi

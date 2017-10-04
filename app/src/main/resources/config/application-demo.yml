@@ -33,11 +33,6 @@ spring:
         host: smtp.helsinki.fi
         port: 25
 
-feedback:
-    recipient:
-        student: neu-tuki@helsinki.fi
-        teacher: opetusteknologia@helsinki.fi
-
 metrics:
     jmx.enabled: true
 
