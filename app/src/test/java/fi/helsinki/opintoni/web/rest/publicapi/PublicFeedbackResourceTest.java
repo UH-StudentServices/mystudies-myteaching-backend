@@ -33,6 +33,7 @@ import javax.mail.Message;
 import javax.mail.Address;
 import javax.mail.MessagingException;
 import java.io.IOException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import com.google.common.collect.ImmutableMap;
 
@@ -45,11 +46,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PublicFeedbackResourceTest extends SpringTest {
     private static final String FEEDBACK_CONTENT = "Content";
     private static final String FEEDBACK_SENDER = "teppo.testaaja@helsinki.fi";
-    private static final String FEEDBACK_NO_SENDER = "doo-projekti@helsinki.fi";
-    private static final String FEEDBACK_NO_REPLY = "noreply@helsinki.fi";
+
+    @Value("${feedback.anonymous.fromAddress}")
+    private String FEEDBACK_NO_SENDER;
+
+    @Value("${feedback.anonymous.replyToAddress}")
+    private String FEEDBACK_NO_REPLY;
+
     private static final String REPLY_TO_HEADER = "Reply-To";
-    private static final String FEEDBACK_STUDENT_RECIPIENT = "neu-tuki@helsinki.fi";
-    private static final String FEEDBACK_TEACHER_RECIPIENT = "opetusteknologia@helsinki.fi";
+
+    @Value("${feedback.recipient.student}")
+    private String FEEDBACK_STUDENT_RECIPIENT;
+
+    @Value("${feedback.recipient.teacher}")
+    private String FEEDBACK_TEACHER_RECIPIENT;
+
     private static final String FEEDBACK_CONTENT_TYPE = "text/plain; charset=UTF-8";
     private static final String FEEDBACK_USER_AGENT = "test-user-agent";
     private static final String FEEDBACK_FACULTY = "H70";
