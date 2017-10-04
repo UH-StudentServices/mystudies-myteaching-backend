@@ -33,9 +33,6 @@ spring:
         host: smtp.helsinki.fi
         port: 25
 
-feedback:
-    efecte.address: doo-opintoni@helsinki.fi
-
 metrics:
     jmx.enabled: true
 

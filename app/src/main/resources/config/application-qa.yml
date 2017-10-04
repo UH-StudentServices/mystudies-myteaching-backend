@@ -33,9 +33,6 @@ spring:
         host: smtp.helsinki.fi
         port: 25
 
-feedback:
-    efecte.address: doo-opintoni@helsinki.fi
-
 logging:
     level:
         org.springframework.security.saml: ERROR

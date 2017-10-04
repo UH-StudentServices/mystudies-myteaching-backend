@@ -34,7 +34,9 @@ spring:
         port: 25
 
 feedback:
-    efecte.address: doo-opintoni@helsinki.fi
+    recipient:
+        student: studentfeedback@localhost
+        teacher: teacherfeedback@localhost
 
 metrics:
     jmx.enabled: true

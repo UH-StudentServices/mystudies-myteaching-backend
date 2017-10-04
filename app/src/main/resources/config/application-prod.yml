@@ -34,8 +34,6 @@ spring:
         host: smtp.helsinki.fi
         port: 25
 
-feedback:
-    efecte.address: neu-tuki@helsinki.fi
 
 logging:
     level:

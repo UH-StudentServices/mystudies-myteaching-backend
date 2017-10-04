@@ -17,7 +17,7 @@
 
 package fi.helsinki.opintoni.web.rest.publicapi;
 
-import fi.helsinki.opintoni.service.FeedbackService;
+import fi.helsinki.opintoni.service.feedback.FeedbackService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
