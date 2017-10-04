@@ -93,7 +93,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
         SendFeedbackRequest request = new SendFeedbackRequest();
         request.content = FEEDBACK_CONTENT;
         request.email = FEEDBACK_SENDER;
-        request.metadata = getMetadata(FEEDBACK_LANG_FI, FeedbackSite.STUDENT);
+        request.metadata = getMetadata(FEEDBACK_LANG_FI, FeedbackSite.STUDENT.toString());
 
         mockMvc.perform(post(RestConstants.PUBLIC_API_V1 + "/feedback")
             .with(securityContext(studentSecurityContext()))
@@ -110,7 +110,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
         SendFeedbackRequest request = new SendFeedbackRequest();
         request.content = FEEDBACK_CONTENT;
         request.email = FEEDBACK_SENDER;
-        request.metadata = getMetadata(FEEDBACK_LANG_FI, FeedbackSite.TEACHER);
+        request.metadata = getMetadata(FEEDBACK_LANG_FI, FeedbackSite.TEACHER.toString());
 
         mockMvc.perform(post(RestConstants.PUBLIC_API_V1 + "/feedback")
             .with(securityContext(studentSecurityContext()))
@@ -173,6 +173,20 @@ public class PublicFeedbackResourceTest extends SpringTest {
             FEEDBACK_SUBJECT_EN, FEEDBACK_CONTENT_PATTERN_EN);
     }
 
+    @Test
+    public void thatInvalidMessageStateCausesError() throws Exception {
+        SendFeedbackRequest request = new SendFeedbackRequest();
+        request.content = FEEDBACK_CONTENT;
+        request.email = FEEDBACK_SENDER;
+        request.metadata = getMetadata(FEEDBACK_LANG_FI, "kukkusteitti");
+
+        mockMvc.perform(post(RestConstants.PUBLIC_API_V1 + "/feedback")
+            .with(securityContext(studentSecurityContext()))
+            .content(WebTestUtils.toJsonBytes(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+    }
+
     private void checkReceivedMessages(String expectedTo,
                                        String expectedSender,
                                        String expectedReplyTo,
@@ -231,14 +245,14 @@ public class PublicFeedbackResourceTest extends SpringTest {
     }
 
     private JsonNode getMetadata(String lang) {
-        return getMetadata(lang, FeedbackSite.STUDENT);
+        return getMetadata(lang, FeedbackSite.STUDENT.toString());
     }
 
-    private JsonNode getMetadata(String lang, FeedbackSite state ) {
+    private JsonNode getMetadata(String lang, String state ) {
         ImmutableMap<String, String> metadata = ImmutableMap.of(
             "userAgent", FEEDBACK_USER_AGENT,
             "faculty", FEEDBACK_FACULTY,
-            "state", state.toString(),
+            "state", state,
             "lang", lang);
         return new ObjectMapper().valueToTree(metadata);
     }

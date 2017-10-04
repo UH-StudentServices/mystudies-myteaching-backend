@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.service.feedback;
 
+import fi.helsinki.opintoni.exception.http.BadRequestException;
 import fi.helsinki.opintoni.service.TimeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,7 +108,8 @@ public class FeedbackService {
         } else if (FeedbackSite.TEACHER.equalsName(state)) {
             message.setTo(teacherFeedbackToAddress);
         } else {
-            // TODO: throw something reasonable
+            log.error("Unexpected message state: {}", state);
+            throw new BadRequestException("Unexpected message metadata state");
         }
 
         message.setSubject(messageSource.getMessage("feedback.subject." + state, null, DEFAULT_SUBJECT, locale));
