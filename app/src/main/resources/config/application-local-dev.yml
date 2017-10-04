@@ -30,7 +30,9 @@ spring:
         port: 2525
 
 feedback:
-    efecte.address: doo-opintoni@helsinki.fi
+    recipient:
+        student: neu-tuki@helsinki.fi
+        teacher: opetusteknologia@helsinki.fi
 
 metrics:
     jmx.enabled: false

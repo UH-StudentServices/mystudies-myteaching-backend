@@ -15,8 +15,9 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.service;
+package fi.helsinki.opintoni.service.feedback;
 
+import fi.helsinki.opintoni.service.TimeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,15 +36,10 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.context.MessageSource;
 
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.time.ZonedDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.localization.Language;
 
 
@@ -65,7 +61,8 @@ public class FeedbackService {
     private final MessageSource messageSource;
     private final FeedbackRepository feedbackRepository;
     private final FeedbackConverter feedbackConverter;
-    private final String efecteEmailAddress;
+    private final String studentFeedbackToAddress;
+    private final String teacherFeedbackToAddress;
     private final String anonymousFeedbackFromAddress;
     private final String anonymousFeedbackReplyToAddress;
 
@@ -73,14 +70,16 @@ public class FeedbackService {
     @Autowired
     public FeedbackService(MailSender mailSender,
                            MessageSource messageSource,
-                           @Value("${feedback.efecte.address}") String efecteEmailAddress,
+                           @Value("${feedback.recipient.student}") String studentFeedbackToAddress,
+                           @Value("${feedback.recipient.teacher}") String teacherFeedbackToAddress,
                            @Value("${feedback.anonymous.fromAddress}") String anonymousFeedbackFromAddress,
                            @Value("${feedback.anonymous.replyToAddress}") String anonymousFeedbackReplyToAddress,
                            FeedbackRepository feedbackRepository,
                            FeedbackConverter feedbackConverter) {
         this.mailSender = mailSender;
         this.messageSource = messageSource;
-        this.efecteEmailAddress = efecteEmailAddress;
+        this.studentFeedbackToAddress = studentFeedbackToAddress;
+        this.teacherFeedbackToAddress = teacherFeedbackToAddress;
         this.anonymousFeedbackFromAddress = anonymousFeedbackFromAddress;
         this.anonymousFeedbackReplyToAddress = anonymousFeedbackReplyToAddress;
         this.feedbackRepository = feedbackRepository;
@@ -102,11 +101,21 @@ public class FeedbackService {
         } else {
             message.setFrom(request.email);
         }
-        message.setTo(efecteEmailAddress);
+
+        if (FeedbackSite.STUDENT.equalsName(state)) {
+            message.setTo(studentFeedbackToAddress);
+        } else if (FeedbackSite.TEACHER.equalsName(state)) {
+            message.setTo(teacherFeedbackToAddress);
+        } else {
+            // TODO: throw something reasonable
+        }
+
         message.setSubject(messageSource.getMessage("feedback.subject." + state, null, DEFAULT_SUBJECT, locale));
         message.setText(body);
         mailSender.send(message);
     }
+
+
 
     public List<FeedbackDto> getAllFeedback() {
         return feedbackRepository.findAllByOrderByCreatedDateDesc()

@@ -20,7 +20,7 @@ package fi.helsinki.opintoni.web.rest.publicapi;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.domain.Feedback;
+import fi.helsinki.opintoni.service.feedback.FeedbackSite;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import fi.helsinki.opintoni.web.rest.privateapi.SendFeedbackRequest;
@@ -33,11 +33,8 @@ import javax.mail.Message;
 import javax.mail.Address;
 import javax.mail.MessagingException;
 import java.io.IOException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import com.google.common.collect.ImmutableMap;
-import java.util.Map;
-import java.util.HashMap;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
@@ -51,21 +48,28 @@ public class PublicFeedbackResourceTest extends SpringTest {
     private static final String FEEDBACK_NO_SENDER = "doo-projekti@helsinki.fi";
     private static final String FEEDBACK_NO_REPLY = "noreply@helsinki.fi";
     private static final String REPLY_TO_HEADER = "Reply-To";
-    private static final String FEEDBACK_RECIPIENT = "opetusteknologia@helsinki.fi";
+    private static final String FEEDBACK_STUDENT_RECIPIENT = "neu-tuki@helsinki.fi";
+    private static final String FEEDBACK_TEACHER_RECIPIENT = "opetusteknologia@helsinki.fi";
     private static final String FEEDBACK_CONTENT_TYPE = "text/plain; charset=UTF-8";
     private static final String FEEDBACK_USER_AGENT = "test-user-agent";
     private static final String FEEDBACK_FACULTY = "H70";
-    private static final String FEEDBACK_STATE = "opintoni";
     private static final String FEEDBACK_LANG_FI = "fi";
     private static final String FEEDBACK_LANG_SV = "sv";
     private static final String FEEDBACK_LANG_EN = "en";
-    private static final String FEEDBACK_SUBJECT_FI = "Palaute Opintoni-sivulta";
+    private static final String FEEDBACK_SUBJECT_STUDENT_FI = "Palaute Opintoni-sivulta";
+    private static final String FEEDBACK_SUBJECT_TEACHER_FI = "Palaute Opetukseni-sivulta";
     private static final String FEEDBACK_CONTENT_PATTERN_FI =
         "Content\r\n\r\n" +
         "Aikaleima: \\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d\r\n" +
         "Tiedekunta: Valtiotieteellinen tiedekunta\r\n" +
         "Tila: opintoni\r\n" +
         "User-Agent: test-user-agent\r\n";
+    private static final String FEEDBACK_CONTENT_PATTERN_TEACHER_FI =
+        "Content\r\n\r\n" +
+            "Aikaleima: \\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d\r\n" +
+            "Tiedekunta: Valtiotieteellinen tiedekunta\r\n" +
+            "Tila: opetukseni\r\n" +
+            "User-Agent: test-user-agent\r\n";
     private static final String FEEDBACK_SUBJECT_SV = "Feedback från Mina Studier websidan";
     private static final String FEEDBACK_CONTENT_PATTERN_SV =
         "Content\r\n\r\n" +
@@ -85,11 +89,11 @@ public class PublicFeedbackResourceTest extends SpringTest {
     public final GreenMailRule greenMail = new GreenMailRule(ServerSetupTest.SMTP);
 
     @Test
-    public void thatFeedbackIsSent() throws Exception {
+    public void thatFeedbackFromStudentSiteIsSent() throws Exception {
         SendFeedbackRequest request = new SendFeedbackRequest();
         request.content = FEEDBACK_CONTENT;
         request.email = FEEDBACK_SENDER;
-        request.metadata = getMetadata(FEEDBACK_LANG_FI);
+        request.metadata = getMetadata(FEEDBACK_LANG_FI, FeedbackSite.STUDENT);
 
         mockMvc.perform(post(RestConstants.PUBLIC_API_V1 + "/feedback")
             .with(securityContext(studentSecurityContext()))
@@ -97,7 +101,25 @@ public class PublicFeedbackResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        checkReceivedMessages(FEEDBACK_SENDER, null, FEEDBACK_SUBJECT_FI, FEEDBACK_CONTENT_PATTERN_FI);
+        checkReceivedMessages(FEEDBACK_STUDENT_RECIPIENT, FEEDBACK_SENDER, null,
+            FEEDBACK_SUBJECT_STUDENT_FI, FEEDBACK_CONTENT_PATTERN_FI);
+    }
+
+    @Test
+    public void thatFeedbackFromTeacherSiteIsSent() throws Exception {
+        SendFeedbackRequest request = new SendFeedbackRequest();
+        request.content = FEEDBACK_CONTENT;
+        request.email = FEEDBACK_SENDER;
+        request.metadata = getMetadata(FEEDBACK_LANG_FI, FeedbackSite.TEACHER);
+
+        mockMvc.perform(post(RestConstants.PUBLIC_API_V1 + "/feedback")
+            .with(securityContext(studentSecurityContext()))
+            .content(WebTestUtils.toJsonBytes(request))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+        checkReceivedMessages(FEEDBACK_TEACHER_RECIPIENT, FEEDBACK_SENDER, null,
+            FEEDBACK_SUBJECT_TEACHER_FI, FEEDBACK_CONTENT_PATTERN_TEACHER_FI);
     }
 
     @Test
@@ -113,7 +135,8 @@ public class PublicFeedbackResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        checkReceivedMessages(FEEDBACK_NO_SENDER, FEEDBACK_NO_REPLY, FEEDBACK_SUBJECT_FI, FEEDBACK_CONTENT_PATTERN_FI);
+        checkReceivedMessages(FEEDBACK_STUDENT_RECIPIENT, FEEDBACK_NO_SENDER, FEEDBACK_NO_REPLY,
+            FEEDBACK_SUBJECT_STUDENT_FI, FEEDBACK_CONTENT_PATTERN_FI);
     }
 
     @Test
@@ -129,7 +152,8 @@ public class PublicFeedbackResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        checkReceivedMessages(FEEDBACK_SENDER, null, FEEDBACK_SUBJECT_SV, FEEDBACK_CONTENT_PATTERN_SV);
+        checkReceivedMessages(FEEDBACK_STUDENT_RECIPIENT, FEEDBACK_SENDER, null,
+            FEEDBACK_SUBJECT_SV, FEEDBACK_CONTENT_PATTERN_SV);
     }
 
     @Test
@@ -145,10 +169,12 @@ public class PublicFeedbackResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
 
-        checkReceivedMessages(FEEDBACK_SENDER, null, FEEDBACK_SUBJECT_EN, FEEDBACK_CONTENT_PATTERN_EN);
+        checkReceivedMessages(FEEDBACK_STUDENT_RECIPIENT, FEEDBACK_SENDER, null,
+            FEEDBACK_SUBJECT_EN, FEEDBACK_CONTENT_PATTERN_EN);
     }
 
-    private void checkReceivedMessages(String expectedSender,
+    private void checkReceivedMessages(String expectedTo,
+                                       String expectedSender,
                                        String expectedReplyTo,
                                        String expectedSubject,
                                        String expectedContentPattern)
@@ -158,7 +184,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
         MimeMessage message = messages[0];
         checkBCC(message);
         checkCC(message);
-        checkTo(message);
+        checkTo(message, expectedTo);
         checkFrom(message, expectedSender);
         checkReplyTo(message, expectedReplyTo);
         checkSubject(message, expectedSubject);
@@ -173,10 +199,10 @@ public class PublicFeedbackResourceTest extends SpringTest {
         assertThat(message.getRecipients(Message.RecipientType.CC)).isNull();
     }
 
-    private void checkTo(MimeMessage message) throws MessagingException {
+    private void checkTo(MimeMessage message, String expectedTo) throws MessagingException {
         Address[] recipients = message.getRecipients(Message.RecipientType.TO);
         assertThat(recipients).hasSize(1);
-        assertThat(recipients[0].toString()).isEqualTo(FEEDBACK_RECIPIENT);
+        assertThat(recipients[0].toString()).isEqualTo(expectedTo);
     }
 
     private void checkFrom(MimeMessage message, String expectedSender) throws MessagingException {
@@ -205,10 +231,14 @@ public class PublicFeedbackResourceTest extends SpringTest {
     }
 
     private JsonNode getMetadata(String lang) {
+        return getMetadata(lang, FeedbackSite.STUDENT);
+    }
+
+    private JsonNode getMetadata(String lang, FeedbackSite state ) {
         ImmutableMap<String, String> metadata = ImmutableMap.of(
             "userAgent", FEEDBACK_USER_AGENT,
             "faculty", FEEDBACK_FACULTY,
-            "state", FEEDBACK_STATE,
+            "state", state.toString(),
             "lang", lang);
         return new ObjectMapper().valueToTree(metadata);
     }

@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.web.rest.adminapi;
 
 import fi.helsinki.opintoni.config.http.CsvResponse;
 import fi.helsinki.opintoni.dto.FeedbackDto;
-import fi.helsinki.opintoni.service.FeedbackService;
+import fi.helsinki.opintoni.service.feedback.FeedbackService;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
