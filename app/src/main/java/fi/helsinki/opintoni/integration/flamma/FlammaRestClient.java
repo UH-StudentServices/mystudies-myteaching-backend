@@ -52,9 +52,9 @@ public class FlammaRestClient {
         this.restTemplate = createRestTemplate();
 
         studentFeedsByLocale = ImmutableMap.of(
-            "fi", "atom-tiedotteet-opiskelijalle.xml",
-            "sv", "atom-tiedotteet-opiskelijalle-sv.xml",
-            "en", "atom-tiedotteet-opiskelijalle-en.xml");
+            "fi", "atom-news.xml",
+            "sv", "atom-news-sv.xml",
+            "en", "atom-news-en.xml");
         teacherFeedsByLocale = ImmutableMap.of(
             "fi", "atom-tiedotteet-opetusasiat.xml",
             "sv", "atom-tiedotteet-opetusasiat-sv.xml",

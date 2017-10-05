@@ -33,10 +33,10 @@ public class FlammaServer {
     private final MockRestServiceServer server;
     private final String flammaBaseUrl;
 
-    private static final String STUDENT_NEWS_PATH_FI = "/infotaulu/atom-tiedotteet-opiskelijalle.xml";
+    private static final String STUDENT_NEWS_PATH_FI = "/infotaulu/atom-news.xml";
     private static final String STUDENT_NEWS_FILE_FI = "flamma/studentnews.xml";
 
-    private static final String STUDENT_NEWS_PATH_EN = "/infotaulu/atom-tiedotteet-opiskelijalle-en.xml";
+    private static final String STUDENT_NEWS_PATH_EN = "/infotaulu/atom-news-en.xml";
     private static final String STUDENT_NEWS_FILE_EN = "flamma/englishstudentnews.xml";
 
     private static final String TEACHER_NEWS_PATH_FI = "/infotaulu/atom-tiedotteet-opetusasiat.xml";
