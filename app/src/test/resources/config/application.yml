@@ -224,7 +224,14 @@ esb:
     client.implementation: rest
 
 flamma:
-    base.url: https://flamma.helsinki.fi
+    studentFeedsByLocale:
+        fi: https://flamma.helsinki.fi/infotaulu/atom-news.xml
+        sv: https://flamma.helsinki.fi/infotaulu/atom-news-sv.xml
+        en: https://flamma.helsinki.fi/infotaulu/atom-news-en.xml
+    teacherFeedsByLocale:
+        fi: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat.xml
+        sv: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat-sv.xml
+        en: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat-en.xml
 
 publicWww:
     base.url: https://www.helsinki.fi

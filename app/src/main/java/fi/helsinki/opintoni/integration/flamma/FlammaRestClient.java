@@ -20,9 +20,12 @@ package fi.helsinki.opintoni.integration.flamma;
 import com.google.common.collect.ImmutableMap;
 import com.rometools.rome.feed.atom.Feed;
 import fi.helsinki.opintoni.config.AppConfiguration;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.feed.AtomFeedHttpMessageConverter;
 import org.springframework.stereotype.Component;
@@ -34,31 +37,18 @@ import java.util.Collections;
 import java.util.Locale;
 
 @Component
+@ConfigurationProperties(prefix = "flamma")
 public class FlammaRestClient {
     private final static Logger log = LoggerFactory.getLogger(FlammaRestClient.class);
 
-    private final String baseUrl;
     private final RestTemplate restTemplate;
 
-    @Autowired
-    private AppConfiguration appConfiguration;
-
-    private final ImmutableMap<String, String> studentFeedsByLocale;
-    private final ImmutableMap<String, String> teacherFeedsByLocale;
+    private Map<String, String> studentFeedsByLocale;
+    private Map<String, String> teacherFeedsByLocale;
 
     @Autowired
-    public FlammaRestClient(AppConfiguration appConfiguration) {
-        this.baseUrl = appConfiguration.get("flamma.base.url");
+    public FlammaRestClient() {
         this.restTemplate = createRestTemplate();
-
-        studentFeedsByLocale = ImmutableMap.of(
-            "fi", "atom-tiedotteet-opiskelijalle.xml",
-            "sv", "atom-tiedotteet-opiskelijalle-sv.xml",
-            "en", "atom-tiedotteet-opiskelijalle-en.xml");
-        teacherFeedsByLocale = ImmutableMap.of(
-            "fi", "atom-tiedotteet-opetusasiat.xml",
-            "sv", "atom-tiedotteet-opetusasiat-sv.xml",
-            "en", "atom-tiedotteet-opetusasiat-en.xml");
     }
 
     public RestTemplate getRestTemplate() {
@@ -66,13 +56,29 @@ public class FlammaRestClient {
     }
 
     public Feed getStudentFeed(Locale locale) {
-        String uri = getFeedUri(studentFeedsByLocale.get(locale.getLanguage()));
-        return getFeed(uri);
+        return getFeed(studentFeedsByLocale.get(locale.getLanguage()));
     }
 
     public Feed getTeacherFeed(Locale locale) {
-        String uri = getFeedUri(teacherFeedsByLocale.get(locale.getLanguage()));
-        return getFeed(uri);
+        return getFeed(teacherFeedsByLocale.get(locale.getLanguage()));
+    }
+
+    public Map<String, String> getStudentFeedsByLocale() {
+        return studentFeedsByLocale;
+    }
+
+    public void setStudentFeedsByLocale(
+        Map<String, String> studentFeedsByLocale) {
+        this.studentFeedsByLocale = studentFeedsByLocale;
+    }
+
+    public Map<String, String> getTeacherFeedsByLocale() {
+        return teacherFeedsByLocale;
+    }
+
+    public void setTeacherFeedsByLocale(
+        Map<String, String> teacherFeedsByLocale) {
+        this.teacherFeedsByLocale = teacherFeedsByLocale;
     }
 
     private RestTemplate createRestTemplate() {
@@ -80,13 +86,6 @@ public class FlammaRestClient {
         converter.setSupportedMediaTypes(Collections.singletonList(MediaType.TEXT_XML));
 
         return new RestTemplate(Collections.singletonList(converter));
-    }
-
-    private String getFeedUri(String pathSegment) {
-        return UriComponentsBuilder.fromHttpUrl(baseUrl)
-            .path("infotaulu")
-            .pathSegment(pathSegment)
-            .toUriString();
     }
 
     private Feed getFeed(String uri) {
