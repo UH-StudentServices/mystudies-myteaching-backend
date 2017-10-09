@@ -221,11 +221,8 @@ cache:
         timeToLiveSeconds: 3600
         maxEntriesLocalHeap: 500
     coursePage:
-        timeToLiveSeconds: 7200
+        timeToLiveSeconds: 86400
         maxEntriesLocalHeap: 10000
-    coursePageOneOffEvents:
-        timeToLiveSeconds: 7200
-        maxEntriesLocalHeap: 7000
     courseUniRealisations:
         timeToLiveSeconds: 28800
         maxEntriesLocalHeap: 10000

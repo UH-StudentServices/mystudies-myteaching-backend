@@ -62,19 +62,13 @@ public class EventConverter {
         this.enrollmentNameConverter = enrollmentNameConverter;
     }
 
-    public EventDto toDto(CoursePageEvent event) {
-        CoursePageCourseImplementation coursePage = coursePageClient
-            .getCoursePage(String.valueOf(event.courseImplementationId));
-        return toDto(event, coursePage);
-    }
-
     public EventDto toDto(CoursePageEvent event, CoursePageCourseImplementation coursePage) {
         return new EventDto(
             eventTypeResolver.getEventTypeByCoursePageEvent(event),
             EventDto.Source.COURSE_PAGE,
             event.begin,
             event.end,
-            event.courseImplementationId,
+            coursePage.courseImplementationId,
             event.title,
             coursePage.title,
             coursePageUriBuilder.getLocalizedUri(coursePage),

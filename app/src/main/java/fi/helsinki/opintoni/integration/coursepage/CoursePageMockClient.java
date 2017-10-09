@@ -31,14 +31,11 @@ import java.util.Set;
 
 public class CoursePageMockClient implements CoursePageClient {
 
-    @Value("classpath:sampledata/coursepage/events.json")
-    private Resource events;
+    @Value("classpath:sampledata/coursepage/course-1.json")
+    private Resource course1;
 
-    @Value("classpath:sampledata/coursepage/courses-1.json")
-    private Resource courses1;
-
-    @Value("classpath:sampledata/coursepage/courses-2.json")
-    private Resource courses2;
+    @Value("classpath:sampledata/coursepage/course-2.json")
+    private Resource course2;
 
     @Value("classpath:sampledata/coursepage/notifications.json")
     private Resource notifications;
@@ -52,14 +49,8 @@ public class CoursePageMockClient implements CoursePageClient {
     }
 
     @Override
-    public List<CoursePageEvent> getEvents(String courseImplementationId) {
-        return getResponse(events, new TypeReference<List<CoursePageEvent>>() {
-        });
-    }
-
-    @Override
     public CoursePageCourseImplementation getCoursePage(String courseImplementationId) {
-        Resource courses = (courseImplementationId != null) ? courses1 : courses2;
+        Resource courses = (courseImplementationId != null) ? course1 : course2;
         return getResponse(courses, new TypeReference<CoursePageCourseImplementation>() {
         });
     }

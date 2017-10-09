@@ -1,0 +1,30 @@
+{
+  "courseImplementationId": 1,
+  "title": "Animal Biotechnology B (KEL/KEBIOT230)",
+  "url": "https://dev.student.helsinki.fi/courses/815058/101472950",
+  "has_material": true,
+  "events" : [
+    {
+      "title":"Kertaluonteinen tapahtuma 1",
+      "begin":"2014-10-28T14:00:00Z",
+      "end":"2014-11-28T14:00:00Z",
+      "where":"Luokkatila 7",
+      "exam": false
+    },
+    {
+      "title":"Erikoistapahtuma",
+      "begin":"2015-05-01T10:00:00Z",
+      "end":"2015-05-01T11:00:00Z",
+      "where":"Luokkahuone 023",
+      "exam": false
+    },
+    {
+      "title":"Lisäkoulutus",
+      "begin":"2016-05-06T08:00:00Z",
+      "end":"2016-05-06T09:30:00Z",
+      "where":"Sivukonttori",
+      "exam": false
+    }
+  ]
+
+}

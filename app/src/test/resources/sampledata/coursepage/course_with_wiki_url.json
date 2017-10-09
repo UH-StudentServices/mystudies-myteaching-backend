@@ -1,0 +1,32 @@
+{
+  "courseImplementationId": 3,
+  "title": "Animal Biotechnology B (KEL/KEBIOT230)",
+  "headerImageUrl": "http://dev.student.helsinki.fi/image",
+  "url": "https://dev.student.helsinki.fi/tvt",
+  "hasMaterial": false,
+  "wikiUrl": "http://wiki.helsinki.fi",
+  "events": [
+    {
+      "title":"Test exam 04159adb2253",
+      "begin":"2016-12-23T14:00:00Z",
+      "end":"2016-12-23T14:00:00Z",
+      "where":"Place: Test 04156f654df1",
+      "exam": true
+    },
+    {
+      "title":"Tentti",
+      "begin":"2040-10-28T11:00:00Z",
+      "end":"2040-11-28T14:00:00Z",
+      "where":"Tenttisali",
+      "exam": true
+    },
+    {
+      "title":"Ei päättymisaikaa",
+      "begin":"2040-10-28T11:00:00Z",
+      "end":"",
+      "where":"Paikka X",
+      "exam": false
+    }
+  ]
+
+}

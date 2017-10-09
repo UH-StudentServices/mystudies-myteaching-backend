@@ -18,23 +18,26 @@
 package fi.helsinki.opintoni.integration.coursepage;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Lists;
+
+import java.util.List;
 
 public class CoursePageCourseImplementation {
 
-    @JsonProperty("title")
+    public Integer courseImplementationId;
+
     public String title;
 
-    @JsonProperty("header_image_url")
+    @JsonProperty("headerImageUrl")
     public String imageUrl;
 
-    @JsonProperty("has_material")
     public boolean hasMaterial;
 
     public String url;
 
-    @JsonProperty("moodle_url")
     public String moodleUrl;
 
-    @JsonProperty("wiki_url")
     public String wikiUrl;
+
+    public List<CoursePageEvent> events = Lists.newArrayList();
 }

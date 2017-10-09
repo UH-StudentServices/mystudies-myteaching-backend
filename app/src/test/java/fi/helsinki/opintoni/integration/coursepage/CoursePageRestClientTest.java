@@ -46,14 +46,14 @@ public class CoursePageRestClientTest extends SpringTest {
     @Test
     public void thatEmptyImageUriIsReturnedWhenCoursePageHasNoImageUri() {
         defaultTeacherRequestChain()
-            .coursePageImplementation(TEACHER_COURSE_REALISATION_ID, "courses_without_image.json");
+            .courseImplementation(TEACHER_COURSE_REALISATION_ID, "course_without_image.json");
 
         assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).imageUrl).isEqualTo("");
     }
 
     @Test
     public void thatNullImageUriIsReturnedWhenCoursePageDoesNotExist() {
-        defaultTeacherRequestChain().coursePageImplementation(TEACHER_COURSE_REALISATION_ID, "courses_empty.json");
+        defaultTeacherRequestChain().courseImplementation(TEACHER_COURSE_REALISATION_ID, "course_empty.json");
 
         assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).imageUrl).isNull();
     }
@@ -68,7 +68,7 @@ public class CoursePageRestClientTest extends SpringTest {
     @Test
     public void thatMoodleUrlIsReturned() {
         defaultTeacherRequestChain()
-            .coursePageImplementation(TEACHER_COURSE_REALISATION_ID, "courses_with_moodle_url.json");
+            .courseImplementation(TEACHER_COURSE_REALISATION_ID, "course_with_moodle_url.json");
 
         assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).moodleUrl).isEqualTo("http://moodle.helsinki.fi");
     }

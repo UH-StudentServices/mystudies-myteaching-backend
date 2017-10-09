@@ -23,9 +23,6 @@ import java.util.Locale;
 import java.util.Set;
 
 public interface CoursePageClient {
-
-    List<CoursePageEvent> getEvents(String courseImplementationId);
-
     List<CoursePageNotification> getCoursePageNotifications(Set<String> courseImplementationIds,
                                                             LocalDateTime from,
                                                             Locale locale);

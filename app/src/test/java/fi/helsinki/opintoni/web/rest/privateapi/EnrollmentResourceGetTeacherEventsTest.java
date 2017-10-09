@@ -82,8 +82,7 @@ public class EnrollmentResourceGetTeacherEventsTest extends SpringTest {
             .defaultCourseImplementation()
             .and()
             .courses("teachercourses_singlecourse.json")
-            .courseUnitRealisation(TestConstants.TEACHER_COURSE_REALISATION_ID)
-            .defaultOneOffEvents();
+            .courseUnitRealisation(TestConstants.TEACHER_COURSE_REALISATION_ID);
     }
 
 }
