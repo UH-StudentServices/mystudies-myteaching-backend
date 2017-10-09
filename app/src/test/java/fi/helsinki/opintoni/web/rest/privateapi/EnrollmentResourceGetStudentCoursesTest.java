@@ -46,14 +46,14 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
 
     @Test
     public void thatStudentCoursesAreReturnedWithMoodleMaterial() throws Exception {
-        expectCourseRequestChainWithImplementation("courses_with_moodle_url.json");
+        expectCourseRequestChainWithImplementation("course_with_moodle_url.json");
 
         thatStudentCoursesAreReturned(false, MOODLE_COURSE_MATERIAL_URL, CourseMaterialType.MOODLE);
     }
 
     @Test
-    public void thatStudentCoursesAreReturnedWitWikiMaterial() throws Exception {
-        expectCourseRequestChainWithImplementation("courses_with_wiki_url.json");
+    public void thatStudentCoursesAreReturnedWithWikiMaterial() throws Exception {
+        expectCourseRequestChainWithImplementation("course_with_wiki_url.json");
 
         thatStudentCoursesAreReturned(false, WIKI_COURSE_MATERIAL_URL, CourseMaterialType.WIKI);
     }

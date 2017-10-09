@@ -28,7 +28,6 @@ public class CacheConstants {
     public static final String TEACHER_COURSES = "teacherCourses";
 
     public static final String COURSE_PAGE = "coursePage";
-    public static final String COURSE_PAGE_ONE_OFF_EVENTS = "coursePageOneOffEvents";
 
     public static final String GUIDE_DEGREE_PROGRAMMES = "guideDegreeProgrammes";
 
@@ -53,7 +52,6 @@ public class CacheConstants {
         .add(TEACHER_EVENTS)
         .add(TEACHER_COURSES)
         .add(COURSE_PAGE)
-        .add(COURSE_PAGE_ONE_OFF_EVENTS)
         .add(GUIDE_DEGREE_PROGRAMMES)
         .add(BUILDINGS)
         .add(COURSE_UNIT_REALISATIONS)

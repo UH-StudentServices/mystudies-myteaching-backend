@@ -26,6 +26,8 @@ import static fi.helsinki.opintoni.web.TestConstants.*;
 
 public class TeacherRequestChain {
 
+    private static final String TEACHER_COURSE_IMPLEMENTATION_FILE = "teacher_course.json";
+
     private final OodiServer oodiServer;
     private final CoursePageServer coursePageServer;
     private final String teacherNumber;
@@ -68,15 +70,15 @@ public class TeacherRequestChain {
     }
 
     public CourseImplementationRequestChain<TeacherRequestChain> defaultCourseImplementation() {
-        return courseImplementation(TEACHER_COURSE_REALISATION_ID);
+        return courseImplementationWithRealisationId(TEACHER_COURSE_REALISATION_ID);
     }
 
     public CourseImplementationRequestChain<TeacherRequestChain> examCourseImplementation() {
-        return courseImplementation(EXAM_TEACHER_COURSE_REALISATION_ID);
+        return courseImplementationWithRealisationId(EXAM_TEACHER_COURSE_REALISATION_ID);
     }
 
     public CourseImplementationRequestChain<TeacherRequestChain> courseImplementationWithRealisationId(String realisationId) {
-        return courseImplementation(realisationId);
+        return courseImplementation(realisationId, TEACHER_COURSE_IMPLEMENTATION_FILE);
     }
 
     public TeacherRequestChain courseUnitRealisation(String realisationId) {
@@ -100,16 +102,6 @@ public class TeacherRequestChain {
     }
 
     public CourseImplementationRequestChain<TeacherRequestChain> courseImplementation(
-        String courseImplementationId) {
-        CourseImplementationRequestChain<TeacherRequestChain> builder =
-            new CourseImplementationRequestChain<>(
-                this,
-                coursePageServer,
-                courseImplementationId);
-        return builder.expectImplementation();
-    }
-
-    public CourseImplementationRequestChain<TeacherRequestChain> coursePageImplementation(
         String courseImplementationId, String responseFile) {
         CourseImplementationRequestChain<TeacherRequestChain> builder =
             new CourseImplementationRequestChain<>(
@@ -117,20 +109,5 @@ public class TeacherRequestChain {
                 coursePageServer,
                 courseImplementationId);
         return builder.expectImplementation(responseFile);
-    }
-
-    public CourseImplementationActivityRequestChain<TeacherRequestChain> activity(String responseFile) {
-        CourseImplementationActivityRequestChain<TeacherRequestChain> chain =
-            new CourseImplementationActivityRequestChain<>(
-                this,
-                coursePageServer,
-                Arrays.asList(EXAM_TEACHER_COURSE_REALISATION_ID, TEACHER_COURSE_REALISATION_ID, POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID)
-            );
-        return chain.activity(responseFile);
-    }
-
-    public TeacherRequestChain defaultOneOffEvents() {
-        coursePageServer.expectTeacherCourseImplementationEventsRequest(TEACHER_COURSE_REALISATION_ID);
-        return this;
     }
 }

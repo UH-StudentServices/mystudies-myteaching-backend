@@ -47,20 +47,6 @@ public class CoursePageRestClient implements CoursePageClient {
         this.restTemplate = restTemplate;
     }
 
-    @Cacheable(CacheConstants.COURSE_PAGE_ONE_OFF_EVENTS)
-    @Override
-    public List<CoursePageEvent> getEvents(String courseImplementationId) {
-        ResponseEntity<List<CoursePageEvent>> responseEntity =
-            restTemplate.exchange("{baseUrl}/events?course_implementation_id={courseImplementationId}", HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<CoursePageEvent>>() {
-                },
-                baseUrl, courseImplementationId);
-
-        return Optional.ofNullable(responseEntity.getBody())
-            .orElse(newArrayList());
-    }
-
     @Cacheable(value = CacheConstants.COURSE_PAGE, key = "#courseImplementationId")
     @Override
     public CoursePageCourseImplementation getCoursePage(String courseImplementationId) {
@@ -68,7 +54,7 @@ public class CoursePageRestClient implements CoursePageClient {
 
         return
             restTemplate.exchange(
-                "{baseUrl}/course_implementations?course_implementation_id={courseImplementationId}",
+                "{baseUrl}/course_implementation/{courseImplementationId}",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<CoursePageCourseImplementation>() {

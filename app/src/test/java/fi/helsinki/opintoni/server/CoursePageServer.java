@@ -49,7 +49,7 @@ public class CoursePageServer {
     public void expectCourseImplementationRequest(String courseImplementationId) {
         server.expect(requestTo(courseImplementationUrl(courseImplementationId)))
             .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(SampleDataFiles.toText("coursepage/courses.json"), MediaType.APPLICATION_JSON));
+            .andRespond(withSuccess(SampleDataFiles.toText("coursepage/course.json"), MediaType.APPLICATION_JSON));
     }
 
     public void expectCourseImplementationRequest(String courseImplementationId, String responseFile) {
@@ -70,24 +70,6 @@ public class CoursePageServer {
             ));
     }
 
-    public void expectStudentCourseImplementationEventsRequest(String courseImplementationId) {
-        server.expect(requestTo(eventsUrl(courseImplementationId)))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(
-                    SampleDataFiles.toText("coursepage/studentevents.json"),
-                    MediaType.APPLICATION_JSON)
-            );
-    }
-
-    public void expectTeacherCourseImplementationEventsRequest(String courseImplementationId) {
-        server.expect(requestTo(eventsUrl(courseImplementationId)))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(
-                    SampleDataFiles.toText("coursepage/teacherevents.json"),
-                    MediaType.APPLICATION_JSON)
-            );
-    }
-
     public void expectCourseImplementationActivityRequest(List<String> courseImplementationIds, String responseFile) {
         server.expect(
             requestTo(new ActivityUrlMatcher(coursePageBaseUrl, courseImplementationIdsToString(courseImplementationIds))))
@@ -99,7 +81,7 @@ public class CoursePageServer {
     }
 
     private String courseImplementationUrl(String courseImplementationId) {
-        return coursePageBaseUrl + "/course_implementations?course_implementation_id=" +
+        return coursePageBaseUrl + "/course_implementation/" +
             courseImplementationId;
     }
 

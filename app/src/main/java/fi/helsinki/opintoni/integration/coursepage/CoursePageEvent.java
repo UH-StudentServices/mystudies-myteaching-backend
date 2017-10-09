@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.integration.coursepage;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import fi.helsinki.opintoni.util.LocalDateTimeDeserializer;
 
@@ -25,8 +24,6 @@ import java.time.LocalDateTime;
 
 public class CoursePageEvent {
 
-    @JsonProperty("course_implementation_id")
-    public Integer courseImplementationId;
     public String title;
     public String where;
     public boolean exam;
