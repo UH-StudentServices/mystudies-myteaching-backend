@@ -19,7 +19,7 @@ package fi.helsinki.opintoni;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.config.Constants;
-import fi.helsinki.opintoni.integration.flamma.FlammaRestClient;
+import fi.helsinki.opintoni.integration.newsfeeds.FlammaRestClient;
 import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;

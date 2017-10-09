@@ -174,7 +174,7 @@ leiki:
     base.url: http://suositukset.student.helsinki.fi
     client.implementation: rest
 
-flamma:
+newsfeeds:
     studentFeedsByLocale:
         fi: https://flamma.helsinki.fi/infotaulu/atom-news.xml
         sv: https://flamma.helsinki.fi/infotaulu/atom-news-sv.xml

@@ -15,45 +15,23 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.flamma;
+package fi.helsinki.opintoni.integration.newsfeeds;
 
-import com.google.common.collect.ImmutableMap;
 import com.rometools.rome.feed.atom.Feed;
-import fi.helsinki.opintoni.config.AppConfiguration;
+import java.util.Locale;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.feed.AtomFeedHttpMessageConverter;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.Collections;
-import java.util.Locale;
 
 @Component
-@ConfigurationProperties(prefix = "flamma")
-public class FlammaRestClient {
+@ConfigurationProperties(prefix = "newsfeeds")
+public class FlammaRestClient extends AtomRestClient{
     private final static Logger log = LoggerFactory.getLogger(FlammaRestClient.class);
-
-    private final RestTemplate restTemplate;
 
     private Map<String, String> studentFeedsByLocale;
     private Map<String, String> teacherFeedsByLocale;
-
-    @Autowired
-    public FlammaRestClient() {
-        this.restTemplate = createRestTemplate();
-    }
-
-    public RestTemplate getRestTemplate() {
-        return restTemplate;
-    }
 
     public Feed getStudentFeed(Locale locale) {
         return getFeed(studentFeedsByLocale.get(locale.getLanguage()));
@@ -81,19 +59,4 @@ public class FlammaRestClient {
         this.teacherFeedsByLocale = teacherFeedsByLocale;
     }
 
-    private RestTemplate createRestTemplate() {
-        final AtomFeedHttpMessageConverter converter = new AtomFeedHttpMessageConverter();
-        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.TEXT_XML));
-
-        return new RestTemplate(Collections.singletonList(converter));
-    }
-
-    private Feed getFeed(String uri) {
-        try {
-            return restTemplate.getForObject(uri, Feed.class);
-        } catch (RestClientException e) {
-            log.error("Flamma REST client with uri {} threw exception: {}", uri, e.getMessage());
-            return new Feed("atom_0.3");
-        }
-    }
 }

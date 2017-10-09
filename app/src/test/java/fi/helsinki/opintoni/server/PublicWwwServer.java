@@ -34,7 +34,7 @@ public class PublicWwwServer {
     private final String publicWwwUrl;
 
     private static final String PUBLIC_WWW_PATH = "/fi/feeds/filtered-news/rss/11405/all";
-    private static final String OPEN_UNI_NEWS_FILE = "flamma/studentopenuniversitynews.xml";
+    private static final String OPEN_UNI_NEWS_FILE = "newsfeeds/flamma/studentopenuniversitynews.xml";
 
     public PublicWwwServer(AppConfiguration appConfiguration, RestTemplate restTemplate) {
         this.server = MockRestServiceServer.createServer(restTemplate);

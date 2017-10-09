@@ -22,7 +22,7 @@ import com.rometools.rome.feed.atom.Feed;
 import com.rometools.rome.feed.rss.Channel;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.dto.NewsDto;
-import fi.helsinki.opintoni.integration.flamma.FlammaRestClient;
+import fi.helsinki.opintoni.integration.newsfeeds.FlammaRestClient;
 import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.service.converter.NewsConverter;
 import org.springframework.beans.factory.annotation.Autowired;

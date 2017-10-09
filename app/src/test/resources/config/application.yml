@@ -223,7 +223,7 @@ esb:
     base.url: https://esbmt2.it.helsinki.fi/devel
     client.implementation: rest
 
-flamma:
+newsfeeds:
     studentFeedsByLocale:
         fi: https://flamma.helsinki.fi/infotaulu/atom-news.xml
         sv: https://flamma.helsinki.fi/infotaulu/atom-news-sv.xml
