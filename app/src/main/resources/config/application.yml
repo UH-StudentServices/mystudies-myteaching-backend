@@ -183,6 +183,10 @@ newsfeeds:
         fi: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat.xml
         sv: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat-sv.xml
         en: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat-en.xml
+    guideFeedsByLocale:
+        fi: https://guide.student.helsinki.fi/fi/news/feed.xml
+        sv: https://guide.student.helsinki.fi/sv/news/feed.xml
+        en: https://guide.student.helsinki.fi/en/news/feed.xml
 
 publicWww:
     base.url: https://www.helsinki.fi

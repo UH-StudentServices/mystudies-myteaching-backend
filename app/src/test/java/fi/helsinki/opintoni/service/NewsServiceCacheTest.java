@@ -35,6 +35,7 @@ public class NewsServiceCacheTest extends SpringTest {
     @Test
     public void thatStudentNewsAreCached() {
         flammaServer.expectStudentNews();
+        guideNewsServer.expectGuideNewsFi();
 
         List<NewsDto> news = newsService.getStudentNews(new Locale("fi"));
         List<NewsDto> cachedNews = newsService.getStudentNews(new Locale("fi"));

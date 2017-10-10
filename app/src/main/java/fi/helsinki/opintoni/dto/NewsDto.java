@@ -17,9 +17,12 @@
 
 package fi.helsinki.opintoni.dto;
 
+import java.util.Date;
+
 public class NewsDto {
 
     public String title;
     public String url;
     public String content;
+    public Date updated;
 }

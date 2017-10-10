@@ -37,6 +37,7 @@ public class NewsResourceTest extends SpringTest {
     @Test
     public void thatStudentNewsAreReturned() throws Exception {
         flammaServer.expectStudentNews();
+        guideNewsServer.expectGuideNewsFi();
 
         mockMvc.perform(get("/api/private/v1/news/student")
             .with(securityContext(studentSecurityContext()))
@@ -47,13 +48,13 @@ public class NewsResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(2)))
-            .andExpect(jsonPath("$[0].title").value("Ajatusten vaihtoa ja vertaistukea verkossa"))
-            .andExpect(jsonPath("$[0].url").value("https://flamma.helsinki.fi/portal/home/sisalto1"))
-            .andExpect(jsonPath("$[0].content").value("Content"))
-            .andExpect(jsonPath("$[1].title").value("Reflekta palkittiin parhaana opiskelijakilpailussa"))
-            .andExpect(jsonPath("$[1].url").value("https://flamma.helsinki.fi/portal/home/sisalto2"))
-            .andExpect(jsonPath("$[1].content").value("Content"));
+            .andExpect(jsonPath("$", hasSize(4)))
+            .andExpect(jsonPath("$[0].title").value("Flammatitle1"))
+            .andExpect(jsonPath("$[0].url").value("https://flamma.helsinki.fi/fi/flammatitle1"))
+            .andExpect(jsonPath("$[0].content").value("Flammacontent1"))
+            .andExpect(jsonPath("$[1].title").value("Guidetitle1"))
+            .andExpect(jsonPath("$[1].url").value("https://guide.student.helsinki.fi/fi/guidetitle1"))
+            .andExpect(jsonPath("$[1].content").value("<p>Guidesummary1</p>"));
     }
 
     @Test
@@ -81,6 +82,7 @@ public class NewsResourceTest extends SpringTest {
     @Test
     public void thatEnglishStudentNewsAreReturned() throws Exception {
         flammaServer.expectEnglishStudentNews();
+        guideNewsServer.expectGuideNewsEn();
 
         mockMvc.perform(get("/api/private/v1/news/student")
             .with(securityContext(studentSecurityContext()))
@@ -91,10 +93,13 @@ public class NewsResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(1)))
-            .andExpect(jsonPath("$[0].title").value("Title"))
-            .andExpect(jsonPath("$[0].url").value("https://flamma.helsinki.fi/portal/home/content"))
-            .andExpect(jsonPath("$[0].content").value("Content"));
+            .andExpect(jsonPath("$", hasSize(4)))
+            .andExpect(jsonPath("$[0].title").value("Flammatitle1-en"))
+            .andExpect(jsonPath("$[0].url").value("https://flamma.helsinki.fi/fi/flammatitle1-en"))
+            .andExpect(jsonPath("$[0].content").value("Flammacontent1-en"))
+            .andExpect(jsonPath("$[1].title").value("Guidetitle1-en"))
+            .andExpect(jsonPath("$[1].url").value("https://guide.student.helsinki.fi/fi/guidetitle1-en"))
+            .andExpect(jsonPath("$[1].content").value("<p>Guidesummary1-en</p>"));
     }
 
     @Test

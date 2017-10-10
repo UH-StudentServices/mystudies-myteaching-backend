@@ -20,6 +20,7 @@ package fi.helsinki.opintoni;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.integration.newsfeeds.FlammaRestClient;
+import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsRestClient;
 import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
@@ -73,6 +74,7 @@ public abstract class SpringTest {
     protected PublicWwwServer publicWwwServer;
     protected UnisportServer unisportServer;
     protected ESBServer esbServer;
+    protected GuideNewsServer guideNewsServer;
 
     protected MockMvc mockMvc;
 
@@ -90,6 +92,9 @@ public abstract class SpringTest {
 
     @Autowired
     protected FlammaRestClient flammaRestClient;
+
+    @Autowired
+    protected GuideNewsRestClient guideNewsRestClient;
 
     @Autowired
     protected RestTemplate esbRestTemplate;
@@ -127,6 +132,8 @@ public abstract class SpringTest {
         guideServer = new GuideServer(appConfiguration, guideRestTemplate);
         leikiServer = new LeikiServer(appConfiguration, leikiRestTemplate);
         flammaServer = new FlammaServer(appConfiguration, flammaRestClient.getRestTemplate());
+        guideNewsServer = new GuideNewsServer(appConfiguration,
+            guideNewsRestClient.getRestTemplate());
         publicWwwServer = new PublicWwwServer(appConfiguration, publicWwwRestClient.getRestTemplate());
         webPageServer = new WebPageServer(metaDataRestTemplate);
         unisportServer = new UnisportServer(appConfiguration, unisportRestTemplate);

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This file is part of MystudiesMyteaching application.
+  ~
+  ~ MystudiesMyteaching application is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ MystudiesMyteaching application is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">News feed</title>
+  <subtitle type="text">Latest relevant news from Guide.</subtitle>
+  <updated>2017-09-20T12:38:08+00:00</updated>
+  <generator>Guide</generator>
+  <link rel="alternate" type="text/html" href="https://guide.student.helsinki.fi/fi/news"/>
+  <link rel="self" type="application/atom+xml" href="https://guide.student.helsinki.fi/fi/news/feed.xml"/>
+  <id>https://guide.student.helsinki.fi/fi/news</id>
+  <entry>
+    <title type="html"><![CDATA[Guidetitle1]]></title>
+    <summary type="html"><![CDATA[<p>Guidesummary1</p>]]></summary>
+    <published>2017-09-20T12:36:55+00:00</published>
+    <updated>2017-10-04T12:38:08+00:00</updated>
+    <link rel="alternate" type="text/html" href="https://guide.student.helsinki.fi/fi/guidetitle1"/>
+    <id>https://guide.student.helsinki.fi/fi/guidetitle1</id>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[Guidetitle2]]></title>
+    <summary type="html"><![CDATA[<p><em>Guidesummary2</em></p>]]></summary>
+    <published>2017-09-20T10:46:35+00:00</published>
+    <updated>2017-10-02T11:12:24+00:00</updated>
+    <link rel="alternate" type="text/html" href="https://guide.student.helsinki.fi/fi/guidetitle2"/>
+    <id>https://guide.student.helsinki.fi/fi/guidetitle2</id>
+  </entry>
+  <entry>
+    <title type="html"><![CDATA[Guidetitle3.]]></title>
+    <summary type="html"><![CDATA[<p>Guidesummary3</p>]]></summary>
+    <published>2017-09-19T07:10:29+00:00</published>
+    <updated>2017-09-19T07:14:30+00:00</updated>
+    <link rel="alternate" type="text/html" href="https://guide.student.helsinki.fi/fi/guidetitle3"/>
+    <id>https://guide.student.helsinki.fi/fi/guidetitle3</id>
+  </entry>
+</feed>

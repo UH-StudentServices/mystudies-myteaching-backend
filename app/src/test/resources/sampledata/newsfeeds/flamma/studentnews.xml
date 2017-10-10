@@ -17,21 +17,33 @@
   -->
 
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <title>Opiskelijalle</title>
-    <link href="https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opiskelijalle" rel="self"/>
-    <id>https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opiskelijalle</id>
+    <title>Flamma-uutiset</title>
+    <link href="https://flamma.helsinki.fi/infotaulu/atom-news.xml" rel="self" />
+    <id>https://flamma.helsinki.fi/infotaulu/atom-news.xml</id>
     <author>Verkkoviestinta</author>
-    <updated>2015-08-25T08:19:04Z</updated>
+    <updated>2017-10-09T04:49:04Z</updated>
     <entry>
-        <content><![CDATA[Content]]></content>
-        <updated>2015-08-25T06:31:00Z</updated>
-        <link href="https://flamma.helsinki.fi/portal/home/sisalto1"/>
-        <title><![CDATA[Ajatusten vaihtoa ja vertaistukea verkossa]]></title>
+        <id>HY368145</id>
+        <link href="https://flamma.helsinki.fi/fi/flammatitle1" />
+        <title><![CDATA[Flammatitle1]]></title>
+        <link rel="enclosure" href="https://flamma.helsinki.fi/infotaulu/images/HY368144.jpg"/>
+        <updated>2017-10-05T13:00:00</updated>
+        <content><![CDATA[Flammacontent1]]></content>
     </entry>
     <entry>
-        <content><![CDATA[Content]]></content>
-        <updated>2015-08-20T11:24:00Z</updated>
-        <link href="https://flamma.helsinki.fi/portal/home/sisalto2"/>
-        <title><![CDATA[Reflekta palkittiin parhaana opiskelijakilpailussa]]></title>
+        <id>HY368043</id>
+        <link href="https://flamma.helsinki.fi/fi/flammatitle2" />
+        <title><![CDATA[Flammatitle2]]></title>
+        <link rel="enclosure" href="https://flamma.helsinki.fi/infotaulu/images/HY368044.jpg"/>
+        <updated>2017-10-03T09:45:00</updated>
+        <content><![CDATA[Flammacontent2]]></content>
+    </entry>
+    <entry>
+        <id>HY368004</id>
+        <link href="https://flamma.helsinki.fi/fi/flammatitle3" />
+        <title><![CDATA[Flammatitle3]]></title>
+        <link rel="enclosure" href="https://flamma.helsinki.fi/infotaulu/images/HY368006.jpg"/>
+        <updated>2017-10-01T13:00:00</updated>
+        <content><![CDATA[Flammacontent3]]></content>
     </entry>
 </feed>

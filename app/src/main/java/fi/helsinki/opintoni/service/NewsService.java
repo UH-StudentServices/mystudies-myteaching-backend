@@ -23,6 +23,7 @@ import com.rometools.rome.feed.rss.Channel;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.dto.NewsDto;
 import fi.helsinki.opintoni.integration.newsfeeds.FlammaRestClient;
+import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsRestClient;
 import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.service.converter.NewsConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,22 +38,29 @@ import java.util.stream.Collectors;
 @Service
 public class NewsService {
 
-    private final FlammaRestClient flammaRestClient;
-    private final PublicWwwRestClient publicWwwRestClient;
-    private final NewsConverter newsConverter;
+    @Autowired
+    private FlammaRestClient flammaRestClient;
+
+    @Autowired
+    private PublicWwwRestClient publicWwwRestClient;
+
+    @Autowired
+    private GuideNewsRestClient guideNewsRestClient;
+
+    @Autowired
+    private NewsConverter newsConverter;
 
     private static final int MAX_NEWS = 4;
 
-    @Autowired
-    public NewsService(FlammaRestClient flammaRestClient, PublicWwwRestClient publicWwwRestClient, NewsConverter newsConverter) {
-        this.flammaRestClient = flammaRestClient;
-        this.publicWwwRestClient = publicWwwRestClient;
-        this.newsConverter = newsConverter;
-    }
-
     @Cacheable(CacheConstants.STUDENT_NEWS)
     public List<NewsDto> getStudentNews(Locale locale) {
-        return getAtomNews(() -> flammaRestClient.getStudentFeed(locale));
+        List<NewsDto> newsDtoList = getAtomNews(() -> flammaRestClient.getStudentFeed(locale));
+        newsDtoList.addAll(getAtomNews(() -> guideNewsRestClient.getGuideFeed(locale)));
+
+        return newsDtoList.stream()
+            .sorted(NewsService::newsDtoDateComparator)
+            .limit(MAX_NEWS)
+            .collect(Collectors.toList());
     }
 
     @Cacheable(CacheConstants.TEACHER_NEWS)
@@ -63,6 +71,16 @@ public class NewsService {
     @Cacheable(CacheConstants.OPEN_UNIVERSITY_NEWS)
     public List<NewsDto> getOpenUniversityNews() {
         return getRssNews(publicWwwRestClient::getOpenUniversityFeed);
+    }
+
+    private static int newsDtoDateComparator(NewsDto dto1, NewsDto dto2) {
+        if (dto1.updated == null ||
+            dto2.updated == null ||
+            dto1.updated.compareTo(dto2.updated) == 0)
+        {
+            return 0;
+        }
+        return dto2.updated.compareTo(dto1.updated);
     }
 
     private List<NewsDto> getAtomNews(Supplier<Feed> feedSupplier) {
