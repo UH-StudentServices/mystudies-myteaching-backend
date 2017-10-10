@@ -20,15 +20,12 @@ package fi.helsinki.opintoni.integration.newsfeeds;
 import com.rometools.rome.feed.atom.Feed;
 import java.util.Locale;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "newsfeeds")
 public class FlammaRestClient extends AtomRestClient{
-    private final static Logger log = LoggerFactory.getLogger(FlammaRestClient.class);
 
     private Map<String, String> studentFeedsByLocale;
     private Map<String, String> teacherFeedsByLocale;
