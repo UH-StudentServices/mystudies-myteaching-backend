@@ -54,7 +54,7 @@ public class NewsResourceTest extends SpringTest {
             .andExpect(jsonPath("$[0].content").value("Flammacontent1"))
             .andExpect(jsonPath("$[1].title").value("Guidetitle1"))
             .andExpect(jsonPath("$[1].url").value("https://guide.student.helsinki.fi/fi/guidetitle1"))
-            .andExpect(jsonPath("$[1].content").value("<p>Guidesummary1</p>"));
+            .andExpect(jsonPath("$[1].content").value("Guidesummary1"));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class NewsResourceTest extends SpringTest {
             .andExpect(jsonPath("$[0].content").value("Flammacontent1-en"))
             .andExpect(jsonPath("$[1].title").value("Guidetitle1-en"))
             .andExpect(jsonPath("$[1].url").value("https://guide.student.helsinki.fi/fi/guidetitle1-en"))
-            .andExpect(jsonPath("$[1].content").value("<p>Guidesummary1-en</p>"));
+            .andExpect(jsonPath("$[1].content").value("Guidesummary1-en"));
     }
 
     @Test
