@@ -18,8 +18,8 @@
 package fi.helsinki.opintoni.integration.coursepage;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.Lists;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoursePageCourseImplementation {
@@ -39,5 +39,5 @@ public class CoursePageCourseImplementation {
 
     public String wikiUrl;
 
-    public List<CoursePageEvent> events = Lists.newArrayList();
+    public List<CoursePageEvent> events = new ArrayList<>();
 }

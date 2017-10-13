@@ -51,8 +51,8 @@ public class CoursePageMockClient implements CoursePageClient {
     @Override
     public CoursePageCourseImplementation getCoursePage(String courseImplementationId) {
         Resource courses = (courseImplementationId != null) ? course1 : course2;
-        return getResponse(courses, new TypeReference<CoursePageCourseImplementation>() {
-        });
+        return getResponse(courses, new TypeReference<List<CoursePageCourseImplementation>>() {
+        }).get(0);
     }
 
     @Override

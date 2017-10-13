@@ -24,17 +24,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 public class CoursePageRestClient implements CoursePageClient {
     private final String baseUrl;
@@ -47,19 +44,34 @@ public class CoursePageRestClient implements CoursePageClient {
         this.restTemplate = restTemplate;
     }
 
+    public <T> List<T> getCoursePageData(
+        String path,
+        ParameterizedTypeReference<List<T>> typeReference,
+        Object... uriVariables) {
+
+        try {
+            return restTemplate.exchange(baseUrl + path, HttpMethod.GET, null, typeReference, uriVariables).getBody();
+        } catch (Exception e) {
+            log.error("Caught exception when calling Course Pages:", e);
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
     @Cacheable(value = CacheConstants.COURSE_PAGE, key = "#courseImplementationId")
     @Override
     public CoursePageCourseImplementation getCoursePage(String courseImplementationId) {
         log.trace("fetching course impl with id {}", courseImplementationId);
 
-        return
-            restTemplate.exchange(
-                "{baseUrl}/course_implementation/{courseImplementationId}",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<CoursePageCourseImplementation>() {
-                },
-                baseUrl, courseImplementationId).getBody();
+        List<CoursePageCourseImplementation> coursePageCourseImplementationList = getCoursePageData(
+            "/course_implementation/{courseImplementationId}",
+            new ParameterizedTypeReference<List<CoursePageCourseImplementation>>() {},
+            courseImplementationId);
+
+        if(coursePageCourseImplementationList != null && coursePageCourseImplementationList.size() > 0) {
+            return coursePageCourseImplementationList.get(0);
+        } else {
+            return new CoursePageCourseImplementation();
+        }
     }
 
     @Override
@@ -67,31 +79,33 @@ public class CoursePageRestClient implements CoursePageClient {
                                                                    LocalDateTime from,
                                                                    Locale locale) {
         if (courseImplementationIds.isEmpty()) {
-            return newArrayList();
+            return new ArrayList<>();
         }
 
-        ResponseEntity<List<CoursePageNotification>> responseEntity = restTemplate.exchange(
-            "{baseUrl}/course_implementation_activity" +
-                "?course_implementation_id={courseImplementationIds}&timestamp={from}&langcode={locale}",
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<List<CoursePageNotification>>() {
-            },
-            baseUrl,
+        List<CoursePageNotification> notifications = getCoursePageData(
+            "/course_implementation_activity?course_implementation_id={courseImplementationIds}&timestamp={from}&langcode={locale}",
+            new ParameterizedTypeReference<List<CoursePageNotification>>() {},
             courseImplementationIds.stream().collect(Collectors.joining(",")),
             from.format(DateFormatter.COURSE_PAGE_DATE_TIME_FORMATTER),
             locale.getLanguage());
 
-        return Optional.ofNullable(responseEntity.getBody())
-            .orElse(newArrayList());
+        if(notifications != null) {
+            return notifications;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     @Override
     public List<Long> getUpdatedCourseImplementationIds(long timestamp) {
-        ResponseEntity<List<Long>> response = restTemplate.exchange(
-            "{baseUrl}/course_implementation/changes/since/{timestamp}", HttpMethod.GET, null,
-            new ParameterizedTypeReference<List<Long>>() {}, baseUrl, timestamp);
+        List<Long> implementationIds = getCoursePageData(
+            "/course_implementation/changes/since/{timestamp}",
+            new ParameterizedTypeReference<List<Long>>() {}, timestamp);
 
-        return Optional.ofNullable(response.getBody()).orElse(newArrayList());
+        if(implementationIds != null) {
+            return implementationIds;
+        } else {
+            return new ArrayList<>();
+        }
     }
 }

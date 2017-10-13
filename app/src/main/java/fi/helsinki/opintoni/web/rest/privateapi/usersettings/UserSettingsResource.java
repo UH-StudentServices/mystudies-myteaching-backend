@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.web.rest.privateapi.usersettings;
 
 import com.codahale.metrics.annotation.Timed;
-import fi.helsinki.opintoni.aop.logging.SkipLoggingAspect;
 import fi.helsinki.opintoni.domain.UserSettings;
 import fi.helsinki.opintoni.dto.UserSettingsDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
@@ -65,7 +64,6 @@ public class UserSettingsResource extends AbstractResource {
 
     @RequestMapping(value = "/{id}/uploaduseravatar", method = RequestMethod.PUT)
     @Timed
-    @SkipLoggingAspect
     public ResponseEntity<Boolean> uploadUserAvatar(@UserId Long userId,
                                                     @PathVariable Long id,
                                                     @RequestBody UploadImageBase64Request request) throws IOException {
@@ -76,7 +74,6 @@ public class UserSettingsResource extends AbstractResource {
 
     @RequestMapping(value = "/{id}/uploadbackground", method = RequestMethod.PUT)
     @Timed
-    @SkipLoggingAspect
     public ResponseEntity<UserSettingsDto> uploadBackground(@UserId Long userId,
                                                             @PathVariable Long id,
                                                             @RequestBody UploadImageBase64Request request)
@@ -87,7 +84,6 @@ public class UserSettingsResource extends AbstractResource {
 
     @RequestMapping(value = "/{id}/selectbackground", method = RequestMethod.PUT)
     @Timed
-    @SkipLoggingAspect
     public ResponseEntity<UserSettingsDto> selectBackground(@UserId Long userId,
                                                             @PathVariable Long id,
                                                             @RequestBody SelectBackgroundRequest request)
