@@ -1,4 +1,4 @@
-{
+[{
   "courseImplementationId": 5,
   "title": "Animal Biotechnology B (KEL/KEBIOT230)",
   "headerImageUrl": "http://dev.student.helsinki.fi/image",
@@ -20,4 +20,4 @@
       "exam": true
     }
   ]
-}
+}]

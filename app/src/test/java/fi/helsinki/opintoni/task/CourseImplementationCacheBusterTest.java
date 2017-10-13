@@ -43,6 +43,10 @@ public class CourseImplementationCacheBusterTest extends SpringTest {
 
         CoursePageCourseImplementation implementations = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID);
 
+        CoursePageCourseImplementation implementationsFromCache = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID);
+
+        assertThat(implementations).isSameAs(implementationsFromCache);
+
         courseImplementationCacheBuster.checkForUpdatedCourseImplementations(Instant.now().getEpochSecond());
 
         CoursePageCourseImplementation implementationsAfterCacheBust =

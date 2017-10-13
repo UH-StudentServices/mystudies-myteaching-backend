@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.service;
 
-import fi.helsinki.opintoni.aop.logging.SkipLoggingAspect;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,6 @@ public class ImageService {
         this.appConfiguration = appConfiguration;
     }
 
-    @SkipLoggingAspect
     public BufferedImage bytesToBufferedImage(byte[] bytes) {
         try {
             return ImageIO.read(new ByteArrayInputStream(bytes));
@@ -51,7 +49,6 @@ public class ImageService {
         }
     }
 
-    @SkipLoggingAspect
     public BufferedImage inputStreamToBufferedImage(InputStream inputStream) {
         try {
             return ImageIO.read(inputStream);
@@ -60,19 +57,16 @@ public class ImageService {
         }
     }
 
-    @SkipLoggingAspect
     public byte[] base64ToBytes(String imageBase64) {
         return Base64.getDecoder().decode(imageBase64);
     }
 
 
-    @SkipLoggingAspect
     public byte[] createUserAvatar(String imageBase64) {
         BufferedImage bufferedImage = bytesToBufferedImage(base64ToBytes(imageBase64));
         return toThumbnail(bufferedImage);
     }
 
-    @SkipLoggingAspect
     public byte[] createUserBackground(String imageBase64) {
         BufferedImage bufferedImage = bytesToBufferedImage(base64ToBytes(imageBase64));
 

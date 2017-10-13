@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.service;
 
-import fi.helsinki.opintoni.aop.logging.SkipLoggingAspect;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.domain.UserAvatar;
 import fi.helsinki.opintoni.domain.UserSettings;
@@ -81,7 +80,6 @@ public class UserSettingsService {
         return userSettingsConverter.toDto(userSettingsRepository.save(userSettings));
     }
 
-    @SkipLoggingAspect
     public void updateUserAvatar(Long userSettingsId, String imageBase64) {
         UserSettings userSettings = userSettingsRepository.findOne(userSettingsId);
 
@@ -135,7 +133,6 @@ public class UserSettingsService {
             .orElseThrow(notFoundException("Avatar not found for user"));
     }
 
-    @SkipLoggingAspect
     public UserSettingsDto updateBackground(Long id, UploadImageBase64Request request) {
         UserSettings userSettings = userSettingsRepository.findOne(id);
         removeOldUploadedBackgroundFile(userSettings);
