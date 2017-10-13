@@ -27,12 +27,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.google.common.collect.Lists.newArrayList;
 
 public class CoursePageRestClient implements CoursePageClient {
     private final String baseUrl;
@@ -80,7 +79,7 @@ public class CoursePageRestClient implements CoursePageClient {
                                                                    LocalDateTime from,
                                                                    Locale locale) {
         if (courseImplementationIds.isEmpty()) {
-            return newArrayList();
+            return new ArrayList<>();
         }
 
         List<CoursePageNotification> notifications = getCoursePageData(
@@ -93,7 +92,7 @@ public class CoursePageRestClient implements CoursePageClient {
         if(notifications != null) {
             return notifications;
         } else {
-            return newArrayList();
+            return new ArrayList<>();
         }
     }
 
@@ -106,7 +105,7 @@ public class CoursePageRestClient implements CoursePageClient {
         if(implementationIds != null) {
             return implementationIds;
         } else {
-            return newArrayList();
+            return new ArrayList<>();
         }
     }
 }
