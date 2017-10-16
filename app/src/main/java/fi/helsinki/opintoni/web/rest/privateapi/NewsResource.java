@@ -20,7 +20,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 import fi.helsinki.opintoni.dto.NewsDto;
 import fi.helsinki.opintoni.security.authorization.StudentRoleRequired;
 import fi.helsinki.opintoni.security.authorization.TeacherRoleRequired;
-import fi.helsinki.opintoni.service.NewsService;
+import fi.helsinki.opintoni.service.news.NewsService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;

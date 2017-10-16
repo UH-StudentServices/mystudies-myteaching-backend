@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -38,6 +39,7 @@ public class NewsResourceTest extends SpringTest {
     public void thatStudentNewsAreReturned() throws Exception {
         flammaServer.expectStudentNews();
         guideNewsServer.expectGuideNewsFi();
+        oodiServer.expectStudentStudyRightsRequest(TestConstants.STUDENT_NUMBER);
 
         mockMvc.perform(get("/api/private/v1/news/student")
             .with(securityContext(studentSecurityContext()))
@@ -83,6 +85,7 @@ public class NewsResourceTest extends SpringTest {
     public void thatEnglishStudentNewsAreReturned() throws Exception {
         flammaServer.expectEnglishStudentNews();
         guideNewsServer.expectGuideNewsEn();
+        oodiServer.expectStudentStudyRightsRequest(TestConstants.STUDENT_NUMBER);
 
         mockMvc.perform(get("/api/private/v1/news/student")
             .with(securityContext(studentSecurityContext()))
@@ -138,6 +141,37 @@ public class NewsResourceTest extends SpringTest {
             .andExpect(jsonPath("$[0].title").value("Otsikko"))
             .andExpect(jsonPath("$[0].url").value("https://www.helsinki.fi/fi/uutiset/otsikko"))
             .andExpect(jsonPath("$[0].content").value("Sisältö"));
+    }
+
+    @Test
+    public void thatStudentNewsIncludingProgrammeNewsAreReturned() throws Exception {
+        flammaServer.expectStudentNews();
+        oodiServer.expectStudentStudyRightsRequest(TestConstants.STUDENT_NUMBER, "studentstudyrights_with_KH_and_MH_codes.json");
+        guideNewsServer.expectGuideProgrammeNewsFi("MH80_xxx", "feed-MH80_xxx.xml");
+        guideNewsServer.expectGuideProgrammeNewsFi("KH57_001", "feed.xml");
+
+        mockMvc.perform(get("/api/private/v1/news/student")
+            .with(securityContext(studentSecurityContext()))
+            .characterEncoding("UTF-8")
+            .contentType(MediaType.APPLICATION_JSON)
+            .locale(new Locale("fi"))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(4)))
+
+            .andExpect(jsonPath("$[0].title").value("Flammatitle1"))
+            .andExpect(jsonPath("$[0].url").value("https://flamma.helsinki.fi/fi/flammatitle1"))
+            .andExpect(jsonPath("$[0].content").value("Flammacontent1"))
+
+            .andExpect(jsonPath("$[1].title").value("Guidetitle1"))
+            .andExpect(jsonPath("$[1].url").value("https://guide.student.helsinki.fi/fi/guidetitle1"))
+            .andExpect(jsonPath("$[1].content").value("Guidesummary1"))
+
+            .andExpect(jsonPath("$[2].title").value("Guidetitle1_mh80"))
+            .andExpect(jsonPath("$[2].url").value("https://guide.student.helsinki.fi/fi/guidetitle1mh80"))
+            .andExpect(jsonPath("$[2].content").value("Guidesummary_mh80"));
     }
 
 }

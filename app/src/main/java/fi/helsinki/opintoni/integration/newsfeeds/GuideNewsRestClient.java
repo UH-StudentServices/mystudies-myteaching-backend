@@ -16,6 +16,11 @@ public class GuideNewsRestClient extends AtomRestClient {
         return getFeed(guideFeedsByLocale.get(locale.getLanguage()));
     }
 
+    public Feed getGuideFeed(Locale locale, String degreeProgrammeCode) {
+        String uri = guideFeedsByLocale.get(locale.getLanguage()) + "?degree_programme_code=" + degreeProgrammeCode;
+        return getFeed(uri);
+    }
+
     public Map<String, String> getGuideFeedsByLocale() {
         return guideFeedsByLocale;
     }

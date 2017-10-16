@@ -19,6 +19,8 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.NewsDto;
+import fi.helsinki.opintoni.service.news.FlammaNewsService;
+import fi.helsinki.opintoni.service.news.NewsService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,15 +32,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class NewsServiceCacheTest extends SpringTest {
 
     @Autowired
-    private NewsService newsService;
+    private FlammaNewsService flammaNewsService;
 
     @Test
     public void thatStudentNewsAreCached() {
         flammaServer.expectStudentNews();
         guideNewsServer.expectGuideNewsFi();
 
-        List<NewsDto> news = newsService.getStudentNews(new Locale("fi"));
-        List<NewsDto> cachedNews = newsService.getStudentNews(new Locale("fi"));
+        List<NewsDto> news = flammaNewsService.getStudentNews(new Locale("fi"));
+        List<NewsDto> cachedNews = flammaNewsService.getStudentNews(new Locale("fi"));
 
         assertThat(cachedNews).isSameAs(news);
     }
@@ -47,8 +49,8 @@ public class NewsServiceCacheTest extends SpringTest {
     public void thatTeacherNewsAreCached() {
         flammaServer.expectTeacherNews();
 
-        List<NewsDto> news = newsService.getTeacherNews(new Locale("fi"));
-        List<NewsDto> cachedNews = newsService.getTeacherNews(new Locale("fi"));
+        List<NewsDto> news = flammaNewsService.getTeacherNews(new Locale("fi"));
+        List<NewsDto> cachedNews = flammaNewsService.getTeacherNews(new Locale("fi"));
 
         assertThat(cachedNews).isSameAs(news);
     }

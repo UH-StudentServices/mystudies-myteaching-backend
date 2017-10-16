@@ -17,7 +17,9 @@
 
 package fi.helsinki.opintoni.dto;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 public class NewsDto {
 
@@ -25,4 +27,28 @@ public class NewsDto {
     public String url;
     public String content;
     public Date updated;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        NewsDto dto = (NewsDto) o;
+
+        return Objects.equals(title, dto.title)
+            && Objects.equals(url, dto.url)
+            && Objects.equals(content, dto.content)
+            && Objects.equals(updated, dto.updated);
+    }
+
+    @Override
+    public int hashCode() {
+        int i = Arrays.hashCode(new Object[]{title, url, content, updated});
+        return i;
+    }
 }

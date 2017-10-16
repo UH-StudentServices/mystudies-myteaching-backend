@@ -38,6 +38,8 @@ public class CacheConstants {
     public static final String STUDENT_NEWS = "studentNews";
     public static final String TEACHER_NEWS = "teacherNews";
     public static final String OPEN_UNIVERSITY_NEWS = "openUniversityNews";
+    public static final String GUIDE_GENERAL_NEWS = "guideGeneralNews";
+    public static final String GUIDE_PROGRAMME_NEWS = "guideProgrammeNews";
 
     public static final String IS_OPEN_UNIVERSITY_STUDENT = "isOpenUniversityStudent";
     public static final String IS_OPEN_UNIVERSITY_TEACHER = "isOpenUniversityTeacher";
@@ -63,5 +65,7 @@ public class CacheConstants {
         .add(IS_OPEN_UNIVERSITY_TEACHER)
         .add(EUROPE_HELSINKI_TIMEZONE)
         .add(FEEDS)
+        .add(GUIDE_GENERAL_NEWS)
+        .add(GUIDE_PROGRAMME_NEWS)
         .build();
 }

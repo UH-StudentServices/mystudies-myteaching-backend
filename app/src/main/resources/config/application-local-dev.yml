@@ -65,6 +65,12 @@ leiki:
     base.url: http://suositukset.student.helsinki.fi
     client.implementation: mock
 
+newsfeeds:
+    guideFeedsByLocale:
+        fi: https://dev.guide.student.helsinki.fi/fi/news/feed.xml
+        sv: https://dev.guide.student.helsinki.fi/sv/news/feed.xml
+        en: https://dev.guide.student.helsinki.fi/en/news/feed.xml
+
 googleAnalyticsAccount:
     main: UA-55852460-3
     student: UA-55852460-9

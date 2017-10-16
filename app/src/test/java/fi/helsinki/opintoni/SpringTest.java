@@ -65,7 +65,7 @@ import static java.util.Collections.singletonList;
 @ActiveProfiles(Constants.SPRING_PROFILE_TEST)
 public abstract class SpringTest {
 
-    private OodiServer oodiServer;
+    protected OodiServer oodiServer;
     private CoursePageServer coursePageServer;
     protected GuideServer guideServer;
     protected WebPageServer webPageServer;
