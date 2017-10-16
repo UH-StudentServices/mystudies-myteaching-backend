@@ -21,6 +21,7 @@ import com.rometools.rome.feed.atom.Entry;
 import com.rometools.rome.feed.rss.Item;
 import fi.helsinki.opintoni.dto.NewsDto;
 import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,8 @@ public class NewsConverter {
         NewsDto newsDto = new NewsDto();
         newsDto.title = atomFeedEntry.getTitle();
         newsDto.url = atomFeedEntry.getAlternateLinks().get(0).getHref();
-        newsDto.content = Jsoup.clean(getContentOrSummaryFromEntry(atomFeedEntry), Whitelist.none());
+        String stripped = Jsoup.clean(getContentOrSummaryFromEntry(atomFeedEntry), Whitelist.none());
+        newsDto.content = Parser.unescapeEntities(stripped, false);
         newsDto.updated = atomFeedEntry.getUpdated();
         return newsDto;
     }
