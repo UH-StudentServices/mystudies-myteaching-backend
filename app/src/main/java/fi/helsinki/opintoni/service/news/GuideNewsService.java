@@ -7,7 +7,6 @@ import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiStudyRight.Element;
 import fi.helsinki.opintoni.security.SecurityUtils;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -38,8 +37,7 @@ public class GuideNewsService extends FetchingNewsService {
     public List<NewsDto> getGuideNewsForDegreeProgramme(String studentNumber, Locale locale) {
 
         Set<String> studyRightsProgrammeCodes = oodiClient.getStudentStudyRights(studentNumber).stream()
-            .map(osr -> osr.elements)
-            .flatMap(Collection::stream)
+            .flatMap(osr -> osr.elements.stream())
             .filter(GuideNewsService::elementMatchesProgramme)
             .map(e -> e.code).collect(Collectors.toSet());
 
