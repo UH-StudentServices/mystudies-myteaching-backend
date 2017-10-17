@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.integration.newsfeeds;
 
+import com.google.common.collect.ImmutableList;
 import com.rometools.rome.feed.atom.Feed;
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,12 +48,9 @@ public class AtomRestClient {
 
     private RestTemplate createRestTemplate() {
         final AtomFeedHttpMessageConverter converter = new AtomFeedHttpMessageConverter();
-        List<MediaType> mediaTypes = Collections
-            .unmodifiableList(Arrays.asList(
+        List<MediaType> mediaTypes = ImmutableList.of(
                 MediaType.TEXT_XML,
-                new MediaType("application", "rss+xml")
-                )
-            );
+                new MediaType("application", "rss+xml"));
 
         converter.setSupportedMediaTypes(mediaTypes);
 
