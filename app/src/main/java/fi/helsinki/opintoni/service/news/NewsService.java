@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.dto.NewsDto;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.SecurityUtils;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -62,7 +63,7 @@ public class NewsService {
         newsDtoList.addAll(guideNewsDtos);
 
         return newsDtoList.stream()
-            .sorted(NewsService::newsDtoDateComparator)
+            .sorted(Comparator.comparing(dto -> dto.updated, Comparator.reverseOrder()))
             .limit(maxNews)
             .collect(Collectors.toList());
     }
@@ -73,16 +74,6 @@ public class NewsService {
 
     public List<NewsDto> getOpenUniversityNews() {
         return openUniversityNewsService.getOpenUniversityNews();
-    }
-
-    private static int newsDtoDateComparator(NewsDto dto1, NewsDto dto2) {
-        if (dto1.updated == null ||
-            dto2.updated == null ||
-            dto1.updated.compareTo(dto2.updated) == 0)
-        {
-            return 0;
-        }
-        return dto2.updated.compareTo(dto1.updated);
     }
 
 }
