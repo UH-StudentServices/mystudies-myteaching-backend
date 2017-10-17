@@ -16,13 +16,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Assert;
+import org.assertj.core.api.Assertions;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class NewsConverterTest {
 
     private static Feed feed;
+
+    private NewsConverter testClass;
 
     @BeforeClass
     public static void init() throws IOException, FeedException, ParseException {
@@ -43,21 +46,22 @@ public class NewsConverterTest {
 
     }
 
+    @Before
+    public void initTest() {
+        testClass = new NewsConverter();
+    }
 
     @Test
     public void thatTagsAreStripped() {
-        final NewsConverter testClass = new NewsConverter();
         NewsDto newsDto = testClass.toDtoFromAtom(feed.getEntries().get(0));
-        Assert.assertEquals("Jes tärkeä", newsDto.content);
+        Assertions.assertThat(newsDto.content).isEqualTo("Jes tärkeä");
     }
 
     @Test
     public void thatEntitiesAreUnescaped() {
-        final NewsConverter testClass = new NewsConverter();
         NewsDto newsDto = testClass.toDtoFromAtom(feed.getEntries().get(1));
-        Assert.assertEquals("Jes ääkkönen", newsDto.content);
+        Assertions.assertThat(newsDto.content).isEqualTo("Jes ääkkönen");
     }
-
 
     private static SyndEntry createEntry(String title, String description, String updated, String url)
         throws ParseException {
