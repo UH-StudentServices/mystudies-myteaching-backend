@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.dto;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
@@ -48,7 +47,6 @@ public class NewsDto {
 
     @Override
     public int hashCode() {
-        int i = Arrays.hashCode(new Object[]{title, url, content, updated});
-        return i;
+        return Objects.hash(title, url, content, updated);
     }
 }
