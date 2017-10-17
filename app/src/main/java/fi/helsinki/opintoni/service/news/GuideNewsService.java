@@ -52,10 +52,11 @@ public class GuideNewsService extends FetchingNewsService {
     }
 
     private static boolean elementMatchesProgramme(Element element) {
-        // TODO: not hardcoded like this, ffs...
-        return element.id.equals(20) && (
-                element.code.toUpperCase().startsWith("KH") ||
-                element.code.toUpperCase().startsWith("MH")
+        return element.id.equals(GuideNewsConstants.OODI_STUDY_RIGHTS_DEGREE_PROGRAMME_ID) && (
+                element.code.toUpperCase()
+                    .startsWith(GuideNewsConstants.OODI_STUDY_RIGHTS_BACHELOR_PROGRAMME_CODE_PREFIX) ||
+                element.code.toUpperCase()
+                    .startsWith(GuideNewsConstants.OODI_STUDY_RIGHTS_MASTERS_PROGRAMME_CODE_PREFIX)
         );
     }
 
