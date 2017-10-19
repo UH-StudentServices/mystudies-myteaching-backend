@@ -46,8 +46,7 @@ public class NewsFeedConfiguration {
     private Map<String, String> teacherFeedsByLocale;
     private Map<String, String> guideFeedsByLocale;
 
-    @Bean
-    public RestTemplate createRestTemplate() {
+    private RestTemplate createRestTemplate() {
         final AtomFeedHttpMessageConverter converter = new AtomFeedHttpMessageConverter();
         List<MediaType> mediaTypes = ImmutableList.of(
             MediaType.TEXT_XML,
