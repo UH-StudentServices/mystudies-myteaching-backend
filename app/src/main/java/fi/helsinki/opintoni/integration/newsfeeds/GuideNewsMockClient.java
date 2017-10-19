@@ -26,7 +26,7 @@ public class GuideNewsMockClient extends NewsFeedsMockClient implements GuideNew
 
     private static final String MOCK_DATA_BASE = "/sampledata/newsfeeds/guide/";
 
-    private static final Map<String, String> LANG_FILES = ImmutableMap.of(
+    private static final ImmutableMap<String, String> LANG_FILES = ImmutableMap.of(
         "fi", "feed.xml",
         "sv", "feed-sv.xml",
         "en", "feed-en.xml");
