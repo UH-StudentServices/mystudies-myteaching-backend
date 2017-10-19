@@ -65,6 +65,9 @@ leiki:
     base.url: http://suositukset.student.helsinki.fi
     client.implementation: mock
 
+newsfeeds:
+    client.implementation: mock
+
 googleAnalyticsAccount:
     main: UA-55852460-3
     student: UA-55852460-9

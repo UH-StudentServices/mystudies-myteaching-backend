@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.server;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
+import fi.helsinki.opintoni.sampledata.SampleDataFiles;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -28,23 +29,37 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-public class PublicWwwServer {
+public class GuideNewsServer {
 
     private final MockRestServiceServer server;
-    private final String publicWwwUrl;
+    private final String guideNewsPathFi;
+    private static final String GUIDE_NEWS_FILE_FI    = "newsfeeds/guide/feed.xml";
 
-    private static final String PUBLIC_WWW_PATH = "/fi/feeds/filtered-news/rss/11405/all";
-    private static final String OPEN_UNI_NEWS_FILE = "newsfeeds/flamma/studentopenuniversitynews.xml";
+    private final String guideNewsPathEn;
+    private static final String GUIDE_NEWS_FILE_EN    = "newsfeeds/guide/feed-en.xml";
 
-    public PublicWwwServer(AppConfiguration appConfiguration, RestTemplate restTemplate) {
-        this.server = MockRestServiceServer.createServer(restTemplate);
-        this.publicWwwUrl = appConfiguration.get("publicWww.base.url") + PUBLIC_WWW_PATH;
+    public GuideNewsServer(AppConfiguration appConfiguration, RestTemplate guideRestTemplate) {
+        this.server = MockRestServiceServer.createServer(guideRestTemplate);
+        this.guideNewsPathFi = appConfiguration.get("newsfeeds.guideFeedsByLocale.fi");
+        this.guideNewsPathEn = appConfiguration.get("newsfeeds.guideFeedsByLocale.en");
     }
 
-    public void expectStudentOpenUniversityNews() {
-        server.expect(requestTo(publicWwwUrl))
+    public void expectGuideNewsFi() {
+        server.expect(requestTo(guideNewsPathFi))
             .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(toText(OPEN_UNI_NEWS_FILE), new MediaType("application", "rss+xml")));
+            .andRespond(withSuccess(toText(GUIDE_NEWS_FILE_FI), MediaType.TEXT_XML));
     }
 
+    public void expectGuideNewsEn() {
+        server.expect(requestTo(guideNewsPathEn))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(toText(GUIDE_NEWS_FILE_EN), MediaType.TEXT_XML));
+    }
+
+
+    public void expectGuideProgrammeNewsFi(String programmeDegreeCode, String responseFile) {
+        server.expect(requestTo(guideNewsPathFi + "?degree_programme_code="+programmeDegreeCode))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(toText("newsfeeds/guide/" + responseFile), MediaType.TEXT_XML));
+    }
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This file is part of MystudiesMyteaching application.
+  ~
+  ~ MystudiesMyteaching application is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ MystudiesMyteaching application is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Flamma-uutiset</title>
+    <link href="https://flamma.helsinki.fi/infotaulu/atom-news.xml" rel="self" />
+    <id>https://flamma.helsinki.fi/infotaulu/atom-news.xml</id>
+    <author>Verkkoviestinta</author>
+    <updated>2017-10-09T04:49:04Z</updated>
+    <entry>
+        <id>HY368145</id>
+        <link href="https://flamma.helsinki.fi/fi/flammatitle1" />
+        <title><![CDATA[Flammatitle1]]></title>
+        <link rel="enclosure" href="https://flamma.helsinki.fi/infotaulu/images/HY368144.jpg"/>
+        <updated>2017-10-05T13:00:00</updated>
+        <content><![CDATA[Flammacontent1]]></content>
+    </entry>
+    <entry>
+        <id>HY368043</id>
+        <link href="https://flamma.helsinki.fi/fi/flammatitle2" />
+        <title><![CDATA[Flammatitle2]]></title>
+        <link rel="enclosure" href="https://flamma.helsinki.fi/infotaulu/images/HY368044.jpg"/>
+        <updated>2017-10-03T09:45:00</updated>
+        <content><![CDATA[Flammacontent2]]></content>
+    </entry>
+    <entry>
+        <id>HY368004</id>
+        <link href="https://flamma.helsinki.fi/fi/flammatitle3" />
+        <title><![CDATA[Flammatitle3]]></title>
+        <link rel="enclosure" href="https://flamma.helsinki.fi/infotaulu/images/HY368006.jpg"/>
+        <updated>2017-10-01T13:00:00</updated>
+        <content><![CDATA[Flammacontent3]]></content>
+    </entry>
+</feed>

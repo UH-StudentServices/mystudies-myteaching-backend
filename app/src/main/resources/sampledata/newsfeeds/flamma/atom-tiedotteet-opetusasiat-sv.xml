@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Opetusasiat</title>
+  <link href="https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat"
+  rel="self" />
+  <id>
+  https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat</id>
+  <author>Verkkoviestinta</author>
+  <updated>2017-10-19T04:49:22Z</updated>
+  <entry>
+    <id>HY365689</id>
+    <link href="https://flamma.helsinki.fi/sv/HY365689" />
+    <title>
+<![CDATA[Studerande instrueras vid läsårets början i att använda tjänsten Mina studier ]]>
+    </title>
+    <updated>2017-08-28T00:00:00</updated>
+    <content>
+<![CDATA[Du som undervisar, har du redan börjat använda kurssidorna och Min undervisning? Kurssidorna hjälper dig att kommunicera med dina studerande och på sidan Min undervisning hittar du alla dina kurssidor.]]>
+    </content>
+  </entry>
+  <entry>
+    <id>HY360934</id>
+    <link href="https://flamma.helsinki.fi/sv/HY360934" />
+    <title>
+<![CDATA[Vill du bli tutor hösten 2017? Ansök nu!]]>
+    </title>
+    <updated>2017-02-03T00:00:00</updated>
+    <content>
+<![CDATA[Ansökan för att bli tutor hösten 2017 har börjat! Det rekryteras både finsk- och svenskspråkiga tutorer och beroende på dina intressen kan du fungera som tutor för nya inhemska studenter eller interna.]]>
+    </content>
+  </entry>
+  <entry>
+    <id>HY361128</id>
+    <link href="https://flamma.helsinki.fi/sv/HY361128" />
+    <title>
+<![CDATA[Kandidatrespons förnyas - Du som tagit kandidatexamen: besvara enkäten så kan du påverka!]]>
+    </title>
+    <updated>2017-01-31T08:46:00</updated>
+    <content>
+<![CDATA[Universitetens gemensamma, riksomfattande studentresponsenkät Kandidatrespons förnyas.]]>
+    </content>
+  </entry>
+  <entry>
+    <id>HY360214</id>
+    <link href="https://flamma.helsinki.fi/sv/HY360214" />
+    <title>
+<![CDATA[Man kan nu publicera provresultaten åt kursens studerande på kurssidorna ]]>
+    </title>
+    <updated>2016-12-22T11:37:22</updated>
+    <content>
+<![CDATA[På kurssidorna kan läraren nu publicera provresultat till kursens  studerande. Resultaten kan tilläggas som fil och läraren kan bifoga även  text till resultatlistan t.ex.]]>
+    </content>
+  </entry>
+  <entry>
+    <id>HY358947</id>
+    <link href="https://flamma.helsinki.fi/sv/HY358947" />
+    <title>
+<![CDATA[Välkommen att ansöka till kurser i Universitetspedagogik våren 2017]]>
+    </title>
+    <updated>2016-11-21T11:39:00</updated>
+    <content>
+<![CDATA[UP 5 Forskningsbaserad utveckling av undervisningen (5 sp)]]>
+    </content>
+  </entry>
+  <entry>
+    <id>HY347183</id>
+    <link href="https://flamma.helsinki.fi/sv/HY347183" />
+    <title>
+<![CDATA[Opetukseni-sivu kaikkien opettajien käytettävissä]]>
+    </title>
+    <updated>2015-11-23T13:25:00</updated>
+    <content>
+<![CDATA[Digitaalinen opetus- ja oppimisympäristö (DOO) -projektin tiedotus on painottanut vahvasti opiskelijanäkökulmaa: olemme kertoneet opiskelijan arkea helpottavista uusista palveluista, järjestäneet opis.]]>
+    </content>
+  </entry>
+  <entry>
+    <id>HY346674</id>
+    <link href="https://flamma.helsinki.fi/sv/HY346674" />
+    <title>
+<![CDATA[Statsvetenskapliga fakulteten tar ett digitalt språng]]>
+    </title>
+    <updated>2015-11-12T11:41:00</updated>
+    <content>
+<![CDATA[Statsvetenskapliga fakulteten går som första fakultet med i ett pilotprojekt som syftar till att göra informationen om vårens kurser tillgängliga på universitetets kurssidor.]]>
+    </content>
+  </entry>
+  <entry>
+    <id>HY342477</id>
+    <link href="https://flamma.helsinki.fi/sv/HY342477" />
+    <title>
+<![CDATA[Examen ger expertis]]>
+    </title>
+    <updated>2015-08-27T00:00:00</updated>
+    <content>
+<![CDATA[Kompetensförankring och sysselsättningsfrämjande]]>
+    </content>
+  </entry>
+  <entry>
+    <id>HY342109</id>
+    <link href="https://flamma.helsinki.fi/sv/HY342109" />
+    <title>
+<![CDATA[Reflekta palkittiin parhaana opiskelijakilpailussa]]>
+    </title>
+    <updated>2015-08-20T15:15:00</updated>
+    <content>
+<![CDATA[Helsingin yliopiston Digitaalinen opetus- ja oppimisympäristö -projekti (DOO) järjesti viime keväänä yliopiston opiskelijoille kilpailun, jossa etsittiin uusia tuoteideoita.]]>
+    </content>
+  </entry>
+  <entry>
+    <id>HY341926</id>
+    <link href="https://flamma.helsinki.fi/sv/HY341926" />
+    <title>
+<![CDATA[Tukea yliopisto-opettajille: haku opettajien vertaismentorointiin on käynnissä]]>
+    </title>
+    <updated>2015-08-18T12:52:40</updated>
+    <content>
+<![CDATA[Helsingin yliopisto panostaa tänä lukuvuonna opettajien vertaismentorointiin.]]>
+    </content>
+  </entry>
+</feed>

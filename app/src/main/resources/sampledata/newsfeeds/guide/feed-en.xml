@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">News feed</title>
+  <subtitle type="text">Latest relevant news from Guide.</subtitle>
+  <updated>2017-10-16T09:46:10+00:00</updated>
+  <generator>Guide</generator>
+  <link rel="alternate" type="text/html"
+  href="https://guide.student.helsinki.fi/en/news" />
+  <link rel="self" type="application/atom+xml"
+  href="https://guide.student.helsinki.fi/en/news/feed.xml" />
+  <id>https://guide.student.helsinki.fi/en/news</id>
+  <entry>
+    <title type="html">
+<![CDATA[Get Your Master´s Thesis Written! Grant]]>
+    </title>
+    <summary type="html">
+<![CDATA[<p>The application period for "Get Your Master´s Thesis Written!" Grant is from October 31, 2017&nbsp; 9:00 until November 16, 2017&nbsp; 15:00.</p>
+
+<p>The aim of the grant is to promote the finalizing of the Master’s thesis by providing an intensive thesis writing period at one of the field stations of the University in Hyytiälä, Kilpisjärvi, Lammi, Tvärminne or Värriö. The grant is meant for students who are close to the end of their thesis work. You can use the grant in January-June 2018.</p>
+]]>
+    </summary>
+    <published>2017-10-16T09:37:03+00:00</published>
+    <updated>2017-10-16T09:46:10+00:00</updated>
+    <link rel="alternate" type="text/html"
+    href="https://guide.student.helsinki.fi/en/news/get-your-masters-thesis-written-grant" />
+    <id>
+    https://guide.student.helsinki.fi/en/news/get-your-masters-thesis-written-grant</id>
+  </entry>
+  <entry>
+    <title type="html">
+<![CDATA[REGISTRATION FOR THE LANGUAGE CENTRE COURSES IN 2ND PERIOD]]>
+    </title>
+    <summary type="html">
+<![CDATA[<p><strong>Registration for the Language Centre courses in 2nd period is going on in WebOodi 16.10.2017–22.10.2017</strong>. Information about the language courses that will be organised in the academic year 2017-18 can be found in the Language Centre Study Guide in WebOodi: Course catalogues &gt; Language Centre &gt; language catalogues &gt; Teaching &gt; 2017-18, 2nd period &gt; Language studies</p>]]>
+    </summary>
+    <published>2017-10-16T07:30:39+00:00</published>
+    <updated>2017-10-16T09:09:13+00:00</updated>
+    <link rel="alternate" type="text/html"
+    href="https://guide.student.helsinki.fi/en/news/registration-language-centre-courses-2nd-period" />
+    <id>
+    https://guide.student.helsinki.fi/en/news/registration-language-centre-courses-2nd-period</id>
+  </entry>
+  <entry>
+    <title type="html">
+<![CDATA[Would you like to change the scene for a while?]]>
+    </title>
+    <summary type="html">
+<![CDATA[<p>Exchange and the flexible study right scheme (JOO-studies) provide excellent opportunities to make your studies more diverse and to deepen your expertise. It is important that you plan your possible studies abroad or at another university well in advance.</p>
+
+<p>Here below you can find the application periods for the academic year 2018 – 2019 and links to more precise instructions.</p>
+
+<p><strong>EXCHANGE STUDIES ABROAD</strong></p>]]>
+    </summary>
+    <published>2017-10-10T08:04:53+00:00</published>
+    <updated>2017-10-10T09:15:02+00:00</updated>
+    <link rel="alternate" type="text/html"
+    href="https://guide.student.helsinki.fi/en/news/would-you-change-scene-while" />
+    <id>
+    https://guide.student.helsinki.fi/en/news/would-you-change-scene-while</id>
+  </entry>
+  <entry>
+    <title type="html">
+<![CDATA[Call for applications: Student exchange destinations outside EU-/ETA-region for academic year 2018-2019]]>
+    </title>
+    <summary type="html">
+<![CDATA[<h4>Application period for student exchange destinations outside EU- /ETA-region&nbsp;for academic year&nbsp;2018-2019</h4>
+
+<p>Would you like to study abroad for&nbsp;one semester or one academic year?</p>
+
+<p><strong>Application period for student exchange destinations outside EU- /ETA-region begins on Thursday 26th of October 2017 and ends on Thursday 9th of November 2017 at 3 pm.</strong></p>]]>
+    </summary>
+    <published>2017-10-09T11:27:52+00:00</published>
+    <updated>2017-10-11T10:12:14+00:00</updated>
+    <link rel="alternate" type="text/html"
+    href="https://guide.student.helsinki.fi/en/news/call-applications-student-exchange-destinations-outside-eu-eta-region-academic-year-2018-2019" />
+    <id>
+    https://guide.student.helsinki.fi/en/news/call-applications-student-exchange-destinations-outside-eu-eta-region-academic-year-2018-2019</id>
+  </entry>
+  <entry>
+    <title type="html">
+<![CDATA[New application to help study planning]]>
+    </title>
+    <summary type="html">
+<![CDATA[<p><strong>Students will have access to a new study planning application during this academic year.</strong><strong> </strong><strong>The application is currently being tested in two Bachelor’s programmes.</strong></p>
+
+<p>The University will adopt a new study planning programme during this academic year. The application is part of a broader redesign of digital services. At first, students will be able to use the system to independently plan their studies. In the future, the degree programmes can use it as part of personal study plan guidance.</p>]]>
+    </summary>
+    <published>2017-10-09T08:24:17+00:00</published>
+    <updated>2017-10-09T08:26:10+00:00</updated>
+    <link rel="alternate" type="text/html"
+    href="https://guide.student.helsinki.fi/en/news/new-application-help-study-planning" />
+    <id>
+    https://guide.student.helsinki.fi/en/news/new-application-help-study-planning</id>
+  </entry>
+  <entry>
+    <title type="html">
+<![CDATA[Become a student representative at the University of Helsinki!]]>
+    </title>
+    <summary type="html">
+<![CDATA[<p><strong>&nbsp;</strong>The Student Union will recruit new student representatives for all faculties and the University Collegium this fall. Student representatives make sure that students’ interests won’t get trampled on when making decisions which concern studies and student life. They voice students’ opinions in meetings, advance and defend issues that are important to students – put university democracy into action.</p>]]>
+    </summary>
+    <published>2017-09-20T12:38:59+00:00</published>
+    <updated>2017-09-20T12:39:58+00:00</updated>
+    <link rel="alternate" type="text/html"
+    href="https://guide.student.helsinki.fi/en/news/become-student-representative-university-helsinki" />
+    <id>
+    https://guide.student.helsinki.fi/en/news/become-student-representative-university-helsinki</id>
+  </entry>
+</feed>

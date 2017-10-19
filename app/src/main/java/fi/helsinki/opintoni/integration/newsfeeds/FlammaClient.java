@@ -15,38 +15,14 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.dto;
+package fi.helsinki.opintoni.integration.newsfeeds;
 
-import java.util.Date;
-import java.util.Objects;
+import com.rometools.rome.feed.atom.Feed;
+import java.util.Locale;
 
-public class NewsDto {
+public interface FlammaClient {
 
-    public String title;
-    public String url;
-    public String content;
-    public Date updated;
+    Feed getStudentFeed(Locale locale);
+    Feed getTeacherFeed(Locale locale);
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        NewsDto dto = (NewsDto) o;
-
-        return Objects.equals(title, dto.title)
-            && Objects.equals(url, dto.url)
-            && Objects.equals(content, dto.content)
-            && Objects.equals(updated, dto.updated);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, url, content, updated);
-    }
 }
