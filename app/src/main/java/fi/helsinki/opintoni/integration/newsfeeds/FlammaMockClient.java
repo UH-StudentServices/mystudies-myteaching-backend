@@ -17,33 +17,33 @@
 
 package fi.helsinki.opintoni.integration.newsfeeds;
 
+import com.google.common.collect.ImmutableMap;
 import com.rometools.rome.feed.atom.Feed;
 import java.util.Locale;
 import java.util.Map;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
-public class FlammaRestClient extends AtomRestClient implements FlammaClient{
+public class FlammaMockClient extends NewsFeedsMockClient implements FlammaClient {
 
-    private Map<String, String> studentFeedsByLocale;
-    private Map<String, String> teacherFeedsByLocale;
+    private static final String MOCK_DATA_BASE = "/sampledata/newsfeeds/flamma/";
 
-    public FlammaRestClient(
-        RestTemplate restTemplate, Map<String, String> studentFeedsByLocale, Map<String, String> teacherFeedsByLocale) {
-        super(restTemplate);
-        this.studentFeedsByLocale = studentFeedsByLocale;
-        this.teacherFeedsByLocale = teacherFeedsByLocale;
-    }
+    private static final Map<String, String> STUDENT_FILES = ImmutableMap.of(
+        "fi", "atom-news.xml",
+        "sv", "atom-news-sv.xml",
+        "en", "atom-news-en.xml");
+
+    private static final Map<String, String> TEACHER_FILES = ImmutableMap.of(
+        "fi", "atom-tiedotteet-opetusasiat.xml",
+        "sv", "atom-tiedotteet-opetusasiat-sv.xml",
+        "en", "atom-tiedotteet-opetusasiat-en.xml");
 
     @Override
     public Feed getStudentFeed(Locale locale) {
-        return getFeed(studentFeedsByLocale.get(locale.getLanguage()));
+        return getFeedFromPath(MOCK_DATA_BASE + STUDENT_FILES.get(locale.getLanguage()));
     }
 
     @Override
     public Feed getTeacherFeed(Locale locale) {
-        return getFeed(teacherFeedsByLocale.get(locale.getLanguage()));
+        return getFeedFromPath(MOCK_DATA_BASE + TEACHER_FILES.get(locale.getLanguage()));
     }
 
 }

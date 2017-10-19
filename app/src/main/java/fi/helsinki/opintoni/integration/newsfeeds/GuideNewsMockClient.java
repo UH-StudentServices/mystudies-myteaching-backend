@@ -17,33 +17,30 @@
 
 package fi.helsinki.opintoni.integration.newsfeeds;
 
+import com.google.common.collect.ImmutableMap;
 import com.rometools.rome.feed.atom.Feed;
 import java.util.Locale;
 import java.util.Map;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
-public class FlammaRestClient extends AtomRestClient implements FlammaClient{
+public class GuideNewsMockClient extends NewsFeedsMockClient implements GuideNewsClient {
 
-    private Map<String, String> studentFeedsByLocale;
-    private Map<String, String> teacherFeedsByLocale;
+    private static final String MOCK_DATA_BASE = "/sampledata/newsfeeds/guide/";
 
-    public FlammaRestClient(
-        RestTemplate restTemplate, Map<String, String> studentFeedsByLocale, Map<String, String> teacherFeedsByLocale) {
-        super(restTemplate);
-        this.studentFeedsByLocale = studentFeedsByLocale;
-        this.teacherFeedsByLocale = teacherFeedsByLocale;
+    private static final Map<String, String> LANG_FILES = ImmutableMap.of(
+        "fi", "feed.xml",
+        "sv", "feed-sv.xml",
+        "en", "feed-en.xml");
+
+
+    @Override
+    public Feed getGuideFeed(Locale locale) {
+        return getFeedFromPath(MOCK_DATA_BASE + LANG_FILES.get(locale.getLanguage()));
     }
 
     @Override
-    public Feed getStudentFeed(Locale locale) {
-        return getFeed(studentFeedsByLocale.get(locale.getLanguage()));
+    public Feed getGuideFeed(Locale locale, String degreeProgrammeCode) {
+        // no proper mocking for degree programme news yet, should be relatively straightforward
+        // to add if needed
+        return getGuideFeed(locale);
     }
-
-    @Override
-    public Feed getTeacherFeed(Locale locale) {
-        return getFeed(teacherFeedsByLocale.get(locale.getLanguage()));
-    }
-
 }

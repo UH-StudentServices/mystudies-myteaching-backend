@@ -66,10 +66,7 @@ leiki:
     client.implementation: mock
 
 newsfeeds:
-    guideFeedsByLocale:
-        fi: https://dev.guide.student.helsinki.fi/fi/news/feed.xml
-        sv: https://dev.guide.student.helsinki.fi/sv/news/feed.xml
-        en: https://dev.guide.student.helsinki.fi/en/news/feed.xml
+    client.implementation: mock
 
 googleAnalyticsAccount:
     main: UA-55852460-3

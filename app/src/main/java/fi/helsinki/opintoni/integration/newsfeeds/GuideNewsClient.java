@@ -19,27 +19,9 @@ package fi.helsinki.opintoni.integration.newsfeeds;
 
 import com.rometools.rome.feed.atom.Feed;
 import java.util.Locale;
-import java.util.Map;
-import org.springframework.web.client.RestTemplate;
 
-public class GuideNewsRestClient extends AtomRestClient implements GuideNewsClient {
+public interface GuideNewsClient {
 
-    private Map<String, String> guideFeedsByLocale;
-
-    public GuideNewsRestClient(RestTemplate restTemplate, Map<String, String> guideFeedsByLocale) {
-        super(restTemplate);
-        this.guideFeedsByLocale = guideFeedsByLocale;
-    }
-
-    @Override
-    public Feed getGuideFeed(Locale locale) {
-        return getFeed(guideFeedsByLocale.get(locale.getLanguage()));
-    }
-
-    @Override
-    public Feed getGuideFeed(Locale locale, String degreeProgrammeCode) {
-        String uri = guideFeedsByLocale.get(locale.getLanguage()) + "?degree_programme_code=" + degreeProgrammeCode;
-        return getFeed(uri);
-    }
-
+    Feed getGuideFeed(Locale locale);
+    Feed getGuideFeed(Locale locale, String degreeProgrammeCode);
 }

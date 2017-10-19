@@ -18,30 +18,29 @@
 package fi.helsinki.opintoni.integration.newsfeeds;
 
 import com.rometools.rome.feed.atom.Feed;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.io.FeedException;
+import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
+import java.io.IOException;
+import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
-public class AtomRestClient {
-    private final static Logger log = LoggerFactory.getLogger(AtomRestClient.class);
+public class NewsFeedsMockClient {
 
-    private final RestTemplate restTemplate;
+    private static final Logger log = LoggerFactory.getLogger(NewsFeedsMockClient.class);
 
-    public AtomRestClient(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
-
-    public RestTemplate getRestTemplate() {
-        return restTemplate;
-    }
-
-    protected Feed getFeed(String uri) {
+    protected Feed getFeedFromPath(String mockResourcePath) {
+        SyndFeedInput feedInput = new SyndFeedInput();
+        InputStream inputResource = ClassLoader.class.getResourceAsStream(mockResourcePath);
         try {
-            return restTemplate.getForObject(uri, Feed.class);
-        } catch (RestClientException e) {
-            log.error("REST client with uri {} threw exception: {}", uri, e.getMessage());
-            return new Feed("atom_0.3");
+            SyndFeed syndFeed = feedInput.build(new XmlReader(inputResource));
+            return (Feed) syndFeed.createWireFeed();
+        } catch (FeedException | IOException e) {
+            log.error(e.getMessage());
         }
+        log.warn("Could not get mock data from {}. Returning empty feed.", mockResourcePath);
+        return new Feed("atom_0.3");
     }
 }

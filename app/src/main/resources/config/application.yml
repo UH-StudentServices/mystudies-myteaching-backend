@@ -176,6 +176,7 @@ leiki:
 
 newsfeeds:
     maxItemsToReturn: 4
+    client.implementation: rest
     studentFeedsByLocale:
         fi: https://flamma.helsinki.fi/infotaulu/atom-news.xml
         sv: https://flamma.helsinki.fi/infotaulu/atom-news-sv.xml

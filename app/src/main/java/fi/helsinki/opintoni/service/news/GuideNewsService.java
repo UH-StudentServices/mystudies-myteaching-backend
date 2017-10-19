@@ -2,6 +2,7 @@ package fi.helsinki.opintoni.service.news;
 
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.dto.NewsDto;
+import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsClient;
 import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsRestClient;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiStudyRight.Element;
@@ -23,14 +24,14 @@ public class GuideNewsService extends FetchingNewsService {
     private OodiClient oodiClient;
 
     @Autowired
-    private GuideNewsRestClient guideNewsRestClient;
+    private GuideNewsClient guideNewsClient;
 
     @Autowired
     private SecurityUtils securityUtils;
 
     @Cacheable(CacheConstants.GUIDE_GENERAL_NEWS)
     public List<NewsDto> getGuideNewsGeneral(Locale locale) {
-        return getAtomNews(() -> guideNewsRestClient.getGuideFeed(locale));
+        return getAtomNews(() -> guideNewsClient.getGuideFeed(locale));
     }
 
     @Cacheable(CacheConstants.GUIDE_PROGRAMME_NEWS)
@@ -42,7 +43,7 @@ public class GuideNewsService extends FetchingNewsService {
             .map(e -> e.code).collect(Collectors.toSet());
 
         HashSet<NewsDto> newsSet = studyRightsProgrammeCodes.stream().map(code -> getAtomNews(
-            () -> guideNewsRestClient.getGuideFeed(locale, code)))
+            () -> guideNewsClient.getGuideFeed(locale, code)))
             .flatMap(List::stream)
             .collect(Collectors.toCollection(HashSet::new));
 
