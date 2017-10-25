@@ -1283,5 +1283,10 @@
                              columnNames="portfolio_id, component"
                              constraintName="unique_component_heading"/>
     </changeSet>
+    <changeSet id="Remove tour columns" author="Marko Rautajoki">
+        <dropColumn tableName="user_settings" columnName="show_my_studies_tour"></dropColumn>
+        <dropColumn tableName="user_settings" columnName="show_my_teaching_tour"></dropColumn>
+        <dropColumn tableName="user_settings" columnName="show_portfolio_tour"></dropColumn>
+    </changeSet>
 
 </databaseChangeLog>

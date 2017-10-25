@@ -51,9 +51,6 @@ public class UserSettingsConverter {
         userSettingsDto.backgroundUri = getBackgroundUri(userSettings);
         userSettingsDto.backgroundType = getBackgroundType(userSettings);
         userSettingsDto.hasAvatarImage = userSettings.hasAvatarImage();
-        userSettingsDto.showMyStudiesTour = userSettings.showMyStudiesTour;
-        userSettingsDto.showMyTeachingTour = userSettings.showMyTeachingTour;
-        userSettingsDto.showPortfolioTour = userSettings.showPortfolioTour;
         userSettingsDto.showBanner = userSettings.showBanner;
         userSettingsDto.cookieConsent = userSettings.cookieConsent;
         userSettingsDto.meceJWTToken = jwtService.generateToken(userSettings.user.eduPersonPrincipalName);
