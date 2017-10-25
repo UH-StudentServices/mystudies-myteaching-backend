@@ -72,9 +72,6 @@ public class UserSettingsService {
 
     public UserSettingsDto update(Long userSettingsId, UpdateUserSettingsRequest request) {
         UserSettings userSettings = userSettingsRepository.findOne(userSettingsId);
-        userSettings.showMyStudiesTour = request.showMyStudiesTour;
-        userSettings.showMyTeachingTour = request.showMyTeachingTour;
-        userSettings.showPortfolioTour = request.showPortfolioTour;
         userSettings.showBanner = request.showBanner;
         userSettings.cookieConsent = request.cookieConsent;
         return userSettingsConverter.toDto(userSettingsRepository.save(userSettings));

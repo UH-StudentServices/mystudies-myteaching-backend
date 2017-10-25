@@ -69,10 +69,7 @@ public class UserSettingsResourceTest extends SpringTest {
             .andExpect(jsonPath("$.id").value(USER_SETTINGS_ID.intValue()))
             .andExpect(jsonPath("$.backgroundUri").value(BACKGROUND_URI))
             .andExpect(jsonPath("$.backgroundType").value("DEFAULT"))
-            .andExpect(jsonPath("$.showMyStudiesTour").value(true))
-            .andExpect(jsonPath("$.showMyTeachingTour").value(true))
             .andExpect(jsonPath("$.showBanner").value(true))
-            .andExpect(jsonPath("$.showPortfolioTour").value(true))
             .andExpect(jsonPath("$.cookieConsent").value(false))
             .andExpect(jsonPath("$.meceJWTToken").value(jwtService.generateToken(STUDENT_PRINCIPAL_NAME)));
     }
@@ -80,9 +77,6 @@ public class UserSettingsResourceTest extends SpringTest {
     @Test
     public void thatUserSettingsAreUpdated() throws Exception {
         UpdateUserSettingsRequest request = new UpdateUserSettingsRequest();
-        request.showMyStudiesTour = false;
-        request.showMyTeachingTour = false;
-        request.showPortfolioTour = false;
         request.showBanner = false;
         request.cookieConsent = true;
 
@@ -96,9 +90,6 @@ public class UserSettingsResourceTest extends SpringTest {
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.id").value(USER_SETTINGS_ID.intValue()))
             .andExpect(jsonPath("$.backgroundType").value("DEFAULT"))
-            .andExpect(jsonPath("$.showMyStudiesTour").value(false))
-            .andExpect(jsonPath("$.showMyTeachingTour").value(false))
-            .andExpect(jsonPath("$.showPortfolioTour").value(false))
             .andExpect(jsonPath("$.showBanner").value(false))
             .andExpect(jsonPath("$.cookieConsent").value(true));
     }

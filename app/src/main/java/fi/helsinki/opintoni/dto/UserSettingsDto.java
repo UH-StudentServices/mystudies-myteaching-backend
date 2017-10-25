@@ -25,9 +25,6 @@ public class UserSettingsDto {
     public String meceJWTToken;
     public String meceDomain;
     public boolean hasAvatarImage;
-    public boolean showMyStudiesTour;
-    public boolean showMyTeachingTour;
-    public boolean showPortfolioTour;
     public boolean showBanner;
     public boolean cookieConsent;
 }
