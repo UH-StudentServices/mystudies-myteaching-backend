@@ -99,9 +99,7 @@ public class OfficeHoursService {
 
     public OfficeHoursDto delete(final Long userId) {
         officeHoursRepository.deleteByUserId(userId);
-        OfficeHours officeHours = new OfficeHours();
-        officeHours.user = userRepository.findOne(userId);
-        return officeHoursConverter.toDto(officeHoursRepository.save(officeHours));
+        return new OfficeHoursDto();
     }
 
     public OfficeHoursDto getByUserId(final Long userId) {
