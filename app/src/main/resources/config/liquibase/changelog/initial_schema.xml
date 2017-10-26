@@ -1346,7 +1346,7 @@
 
         <createTable tableName="office_hours_degree_programme">
             <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" primaryKeyName="pk_content_items" nullable="false"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="office_hours_id" type="bigint" >
                 <constraints foreignKeyName="fk_office_hours_degree_programme_office_hours"
