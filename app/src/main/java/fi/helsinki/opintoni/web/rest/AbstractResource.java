@@ -31,4 +31,8 @@ public abstract class AbstractResource {
     protected final <T> ResponseEntity<T> response(Supplier<T> resultSupplier) {
         return response(resultSupplier.get());
     }
+
+    protected final ResponseEntity response(HttpStatus status) {
+        return new ResponseEntity(status);
+    }
 }

@@ -27,11 +27,11 @@ import fi.helsinki.opintoni.web.rest.RestConstants;
 
 import com.codahale.metrics.annotation.Timed;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(
@@ -62,8 +62,9 @@ public class OfficeHoursResource extends AbstractResource {
 
     @RequestMapping(method = RequestMethod.DELETE)
     @Timed
-    public ResponseEntity<OfficeHoursDto> deleteOwnOfficeHours(@UserId Long userId) {
-        return response(officeHoursService.delete(userId));
+    public ResponseEntity deleteOwnOfficeHours(@UserId Long userId) {
+        officeHoursService.delete(userId);
+        return response(HttpStatus.NO_CONTENT);
     }
 
 }
