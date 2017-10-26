@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.domain;
 
+import java.util.List;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -24,7 +25,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "degree_programme")
-public class DegreeProgramme extends AbstractAuditingEntity implements Ownership {
+public class DegreeProgramme extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue
@@ -35,12 +36,6 @@ public class DegreeProgramme extends AbstractAuditingEntity implements Ownership
     @Column(name = "degree_code")
     public String degreeCode;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id")
-    public User user;
-
-    @Override
-    public Long getOwnerId() {
-        return user.id;
-    }
+    @ManyToMany(mappedBy="degreeProgrammes")
+    private List<OfficeHours> officeHours;
 }

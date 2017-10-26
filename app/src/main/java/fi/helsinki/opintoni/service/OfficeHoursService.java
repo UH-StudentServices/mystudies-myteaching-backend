@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.service;
 
-import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.domain.DegreeProgramme;
 import fi.helsinki.opintoni.domain.OfficeHours;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
@@ -77,42 +76,37 @@ public class OfficeHoursService {
 
         officeHours.description = officeHoursDto.description;
         officeHours.name = officeHoursDto.name;
-        officeHours = officeHoursRepository.save(officeHours);
 
         List<DegreeProgramme> degreeProgrammes = officeHoursDto.degreeProgrammes.stream()
             .distinct()
             .map(degreeProgrammeDto -> {
-                DegreeProgramme degreeProgramme = new DegreeProgramme();
-                degreeProgramme.user = userRepository.findOne(userId);
-                degreeProgramme.degreeCode = degreeProgrammeDto.code;
-                return degreeProgramme;
+                DegreeProgramme firstByDegreeCode = degreeProgrammeRepository
+                    .findFirstByDegreeCode(degreeProgrammeDto.code);
+                if (firstByDegreeCode == null) {
+                    firstByDegreeCode = new DegreeProgramme();
+                    firstByDegreeCode.degreeCode = degreeProgrammeDto.code;
+                    firstByDegreeCode = degreeProgrammeRepository.save(firstByDegreeCode);
+                }
+                return firstByDegreeCode;
             })
             .collect(Collectors.toList());
 
-        degreeProgrammeRepository.deleteByUserId(userId);
-        degreeProgrammes = degreeProgrammeRepository.save(degreeProgrammes);
+        officeHours.degreeProgrammes = degreeProgrammes;
+        officeHours = officeHoursRepository.save(officeHours);
 
-        return officeHoursConverter.toDto(officeHours, degreeProgrammes);
+        return officeHoursConverter.toDto(officeHours);
     }
 
     public OfficeHoursDto delete(final Long userId) {
-        OfficeHours officeHours = officeHoursRepository.findByUserId(userId);
-        if (officeHours == null) {
-            officeHours = new OfficeHours();
-            officeHours.user = userRepository.findOne(userId);
-        }
-
-        degreeProgrammeRepository.deleteByUserId(userId);
-
-        officeHours.description = null;
-        return officeHoursConverter.toDto(officeHoursRepository.save(officeHours), Lists.newArrayList());
+        officeHoursRepository.deleteByUserId(userId);
+        OfficeHours officeHours = new OfficeHours();
+        officeHours.user = userRepository.findOne(userId);
+        return officeHoursConverter.toDto(officeHoursRepository.save(officeHours));
     }
 
     public OfficeHoursDto getByUserId(final Long userId) {
         OfficeHours officeHours = officeHoursRepository.findByUserId(userId);
-        List<DegreeProgramme> degreeProgrammes = degreeProgrammeRepository.findByUserId(userId);
-
-        return officeHoursConverter.toDto(officeHours, degreeProgrammes);
+        return officeHoursConverter.toDto(officeHours);
     }
 
     public List<PublicOfficeHoursDto> getAll() {
@@ -121,11 +115,8 @@ public class OfficeHoursService {
         return allOfficeHours.stream()
             .filter(officeHours -> officeHours.description != null)
             .map(officeHours -> {
-                List<DegreeProgramme> degreeProgrammes = degreeProgrammeRepository.findByUserId(officeHours.getOwnerId());
-                List<String> degreeProgrammeCodes = degreeProgrammes.stream()
-                    .map(degreeProgramme -> {
-                        return degreeProgramme.degreeCode;
-                    })
+                List<String> degreeProgrammeCodes = officeHours.degreeProgrammes.stream()
+                    .map(dp -> dp.degreeCode)
                     .collect(Collectors.toList());
 
                 PublicOfficeHoursDto officeHoursDto = new PublicOfficeHoursDto();
