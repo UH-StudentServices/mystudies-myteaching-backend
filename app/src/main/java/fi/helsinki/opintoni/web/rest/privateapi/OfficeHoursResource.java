@@ -64,7 +64,7 @@ public class OfficeHoursResource extends AbstractResource {
     @Timed
     public ResponseEntity deleteOwnOfficeHours(@UserId Long userId) {
         officeHoursService.delete(userId);
-        return response(HttpStatus.NO_CONTENT);
+        return noContentResponse();
     }
 
 }

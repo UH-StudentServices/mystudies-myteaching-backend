@@ -32,7 +32,7 @@ public abstract class AbstractResource {
         return response(resultSupplier.get());
     }
 
-    protected final ResponseEntity response(HttpStatus status) {
-        return new ResponseEntity(status);
+    protected final ResponseEntity noContentResponse() {
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
