@@ -20,11 +20,9 @@ package fi.helsinki.opintoni.repository;
 import fi.helsinki.opintoni.domain.DegreeProgramme;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 
 public interface DegreeProgrammeRepository extends JpaRepository<DegreeProgramme, Long> {
 
-    void deleteByUserId(Long userId);
 
-    List<DegreeProgramme> findByUserId(Long userId);
+    DegreeProgramme findFirstByDegreeCode(String degreeCode);
 }

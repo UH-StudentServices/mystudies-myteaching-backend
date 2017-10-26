@@ -91,9 +91,8 @@ public class OfficeHoursResourceTest extends SpringTest {
             .with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.description").doesNotExist());
+            .andExpect(status().isNoContent())
+            .andExpect(content().string(""));
     }
 
 }

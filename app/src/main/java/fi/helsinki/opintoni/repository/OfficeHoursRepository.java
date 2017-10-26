@@ -23,5 +23,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface OfficeHoursRepository extends JpaRepository<OfficeHours, Long> {
 
     OfficeHours findByUserId(Long userId);
-
+    void deleteByUserId(Long userId);
 }
