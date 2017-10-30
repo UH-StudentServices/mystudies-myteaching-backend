@@ -26,8 +26,8 @@ public class OfficeHoursSampleData {
     public static final String OFFICE_HOURS_2 = "uudet ajat 2";
     public static final String OFFICE_HOURS_7 = "Tiistaisin klo 10.00";
 
-    public static final String DEGREE_CODE_1 = "KH50_004";
-    public  static final String DEGREE_CODE_2 = "KH80_001";
-    public static final String DEGREE_CODE_3 = "KH50_002";
+    public static final String DEGREE_CODE_1 = "KH80_001";
+    public static final String DEGREE_CODE_2 = "KH50_002";
+    public static final String DEGREE_CODE_3 = "KH50_004";
 
 }

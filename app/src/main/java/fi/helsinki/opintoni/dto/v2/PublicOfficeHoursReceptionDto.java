@@ -15,18 +15,11 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.web.rest;
+package fi.helsinki.opintoni.dto.v2;
 
-public class RestConstants {
+import java.util.List;
 
-    public static final String PRIVATE_API_V1 = "/api/private/v1";
-    public static final String RESTRICTED_API_V1 = "/api/restricted/v1";
-    public static final String PUBLIC_API_V1 = "/api/public/v1";
-    public static final String PUBLIC_API_V2 = "/api/public/v2";
-    public static final String ADMIN_API_V1 = "/api/admin/v1";
-
-    public static final String MATCH_NUMBER = "^[0-9]+$";
-
-    private RestConstants() {
-    }
+public class PublicOfficeHoursReceptionDto {
+    public String description;
+    public List<String> degreeProgrammes;
 }
