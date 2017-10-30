@@ -30,4 +30,14 @@ public class OfficeHoursDto {
     public String description;
 
     public List<DegreeProgrammeDto> degreeProgrammes;
+
+    public OfficeHoursDto() {
+
+    }
+
+    public OfficeHoursDto(String name, String description, List<DegreeProgrammeDto> degreeProgrammes) {
+        this.name = name;
+        this.description = description;
+        this.degreeProgrammes = degreeProgrammes;
+    }
 }

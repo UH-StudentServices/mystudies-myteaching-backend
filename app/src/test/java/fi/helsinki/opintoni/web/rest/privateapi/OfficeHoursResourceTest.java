@@ -19,8 +19,14 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.SpringTest;
+
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_1;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_2;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_3;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS_2;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHER_NAME;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHER_NAME_2;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static fi.helsinki.opintoni.web.WebTestUtils.toJsonBytes;
@@ -28,6 +34,9 @@ import static fi.helsinki.opintoni.web.WebTestUtils.toJsonBytes;
 import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
 import fi.helsinki.opintoni.web.WebConstants;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
@@ -41,9 +50,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class OfficeHoursResourceTest extends SpringTest {
 
-    private static final String NEW_OFFICE_HOURS = "uudet ajat";
-    private static final String DEGREE_CODE_1 = "KH50_004";
-    private static final String DEGREE_CODE_2 = "KH80_001";
 
     @Test
     public void thatOfficeHoursReturnCorrectResponse() throws Exception {
@@ -53,21 +59,23 @@ public class OfficeHoursResourceTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.description").value(OFFICE_HOURS))
-            .andExpect(jsonPath("$.name").value(TEACHER_NAME));
+            .andExpect(jsonPath("$[0].description").value(OFFICE_HOURS))
+            .andExpect(jsonPath("$[0].name").value(TEACHER_NAME));
     }
 
     @Test
     public void thatOfficeHoursAreUpdated() throws Exception {
-        OfficeHoursDto request = new OfficeHoursDto();
-        request.description = NEW_OFFICE_HOURS;
-        request.name = TEACHER_NAME;
+        OfficeHoursDto officeHoursDto = new OfficeHoursDto();
+        officeHoursDto.description = OFFICE_HOURS;
+        officeHoursDto.name = TEACHER_NAME;
 
         DegreeProgrammeDto programme1 = new DegreeProgrammeDto();
         DegreeProgrammeDto programme2 = new DegreeProgrammeDto();
         programme1.code = DEGREE_CODE_1;
         programme2.code = DEGREE_CODE_2;
-        request.degreeProgrammes = Lists.newArrayList(programme1, programme2);
+        officeHoursDto.degreeProgrammes = Lists.newArrayList(programme1, programme2);
+
+        List<OfficeHoursDto> request = Arrays.asList(officeHoursDto);
 
         mockMvc.perform(post("/api/private/v1/officehours")
             .with(securityContext(teacherSecurityContext()))
@@ -77,12 +85,12 @@ public class OfficeHoursResourceTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.description").value(NEW_OFFICE_HOURS))
-            .andExpect(jsonPath("$.name").value(TEACHER_NAME))
-            .andExpect(jsonPath("$.degreeProgrammes").isArray())
-            .andExpect(jsonPath("$.degreeProgrammes", hasSize(2)))
-            .andExpect(jsonPath("$.degreeProgrammes[0].code").value(DEGREE_CODE_1))
-            .andExpect(jsonPath("$.degreeProgrammes[1].code").value(DEGREE_CODE_2));
+            .andExpect(jsonPath("$[0].description").value(OFFICE_HOURS))
+            .andExpect(jsonPath("$[0]name").value(TEACHER_NAME))
+            .andExpect(jsonPath("$[0]degreeProgrammes").isArray())
+            .andExpect(jsonPath("$[0]degreeProgrammes", hasSize(2)))
+            .andExpect(jsonPath("$[0]degreeProgrammes[0].code").value(DEGREE_CODE_1))
+            .andExpect(jsonPath("$[0]degreeProgrammes[1].code").value(DEGREE_CODE_2));
     }
 
     @Test
@@ -95,4 +103,48 @@ public class OfficeHoursResourceTest extends SpringTest {
             .andExpect(content().string(""));
     }
 
+    @Test
+    public void thatMultipleOfficeHoursCanBeAdded() throws Exception {
+        OfficeHoursDto officeHoursDto = new OfficeHoursDto(
+            TEACHER_NAME,
+            OFFICE_HOURS,
+            createProgrammeDtoList(DEGREE_CODE_1, DEGREE_CODE_2)
+        );
+
+        OfficeHoursDto officeHoursDto2 = new OfficeHoursDto(
+            TEACHER_NAME_2,
+            OFFICE_HOURS_2,
+            createProgrammeDtoList(DEGREE_CODE_3)
+        );
+
+        List<OfficeHoursDto> request = Arrays.asList(officeHoursDto, officeHoursDto2);
+
+        mockMvc.perform(post("/api/private/v1/officehours")
+            .with(securityContext(teacherSecurityContext()))
+            .characterEncoding("UTF-8")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJsonBytes(request))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$[0].description").value(OFFICE_HOURS))
+            .andExpect(jsonPath("$[0]name").value(TEACHER_NAME))
+            .andExpect(jsonPath("$[0]degreeProgrammes").isArray())
+            .andExpect(jsonPath("$[0]degreeProgrammes", hasSize(2)))
+            .andExpect(jsonPath("$[0]degreeProgrammes[0].code").value(DEGREE_CODE_1))
+            .andExpect(jsonPath("$[0]degreeProgrammes[1].code").value(DEGREE_CODE_2))
+            .andExpect(jsonPath("$[1].description").value(OFFICE_HOURS_2))
+            .andExpect(jsonPath("$[1]name").value(TEACHER_NAME_2))
+            .andExpect(jsonPath("$[1]degreeProgrammes").isArray())
+            .andExpect(jsonPath("$[1]degreeProgrammes", hasSize(1)))
+            .andExpect(jsonPath("$[1]degreeProgrammes[0].code").value(DEGREE_CODE_3));
+    }
+
+    private List<DegreeProgrammeDto> createProgrammeDtoList(String... codes) {
+        return Arrays.stream(codes).map(code -> {
+            DegreeProgrammeDto dto = new DegreeProgrammeDto();
+            dto.code = code;
+            return dto;
+        }).collect(Collectors.toList());
+    }
 }

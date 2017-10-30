@@ -26,8 +26,8 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 
 import com.codahale.metrics.annotation.Timed;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,14 +49,14 @@ public class OfficeHoursResource extends AbstractResource {
 
     @RequestMapping(method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<OfficeHoursDto> getOwnOfficeHours(@UserId Long userId) {
+    public ResponseEntity<List<OfficeHoursDto>> getOwnOfficeHours(@UserId Long userId) {
         return response(officeHoursService.getByUserId(userId));
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<OfficeHoursDto> saveOwnOfficeHours(@UserId Long userId,
-                                                             @Valid @RequestBody OfficeHoursDto officeHoursDto) {
+    public ResponseEntity<List<OfficeHoursDto>> saveOwnOfficeHours(@UserId Long userId,
+                                                             @Valid @RequestBody List <OfficeHoursDto> officeHoursDto) {
         return response(officeHoursService.update(userId, officeHoursDto));
     }
 

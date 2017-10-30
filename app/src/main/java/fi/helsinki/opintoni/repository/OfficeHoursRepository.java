@@ -18,10 +18,11 @@
 package fi.helsinki.opintoni.repository;
 
 import fi.helsinki.opintoni.domain.OfficeHours;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OfficeHoursRepository extends JpaRepository<OfficeHours, Long> {
 
-    OfficeHours findByUserId(Long userId);
+    List<OfficeHours> findByUserId(Long userId);
     void deleteByUserId(Long userId);
 }
