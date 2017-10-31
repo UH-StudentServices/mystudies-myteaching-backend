@@ -36,11 +36,13 @@ public class CoursePageServer {
 
     private final MockRestServiceServer server;
     private final String coursePageBaseUrl;
+    private final String coursePageApiPath;
 
     public CoursePageServer(AppConfiguration appConfiguration,
                             RestTemplate coursePageRestTemplate) {
         this.server = MockRestServiceServer.createServer(coursePageRestTemplate);
         this.coursePageBaseUrl = appConfiguration.get("coursePage.base.url");
+        this.coursePageApiPath = appConfiguration.get("coursePage.api.path");
     }
 
     public void expectCourseImplementationRequest(String courseImplementationId, Locale locale) {
@@ -68,10 +70,14 @@ public class CoursePageServer {
     }
 
     private String courseImplementationUrl(String courseImplementationId, Locale locale) {
-        return String.format("%s/%s/course_implementation/%s", coursePageBaseUrl, locale.toString(), courseImplementationId);
+        return String.format("%s/%s%s/course_implementation/%s",
+            coursePageBaseUrl,
+            locale.toString(),
+            coursePageApiPath,
+            courseImplementationId);
     }
 
     private Matcher<String> courseImplementationChangesUrlMatcher() {
-        return startsWith(coursePageBaseUrl + "/course_implementation/changes/since/");
+        return startsWith(coursePageBaseUrl + coursePageApiPath + "/course_implementation/changes/since/");
     }
 }

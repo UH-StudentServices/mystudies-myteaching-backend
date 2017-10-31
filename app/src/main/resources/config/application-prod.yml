@@ -48,7 +48,8 @@ oodi:
     client.implementation: rest
 
 coursePage:
-    base.url: https://courses.helsinki.fi/api/v1
+    base.url: https://courses.helsinki.fi
+    api.path: /api/v1
     client.implementation: rest
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
     checkUpdates.interval.seconds: 60

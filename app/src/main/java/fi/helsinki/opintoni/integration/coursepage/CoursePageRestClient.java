@@ -35,12 +35,14 @@ import java.util.stream.Collectors;
 
 public class CoursePageRestClient implements CoursePageClient {
     private final String baseUrl;
+    private final String apiPath;
     private final RestTemplate restTemplate;
 
     private static final Logger log = LoggerFactory.getLogger(CoursePageRestClient.class);
 
-    public CoursePageRestClient(String baseUrl, RestTemplate restTemplate) {
+    public CoursePageRestClient(String baseUrl, String apiPath, RestTemplate restTemplate) {
         this.baseUrl = baseUrl;
+        this.apiPath = apiPath;
         this.restTemplate = restTemplate;
     }
 
@@ -49,8 +51,23 @@ public class CoursePageRestClient implements CoursePageClient {
         ParameterizedTypeReference<List<T>> typeReference,
         Object... uriVariables) {
 
+        return getCoursePageData(path, typeReference, null, uriVariables);
+    }
+
+    private String getCoursePageApiUrl(String path, Locale locale) {
+        String localeUrlSegment = locale != null ? "/" + locale.toString() : "";
+
+        return baseUrl + localeUrlSegment + apiPath + path;
+    }
+
+    public <T> List<T> getCoursePageData(
+        String path,
+        ParameterizedTypeReference<List<T>> typeReference,
+        Locale locale,
+        Object... uriVariables) {
+
         try {
-            return restTemplate.exchange(baseUrl + path, HttpMethod.GET, null, typeReference, uriVariables).getBody();
+            return restTemplate.exchange(getCoursePageApiUrl(path, locale), HttpMethod.GET, null, typeReference, uriVariables).getBody();
         } catch (Exception e) {
             log.error("Caught exception when calling Course Pages:", e);
             throw new RuntimeException(e.getMessage(), e);
@@ -63,8 +80,9 @@ public class CoursePageRestClient implements CoursePageClient {
         log.trace("fetching course impl with id {} and locale {}", courseImplementationId, locale.toString());
 
         List<CoursePageCourseImplementation> coursePageCourseImplementationList = getCoursePageData(
-            String.format("/%s/course_implementation/{courseImplementationId}", locale.toString()),
+            "/course_implementation/{courseImplementationId}",
             new ParameterizedTypeReference<List<CoursePageCourseImplementation>>() {},
+            locale,
             courseImplementationId);
 
         if(coursePageCourseImplementationList != null && coursePageCourseImplementationList.size() > 0) {
