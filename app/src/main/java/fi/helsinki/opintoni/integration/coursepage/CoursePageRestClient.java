@@ -54,18 +54,20 @@ public class CoursePageRestClient implements CoursePageClient {
         return getCoursePageData(path, typeReference, null, uriVariables);
     }
 
+    private String getCoursePageApiUrl(String path, Locale locale) {
+        String localeUrlSegment = locale != null ? "/" + locale.toString() : "";
+
+        return baseUrl + localeUrlSegment + apiPath + path;
+    }
+
     public <T> List<T> getCoursePageData(
         String path,
         ParameterizedTypeReference<List<T>> typeReference,
         Locale locale,
         Object... uriVariables) {
 
-        String localeUrlSegment = locale != null ? "/" + locale.toString() : "";
-
-        String url = baseUrl + localeUrlSegment + apiPath + path;
-
         try {
-            return restTemplate.exchange(url, HttpMethod.GET, null, typeReference, uriVariables).getBody();
+            return restTemplate.exchange(getCoursePageApiUrl(path, locale), HttpMethod.GET, null, typeReference, uriVariables).getBody();
         } catch (Exception e) {
             log.error("Caught exception when calling Course Pages:", e);
             throw new RuntimeException(e.getMessage(), e);
@@ -78,7 +80,7 @@ public class CoursePageRestClient implements CoursePageClient {
         log.trace("fetching course impl with id {} and locale {}", courseImplementationId, locale.toString());
 
         List<CoursePageCourseImplementation> coursePageCourseImplementationList = getCoursePageData(
-            String.format("/%s/course_implementation/{courseImplementationId}", locale.toString()),
+            "/course_implementation/{courseImplementationId}",
             new ParameterizedTypeReference<List<CoursePageCourseImplementation>>() {},
             locale,
             courseImplementationId);

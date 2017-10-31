@@ -70,7 +70,11 @@ public class CoursePageServer {
     }
 
     private String courseImplementationUrl(String courseImplementationId, Locale locale) {
-        return String.format("%s/%s/course_implementation/%s", coursePageBaseUrl, locale.toString(), courseImplementationId);
+        return String.format("%s/%s%s/course_implementation/%s",
+            coursePageBaseUrl,
+            locale.toString(),
+            coursePageApiPath,
+            courseImplementationId);
     }
 
     private Matcher<String> courseImplementationChangesUrlMatcher() {
