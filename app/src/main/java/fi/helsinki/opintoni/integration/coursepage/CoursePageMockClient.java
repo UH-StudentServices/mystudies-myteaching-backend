@@ -37,9 +37,6 @@ public class CoursePageMockClient implements CoursePageClient {
     @Value("classpath:sampledata/coursepage/course-2.json")
     private Resource course2;
 
-    @Value("classpath:sampledata/coursepage/notifications.json")
-    private Resource notifications;
-
     private final ObjectMapper objectMapper;
 
     private static final long TEST_COURSE_IMPLEMENTATION_ID = 123456789L;
@@ -49,18 +46,10 @@ public class CoursePageMockClient implements CoursePageClient {
     }
 
     @Override
-    public CoursePageCourseImplementation getCoursePage(String courseImplementationId) {
+    public CoursePageCourseImplementation getCoursePage(String courseImplementationId, Locale locale) {
         Resource courses = (courseImplementationId != null) ? course1 : course2;
         return getResponse(courses, new TypeReference<List<CoursePageCourseImplementation>>() {
         }).get(0);
-    }
-
-    @Override
-    public List<CoursePageNotification> getCoursePageNotifications(Set<String> courseImplementationIds,
-                                                                   LocalDateTime from,
-                                                                   Locale locale) {
-        return getResponse(notifications, new TypeReference<List<CoursePageNotification>>() {
-        });
     }
 
     @Override

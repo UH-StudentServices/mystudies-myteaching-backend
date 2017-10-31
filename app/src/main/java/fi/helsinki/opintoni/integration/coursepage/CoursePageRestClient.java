@@ -57,13 +57,13 @@ public class CoursePageRestClient implements CoursePageClient {
         }
     }
 
-    @Cacheable(value = CacheConstants.COURSE_PAGE, key = "#courseImplementationId")
     @Override
-    public CoursePageCourseImplementation getCoursePage(String courseImplementationId) {
-        log.trace("fetching course impl with id {}", courseImplementationId);
+    @Cacheable(value = CacheConstants.COURSE_PAGE, key = "#courseImplementationId + '_' + #locale.toString()")
+    public CoursePageCourseImplementation getCoursePage(String courseImplementationId, Locale locale) {
+        log.trace("fetching course impl with id {} and locale {}", courseImplementationId, locale.toString());
 
         List<CoursePageCourseImplementation> coursePageCourseImplementationList = getCoursePageData(
-            "/course_implementation/{courseImplementationId}",
+            String.format("/%s/course_implementation/{courseImplementationId}", locale.toString()),
             new ParameterizedTypeReference<List<CoursePageCourseImplementation>>() {},
             courseImplementationId);
 
@@ -71,28 +71,6 @@ public class CoursePageRestClient implements CoursePageClient {
             return coursePageCourseImplementationList.get(0);
         } else {
             return new CoursePageCourseImplementation();
-        }
-    }
-
-    @Override
-    public List<CoursePageNotification> getCoursePageNotifications(Set<String> courseImplementationIds,
-                                                                   LocalDateTime from,
-                                                                   Locale locale) {
-        if (courseImplementationIds.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        List<CoursePageNotification> notifications = getCoursePageData(
-            "/course_implementation_activity?course_implementation_id={courseImplementationIds}&timestamp={from}&langcode={locale}",
-            new ParameterizedTypeReference<List<CoursePageNotification>>() {},
-            courseImplementationIds.stream().collect(Collectors.joining(",")),
-            from.format(DateFormatter.COURSE_PAGE_DATE_TIME_FORMATTER),
-            locale.getLanguage());
-
-        if(notifications != null) {
-            return notifications;
-        } else {
-            return new ArrayList<>();
         }
     }
 

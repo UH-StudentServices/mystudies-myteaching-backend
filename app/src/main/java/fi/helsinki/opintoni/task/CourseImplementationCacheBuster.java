@@ -22,11 +22,14 @@ import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 @Component
 public class CourseImplementationCacheBuster {
@@ -34,6 +37,9 @@ public class CourseImplementationCacheBuster {
     private final CacheManager cacheManager;
 
     private static Logger log = LoggerFactory.getLogger(CourseImplementationCacheBuster.class);
+
+    @Value("${locale.available}")
+    private String[] availableLocales;
 
     @Autowired
     public CourseImplementationCacheBuster(CoursePageClient coursePageClient, CacheManager cacheManager) {
@@ -48,9 +54,12 @@ public class CourseImplementationCacheBuster {
 
     private void evictStaleCacheEntries(List<Long> updatedCourses) {
         Cache courseImplementationCache = cacheManager.getCache(CacheConstants.COURSE_PAGE);
-        updatedCourses.stream().forEach(id -> {
-            log.trace("evicting cache entry for course impl with id {}", id);
-            courseImplementationCache.evict(id.toString());
-        });
+        updatedCourses.stream()
+            .flatMap(courseId ->
+                asList(availableLocales).stream().map(locale -> String.format("%s_%s", courseId, locale)))
+            .forEach(cacheKey -> {
+                log.trace("evicting cache entry for course impl with key {}", cacheKey);
+                courseImplementationCache.evict(cacheKey);
+            });
     }
 }
