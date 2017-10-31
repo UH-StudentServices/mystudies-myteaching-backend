@@ -17,6 +17,8 @@
 
 package fi.helsinki.opintoni.web;
 
+import java.util.Locale;
+
 public class TestConstants {
 
     public static final String STUDENT_NUMBER = "010189791";
@@ -31,4 +33,6 @@ public class TestConstants {
     public static final String POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID = "1234567";
 
     public static final Long PORTFOLIO_ID = 2L;
+
+    public static final Locale DEFAULT_COURSE_IMPLEMENTATION_LOCALE = Locale.ENGLISH;
 }

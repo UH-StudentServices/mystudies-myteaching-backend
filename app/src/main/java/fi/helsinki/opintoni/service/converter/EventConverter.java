@@ -41,7 +41,6 @@ public class EventConverter {
     private final EventTypeResolver eventTypeResolver;
     private final LocationResolver locationResolver;
     private final CoursePageUriBuilder coursePageUriBuilder;
-    private final LocalizedValueConverter localizedValueConverter;
     private final CourseMaterialDtoFactory courseMaterialDtoFactory;
     private final EnrollmentNameConverter enrollmentNameConverter;
 
@@ -50,14 +49,12 @@ public class EventConverter {
                           EventTypeResolver eventTypeResolver,
                           LocationResolver locationResolver,
                           CoursePageUriBuilder coursePageUriBuilder,
-                          LocalizedValueConverter localizedValueConverter,
                           CourseMaterialDtoFactory courseMaterialDtoFactory,
                           EnrollmentNameConverter enrollmentNameConverter) {
         this.coursePageClient = coursePageClient;
         this.eventTypeResolver = eventTypeResolver;
         this.locationResolver = locationResolver;
         this.coursePageUriBuilder = coursePageUriBuilder;
-        this.localizedValueConverter = localizedValueConverter;
         this.courseMaterialDtoFactory = courseMaterialDtoFactory;
         this.enrollmentNameConverter = enrollmentNameConverter;
     }
@@ -71,7 +68,7 @@ public class EventConverter {
             coursePage.courseImplementationId,
             event.title,
             coursePage.title,
-            coursePageUriBuilder.getLocalizedUri(coursePage),
+            coursePage.url,
             coursePageUriBuilder.getImageUri(coursePage),
             courseMaterialDtoFactory.fromCoursePage(coursePage),
             coursePage.moodleUrl,
@@ -80,7 +77,7 @@ public class EventConverter {
     }
 
     public EventDto toDto(OodiEvent event, Locale locale) {
-        CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(String.valueOf(event.realisationId));
+        CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(String.valueOf(event.realisationId), locale);
         return toDto(event, coursePage, locale);
     }
 
@@ -93,7 +90,7 @@ public class EventConverter {
             event.realisationId,
             enrollmentNameConverter.getRealisationNameWithRootName(event.realisationName, event.realisationRootName, locale),
             coursePage.title,
-            coursePageUriBuilder.getLocalizedUri(coursePage),
+            coursePage.url,
             coursePageUriBuilder.getImageUri(coursePage),
             courseMaterialDtoFactory.fromCoursePage(coursePage),
             coursePage.moodleUrl,

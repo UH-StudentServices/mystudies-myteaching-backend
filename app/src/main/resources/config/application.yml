@@ -286,7 +286,9 @@ facultyLinks:
 
 feed.client.implementation: remote
 
-locale.default: fi
+locale:
+    available: fi,sv,en
+    default: fi
 
 pilotDegreeProgrammes:
     - KH40_001

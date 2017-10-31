@@ -19,16 +19,13 @@ package fi.helsinki.opintoni.server;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.sampledata.SampleDataFiles;
-import org.apache.commons.lang.StringUtils;
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import java.util.Locale;
 
 import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
@@ -46,14 +43,14 @@ public class CoursePageServer {
         this.coursePageBaseUrl = appConfiguration.get("coursePage.base.url");
     }
 
-    public void expectCourseImplementationRequest(String courseImplementationId) {
-        server.expect(requestTo(courseImplementationUrl(courseImplementationId)))
+    public void expectCourseImplementationRequest(String courseImplementationId, Locale locale) {
+        server.expect(requestTo(courseImplementationUrl(courseImplementationId, locale)))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(SampleDataFiles.toText("coursepage/course.json"), MediaType.APPLICATION_JSON));
     }
 
-    public void expectCourseImplementationRequest(String courseImplementationId, String responseFile) {
-        server.expect(requestTo(courseImplementationUrl(courseImplementationId)))
+    public void expectCourseImplementationRequest(String courseImplementationId, String responseFile, Locale locale) {
+        server.expect(requestTo(courseImplementationUrl(courseImplementationId, locale)))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(
                     SampleDataFiles.toText("coursepage/" + responseFile),
@@ -70,59 +67,11 @@ public class CoursePageServer {
             ));
     }
 
-    public void expectCourseImplementationActivityRequest(List<String> courseImplementationIds, String responseFile) {
-        server.expect(
-            requestTo(new ActivityUrlMatcher(coursePageBaseUrl, courseImplementationIdsToString(courseImplementationIds))))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(
-                    SampleDataFiles.toText("coursepage/" + responseFile),
-                    MediaType.APPLICATION_JSON)
-            );
-    }
-
-    private String courseImplementationUrl(String courseImplementationId) {
-        return coursePageBaseUrl + "/course_implementation/" +
-            courseImplementationId;
+    private String courseImplementationUrl(String courseImplementationId, Locale locale) {
+        return String.format("%s/%s/course_implementation/%s", coursePageBaseUrl, locale.toString(), courseImplementationId);
     }
 
     private Matcher<String> courseImplementationChangesUrlMatcher() {
         return startsWith(coursePageBaseUrl + "/course_implementation/changes/since/");
-    }
-
-    private String eventsUrl(String courseImplementationId) {
-        return coursePageBaseUrl + "/events?course_implementation_id=" + courseImplementationId;
-    }
-
-    private String courseImplementationIdsToString(List<String> courseImplementationIds) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(courseImplementationIds.get(0));
-        courseImplementationIds.stream()
-            .skip(1)
-            .forEach(i -> builder.append(",").append(i));
-        return builder.toString();
-    }
-
-    public static class ActivityUrlMatcher extends TypeSafeMatcher<String> {
-
-        private final String courseRealisationId;
-        private final String urlTemplate;
-
-        public ActivityUrlMatcher(String coursePageBaseUrl, String courseRealisationId) {
-            this.courseRealisationId = courseRealisationId;
-            this.urlTemplate = coursePageBaseUrl + "/course_implementation_activity" +
-                "?course_implementation_id=%s&timestamp=";
-        }
-
-        @Override
-        public boolean matchesSafely(String url) {
-            return StringUtils.contains(
-                url,
-                String.format(urlTemplate, courseRealisationId));
-        }
-
-        @Override
-        public void describeTo(Description description) {
-            description.appendText(String.format("url containing " + urlTemplate, courseRealisationId));
-        }
     }
 }

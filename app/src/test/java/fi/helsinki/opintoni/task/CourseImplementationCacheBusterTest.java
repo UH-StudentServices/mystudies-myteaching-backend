@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.Instant;
+import java.util.Locale;
 
 import static fi.helsinki.opintoni.web.TestConstants.TEACHER_COURSE_REALISATION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,23 +36,37 @@ public class CourseImplementationCacheBusterTest extends SpringTest {
     @Autowired
     private CourseImplementationCacheBuster courseImplementationCacheBuster;
 
-    @Test
-    public void thatCourseImplementationCacheIsBusted() {
-        defaultTeacherRequestChain().defaultCourseImplementation();
+    public void assertCourseImplementationCacheBustForLocale(Locale locale) {
+        defaultTeacherRequestChain().courseImplementationWithLocale(locale);
         expectCourseImplementationChangesRequest();
-        defaultTeacherRequestChain().defaultCourseImplementation();
+        defaultTeacherRequestChain().courseImplementationWithLocale(locale);
 
-        CoursePageCourseImplementation implementations = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID);
+        CoursePageCourseImplementation implementations = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
 
-        CoursePageCourseImplementation implementationsFromCache = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID);
+        CoursePageCourseImplementation implementationsFromCache = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
 
         assertThat(implementations).isSameAs(implementationsFromCache);
 
         courseImplementationCacheBuster.checkForUpdatedCourseImplementations(Instant.now().getEpochSecond());
 
         CoursePageCourseImplementation implementationsAfterCacheBust =
-            coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID);
+            coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
 
         assertThat(implementations).isNotSameAs(implementationsAfterCacheBust);
+    }
+
+    @Test
+    public void thatCourseImplementationCacheIsBustedForFinnishLocale() {
+        assertCourseImplementationCacheBustForLocale(new Locale("fi"));
+    }
+
+    @Test
+    public void thatCourseImplementationCacheIsBustedForEnglishLocale() {
+        assertCourseImplementationCacheBustForLocale(Locale.ENGLISH);
+    }
+
+    @Test
+    public void thatCourseImplementationCacheIsBustedForSwedishLocale() {
+        assertCourseImplementationCacheBustForLocale(new Locale("sv"));
     }
 }
