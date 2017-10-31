@@ -195,6 +195,7 @@ oodi:
 
 coursePage:
     base.url: http://coursepage.helsinki.fi
+    api.path: /api/v1
     client.implementation: rest
     defaultCourseImageUri: https://dev.student.helsinki.fi/default
 
