@@ -42,7 +42,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.3.RELEASE'
         classpath 'com.moowork.gradle:gradle-node-plugin:0.8'
         classpath "net.researchgate:gradle-release:2.0.0"
         classpath 'net.ltgt.gradle:gradle-errorprone-plugin:latest.release'
