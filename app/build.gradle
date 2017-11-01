@@ -151,7 +151,6 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-actuator', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-loader-tools', version: spring_boot_version
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: spring_boot_version
@@ -183,7 +182,7 @@ dependencies {
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: io_jsonwebtoken_version
 
     compile group: 'org.slf4j', name:'jcl-over-slf4j', version: '1.7.7'
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.2'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     compile group: 'com.rometools', name: 'rome', version: '1.5.1'
 
     testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: awaility_version
