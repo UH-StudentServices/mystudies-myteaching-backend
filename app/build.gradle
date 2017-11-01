@@ -36,8 +36,6 @@
   }
 }
 
-
-
 buildscript {
     repositories {
         mavenLocal()
@@ -57,7 +55,6 @@ sourceCompatibility=1.8
 targetCompatibility=1.8
 apply plugin: 'maven'
 apply plugin: 'spring-boot'
-apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'jacoco'
 
@@ -70,6 +67,7 @@ apply plugin: 'net.researchgate.release'
 
 bootRepackage {
    mainClass = 'fi.helsinki.opintoni.Application'
+   executable = true
 }
 
 springBoot {
@@ -78,38 +76,9 @@ springBoot {
 
 apply from: 'liquibase.gradle'
 
-if (project.hasProperty('environment')) {
-    ext.environment = project.getProperty('environment')
-} else {
-    ext.environment = 'local'
-}
-
-if (ext.environment == 'prod') {
-    profile = 'prod'
-} else if (ext.environment == 'dev') {
-    profile = 'dev'
-}
-
-if (profile == 'prod') {
-    apply from: 'profile_prod.gradle'
-} else if (profile == 'dev') {
-    apply from: 'profile_dev.gradle'
-} else {
-    apply from: 'profile_local_dev.gradle'
-}
-
-group 'fi.helsinki.opintoni'
-version version
-
-description = ''
 
 configurations {
     providedRuntime
-}
-
-war {
-    baseName 'opintoni'
-    version version
 }
 
 repositories {
@@ -227,7 +196,6 @@ dependencies {
     testCompile group: 'com.icegreen', name: 'greenmail', version: greenmail_version
 }
 
-
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
@@ -244,7 +212,7 @@ publishing {
       groupId group
       artifactId 'opintoni'
       version version
-      from components.web
+      from components.java
     }
   }
 
