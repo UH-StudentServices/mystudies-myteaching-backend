@@ -18,10 +18,6 @@
 package fi.helsinki.opintoni.web.rest.privateapi.usersettings;
 
 public class UpdateUserSettingsRequest {
-
-    public boolean showMyStudiesTour;
-    public boolean showMyTeachingTour;
-    public boolean showPortfolioTour;
     public boolean showBanner;
     public boolean cookieConsent;
 }

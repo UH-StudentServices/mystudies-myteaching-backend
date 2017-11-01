@@ -17,13 +17,10 @@
 
 package fi.helsinki.opintoni.integration.coursepage;
 
-import com.google.common.collect.Sets;
 import fi.helsinki.opintoni.SpringTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Locale;
 
 import static fi.helsinki.opintoni.web.TestConstants.TEACHER_COURSE_REALISATION_ID;
@@ -34,13 +31,37 @@ public class CoursePageRestClientTest extends SpringTest {
     @Autowired
     private CoursePageClient coursePageRestClient;
 
+    private static final Locale EN = Locale.ENGLISH;
+    private static final Locale FI = new Locale("fi");
+    private static final Locale SV = new Locale("sv");
+
     @Test
     public void thatImageUriIsReturned() {
         defaultTeacherRequestChain().defaultCourseImplementation();
 
-        CoursePageCourseImplementation coursePage = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID);
+        CoursePageCourseImplementation coursePage = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN);
 
         assertThat(coursePage.imageUrl).isEqualTo("http://dev.student.helsinki.fi/image");
+    }
+
+    private void expectCourseImplementationWithLocale(Locale locale) {
+        defaultTeacherRequestChain().courseImplementationWithLocale(locale);
+        coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
+    }
+
+    @Test
+    public void thatEnglishLocaleImplementationIsRequested() {
+        expectCourseImplementationWithLocale(EN);
+    }
+
+    @Test
+    public void thatFinnishLocaleImplementationIsRequested() {
+        expectCourseImplementationWithLocale(FI);
+    }
+
+    @Test
+    public void thatSwedishLocaleImplementationIsRequested() {
+        expectCourseImplementationWithLocale(SV);
     }
 
     @Test
@@ -48,21 +69,14 @@ public class CoursePageRestClientTest extends SpringTest {
         defaultTeacherRequestChain()
             .courseImplementation(TEACHER_COURSE_REALISATION_ID, "course_without_image.json");
 
-        assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).imageUrl).isEqualTo("");
+        assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN).imageUrl).isEqualTo("");
     }
 
     @Test
     public void thatNullImageUriIsReturnedWhenCoursePageDoesNotExist() {
         defaultTeacherRequestChain().courseImplementation(TEACHER_COURSE_REALISATION_ID, "course_empty.json");
 
-        assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).imageUrl).isNull();
-    }
-
-    @Test
-    public void thatEmptyNotificationListIsReturnedWithEmptyIds() {
-        List<CoursePageNotification> notifications = coursePageRestClient
-            .getCoursePageNotifications(Sets.newHashSet(), LocalDateTime.now(), Locale.ENGLISH);
-        assertThat(notifications.isEmpty()).isTrue();
+        assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN).imageUrl).isNull();
     }
 
     @Test
@@ -70,16 +84,16 @@ public class CoursePageRestClientTest extends SpringTest {
         defaultTeacherRequestChain()
             .courseImplementation(TEACHER_COURSE_REALISATION_ID, "course_with_moodle_url.json");
 
-        assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID).moodleUrl).isEqualTo("http://moodle.helsinki.fi");
+        assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN).moodleUrl).isEqualTo("http://moodle.helsinki.fi");
     }
 
     @Test
     public void thatCourseImplementationsAreCached() {
         defaultTeacherRequestChain().defaultCourseImplementation();
 
-        CoursePageCourseImplementation implementations = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID);
+        CoursePageCourseImplementation implementations = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN);
         CoursePageCourseImplementation cachedImplementations =
-            coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID);
+            coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN);
 
         assertThat(implementations).isSameAs(cachedImplementations);
     }

@@ -1283,5 +1283,98 @@
                              columnNames="portfolio_id, component"
                              constraintName="unique_component_heading"/>
     </changeSet>
+    <changeSet id="Remove tour columns" author="Marko Rautajoki">
+        <dropColumn tableName="user_settings" columnName="show_my_studies_tour"></dropColumn>
+        <dropColumn tableName="user_settings" columnName="show_my_teaching_tour"></dropColumn>
+        <dropColumn tableName="user_settings" columnName="show_portfolio_tour"></dropColumn>
+    </changeSet>
+
+    <!--
+        Before this patch was office_hours and degree_programme were associated with user
+        separately. That way it was possible for single user to either have multiple office_hours
+        but only one degree_programme or multiple_degree programmes but only one office hours.
+        Latter was used.
+
+        However, we want the user to be able to have multiple office hours, each of which
+        associated with multiple degree programmes.
+
+        Data base -wise Lets do this as follows:
+        1. Add many to many join table between degree_programme and office_hours.
+        2. Populate the join table
+        3. Remove the direct association between user and degree_programme, as it's no more needed
+
+        This was tested by using following dummy data:
+
+    <changeSet id="Add dummydata to smoketest migration" author="Jussi Niskanen">
+        <sql>
+            INSERT INTO user_account (id, edu_person_principal_name, oodi_person_id, created_by, created_date)
+            VALUES
+              (1, 'opettaja@helsinki.fi', '1000', 'me', now()),
+              (2, 'hybriduser@helsinki.fi', '1002', 'me', now()),
+              (3, 'testteacher@helsinki.fi', '1003', 'me', now()),
+              (4, 'testhybriduser@helsinki.fi', '1005', 'me', now());
+
+            INSERT INTO user_settings(user_id, created_by, created_date)
+            VALUES
+                (1, 'me', now()),
+                (2, 'me', now()),
+                (3, 'me', now()),
+                (4, 'me', now());
+
+            INSERT INTO office_hours(user_id, name, description, created_by, created_date)
+            VALUES
+                (1, 'oo-name: opettaja@helsinki.fi', 'should have KH40_002, KH40_005, KH50_003 and KH50_004', 'me', now()),
+                (2, 'oo-name: hybriduser@helsinki.fi', 'should have KH50_004 and KH50_005', 'me', now()),
+                (3, 'oo-name: testteacher@helsinki.fi', 'should have no programmes', 'me', now()),
+                (4, 'oo-name: testhybriduser@helsinki.fi', 'should have SH60_035', 'me', now());
+
+            INSERT INTO degree_programme (user_id, degree_code, created_by, created_date)
+            VALUES
+                (1, 'KH40_002', 'me', now()),
+                (1, 'KH40_005', 'me', now()),
+                (1, 'KH50_003', 'me', now()),
+                (1, 'KH50_004', 'me', now()),
+                (2, 'KH50_004', 'me', now()),
+                (2, 'KH50_005', 'me', now()),
+                (4, 'SH60_035', 'me', now());
+        </sql>
+    </changeSet>
+
+    -->
+
+    <changeSet id="User may have multiple associated office hours each of which having multiple degree_programmes" author="Jussi Niskanen">
+
+        <createTable tableName="office_hours_degree_programme">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="office_hours_id" type="bigint" >
+                <constraints foreignKeyName="fk_office_hours_degree_programme_office_hours"
+                    references="office_hours(id)" nullable="false" deleteCascade="true"/>
+            </column>
+            <column name="degree_programme_id" type="bigint">
+                <constraints foreignKeyName="fk_office_hours_degree_programme_degree_programme"
+                    references="degree_programme(id)" nullable="false" deleteCascade="true"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint
+            constraintName="uc_office_hours_id__degree_programme_id"
+            tableName="office_hours_degree_programme"
+            columnNames="office_hours_id, degree_programme_id" />
+
+        <sql>
+            INSERT INTO office_hours_degree_programme (
+                office_hours_id,
+                degree_programme_id
+            )
+            SELECT DISTINCT office_hours.id, degree_programme.id
+            FROM office_hours
+            INNER JOIN degree_programme on office_hours.user_id = degree_programme.user_id;
+        </sql>
+
+        <dropColumn tableName="degree_programme" columnName="user_id" />
+
+    </changeSet>
 
 </databaseChangeLog>

@@ -17,17 +17,12 @@
 
 package fi.helsinki.opintoni.integration.coursepage;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 public interface CoursePageClient {
-    List<CoursePageNotification> getCoursePageNotifications(Set<String> courseImplementationIds,
-                                                            LocalDateTime from,
-                                                            Locale locale);
 
-    CoursePageCourseImplementation getCoursePage(String courseImplementationId);
+    CoursePageCourseImplementation getCoursePage(String courseImplementationId, Locale locale);
 
     List<Long> getUpdatedCourseImplementationIds(long timestamp);
 }

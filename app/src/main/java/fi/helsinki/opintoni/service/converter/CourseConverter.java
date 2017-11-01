@@ -67,14 +67,14 @@ public class CourseConverter {
         CourseDto dto = null;
 
         if(!isPositionStudygroupset(oodiEnrollment.position)) {
-            CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiEnrollment.realisationId);
+            CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiEnrollment.realisationId, locale);
 
             dto = new CourseDto(
                 oodiEnrollment.learningOpportunityId,
                 oodiEnrollment.typeCode,
                 localizedValueConverter.toLocalizedString(oodiEnrollment.name, locale),
                 coursePageUriBuilder.getImageUri(coursePage),
-                coursePageUriBuilder.getLocalizedUri(coursePage),
+                coursePage.url,
                 courseMaterialDtoFactory.fromCoursePage(coursePage),
                 oodiEnrollment.webOodiUri,
                 oodiEnrollment.startDate,
@@ -97,7 +97,7 @@ public class CourseConverter {
         CourseDto dto = null;
 
         if(!isPositionStudygroupset(oodiTeacherCourse.position)) {
-            CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiTeacherCourse.realisationId);
+            CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiTeacherCourse.realisationId, locale);
 
             dto = new CourseDto(
                 oodiTeacherCourse.basecode,
@@ -109,7 +109,7 @@ public class CourseConverter {
                         locale) :
                     localizedValueConverter.toLocalizedString(oodiTeacherCourse.realisationName, locale),
                 coursePageUriBuilder.getImageUri(coursePage),
-                coursePageUriBuilder.getLocalizedUri(coursePage),
+                coursePage.url,
                 courseMaterialDtoFactory.fromCoursePage(coursePage),
                 oodiTeacherCourse.webOodiUri,
                 oodiTeacherCourse.startDate,

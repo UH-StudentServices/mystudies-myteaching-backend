@@ -21,10 +21,12 @@ import fi.helsinki.opintoni.server.CoursePageServer;
 import fi.helsinki.opintoni.server.OodiServer;
 import fi.helsinki.opintoni.web.TestConstants;
 
+import java.util.Locale;
+
+import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_COURSE_IMPLEMENTATION_LOCALE;
 import static java.util.Collections.singletonList;
 
 public class StudentRequestChain {
-
     private final OodiServer oodiServer;
     private final CoursePageServer coursePageServer;
     private final String studentNumber;
@@ -58,17 +60,8 @@ public class StudentRequestChain {
         return new CourseImplementationRequestChain<>(
             this,
             coursePageServer,
-            coursePageImplementationId);
-    }
-
-    public CourseImplementationActivityRequestChain<StudentRequestChain> activity(String responseFile) {
-        CourseImplementationActivityRequestChain<StudentRequestChain> chain =
-            new CourseImplementationActivityRequestChain<>(
-                this,
-                coursePageServer,
-                singletonList(TestConstants.STUDENT_COURSE_REALISATION_ID)
-            );
-        return chain.activity(responseFile);
+            coursePageImplementationId,
+            DEFAULT_COURSE_IMPLEMENTATION_LOCALE);
     }
 
     public StudentRequestChain enrollments() {

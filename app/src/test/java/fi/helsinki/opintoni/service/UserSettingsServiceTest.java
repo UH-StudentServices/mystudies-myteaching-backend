@@ -62,30 +62,6 @@ public class UserSettingsServiceTest extends SpringTest {
     }
 
     @Test
-    public void thatShowMyStudiesTourIsUpdated() {
-        assertThat(userSettingsRepository.findOne(1L).showMyStudiesTour).isTrue();
-
-        UpdateUserSettingsRequest request = new UpdateUserSettingsRequest();
-        request.showMyStudiesTour = false;
-
-        userSettingsService.update(1L, request);
-
-        assertThat(userSettingsRepository.findOne(1L).showMyStudiesTour).isFalse();
-    }
-
-    @Test
-    public void thatShowMyTeachingTourIsUpdated() {
-        assertThat(userSettingsRepository.findOne(1L).showMyTeachingTour).isTrue();
-
-        UpdateUserSettingsRequest request = new UpdateUserSettingsRequest();
-        request.showMyTeachingTour = false;
-
-        userSettingsService.update(1L, request);
-
-        assertThat(userSettingsRepository.findOne(1L).showMyTeachingTour).isFalse();
-    }
-
-    @Test
     public void thatCookieConsentFlagIsFlipped() throws Exception {
         assertThat(userSettingsRepository.findOne(1L).cookieConsent).isFalse();
 

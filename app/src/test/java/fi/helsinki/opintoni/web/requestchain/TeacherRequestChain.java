@@ -19,8 +19,10 @@ package fi.helsinki.opintoni.web.requestchain;
 
 import fi.helsinki.opintoni.server.CoursePageServer;
 import fi.helsinki.opintoni.server.OodiServer;
+import fi.helsinki.opintoni.web.TestConstants;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 import static fi.helsinki.opintoni.web.TestConstants.*;
 
@@ -69,6 +71,10 @@ public class TeacherRequestChain {
         return courseImplementationWithRealisationId(TEACHER_COURSE_REALISATION_ID);
     }
 
+    public CourseImplementationRequestChain<TeacherRequestChain> courseImplementationWithLocale(Locale locale) {
+        return courseImplementation(TEACHER_COURSE_REALISATION_ID, TEACHER_COURSE_IMPLEMENTATION_FILE, locale);
+    }
+
     public CourseImplementationRequestChain<TeacherRequestChain> examCourseImplementation() {
         return courseImplementationWithRealisationId(EXAM_TEACHER_COURSE_REALISATION_ID);
     }
@@ -99,11 +105,17 @@ public class TeacherRequestChain {
 
     public CourseImplementationRequestChain<TeacherRequestChain> courseImplementation(
         String courseImplementationId, String responseFile) {
+        return courseImplementation(courseImplementationId, responseFile, DEFAULT_COURSE_IMPLEMENTATION_LOCALE);
+    }
+
+    public CourseImplementationRequestChain<TeacherRequestChain> courseImplementation(
+        String courseImplementationId, String responseFile, Locale locale) {
         CourseImplementationRequestChain<TeacherRequestChain> builder =
             new CourseImplementationRequestChain<>(
                 this,
                 coursePageServer,
-                courseImplementationId);
+                courseImplementationId,
+                locale);
         return builder.expectImplementation(responseFile);
     }
 }

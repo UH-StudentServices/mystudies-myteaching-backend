@@ -53,15 +53,6 @@ public class UserSettings extends AbstractAuditingEntity implements Ownership {
         return userAvatar != null && userAvatar.imageData != null;
     }
 
-    @Column(name = "show_my_studies_tour")
-    public boolean showMyStudiesTour;
-
-    @Column(name = "show_my_teaching_tour")
-    public boolean showMyTeachingTour;
-
-    @Column(name = "show_portfolio_tour")
-    public boolean showPortfolioTour;
-
     @Column(name = "show_banner")
     public boolean showBanner;
 

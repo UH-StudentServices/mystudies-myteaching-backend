@@ -19,28 +19,33 @@ package fi.helsinki.opintoni.web.requestchain;
 
 import fi.helsinki.opintoni.server.CoursePageServer;
 
+import java.util.Locale;
+
 public class CourseImplementationRequestChain<T> implements NestedRequestChain<T> {
 
     private final CoursePageServer coursePageServer;
     private final T parentBuilder;
     private final String courseImplementationId;
+    private final Locale locale;
 
     public CourseImplementationRequestChain(T parentBuilder,
                                             CoursePageServer coursePageServer,
-                                            String courseImplementationId) {
+                                            String courseImplementationId,
+                                            Locale locale) {
         this.parentBuilder = parentBuilder;
         this.coursePageServer = coursePageServer;
         this.courseImplementationId = courseImplementationId;
+        this.locale = locale;
     }
 
     protected CourseImplementationRequestChain<T> expectImplementation() {
-        coursePageServer.expectCourseImplementationRequest(courseImplementationId);
+        coursePageServer.expectCourseImplementationRequest(courseImplementationId, locale);
         return this;
     }
 
     protected CourseImplementationRequestChain<T> expectImplementation(
         String responseFile) {
-        coursePageServer.expectCourseImplementationRequest(courseImplementationId, responseFile);
+        coursePageServer.expectCourseImplementationRequest(courseImplementationId, responseFile, locale);
         return this;
     }
 

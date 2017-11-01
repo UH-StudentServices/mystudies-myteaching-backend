@@ -195,6 +195,7 @@ oodi:
 
 coursePage:
     base.url: http://coursepage.helsinki.fi
+    api.path: /api/v1
     client.implementation: rest
     defaultCourseImageUri: https://dev.student.helsinki.fi/default
 
@@ -309,7 +310,9 @@ adminAccounts: opettaja@helsinki.fi
 
 feed.client.implementation: remote
 
-locale.default: fi
+locale:
+    available: fi,sv,en
+    default: fi
 
 staticResourceCachingPeriod: 31536000
 

@@ -88,7 +88,10 @@ public class CoursePageConfiguration {
 
     @Bean
     public CoursePageClient coursePageRestClient() {
-        return new CoursePageRestClient(appConfiguration.get("coursePage.base.url"), coursePageRestTemplate());
+        return new CoursePageRestClient(
+            appConfiguration.get("coursePage.base.url"),
+            appConfiguration.get("coursePage.api.path"),
+            coursePageRestTemplate());
     }
 
     @Bean

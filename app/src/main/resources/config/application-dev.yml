@@ -46,7 +46,8 @@ oodi:
     client.implementation: mock
 
 coursePage:
-    base.url: https://dev.student.helsinki.fi/api/v1
+    base.url: https://dev.courses.helsinki.fi
+    api.path: /api/v1
     client.implementation: mock
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 

@@ -104,9 +104,6 @@ public class UserService {
         UserSettings userSettings = new UserSettings();
         userSettings.user = user;
         userSettings.backgroundFilename = backgroundImageService.getDefaultImageFileName();
-        userSettings.showMyStudiesTour = true;
-        userSettings.showMyTeachingTour = true;
-        userSettings.showPortfolioTour = true;
         userSettings.showBanner = true;
         userSettingsRepository.save(userSettings);
     }

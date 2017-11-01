@@ -17,59 +17,23 @@
 
 package fi.helsinki.opintoni.util;
 
-import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-import fi.helsinki.opintoni.service.converter.CoursePageUriLocalizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CoursePageUriBuilder {
 
-    private final ImmutableMap<String, String> pathParameterByNotificationType;
-    private final CoursePageUriLocalizer coursePageUriLocalizer;
     private final AppConfiguration appConfiguration;
 
     @Autowired
-    public CoursePageUriBuilder(CoursePageUriLocalizer coursePageUriLocalizer, AppConfiguration appConfiguration) {
-        this.coursePageUriLocalizer = coursePageUriLocalizer;
+    public CoursePageUriBuilder(AppConfiguration appConfiguration) {
         this.appConfiguration = appConfiguration;
-        pathParameterByNotificationType = ImmutableMap.<String, String>builder()
-            .put("course_implementation_comment_create", "group-course-messages")
-            .put("course_implementation_comment_remove", "group-course-messages")
-            .put("course_implementation_comment_update", "group-course-messages")
-            .put("course_implementation_event_create", "group-timetable")
-            .put("course_implementation_event_remove", "group-timetable")
-            .put("course_implementation_event_update", "group-timetable")
-            .put("course_implementation_material_create", "group-imp-material")
-            .put("course_implementation_material_description_update", "group-imp-material")
-            .put("course_implementation_material_remove", "group-imp-material")
-            .put("course_implementation_material_update", "group-imp-material")
-            .put("course_implementation_teacher_section_create", "group-custom-section")
-            .put("course_implementation_teacher_section_remove", "group-custom-section")
-            .put("course_implementation_teacher_section_update", "group-custom-section")
-            .put("course_implementation_course_conduct_create", "group-conduct-of-course")
-            .put("course_implementation_course_conduct_remove", "group-conduct-of-course")
-            .put("course_implementation_course_conduct_update", "group-conduct-of-course")
-            .put("course_implementation_course_overview_accordion_target", "group-description-objectives")
-            .put("course_implementation_task_create", "group-course-task-material")
-            .put("course_implementation_task_remove", "group-course-task-material")
-            .put("course_implementation_task_update", "group-course-task-material")
-            .build();
-
-    }
-
-    public String getNotificationUriByNotificationType(String localizedCoursePageUri, String notificationType) {
-        return localizedCoursePageUri + "?" + pathParameterByNotificationType.get(notificationType);
     }
 
     public String getMaterialUri(CoursePageCourseImplementation coursePage) {
-        return coursePage.url != null ? getLocalizedUri(coursePage) + "?group-imp-material" : null;
-    }
-
-    public String getLocalizedUri(CoursePageCourseImplementation coursePage) {
-        return coursePage.url != null ? coursePageUriLocalizer.localize(coursePage.url) : null;
+        return coursePage.url != null ? coursePage.url + "?group-imp-material" : null;
     }
 
     public String getImageUri(CoursePageCourseImplementation coursePage) {

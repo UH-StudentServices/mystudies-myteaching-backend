@@ -35,12 +35,14 @@ import java.util.stream.Collectors;
 
 public class CoursePageRestClient implements CoursePageClient {
     private final String baseUrl;
+    private final String apiPath;
     private final RestTemplate restTemplate;
 
     private static final Logger log = LoggerFactory.getLogger(CoursePageRestClient.class);
 
-    public CoursePageRestClient(String baseUrl, RestTemplate restTemplate) {
+    public CoursePageRestClient(String baseUrl, String apiPath, RestTemplate restTemplate) {
         this.baseUrl = baseUrl;
+        this.apiPath = apiPath;
         this.restTemplate = restTemplate;
     }
 
@@ -49,50 +51,44 @@ public class CoursePageRestClient implements CoursePageClient {
         ParameterizedTypeReference<List<T>> typeReference,
         Object... uriVariables) {
 
+        return getCoursePageData(path, typeReference, null, uriVariables);
+    }
+
+    private String getCoursePageApiUrl(String path, Locale locale) {
+        String localeUrlSegment = locale != null ? "/" + locale.toString() : "";
+
+        return baseUrl + localeUrlSegment + apiPath + path;
+    }
+
+    public <T> List<T> getCoursePageData(
+        String path,
+        ParameterizedTypeReference<List<T>> typeReference,
+        Locale locale,
+        Object... uriVariables) {
+
         try {
-            return restTemplate.exchange(baseUrl + path, HttpMethod.GET, null, typeReference, uriVariables).getBody();
+            return restTemplate.exchange(getCoursePageApiUrl(path, locale), HttpMethod.GET, null, typeReference, uriVariables).getBody();
         } catch (Exception e) {
             log.error("Caught exception when calling Course Pages:", e);
             throw new RuntimeException(e.getMessage(), e);
         }
     }
 
-    @Cacheable(value = CacheConstants.COURSE_PAGE, key = "#courseImplementationId")
     @Override
-    public CoursePageCourseImplementation getCoursePage(String courseImplementationId) {
-        log.trace("fetching course impl with id {}", courseImplementationId);
+    @Cacheable(value = CacheConstants.COURSE_PAGE, key = "#courseImplementationId + '_' + #locale.toString()")
+    public CoursePageCourseImplementation getCoursePage(String courseImplementationId, Locale locale) {
+        log.trace("fetching course impl with id {} and locale {}", courseImplementationId, locale.toString());
 
         List<CoursePageCourseImplementation> coursePageCourseImplementationList = getCoursePageData(
             "/course_implementation/{courseImplementationId}",
             new ParameterizedTypeReference<List<CoursePageCourseImplementation>>() {},
+            locale,
             courseImplementationId);
 
         if(coursePageCourseImplementationList != null && coursePageCourseImplementationList.size() > 0) {
             return coursePageCourseImplementationList.get(0);
         } else {
             return new CoursePageCourseImplementation();
-        }
-    }
-
-    @Override
-    public List<CoursePageNotification> getCoursePageNotifications(Set<String> courseImplementationIds,
-                                                                   LocalDateTime from,
-                                                                   Locale locale) {
-        if (courseImplementationIds.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        List<CoursePageNotification> notifications = getCoursePageData(
-            "/course_implementation_activity?course_implementation_id={courseImplementationIds}&timestamp={from}&langcode={locale}",
-            new ParameterizedTypeReference<List<CoursePageNotification>>() {},
-            courseImplementationIds.stream().collect(Collectors.joining(",")),
-            from.format(DateFormatter.COURSE_PAGE_DATE_TIME_FORMATTER),
-            locale.getLanguage());
-
-        if(notifications != null) {
-            return notifications;
-        } else {
-            return new ArrayList<>();
         }
     }
 
