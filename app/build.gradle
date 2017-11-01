@@ -208,7 +208,7 @@ publishing {
   //
   publications {
     maven(MavenPublication) {
-      groupId group
+      groupId 'fi.helsinki.opintoni'
       artifactId 'opintoni'
       version version
       from components.java
