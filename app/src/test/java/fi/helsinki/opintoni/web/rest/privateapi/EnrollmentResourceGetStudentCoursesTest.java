@@ -39,7 +39,7 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
     @Test
     public void thatStudentCoursesAreReturned() throws Exception {
         expectCourseRequestChain()
-            .defaultCourseUnitRealisation();
+            .defaultCourseUnitRealisationTeachers();
 
         thatStudentCoursesAreReturned(false, COURSE_PAGE_COURSE_MATERIAL_URL, CourseMaterialType.COURSE_PAGE);
     }
@@ -60,15 +60,15 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
 
     @Test
     public void thatCancelledCourseStatusIsReturned() throws Exception{
-        expectCourseRequestChain()
-            .cancelledCourseUnitRealisation();
+        expectCancelledCourseRequestChain()
+            .defaultCourseUnitRealisationTeachers();
 
         thatStudentCoursesAreReturned(true, COURSE_PAGE_COURSE_MATERIAL_URL, CourseMaterialType.COURSE_PAGE);
     }
 
     @Test
     public void thatRealisationPositionStudygroupsetIsNotReturned() throws Exception{
-        expectCourseRequestChain()
+        expectStudygroupsetCourseRequestChain()
             .positionStudygroupsetCourseUnitRealisation();
 
         mockMvc.perform(get("/api/private/v1/students/enrollments/courses")
@@ -85,12 +85,26 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
             .enrollments()
             .courseImplementation(TestConstants.STUDENT_COURSE_REALISATION_ID, responseFile)
             .and()
-            .defaultCourseUnitRealisation();
+            .defaultCourseUnitRealisationTeachers();
     }
 
     private StudentRequestChain expectCourseRequestChain() {
         return defaultStudentRequestChain()
             .enrollments()
+            .defaultImplementation()
+            .and();
+    }
+
+    private StudentRequestChain expectCancelledCourseRequestChain() {
+        return defaultStudentRequestChain()
+            .enrollments("enrollmentswithcancelled.json")
+            .defaultImplementation()
+            .and();
+    }
+
+    private StudentRequestChain expectStudygroupsetCourseRequestChain() {
+        return defaultStudentRequestChain()
+            .enrollments("enrollmentswithstudygroupset.json")
             .defaultImplementation()
             .and();
     }

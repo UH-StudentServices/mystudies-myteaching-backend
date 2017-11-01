@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.integration.oodi.*;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
+import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import static fi.helsinki.opintoni.security.DevUserDetailsService.STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT;
@@ -71,6 +72,9 @@ public class OodiMockClient implements OodiClient {
 
     @Value("classpath:sampledata/oodi/courseunitrealisation.json")
     private Resource courseUnitRealisation;
+
+    @Value("classpath:sampledata/oodi/courseunitrealisationteachers.json")
+    private Resource getCourseUnitRealisationTeachers;
 
     @Value("classpath:sampledata/oodi/courseunitrealisationcancelled.json")
     private Resource courseUnitRealisationCancelled;
@@ -171,6 +175,12 @@ public class OodiMockClient implements OodiClient {
         return getSingleOodiResponse(courseUnitRealisationResponce,
             new TypeReference<OodiSingleResponse<OodiCourseUnitRealisation>>() {
             });
+    }
+
+    @Override
+    public List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId) {
+        return getOodiResponse(getCourseUnitRealisationTeachers, new TypeReference<OodiResponse<OodiCourseUnitRealisationTeacher>>() {
+        });
     }
 
     @Override

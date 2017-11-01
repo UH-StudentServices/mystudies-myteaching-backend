@@ -105,7 +105,7 @@ public class CourseServiceTest extends SpringTest {
     private void expectStudentCourses() {
         defaultStudentRequestChain()
             .enrollments()
-            .defaultCourseUnitRealisation()
+            .defaultCourseUnitRealisationTeachers()
             .defaultImplementation();
     }
 

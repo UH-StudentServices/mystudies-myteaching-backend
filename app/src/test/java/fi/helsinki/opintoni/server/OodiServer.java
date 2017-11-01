@@ -106,6 +106,10 @@ public class OodiServer {
         courseUnitRealisationRequest(realisationId, "oodi/courseunitrealisation.json");
     }
 
+    public void expectCourseUnitRealisationTeachersRequest(String realisationId) {
+        courseUnitRealisationTeachersRequest(realisationId, "oodi/courseunitrealisationteachers.json");
+    }
+
     public void expectCancelledCourseUnitRealisationRequest(String realisationId) {
         courseUnitRealisationRequest(realisationId, "oodi/cancelledcourseunitrealisation.json");
     }
@@ -125,6 +129,15 @@ public class OodiServer {
                     SampleDataFiles.toText(fileName),
                     MediaType.APPLICATION_JSON)
             );
+    }
+
+    private void courseUnitRealisationTeachersRequest(String realisationId, String fileName) {
+        server.expect(requestTo(courseUnitRealisationTeachersUrl(realisationId)))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(
+                SampleDataFiles.toText(fileName),
+                MediaType.APPLICATION_JSON
+            ));
     }
 
     public void expectCourseUnitRealisationRequest(String realisationId, String responseFile) {
@@ -206,6 +219,10 @@ public class OodiServer {
 
     private String courseUnitRealisationUrl(String realisationId) {
         return oodiBaseUrl + "/courseunitrealisations/" + realisationId;
+    }
+
+    private String courseUnitRealisationTeachersUrl(String realisationId) {
+        return oodiBaseUrl + "/courseunitrealisations/" + realisationId + "/teachers";
     }
 
     private String learningOpportunityUrl(String learningOpportunityId) {

@@ -247,6 +247,46 @@
             ],
             "learningopportunity_id": "1234567890",
             "cancelled" : "false"
-        }
+        },
+      {
+        "weekday_code": 3,
+        "building_address1": "Fabianinkatu 33",
+        "building_zipcode" : "00790",
+        "room_name_short": "Päärakennus, sali 3",
+        "realisation_type_code": 17,
+        "start_date": "2017-11-30T12:15:00.000Z",
+        "course_id": 12345,
+        "simple_type_code": 1,
+        "realisation_name": [
+          {
+            "langcode": "fi",
+            "text": "Harjoitus IV r3"
+          },
+          {
+            "langcode": "sv",
+            "text": "Harjoitus IV g3 (sv)"
+          },
+          {
+            "langcode": "en",
+            "text": "Harjoitus IV g3 (en)"
+          }
+        ],
+        "realisation_root_name": [
+          {
+            "langcode": "fi",
+            "text": "Formulointi IIII"
+          },
+          {
+            "langcode": "sv",
+            "text": "Formulering IIII"
+          },
+          {
+            "langcode": "en",
+            "text": "Formulation IIII"
+          }
+        ],
+        "learningopportunity_id": "1234567890",
+        "cancelled" : "false"
+      }
     ]
 }

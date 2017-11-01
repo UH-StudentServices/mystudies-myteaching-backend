@@ -57,4 +57,9 @@ public class OodiEnrollment {
     @JsonProperty("root_id")
     public String rootId;
 
+    @JsonProperty("cancelled")
+    public boolean isCancelled;
+
+    @JsonProperty("position")
+    public String position;
 }

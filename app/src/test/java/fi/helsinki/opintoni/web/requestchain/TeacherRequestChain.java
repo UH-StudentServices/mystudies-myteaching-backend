@@ -52,11 +52,7 @@ public class TeacherRequestChain {
             .examCourseImplementation()
             .and()
             .courseImplementationWithRealisationId(POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID)
-            .and()
-            .courseUnitRealisation(TEACHER_COURSE_REALISATION_ID)
-            .cancelledCourseUnitRealisation(EXAM_TEACHER_COURSE_REALISATION_ID)
-            .positionStudygroupsetCourseUnitRealisation(POSITION_STUDYGROUPSET_TEACHER_COURSE_REALISATION_ID)
-            .positionStudygroupCourseUnitRealisation(POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID);
+            .and();
     }
 
     public TeacherRequestChain courses(String responseFile) {
