@@ -36,8 +36,6 @@ public interface OodiClient {
 
     List<OodiStudyRight> getStudentStudyRights(String studentNumber);
 
-    OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId);
-
     List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId);
 
     OodiStudentInfo getStudentInfo(String studentNumber);

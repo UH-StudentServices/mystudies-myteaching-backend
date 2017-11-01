@@ -34,6 +34,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 public class CourseService {
 
@@ -65,7 +67,7 @@ public class CourseService {
             .map(c -> courseConverter.toDto(c, locale, isChildCourseWithoutRoot(c, coursesByRealisationIds)))
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     public List<CourseDto> getStudentCourses(String studentNumber, Locale locale) {
@@ -73,18 +75,22 @@ public class CourseService {
             .map(c -> courseConverter.toDto(c, locale))
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
-    public Stream<String> getTeacherCourseIds(String teacherNumber) {
+    public List<String> getTeacherCourseIds(String teacherNumber) {
         return oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
-            .map(e -> String.valueOf(e.realisationId));
+            .filter(e -> !e.isCancelled)
+            .map(e -> String.valueOf(e.realisationId))
+            .collect(toList());
     }
 
-    public Stream<String> getStudentCourseIds(String studentNumber) {
+    public List<String> getStudentCourseIds(String studentNumber) {
         return oodiClient.getEnrollments(studentNumber)
             .stream()
-            .map(e -> String.valueOf(e.realisationId));
+            .filter(e -> !e.isCancelled)
+            .map(e -> String.valueOf(e.realisationId))
+            .collect(toList());
     }
 
     public Set<CourseDto> getCourses(Optional<String> studentNumber, Optional<String> teacherNumber, Locale locale) {
@@ -106,7 +112,7 @@ public class CourseService {
             .stream()
             .map(oodiClient::getLearningOpportunity)
             .map(l -> learningOpportunityConverter.toDto(l, locale))
-            .collect(Collectors.toList());
+            .collect(toList());
     }
 
     private boolean isChildCourseWithoutRoot(OodiTeacherCourse oodiTeacherCourse, Map<String, OodiTeacherCourse> coursesByRealisationIds) {

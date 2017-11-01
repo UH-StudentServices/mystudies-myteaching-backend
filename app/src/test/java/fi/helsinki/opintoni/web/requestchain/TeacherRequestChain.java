@@ -83,26 +83,6 @@ public class TeacherRequestChain {
         return courseImplementation(realisationId, TEACHER_COURSE_IMPLEMENTATION_FILE);
     }
 
-    public TeacherRequestChain courseUnitRealisation(String realisationId) {
-        oodiServer.expectCourseUnitRealisationRequest(realisationId);
-        return this;
-    }
-
-    public TeacherRequestChain cancelledCourseUnitRealisation(String realisationId) {
-        oodiServer.expectCancelledCourseUnitRealisationRequest(realisationId);
-        return this;
-    }
-
-    public TeacherRequestChain positionStudygroupsetCourseUnitRealisation(String realisationId) {
-        oodiServer.expectPositionStudygroupsetCourseUnitRealisationRequest(realisationId);
-        return this;
-    }
-
-    public TeacherRequestChain positionStudygroupCourseUnitRealisation(String realisationId) {
-        oodiServer.expectPositionStudygroupCourseUnitRealisationRequest(realisationId);
-        return this;
-    }
-
     public CourseImplementationRequestChain<TeacherRequestChain> courseImplementation(
         String courseImplementationId, String responseFile) {
         return courseImplementation(courseImplementationId, responseFile, DEFAULT_COURSE_IMPLEMENTATION_LOCALE);

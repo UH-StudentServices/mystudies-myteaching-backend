@@ -68,8 +68,7 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
 
     @Test
     public void thatRealisationPositionStudygroupsetIsNotReturned() throws Exception{
-        expectStudygroupsetCourseRequestChain()
-            .positionStudygroupsetCourseUnitRealisation();
+        expectStudygroupsetCourseRequestChain();
 
         mockMvc.perform(get("/api/private/v1/students/enrollments/courses")
             .with(securityContext(studentSecurityContext()))

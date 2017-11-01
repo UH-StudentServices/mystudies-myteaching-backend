@@ -125,7 +125,6 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
             .events()
             .defaultImplementation()
             .and()
-            .enrollments()
-            .defaultCourseUnitRealisation();
+            .enrollments();
     }
 }

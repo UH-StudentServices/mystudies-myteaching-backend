@@ -82,14 +82,6 @@ public class OodiRestClient implements OodiClient {
     }
 
     @Override
-    @Cacheable(CacheConstants.COURSE_UNIT_REALISATIONS)
-    public OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId) {
-        return getSingleOodiData("{baseUrl}/courseunitrealisations/{realisationId}",
-            new ParameterizedTypeReference<OodiSingleResponse<OodiCourseUnitRealisation>>() {
-            }, OodiCourseUnitRealisation.class, baseUrl, realisationId);
-    }
-
-    @Override
     @Cacheable(CacheConstants.COURSE_UNIT_REALISATION_TEACHERS)
     public List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId) {
         return getOodiData("{baseUrl}/courseunitrealisations/{realisationId}/teachers",
