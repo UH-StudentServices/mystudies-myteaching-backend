@@ -54,11 +54,7 @@ public class TeacherRequestChain {
             .examCourseImplementation()
             .and()
             .courseImplementationWithRealisationId(POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID)
-            .and()
-            .courseUnitRealisation(TEACHER_COURSE_REALISATION_ID)
-            .cancelledCourseUnitRealisation(EXAM_TEACHER_COURSE_REALISATION_ID)
-            .positionStudygroupsetCourseUnitRealisation(POSITION_STUDYGROUPSET_TEACHER_COURSE_REALISATION_ID)
-            .positionStudygroupCourseUnitRealisation(POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID);
+            .and();
     }
 
     public TeacherRequestChain courses(String responseFile) {
@@ -85,26 +81,6 @@ public class TeacherRequestChain {
 
     public CourseImplementationRequestChain<TeacherRequestChain> courseImplementationWithRealisationId(String realisationId) {
         return courseImplementation(realisationId, TEACHER_COURSE_IMPLEMENTATION_FILE);
-    }
-
-    public TeacherRequestChain courseUnitRealisation(String realisationId) {
-        oodiServer.expectCourseUnitRealisationRequest(realisationId);
-        return this;
-    }
-
-    public TeacherRequestChain cancelledCourseUnitRealisation(String realisationId) {
-        oodiServer.expectCancelledCourseUnitRealisationRequest(realisationId);
-        return this;
-    }
-
-    public TeacherRequestChain positionStudygroupsetCourseUnitRealisation(String realisationId) {
-        oodiServer.expectPositionStudygroupsetCourseUnitRealisationRequest(realisationId);
-        return this;
-    }
-
-    public TeacherRequestChain positionStudygroupCourseUnitRealisation(String realisationId) {
-        oodiServer.expectPositionStudygroupCourseUnitRealisationRequest(realisationId);
-        return this;
     }
 
     public CourseImplementationRequestChain<TeacherRequestChain> courseImplementation(

@@ -26,7 +26,9 @@
       "type_code": 5,
       "image_uri": null,
       "weboodi_uri": "https://weboodi.helsinki.fi",
-      "learningopportunity_id": "A52736"
+      "learningopportunity_id": "A52736",
+      "cancelled": false,
+      "position": "root"
     }
   ]
 }

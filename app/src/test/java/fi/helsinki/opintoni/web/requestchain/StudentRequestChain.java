@@ -74,18 +74,8 @@ public class StudentRequestChain {
         return this;
     }
 
-    public StudentRequestChain defaultCourseUnitRealisation() {
-        oodiServer.expectCourseUnitRealisationRequest(TestConstants.STUDENT_COURSE_REALISATION_ID);
-        return this;
-    }
-
-    public StudentRequestChain cancelledCourseUnitRealisation() {
-        oodiServer.expectCancelledCourseUnitRealisationRequest(TestConstants.STUDENT_COURSE_REALISATION_ID);
-        return this;
-    }
-
-    public StudentRequestChain positionStudygroupsetCourseUnitRealisation() {
-        oodiServer.expectPositionStudygroupsetCourseUnitRealisationRequest(TestConstants.STUDENT_COURSE_REALISATION_ID);
+    public StudentRequestChain defaultCourseUnitRealisationTeachers() {
+        oodiServer.expectCourseUnitRealisationTeachersRequest(TestConstants.STUDENT_COURSE_REALISATION_ID);
         return this;
     }
 

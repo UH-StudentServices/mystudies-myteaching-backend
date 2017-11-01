@@ -102,38 +102,17 @@ public class OodiServer {
             );
     }
 
-    public void expectCourseUnitRealisationRequest(String realisationId) {
-        courseUnitRealisationRequest(realisationId, "oodi/courseunitrealisation.json");
+    public void expectCourseUnitRealisationTeachersRequest(String realisationId) {
+        courseUnitRealisationTeachersRequest(realisationId, "oodi/courseunitrealisationteachers.json");
     }
 
-    public void expectCancelledCourseUnitRealisationRequest(String realisationId) {
-        courseUnitRealisationRequest(realisationId, "oodi/cancelledcourseunitrealisation.json");
-    }
-
-    public void expectPositionStudygroupsetCourseUnitRealisationRequest(String realisationId) {
-        courseUnitRealisationRequest(realisationId, "oodi/courseunitrealisation_position_studygroupset.json");
-    }
-
-    public void expectPositionStudygroupCourseUnitRealisationRequest(String realisationId) {
-        courseUnitRealisationRequest(realisationId, "oodi/courseunitrealisation_position_studygroup.json");
-    }
-
-    private void courseUnitRealisationRequest(String realisationId, String fileName) {
-        server.expect(requestTo(courseUnitRealisationUrl(realisationId)))
+    private void courseUnitRealisationTeachersRequest(String realisationId, String fileName) {
+        server.expect(requestTo(courseUnitRealisationTeachersUrl(realisationId)))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(
-                    SampleDataFiles.toText(fileName),
-                    MediaType.APPLICATION_JSON)
-            );
-    }
-
-    public void expectCourseUnitRealisationRequest(String realisationId, String responseFile) {
-        server.expect(requestTo(courseUnitRealisationUrl(realisationId)))
-            .andExpect(method(HttpMethod.GET))
-            .andRespond(withSuccess(
-                    SampleDataFiles.toText("oodi/" + responseFile),
-                    MediaType.APPLICATION_JSON)
-            );
+                SampleDataFiles.toText(fileName),
+                MediaType.APPLICATION_JSON
+            ));
     }
 
     public void expectCourseNameRequest(String learningOpportunityId, String responseFile) {
@@ -206,6 +185,10 @@ public class OodiServer {
 
     private String courseUnitRealisationUrl(String realisationId) {
         return oodiBaseUrl + "/courseunitrealisations/" + realisationId;
+    }
+
+    private String courseUnitRealisationTeachersUrl(String realisationId) {
+        return oodiBaseUrl + "/courseunitrealisations/" + realisationId + "/teachers";
     }
 
     private String learningOpportunityUrl(String learningOpportunityId) {

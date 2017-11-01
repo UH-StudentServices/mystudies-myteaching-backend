@@ -70,12 +70,10 @@ public class EventService {
 
     private List<EventDto> getEvents(
         List<OodiEvent> oodiEvents,
-        Stream<String> courseIds,
+        List<String> courseIds,
         Locale locale) {
 
-        List<String> filteredCourseIds = filterOutCancelledCourses(courseIds);
-
-        Map<String, CoursePageCourseImplementation> coursePages = getCoursePages(oodiEvents, filteredCourseIds, locale);
+        Map<String, CoursePageCourseImplementation> coursePages = getCoursePages(oodiEvents, courseIds, locale);
 
         Stream<EventDto> oodiEventDtos = oodiEvents.stream()
             .filter(oodiEvent -> !oodiEvent.isCancelled)
@@ -140,12 +138,6 @@ public class EventService {
         return oodiEvents
             .stream()
             .map(oodiEvent -> String.valueOf(oodiEvent.realisationId));
-    }
-
-    private List<String> filterOutCancelledCourses(Stream<String> courseIds) {
-        return courseIds
-            .filter(courseId -> !oodiClient.getCourseUnitRealisation(courseId).isCancelled)
-            .collect(Collectors.toList());
     }
 
 }

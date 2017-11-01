@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.integration.oodi.*;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
+import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import static fi.helsinki.opintoni.security.DevUserDetailsService.STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT;
@@ -69,14 +70,8 @@ public class OodiMockClient implements OodiClient {
     @Value("classpath:sampledata/oodi/buildings.json")
     private Resource buildings;
 
-    @Value("classpath:sampledata/oodi/courseunitrealisation.json")
-    private Resource courseUnitRealisation;
-
-    @Value("classpath:sampledata/oodi/courseunitrealisationcancelled.json")
-    private Resource courseUnitRealisationCancelled;
-
-    @Value("classpath:sampledata/oodi/courseunitrealisation_position_studygroupset.json")
-    private Resource courseUnitRealisationPositionStudygroupset;
+    @Value("classpath:sampledata/oodi/courseunitrealisationteachers.json")
+    private Resource getCourseUnitRealisationTeachers;
 
     @Value("classpath:sampledata/oodi/roles.json")
     private Resource roles;
@@ -92,17 +87,7 @@ public class OodiMockClient implements OodiClient {
 
     private final ObjectMapper objectMapper;
 
-    private Map<String, Resource> courseUnitRealisationsById;
-
     private Map<String, Resource> learningOpportunityById;
-
-    @PostConstruct
-    private void createCourseUnitRealisationsMap() {
-        this.courseUnitRealisationsById = ImmutableMap.of(
-            COURSE_UNIT_REALISATION_ID, courseUnitRealisation,
-            CANCELLED_COURSE_UNIT_REALISATION_ID, courseUnitRealisationCancelled,
-            POSITION_STUDYGROUPSET_COURSE_UNIT_REALISATION_ID, courseUnitRealisationPositionStudygroupset);
-    }
 
     @PostConstruct
     private void createLearningOpportunityMap() {
@@ -163,14 +148,9 @@ public class OodiMockClient implements OodiClient {
     }
 
     @Override
-    public OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId) {
-        Resource courseUnitRealisationResponce = Optional
-            .ofNullable(courseUnitRealisationsById.get(realisationId))
-            .orElse(courseUnitRealisation);
-
-        return getSingleOodiResponse(courseUnitRealisationResponce,
-            new TypeReference<OodiSingleResponse<OodiCourseUnitRealisation>>() {
-            });
+    public List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId) {
+        return getOodiResponse(getCourseUnitRealisationTeachers, new TypeReference<OodiResponse<OodiCourseUnitRealisationTeacher>>() {
+        });
     }
 
     @Override

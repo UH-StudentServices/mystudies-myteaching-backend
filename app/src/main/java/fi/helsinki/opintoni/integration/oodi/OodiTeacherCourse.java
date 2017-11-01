@@ -61,4 +61,10 @@ public class OodiTeacherCourse {
 
     @JsonProperty("teacher_role")
     public String teacherRole;
+
+    @JsonProperty("cancelled")
+    public boolean isCancelled;
+
+    @JsonProperty("position")
+    public String position;
 }

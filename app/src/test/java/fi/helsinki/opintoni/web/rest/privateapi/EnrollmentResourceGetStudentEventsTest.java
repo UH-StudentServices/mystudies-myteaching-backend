@@ -81,8 +81,7 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
             .events()
             .defaultImplementation()
             .and()
-            .enrollments()
-            .defaultCourseUnitRealisation();
+            .enrollments();
     }
 
 }

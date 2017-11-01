@@ -36,7 +36,9 @@
       "learningopportunity_id": "10440",
       "teacher_id": "010540",
       "organisation_code": "H1001",
-      "teacher_role": "official"
+      "teacher_role": "official",
+      "cancelled": false,
+      "position": "root"
     },
     {
       "realisation_name": [
@@ -71,7 +73,9 @@
       "weboodi_uri": "https://weboodi.helsinki.fi/",
       "learningopportunity_id": "10442",
       "teacher_id": "010540",
-      "organisation_code": "H1003"
+      "organisation_code": "H1003",
+      "cancelled": true,
+      "position": "studygroup"
     },
     {
       "realisation_name": [
@@ -106,7 +110,9 @@
       "weboodi_uri": "https://weboodi.helsinki.fi/",
       "learningopportunity_id": "10442",
       "teacher_id": "010540",
-      "organisation_code": "H1003"
+      "organisation_code": "H1003",
+      "cancelled": false,
+      "position": "studygroupset"
     },
     {
       "realisation_root_name": [
@@ -127,7 +133,9 @@
       "course_id": 1234567,
       "parent_id": 7654321,
       "root_id": 7654321,
-      "learningopportunity_id": "453421"
+      "learningopportunity_id": "453421",
+      "cancelled": false,
+      "position": "studygroup"
     }
   ]
 }

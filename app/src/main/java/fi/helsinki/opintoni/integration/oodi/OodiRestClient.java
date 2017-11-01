@@ -20,16 +20,15 @@ package fi.helsinki.opintoni.integration.oodi;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
+import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+
 import java.util.List;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 import java.util.Optional;
 
 public class OodiRestClient implements OodiClient {
@@ -83,11 +82,11 @@ public class OodiRestClient implements OodiClient {
     }
 
     @Override
-    @Cacheable(CacheConstants.COURSE_UNIT_REALISATIONS)
-    public OodiCourseUnitRealisation getCourseUnitRealisation(String realisationId) {
-        return getSingleOodiData("{baseUrl}/courseunitrealisations/{realisationId}",
-            new ParameterizedTypeReference<OodiSingleResponse<OodiCourseUnitRealisation>>() {
-            }, OodiCourseUnitRealisation.class, baseUrl, realisationId);
+    @Cacheable(CacheConstants.COURSE_UNIT_REALISATION_TEACHERS)
+    public List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId) {
+        return getOodiData("{baseUrl}/courseunitrealisations/{realisationId}/teachers",
+            new ParameterizedTypeReference<OodiResponse<OodiCourseUnitRealisationTeacher>>() {
+            }, baseUrl, realisationId);
     }
 
     @Override
