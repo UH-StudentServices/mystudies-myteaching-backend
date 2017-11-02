@@ -20,8 +20,6 @@ package fi.helsinki.opintoni.config;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
-import org.apache.catalina.mbeans.JmxRemoteLifecycleListener;
-import org.apache.catalina.valves.RemoteIpValve;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,6 @@ import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomi
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.MimeMappings;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainerFactory;
 import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,11 +37,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 
 import javax.inject.Inject;
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
+import javax.servlet.*;
 import java.util.Arrays;
 import java.util.EnumSet;
 
@@ -70,11 +63,7 @@ public class WebConfigurer implements org.springframework.boot.web.servlet.Servl
     @Bean
     @Profile("!" + Constants.SPRING_PROFILE_TEST)
     public EmbeddedServletContainerFactory servletContainer() {
-        if (env.acceptsProfiles(Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT)) {
-            return createUndertow();
-        } else {
-            return createTomcat();
-        }
+        return createTomcat();
     }
 
     @Bean
@@ -89,26 +78,8 @@ public class WebConfigurer implements org.springframework.boot.web.servlet.Servl
         });
     }
 
-    private EmbeddedServletContainerFactory createUndertow() {
-        return new UndertowEmbeddedServletContainerFactory();
-    }
-
     private EmbeddedServletContainerFactory createTomcat() {
         TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
-
-        /*
-         * JmxRemoteLifecycleListener needs to be set to fixed ports for JMX monitoring.
-         * If not set, Java would select random ports and firewall would block RMI connections.
-         */
-        JmxRemoteLifecycleListener jmxRemoteLifecycleListener = new JmxRemoteLifecycleListener();
-        jmxRemoteLifecycleListener.setRmiRegistryPortPlatform(5000);
-        jmxRemoteLifecycleListener.setRmiServerPortPlatform(5001);
-        tomcat.addContextLifecycleListeners(jmxRemoteLifecycleListener);
-
-        RemoteIpValve remoteIpValve = new RemoteIpValve();
-        remoteIpValve.setRemoteIpHeader("x-forwarded-for");
-        remoteIpValve.setInternalProxies(appConfiguration.get("internalProxies"));
-        tomcat.addContextValves(remoteIpValve);
 
         return tomcat;
     }

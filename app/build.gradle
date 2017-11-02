@@ -36,15 +36,13 @@
   }
 }
 
-
-
 buildscript {
     repositories {
         mavenLocal()
         jcenter()
     }
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.3.RELEASE'
         classpath 'com.moowork.gradle:gradle-node-plugin:0.8'
         classpath "net.researchgate:gradle-release:2.0.0"
         classpath 'net.ltgt.gradle:gradle-errorprone-plugin:latest.release'
@@ -56,8 +54,7 @@ apply plugin: 'errorprone'
 sourceCompatibility=1.8
 targetCompatibility=1.8
 apply plugin: 'maven'
-apply plugin: 'spring-boot'
-apply plugin: 'war'
+apply plugin: 'org.springframework.boot'
 apply plugin: 'idea'
 apply plugin: 'jacoco'
 
@@ -70,6 +67,7 @@ apply plugin: 'net.researchgate.release'
 
 bootRepackage {
    mainClass = 'fi.helsinki.opintoni.Application'
+   executable = true
 }
 
 springBoot {
@@ -78,38 +76,9 @@ springBoot {
 
 apply from: 'liquibase.gradle'
 
-if (project.hasProperty('environment')) {
-    ext.environment = project.getProperty('environment')
-} else {
-    ext.environment = 'local'
-}
-
-if (ext.environment == 'prod') {
-    profile = 'prod'
-} else if (ext.environment == 'dev') {
-    profile = 'dev'
-}
-
-if (profile == 'prod') {
-    apply from: 'profile_prod.gradle'
-} else if (profile == 'dev') {
-    apply from: 'profile_dev.gradle'
-} else {
-    apply from: 'profile_local_dev.gradle'
-}
-
-group 'fi.helsinki.opintoni'
-version version
-
-description = ''
 
 configurations {
     providedRuntime
-}
-
-war {
-    baseName 'opintoni'
-    version version
 }
 
 repositories {
@@ -128,7 +97,10 @@ configurations.all {
   all*.exclude group: "commons-logging", module: "commons-logging"
   all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
   all*.exclude group: "org.slf4j", module: "log4j-over-slf4j"
+  all*.exclude group: "org.apache.tomcat", module: "tomcat-el-api"
+  all*.exclude group: "org.apache.tomcat", module: "tomcat-util"
   all*.exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
+  all*.exclude group: "javax.el", module: "el-api"
 }
 
 configurations.compile {
@@ -182,20 +154,17 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-actuator', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-loader-tools', version: spring_boot_version
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-undertow', version: spring_boot_version
     compile(group: 'org.springframework', name: 'spring-context-support') {
         exclude(module: 'quartz')
     }
     compile group: 'org.springframework', name: 'spring-orm', version: spring_orm_version
     compile group: 'javax.mail', name: 'mail', version: javax_mail_version
 
-    compile 'org.apache.tomcat:tomcat-catalina-jmx-remote:8.0.22'
     compile group: 'com.google.guava', name: 'guava', version: guava_version
     compile group: 'com.google.guava', name: 'guava-testlib', version: guava_version
     compile group: 'org.mnode.ical4j', name: 'ical4j', version: '1.0.6'
@@ -214,7 +183,7 @@ dependencies {
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: io_jsonwebtoken_version
 
     compile group: 'org.slf4j', name:'jcl-over-slf4j', version: '1.7.7'
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.1.2'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     compile group: 'com.rometools', name: 'rome', version: '1.5.1'
 
     testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: awaility_version
@@ -227,9 +196,8 @@ dependencies {
     testCompile group: 'com.icegreen', name: 'greenmail', version: greenmail_version
 }
 
-
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
+    gradleVersion = '2.9'
 }
 
 apply plugin: "maven-publish"
@@ -241,10 +209,10 @@ publishing {
   //
   publications {
     maven(MavenPublication) {
-      groupId group
+      groupId 'fi.helsinki.opintoni'
       artifactId 'opintoni'
       version version
-      from components.web
+      from components.java
     }
   }
 
