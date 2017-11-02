@@ -27,7 +27,10 @@ import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.OfficeHoursConverter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.StringJoiner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,12 +69,10 @@ public class OfficeHoursService {
     }
 
     private static String convertToSortableName(String name){
-        String[] parts = name.trim().split(" ");
-        String sortableString = parts[parts.length-1];
-        for (int i=0; i<parts.length-1;i++) {
-            sortableString = sortableString + parts[i];
-        }
-        return sortableString;
+        ArrayList<String> nameParts = new ArrayList<>(Arrays.asList(name.trim().split(" ")));
+        String surname = nameParts.remove(nameParts.size() - 1);
+        nameParts.add(0, surname);
+        return nameParts.stream().collect(Collectors.joining(""));
     }
 
     public List<OfficeHoursDto> update(final Long userId, final List<OfficeHoursDto> officeHoursDtoList) {
@@ -120,7 +121,7 @@ public class OfficeHoursService {
 
                 officeHoursDto.officeHours = groupedOfficeHours.get(name).stream()
                     .map(oh -> oh.description)
-                    .reduce("", this::joinHours);
+                    .collect(Collectors.joining(OFFICE_HOURS_JOIN));
 
                 officeHoursDto.name = name;
 
