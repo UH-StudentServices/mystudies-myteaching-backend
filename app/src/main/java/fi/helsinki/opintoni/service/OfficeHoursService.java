@@ -29,14 +29,13 @@ import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.OfficeHoursConverter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -69,10 +68,9 @@ public class OfficeHoursService {
     }
 
     private static String convertToSortableName(String name){
-        ArrayList<String> nameParts = new ArrayList<>(Arrays.asList(name.trim().split(" ")));
-        String surname = nameParts.remove(nameParts.size() - 1);
-        nameParts.add(0, surname);
-        return nameParts.stream().collect(Collectors.joining(""));
+        List<String> nameParts = new ArrayList<>(Arrays.asList(name.trim().split(" ")));
+        Collections.rotate(nameParts,1);
+        return String.join("", nameParts);
     }
 
     public List<OfficeHoursDto> update(final Long userId, final List<OfficeHoursDto> officeHoursDtoList) {
@@ -127,13 +125,6 @@ public class OfficeHoursService {
 
                 return officeHoursDto;
             }).collect(Collectors.toList());
-    }
-
-    private String joinHours(String sum, String next) {
-        if (sum.trim().isEmpty()) {
-            return next;
-        }
-        return sum + OFFICE_HOURS_JOIN + next;
     }
 
     private List<DegreeProgramme> degreeProgrammesFromDtos(List<DegreeProgrammeDto> degreeProgrammesDtos) {

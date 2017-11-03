@@ -38,11 +38,13 @@ import javax.validation.Valid;
     value = RestConstants.PRIVATE_API_V1 + "/officehours",
     produces = WebConstants.APPLICATION_JSON_UTF8)
 public class OfficeHoursResource extends AbstractResource {
-    private final OfficeHoursService  officeHoursService;
+
+    private final OfficeHoursService officeHoursService;
     private final PermissionChecker permissionChecker;
 
     @Autowired
-    public OfficeHoursResource(OfficeHoursService officeHoursService, PermissionChecker permissionChecker) {
+    public OfficeHoursResource(OfficeHoursService officeHoursService,
+        PermissionChecker permissionChecker) {
         this.officeHoursService = officeHoursService;
         this.permissionChecker = permissionChecker;
     }
@@ -55,8 +57,9 @@ public class OfficeHoursResource extends AbstractResource {
 
     @RequestMapping(method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<List<OfficeHoursDto>> saveOwnOfficeHours(@UserId Long userId,
-                                                             @Valid @RequestBody List <OfficeHoursDto> officeHoursDto) {
+    public ResponseEntity<List<OfficeHoursDto>> saveOwnOfficeHours(
+        @UserId Long userId,
+        @Valid @RequestBody List<OfficeHoursDto> officeHoursDto) {
         return response(officeHoursService.update(userId, officeHoursDto));
     }
 
