@@ -180,6 +180,17 @@
                   tableName="component_heading">
             <column name="created_date" type="timestamp"/>
         </loadData>
+        <loadData encoding="UTF-8"
+            file="config/liquibase/testdata/office_hours/degree_programme.csv"
+            separator=";"
+            tableName="degree_programme">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+            file="config/liquibase/testdata/office_hours/office_hours_degree_programme.csv"
+            separator=";"
+            tableName="office_hours_degree_programme">
+        </loadData>
     </changeSet>
 
 </databaseChangeLog>

@@ -19,7 +19,15 @@ package fi.helsinki.opintoni.sampledata;
 
 public class OfficeHoursSampleData {
     public static final String TEACHER_NAME = "Leena Lehtori";
-    public static final String[] TEACHER_NAME_ARRAY = {"Leena von Ahteritohtori", "Hertzen", "Barry von Hertzen",  "Harry von Hertzen", "Leena Lehtori", "Leena von Tohtori"};
+    public static final String TEACHER_NAME_2 = "\"Barry von Hertzen\"";
+    public static final String[] TEACHER_NAME_ARRAY = {"Leena von Ahdes", "Hertzen", "Barry von Hertzen",  "Harry von Hertzen", "Leena Lehtori", "Leena von Tohtori"};
 
     public static final String OFFICE_HOURS = "Vastaanotto maanantaisin klo 10.00";
+    public static final String OFFICE_HOURS_2 = "uudet ajat 2";
+    public static final String OFFICE_HOURS_7 = "Tiistaisin klo 10.00";
+
+    public static final String DEGREE_CODE_1 = "KH80_001";
+    public static final String DEGREE_CODE_2 = "KH50_002";
+    public static final String DEGREE_CODE_3 = "KH50_004";
+
 }

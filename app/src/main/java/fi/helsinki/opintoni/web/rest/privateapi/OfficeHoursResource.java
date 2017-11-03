@@ -26,8 +26,8 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 
 import com.codahale.metrics.annotation.Timed;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,25 +38,28 @@ import javax.validation.Valid;
     value = RestConstants.PRIVATE_API_V1 + "/officehours",
     produces = WebConstants.APPLICATION_JSON_UTF8)
 public class OfficeHoursResource extends AbstractResource {
-    private final OfficeHoursService  officeHoursService;
+
+    private final OfficeHoursService officeHoursService;
     private final PermissionChecker permissionChecker;
 
     @Autowired
-    public OfficeHoursResource(OfficeHoursService officeHoursService, PermissionChecker permissionChecker) {
+    public OfficeHoursResource(OfficeHoursService officeHoursService,
+        PermissionChecker permissionChecker) {
         this.officeHoursService = officeHoursService;
         this.permissionChecker = permissionChecker;
     }
 
     @RequestMapping(method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<OfficeHoursDto> getOwnOfficeHours(@UserId Long userId) {
+    public ResponseEntity<List<OfficeHoursDto>> getOwnOfficeHours(@UserId Long userId) {
         return response(officeHoursService.getByUserId(userId));
     }
 
     @RequestMapping(method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<OfficeHoursDto> saveOwnOfficeHours(@UserId Long userId,
-                                                             @Valid @RequestBody OfficeHoursDto officeHoursDto) {
+    public ResponseEntity<List<OfficeHoursDto>> saveOwnOfficeHours(
+        @UserId Long userId,
+        @Valid @RequestBody List<OfficeHoursDto> officeHoursDto) {
         return response(officeHoursService.update(userId, officeHoursDto));
     }
 

@@ -15,14 +15,11 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.repository;
+package fi.helsinki.opintoni.dto.v2;
 
-import fi.helsinki.opintoni.domain.OfficeHours;
 import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OfficeHoursRepository extends JpaRepository<OfficeHours, Long> {
-
-    List<OfficeHours> findByUserId(Long userId);
-    void deleteByUserId(Long userId);
+public class PublicOfficeHoursReceptionDto {
+    public String description;
+    public List<String> degreeProgrammes;
 }

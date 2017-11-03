@@ -19,22 +19,31 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.domain.DegreeProgramme;
 import fi.helsinki.opintoni.domain.OfficeHours;
+import fi.helsinki.opintoni.domain.User;
+import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
 import fi.helsinki.opintoni.dto.PublicOfficeHoursDto;
 import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.OfficeHoursConverter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @Transactional
 public class OfficeHoursService {
+
+    // String used to catenate multiple office hours in getAll
+    public static final String OFFICE_HOURS_JOIN = " ; ";
+
     private final OfficeHoursRepository officeHoursRepository;
     private final DegreeProgrammeRepository degreeProgrammeRepository;
     private final UserRepository userRepository;
@@ -52,78 +61,86 @@ public class OfficeHoursService {
         this.officeHoursConverter = officeHoursConverter;
     }
 
-    private int comparePublicOfficeHoursDtos(PublicOfficeHoursDto p1, PublicOfficeHoursDto p2) {
-        String p1ToBeSorted = convertToSortableName(p1.name);
-        String p2ToBeSorted = convertToSortableName(p2.name);
+    private int compareNames(String name1,String name2) {
+        String p1ToBeSorted = convertToSortableName(name1);
+        String p2ToBeSorted = convertToSortableName(name2);
         return p1ToBeSorted.compareTo(p2ToBeSorted);
     }
 
     private static String convertToSortableName(String name){
-        String[] parts = name.trim().split(" ");
-        String sortableString = parts[parts.length-1];
-        for (int i=0; i<parts.length-1;i++) {
-            sortableString = sortableString + parts[i];
-        }
-        return sortableString;
+        List<String> nameParts = Arrays.asList(name.trim().split(" "));
+        Collections.rotate(nameParts,1);
+        return String.join("", nameParts);
     }
 
-    public OfficeHoursDto update(final Long userId, final OfficeHoursDto officeHoursDto) {
-        OfficeHours officeHours = officeHoursRepository.findByUserId(userId);
-        if (officeHours == null) {
-            officeHours = new OfficeHours();
-            officeHours.user = userRepository.findOne(userId);
-        }
-
-        officeHours.description = officeHoursDto.description;
-        officeHours.name = officeHoursDto.name;
-
-        List<DegreeProgramme> degreeProgrammes = officeHoursDto.degreeProgrammes.stream()
-            .distinct()
-            .map(degreeProgrammeDto -> {
-                DegreeProgramme firstByDegreeCode = degreeProgrammeRepository
-                    .findFirstByDegreeCode(degreeProgrammeDto.code);
-                if (firstByDegreeCode == null) {
-                    firstByDegreeCode = new DegreeProgramme();
-                    firstByDegreeCode.degreeCode = degreeProgrammeDto.code;
-                    firstByDegreeCode = degreeProgrammeRepository.save(firstByDegreeCode);
-                }
-                return firstByDegreeCode;
+    public List<OfficeHoursDto> update(final Long userId, final List<OfficeHoursDto> officeHoursDtoList) {
+        officeHoursRepository.deleteByUserId(userId);
+        User user = userRepository.findOne(userId);
+        return officeHoursDtoList.stream()
+            .map(dto -> {
+                OfficeHours officeHours = new OfficeHours();
+                officeHours.user = user;
+                officeHours.description = dto.description;
+                officeHours.name = dto.name;
+                officeHours.degreeProgrammes = degreeProgrammesFromDtos(dto.degreeProgrammes);
+                return officeHoursRepository.save(officeHours);
             })
+            .map(officeHoursConverter::toDto)
             .collect(Collectors.toList());
-
-        officeHours.degreeProgrammes = degreeProgrammes;
-        officeHours = officeHoursRepository.save(officeHours);
-
-        return officeHoursConverter.toDto(officeHours);
     }
 
     public void delete(final Long userId) {
         officeHoursRepository.deleteByUserId(userId);
     }
 
-    public OfficeHoursDto getByUserId(final Long userId) {
-        OfficeHours officeHours = officeHoursRepository.findByUserId(userId);
-        return officeHoursConverter.toDto(officeHours);
+    public List<OfficeHoursDto> getByUserId(final Long userId) {
+        List<OfficeHours> officeHours = officeHoursRepository.findByUserId(userId);
+        return officeHours.stream()
+            .map(officeHoursConverter::toDto)
+            .collect(Collectors.toList());
     }
 
     public List<PublicOfficeHoursDto> getAll() {
         List<OfficeHours> allOfficeHours = officeHoursRepository.findAll();
 
-        return allOfficeHours.stream()
-            .filter(officeHours -> officeHours.description != null)
-            .map(officeHours -> {
-                List<String> degreeProgrammeCodes = officeHours.degreeProgrammes.stream()
-                    .map(dp -> dp.degreeCode)
+        Map<String, List<OfficeHours>> groupedOfficeHours = allOfficeHours.stream()
+            .collect(Collectors.groupingBy(oh -> oh.name));
+
+        return groupedOfficeHours.keySet().stream()
+            .sorted(this::compareNames)
+            .map(name -> {
+                PublicOfficeHoursDto officeHoursDto = new PublicOfficeHoursDto();
+
+                officeHoursDto.degreeProgrammes = groupedOfficeHours.get(name).stream()
+                    .flatMap(oh -> oh.degreeProgrammes.stream().map(dp -> dp.degreeCode))
+                    .distinct()
+                    .sorted()
                     .collect(Collectors.toList());
 
-                PublicOfficeHoursDto officeHoursDto = new PublicOfficeHoursDto();
-                officeHoursDto.degreeProgrammes = degreeProgrammeCodes;
-                officeHoursDto.officeHours = officeHours.description;
-                officeHoursDto.name = officeHours.name;
+                officeHoursDto.officeHours = groupedOfficeHours.get(name).stream()
+                    .map(oh -> oh.description)
+                    .collect(Collectors.joining(OFFICE_HOURS_JOIN));
+
+                officeHoursDto.name = name;
 
                 return officeHoursDto;
+            }).collect(Collectors.toList());
+    }
+
+    private List<DegreeProgramme> degreeProgrammesFromDtos(List<DegreeProgrammeDto> degreeProgrammesDtos) {
+        return degreeProgrammesDtos.stream()
+            .map(dto -> dto.code)
+            .distinct()
+            .map(code -> {
+                DegreeProgramme degreeProgramme = degreeProgrammeRepository
+                    .findFirstByDegreeCode(code);
+                if (degreeProgramme == null) {
+                    degreeProgramme = new DegreeProgramme();
+                    degreeProgramme.degreeCode = code;
+                    degreeProgramme = degreeProgrammeRepository.save(degreeProgramme);
+                }
+                return degreeProgramme;
             })
-            .sorted(this::comparePublicOfficeHoursDtos)
             .collect(Collectors.toList());
     }
 
