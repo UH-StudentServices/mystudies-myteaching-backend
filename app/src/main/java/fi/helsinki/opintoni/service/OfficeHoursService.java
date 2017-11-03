@@ -68,7 +68,7 @@ public class OfficeHoursService {
     }
 
     private static String convertToSortableName(String name){
-        List<String> nameParts = new ArrayList<>(Arrays.asList(name.trim().split(" ")));
+        List<String> nameParts = Arrays.asList(name.trim().split(" "));
         Collections.rotate(nameParts,1);
         return String.join("", nameParts);
     }
