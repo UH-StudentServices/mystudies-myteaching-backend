@@ -17,20 +17,30 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
-import com.google.common.collect.Lists;
-import fi.helsinki.opintoni.SpringTest;
-
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.ADDITIONAL_INFO;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.ADDITIONAL_INFO_2;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_1;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_2;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_3;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS_2;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.RECEPTION_LOCATION;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.RECEPTION_LOCATION_2;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHER_NAME;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHER_NAME_2;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static fi.helsinki.opintoni.web.WebTestUtils.toJsonBytes;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.google.common.collect.Lists;
+import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
 import fi.helsinki.opintoni.web.WebConstants;
@@ -39,14 +49,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class OfficeHoursResourceTest extends SpringTest {
 
@@ -60,20 +62,19 @@ public class OfficeHoursResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$[0].description").value(OFFICE_HOURS))
-            .andExpect(jsonPath("$[0].name").value(TEACHER_NAME));
+            .andExpect(jsonPath("$[0].name").value(TEACHER_NAME))
+            .andExpect(jsonPath("$[0].additionalInfo").value(ADDITIONAL_INFO))
+            .andExpect(jsonPath("$[0].receptionLocation").value(RECEPTION_LOCATION));
     }
 
     @Test
     public void thatOfficeHoursAreUpdated() throws Exception {
-        OfficeHoursDto officeHoursDto = new OfficeHoursDto();
-        officeHoursDto.description = OFFICE_HOURS;
-        officeHoursDto.name = TEACHER_NAME;
-
         DegreeProgrammeDto programme1 = new DegreeProgrammeDto();
         DegreeProgrammeDto programme2 = new DegreeProgrammeDto();
         programme1.code = DEGREE_CODE_1;
         programme2.code = DEGREE_CODE_2;
-        officeHoursDto.degreeProgrammes = Lists.newArrayList(programme1, programme2);
+        OfficeHoursDto officeHoursDto = new OfficeHoursDto(TEACHER_NAME, OFFICE_HOURS,
+            ADDITIONAL_INFO_2, RECEPTION_LOCATION_2, Lists.newArrayList(programme1, programme2));
 
         List<OfficeHoursDto> request = Arrays.asList(officeHoursDto);
 
@@ -87,6 +88,8 @@ public class OfficeHoursResourceTest extends SpringTest {
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$[0].description").value(OFFICE_HOURS))
             .andExpect(jsonPath("$[0]name").value(TEACHER_NAME))
+            .andExpect(jsonPath("$[0]additionalInfo").value(ADDITIONAL_INFO_2))
+            .andExpect(jsonPath("$[0]receptionLocation").value(RECEPTION_LOCATION_2))
             .andExpect(jsonPath("$[0]degreeProgrammes").isArray())
             .andExpect(jsonPath("$[0]degreeProgrammes", hasSize(2)))
             .andExpect(jsonPath("$[0]degreeProgrammes[0].code").value(DEGREE_CODE_1))
@@ -108,12 +111,16 @@ public class OfficeHoursResourceTest extends SpringTest {
         OfficeHoursDto officeHoursDto = new OfficeHoursDto(
             TEACHER_NAME,
             OFFICE_HOURS,
+            null,
+            null,
             createProgrammeDtoList(DEGREE_CODE_1, DEGREE_CODE_2)
         );
 
         OfficeHoursDto officeHoursDto2 = new OfficeHoursDto(
             TEACHER_NAME_2,
             OFFICE_HOURS_2,
+            null,
+            null,
             createProgrammeDtoList(DEGREE_CODE_3)
         );
 

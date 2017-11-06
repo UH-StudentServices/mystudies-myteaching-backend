@@ -21,6 +21,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class OfficeHoursDto {
+
     public Long id;
 
     @NotNull
@@ -29,15 +30,23 @@ public class OfficeHoursDto {
     @NotNull
     public String description;
 
+    public String additionalInfo;
+
+    public String receptionLocation;
+
     public List<DegreeProgrammeDto> degreeProgrammes;
 
     public OfficeHoursDto() {
 
     }
 
-    public OfficeHoursDto(String name, String description, List<DegreeProgrammeDto> degreeProgrammes) {
+    public OfficeHoursDto(
+        String name, String description, String additionalInfo, String receptionLocation,
+        List<DegreeProgrammeDto> degreeProgrammes) {
         this.name = name;
         this.description = description;
+        this.additionalInfo = additionalInfo;
+        this.receptionLocation = receptionLocation;
         this.degreeProgrammes = degreeProgrammes;
     }
 }

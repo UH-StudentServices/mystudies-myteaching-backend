@@ -82,6 +82,8 @@ public class OfficeHoursService {
                 officeHours.user = user;
                 officeHours.description = dto.description;
                 officeHours.name = dto.name;
+                officeHours.additionalInfo = dto.additionalInfo;
+                officeHours.receptionLocation = dto.receptionLocation;
                 officeHours.degreeProgrammes = degreeProgrammesFromDtos(dto.degreeProgrammes);
                 return officeHoursRepository.save(officeHours);
             })
