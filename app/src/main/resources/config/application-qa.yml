@@ -50,6 +50,7 @@ coursePage:
     api.path: /api/v1
     client.implementation: rest
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
+    checkUpdates.interval.seconds: 60
 
 guide:
     base.url: https://dev.guide.student.helsinki.fi/api/v1
