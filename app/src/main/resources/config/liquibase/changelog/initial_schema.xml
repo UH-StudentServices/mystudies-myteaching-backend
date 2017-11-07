@@ -1377,4 +1377,11 @@
 
     </changeSet>
 
+    <changeSet id="OO-969 Add new fields to office hours" author="Jussi Niskanen">
+        <addColumn tableName="office_hours">
+            <column name="additional_info" type="text" />
+            <column name="location" type="text"  />
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
