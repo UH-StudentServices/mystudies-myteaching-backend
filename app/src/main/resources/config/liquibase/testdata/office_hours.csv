@@ -1,4 +1,4 @@
-id;user_id;name;description;additional_info;reception_location;created_by
+id;user_id;name;description;additional_info;location;created_by
 1;4;Leena Lehtori;Vastaanotto maanantaisin klo 10.00;Blogi www.leenansaitti.fi;Vastaanottopiste a;system
 2;3;Harry von Hertzen;Vastaanotto maanantaisin klo 11.00;Blogi www.harrynsaitti.fi;Vastaanottopiste b;system
 3;2;Barry von Hertzen;Vastaanotto maanantaisin klo 12.00;Blogi www.barrynsaitti.fi;Vastaanottopiste c;system

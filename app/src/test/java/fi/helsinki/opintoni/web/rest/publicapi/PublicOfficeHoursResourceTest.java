@@ -10,8 +10,8 @@ import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_3;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS_7;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.RECEPTION_LOCATION;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.RECEPTION_LOCATION_2;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.LOCATION;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.LOCATION_2;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHER_NAME_ARRAY;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
@@ -61,10 +61,10 @@ public class PublicOfficeHoursResourceTest extends SpringTest{
             .andExpect(jsonPath("$.[4].officeHours", hasSize(2)))
             .andExpect(jsonPath("$.[4].officeHours.[0].description").value(OFFICE_HOURS))
             .andExpect(jsonPath("$.[4].officeHours.[0].additionalInfo").value(ADDITIONAL_INFO))
-            .andExpect(jsonPath("$.[4].officeHours.[0].receptionLocation").value(RECEPTION_LOCATION))
+            .andExpect(jsonPath("$.[4].officeHours.[0].location").value(LOCATION))
             .andExpect(jsonPath("$.[4].officeHours.[1].description").value(OFFICE_HOURS_7))
             .andExpect(jsonPath("$.[4].officeHours.[1].additionalInfo").value(ADDITIONAL_INFO_2))
-            .andExpect(jsonPath("$.[4].officeHours.[1].receptionLocation").value(RECEPTION_LOCATION_2))
+            .andExpect(jsonPath("$.[4].officeHours.[1].location").value(LOCATION_2))
             .andExpect(jsonPath("$.[4].officeHours.[0].degreeProgrammes", containsInAnyOrder(DEGREE_CODE_1, DEGREE_CODE_2)))
             .andExpect(jsonPath("$.[4].officeHours.[1].degreeProgrammes", containsInAnyOrder(DEGREE_CODE_2, DEGREE_CODE_3)));
     }

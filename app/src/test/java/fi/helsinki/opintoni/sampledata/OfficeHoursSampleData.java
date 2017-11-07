@@ -32,7 +32,7 @@ public class OfficeHoursSampleData {
 
     public static final String ADDITIONAL_INFO = "Blogi www.leenansaitti.fi";
     public static final String ADDITIONAL_INFO_2 = "Olenpa mainio ihminen!";
-    public static final String RECEPTION_LOCATION = "Vastaanottopiste a";
-    public static final String RECEPTION_LOCATION_2 = "Vastaanottopiste A3";
+    public static final String LOCATION = "Vastaanottopiste a";
+    public static final String LOCATION_2 = "Vastaanottopiste A3";
 
 }

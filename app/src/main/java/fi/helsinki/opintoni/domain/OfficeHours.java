@@ -41,8 +41,8 @@ public class OfficeHours extends AbstractAuditingEntity implements Ownership {
     @Column(name = "additional_info")
     public String additionalInfo;
 
-    @Column(name = "reception_location")
-    public String receptionLocation;
+    @Column(name = "location")
+    public String location;
 
     @OneToOne(optional = false)
     @JoinColumn(name = "user_id")

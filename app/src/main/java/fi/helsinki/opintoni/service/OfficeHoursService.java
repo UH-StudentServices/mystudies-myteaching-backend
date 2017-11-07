@@ -27,7 +27,6 @@ import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.OfficeHoursConverter;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -83,7 +82,7 @@ public class OfficeHoursService {
                 officeHours.description = dto.description;
                 officeHours.name = dto.name;
                 officeHours.additionalInfo = dto.additionalInfo;
-                officeHours.receptionLocation = dto.receptionLocation;
+                officeHours.location = dto.location;
                 officeHours.degreeProgrammes = degreeProgrammesFromDtos(dto.degreeProgrammes);
                 return officeHoursRepository.save(officeHours);
             })

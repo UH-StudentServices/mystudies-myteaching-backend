@@ -22,6 +22,6 @@ import java.util.List;
 public class PublicOfficeHoursReceptionDto {
     public String description;
     public String additionalInfo;
-    public String receptionLocation;
+    public String location;
     public List<String> degreeProgrammes;
 }

@@ -73,7 +73,7 @@ public class OfficeHoursServiceV2  {
                         new PublicOfficeHoursReceptionDto();
                     publicOfficeHoursReceptionDto.description = oh.description;
                     publicOfficeHoursReceptionDto.additionalInfo = oh.additionalInfo;
-                    publicOfficeHoursReceptionDto.receptionLocation = oh.receptionLocation;
+                    publicOfficeHoursReceptionDto.location = oh.location;
                     publicOfficeHoursReceptionDto.degreeProgrammes = oh.degreeProgrammes.stream()
                         .map(dp -> dp.degreeCode)
                         .collect(Collectors.toList());

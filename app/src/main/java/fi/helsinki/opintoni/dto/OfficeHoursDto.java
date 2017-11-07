@@ -32,7 +32,7 @@ public class OfficeHoursDto {
 
     public String additionalInfo;
 
-    public String receptionLocation;
+    public String location;
 
     public List<DegreeProgrammeDto> degreeProgrammes;
 
@@ -41,12 +41,12 @@ public class OfficeHoursDto {
     }
 
     public OfficeHoursDto(
-        String name, String description, String additionalInfo, String receptionLocation,
+        String name, String description, String additionalInfo, String location,
         List<DegreeProgrammeDto> degreeProgrammes) {
         this.name = name;
         this.description = description;
         this.additionalInfo = additionalInfo;
-        this.receptionLocation = receptionLocation;
+        this.location = location;
         this.degreeProgrammes = degreeProgrammes;
     }
 }

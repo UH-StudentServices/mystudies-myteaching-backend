@@ -32,7 +32,7 @@ public class OfficeHoursConverter {
             officeHoursDto.id = officeHours.id;
             officeHoursDto.description = officeHours.description;
             officeHoursDto.additionalInfo = officeHours.additionalInfo;
-            officeHoursDto.receptionLocation = officeHours.receptionLocation;
+            officeHoursDto.location = officeHours.location;
             officeHoursDto.name = officeHours.name;
 
             officeHoursDto.degreeProgrammes = officeHours.degreeProgrammes.stream()
