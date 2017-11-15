@@ -53,8 +53,8 @@ public class NewsService {
     private int maxNews;
 
     public List<NewsDto> getStudentNews(Locale locale) {
-        Set<NewsDto> newsDtoSet = new HashSet<>();
-        newsDtoSet.addAll(flammaNewsService.getStudentNews(locale));
+        Set<NewsDto> newsDtos = new HashSet<>();
+        newsDtos.addAll(flammaNewsService.getStudentNews(locale));
 
         List<NewsDto> guideNewsDtos = securityUtils.getAppUser()
             .map(AppUser::getStudentNumber)
@@ -64,9 +64,9 @@ public class NewsService {
         if (guideNewsDtos.isEmpty()) {
             guideNewsDtos = guideNewsService.getGuideNewsGeneral(locale);
         }
-        newsDtoSet.addAll(guideNewsDtos);
+        newsDtos.addAll(guideNewsDtos);
 
-        return newsDtoSet.stream()
+        return newsDtos.stream()
             .sorted(Comparator.comparing(dto -> dto.updated, Comparator.reverseOrder()))
             .limit(maxNews)
             .collect(Collectors.toList());
