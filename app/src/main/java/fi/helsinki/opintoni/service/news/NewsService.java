@@ -23,8 +23,11 @@ import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.SecurityUtils;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,7 +53,8 @@ public class NewsService {
     private int maxNews;
 
     public List<NewsDto> getStudentNews(Locale locale) {
-        List<NewsDto> newsDtoList = flammaNewsService.getStudentNews(locale);
+        Set<NewsDto> newsDtos = new HashSet<>();
+        newsDtos.addAll(flammaNewsService.getStudentNews(locale));
 
         List<NewsDto> guideNewsDtos = securityUtils.getAppUser()
             .map(AppUser::getStudentNumber)
@@ -60,9 +64,9 @@ public class NewsService {
         if (guideNewsDtos.isEmpty()) {
             guideNewsDtos = guideNewsService.getGuideNewsGeneral(locale);
         }
-        newsDtoList.addAll(guideNewsDtos);
+        newsDtos.addAll(guideNewsDtos);
 
-        return newsDtoList.stream()
+        return newsDtos.stream()
             .sorted(Comparator.comparing(dto -> dto.updated, Comparator.reverseOrder()))
             .limit(maxNews)
             .collect(Collectors.toList());
