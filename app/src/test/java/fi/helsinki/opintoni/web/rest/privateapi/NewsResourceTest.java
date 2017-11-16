@@ -186,6 +186,11 @@ public class NewsResourceTest extends SpringTest {
         guideNewsServer.expectGuideNewsFi();
         oodiServer.expectStudentStudyRightsRequest(TestConstants.STUDENT_NUMBER);
 
+        performGetNewsForStudentsWithChecks();
+        performGetNewsForStudentsWithChecks();
+    }
+
+    private void performGetNewsForStudentsWithChecks() throws Exception {
         mockMvc.perform(get("/api/private/v1/news/student")
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
@@ -200,22 +205,6 @@ public class NewsResourceTest extends SpringTest {
             .andExpect(jsonPath("$[1].title").value("Guidetitle1"))
             .andExpect(jsonPath("$[2].title").value("Flammatitle2"))
             .andExpect(jsonPath("$[3].title").value("Guidetitle2"));
-
-        mockMvc.perform(get("/api/private/v1/news/student")
-            .with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .contentType(MediaType.APPLICATION_JSON)
-            .locale(new Locale("fi"))
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(4)))
-            .andExpect(jsonPath("$[0].title").value("Flammatitle1"))
-            .andExpect(jsonPath("$[1].title").value("Guidetitle1"))
-            .andExpect(jsonPath("$[2].title").value("Flammatitle2"))
-            .andExpect(jsonPath("$[3].title").value("Guidetitle2"));
-
     }
 
 }
