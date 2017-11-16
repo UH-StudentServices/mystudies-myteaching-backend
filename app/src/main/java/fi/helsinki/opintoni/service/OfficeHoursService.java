@@ -27,6 +27,7 @@ import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.OfficeHoursConverter;
+import fi.helsinki.opintoni.util.NameSorting;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -60,17 +61,6 @@ public class OfficeHoursService {
         this.officeHoursConverter = officeHoursConverter;
     }
 
-    private int compareNames(String name1,String name2) {
-        String p1ToBeSorted = convertToSortableName(name1);
-        String p2ToBeSorted = convertToSortableName(name2);
-        return p1ToBeSorted.compareTo(p2ToBeSorted);
-    }
-
-    private static String convertToSortableName(String name){
-        List<String> nameParts = Arrays.asList(name.trim().split(" "));
-        Collections.rotate(nameParts,1);
-        return String.join("", nameParts);
-    }
 
     public List<OfficeHoursDto> update(final Long userId, final List<OfficeHoursDto> officeHoursDtoList) {
         officeHoursRepository.deleteByUserId(userId);
@@ -105,10 +95,15 @@ public class OfficeHoursService {
         List<OfficeHours> allOfficeHours = officeHoursRepository.findAll();
 
         Map<String, List<OfficeHours>> groupedOfficeHours = allOfficeHours.stream()
-            .collect(Collectors.groupingBy(oh -> oh.name));
+            .collect(Collectors.groupingBy(oh -> {
+                if (oh.name != null) {
+                    return oh.name;
+                }
+                return oh.user.eduPersonPrincipalName;
+            }));
 
         return groupedOfficeHours.keySet().stream()
-            .sorted(this::compareNames)
+            .sorted(NameSorting::compareNames)
             .map(name -> {
                 PublicOfficeHoursDto officeHoursDto = new PublicOfficeHoursDto();
 

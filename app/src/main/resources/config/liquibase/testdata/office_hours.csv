@@ -6,3 +6,4 @@ id;user_id;name;description;additional_info;location;created_by
 5;5;Leena von Tohtori;Vastaanotto maanantaisin klo 13.00;Blogi www.tohtorileenansaitti.fi;Vastaanottopiste e;system
 6;6;Leena von Ahdes;Vastaanotto maanantaisin klo 13.00;Blogi www.ahteenleena.fi;Vastaanottopiste f;system
 7;4;Leena Lehtori;Tiistaisin klo 10.00;Olenpa mainio ihminen!;Vastaanottopiste A3;system
+8;4;null;Tiistaisin klo 10.00;Oho, bugin vuoksi ei olekaan nimeä;;system
