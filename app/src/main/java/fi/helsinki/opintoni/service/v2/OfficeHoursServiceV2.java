@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.dto.v2.PublicOfficeHoursDto;
 import fi.helsinki.opintoni.dto.v2.PublicOfficeHoursReceptionDto;
 import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
+import fi.helsinki.opintoni.util.NameSorting;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -43,29 +44,15 @@ public class OfficeHoursServiceV2  {
         this.degreeProgrammeRepository = degreeProgrammeRepository;
     }
 
-    private int compareNames(String name1,String name2) {
-        String p1ToBeSorted = convertToSortableName(name1);
-        String p2ToBeSorted = convertToSortableName(name2);
-        return p1ToBeSorted.compareTo(p2ToBeSorted);
-    }
-
-    private static String convertToSortableName(String name){
-        String[] parts = name.trim().split(" ");
-        String sortableString = parts[parts.length-1];
-        for (int i=0; i<parts.length-1;i++) {
-            sortableString = sortableString + parts[i];
-        }
-        return sortableString;
-    }
-
     public List<PublicOfficeHoursDto> getAll() {
         List<OfficeHours> allOfficeHours = officeHoursRepository.findAll();
 
         Map<String, List<OfficeHours>> groupedOfficeHours = allOfficeHours.stream()
+            .filter(oh -> oh.name != null)
             .collect(Collectors.groupingBy(oh -> oh.name));
 
         return groupedOfficeHours.keySet().stream()
-            .sorted(this::compareNames)
+            .sorted(NameSorting::compareNames)
             .map(name -> {
                 PublicOfficeHoursDto officeHoursDto = new PublicOfficeHoursDto();
                 officeHoursDto.officeHours = groupedOfficeHours.get(name).stream().map(oh -> {
