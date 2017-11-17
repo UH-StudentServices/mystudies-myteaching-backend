@@ -48,12 +48,8 @@ public class OfficeHoursServiceV2  {
         List<OfficeHours> allOfficeHours = officeHoursRepository.findAll();
 
         Map<String, List<OfficeHours>> groupedOfficeHours = allOfficeHours.stream()
-            .collect(Collectors.groupingBy(oh -> {
-                if (oh.name != null) {
-                    return oh.name;
-                }
-                return oh.user.eduPersonPrincipalName;
-            }));
+            .filter(oh -> oh.name != null)
+            .collect(Collectors.groupingBy(oh -> oh.name));
 
         return groupedOfficeHours.keySet().stream()
             .sorted(NameSorting::compareNames)

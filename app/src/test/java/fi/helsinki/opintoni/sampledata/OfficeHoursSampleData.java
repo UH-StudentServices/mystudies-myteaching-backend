@@ -26,7 +26,6 @@ public class OfficeHoursSampleData {
         "Barry von Hertzen",
         "Harry von Hertzen",
         "Leena Lehtori",
-        "opettaja@helsinki.fi",
         "Leena von Tohtori"
     };
 
