@@ -1,10 +1,10 @@
 server:
     port: 8080
     session:
-        timeout: 1800 # Seconds
+        timeout: 3600 # Seconds
         cookie:
             http-only: true
-            max-age: 3600
+            max-age: 86400
             path: /
             domain: helsinki.fi
 
