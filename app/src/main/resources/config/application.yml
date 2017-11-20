@@ -4,6 +4,7 @@ server:
         timeout: 1800 # Seconds
         cookie:
             http-only: true
+            max-age: 3600
             path: /
             domain: helsinki.fi
 
