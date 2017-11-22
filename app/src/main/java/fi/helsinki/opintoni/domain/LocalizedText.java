@@ -38,7 +38,7 @@ public class LocalizedText {
     @MapKeyEnumerated(EnumType.STRING)
     @Column(name = "value")
     @CollectionTable(name = "localization", joinColumns = @JoinColumn(name = "localized_text_id"))
-    private Map<Language, String> localizations = Maps.newHashMap();
+    public Map<Language, String> localizations = Maps.newHashMap();
 
     public void put(Language language, String value) {
         Assert.notNull(language);

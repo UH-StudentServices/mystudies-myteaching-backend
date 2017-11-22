@@ -191,6 +191,26 @@
             separator=";"
             tableName="office_hours_degree_programme">
         </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/localized_text.csv"
+                  separator=";"
+                  tableName="localized_text">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/localizations.csv"
+                  separator=";"
+                  tableName="localization">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/notifications.csv"
+                  separator=";"
+                  tableName="notifications">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/notification_schedules.csv"
+                  separator=";"
+                  tableName="notification_schedules">
+        </loadData>
     </changeSet>
 
 </databaseChangeLog>
