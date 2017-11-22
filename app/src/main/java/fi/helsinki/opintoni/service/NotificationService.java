@@ -103,7 +103,6 @@ public class NotificationService {
     }
 
     private boolean nowDateIsWithinNotificationDateRange(NotificationSchedule schedule, LocalDateTime now) {
-
         return now.isEqual(schedule.startDate) || ( now.isAfter(schedule.startDate) && now.isBefore(schedule.endDate) ) || now.isEqual(schedule.endDate);
     }
 

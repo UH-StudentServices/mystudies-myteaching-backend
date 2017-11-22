@@ -51,6 +51,6 @@ public class PrivateNotificationResource extends AbstractResource {
             produces = WebConstants.APPLICATION_JSON_UTF8)
     @Timed
     public ResponseEntity<List<LocalizedNotificationDto>> getNotifications(Locale locale) {
-        return response(() -> notificationService.getNotifications(locale));
+        return response(notificationService.getNotifications(locale));
     }
 }
