@@ -35,6 +35,7 @@ public class NotificationConverter {
 
     public LocalizedNotificationDto toDto(Notification notification, Locale locale) {
         LocalizedNotificationDto notificationDto = new LocalizedNotificationDto();
+        notificationDto.id = notification.id;
         notificationDto.text = notification.text.getByLocale(locale);
 
         return notificationDto;

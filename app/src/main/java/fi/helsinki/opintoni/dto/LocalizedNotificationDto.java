@@ -18,5 +18,6 @@
 package fi.helsinki.opintoni.dto;
 
 public class LocalizedNotificationDto {
+    public Long id;
     public String text;
 }
