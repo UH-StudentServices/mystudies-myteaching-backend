@@ -43,18 +43,6 @@ public class LeikiMockClient implements LeikiClient {
         this.objectMapper = objectMapper;
     }
 
-    @Override
-    public List<LeikiSearchHit> search(String searchTerm, Locale locale) {
-        return getLeikiSearchResponse(searchResultsResource, new TypeReference<LeikiResponse<LeikiSearchHit>>() {
-        });
-    }
-
-    @Override
-    public List<LeikiCategoryHit> searchCategory(String searchTerm, Locale locale) {
-        return getLeikiCategoryResponse(categoryResultsResource,
-            new TypeReference<LeikiCategoryResponse<LeikiCategoryHit>>() {
-            });
-    }
 
     @Override
     public List<LeikiCourseRecommendation> getCourseRecommendations(String studentNumber) {
@@ -71,13 +59,4 @@ public class LeikiMockClient implements LeikiClient {
         }
     }
 
-    public <T> List<T> getLeikiCategoryResponse(Resource resource, TypeReference<LeikiCategoryResponse<T>>
-        typeReference) {
-        try {
-            LeikiCategoryResponse<T> response = objectMapper.readValue(resource.getInputStream(), typeReference);
-            return response.data.matches.get(0).match;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
