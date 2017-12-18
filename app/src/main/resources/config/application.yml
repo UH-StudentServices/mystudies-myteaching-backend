@@ -171,9 +171,6 @@ studentAppUrl:
 teacherAppUrl:
 appRelativeUrl:
 
-leiki:
-    base.url: http://suositukset.student.helsinki.fi
-    client.implementation: rest
 
 newsfeeds:
     maxItemsToReturn: 4

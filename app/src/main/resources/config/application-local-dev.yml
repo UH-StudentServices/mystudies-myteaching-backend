@@ -62,10 +62,6 @@ unisport:
 
 unisportApiKey: foobar123
 
-leiki:
-    base.url: http://suositukset.student.helsinki.fi
-    client.implementation: mock
-
 newsfeeds:
     client.implementation: mock
 
