@@ -57,38 +57,6 @@ public class LeikiRestClient implements LeikiClient {
     }
 
     @Override
-    public List<LeikiSearchHit> search(String searchTerm, Locale locale) {
-        URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
-            .path("/focus/api")
-            .queryParam("method", "searchc")
-            .query("sourceallmatch")
-            .query("instancesearch")
-            .queryParam("lang", locale.getLanguage())
-            .queryParam("query", searchTerm)
-            .queryParam("format", "json")
-            .queryParam("t_type", LeikiTType.getByLocale(locale).getValue())
-            .queryParam("max", maxSearchResults)
-            .queryParam("fulltext", "true")
-            .queryParam("partialsearchpriority", "ontology").build().encode().toUri();
-
-        return getLeikiItemsData(uri, new ParameterizedTypeReference<LeikiResponse<LeikiSearchHit>>() {});
-    }
-
-    @Override
-    public List<LeikiCategoryHit> searchCategory(String searchTerm, Locale locale) {
-        URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
-            .path("/focus/api")
-            .queryParam("method", "searchcategories")
-            .queryParam("autocomplete", "occurred")
-            .queryParam("lang", locale.getLanguage())
-            .queryParam("text", searchTerm)
-            .queryParam("format", "json")
-            .queryParam("max", maxCategoryResults).build().encode().toUri();
-
-        return getLeikiCategoryData(uri, new ParameterizedTypeReference<LeikiCategoryResponse<LeikiCategoryHit>>() {});
-    }
-
-    @Override
     public List<LeikiCourseRecommendation> getCourseRecommendations(String studentNumber) {
         ZonedDateTime today = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS);
 
@@ -128,22 +96,4 @@ public class LeikiRestClient implements LeikiClient {
         }
     }
 
-    private <T> List<T> getLeikiCategoryData(URI uri,
-                                             ParameterizedTypeReference<LeikiCategoryResponse<T>> typeReference) {
-        try {
-            LeikiCategoryData<T> leikiCategoryData = restTemplate.exchange(
-                uri,
-                HttpMethod.GET,
-                null,
-                typeReference).getBody().data;
-
-            return isNotEmpty(leikiCategoryData.matches) ?
-                leikiCategoryData.matches.get(0).match :
-                newArrayList();
-        } catch (RestClientException e) {
-            log.error("Leiki client threw exception: {}", e.getMessage());
-
-            return newArrayList();
-        }
-    }
 }

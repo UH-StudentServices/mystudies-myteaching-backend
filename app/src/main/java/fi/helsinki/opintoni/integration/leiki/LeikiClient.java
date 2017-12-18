@@ -22,9 +22,5 @@ import java.util.Locale;
 
 public interface LeikiClient {
 
-    List<LeikiSearchHit> search(String searchTerm, Locale locale);
-
-    List<LeikiCategoryHit> searchCategory(String searchTerm, Locale locale);
-
     List<LeikiCourseRecommendation> getCourseRecommendations(String studentNumber);
 }
