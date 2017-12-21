@@ -91,41 +91,55 @@ public class PublicFeedbackResourceTest extends SpringTest {
     private static final String FEEDBACK_SUBJECT_ACADEMIC_PORTFOLIO_SV = "Feedback från universitetsportfölj";
     private static final String FEEDBACK_SUBJECT_ACADEMIC_PORTFOLIO_EN = "Feedback from academic portfolio";
 
+    private static final String SITE_MY_STUDIES_FI = "Opintoni";
+    private static final String SITE_MY_STUDIES_SV = "Mina Studier";
+    private static final String SITE_MY_STUDIES_EN = "My Studies";
 
+    private static final String SITE_MY_TEACHING_FI = "Opetukseni";
+    private static final String SITE_MY_TEACHING_SV = "Min Undervisning";
+    private static final String SITE_MY_TEACHING_EN = "My Teaching";
+
+    private static final String SITE_PORTFOLIO_FI = "Portfolio";
+    private static final String SITE_PORTFOLIO_SV = "Portfölj";
+    private static final String SITE_PORTFOLIO_EN = "Portfolio";
+
+    private static final String SITE_ACADEMIC_PORTFOLIO_FI = "Yliopistoportfolio";
+    private static final String SITE_ACADEMIC_PORTFOLIO_SV = "Universitetsportfölj";
+    private static final String SITE_ACADEMIC_PORTFOLIO_EN = "Academic Portfolio";
 
     private static final String FEEDBACK_CONTENT_PATTERN_FI =
         "Content\r\n\r\n" +
         "Aikaleima: \\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d\r\n" +
         "Tiedekunta: Valtiotieteellinen tiedekunta\r\n" +
-        "Tila: %s\r\n" +
+        "Palvelu: %s\r\n" +
         "User-Agent: test-user-agent\r\n";
     private static final String FEEDBACK_CONTENT_PATTERN_SV =
         "Content\r\n\r\n" +
             "Tidsstämpel: \\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d\r\n" +
             "Fakultet: Statsvetenskapliga fakulteten\r\n" +
-            "Status: %s\r\n" +
+            "Websidan: %s\r\n" +
             "User-Agent: test-user-agent\r\n";
     private static final String FEEDBACK_CONTENT_PATTERN_EN =
         "Content\r\n\r\n" +
             "Timestamp: \\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d\r\n" +
             "Faculty: Faculty of Social Sciences\r\n" +
-            "State: %s\r\n" +
+            "Site: %s\r\n" +
             "User-Agent: test-user-agent\r\n";
-    private static final String FEEDBACK_CONTENT_PATTERN_MY_STUDIES_FI = String.format(FEEDBACK_CONTENT_PATTERN_FI, "Opintoni");
-    private static final String FEEDBACK_CONTENT_PATTERN_MY_STUDIES_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, "Mina Studier");
-    private static final String FEEDBACK_CONTENT_PATTERN_MY_STUDIES_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, "My Studies");
+    private static final String FEEDBACK_CONTENT_PATTERN_MY_STUDIES_FI = String.format(FEEDBACK_CONTENT_PATTERN_FI, SITE_MY_STUDIES_FI);
+    private static final String FEEDBACK_CONTENT_PATTERN_MY_STUDIES_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, SITE_MY_STUDIES_SV);
+    private static final String FEEDBACK_CONTENT_PATTERN_MY_STUDIES_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, SITE_MY_STUDIES_EN);
 
-    private static final String FEEDBACK_CONTENT_PATTERN_MY_TEACHING_FI = String.format(FEEDBACK_CONTENT_PATTERN_FI, "Opetukseni");
-    private static final String FEEDBACK_CONTENT_PATTERN_MY_TEACHING_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, "Min Undervisning");
-    private static final String FEEDBACK_CONTENT_PATTERN_MY_TEACHING_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, "My Teaching");
+    private static final String FEEDBACK_CONTENT_PATTERN_MY_TEACHING_FI = String.format(FEEDBACK_CONTENT_PATTERN_FI, SITE_MY_TEACHING_FI);
+    private static final String FEEDBACK_CONTENT_PATTERN_MY_TEACHING_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, SITE_MY_TEACHING_SV);
+    private static final String FEEDBACK_CONTENT_PATTERN_MY_TEACHING_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, SITE_MY_TEACHING_EN);
 
-    private static final String FEEDBACK_CONTENT_PATTERN_PORTFOLIO_FI = String.format(FEEDBACK_CONTENT_PATTERN_FI, "Portfolio");
-    private static final String FEEDBACK_CONTENT_PATTERN_PORTFOLIO_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, "Portfölj");
-    private static final String FEEDBACK_CONTENT_PATTERN_PORTFOLIO_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, "Portfolio");
+    private static final String FEEDBACK_CONTENT_PATTERN_PORTFOLIO_FI = String.format(FEEDBACK_CONTENT_PATTERN_FI, SITE_PORTFOLIO_FI);
+    private static final String FEEDBACK_CONTENT_PATTERN_PORTFOLIO_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, SITE_PORTFOLIO_SV);
+    private static final String FEEDBACK_CONTENT_PATTERN_PORTFOLIO_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, SITE_PORTFOLIO_EN);
 
-    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_FI = String.format(FEEDBACK_CONTENT_PATTERN_FI, "Yliopistoportfolio");
-    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, "Universitetsportfölj");
-    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, "Academic Portfolio");
+    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_FI = String.format(FEEDBACK_CONTENT_PATTERN_FI, SITE_ACADEMIC_PORTFOLIO_FI);
+    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, SITE_ACADEMIC_PORTFOLIO_SV);
+    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, SITE_ACADEMIC_PORTFOLIO_EN);
 
     @Rule
     public final GreenMailRule greenMail = new GreenMailRule(ServerSetupTest.SMTP);
@@ -138,7 +152,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(state, lang, recipientEmail, subject, contentPattern, FEEDBACK_SENDER, FEEDBACK_SENDER, null);
     }
 
-    private void thatFeedbackIsSent(String state,
+    private void thatFeedbackIsSent(String site,
                                     String lang,
                                     String recipientEmail,
                                     String subject,
@@ -149,7 +163,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
         SendFeedbackRequest request = new SendFeedbackRequest();
         request.content = FEEDBACK_CONTENT;
         request.email = requestFromEmail;
-        request.metadata = getMetadata(lang, state);
+        request.metadata = getMetadata(lang, site);
 
         mockMvc.perform(post(RestConstants.PUBLIC_API_V1 + "/feedback")
             .with(securityContext(studentSecurityContext()))
@@ -371,15 +385,11 @@ public class PublicFeedbackResourceTest extends SpringTest {
         assertThat((String)(message.getContent())).matches(expectedContentPattern);
     }
 
-    private JsonNode getMetadata(String lang) {
-        return getMetadata(lang, FeedbackSite.STUDENT.toString());
-    }
-
-    private JsonNode getMetadata(String lang, String state ) {
+    private JsonNode getMetadata(String lang, String site ) {
         ImmutableMap<String, String> metadata = ImmutableMap.of(
             "userAgent", FEEDBACK_USER_AGENT,
             "faculty", FEEDBACK_FACULTY,
-            "state", state,
+            "site", site,
             "lang", lang);
         return new ObjectMapper().valueToTree(metadata);
     }

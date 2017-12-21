@@ -53,7 +53,7 @@ public class FeedbackService {
     private static final String COUNTRY_FINLAND_CODE = "FI";
     private static final String FIELD_TIMESTAMP = "timestamp";
     private static final String FIELD_FACULTY = "faculty";
-    private static final String FIELD_STATE = "state";
+    private static final String FIELD_SITE = "site";
     private static final String FIELD_USER_AGENT = "userAgent";
     private static final String FIELD_LANG = "lang";
     private static final String DEFAULT_SUBJECT = "Palaute";
@@ -96,11 +96,11 @@ public class FeedbackService {
     public void sendFeedback(SendFeedbackRequest request) throws MailException {
         String content = request.content;
         String timestamp = createTimestamp();
-        String state = getState(request);
+        String site = getSite(request);
         String faculty = getFaculty(request);
         String userAgent = getUserAgent(request);
         Locale locale = getLocale(request);
-        String body = buildMessageBody(content, timestamp, faculty, state, userAgent, locale);
+        String body = buildMessageBody(content, timestamp, faculty, site, userAgent, locale);
         SimpleMailMessage message = new SimpleMailMessage();
         if ((request.email == null) || request.email.isEmpty()) {
             message.setFrom(anonymousFeedbackFromAddress);
@@ -109,20 +109,20 @@ public class FeedbackService {
             message.setFrom(request.email);
         }
 
-        if (FeedbackSite.STUDENT.equalsName(state)) {
+        if (FeedbackSite.STUDENT.equalsName(site)) {
             message.setTo(studentFeedbackToAddress);
-        } else if (FeedbackSite.TEACHER.equalsName(state)) {
+        } else if (FeedbackSite.TEACHER.equalsName(site)) {
             message.setTo(teacherFeedbackToAddress);
-        } else if (FeedbackSite.PORTFOLIO.equalsName(state)) {
+        } else if (FeedbackSite.PORTFOLIO.equalsName(site)) {
             message.setTo(portfolioFeedbackToAddress);
-        } else if (FeedbackSite.ACADEMIC_PORTFOLIO.equalsName(state)) {
+        } else if (FeedbackSite.ACADEMIC_PORTFOLIO.equalsName(site)) {
             message.setTo(academicPortfolioFeedbackToAddress);
         } else {
-            log.error("Unexpected message state: {}", state);
+            log.error("Unexpected message state: {}", site);
             throw new BadRequestException("Unexpected message metadata state");
         }
 
-        message.setSubject(messageSource.getMessage("feedback.subject." + state, null, DEFAULT_SUBJECT, locale));
+        message.setSubject(messageSource.getMessage("feedback.subject." + site, null, DEFAULT_SUBJECT, locale));
         message.setText(body);
         mailSender.send(message);
     }
@@ -146,8 +146,8 @@ public class FeedbackService {
         return helsinkiNow.format(TIMESTAMP_FORMATTER);
     }
 
-    private String getState(SendFeedbackRequest request) {
-        return getMetadataValue(request, FIELD_STATE, null);
+    private String getSite(SendFeedbackRequest request) {
+        return getMetadataValue(request, FIELD_SITE, null);
     }
 
     private String getFaculty(SendFeedbackRequest request) {
@@ -175,7 +175,7 @@ public class FeedbackService {
                                     String userAgent,
                                     Locale locale) {
         String timestampLine = getTimestampLine(timestamp, locale);
-        String stateLine = getStateLine(state, locale);
+        String stateLine = getSiteLine(state, locale);
         String userAgentLine = getUserAgentLine(userAgent, locale);
         if (faculty == null) {
             return String.join("\n", content, "", timestampLine, stateLine, userAgentLine);
@@ -193,8 +193,8 @@ public class FeedbackService {
         return getNameValueLine(FIELD_FACULTY, messageSource.getMessage("faculty." + faculty, null, faculty, locale), locale);
     }
 
-    private String getStateLine(String state, Locale locale) {
-        return getNameValueLine(FIELD_STATE, messageSource.getMessage("state." + state, null, state, locale), locale);
+    private String getSiteLine(String site, Locale locale) {
+        return getNameValueLine(FIELD_SITE, messageSource.getMessage("site." + site, null, site, locale), locale);
     }
 
     private String getUserAgentLine(String userAgent, Locale locale) {
