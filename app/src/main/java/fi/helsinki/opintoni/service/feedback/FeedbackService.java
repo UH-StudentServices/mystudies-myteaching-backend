@@ -51,11 +51,11 @@ public class FeedbackService {
     private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final String DEFAULT_LANG = Language.FI.getCode();
     private static final String COUNTRY_FINLAND_CODE = "FI";
-    private static final String FIELD_TIMESTAMP = "timestamp";
-    private static final String FIELD_FACULTY = "faculty";
-    private static final String FIELD_SITE = "site";
-    private static final String FIELD_USER_AGENT = "userAgent";
-    private static final String FIELD_LANG = "lang";
+    private static final String TIMESTAMP_FIELD = "timestamp";
+    private static final String FACULTY_FIELD = "faculty";
+    private static final String SITE_FIELD = "site";
+    private static final String USER_AGENT_FIELD = "userAgent";
+    private static final String LANG_FIELD = "lang";
     private static final String DEFAULT_SUBJECT = "Palaute";
 
     private final MailSender mailSender;
@@ -147,19 +147,19 @@ public class FeedbackService {
     }
 
     private String getSite(SendFeedbackRequest request) {
-        return getMetadataValue(request, FIELD_SITE, null);
+        return getMetadataValue(request, SITE_FIELD, null);
     }
 
     private String getFaculty(SendFeedbackRequest request) {
-        return getMetadataValue(request, FIELD_FACULTY, null);
+        return getMetadataValue(request, FACULTY_FIELD, null);
     }
 
     private String getUserAgent(SendFeedbackRequest request) {
-        return getMetadataValue(request, FIELD_USER_AGENT, null);
+        return getMetadataValue(request, USER_AGENT_FIELD, null);
     }
 
     private Locale getLocale(SendFeedbackRequest request) {
-        String langCode = getMetadataValue(request, FIELD_LANG, DEFAULT_LANG);
+        String langCode = getMetadataValue(request, LANG_FIELD, DEFAULT_LANG);
         return new Locale(langCode, COUNTRY_FINLAND_CODE);
     }
 
@@ -186,19 +186,19 @@ public class FeedbackService {
     }
 
     private String getTimestampLine(String timestamp, Locale locale) {
-        return getNameValueLine(FIELD_TIMESTAMP, timestamp, locale);
+        return getNameValueLine(TIMESTAMP_FIELD, timestamp, locale);
     }
 
     private String getFacultyLine(String faculty, Locale locale) {
-        return getNameValueLine(FIELD_FACULTY, messageSource.getMessage("faculty." + faculty, null, faculty, locale), locale);
+        return getNameValueLine(FACULTY_FIELD, messageSource.getMessage("faculty." + faculty, null, faculty, locale), locale);
     }
 
     private String getSiteLine(String site, Locale locale) {
-        return getNameValueLine(FIELD_SITE, messageSource.getMessage("site." + site, null, site, locale), locale);
+        return getNameValueLine(SITE_FIELD, messageSource.getMessage("site." + site, null, site, locale), locale);
     }
 
     private String getUserAgentLine(String userAgent, Locale locale) {
-        return getNameValueLine(FIELD_USER_AGENT, userAgent, locale);
+        return getNameValueLine(USER_AGENT_FIELD, userAgent, locale);
     }
 
     private String getNameValueLine(String name, String value, Locale locale) {
