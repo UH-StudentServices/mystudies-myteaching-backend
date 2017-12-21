@@ -42,6 +42,8 @@ feedback:
     recipient:
         student: studentfeedback@localhost
         teacher: teacherfeedback@localhost
+        portfolio: portfoliofeedback@localhost
+        academicPortfolio: academicportfoliofeedback@localhost
 
     anonymous:
         fromAddress: doo-projekti@helsinki.fi

@@ -37,6 +37,8 @@ feedback:
     recipient:
         student: studentfeedback@localhost
         teacher: teacherfeedback@localhost
+        portfolio: portfoliofeedback@localhost
+        academicPortfolio: academicportfoliofeedback@localhost
 
 metrics:
     jmx.enabled: true
