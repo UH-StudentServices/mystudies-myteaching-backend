@@ -24,6 +24,8 @@ feedback:
     recipient:
         student: neu-tuki@helsinki.fi
         teacher: opetusteknologia@helsinki.fi
+        porfolio: opetusteknologia@helsinki.fi
+        academicPortfolio: opetusteknologia@helsinki.fi
 
     anonymous:
         fromAddress: doo-projekti@helsinki.fi

@@ -64,6 +64,8 @@ public class FeedbackService {
     private final FeedbackConverter feedbackConverter;
     private final String studentFeedbackToAddress;
     private final String teacherFeedbackToAddress;
+    private final String portfolioFeedbackToAddress;
+    private final String academicPortfolioFeedbackToAddress;
     private final String anonymousFeedbackFromAddress;
     private final String anonymousFeedbackReplyToAddress;
 
@@ -73,6 +75,8 @@ public class FeedbackService {
                            MessageSource messageSource,
                            @Value("${feedback.recipient.student}") String studentFeedbackToAddress,
                            @Value("${feedback.recipient.teacher}") String teacherFeedbackToAddress,
+                           @Value("${feedback.recipient.portfolio}") String portfolioFeedbackToAddress,
+                           @Value("${feedback.recipient.academicPortfolio}") String academicPortfolioFeedbackToAddress,
                            @Value("${feedback.anonymous.fromAddress}") String anonymousFeedbackFromAddress,
                            @Value("${feedback.anonymous.replyToAddress}") String anonymousFeedbackReplyToAddress,
                            FeedbackRepository feedbackRepository,
@@ -81,6 +85,8 @@ public class FeedbackService {
         this.messageSource = messageSource;
         this.studentFeedbackToAddress = studentFeedbackToAddress;
         this.teacherFeedbackToAddress = teacherFeedbackToAddress;
+        this.portfolioFeedbackToAddress = portfolioFeedbackToAddress;
+        this.academicPortfolioFeedbackToAddress = academicPortfolioFeedbackToAddress;
         this.anonymousFeedbackFromAddress = anonymousFeedbackFromAddress;
         this.anonymousFeedbackReplyToAddress = anonymousFeedbackReplyToAddress;
         this.feedbackRepository = feedbackRepository;
@@ -107,6 +113,10 @@ public class FeedbackService {
             message.setTo(studentFeedbackToAddress);
         } else if (FeedbackSite.TEACHER.equalsName(state)) {
             message.setTo(teacherFeedbackToAddress);
+        } else if (FeedbackSite.PORTFOLIO.equalsName(state)) {
+            message.setTo(portfolioFeedbackToAddress);
+        } else if (FeedbackSite.ACADEMIC_PORTFOLIO.equalsName(state)) {
+            message.setTo(academicPortfolioFeedbackToAddress);
         } else {
             log.error("Unexpected message state: {}", state);
             throw new BadRequestException("Unexpected message metadata state");
