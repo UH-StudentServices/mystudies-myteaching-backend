@@ -15,27 +15,27 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.web.rest.publicapi;
+package fi.helsinki.opintoni.web.rest.privateapi;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
+import com.icegreen.greenmail.junit.GreenMailRule;
+import com.icegreen.greenmail.util.ServerSetupTest;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.service.feedback.FeedbackSite;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-import fi.helsinki.opintoni.web.rest.privateapi.SendFeedbackRequest;
-import org.junit.Test;
 import org.junit.Rule;
-import com.icegreen.greenmail.junit.GreenMailRule;
-import com.icegreen.greenmail.util.ServerSetupTest;
-import javax.mail.internet.MimeMessage;
-import javax.mail.Message;
-import javax.mail.Address;
-import javax.mail.MessagingException;
-import java.io.IOException;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import com.google.common.collect.ImmutableMap;
+
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
@@ -43,7 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PublicFeedbackResourceTest extends SpringTest {
+public class PrivateFeedbackResourceTest extends SpringTest {
     private static final String FEEDBACK_CONTENT = "Content";
     private static final String FEEDBACK_SENDER = "teppo.testaaja@helsinki.fi";
 
@@ -165,7 +165,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
         request.email = requestFromEmail;
         request.metadata = getMetadata(lang, site);
 
-        mockMvc.perform(post(RestConstants.PUBLIC_API_V1 + "/feedback")
+        mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + "/feedback")
             .with(securityContext(studentSecurityContext()))
             .content(WebTestUtils.toJsonBytes(request))
             .contentType(MediaType.APPLICATION_JSON))
@@ -321,7 +321,7 @@ public class PublicFeedbackResourceTest extends SpringTest {
         request.email = FEEDBACK_SENDER;
         request.metadata = getMetadata(FEEDBACK_LANG_FI, "kukkusteitti");
 
-        mockMvc.perform(post(RestConstants.PUBLIC_API_V1 + "/feedback")
+        mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + "/feedback")
             .with(securityContext(studentSecurityContext()))
             .content(WebTestUtils.toJsonBytes(request))
             .contentType(MediaType.APPLICATION_JSON))
