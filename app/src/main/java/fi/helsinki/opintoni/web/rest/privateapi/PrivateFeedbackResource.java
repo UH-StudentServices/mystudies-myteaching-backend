@@ -15,13 +15,12 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.web.rest.publicapi;
+package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.service.feedback.FeedbackService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-import fi.helsinki.opintoni.web.rest.privateapi.SendFeedbackRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,14 +32,14 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.PUBLIC_API_V1 + "/feedback",
+    value = RestConstants.PRIVATE_API_V1 + "/feedback",
     produces = WebConstants.APPLICATION_JSON_UTF8)
-public class PublicFeedbackResource extends AbstractResource {
+public class PrivateFeedbackResource extends AbstractResource {
 
     private final FeedbackService feedbackService;
 
     @Autowired
-    public PublicFeedbackResource(FeedbackService feedbackService) {
+    public PrivateFeedbackResource(FeedbackService feedbackService) {
         this.feedbackService = feedbackService;
     }
 
