@@ -321,7 +321,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         request.email = FEEDBACK_SENDER;
         request.metadata = getMetadata(FEEDBACK_LANG_FI, "kukkusteitti");
 
-        mockMvc.perform(post(RestConstants.PUBLIC_API_V1 + "/feedback")
+        mockMvc.perform(post(RestConstants.PRIVATE_API_V1 + "/feedback")
             .with(securityContext(studentSecurityContext()))
             .content(WebTestUtils.toJsonBytes(request))
             .contentType(MediaType.APPLICATION_JSON))
