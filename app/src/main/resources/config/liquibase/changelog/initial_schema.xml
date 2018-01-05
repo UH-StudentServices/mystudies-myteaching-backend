@@ -1425,4 +1425,8 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="OO-938 Remove feedbacks" author="Tomi Mäkinen">
+        <dropTable tableName="feedback"/>
+    </changeSet>
 </databaseChangeLog>
