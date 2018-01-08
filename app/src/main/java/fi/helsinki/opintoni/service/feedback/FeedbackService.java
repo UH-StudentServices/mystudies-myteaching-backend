@@ -22,10 +22,6 @@ import fi.helsinki.opintoni.service.TimeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
-import fi.helsinki.opintoni.domain.Feedback;
-import fi.helsinki.opintoni.dto.FeedbackDto;
-import fi.helsinki.opintoni.repository.FeedbackRepository;
-import fi.helsinki.opintoni.service.converter.FeedbackConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.SendFeedbackRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,9 +32,7 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.context.MessageSource;
 
-import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import fi.helsinki.opintoni.localization.Language;
@@ -60,8 +54,6 @@ public class FeedbackService {
 
     private final MailSender mailSender;
     private final MessageSource messageSource;
-    private final FeedbackRepository feedbackRepository;
-    private final FeedbackConverter feedbackConverter;
     private final String studentFeedbackToAddress;
     private final String teacherFeedbackToAddress;
     private final String portfolioFeedbackToAddress;
@@ -78,9 +70,7 @@ public class FeedbackService {
                            @Value("${feedback.recipient.portfolio}") String portfolioFeedbackToAddress,
                            @Value("${feedback.recipient.academicPortfolio}") String academicPortfolioFeedbackToAddress,
                            @Value("${feedback.anonymous.fromAddress}") String anonymousFeedbackFromAddress,
-                           @Value("${feedback.anonymous.replyToAddress}") String anonymousFeedbackReplyToAddress,
-                           FeedbackRepository feedbackRepository,
-                           FeedbackConverter feedbackConverter) {
+                           @Value("${feedback.anonymous.replyToAddress}") String anonymousFeedbackReplyToAddress) {
         this.mailSender = mailSender;
         this.messageSource = messageSource;
         this.studentFeedbackToAddress = studentFeedbackToAddress;
@@ -89,8 +79,6 @@ public class FeedbackService {
         this.academicPortfolioFeedbackToAddress = academicPortfolioFeedbackToAddress;
         this.anonymousFeedbackFromAddress = anonymousFeedbackFromAddress;
         this.anonymousFeedbackReplyToAddress = anonymousFeedbackReplyToAddress;
-        this.feedbackRepository = feedbackRepository;
-        this.feedbackConverter = feedbackConverter;
     }
 
     public void sendFeedback(SendFeedbackRequest request) throws MailException {
@@ -125,20 +113,6 @@ public class FeedbackService {
         message.setSubject(messageSource.getMessage("feedback.subject." + site, null, DEFAULT_SUBJECT, locale));
         message.setText(body);
         mailSender.send(message);
-    }
-
-    public List<FeedbackDto> getAllFeedback() {
-        return feedbackRepository.findAllByOrderByCreatedDateDesc()
-            .stream()
-            .map(feedbackConverter::toDto)
-            .collect(Collectors.toList());
-    }
-
-    public List<FeedbackDto> updateFeedback(Long feedbackId, FeedbackDto feedbackDto) {
-        Feedback feedback = feedbackRepository.findOne(feedbackId);
-        feedback.processed = feedbackDto.processed;
-        feedback.comment = feedbackDto.comment;
-        return getAllFeedback();
     }
 
     private String createTimestamp() {
