@@ -39,7 +39,7 @@ public class OodiUserRoleService {
         this.oodiClient = oodiClient;
     }
 
-    @Cacheable(value = CacheConstants.IS_OPEN_UNIVERSITY_TEACHER, cacheManager = "inMemoryCacheManager")
+    @Cacheable(value = CacheConstants.IS_OPEN_UNIVERSITY_TEACHER, cacheManager = "transientCacheManager")
     public boolean isOpenUniversityTeacher(String teacherNumber) {
         List<OodiTeacherCourse> oodiTeacherCourses = oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()));
         return !oodiTeacherCourses.isEmpty() &&
@@ -49,7 +49,7 @@ public class OodiUserRoleService {
                 .allMatch(this::isOpenUniversityId);
     }
 
-    @Cacheable(value = CacheConstants.IS_OPEN_UNIVERSITY_STUDENT, cacheManager = "inMemoryCacheManager")
+    @Cacheable(value = CacheConstants.IS_OPEN_UNIVERSITY_STUDENT, cacheManager = "transientCacheManager")
     public boolean isOpenUniversityStudent(String studentNumber) {
         List<OodiEnrollment> oodiEnrollments = oodiClient.getEnrollments(studentNumber);
         return !oodiEnrollments.isEmpty() &&

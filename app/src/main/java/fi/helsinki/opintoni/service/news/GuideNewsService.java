@@ -21,12 +21,12 @@ public class GuideNewsService extends FetchingNewsService {
     @Autowired
     private GuideNewsClient guideNewsClient;
 
-    @Cacheable(value = CacheConstants.GUIDE_GENERAL_NEWS, cacheManager = "inMemoryCacheManager")
+    @Cacheable(value = CacheConstants.GUIDE_GENERAL_NEWS, cacheManager = "transientCacheManager")
     public List<NewsDto> getGuideNewsGeneral(Locale locale) {
         return getAtomNews(() -> guideNewsClient.getGuideFeed(locale));
     }
 
-    @Cacheable(value = CacheConstants.GUIDE_PROGRAMME_NEWS, cacheManager = "inMemoryCacheManager")
+    @Cacheable(value = CacheConstants.GUIDE_PROGRAMME_NEWS, cacheManager = "transientCacheManager")
     public List<NewsDto> getGuideNewsForDegreeProgramme(String studentNumber, Locale locale) {
 
         Set<String> studyRightsProgrammeCodes = oodiClient.getStudentStudyRights(studentNumber).stream()

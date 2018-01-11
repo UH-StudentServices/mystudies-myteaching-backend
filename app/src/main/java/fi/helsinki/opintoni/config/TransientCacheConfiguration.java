@@ -31,7 +31,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PreDestroy;
@@ -41,9 +40,9 @@ import java.util.SortedSet;
 @Configuration
 @EnableCaching
 @AutoConfigureAfter(value = {MetricsConfiguration.class, DatabaseConfiguration.class})
-public class InMemoryCacheConfiguration {
+public class TransientCacheConfiguration {
 
-    private final Logger log = LoggerFactory.getLogger(InMemoryCacheConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(TransientCacheConfiguration.class);
 
     @Inject
     private Environment env;
@@ -62,7 +61,7 @@ public class InMemoryCacheConfiguration {
         cacheManager.shutdown();
     }
 
-    @Bean(name = "inMemoryCacheManager")
+    @Bean(name = "transientCacheManager")
     public CacheManager cacheManager() {
         log.debug("Starting Ehcache");
 
@@ -75,7 +74,7 @@ public class InMemoryCacheConfiguration {
     }
 
     private void configureCaches() {
-        CacheConstants.inMemoryCacheNames.forEach(cacheName -> {
+        CacheConstants.transientCacheNames.forEach(cacheName -> {
             cacheManager.addCache(cacheName);
             setDefaultCacheProperties(cacheName);
         });

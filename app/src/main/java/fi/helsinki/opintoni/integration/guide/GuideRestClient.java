@@ -43,7 +43,7 @@ public class GuideRestClient implements GuideClient {
         this.restTemplate = restTemplate;
     }
 
-    @Cacheable(value = CacheConstants.GUIDE_DEGREE_PROGRAMMES, cacheManager = "inMemoryCacheManager")
+    @Cacheable(value = CacheConstants.GUIDE_DEGREE_PROGRAMMES, cacheManager = "transientCacheManager")
     @Override
     public List<GuideDegreeProgramme> getDegreeProgrammes() {
         try {

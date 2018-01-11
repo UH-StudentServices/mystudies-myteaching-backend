@@ -111,7 +111,7 @@ public abstract class SpringTest {
     private WebApplicationContext context;
 
     @Autowired
-    private CacheManager inMemoryCacheManager;
+    private CacheManager transientCacheManager;
 
     @Autowired
     private CacheManager persistentCacheManager;
@@ -147,7 +147,7 @@ public abstract class SpringTest {
 
     @Before
     public void clearCaches() {
-        clearCaches(inMemoryCacheManager);
+        clearCaches(transientCacheManager);
         clearCaches(persistentCacheManager);
     }
 

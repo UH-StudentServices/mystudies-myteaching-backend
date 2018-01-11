@@ -81,8 +81,13 @@ public class PersistentCacheConfiguration extends CachingConfigurerSupport {
     public RedisConnectionFactory redisConnectionFactory() {
         String redistHost = environment.getProperty("redis.host", DEFAULT_REDIS_HOST);
         int redisPort = environment.getProperty("redis.port", Integer.class, DEFAULT_REDIS_PORT);
+        String redisPassword = environment.getProperty("redis.password");
 
         JedisShardInfo jedisShardInfo = new JedisShardInfo(redistHost, redisPort);
+
+        if(redisPassword != null) {
+            jedisShardInfo.setPassword(redisPassword);
+        }
 
         return new JedisConnectionFactory(jedisShardInfo);
     }

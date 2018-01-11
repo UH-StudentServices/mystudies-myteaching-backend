@@ -16,12 +16,12 @@ public class FlammaNewsService extends FetchingNewsService {
     @Autowired
     private FlammaClient flammaClient;
 
-    @Cacheable(value = CacheConstants.STUDENT_NEWS, cacheManager = "inMemoryCacheManager")
+    @Cacheable(value = CacheConstants.STUDENT_NEWS, cacheManager = "transientCacheManager")
     public List<NewsDto> getStudentNews(Locale locale) {
         return getAtomNews(() -> flammaClient.getStudentFeed(locale));
     }
 
-    @Cacheable(value = CacheConstants.TEACHER_NEWS, cacheManager = "inMemoryCacheManager")
+    @Cacheable(value = CacheConstants.TEACHER_NEWS, cacheManager = "transientCacheManager")
     public List<NewsDto> getTeacherNews(Locale locale) {
         return getAtomNews(() -> flammaClient.getTeacherFeed(locale));
     }
