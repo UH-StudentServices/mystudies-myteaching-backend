@@ -44,7 +44,7 @@ public class PersistentCacheConfiguration extends CachingConfigurerSupport {
     private static final long DEFAULT_CACHE_EXPIRATION = 0;
 
     @Autowired
-    private CacheManager cacheManager;
+    private CacheManager persistentCacheManager;
 
     @Autowired
     private Environment environment;
@@ -117,6 +117,6 @@ public class PersistentCacheConfiguration extends CachingConfigurerSupport {
     @Bean
     @Override
     public CacheResolver cacheResolver() {
-        return new SimpleCacheResolver(cacheManager);
+        return new SimpleCacheResolver(persistentCacheManager);
     }
 }

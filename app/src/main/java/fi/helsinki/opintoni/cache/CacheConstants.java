@@ -53,7 +53,6 @@ public class CacheConstants {
         .add(STUDENT_ENROLLMENTS)
         .add(TEACHER_EVENTS)
         .add(TEACHER_COURSES)
-        .add(COURSE_PAGE)
         .add(GUIDE_DEGREE_PROGRAMMES)
         .add(BUILDINGS)
         .add(COURSE_UNIT_REALISATION_TEACHERS)
