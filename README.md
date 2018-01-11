@@ -31,8 +31,12 @@ Add following localhost alias configurations (/etc/hosts)
 ```
 
 ### 2. Execute tests
+
+Docker must be installed and running
+
 ```sh
 cd app
+./src/test/script/start-redis.sh
 ./gradlew test
 ```
 
