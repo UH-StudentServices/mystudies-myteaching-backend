@@ -29,9 +29,8 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-public class GuideNewsServer {
+public class GuideNewsServer extends AbstractRestServiceServer {
 
-    private final MockRestServiceServer server;
     private final String guideNewsPathFi;
     private static final String GUIDE_NEWS_FILE_FI    = "newsfeeds/guide/feed.xml";
 
@@ -39,7 +38,8 @@ public class GuideNewsServer {
     private static final String GUIDE_NEWS_FILE_EN    = "newsfeeds/guide/feed-en.xml";
 
     public GuideNewsServer(AppConfiguration appConfiguration, RestTemplate guideRestTemplate) {
-        this.server = MockRestServiceServer.createServer(guideRestTemplate);
+        super(MockRestServiceServer.createServer(guideRestTemplate));
+
         this.guideNewsPathFi = appConfiguration.get("newsfeeds.guideFeedsByLocale.fi");
         this.guideNewsPathEn = appConfiguration.get("newsfeeds.guideFeedsByLocale.en");
     }

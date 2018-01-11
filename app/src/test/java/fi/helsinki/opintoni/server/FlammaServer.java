@@ -28,9 +28,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-public class FlammaServer {
-
-    private final MockRestServiceServer server;
+public class FlammaServer extends AbstractRestServiceServer {
 
     private final String studentNewsPathFi;
     private static final String STUDENT_NEWS_FILE_FI = "newsfeeds/flamma/studentnews.xml";
@@ -45,7 +43,8 @@ public class FlammaServer {
     private static final String TEACHER_NEWS_FILE_EN = "newsfeeds/flamma/englishteachernews.xml";
 
     public FlammaServer(AppConfiguration appConfiguration, RestTemplate restTemplate) {
-        this.server = MockRestServiceServer.createServer(restTemplate);
+        super(MockRestServiceServer.createServer(restTemplate));
+
         this.studentNewsPathFi = appConfiguration.get("newsfeeds.studentFeedsByLocale.fi");
         this.studentNewsPathEn = appConfiguration.get("newsfeeds.studentFeedsByLocale.en");
         this.teacherNewsPathFi = appConfiguration.get("newsfeeds.teacherFeedsByLocale.fi");

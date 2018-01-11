@@ -28,16 +28,15 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-public class PublicWwwServer {
+public class PublicWwwServer extends AbstractRestServiceServer {
 
-    private final MockRestServiceServer server;
     private final String publicWwwUrl;
 
     private static final String PUBLIC_WWW_PATH = "/fi/feeds/filtered-news/rss/11405/all";
     private static final String OPEN_UNI_NEWS_FILE = "newsfeeds/flamma/studentopenuniversitynews.xml";
 
     public PublicWwwServer(AppConfiguration appConfiguration, RestTemplate restTemplate) {
-        this.server = MockRestServiceServer.createServer(restTemplate);
+        super(MockRestServiceServer.createServer(restTemplate));
         this.publicWwwUrl = appConfiguration.get("publicWww.base.url") + PUBLIC_WWW_PATH;
     }
 

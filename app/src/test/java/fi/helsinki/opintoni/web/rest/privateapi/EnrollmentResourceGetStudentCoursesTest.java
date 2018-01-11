@@ -103,9 +103,7 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
 
     private StudentRequestChain expectStudygroupsetCourseRequestChain() {
         return defaultStudentRequestChain()
-            .enrollments("enrollmentswithstudygroupset.json")
-            .defaultImplementation()
-            .and();
+            .enrollments("enrollmentswithstudygroupset.json");
     }
 
     private void thatStudentCoursesAreReturned(boolean expectedCancellation,

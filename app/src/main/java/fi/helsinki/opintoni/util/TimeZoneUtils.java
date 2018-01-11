@@ -33,7 +33,7 @@ public class TimeZoneUtils {
        this.timeZoneRegistry =  TimeZoneRegistryFactory.getInstance().createRegistry();
     }
 
-    @Cacheable(CacheConstants.EUROPE_HELSINKI_TIMEZONE)
+    @Cacheable(value = CacheConstants.EUROPE_HELSINKI_TIMEZONE, cacheManager = "inMemoryCacheManager")
     public VTimeZone getHelsinkiTimeZone() {
         return timeZoneRegistry.getTimeZone(EUROPE_HELSINKI_TIMEZONE_ID).getVTimeZone();
     }

@@ -48,7 +48,7 @@ public class CacheConstants {
 
     public static final String FEEDS = "feeds";
 
-    public static final ImmutableList<String> cacheNames = ImmutableList.<String>builder()
+    public static final ImmutableList<String> inMemoryCacheNames = ImmutableList.<String>builder()
         .add(STUDENT_EVENTS)
         .add(STUDENT_ENROLLMENTS)
         .add(TEACHER_EVENTS)
@@ -67,5 +67,9 @@ public class CacheConstants {
         .add(FEEDS)
         .add(GUIDE_GENERAL_NEWS)
         .add(GUIDE_PROGRAMME_NEWS)
+        .build();
+
+    public static final ImmutableList<String> persistentCacheNames = ImmutableList.<String>builder()
+        .add(COURSE_PAGE)
         .build();
 }

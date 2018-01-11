@@ -45,7 +45,7 @@ import java.util.EnumSet;
  * Configuration of web application with Servlet 3.0 APIs.
  */
 @Configuration
-@AutoConfigureAfter(CacheConfiguration.class)
+@AutoConfigureAfter(InMemoryCacheConfiguration.class)
 public class WebConfigurer implements org.springframework.boot.web.servlet.ServletContextInitializer,
     EmbeddedServletContainerCustomizer {
 

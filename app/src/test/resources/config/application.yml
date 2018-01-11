@@ -3,9 +3,9 @@ server:
     address: localhost
     session.timeout: 1800 # Seconds
 
-
-# security configuration (this key should be unique for your application, and kept secret)
-jhipster.security.rememberme.key: 0c710457dda9949b55d066fcb350d82b76acec33
+redis:
+    host: localhost
+    port: 6379
 
 async:
     corePoolSize: 2

@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.integration.oodi;
 
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.cache.CacheConstants;
-import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +43,7 @@ public class OodiRestClient implements OodiClient {
     }
 
     @Override
-    @Cacheable(CacheConstants.STUDENT_ENROLLMENTS)
+    @Cacheable(value = CacheConstants.STUDENT_ENROLLMENTS, cacheManager = "inMemoryCacheManager")
     public List<OodiEnrollment> getEnrollments(String studentNumber) {
         return getOodiData("{baseUrl}/students/{studentNumber}/enrollments",
             new ParameterizedTypeReference<OodiResponse<OodiEnrollment>>() {
@@ -52,7 +51,7 @@ public class OodiRestClient implements OodiClient {
     }
 
     @Override
-    @Cacheable(CacheConstants.STUDENT_EVENTS)
+    @Cacheable(value = CacheConstants.STUDENT_EVENTS, cacheManager = "inMemoryCacheManager")
     public List<OodiEvent> getStudentEvents(String studentNumber) {
         return getOodiData("{baseUrl}/students/{studentNumber}/events",
             new ParameterizedTypeReference<OodiResponse<OodiEvent>>() {
@@ -67,7 +66,7 @@ public class OodiRestClient implements OodiClient {
     }
 
     @Override
-    @Cacheable(CacheConstants.TEACHER_COURSES)
+    @Cacheable(value = CacheConstants.TEACHER_COURSES, cacheManager = "inMemoryCacheManager")
     public List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
         return getOodiData("{baseUrl}/teachers/{teacherNumber}/teaching/all?since_date={sinceDate}",
             new ParameterizedTypeReference<OodiResponse<OodiTeacherCourse>>() {
@@ -82,7 +81,7 @@ public class OodiRestClient implements OodiClient {
     }
 
     @Override
-    @Cacheable(CacheConstants.COURSE_UNIT_REALISATION_TEACHERS)
+    @Cacheable(value = CacheConstants.COURSE_UNIT_REALISATION_TEACHERS, cacheManager = "inMemoryCacheManager")
     public List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId) {
         return getOodiData("{baseUrl}/courseunitrealisations/{realisationId}/teachers",
             new ParameterizedTypeReference<OodiResponse<OodiCourseUnitRealisationTeacher>>() {
@@ -104,7 +103,7 @@ public class OodiRestClient implements OodiClient {
     }
 
     @Override
-    @Cacheable(CacheConstants.TEACHER_EVENTS)
+    @Cacheable(value = CacheConstants.TEACHER_EVENTS, cacheManager = "inMemoryCacheManager")
     public List<OodiEvent> getTeacherEvents(String teacherNumber) {
         return getOodiData("{baseUrl}/teachers/{teacherNumber}/events",
             new ParameterizedTypeReference<OodiResponse<OodiEvent>>() {
@@ -113,7 +112,7 @@ public class OodiRestClient implements OodiClient {
     }
 
     @Override
-    @Cacheable(CacheConstants.LEARNING_OPPORTUNITIES)
+    @Cacheable(value = CacheConstants.LEARNING_OPPORTUNITIES, cacheManager = "inMemoryCacheManager")
     public OodiLearningOpportunity getLearningOpportunity(String learningOpportunityId) {
         return getSingleOodiData("{baseUrl}/learningopportunities/{learningOpportunityId}",
             new ParameterizedTypeReference<OodiSingleResponse<OodiLearningOpportunity>>() {

@@ -66,7 +66,6 @@ public class FavoriteResourceTest extends SpringTest {
 
     @Test
     public void thatUnisportFavoriteIsSaved() throws Exception {
-        unisportServer.expectAuthorization();
         mockMvc.perform(post("/api/private/v1/favorites/unisport").with(securityContext(studentSecurityContext()))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))

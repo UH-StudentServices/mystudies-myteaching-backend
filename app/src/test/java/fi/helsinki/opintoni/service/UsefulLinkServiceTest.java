@@ -133,8 +133,7 @@ public class UsefulLinkServiceTest extends SpringTest {
         configureStudentSecurityContext();
 
         defaultStudentRequestChain()
-            .enrollments()
-            .studyRights();
+            .enrollments();
 
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
         assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_DEFAULT_STUDENT);

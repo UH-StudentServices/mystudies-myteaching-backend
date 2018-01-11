@@ -30,14 +30,14 @@ public class SpringFeedFetcherCache implements FeedFetcherCache {
 
     private final String cacheName;
 
-    private final CacheManager cacheManager;
+    private final CacheManager inMemoryCacheManager;
 
     private final Cache cache;
 
-    public SpringFeedFetcherCache(String cacheName, CacheManager cacheManager) {
+    public SpringFeedFetcherCache(String cacheName, CacheManager inMemoryCacheManager) {
         this.cacheName = cacheName;
-        this.cacheManager = cacheManager;
-        this.cache = cacheManager.getCache(cacheName);
+        this.inMemoryCacheManager = inMemoryCacheManager;
+        this.cache = inMemoryCacheManager.getCache(cacheName);
     }
 
     @Override

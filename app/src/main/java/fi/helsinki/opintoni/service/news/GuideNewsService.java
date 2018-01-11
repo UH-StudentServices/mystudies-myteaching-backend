@@ -3,19 +3,14 @@ package fi.helsinki.opintoni.service.news;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.dto.NewsDto;
 import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsClient;
-import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsRestClient;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiStudyRight.Element;
-import fi.helsinki.opintoni.security.SecurityUtils;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class GuideNewsService extends FetchingNewsService {
@@ -26,15 +21,12 @@ public class GuideNewsService extends FetchingNewsService {
     @Autowired
     private GuideNewsClient guideNewsClient;
 
-    @Autowired
-    private SecurityUtils securityUtils;
-
-    @Cacheable(CacheConstants.GUIDE_GENERAL_NEWS)
+    @Cacheable(value = CacheConstants.GUIDE_GENERAL_NEWS, cacheManager = "inMemoryCacheManager")
     public List<NewsDto> getGuideNewsGeneral(Locale locale) {
         return getAtomNews(() -> guideNewsClient.getGuideFeed(locale));
     }
 
-    @Cacheable(CacheConstants.GUIDE_PROGRAMME_NEWS)
+    @Cacheable(value = CacheConstants.GUIDE_PROGRAMME_NEWS, cacheManager = "inMemoryCacheManager")
     public List<NewsDto> getGuideNewsForDegreeProgramme(String studentNumber, Locale locale) {
 
         Set<String> studyRightsProgrammeCodes = oodiClient.getStudentStudyRights(studentNumber).stream()

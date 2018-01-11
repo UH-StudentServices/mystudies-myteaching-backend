@@ -32,15 +32,15 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-public class CoursePageServer {
+public class CoursePageServer extends AbstractRestServiceServer {
 
-    private final MockRestServiceServer server;
     private final String coursePageBaseUrl;
     private final String coursePageApiPath;
 
     public CoursePageServer(AppConfiguration appConfiguration,
                             RestTemplate coursePageRestTemplate) {
-        this.server = MockRestServiceServer.createServer(coursePageRestTemplate);
+        super(MockRestServiceServer.createServer(coursePageRestTemplate));
+
         this.coursePageBaseUrl = appConfiguration.get("coursePage.base.url");
         this.coursePageApiPath = appConfiguration.get("coursePage.api.path");
     }

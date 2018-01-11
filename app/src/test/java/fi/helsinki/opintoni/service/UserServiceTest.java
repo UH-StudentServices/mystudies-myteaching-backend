@@ -87,8 +87,7 @@ public class UserServiceTest extends SpringTest {
 
     private User saveStudent() {
         studentRequestChain("123")
-            .enrollments()
-            .studyRights();
+            .enrollments();
         return userService.createNewUser(createAppUser());
     }
 

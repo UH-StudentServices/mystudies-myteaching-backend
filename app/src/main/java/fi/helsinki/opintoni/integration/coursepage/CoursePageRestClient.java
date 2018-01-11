@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.integration.coursepage;
 
 import fi.helsinki.opintoni.cache.CacheConstants;
-import fi.helsinki.opintoni.integration.DateFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
@@ -26,12 +25,9 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class CoursePageRestClient implements CoursePageClient {
     private final String baseUrl;
@@ -75,7 +71,10 @@ public class CoursePageRestClient implements CoursePageClient {
     }
 
     @Override
-    @Cacheable(value = CacheConstants.COURSE_PAGE, key = "#courseImplementationId + '_' + #locale.toString()")
+    @Cacheable(
+        value = CacheConstants.COURSE_PAGE,
+        key = "#courseImplementationId + '_' + #locale.toString()",
+        cacheManager = "persistentCacheManager")
     public CoursePageCourseImplementation getCoursePage(String courseImplementationId, Locale locale) {
         log.trace("fetching course impl with id {} and locale {}", courseImplementationId, locale.toString());
 

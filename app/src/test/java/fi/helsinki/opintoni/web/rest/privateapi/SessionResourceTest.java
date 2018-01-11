@@ -37,7 +37,7 @@ public class SessionResourceTest extends SpringTest {
     @Test
     public void getCurrentSessionReturnsCorrectResponse() throws Exception {
         defaultStudentRequestChain().enrollments().studyRights();
-        defaultStudentRequestChain().studyRights().studyRights();
+        defaultStudentRequestChain().studyRights();
 
         mockMvc.perform(get("/api/private/v1/session").with(securityContext(studentSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
