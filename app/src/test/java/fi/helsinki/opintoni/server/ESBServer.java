@@ -29,14 +29,14 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-public class ESBServer {
+public class ESBServer extends AbstractRestServiceServer {
 
-    private final MockRestServiceServer server;
     private final String baseUrl;
 
     public ESBServer(AppConfiguration appConfiguration,
                      RestTemplate esbRestTemplate) {
-        this.server = MockRestServiceServer.createServer(esbRestTemplate);
+        super(MockRestServiceServer.createServer(esbRestTemplate));
+
         this.baseUrl = appConfiguration.get("esb.base.url");
     }
 

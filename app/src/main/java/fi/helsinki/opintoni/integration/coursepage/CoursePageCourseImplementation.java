@@ -19,10 +19,12 @@ package fi.helsinki.opintoni.integration.coursepage;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CoursePageCourseImplementation {
+public class CoursePageCourseImplementation implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public Integer courseImplementationId;
 

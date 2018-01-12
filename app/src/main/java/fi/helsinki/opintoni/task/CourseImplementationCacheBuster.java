@@ -34,7 +34,7 @@ import static java.util.Arrays.asList;
 @Component
 public class CourseImplementationCacheBuster {
     private final CoursePageClient coursePageClient;
-    private final CacheManager cacheManager;
+    private final CacheManager persistentCacheManager;
 
     private static Logger log = LoggerFactory.getLogger(CourseImplementationCacheBuster.class);
 
@@ -42,9 +42,9 @@ public class CourseImplementationCacheBuster {
     private String[] availableLocales;
 
     @Autowired
-    public CourseImplementationCacheBuster(CoursePageClient coursePageClient, CacheManager cacheManager) {
+    public CourseImplementationCacheBuster(CoursePageClient coursePageClient, CacheManager persistentCacheManager) {
         this.coursePageClient = coursePageClient;
-        this.cacheManager = cacheManager;
+        this.persistentCacheManager = persistentCacheManager;
     }
 
     public void checkForUpdatedCourseImplementations(long updatesSince) {
@@ -53,7 +53,7 @@ public class CourseImplementationCacheBuster {
     }
 
     private void evictStaleCacheEntries(List<Long> updatedCourses) {
-        Cache courseImplementationCache = cacheManager.getCache(CacheConstants.COURSE_PAGE);
+        Cache courseImplementationCache = persistentCacheManager.getCache(CacheConstants.COURSE_PAGE);
         updatedCourses.stream()
             .flatMap(courseId ->
                 asList(availableLocales).stream().map(locale -> String.format("%s_%s", courseId, locale)))

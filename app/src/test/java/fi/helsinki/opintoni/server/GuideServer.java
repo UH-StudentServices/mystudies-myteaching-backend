@@ -28,14 +28,13 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-public class GuideServer {
+public class GuideServer extends AbstractRestServiceServer {
 
-    private final MockRestServiceServer server;
     private final String guideBaseUrl;
     private final String degreeProgrammesUrl;
 
     public GuideServer(AppConfiguration appConfiguration, RestTemplate guideRestTemplate) {
-        this.server = MockRestServiceServer.createServer(guideRestTemplate);
+        super(MockRestServiceServer.createServer(guideRestTemplate));
         this.guideBaseUrl = appConfiguration.get("guide.base.url");
         this.degreeProgrammesUrl = this.guideBaseUrl + "/degree-programme?_format=json";
     }

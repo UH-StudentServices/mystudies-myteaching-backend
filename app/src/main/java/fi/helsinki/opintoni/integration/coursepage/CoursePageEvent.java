@@ -20,9 +20,11 @@ package fi.helsinki.opintoni.integration.coursepage;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import fi.helsinki.opintoni.util.LocalDateTimeDeserializer;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class CoursePageEvent {
+public class CoursePageEvent implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public String title;
     public String where;

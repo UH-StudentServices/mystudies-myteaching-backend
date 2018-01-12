@@ -18,10 +18,14 @@
 package fi.helsinki.opintoni.task;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.Cache.ValueWrapper;
+import org.springframework.cache.CacheManager;
 
 import java.time.Instant;
 import java.util.Locale;
@@ -36,23 +40,28 @@ public class CourseImplementationCacheBusterTest extends SpringTest {
     @Autowired
     private CourseImplementationCacheBuster courseImplementationCacheBuster;
 
+    @Autowired
+    private CacheManager persistentCacheManager;
+
+    private ValueWrapper getCourseImplementationFromCache(String implementationId, Locale locale) {
+        return persistentCacheManager.getCache(CacheConstants.COURSE_PAGE).get(String.format("%s_%s", implementationId, locale.toString()));
+    }
+
     public void assertCourseImplementationCacheBustForLocale(Locale locale) {
         defaultTeacherRequestChain().courseImplementationWithLocale(locale);
         expectCourseImplementationChangesRequest();
-        defaultTeacherRequestChain().courseImplementationWithLocale(locale);
 
         CoursePageCourseImplementation implementations = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
 
-        CoursePageCourseImplementation implementationsFromCache = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
+        ValueWrapper implementationsFromCache = getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, locale);
 
-        assertThat(implementations).isSameAs(implementationsFromCache);
+        assertThat(implementations).isEqualToComparingFieldByFieldRecursively(implementationsFromCache.get());
 
         courseImplementationCacheBuster.checkForUpdatedCourseImplementations(Instant.now().getEpochSecond());
 
-        CoursePageCourseImplementation implementationsAfterCacheBust =
-            coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
+        implementationsFromCache = getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, locale);
 
-        assertThat(implementations).isNotSameAs(implementationsAfterCacheBust);
+        assertThat(implementationsFromCache).isNull();
     }
 
     @Test

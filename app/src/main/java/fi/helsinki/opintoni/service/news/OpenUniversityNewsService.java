@@ -14,7 +14,7 @@ public class OpenUniversityNewsService extends FetchingNewsService {
     @Autowired
     private PublicWwwRestClient publicWwwRestClient;
 
-    @Cacheable(CacheConstants.OPEN_UNIVERSITY_NEWS)
+    @Cacheable(value = CacheConstants.OPEN_UNIVERSITY_NEWS, cacheManager = "transientCacheManager")
     public List<NewsDto> getOpenUniversityNews() {
         return getRssNews(publicWwwRestClient::getOpenUniversityFeed);
     }

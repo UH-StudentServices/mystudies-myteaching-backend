@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.integration.coursepage;
 import fi.helsinki.opintoni.SpringTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 
 import java.util.Locale;
 
@@ -85,16 +86,5 @@ public class CoursePageRestClientTest extends SpringTest {
             .courseImplementation(TEACHER_COURSE_REALISATION_ID, "course_with_moodle_url.json");
 
         assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN).moodleUrl).isEqualTo("http://moodle.helsinki.fi");
-    }
-
-    @Test
-    public void thatCourseImplementationsAreCached() {
-        defaultTeacherRequestChain().defaultCourseImplementation();
-
-        CoursePageCourseImplementation implementations = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN);
-        CoursePageCourseImplementation cachedImplementations =
-            coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN);
-
-        assertThat(implementations).isSameAs(cachedImplementations);
     }
 }

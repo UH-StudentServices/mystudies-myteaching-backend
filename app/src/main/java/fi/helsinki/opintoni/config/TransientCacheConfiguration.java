@@ -40,9 +40,9 @@ import java.util.SortedSet;
 @Configuration
 @EnableCaching
 @AutoConfigureAfter(value = {MetricsConfiguration.class, DatabaseConfiguration.class})
-public class CacheConfiguration {
+public class TransientCacheConfiguration {
 
-    private final Logger log = LoggerFactory.getLogger(CacheConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(TransientCacheConfiguration.class);
 
     @Inject
     private Environment env;
@@ -61,7 +61,7 @@ public class CacheConfiguration {
         cacheManager.shutdown();
     }
 
-    @Bean
+    @Bean(name = "transientCacheManager")
     public CacheManager cacheManager() {
         log.debug("Starting Ehcache");
 
@@ -74,7 +74,7 @@ public class CacheConfiguration {
     }
 
     private void configureCaches() {
-        CacheConstants.cacheNames.forEach(cacheName -> {
+        CacheConstants.transientCacheNames.forEach(cacheName -> {
             cacheManager.addCache(cacheName);
             setDefaultCacheProperties(cacheName);
         });

@@ -33,6 +33,7 @@ import fi.helsinki.opintoni.web.requestchain.OodiCourseNamesRequestChain;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +111,10 @@ public abstract class SpringTest {
     private WebApplicationContext context;
 
     @Autowired
-    private CacheManager cacheManager;
+    private CacheManager transientCacheManager;
+
+    @Autowired
+    private CacheManager persistentCacheManager;
 
     @Autowired
     private SpringLiquibase springLiquibase;
@@ -143,6 +147,24 @@ public abstract class SpringTest {
 
     @Before
     public void clearCaches() {
+        clearCaches(transientCacheManager);
+        clearCaches(persistentCacheManager);
+    }
+
+    @After
+    public void verify() {
+        oodiServer.verify();
+        coursePageServer.verify();
+        guideServer.verify();
+        flammaServer.verify();
+        guideNewsServer.verify();
+        publicWwwServer.verify();
+        webPageServer.verify();
+        unisportServer.verify();
+        esbServer.verify();
+    }
+
+    private void clearCaches(CacheManager cacheManager) {
         cacheManager.getCacheNames()
             .stream()
             .map(cacheManager::getCache)

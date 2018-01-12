@@ -28,14 +28,13 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-public class OodiServer {
+public class OodiServer extends AbstractRestServiceServer {
 
-    private final MockRestServiceServer server;
     private final String oodiBaseUrl;
 
     public OodiServer(AppConfiguration appConfiguration,
                       RestTemplate oodiRestTemplate) {
-        this.server = MockRestServiceServer.createServer(oodiRestTemplate);
+        super(MockRestServiceServer.createServer(oodiRestTemplate));
         this.oodiBaseUrl = appConfiguration.get("oodi.base.url");
     }
 

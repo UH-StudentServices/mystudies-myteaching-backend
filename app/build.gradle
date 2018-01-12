@@ -155,8 +155,8 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-autoconfigure', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-loader-tools', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: spring_boot_version
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: spring_boot_version
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: spring_boot_version
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: spring_boot_version
     compile(group: 'org.springframework', name: 'spring-context-support') {

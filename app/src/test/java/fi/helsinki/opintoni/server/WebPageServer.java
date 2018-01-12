@@ -31,12 +31,10 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-public class WebPageServer {
-
-    private final MockRestServiceServer server;
+public class WebPageServer extends AbstractRestServiceServer {
 
     public WebPageServer(RestTemplate metaDataRestTemplate) {
-        this.server = MockRestServiceServer.createServer(metaDataRestTemplate);
+        super(MockRestServiceServer.createServer(metaDataRestTemplate));
     }
 
     public void expectMetaDataRequest() {

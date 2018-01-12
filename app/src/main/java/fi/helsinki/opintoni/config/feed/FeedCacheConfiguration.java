@@ -29,10 +29,10 @@ import org.springframework.context.annotation.Configuration;
 public class FeedCacheConfiguration {
 
     @Autowired
-    private CacheManager cacheManager;
+    private CacheManager transientCacheManager;
 
     @Bean
     public FeedFetcherCache feedFetcherCache() {
-        return new SpringFeedFetcherCache(CacheConstants.FEEDS, cacheManager);
+        return new SpringFeedFetcherCache(CacheConstants.FEEDS, transientCacheManager);
     }
 }

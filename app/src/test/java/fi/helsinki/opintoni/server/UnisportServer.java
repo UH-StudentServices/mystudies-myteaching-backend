@@ -33,14 +33,13 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-public class UnisportServer {
+public class UnisportServer extends AbstractRestServiceServer {
 
-    private final MockRestServiceServer server;
     private final String unisportBaseUrl;
 
     public UnisportServer(AppConfiguration appConfiguration,
                         RestTemplate unisportRestTemplate) {
-        this.server = MockRestServiceServer.createServer(unisportRestTemplate);
+       super(MockRestServiceServer.createServer(unisportRestTemplate));
         this.unisportBaseUrl = appConfiguration.get("unisport.base.url");
     }
 
