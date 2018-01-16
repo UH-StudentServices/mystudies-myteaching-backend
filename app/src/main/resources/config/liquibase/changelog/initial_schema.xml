@@ -1429,4 +1429,18 @@
     <changeSet id="OO-938 Remove feedbacks" author="Tomi Mäkinen">
         <dropTable tableName="feedback"/>
     </changeSet>
+
+    <changeSet id="create cached_item_changes_check table" author="Marko Rautajoki">
+        <createTable tableName="cached_item_updates_check">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cache_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_time" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
