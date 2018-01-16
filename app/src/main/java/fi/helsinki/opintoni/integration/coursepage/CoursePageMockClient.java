@@ -19,9 +19,7 @@ package fi.helsinki.opintoni.integration.coursepage;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fi.helsinki.opintoni.cache.CacheConstants;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;

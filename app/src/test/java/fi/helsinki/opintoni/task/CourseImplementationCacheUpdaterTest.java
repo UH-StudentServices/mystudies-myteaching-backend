@@ -8,12 +8,9 @@ import fi.helsinki.opintoni.repository.CachedItemUpdatesCheckRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
-import org.springframework.core.env.Environment;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Locale;
 
 import static fi.helsinki.opintoni.cache.CacheConstants.COURSE_PAGE;
@@ -68,7 +65,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
 
         assertThat(courseImplementation).isEqualToComparingFieldByFieldRecursively(courseImplementationFromCache);
 
-        courseImplementationUpdatesChecker.getUpdatedCourseImplementationsAndEvictFromCache();
+        courseImplementationUpdatesChecker.getChancedCourseImplementationsAndUpdateCached();
 
         courseImplementationFromCache = getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, locale);
 
@@ -101,7 +98,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
 
         CoursePageCourseImplementation courseImplementation = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
 
-        courseImplementationUpdatesChecker.getUpdatedCourseImplementationsAndEvictFromCache();
+        courseImplementationUpdatesChecker.getChancedCourseImplementationsAndUpdateCached();
 
         CoursePageCourseImplementation courseImplementationFromCache = getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, locale);
 

@@ -60,8 +60,7 @@ public class CourseImplementationCacheUpdater {
         this.persistentCacheManager = persistentCacheManager;
     }
 
-    public void getUpdatedCourseImplementationsAndEvictFromCache() {
-
+    public void getChancedCourseImplementationsAndUpdateCached() {
         CachedItemUpdatesCheck cachedItemUpdatesCheck = cachedItemUpdatesCheckRepository.findByCacheName(COURSE_PAGE)
             .orElseGet(this::initialCourseImplementationUpdatesCheck);
 
@@ -105,7 +104,7 @@ public class CourseImplementationCacheUpdater {
             asList(availableLocales).stream()
                 .map(Locale::new)
                 .forEach(locale -> {
-                    String cacheKey = String.format("%s_%s", courseId, locale);
+                    String cacheKey = String.format("%s_%s", courseId, locale.toString());
 
                     if(courseImplementationCache.get(cacheKey) != null) {
                         log.trace("Updating cache entry for course impl with key {}", cacheKey);

@@ -1430,7 +1430,7 @@
         <dropTable tableName="feedback"/>
     </changeSet>
 
-    <changeSet id="create cached_item_changes_check table" author="Marko Rautajoki">
+    <changeSet id="create cached_item_updates_check table" author="Marko Rautajoki">
         <createTable tableName="cached_item_updates_check">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
