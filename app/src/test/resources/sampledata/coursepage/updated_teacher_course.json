@@ -1,0 +1,23 @@
+[{
+  "courseImplementationId": 5,
+  "title": "Updated title",
+  "headerImageUrl": "http://dev.student.helsinki.fi/image",
+  "url": "https://dev.student.helsinki.fi/tvt",
+  "hasMaterial": true,
+  "events": [
+    {
+      "title":"Title: Test 04159adb2253",
+      "begin":"2016-10-28T14:00:00Z",
+      "end":"2016-11-28T14:00:00Z",
+      "where":"Place: Test 04156f654df1",
+      "exam": false
+    },
+    {
+      "title":"Tentti",
+      "begin":"2040-10-28T11:00:00Z",
+      "end":"2040-11-28T14:00:00Z",
+      "where":"Tenttisali",
+      "exam": true
+    }
+  ]
+}]

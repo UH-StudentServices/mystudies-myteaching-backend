@@ -19,17 +19,18 @@ package fi.helsinki.opintoni.server;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.sampledata.SampleDataFiles;
-import org.hamcrest.Matcher;
+import fi.helsinki.opintoni.service.TimeService;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.Locale;
 
-import static org.hamcrest.Matchers.startsWith;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 public class CoursePageServer extends AbstractRestServiceServer {
@@ -60,13 +61,27 @@ public class CoursePageServer extends AbstractRestServiceServer {
             );
     }
 
-    public void expectCourseImplementationChangesRequest() {
-        server.expect(requestTo(courseImplementationChangesUrlMatcher()))
+    public void expectCourseImplementationChangesRequest(LocalDateTime sinceDate) {
+        expectCourseImplementationChangesRequest(sinceDate, "coursepage/course_implementation_changes.json");
+    }
+
+    public void expectCourseImplementationChangesRequestWhenNoChanges(LocalDateTime sinceDate) {
+        expectCourseImplementationChangesRequest(sinceDate, "coursepage/course_implementation_changes_no_changes.json");
+    }
+
+    private void expectCourseImplementationChangesRequest(LocalDateTime sinceDate, String responseFile) {
+        server.expect(requestTo(courseImplementationChangesUrl(sinceDate)))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(
-                SampleDataFiles.toText("coursepage/course_implementation_changes.json"),
+                SampleDataFiles.toText(responseFile),
                 MediaType.APPLICATION_JSON
             ));
+    }
+
+    public void expectCourseImplementationChangesRequestToRespondError(LocalDateTime sinceDate) {
+        server.expect(requestTo(courseImplementationChangesUrl(sinceDate)))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withServerError());
     }
 
     private String courseImplementationUrl(String courseImplementationId, Locale locale) {
@@ -77,7 +92,8 @@ public class CoursePageServer extends AbstractRestServiceServer {
             courseImplementationId);
     }
 
-    private Matcher<String> courseImplementationChangesUrlMatcher() {
-        return startsWith(coursePageBaseUrl + coursePageApiPath + "/course_implementation/changes/since/");
+    private String courseImplementationChangesUrl(LocalDateTime sinceDate) {
+        Long epochSecond = sinceDate.atZone(TimeService.HELSINKI_ZONE_ID).toEpochSecond();
+        return String.format("%s%s/course_implementation/changes/since/%s", coursePageBaseUrl, coursePageApiPath, epochSecond);
     }
 }

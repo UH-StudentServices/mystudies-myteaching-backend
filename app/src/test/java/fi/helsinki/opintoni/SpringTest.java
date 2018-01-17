@@ -55,6 +55,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static java.util.Collections.singletonList;
@@ -67,7 +68,7 @@ import static java.util.Collections.singletonList;
 public abstract class SpringTest {
 
     protected OodiServer oodiServer;
-    private CoursePageServer coursePageServer;
+    protected CoursePageServer coursePageServer;
     protected GuideServer guideServer;
     protected WebPageServer webPageServer;
     protected FlammaServer flammaServer;
@@ -222,10 +223,6 @@ public abstract class SpringTest {
 
     protected OodiCourseNamesRequestChain defaultOodiCourseNamesRequestChain() {
         return  new OodiCourseNamesRequestChain(oodiServer);
-    }
-
-    protected void expectCourseImplementationChangesRequest() {
-        coursePageServer.expectCourseImplementationChangesRequest();
     }
 
     protected String getRemoteMockApiUrl(String path) {
