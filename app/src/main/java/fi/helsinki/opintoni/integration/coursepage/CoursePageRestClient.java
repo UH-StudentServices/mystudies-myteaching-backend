@@ -66,7 +66,7 @@ public class CoursePageRestClient implements CoursePageClient {
             return restTemplate.exchange(getCoursePageApiUrl(path, locale), HttpMethod.GET, null, typeReference, uriVariables).getBody();
         } catch (Exception e) {
             log.error("Caught exception when calling Course Pages:", e);
-            throw new RuntimeException(e.getMessage(), e);
+            throw new CoursePageIntegrationException(e.getMessage(), e);
         }
     }
 

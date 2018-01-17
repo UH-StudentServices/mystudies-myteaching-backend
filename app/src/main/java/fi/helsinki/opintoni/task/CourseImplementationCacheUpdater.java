@@ -41,6 +41,7 @@ import static java.util.Arrays.asList;
 
 @Component
 public class CourseImplementationCacheUpdater {
+    private static final int FIRST_UPDATE_CHECK_RADIUS = 1;
 
     @Value("${locale.available}")
     private String[] availableLocales;
@@ -60,38 +61,35 @@ public class CourseImplementationCacheUpdater {
         this.persistentCacheManager = persistentCacheManager;
     }
 
-    public void getChancedCourseImplementationsAndUpdateCached() {
+    public void getChangedCourseImplementationsAndUpdateCached() {
         CachedItemUpdatesCheck cachedItemUpdatesCheck = cachedItemUpdatesCheckRepository.findByCacheName(COURSE_PAGE)
             .orElseGet(this::initialCourseImplementationUpdatesCheck);
 
-        log.info("checking for course implementation updates since {}", cachedItemUpdatesCheck.dateTime);
+        log.info("checking for course implementation updates since {}", cachedItemUpdatesCheck.lastChecked);
 
-        try {
-            LocalDateTime updateCheckDateTime = LocalDateTime.now();
+        LocalDateTime updateCheckDateTime = LocalDateTime.now();
 
-            List<Long> updatedCourses =
-                coursePageClient.getUpdatedCourseImplementationIds(
-                    cachedItemUpdatesCheck.dateTime.atZone(TimeService.HELSINKI_ZONE_ID).toEpochSecond());
+        List<Long> updatedCourses =
+            coursePageClient.getUpdatedCourseImplementationIds(
+                cachedItemUpdatesCheck.lastChecked.atZone(TimeService.HELSINKI_ZONE_ID).toEpochSecond());
 
-            updateCachedCourses(updatedCourses);
+        updateCachedCourses(updatedCourses);
 
-            cachedItemUpdatesCheck.dateTime = updateCheckDateTime;
+        cachedItemUpdatesCheck.lastChecked = updateCheckDateTime;
 
-            cachedItemUpdatesCheckRepository.save(cachedItemUpdatesCheck);
-        } catch (RestClientException e) {
-            log.error("checking for course implementation updates failed: {}", e.getMessage());
-        }
+        cachedItemUpdatesCheckRepository.save(cachedItemUpdatesCheck);
     }
 
     private CachedItemUpdatesCheck initialCourseImplementationUpdatesCheck() {
         CachedItemUpdatesCheck cachedItemUpdatesCheck = new CachedItemUpdatesCheck();
         cachedItemUpdatesCheck.cacheName = COURSE_PAGE;
-        cachedItemUpdatesCheck.dateTime = initialCourseImplementationUpdateCheckDateTime();
+        cachedItemUpdatesCheck.lastChecked = initialCourseImplementationUpdateCheckDateTime();
         return cachedItemUpdatesCheck;
     }
 
     private LocalDateTime initialCourseImplementationUpdateCheckDateTime() {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(jvmStartTime()), TimeService.HELSINKI_ZONE_ID).minusHours(1);
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(jvmStartTime()), TimeService.HELSINKI_ZONE_ID)
+            .minusHours(FIRST_UPDATE_CHECK_RADIUS);
     }
 
     private long jvmStartTime() {

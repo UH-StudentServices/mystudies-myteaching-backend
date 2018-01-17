@@ -16,7 +16,7 @@ public class CachedItemUpdatesCheck {
     @NotBlank
     public String cacheName;
 
-    @Column(name = "date_time")
+    @Column(name = "last_checked")
     @NotNull
-    public LocalDateTime dateTime;
+    public LocalDateTime lastChecked;
 }

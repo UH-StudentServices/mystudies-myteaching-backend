@@ -1438,7 +1438,7 @@
             <column name="cache_name" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="date_time" type="timestamp">
+            <column name="last_checked" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>

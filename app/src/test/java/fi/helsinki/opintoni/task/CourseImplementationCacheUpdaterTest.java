@@ -4,6 +4,7 @@ import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.CachedItemUpdatesCheck;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
+import fi.helsinki.opintoni.integration.coursepage.CoursePageIntegrationException;
 import fi.helsinki.opintoni.repository.CachedItemUpdatesCheckRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import java.util.Locale;
 import static fi.helsinki.opintoni.cache.CacheConstants.COURSE_PAGE;
 import static fi.helsinki.opintoni.web.TestConstants.TEACHER_COURSE_REALISATION_ID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class CourseImplementationCacheUpdaterTest extends SpringTest {
     private static final String COURSE_IMPLEMENTATION_RESPONSE = "teacher_course.json";
@@ -43,20 +45,20 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
     public void init() {
         CachedItemUpdatesCheck cachedItemUpdatesCheck = new CachedItemUpdatesCheck();
         cachedItemUpdatesCheck.cacheName = COURSE_PAGE;
-        cachedItemUpdatesCheck.dateTime = LocalDateTime.now();
+        cachedItemUpdatesCheck.lastChecked = LocalDateTime.now();
         cachedItemUpdatesCheckRepository.save(cachedItemUpdatesCheck);
     }
 
-    private LocalDateTime getSinceDate() {
+    private LocalDateTime getLastCheckDateTime() {
         return cachedItemUpdatesCheckRepository
             .findByCacheName(COURSE_PAGE)
-            .orElseThrow(() -> new RuntimeException("No course page update checks found")).dateTime;
+            .orElseThrow(() -> new RuntimeException("No course page update checks found")).lastChecked;
     }
 
     private void assertGetCourseImplementationAndUpdateCachedItem(Locale locale) {
         coursePageServer.expectCourseImplementationRequest(TEACHER_COURSE_REALISATION_ID, COURSE_IMPLEMENTATION_RESPONSE, locale);
-        LocalDateTime initialSinceDate = getSinceDate();
-        coursePageServer.expectCourseImplementationChangesRequest(initialSinceDate);
+        LocalDateTime initialLastCheckDateTime = getLastCheckDateTime();
+        coursePageServer.expectCourseImplementationChangesRequest(initialLastCheckDateTime);
         coursePageServer.expectCourseImplementationRequest(TEACHER_COURSE_REALISATION_ID, UPDATED_COURSE_IMPLEMENTATION_RESPONSE, locale);
 
         CoursePageCourseImplementation courseImplementation = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
@@ -65,12 +67,12 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
 
         assertThat(courseImplementation).isEqualToComparingFieldByFieldRecursively(courseImplementationFromCache);
 
-        courseImplementationUpdatesChecker.getChancedCourseImplementationsAndUpdateCached();
+        courseImplementationUpdatesChecker.getChangedCourseImplementationsAndUpdateCached();
 
         courseImplementationFromCache = getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, locale);
 
         assertThat(courseImplementationFromCache.title).isEqualTo(UPDATED_COURSE_IMPLEMENTATION_TITLE);
-        assertThat(initialSinceDate).isBefore(getSinceDate());
+        assertThat(initialLastCheckDateTime).isBefore(getLastCheckDateTime());
     }
 
     @Test
@@ -94,15 +96,26 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
 
         coursePageServer.expectCourseImplementationRequest(TEACHER_COURSE_REALISATION_ID, COURSE_IMPLEMENTATION_RESPONSE, locale);
 
-        coursePageServer.expectCourseImplementationChangesRequestWhenNoChanges(getSinceDate());
+        coursePageServer.expectCourseImplementationChangesRequestWhenNoChanges(getLastCheckDateTime());
 
         CoursePageCourseImplementation courseImplementation = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
 
-        courseImplementationUpdatesChecker.getChancedCourseImplementationsAndUpdateCached();
+        courseImplementationUpdatesChecker.getChangedCourseImplementationsAndUpdateCached();
 
         CoursePageCourseImplementation courseImplementationFromCache = getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, locale);
 
         assertThat(courseImplementation).isEqualToComparingFieldByFieldRecursively(courseImplementationFromCache);
+    }
 
+    @Test
+    public void thatLastCheckDateTimeIsNotIncrementedIfCourseImplementationChangesRequestFails() {
+        LocalDateTime initialLastCheckDateTime = getLastCheckDateTime();
+
+        coursePageServer.expectCourseImplementationChangesRequestToRespondError(getLastCheckDateTime());
+
+        assertThatExceptionOfType(CoursePageIntegrationException.class).isThrownBy(() ->
+            courseImplementationUpdatesChecker.getChangedCourseImplementationsAndUpdateCached());
+
+        assertThat(initialLastCheckDateTime).isEqualTo(getLastCheckDateTime());
     }
 }
