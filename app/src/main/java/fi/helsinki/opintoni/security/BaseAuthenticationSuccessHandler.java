@@ -20,33 +20,33 @@ package fi.helsinki.opintoni.security;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.integration.oodi.OodiIntegrationException;
-import fi.helsinki.opintoni.service.TimeService;
 import fi.helsinki.opintoni.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+
+import static fi.helsinki.opintoni.config.Constants.NG_TRANSLATE_LANG_KEY;
+import static fi.helsinki.opintoni.config.Constants.OPINTONI_HAS_LOGGED_IN;
 
 public abstract class BaseAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
     private UserService userService;
 
-    private TimeService timeService;
-
     private Environment env;
 
     @Autowired
-    public void initialize(UserService userService, TimeService timeService, Environment env) {
+    public void initialize(UserService userService, Environment env) {
         this.userService = userService;
-        this.timeService = timeService;
         this.env = env;
     }
 
@@ -59,7 +59,9 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         try {
             syncUserWithDatabase(appUser);
 
-            addLanguageCookie(appUser, response);
+            if(isFirstLogin(request)) {
+                addLanguageCookieForUserPreferredLanguageIfSupported(appUser, response);
+            }
 
             if(!env.acceptsProfiles(Constants.SPRING_PROFILE_DEMO)) {
                 addHasLoggedInCookie(response);
@@ -99,15 +101,27 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         }
     }
 
-    private void addLanguageCookie(AppUser appUser, HttpServletResponse response) {
-        Cookie cookie = new Cookie(Constants.NG_TRANSLATE_LANG_KEY, appUser.getPreferredLanguage());
-        addCookie(response, cookie);
+    private void addLanguageCookieForUserPreferredLanguageIfSupported(AppUser appUser, HttpServletResponse response) {
+        if(isPreferredLanguageSupported(appUser.getPreferredLanguage())) {
+            Cookie cookie = new Cookie(NG_TRANSLATE_LANG_KEY, appUser.getPreferredLanguage());
+            addCookie(response, cookie);
+        }
+    }
+
+    private boolean isFirstLogin(HttpServletRequest request) {
+        return WebUtils.getCookie(request, OPINTONI_HAS_LOGGED_IN) == null;
+    }
+
+    private boolean isPreferredLanguageSupported(String preferredLanguage) {
+        List<String> availableLocales = env.getRequiredProperty("locale.available", List.class);
+
+        return preferredLanguage != null && availableLocales.contains(preferredLanguage);
     }
 
     // NOTE: This cookie is relied on by courses.helsinki.fi for automatic user login
     // and should thus not be removed without consulting the course page team first.
     private void addHasLoggedInCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie(Constants.OPINTONI_HAS_LOGGED_IN, Boolean.TRUE.toString());
+        Cookie cookie = new Cookie(OPINTONI_HAS_LOGGED_IN, Boolean.TRUE.toString());
         cookie.setMaxAge(Integer.MAX_VALUE);
         addCookie(response, cookie);
     }

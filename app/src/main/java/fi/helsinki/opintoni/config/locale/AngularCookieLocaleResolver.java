@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.config.locale;
 
 import org.springframework.context.i18n.LocaleContext;
+import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.util.WebUtils;
