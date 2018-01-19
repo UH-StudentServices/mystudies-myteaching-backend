@@ -19,6 +19,8 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.config.Constants;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.WebConstants;
 import java.util.stream.Collectors;
@@ -26,8 +28,11 @@ import java.util.stream.IntStream;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
+import javax.servlet.http.Cookie;
 import java.util.Locale;
 
+import static fi.helsinki.opintoni.localization.Language.*;
+import static fi.helsinki.opintoni.localization.Language.FI;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
@@ -47,7 +52,7 @@ public class NewsResourceTest extends SpringTest {
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
-            .locale(new Locale("fi"))
+            .cookie(langCookie(FI))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
@@ -69,7 +74,7 @@ public class NewsResourceTest extends SpringTest {
             .with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
-            .locale(new Locale("fi"))
+            .cookie(langCookie(FI))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
@@ -93,7 +98,7 @@ public class NewsResourceTest extends SpringTest {
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
-            .locale(new Locale("en"))
+            .cookie(langCookie(EN))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
@@ -115,7 +120,7 @@ public class NewsResourceTest extends SpringTest {
             .with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
-            .locale(new Locale("en"))
+            .cookie(langCookie(EN))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
@@ -134,7 +139,7 @@ public class NewsResourceTest extends SpringTest {
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
-            .locale(new Locale("fi"))
+            .cookie(langCookie(FI))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
@@ -156,7 +161,7 @@ public class NewsResourceTest extends SpringTest {
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
-            .locale(new Locale("fi"))
+            .cookie(langCookie(FI))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
@@ -195,7 +200,7 @@ public class NewsResourceTest extends SpringTest {
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
-            .locale(new Locale("fi"))
+            .cookie(langCookie(FI))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))

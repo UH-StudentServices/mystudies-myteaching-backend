@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.integration.newsfeeds.FlammaRestClient;
 import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsRestClient;
 import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.server.*;
@@ -54,6 +55,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
+import javax.servlet.http.Cookie;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -239,6 +241,10 @@ public abstract class SpringTest {
 
     protected String getMockFeedApiUrl(String feedId) {
         return getRemoteMockApiUrl(String.format("mockfeed?id=%s", feedId));
+    }
+
+    protected Cookie langCookie(Language language) {
+        return new Cookie(Constants.NG_TRANSLATE_LANG_KEY, language.getCode());
     }
 
 }

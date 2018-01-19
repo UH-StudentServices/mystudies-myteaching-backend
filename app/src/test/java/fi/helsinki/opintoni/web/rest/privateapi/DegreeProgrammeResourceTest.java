@@ -18,12 +18,17 @@
 package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.localization.Language;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
+import javax.servlet.http.Cookie;
 import java.util.Locale;
 
+import static fi.helsinki.opintoni.localization.Language.EN;
+import static fi.helsinki.opintoni.localization.Language.FI;
+import static fi.helsinki.opintoni.localization.Language.SV;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -37,14 +42,14 @@ public class DegreeProgrammeResourceTest extends SpringTest {
     private static final String NAME_SV = "Kandidatprogrammet för ämneslärare i matematik, fysik och kemi";
     private static final String NAME_EN = "Bachelor's Programme for Teachers of Mathematics, Physics and Chemistry";
 
-    private void testDegreeProgrammesWithLocale(String languageCode,
+    private void testDegreeProgrammesWithLocale(Language lang,
                                                 String expectedCode,
                                                 String expectedName) throws Exception {
         guideServer.expectDegreeProgrammesRequest();
 
         mockMvc.perform(get("/api/private/v1/degreeprogrammes")
             .with(securityContext(teacherSecurityContext()))
-            .locale(new Locale(languageCode))
+            .cookie(langCookie(lang))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
@@ -54,17 +59,17 @@ public class DegreeProgrammeResourceTest extends SpringTest {
 
     @Test
     public void thatDegreeProgrammesAreGivenInFinnish() throws Exception {
-        testDegreeProgrammesWithLocale(Language.FI.getCode(), CODE, NAME_FI);
+        testDegreeProgrammesWithLocale(FI, CODE, NAME_FI);
     }
 
     @Test
     public void thatDegreeProgrammesAreGivenInEnglish() throws Exception {
-        testDegreeProgrammesWithLocale(Language.EN.getCode(), CODE, NAME_EN);
+        testDegreeProgrammesWithLocale(EN, CODE, NAME_EN);
     }
 
     @Test
     public void thatDegreeProgrammesAreGivenInSwedish() throws Exception {
-        testDegreeProgrammesWithLocale(Language.SV.getCode(), CODE, NAME_SV);
+        testDegreeProgrammesWithLocale(SV, CODE, NAME_SV);
     }
 
 }

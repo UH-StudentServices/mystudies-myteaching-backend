@@ -24,6 +24,7 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -33,6 +34,15 @@ import java.util.Optional;
  * is not able to parse the locale.
  */
 public class AngularCookieLocaleResolver extends CookieLocaleResolver {
+
+    private final List<String> supportedLocales;
+
+    public AngularCookieLocaleResolver(String cookieName, String defaultLocale, List<String> supportedLocales) {
+        setCookieName(cookieName);
+        setDefaultLocale(new Locale(defaultLocale));
+
+        this.supportedLocales = supportedLocales;
+    }
 
     @Override
     public Locale resolveLocale(HttpServletRequest request) {
@@ -48,10 +58,10 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
 
     private void parseLocaleCookieIfNecessary(HttpServletRequest request) {
         if (request.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME) == null) {
-
             Locale locale = Optional.ofNullable(WebUtils.getCookie(request, getCookieName()))
                 .map(Cookie::getValue)
                 .map(value -> StringUtils.replace(value, "%22", ""))
+                .filter(supportedLocales::contains)
                 .map(StringUtils::parseLocaleString)
                 .orElse(determineDefaultLocale(request));
 

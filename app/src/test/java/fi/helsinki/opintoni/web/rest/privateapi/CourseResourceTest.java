@@ -18,11 +18,17 @@
 package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.localization.Language;
 import org.junit.Test;
 import org.springframework.http.MediaType;
+
+import javax.servlet.http.Cookie;
 import java.util.Locale;
 
+import static fi.helsinki.opintoni.localization.Language.EN;
+import static fi.helsinki.opintoni.localization.Language.FI;
+import static fi.helsinki.opintoni.localization.Language.SV;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 
@@ -44,13 +50,13 @@ public class CourseResourceTest extends SpringTest {
     private final static String EXPECTED_SECOND_COURSE_NAME_EN = "Historical Interpretations of Russia and Eastern Europe (B)";
     private final static String EXPECTED_SECOND_COURSE_NAME_SV = "Historiska tolkningar om Ryssland och Östeuropa (B)";
 
-    private void testCourseNamesWithLocale(String languageCode, String expectedFirstName, String expectedSecondName) throws Exception{
+    private void testCourseNamesWithLocale(Language lang, String expectedFirstName, String expectedSecondName) throws Exception{
         defaultOodiCourseNamesRequestChain().courseName(LEARNING_OPPORTUNITY_ID_FIRST, "learningopportunity_a.json");
         defaultOodiCourseNamesRequestChain().courseName(LEARNING_OPPORTUNITY_ID_SECOND, "learningopportunity_b.json");
 
         mockMvc.perform(get("/api/private/v1/courses/names?learningOpportunities=" + LEARNING_OPPORTUNITY_IDS)
             .with(securityContext(studentSecurityContext()))
-            .locale(new Locale(languageCode))
+            .cookie(langCookie(lang))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
@@ -61,7 +67,7 @@ public class CourseResourceTest extends SpringTest {
     @Test
     public void thatCourseNamesAreReturnedInFinnish() throws Exception {
         testCourseNamesWithLocale(
-            Language.FI.getCode(),
+            FI,
             EXPECTED_FIRST_COURSE_NAME_FI,
             EXPECTED_SECOND_COURSE_NAME_FI);
     }
@@ -69,7 +75,7 @@ public class CourseResourceTest extends SpringTest {
     @Test
     public void thatCourseNamesAreReturnedInEnglish() throws Exception {
         testCourseNamesWithLocale(
-            Language.EN.getCode(),
+            EN,
             EXPECTED_FIRST_COURSE_NAME_EN,
             EXPECTED_SECOND_COURSE_NAME_EN);
     }
@@ -77,7 +83,7 @@ public class CourseResourceTest extends SpringTest {
     @Test
     public void thatCourseNamesAreReturnedInSwedish() throws Exception {
         testCourseNamesWithLocale(
-            Language.SV.getCode(),
+            SV,
             EXPECTED_FIRST_COURSE_NAME_SV,
             EXPECTED_SECOND_COURSE_NAME_SV);
     }

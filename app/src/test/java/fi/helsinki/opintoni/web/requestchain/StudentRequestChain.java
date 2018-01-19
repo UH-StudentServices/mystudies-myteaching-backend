@@ -23,8 +23,8 @@ import fi.helsinki.opintoni.web.TestConstants;
 
 import java.util.Locale;
 
-import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_COURSE_IMPLEMENTATION_LOCALE;
-import static java.util.Collections.singletonList;
+import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_USER_LOCALE;
+import static fi.helsinki.opintoni.web.TestConstants.STUDENT_COURSE_REALISATION_ID;
 
 public class StudentRequestChain {
     private final OodiServer oodiServer;
@@ -43,25 +43,26 @@ public class StudentRequestChain {
     }
 
     public CourseImplementationRequestChain<StudentRequestChain> defaultImplementation() {
-        return courseImplementation(TestConstants.STUDENT_COURSE_REALISATION_ID);
+        return courseImplementationRequestChain(STUDENT_COURSE_REALISATION_ID, DEFAULT_USER_LOCALE)
+            .expectImplementation();
+    }
+
+    public CourseImplementationRequestChain<StudentRequestChain> defaultImplementationWithLocale(Locale locale) {
+        return courseImplementationRequestChain(STUDENT_COURSE_REALISATION_ID, locale)
+            .expectImplementation();
     }
 
     public CourseImplementationRequestChain<StudentRequestChain> courseImplementation(
         String coursePageImplementationId, String responseFile) {
-        return courseImplementationRequestChain(coursePageImplementationId).expectImplementation(responseFile);
+        return courseImplementationRequestChain(coursePageImplementationId, DEFAULT_USER_LOCALE).expectImplementation(responseFile);
     }
 
-    public CourseImplementationRequestChain<StudentRequestChain> courseImplementation(
-        String coursePageImplementationId) {
-        return courseImplementationRequestChain(coursePageImplementationId).expectImplementation();
-    }
-
-    private CourseImplementationRequestChain<StudentRequestChain> courseImplementationRequestChain(String coursePageImplementationId) {
+    private CourseImplementationRequestChain<StudentRequestChain> courseImplementationRequestChain(String coursePageImplementationId, Locale locale) {
         return new CourseImplementationRequestChain<>(
             this,
             coursePageServer,
             coursePageImplementationId,
-            DEFAULT_COURSE_IMPLEMENTATION_LOCALE);
+            locale);
     }
 
     public StudentRequestChain enrollments() {
@@ -75,7 +76,7 @@ public class StudentRequestChain {
     }
 
     public StudentRequestChain defaultCourseUnitRealisationTeachers() {
-        oodiServer.expectCourseUnitRealisationTeachersRequest(TestConstants.STUDENT_COURSE_REALISATION_ID);
+        oodiServer.expectCourseUnitRealisationTeachersRequest(STUDENT_COURSE_REALISATION_ID);
         return this;
     }
 

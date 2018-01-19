@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.web.rest.publicapi;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -27,6 +28,7 @@ import org.hamcrest.core.StringStartsWith;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -41,7 +43,9 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
 
     @Test
     public void thatTheFeedIsDisplayed() throws Exception {
-        expectEvents();
+        Language language = Language.EN;
+
+        expectEvents(language);
 
         String expectedICalStart = String.join(CRLF,
             "BEGIN:VCALENDAR",
@@ -92,7 +96,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
 
         String expectedICalEnd = "END:VCALENDAR" + CRLF;
 
-        mockMvc.perform(get("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/en"))
+        mockMvc.perform(get(String.format("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/%s", language.getCode())))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.TEXT_CALENDAR_UTF8))
             .andExpect(content().string(Matchers.allOf(newArrayList(
@@ -119,11 +123,11 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
         return String.join(CRLF, args);
     }
 
-    private void expectEvents() {
+    private void expectEvents(Language language) {
         defaultStudentRequestChain()
             .roles("roleswithstudentrole.json")
             .events()
-            .defaultImplementation()
+            .defaultImplementationWithLocale(new Locale(language.getCode()))
             .and()
             .enrollments();
     }

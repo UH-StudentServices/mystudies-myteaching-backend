@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.service;
 import com.google.common.collect.Iterables;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.StudyAttainmentDto;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.web.TestConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +37,11 @@ import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.CREDITS;
 import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.GRADE;
 import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.LEARNING_OPPORTINITY_NAME;
 import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.TEACHERS;
+import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_USER_LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StudyAttainmentServiceTest extends SpringTest {
+    private static final Locale USER_LOCALE = new Locale(Language.FI.getCode());
 
     private static final Long MISSING_WHITELIST_PORTFOLIO_ID = 999L;
 
@@ -52,7 +55,7 @@ public class StudyAttainmentServiceTest extends SpringTest {
         int limitStudyAttainments = 1;
 
         List<StudyAttainmentDto> studyAttainments = studyAttainmentService.getStudyAttainments(
-            TestConstants.STUDENT_NUMBER, limitStudyAttainments, Locale.ENGLISH);
+            TestConstants.STUDENT_NUMBER, limitStudyAttainments, DEFAULT_USER_LOCALE);
         assertThat(studyAttainments.size()).isEqualTo(limitStudyAttainments);
 
         StudyAttainmentDto studyAttainmentDto = Iterables.getOnlyElement(studyAttainments);
@@ -66,7 +69,7 @@ public class StudyAttainmentServiceTest extends SpringTest {
         int limitStudyAttainments = 4;
 
         List<StudyAttainmentDto> studyAttainments = studyAttainmentService.getStudyAttainments(
-            TestConstants.STUDENT_NUMBER, limitStudyAttainments, Locale.ENGLISH);
+            TestConstants.STUDENT_NUMBER, limitStudyAttainments, DEFAULT_USER_LOCALE);
         assertThat(studyAttainments.size()).isEqualTo(limitStudyAttainments);
 
         List<LocalDateTime> dates = studyAttainments.stream().map(s -> s.attainmentDate).collect(Collectors.toList());

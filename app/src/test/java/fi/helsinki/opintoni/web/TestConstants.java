@@ -17,6 +17,8 @@
 
 package fi.helsinki.opintoni.web;
 
+import fi.helsinki.opintoni.localization.Language;
+
 import java.util.Locale;
 
 public class TestConstants {
@@ -29,10 +31,9 @@ public class TestConstants {
     public static final String TEACHER_COURSE_REALISATION_ID = "99903629";
 
     public static final String EXAM_TEACHER_COURSE_REALISATION_ID = "99903628";
-    public static final String POSITION_STUDYGROUPSET_TEACHER_COURSE_REALISATION_ID = "99903630";
     public static final String POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID = "1234567";
 
     public static final Long PORTFOLIO_ID = 2L;
 
-    public static final Locale DEFAULT_COURSE_IMPLEMENTATION_LOCALE = Locale.ENGLISH;
+    public static final Locale DEFAULT_USER_LOCALE = new Locale(Language.FI.getCode());
 }

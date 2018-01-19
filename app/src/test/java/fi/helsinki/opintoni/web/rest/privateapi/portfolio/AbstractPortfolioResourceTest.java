@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import javax.servlet.http.Cookie;
 
+import static fi.helsinki.opintoni.localization.Language.*;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -35,13 +36,13 @@ public abstract class AbstractPortfolioResourceTest extends SpringTest {
     protected static final String PRIVATE_PORTFOLIO_API_PATH = RestConstants.PRIVATE_API_V1 + "/portfolio";
     protected static final String STUDENT_PORTFOLIO_API_PATH = PRIVATE_PORTFOLIO_API_PATH + "/student";
     protected static final String TEACHER_PORTFOLIO_API_PATH = PRIVATE_PORTFOLIO_API_PATH + "/teacher";
-    protected static final String SESSION_LANG = Language.EN.getCode();
+    protected static final String SESSION_LANG = EN.getCode();
 
     private static final String EMPLOYEE_NUMBER = "010540";
 
     protected ResultActions createPortfolio(SecurityContext securityContext, String apiUrl) throws Exception {
         return mockMvc.perform(post(apiUrl)
-            .cookie(localeCookie(Language.EN))
+            .cookie(langCookie(EN))
             .with(securityContext(securityContext))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
@@ -66,9 +67,5 @@ public abstract class AbstractPortfolioResourceTest extends SpringTest {
 
     protected void expectEmployeeContactInformationRequestToESB() {
         esbServer.expectEmployeeContactInformationRequest(EMPLOYEE_NUMBER);
-    }
-
-    private static Cookie localeCookie(Language lang) {
-        return new Cookie(Constants.NG_TRANSLATE_LANG_KEY, lang.getCode());
     }
 }
