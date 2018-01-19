@@ -135,17 +135,10 @@ public class FederatedAuthenticationSuccessHandlerTest {
         verify(response, times(1)).addCookie(argThat(new LangCookieMatcher(langCode)));
     }
 
-    @Test
-    public void thatLanguageCookieIsNotAddedForUserInLaterLogins() throws Exception {
-        String langCode = FI.getCode();
-
+    private void assertLanguageCookieNotAddedScenario(HttpServletRequest request, String langCode) throws Exception {
         setupMocks(langCode);
         HttpServletResponse response = mockResponse();
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
-
-        HttpServletRequest request = mock(HttpServletRequest.class);
-        Cookie[] cookies = {new Cookie(OPINTONI_HAS_LOGGED_IN, "true")};
-        when(request.getCookies()).thenReturn(cookies);
 
         handler.onAuthenticationSuccess(request, response, authentication);
 
@@ -153,14 +146,22 @@ public class FederatedAuthenticationSuccessHandlerTest {
     }
 
     @Test
+    public void thatLanguageCookieIsNotAddedForUserInLaterLogins() throws Exception {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        Cookie[] cookies = {new Cookie(OPINTONI_HAS_LOGGED_IN, "true")};
+        when(request.getCookies()).thenReturn(cookies);
+
+        assertLanguageCookieNotAddedScenario(request, FI.getCode());
+    }
+
+    @Test
     public void languageCookieIsNotAddedIfUserPreferredLanguageIsNotSupported() throws Exception {
-        setupMocks(UNSUPPORTED_LANGUAGE);
-        HttpServletResponse response = mockResponse();
-        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
+        assertLanguageCookieNotAddedScenario(mock(HttpServletRequest.class), UNSUPPORTED_LANGUAGE);
+    }
 
-        handler.onAuthenticationSuccess(mock(HttpServletRequest.class), response, authentication);
-
-        verify(response, times(0)).addCookie(argThat(new LangCookieMatcher(UNSUPPORTED_LANGUAGE)));
+    @Test
+    public void languageCookieIsNotAddedIfIfUserDoesNotHavePreferredLanguage() throws Exception {
+        assertLanguageCookieNotAddedScenario(mock(HttpServletRequest.class), null);
     }
 
     @Test

@@ -59,16 +59,6 @@ public class AppUserTest {
     }
 
     @Test
-    public void thatDefaultPreferredLanguageIsSet() {
-        AppUser appUser = new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
-            .studentNumber(STUDENT_NUMBER)
-            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
-            .build();
-        assertThat(appUser.getPreferredLanguage()).isEqualTo("en");
-    }
-
-    @Test
     public void thatAdminRoleIsNotAddedByDefault() {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)

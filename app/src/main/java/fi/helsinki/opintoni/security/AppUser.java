@@ -204,10 +204,6 @@ public final class AppUser extends User {
                 throw new BadCredentialsException("User does not have eduPersonPrincipalName");
             }
 
-            if (preferredLanguage == null) {
-                preferredLanguage = Language.EN.getCode();
-            }
-
             if (eduPersonAffiliations == null || eduPersonAffiliations.isEmpty()) {
                 throw new BadCredentialsException("User does not have any eduPersonAffiliations");
             }

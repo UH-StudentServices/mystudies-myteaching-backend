@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.config.locale;
 
 import org.springframework.context.i18n.LocaleContext;
-import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.util.WebUtils;
@@ -36,13 +35,13 @@ import java.util.Optional;
  */
 public class AngularCookieLocaleResolver extends CookieLocaleResolver {
 
-    private final List<String> supportedLocales;
+    private final List<String> availableLocales;
 
-    public AngularCookieLocaleResolver(String cookieName, String defaultLocale, List<String> supportedLocales) {
+    public AngularCookieLocaleResolver(String cookieName, String defaultLocale, List<String> availableLocales) {
         setCookieName(cookieName);
         setDefaultLocale(new Locale(defaultLocale));
 
-        this.supportedLocales = supportedLocales;
+        this.availableLocales = availableLocales;
     }
 
     @Override
@@ -62,7 +61,7 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
             Locale locale = Optional.ofNullable(WebUtils.getCookie(request, getCookieName()))
                 .map(Cookie::getValue)
                 .map(value -> StringUtils.replace(value, "%22", ""))
-                .filter(supportedLocales::contains)
+                .filter(availableLocales::contains)
                 .map(StringUtils::parseLocaleString)
                 .orElse(determineDefaultLocale(request));
 
