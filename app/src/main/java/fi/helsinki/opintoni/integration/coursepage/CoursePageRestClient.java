@@ -51,7 +51,7 @@ public class CoursePageRestClient implements CoursePageClient {
     }
 
     private String getCoursePageApiUrl(String path, Locale locale) {
-        String localeUrlSegment = locale != null ? "/" + locale.toString() : "";
+        String localeUrlSegment = locale != null ? "/" + locale.getLanguage() : "";
 
         return baseUrl + localeUrlSegment + apiPath + path;
     }

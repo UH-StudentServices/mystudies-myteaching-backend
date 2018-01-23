@@ -28,7 +28,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
 
 import java.lang.management.ManagementFactory;
 import java.time.Instant;
@@ -43,8 +42,8 @@ import static java.util.Arrays.asList;
 public class CourseImplementationCacheUpdater {
     private static final int FIRST_UPDATE_CHECK_RADIUS = 1;
 
-    @Value("${locale.available}")
-    private String[] availableLocales;
+    @Value("${language.available}")
+    private String[] availableLanguages;
 
     private final CoursePageClient coursePageClient;
     private final CachedItemUpdatesCheckRepository cachedItemUpdatesCheckRepository;
@@ -99,10 +98,10 @@ public class CourseImplementationCacheUpdater {
     private void updateCachedCourses(List<Long> updatedCourses) {
         Cache courseImplementationCache = persistentCacheManager.getCache(COURSE_PAGE);
         updatedCourses.stream().forEach(courseId ->
-            asList(availableLocales).stream()
+            asList(availableLanguages).stream()
                 .map(Locale::new)
                 .forEach(locale -> {
-                    String cacheKey = String.format("%s_%s", courseId, locale.toString());
+                    String cacheKey = String.format("%s_%s", courseId, locale.getLanguage());
 
                     if(courseImplementationCache.get(cacheKey) != null) {
                         log.trace("Updating cache entry for course impl with key {}", cacheKey);

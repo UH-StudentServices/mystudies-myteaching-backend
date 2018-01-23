@@ -47,7 +47,7 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$[0].code").value("10440"))
-            .andExpect(jsonPath("$[0].name").value("Formulointi III"))
+            .andExpect(jsonPath("$[0].name").value("Formulation III"))
             .andExpect(jsonPath("$[0].startDate[0]").value(2015))
             .andExpect(jsonPath("$[0].startDate[1]").value(10))
             .andExpect(jsonPath("$[0].startDate[2]").value(26))

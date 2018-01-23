@@ -211,7 +211,7 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
             .andExpect(jsonPath("$.contactInformation.workMobile").value("12345678"))
             .andExpect(jsonPath("$.contactInformation.title").value("universitetslektor"))
             .andExpect(jsonPath("$.contactInformation.faculty").value("Käyttäytymistieteellinen tiedekunta"))
-            .andExpect(jsonPath("$.contactInformation.financialUnit").value("OIKTDK, Oikeustieteellinen tiedekunta (OIKTDK)"))
+            .andExpect(jsonPath("$.contactInformation.financialUnit").value("OIKTDK, Faculty of Law"))
             .andExpect(jsonPath("$.contactInformation.workAddress").value("PL 9 (Siltavuorenpenger 1A)"))
             .andExpect(jsonPath("$.contactInformation.workPostcode").value("00014 HELSINGIN YLIOPISTO"));
     }

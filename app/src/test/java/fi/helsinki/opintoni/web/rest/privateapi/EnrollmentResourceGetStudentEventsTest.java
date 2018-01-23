@@ -34,6 +34,7 @@ import java.util.Locale;
 import static fi.helsinki.opintoni.config.Constants.NG_TRANSLATE_LANG_KEY;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
+import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_USER_LOCALE;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -42,7 +43,9 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
     private static final String LANG_CODE_FI = Language.FI.getCode();
     private static final String LANG_CODE_EN = Language.EN.getCode();
     private static final String LANG_CODE_SV = Language.SV.getCode();
-    private static final String UNSUPPORTED_LANG_CODE = "en_US";
+    private static final String INVALID_LANGUAGE_CODE = "invalidLangCode";
+    private static final String UNSUPPORTED_LANG_CODE = "de";
+    private static final String LOCALE_LANGUAGE_FORMAT = "fi_FI";
 
     private static final String EVENT_TITLE_FI = "Formuloi... Harjoitus II";
     private static final String EVENT_TITLE_SV = "Formuler... Harjoitus II (sv)";
@@ -122,19 +125,29 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
     }
 
     @Test
-    public void thatUnsupportedLanguageInCookieWillResolveToDefaultLanguage() throws Exception {
-        performGetStudentEvents(UNSUPPORTED_LANG_CODE, null, LANG_CODE_FI, EVENT_TITLE_FI);
+    public void thatLocaleFormatInCookieWillResolveToDefaultLanguage() throws Exception {
+        performGetStudentEvents(LOCALE_LANGUAGE_FORMAT, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
+    }
+
+    @Test
+    public void thatInvalidLanguageCodeWillResolveToDefaultLanguage() throws Exception {
+        performGetStudentEvents(INVALID_LANGUAGE_CODE, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
+    }
+
+    @Test
+    public void thatUnsupportedLanguageCodeWillResolveToDefaultLanguage() throws Exception {
+        performGetStudentEvents(UNSUPPORTED_LANG_CODE, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
     }
 
     @Test
     public void thatAcceptLanguageHeaderIsAlwaysResolvedToDefaultLanguage() throws Exception {
         //Language is always set in the
-        performGetStudentEvents(null, LANG_CODE_SV, LANG_CODE_FI, EVENT_TITLE_FI);
+        performGetStudentEvents(null, LANG_CODE_SV, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
     }
 
     @Test
     public void thatIfLanguageCookieIsNotPresentDefaultLanguageIsUsed() throws Exception {
-        performGetStudentEvents(null, null, LANG_CODE_FI, EVENT_TITLE_FI);
+        performGetStudentEvents(null, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
     }
 
     private void expectEvents(String langCode) {

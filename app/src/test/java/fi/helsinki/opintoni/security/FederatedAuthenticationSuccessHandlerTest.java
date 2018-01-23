@@ -50,7 +50,9 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class FederatedAuthenticationSuccessHandlerTest {
     private static final List<String> availableLanguages = newArrayList(FI.getCode(), EN.getCode(), SV.getCode());
-    private static final String UNSUPPORTED_LANGUAGE = "en_US";
+    private static final String UNSUPPORTED_LANGUAGE = "de";
+    private static final String LOCALE_LANGUAGE_FORMAT = "en_US";
+    private static final String INVALID_LANGUAGE_CODE = "invalidLangCode";
 
     private static final String EDU_PRINCIPAL_NAME = "eduPrincipalName";
     private static final String OODI_PERSON_ID = "oodiPersonId";
@@ -85,7 +87,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
             .build();
 
         when(authentication.getPrincipal()).thenReturn(appUser);
-        when(env.getRequiredProperty("locale.available", List.class)).thenReturn(availableLanguages);
+        when(env.getRequiredProperty("language.available", List.class)).thenReturn(availableLanguages);
     }
 
     @Test
@@ -122,17 +124,24 @@ public class FederatedAuthenticationSuccessHandlerTest {
         verify(userService, times(1)).createNewUser(any(AppUser.class));
     }
 
-    @Test
-    public void thatLanguageCookieIsAddedForUserPreferredLanguageInFirstLogin() throws Exception {
-        String langCode = FI.getCode();
-
-        setupMocks(langCode);
+    private void assertLanguageCookieAddScenario(String userPreferredLanguage, String expectedCookieLanguage) throws Exception {
+        setupMocks(userPreferredLanguage);
         HttpServletResponse response = mockResponse();
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
 
         handler.onAuthenticationSuccess(mock(HttpServletRequest.class), response, authentication);
 
-        verify(response, times(1)).addCookie(argThat(new LangCookieMatcher(langCode)));
+        verify(response, times(1)).addCookie(argThat(new LangCookieMatcher(expectedCookieLanguage)));
+    }
+
+    @Test
+    public void thatLanguageCookieIsAddedForUserPreferredLanguageInFirstLogin() throws Exception {
+        assertLanguageCookieAddScenario(FI.getCode(), FI.getCode());
+    }
+
+    @Test
+    public void thatLanguageCookieIsAddedForUserPreferredLanguageInLocaleFormatInFirstLogin() throws Exception {
+        assertLanguageCookieAddScenario(LOCALE_LANGUAGE_FORMAT, EN.getCode());
     }
 
     private void assertLanguageCookieNotAddedScenario(HttpServletRequest request, String langCode) throws Exception {
@@ -157,6 +166,11 @@ public class FederatedAuthenticationSuccessHandlerTest {
     @Test
     public void languageCookieIsNotAddedIfUserPreferredLanguageIsNotSupported() throws Exception {
         assertLanguageCookieNotAddedScenario(mock(HttpServletRequest.class), UNSUPPORTED_LANGUAGE);
+    }
+
+    @Test
+    public void languageCookieIsNotAddedIfUserPreferredLanguageIsNotValidLanguageCode() throws Exception {
+        assertLanguageCookieNotAddedScenario(mock(HttpServletRequest.class), INVALID_LANGUAGE_CODE);
     }
 
     @Test

@@ -21,10 +21,13 @@ import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.integration.oodi.OodiIntegrationException;
 import fi.helsinki.opintoni.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.ServletException;
@@ -33,12 +36,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import static fi.helsinki.opintoni.config.Constants.NG_TRANSLATE_LANG_KEY;
 import static fi.helsinki.opintoni.config.Constants.OPINTONI_HAS_LOGGED_IN;
 
 public abstract class BaseAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(BaseAuthenticationSuccessHandler.class);
 
     private UserService userService;
 
@@ -102,8 +108,10 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
     }
 
     private void addLanguageCookieForUserPreferredLanguageIfSupported(AppUser appUser, HttpServletResponse response) {
-        if(isPreferredLanguageSupported(appUser.getPreferredLanguage())) {
-            Cookie cookie = new Cookie(NG_TRANSLATE_LANG_KEY, appUser.getPreferredLanguage());
+        String language = getLanguageCookieValue(appUser.getPreferredLanguage());
+
+        if(language != null) {
+            Cookie cookie = new Cookie(NG_TRANSLATE_LANG_KEY, language);
             addCookie(response, cookie);
         }
     }
@@ -112,10 +120,23 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         return WebUtils.getCookie(request, OPINTONI_HAS_LOGGED_IN) == null;
     }
 
-    private boolean isPreferredLanguageSupported(String preferredLanguage) {
-        List<String> availableLocales = env.getRequiredProperty("locale.available", List.class);
+    private String getLanguageCookieValue(String preferredLanguage) {
+        if(preferredLanguage != null) {
+            List<String> availableLanguages = env.getRequiredProperty("language.available", List.class);
 
-        return preferredLanguage != null && availableLocales.contains(preferredLanguage);
+            try {
+                Locale locale = StringUtils.parseLocaleString(preferredLanguage);
+
+                String language = locale.getLanguage();
+
+                return availableLanguages.contains(language) ? language : null;
+
+            } catch(IllegalArgumentException e) {
+                log.error("Failed to parse preferredLanguage %s", preferredLanguage);
+            }
+        }
+
+        return null;
     }
 
     // NOTE: This cookie is relied on by courses.helsinki.fi for automatic user login

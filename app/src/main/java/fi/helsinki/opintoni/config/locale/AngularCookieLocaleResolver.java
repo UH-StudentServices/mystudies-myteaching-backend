@@ -35,13 +35,13 @@ import java.util.Optional;
  */
 public class AngularCookieLocaleResolver extends CookieLocaleResolver {
 
-    private final List<String> availableLocales;
+    private final List<String> availableLanguages;
 
-    public AngularCookieLocaleResolver(String cookieName, String defaultLocale, List<String> availableLocales) {
+    public AngularCookieLocaleResolver(String cookieName, String defaultLanguage, List<String> availableLanguages) {
         setCookieName(cookieName);
-        setDefaultLocale(new Locale(defaultLocale));
+        setDefaultLocale(new Locale(defaultLanguage));
 
-        this.availableLocales = availableLocales;
+        this.availableLanguages = availableLanguages;
     }
 
     @Override

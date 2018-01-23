@@ -17,7 +17,9 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
+import antlr.StringUtils;
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.sampledata.RSSFeedSampleData;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.WebTestUtils;
@@ -80,7 +82,7 @@ public class FavoriteResourceTest extends SpringTest {
         unisportServer.expectUserReservations();
 
         mockMvc.perform(get("/api/private/v1/favorites/unisport").with(securityContext(studentSecurityContext()))
-            .locale(new Locale("fi"))
+            .cookie(langCookie(Language.FI))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
@@ -92,7 +94,7 @@ public class FavoriteResourceTest extends SpringTest {
         unisportServer.expectAuthorizationFailWith404();
 
         mockMvc.perform(get("/api/private/v1/favorites/unisport").with(securityContext(teacherSecurityContext()))
-            .locale(new Locale("fi"))
+            .cookie(langCookie(Language.FI))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))

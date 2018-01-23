@@ -308,9 +308,9 @@ adminAccounts: opettaja@helsinki.fi
 
 feed.client.implementation: remote
 
-locale:
+language:
     available: fi,sv,en
-    default: fi
+    default: en
 
 staticResourceCachingPeriod: 31536000
 

@@ -30,11 +30,11 @@ import java.util.Optional;
 @Component
 public class LocalizedValueConverter {
 
-    private final String defaultLocale;
+    private final String defaultLanguage;
 
     @Autowired
     public LocalizedValueConverter(AppConfiguration appConfiguration) {
-        defaultLocale = appConfiguration.get("locale.default");
+        defaultLanguage = appConfiguration.get("language.default");
     }
 
     public String toLocalizedString(List<OodiLocalizedValue> oodiLocalizedValues, Locale locale) {
@@ -45,25 +45,25 @@ public class LocalizedValueConverter {
     }
 
     public String toLocalizedString(Map<String, String> localizedValues, Locale locale) {
-        String currentLocale = locale.toString();
+        String currentLanguage = locale.getLanguage();
 
         if(localizedValues == null) {
             return null;
-        } else if(localizedValues.containsKey(currentLocale)) {
-            return localizedValues.get(currentLocale);
-        } else if(localizedValues.containsKey(defaultLocale)) {
-            return localizedValues.get(defaultLocale);
+        } else if(localizedValues.containsKey(currentLanguage)) {
+            return localizedValues.get(currentLanguage);
+        } else if(localizedValues.containsKey(defaultLanguage)) {
+            return localizedValues.get(defaultLanguage);
         } else {
             return localizedValues.entrySet().iterator().next().getValue();
         }
     }
 
     private Optional<String> getLocalization(List<OodiLocalizedValue> oodiLocalizedValues, Locale locale) {
-        return getLocalizationByLocaleString(oodiLocalizedValues, locale.toString());
+        return getLocalizationByLanguage(oodiLocalizedValues, locale.getLanguage());
     }
 
     private Optional<String> getDefaultLocalization(List<OodiLocalizedValue> oodiLocalizedValues) {
-        return getLocalizationByLocaleString(oodiLocalizedValues, defaultLocale);
+        return getLocalizationByLanguage(oodiLocalizedValues, defaultLanguage);
     }
 
     private Optional<String> getFirstLocalization(List<OodiLocalizedValue> oodiLocalizedValues) {
@@ -73,10 +73,10 @@ public class LocalizedValueConverter {
             .map(oodiLocalizedValue -> oodiLocalizedValue.text);
     }
 
-    private Optional<String> getLocalizationByLocaleString(List<OodiLocalizedValue> oodiLocalizedValues, String localeString) {
+    private Optional<String> getLocalizationByLanguage(List<OodiLocalizedValue> oodiLocalizedValues, String language) {
         return oodiLocalizedValues
             .stream()
-            .filter(oodiLocalizedValue -> localeString.equals(oodiLocalizedValue.langcode.toString()))
+            .filter(oodiLocalizedValue -> language.equals(oodiLocalizedValue.langcode.toString()))
             .findFirst()
             .map(oodiLocalizedValue -> oodiLocalizedValue.text);
     }

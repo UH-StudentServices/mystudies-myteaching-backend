@@ -92,7 +92,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
             .andExpect(jsonPath("$.workMobile").value("12345678"))
             .andExpect(jsonPath("$.title").value("universitetslektor"))
             .andExpect(jsonPath("$.faculty").value("Käyttäytymistieteellinen tiedekunta"))
-            .andExpect(jsonPath("$.financialUnit").value("OIKTDK, Oikeustieteellinen tiedekunta (OIKTDK)"))
+            .andExpect(jsonPath("$.financialUnit").value("OIKTDK, Faculty of Law"))
             .andExpect(jsonPath("$.workAddress").value("PL 9 (Siltavuorenpenger 1A)"))
             .andExpect(jsonPath("$.workPostcode").value("00014 HELSINGIN YLIOPISTO"));
     }
