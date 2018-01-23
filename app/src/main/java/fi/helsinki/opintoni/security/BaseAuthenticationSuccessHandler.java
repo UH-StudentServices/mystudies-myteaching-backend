@@ -65,11 +65,11 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         try {
             syncUserWithDatabase(appUser);
 
-            if(isFirstLogin(request)) {
+            if (isFirstLogin(request)) {
                 addLanguageCookieForUserPreferredLanguageIfSupported(appUser, response);
             }
 
-            if(!env.acceptsProfiles(Constants.SPRING_PROFILE_DEMO)) {
+            if (!env.acceptsProfiles(Constants.SPRING_PROFILE_DEMO)) {
                 addHasLoggedInCookie(response);
             }
 
@@ -110,7 +110,7 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
     private void addLanguageCookieForUserPreferredLanguageIfSupported(AppUser appUser, HttpServletResponse response) {
         String language = getLanguageCookieValue(appUser.getPreferredLanguage());
 
-        if(language != null) {
+        if (language != null) {
             Cookie cookie = new Cookie(NG_TRANSLATE_LANG_KEY, language);
             addCookie(response, cookie);
         }
@@ -121,7 +121,7 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
     }
 
     private String getLanguageCookieValue(String preferredLanguage) {
-        if(preferredLanguage != null) {
+        if (preferredLanguage != null) {
             List<String> availableLanguages = env.getRequiredProperty("language.available", List.class);
 
             try {
@@ -135,7 +135,6 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
                 log.error("Failed to parse preferredLanguage %s", preferredLanguage);
             }
         }
-
         return null;
     }
 

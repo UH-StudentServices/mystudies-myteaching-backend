@@ -141,7 +141,6 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
 
     @Test
     public void thatAcceptLanguageHeaderIsAlwaysResolvedToDefaultLanguage() throws Exception {
-        //Language is always set in the
         performGetStudentEvents(null, LANG_CODE_SV, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
     }
 

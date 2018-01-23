@@ -155,7 +155,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
     }
 
     @Test
-    public void thatLanguageCookieIsNotAddedForUserInLaterLogins() throws Exception {
+    public void thatLanguageCookieIsNotAddedForUserOnLaterLogins() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         Cookie[] cookies = {new Cookie(OPINTONI_HAS_LOGGED_IN, "true")};
         when(request.getCookies()).thenReturn(cookies);
