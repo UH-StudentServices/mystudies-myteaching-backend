@@ -151,4 +151,8 @@ public class EventDto implements Comparable<EventDto> {
             .collect(Collectors.joining(", "));
     }
 
+    public String getTitle() {
+        return Source.OODI.equals(source) ? title : String.format("%s, %s", title, courseTitle);
+    }
+
 }
