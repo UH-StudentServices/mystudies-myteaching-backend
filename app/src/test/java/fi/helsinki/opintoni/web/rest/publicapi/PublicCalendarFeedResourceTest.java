@@ -61,7 +61,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 "BEGIN:VEVENT",
                 "DTSTART;TZID=Europe/Helsinki:20161219T141500",
                 "DTEND;TZID=Europe/Helsinki:20161219T154500",
-                "SUMMARY:Formulat... Harjoitus II (en)\\, Animal Biotechnology B (KEL/KEBIOT230)",
+                "SUMMARY:Formulat... Harjoitus II (en)",
                 "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11\\, Päärakennus\\, sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11",
                 "UID:"),
             eventToString(
@@ -75,7 +75,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 "BEGIN:VEVENT",
                 "DTSTART;TZID=Europe/Helsinki:20170131T110000",
                 "DTEND;TZID=Europe/Helsinki:20170131T140000",
-                "SUMMARY:Formulat... Harjoitus (en)\\, Animal Biotechnology B (KEL/KEBIOT230)",
+                "SUMMARY:Formulat... Harjoitus (en)",
                 "LOCATION:Arppeanumin auditorio\\, Viikinkaari 11",
                 "UID:"),
             eventToString(
