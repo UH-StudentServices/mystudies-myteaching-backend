@@ -125,14 +125,14 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
             List<String> availableLanguages = env.getRequiredProperty("language.available", List.class);
 
             try {
-                Locale locale = StringUtils.parseLocaleString(preferredLanguage);
+                Locale locale = Locale.forLanguageTag(StringUtils.replace(preferredLanguage, "_", "-"));
 
                 String language = locale.getLanguage();
 
                 return availableLanguages.contains(language) ? language : null;
 
-            } catch(IllegalArgumentException e) {
-                log.error("Failed to parse preferredLanguage %s", preferredLanguage);
+            } catch (IllegalArgumentException e) {
+                log.error(String.format("Failed to parse preferredLanguage %s", preferredLanguage));
             }
         }
         return null;

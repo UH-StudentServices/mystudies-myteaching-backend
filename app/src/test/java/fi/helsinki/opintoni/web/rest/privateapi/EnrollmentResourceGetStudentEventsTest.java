@@ -45,7 +45,7 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
     private static final String LANG_CODE_SV = Language.SV.getCode();
     private static final String INVALID_LANGUAGE_CODE = "invalidLangCode";
     private static final String UNSUPPORTED_LANG_CODE = "de";
-    private static final String LOCALE_LANGUAGE_FORMAT = "fi_FI";
+    private static final String LANGUAGE_CODE_WITH_COUNTRY = "en-US";
 
     private static final String EVENT_TITLE_FI = "Formuloi... Harjoitus II";
     private static final String EVENT_TITLE_SV = "Formuler... Harjoitus II (sv)";
@@ -64,11 +64,11 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
             .characterEncoding("UTF-8")
             .accept(MediaType.APPLICATION_JSON);
 
-        if(cookieLanguage != null) {
+        if (cookieLanguage != null) {
             requestBuilder.cookie(new Cookie(NG_TRANSLATE_LANG_KEY, cookieLanguage));
         }
 
-        if(acceptLanguageHeader != null) {
+        if (acceptLanguageHeader != null) {
             requestBuilder.header(HttpHeaders.ACCEPT_LANGUAGE, acceptLanguageHeader);
         }
 
@@ -125,8 +125,8 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
     }
 
     @Test
-    public void thatLocaleFormatInCookieWillResolveToDefaultLanguage() throws Exception {
-        performGetStudentEvents(LOCALE_LANGUAGE_FORMAT, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
+    public void thatLanguageCodeWithCountryInCookieWillResolveToDefaultLanguage() throws Exception {
+        performGetStudentEvents(LANGUAGE_CODE_WITH_COUNTRY, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
     }
 
     @Test

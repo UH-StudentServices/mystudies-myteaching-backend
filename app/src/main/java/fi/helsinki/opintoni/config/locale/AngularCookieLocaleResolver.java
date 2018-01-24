@@ -62,7 +62,7 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
                 .map(Cookie::getValue)
                 .map(value -> StringUtils.replace(value, "%22", ""))
                 .filter(availableLanguages::contains)
-                .map(StringUtils::parseLocaleString)
+                .map(Locale::new)
                 .orElse(determineDefaultLocale(request));
 
             request.setAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME, locale);

@@ -51,7 +51,8 @@ import static org.mockito.Mockito.*;
 public class FederatedAuthenticationSuccessHandlerTest {
     private static final List<String> availableLanguages = newArrayList(FI.getCode(), EN.getCode(), SV.getCode());
     private static final String UNSUPPORTED_LANGUAGE = "de";
-    private static final String LOCALE_LANGUAGE_FORMAT = "en_US";
+    private static final String LANGUAGE_CODE_WITH_COUNTRY = "en-US";
+    private static final String LANGUAGE_CODE_WITH_COUNTRY_UNDERSCORE = "en_US";
     private static final String INVALID_LANGUAGE_CODE = "invalidLangCode";
 
     private static final String EDU_PRINCIPAL_NAME = "eduPrincipalName";
@@ -124,7 +125,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
         verify(userService, times(1)).createNewUser(any(AppUser.class));
     }
 
-    private void assertLanguageCookieAddScenario(String userPreferredLanguage, String expectedCookieLanguage) throws Exception {
+    private void assertLanguageCookieAddedScenario(String userPreferredLanguage, String expectedCookieLanguage) throws Exception {
         setupMocks(userPreferredLanguage);
         HttpServletResponse response = mockResponse();
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
@@ -135,13 +136,18 @@ public class FederatedAuthenticationSuccessHandlerTest {
     }
 
     @Test
-    public void thatLanguageCookieIsAddedForUserPreferredLanguageInFirstLogin() throws Exception {
-        assertLanguageCookieAddScenario(FI.getCode(), FI.getCode());
+    public void thatLanguageCookieIsAddedForUserPreferredLanguageOnFirstLogin() throws Exception {
+        assertLanguageCookieAddedScenario(FI.getCode(), FI.getCode());
     }
 
     @Test
-    public void thatLanguageCookieIsAddedForUserPreferredLanguageInLocaleFormatInFirstLogin() throws Exception {
-        assertLanguageCookieAddScenario(LOCALE_LANGUAGE_FORMAT, EN.getCode());
+    public void thatOnlyLanguagePartOfLanguageCodeWithCountryIsUsedInLanguageCookie() throws Exception {
+        assertLanguageCookieAddedScenario(LANGUAGE_CODE_WITH_COUNTRY, EN.getCode());
+    }
+
+    @Test
+    public void thatOnlyLanguagePartOfLanguageCodeWithCountrySeparatedByUnderscoreIsUsedInLanguageCookie() throws Exception {
+        assertLanguageCookieAddedScenario(LANGUAGE_CODE_WITH_COUNTRY_UNDERSCORE, EN.getCode());
     }
 
     private void assertLanguageCookieNotAddedScenario(HttpServletRequest request, String langCode) throws Exception {

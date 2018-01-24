@@ -47,11 +47,11 @@ public class LocalizedValueConverter {
     public String toLocalizedString(Map<String, String> localizedValues, Locale locale) {
         String currentLanguage = locale.getLanguage();
 
-        if(localizedValues == null) {
+        if (localizedValues == null) {
             return null;
-        } else if(localizedValues.containsKey(currentLanguage)) {
+        } else if (localizedValues.containsKey(currentLanguage)) {
             return localizedValues.get(currentLanguage);
-        } else if(localizedValues.containsKey(defaultLanguage)) {
+        } else if (localizedValues.containsKey(defaultLanguage)) {
             return localizedValues.get(defaultLanguage);
         } else {
             return localizedValues.entrySet().iterator().next().getValue();
