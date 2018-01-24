@@ -12,14 +12,17 @@ import static org.junit.Assert.*;
 
 public class EventDtoTest {
 
+    private static final String EVENT_TITLE = "Title of event";
+    private static final String COURSE_TITLE = "Title of course";
+
     @Test
     public void compareTo() {
         EventDto februaryCourse = new EventDto(EventDto.Type.DEFAULT, EventDto.Source.COURSE_PAGE,
             LocalDateTime.of(2018, 2, 1, 8, 0),
             LocalDateTime.of(2018, 2, 1, 8, 0),
             100,
-            "Title of event",
-            "Title of course",
+            EVENT_TITLE,
+            COURSE_TITLE,
             "",
             "",
             null,
@@ -30,8 +33,8 @@ public class EventDtoTest {
             LocalDateTime.of(2018, 1, 1, 8, 0),
             LocalDateTime.of(2018, 3, 1, 8, 0),
             100,
-            "Title of event",
-            "Title of course",
+            EVENT_TITLE,
+            COURSE_TITLE,
             "",
             "",
             null,
@@ -48,27 +51,26 @@ public class EventDtoTest {
             LocalDateTime.of(2018, 1, 1, 8, 0),
             LocalDateTime.of(2018, 3, 1, 8, 0),
             100,
-            "Title of event",
-            "Title of course",
+            EVENT_TITLE,
+            COURSE_TITLE,
             "",
             "",
             null,
             "",
             false,
             null);
-        
+
         assertEquals("1002018-01-01T08:002018-03-01T08:00", EventDto.getRealisationIdAndTimes(eventDto));
     }
 
     @Test
-    public void getTitle_whenSourceIsOodi() {
-        final String titleGeneratedFromOodi = "Generated title from oodi";
+    public void getTitleWhenSourceIsOodi() {
         EventDto eventDataFromOodi = new EventDto(EventDto.Type.DEFAULT, EventDto.Source.OODI,
             LocalDateTime.of(2018, 1, 1, 8, 0),
             LocalDateTime.of(2018, 1, 1, 8, 0),
             100,
-            titleGeneratedFromOodi,
-            "CourseTitle",
+            EVENT_TITLE,
+            COURSE_TITLE,
             "",
             "",
             null,
@@ -76,19 +78,17 @@ public class EventDtoTest {
             false,
             null);
 
-        assertEquals(titleGeneratedFromOodi, eventDataFromOodi.getTitle());
+        assertEquals(EVENT_TITLE, eventDataFromOodi.getTitle());
     }
 
     @Test
-    public void getTitle_whenSourceIsCoursePage() {
-        final String eventTitle = "EventTitle";
-        final String courseTitle = "CourseTitle";
+    public void getTitleWhenSourceIsCoursePage() {
         EventDto eventDataFromOodi = new EventDto(EventDto.Type.DEFAULT, EventDto.Source.COURSE_PAGE,
             LocalDateTime.of(2018, 1, 1, 8, 0),
             LocalDateTime.of(2018, 1, 1, 8, 0),
             100,
-            eventTitle,
-            courseTitle,
+            EVENT_TITLE,
+            COURSE_TITLE,
             "",
             "",
             null,
@@ -96,7 +96,7 @@ public class EventDtoTest {
             false,
             null);
 
-        assertEquals(String.format("%s, %s", eventTitle, courseTitle), eventDataFromOodi.getTitle());
+        assertEquals(String.format("%s, %s", EVENT_TITLE, COURSE_TITLE), eventDataFromOodi.getTitle());
     }
 
 }
