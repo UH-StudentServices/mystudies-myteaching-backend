@@ -105,14 +105,6 @@ public class CalendarService {
         return calendar.toString();
     }
 
-    private String getEventTitle(EventDto eventDto) {
-        String title = eventDto.title;
-        if (eventDto.courseTitle != null) {
-            title += ", " + eventDto.courseTitle;
-        }
-        return title;
-    }
-
     private Uid generateUid() {
         return new Uid(UUID.randomUUID().toString());
     }
@@ -121,7 +113,7 @@ public class CalendarService {
         PropertyList eventProperties = new PropertyList();
         eventProperties.add(new DtStart(convertStartDateToCalDate(eventDto)));
         eventProperties.add(new DtEnd(convertEndDateToCalDate(eventDto)));
-        eventProperties.add(new Summary(getEventTitle(eventDto)));
+        eventProperties.add(new Summary(eventDto.getTitle()));
         eventProperties.add(new Location((eventDto.getLocationsAsString())));
         eventProperties.add(generateUid());
 
