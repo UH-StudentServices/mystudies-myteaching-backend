@@ -20,33 +20,39 @@ package fi.helsinki.opintoni.security;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.integration.oodi.OodiIntegrationException;
-import fi.helsinki.opintoni.service.TimeService;
 import fi.helsinki.opintoni.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.util.StringUtils;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+
+import static fi.helsinki.opintoni.config.Constants.NG_TRANSLATE_LANG_KEY;
+import static fi.helsinki.opintoni.config.Constants.OPINTONI_HAS_LOGGED_IN;
 
 public abstract class BaseAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private UserService userService;
+    private static final Logger log = LoggerFactory.getLogger(BaseAuthenticationSuccessHandler.class);
 
-    private TimeService timeService;
+    private UserService userService;
 
     private Environment env;
 
     @Autowired
-    public void initialize(UserService userService, TimeService timeService, Environment env) {
+    public void initialize(UserService userService, Environment env) {
         this.userService = userService;
-        this.timeService = timeService;
         this.env = env;
     }
 
@@ -59,9 +65,11 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         try {
             syncUserWithDatabase(appUser);
 
-            addLanguageCookie(appUser, response);
+            if (isFirstLogin(request)) {
+                addLanguageCookieForUserPreferredLanguageIfSupported(appUser, response);
+            }
 
-            if(!env.acceptsProfiles(Constants.SPRING_PROFILE_DEMO)) {
+            if (!env.acceptsProfiles(Constants.SPRING_PROFILE_DEMO)) {
                 addHasLoggedInCookie(response);
             }
 
@@ -99,15 +107,41 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         }
     }
 
-    private void addLanguageCookie(AppUser appUser, HttpServletResponse response) {
-        Cookie cookie = new Cookie(Constants.NG_TRANSLATE_LANG_KEY, appUser.getPreferredLanguage());
-        addCookie(response, cookie);
+    private void addLanguageCookieForUserPreferredLanguageIfSupported(AppUser appUser, HttpServletResponse response) {
+        String language = getLanguageCookieValue(appUser.getPreferredLanguage());
+
+        if (language != null) {
+            Cookie cookie = new Cookie(NG_TRANSLATE_LANG_KEY, language);
+            addCookie(response, cookie);
+        }
+    }
+
+    private boolean isFirstLogin(HttpServletRequest request) {
+        return WebUtils.getCookie(request, OPINTONI_HAS_LOGGED_IN) == null;
+    }
+
+    private String getLanguageCookieValue(String preferredLanguage) {
+        if (preferredLanguage != null) {
+            List<String> availableLanguages = env.getRequiredProperty("language.available", List.class);
+
+            try {
+                Locale locale = Locale.forLanguageTag(StringUtils.replace(preferredLanguage, "_", "-"));
+
+                String language = locale.getLanguage();
+
+                return availableLanguages.contains(language) ? language : null;
+
+            } catch (IllegalArgumentException e) {
+                log.error(String.format("Failed to parse preferredLanguage %s", preferredLanguage));
+            }
+        }
+        return null;
     }
 
     // NOTE: This cookie is relied on by courses.helsinki.fi for automatic user login
     // and should thus not be removed without consulting the course page team first.
     private void addHasLoggedInCookie(HttpServletResponse response) {
-        Cookie cookie = new Cookie(Constants.OPINTONI_HAS_LOGGED_IN, Boolean.TRUE.toString());
+        Cookie cookie = new Cookie(OPINTONI_HAS_LOGGED_IN, Boolean.TRUE.toString());
         cookie.setMaxAge(Integer.MAX_VALUE);
         addCookie(response, cookie);
     }

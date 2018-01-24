@@ -18,12 +18,18 @@
 package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.config.Constants;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
+import javax.servlet.http.Cookie;
 import java.util.Locale;
 
+import static fi.helsinki.opintoni.localization.Language.EN;
+import static fi.helsinki.opintoni.localization.Language.FI;
+import static fi.helsinki.opintoni.localization.Language.SV;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.hamcrest.Matchers.hasSize;
@@ -39,11 +45,11 @@ public class PrivateNotificationResourceTest extends SpringTest {
 
     private static final String NOTIFICATION_RESOURCE_PATH = RestConstants.PRIVATE_API_V1 + "/notifications";
 
-    private void assertNotificationsForLocale(Locale locale, String expectedNotificationText) throws Exception {
+    private void assertNotificationsForLocale(Language lang, String expectedNotificationText) throws Exception {
         mockMvc.perform(get(NOTIFICATION_RESOURCE_PATH)
             .with(securityContext(studentSecurityContext()))
             .accept(MediaType.APPLICATION_JSON)
-            .locale(locale))
+            .cookie(langCookie(lang)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(1)))
@@ -52,17 +58,17 @@ public class PrivateNotificationResourceTest extends SpringTest {
 
     @Test
     public void thatActiveNotificationIsReturnedInEnglish() throws Exception {
-       assertNotificationsForLocale(Locale.ENGLISH, NOTIFICATION_TEXT_EN);
+       assertNotificationsForLocale(EN, NOTIFICATION_TEXT_EN);
     }
 
     @Test
     public void thatActiveNotificationIsReturnedInFinnish() throws Exception {
-        assertNotificationsForLocale(new Locale("FI"), NOTIFICATION_TEXT_FI);
+        assertNotificationsForLocale(FI, NOTIFICATION_TEXT_FI);
     }
 
     @Test
     public void thatActiveNotificationIsReturnedInSwedish() throws Exception {
-        assertNotificationsForLocale(new Locale("SV"), NOTIFICATION_TEXT_SV);
+        assertNotificationsForLocale(SV, NOTIFICATION_TEXT_SV);
     }
 
 }

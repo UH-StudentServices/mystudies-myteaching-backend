@@ -19,9 +19,7 @@ package fi.helsinki.opintoni.web.requestchain;
 
 import fi.helsinki.opintoni.server.CoursePageServer;
 import fi.helsinki.opintoni.server.OodiServer;
-import fi.helsinki.opintoni.web.TestConstants;
 
-import java.util.Arrays;
 import java.util.Locale;
 
 import static fi.helsinki.opintoni.web.TestConstants.*;
@@ -85,7 +83,7 @@ public class TeacherRequestChain {
 
     public CourseImplementationRequestChain<TeacherRequestChain> courseImplementation(
         String courseImplementationId, String responseFile) {
-        return courseImplementation(courseImplementationId, responseFile, DEFAULT_COURSE_IMPLEMENTATION_LOCALE);
+        return courseImplementation(courseImplementationId, responseFile, DEFAULT_USER_LOCALE);
     }
 
     public CourseImplementationRequestChain<TeacherRequestChain> courseImplementation(

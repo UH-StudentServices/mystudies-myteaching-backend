@@ -18,13 +18,11 @@
 package fi.helsinki.opintoni.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.service.SessionService;
 import fi.helsinki.opintoni.service.TimeService;
 import fi.helsinki.opintoni.service.UserService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
@@ -39,19 +37,23 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static fi.helsinki.opintoni.config.Constants.NG_TRANSLATE_LANG_KEY;
+import static fi.helsinki.opintoni.config.Constants.OPINTONI_HAS_LOGGED_IN;
+import static fi.helsinki.opintoni.localization.Language.*;
 import static java.util.Collections.singletonList;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.argThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FederatedAuthenticationSuccessHandlerTest {
+    private static final List<String> availableLanguages = newArrayList(FI.getCode(), EN.getCode(), SV.getCode());
+    private static final String UNSUPPORTED_LANGUAGE = "de";
+    private static final String LANGUAGE_CODE_WITH_COUNTRY = "en-US";
+    private static final String LANGUAGE_CODE_WITH_COUNTRY_UNDERSCORE = "en_US";
+    private static final String INVALID_LANGUAGE_CODE = "invalidLangCode";
 
     private static final String EDU_PRINCIPAL_NAME = "eduPrincipalName";
     private static final String OODI_PERSON_ID = "oodiPersonId";
@@ -76,20 +78,22 @@ public class FederatedAuthenticationSuccessHandlerTest {
     @InjectMocks
     private FederatedAuthenticationSuccessHandler handler;
 
-    @Before
-    public void init() {
+    private void setupMocks(String appUserPreferredLanguage) {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PRINCIPAL_NAME)
             .studentNumber("1234")
             .oodiPersonId(OODI_PERSON_ID)
-            .preferredLanguage("fi")
+            .preferredLanguage(appUserPreferredLanguage)
             .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .build();
+
         when(authentication.getPrincipal()).thenReturn(appUser);
+        when(env.getRequiredProperty("language.available", List.class)).thenReturn(availableLanguages);
     }
 
     @Test
     public void thatOldUserDoesNotResultInNewUser() throws Exception {
+        setupMocks(FI.getCode());
         Optional<User> user = Optional.of(new User());
         HttpServletResponse response = mockResponse();
 
@@ -102,6 +106,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
     @Test
     public void thatMissingOodiPersonIdIsUpdated() throws Exception {
+        setupMocks(FI.getCode());
         Optional<User> user = Optional.of(new User());
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(user);
 
@@ -112,6 +117,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
     @Test
     public void thatNewUserIsSaved() throws Exception {
+        setupMocks(FI.getCode());
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
 
         handler.onAuthenticationSuccess(mock(HttpServletRequest.class), mockResponse(), authentication);
@@ -119,18 +125,68 @@ public class FederatedAuthenticationSuccessHandlerTest {
         verify(userService, times(1)).createNewUser(any(AppUser.class));
     }
 
-    @Test
-    public void thatLanguageCookieIsAdded() throws Exception {
+    private void assertLanguageCookieAddedScenario(String userPreferredLanguage, String expectedCookieLanguage) throws Exception {
+        setupMocks(userPreferredLanguage);
         HttpServletResponse response = mockResponse();
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
 
         handler.onAuthenticationSuccess(mock(HttpServletRequest.class), response, authentication);
 
-        verify(response, times(1)).addCookie(argThat(new LangCookieMatcher()));
+        verify(response, times(1)).addCookie(argThat(new LangCookieMatcher(expectedCookieLanguage)));
+    }
+
+    @Test
+    public void thatLanguageCookieIsAddedForUserPreferredLanguageOnFirstLogin() throws Exception {
+        assertLanguageCookieAddedScenario(FI.getCode(), FI.getCode());
+    }
+
+    @Test
+    public void thatOnlyLanguagePartOfLanguageCodeWithCountryIsUsedInLanguageCookie() throws Exception {
+        assertLanguageCookieAddedScenario(LANGUAGE_CODE_WITH_COUNTRY, EN.getCode());
+    }
+
+    @Test
+    public void thatOnlyLanguagePartOfLanguageCodeWithCountrySeparatedByUnderscoreIsUsedInLanguageCookie() throws Exception {
+        assertLanguageCookieAddedScenario(LANGUAGE_CODE_WITH_COUNTRY_UNDERSCORE, EN.getCode());
+    }
+
+    private void assertLanguageCookieNotAddedScenario(HttpServletRequest request, String langCode) throws Exception {
+        setupMocks(langCode);
+        HttpServletResponse response = mockResponse();
+        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
+
+        handler.onAuthenticationSuccess(request, response, authentication);
+
+        verify(response, times(0)).addCookie(argThat(new LangCookieMatcher(langCode)));
+    }
+
+    @Test
+    public void thatLanguageCookieIsNotAddedForUserOnLaterLogins() throws Exception {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        Cookie[] cookies = {new Cookie(OPINTONI_HAS_LOGGED_IN, "true")};
+        when(request.getCookies()).thenReturn(cookies);
+
+        assertLanguageCookieNotAddedScenario(request, FI.getCode());
+    }
+
+    @Test
+    public void languageCookieIsNotAddedIfUserPreferredLanguageIsNotSupported() throws Exception {
+        assertLanguageCookieNotAddedScenario(mock(HttpServletRequest.class), UNSUPPORTED_LANGUAGE);
+    }
+
+    @Test
+    public void languageCookieIsNotAddedIfUserPreferredLanguageIsNotValidLanguageCode() throws Exception {
+        assertLanguageCookieNotAddedScenario(mock(HttpServletRequest.class), INVALID_LANGUAGE_CODE);
+    }
+
+    @Test
+    public void languageCookieIsNotAddedIfIfUserDoesNotHavePreferredLanguage() throws Exception {
+        assertLanguageCookieNotAddedScenario(mock(HttpServletRequest.class), null);
     }
 
     @Test
     public void thatHasLoggedInCookieIsAdded() throws IOException, ServletException {
+        setupMocks(FI.getCode());
         HttpServletResponse response = mockResponse();
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
 
@@ -146,9 +202,15 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
     private static class LangCookieMatcher implements ArgumentMatcher<Cookie> {
 
+        private final String langCode;
+
+        public LangCookieMatcher(String langCode) {
+            this.langCode = langCode;
+        }
+
         @Override
         public boolean matches(Cookie cookie) {
-            return Constants.NG_TRANSLATE_LANG_KEY.equals(cookie.getName()) && "fi".equals(cookie.getValue());
+            return NG_TRANSLATE_LANG_KEY.equals(cookie.getName()) && langCode.equals(cookie.getValue());
         }
     }
 
@@ -156,7 +218,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
         @Override
         public boolean matches(Cookie cookie) {
-            return Constants.OPINTONI_HAS_LOGGED_IN.equals(cookie.getName()) && "true".equals(cookie.getValue());
+            return OPINTONI_HAS_LOGGED_IN.equals(cookie.getName()) && "true".equals(cookie.getValue());
         }
     }
 

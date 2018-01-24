@@ -15,25 +15,30 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.config;
+package fi.helsinki.opintoni.config.locale;
 
-import fi.helsinki.opintoni.config.locale.AngularCookieLocaleResolver;
+import fi.helsinki.opintoni.config.Constants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+
+import java.util.List;
 
 @Configuration
 public class LocaleConfiguration extends WebMvcConfigurerAdapter implements EnvironmentAware {
 
     private RelaxedPropertyResolver propertyResolver;
+
+    @Autowired
+    private Environment environment;
 
     @Override
     public void setEnvironment(Environment environment) {
@@ -42,23 +47,23 @@ public class LocaleConfiguration extends WebMvcConfigurerAdapter implements Envi
 
     @Bean
     public LocaleResolver localeResolver() {
-        AngularCookieLocaleResolver cookieLocaleResolver = new AngularCookieLocaleResolver();
-        cookieLocaleResolver.setCookieName(Constants.NG_TRANSLATE_LANG_KEY);
+        String defaultLanguage = environment.getRequiredProperty("language.default");
+        List<String> availableLanguages = environment.getRequiredProperty("language.available", List.class);
+
+        AngularCookieLocaleResolver cookieLocaleResolver = new AngularCookieLocaleResolver(
+            Constants.NG_TRANSLATE_LANG_KEY,
+            defaultLanguage,
+            availableLanguages);
+
         return cookieLocaleResolver;
     }
 
     @Bean
+    @DependsOn("localeResolver")
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("locale/messages");
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-        localeChangeInterceptor.setParamName("language");
-        registry.addInterceptor(localeChangeInterceptor);
     }
 }

@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.CourseDto;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.web.TestConstants;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -30,11 +31,11 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
+import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_USER_LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThat;
 
 public class CourseServiceTest extends SpringTest {
-
     @Autowired
     private CourseService courseService;
 
@@ -43,7 +44,7 @@ public class CourseServiceTest extends SpringTest {
         expectStudentCourses();
 
         Set<CourseDto> courseDtos = courseService
-            .getCourses(Optional.of(TestConstants.STUDENT_NUMBER), Optional.empty(), Locale.ENGLISH);
+            .getCourses(Optional.of(TestConstants.STUDENT_NUMBER), Optional.empty(), DEFAULT_USER_LOCALE);
 
         assertThat(courseDtos).hasSize(1);
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.STUDENT_COURSE_REALISATION_ID));
@@ -55,7 +56,7 @@ public class CourseServiceTest extends SpringTest {
         expectTeacherCourses();
 
         Set<CourseDto> courseDtos = courseService
-            .getCourses(Optional.empty(), Optional.of(TestConstants.EMPLOYEE_NUMBER), Locale.ENGLISH);
+            .getCourses(Optional.empty(), Optional.of(TestConstants.EMPLOYEE_NUMBER), DEFAULT_USER_LOCALE);
 
         assertThat(courseDtos).hasSize(3);
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.TEACHER_COURSE_REALISATION_ID));
@@ -71,7 +72,7 @@ public class CourseServiceTest extends SpringTest {
             .getCourses(
                 Optional.of(TestConstants.STUDENT_NUMBER),
                 Optional.of(TestConstants.EMPLOYEE_NUMBER),
-                Locale.ENGLISH);
+                DEFAULT_USER_LOCALE);
 
         assertThat(courseDtos).hasSize(4);
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.STUDENT_COURSE_REALISATION_ID));
