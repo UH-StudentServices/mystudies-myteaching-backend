@@ -78,7 +78,7 @@ public class EventDtoTest {
             false,
             null);
 
-        assertEquals(EVENT_TITLE, eventDataFromOodi.getTitle());
+        assertEquals(EVENT_TITLE, eventDataFromOodi.getFullEventTitle());
     }
 
     @Test
@@ -96,7 +96,7 @@ public class EventDtoTest {
             false,
             null);
 
-        assertEquals(String.format("%s, %s", EVENT_TITLE, COURSE_TITLE), eventDataFromOodi.getTitle());
+        assertEquals(String.format("%s, %s", EVENT_TITLE, COURSE_TITLE), eventDataFromOodi.getFullEventTitle());
     }
 
 }

@@ -109,7 +109,7 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
             .andExpect(jsonPath("$[0].locations[0].streetAddress").value("Viikinkaari 11"))
             .andExpect(jsonPath("$[0].locations[0].zipCode").value("00790"))
             .andExpect(jsonPath("$[0].hasMaterial").value(true))
-            .andExpect(jsonPath("$[3].title").value("Ei päättymisaikaa, Animal Biotechnology B (KEL/KEBIOT230)"))
+            .andExpect(jsonPath("$[3].title").value("Ei päättymisaikaa"))
             .andExpect(jsonPath("$[3].source").value(EventDto.Source.COURSE_PAGE.name()))
             .andExpect(jsonPath("$[3].type").value(EventDto.Type.DEFAULT.name()));
     }
