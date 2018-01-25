@@ -113,7 +113,7 @@ public class CalendarService {
         PropertyList eventProperties = new PropertyList();
         eventProperties.add(new DtStart(convertStartDateToCalDate(eventDto)));
         eventProperties.add(new DtEnd(convertEndDateToCalDate(eventDto)));
-        eventProperties.add(new Summary(eventDto.getTitle()));
+        eventProperties.add(new Summary(eventDto.getFullEventTitle()));
         eventProperties.add(new Location((eventDto.getLocationsAsString())));
         eventProperties.add(generateUid());
 
