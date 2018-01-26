@@ -75,7 +75,7 @@ public class CourseImplementationCacheUpdater {
             coursePageClient.getUpdatedCourseImplementationIds(
                 cachedItemUpdatesCheck.lastChecked.atZone(TimeService.HELSINKI_ZONE_ID).toEpochSecond());
 
-        if(updatedCourses.size() > 0) {
+        if (!updatedCourses.isEmpty()) {
             updateCourseCache(updatedCourses);
         }
 
