@@ -30,7 +30,7 @@ public class CourseImplementationCacheOperations
     @CachePut(value = CacheConstants.COURSE_PAGE,
         key = "#implementation.courseImplementationId + '_' + #locale.getLanguage()",
         cacheManager = "persistentCacheManager")
-    public CoursePageCourseImplementation cachePutCoursePageCourseImplementation(CoursePageCourseImplementation implementation, Locale locale) {
+    public CoursePageCourseImplementation insertOrUpdateCoursePageCourseImplementationInCache(CoursePageCourseImplementation implementation, Locale locale) {
         return implementation;
     }
 }

@@ -112,6 +112,6 @@ public class CourseImplementationCacheUpdater {
 
     private void updateCourseCacheForLocale(List<String> courseIds, Locale locale) {
         coursePageClient.getCoursePages(courseIds, locale).stream()
-            .forEach(courseImplementation -> courseImplementationCache.cachePutCoursePageCourseImplementation(courseImplementation, locale));
+            .forEach(courseImplementation -> courseImplementationCache.insertOrUpdateCoursePageCourseImplementationInCache(courseImplementation, locale));
     }
 }
