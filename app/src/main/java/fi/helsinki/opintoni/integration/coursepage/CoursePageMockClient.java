@@ -38,6 +38,7 @@ public class CoursePageMockClient implements CoursePageClient {
     private final ObjectMapper objectMapper;
 
     private static final long TEST_COURSE_IMPLEMENTATION_ID = 123456789L;
+    private static final String TEST_COURSE_IMPLEMENTATION_NOT_FOUND_ID = "109155865";
 
     public CoursePageMockClient(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -45,6 +46,9 @@ public class CoursePageMockClient implements CoursePageClient {
 
     @Override
     public CoursePageCourseImplementation getCoursePage(String courseImplementationId, Locale locale) {
+        if (TEST_COURSE_IMPLEMENTATION_NOT_FOUND_ID.equals(courseImplementationId)) {
+            return new CoursePageCourseImplementation();
+        }
         Resource courses = (courseImplementationId != null) ? course1 : course2;
         return getResponse(courses, new TypeReference<List<CoursePageCourseImplementation>>() {
         }).get(0);

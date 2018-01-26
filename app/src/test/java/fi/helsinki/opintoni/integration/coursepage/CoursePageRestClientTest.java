@@ -21,6 +21,7 @@ import fi.helsinki.opintoni.SpringTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import org.springframework.http.HttpStatus;
 
 import java.util.Locale;
 
@@ -81,10 +82,19 @@ public class CoursePageRestClientTest extends SpringTest {
     }
 
     @Test
+    public void thatNullImageUriIsReturnedWhenCoursePageReturns404() {
+        coursePageServer.expectCourseImplementationRequestAndReturnStatus(TEACHER_COURSE_REALISATION_ID, EN, HttpStatus.NOT_FOUND);
+
+        assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN).imageUrl).isNull();
+    }
+
+    @Test
     public void thatMoodleUrlIsReturned() {
         defaultTeacherRequestChain()
             .courseImplementation(TEACHER_COURSE_REALISATION_ID, "course_with_moodle_url.json", EN);
 
         assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN).moodleUrl).isEqualTo("http://moodle.helsinki.fi");
     }
+
+
 }
