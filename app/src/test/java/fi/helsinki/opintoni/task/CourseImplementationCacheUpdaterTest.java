@@ -10,9 +10,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import org.springframework.core.env.Environment;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import static fi.helsinki.opintoni.cache.CacheConstants.COURSE_PAGE;
 import static fi.helsinki.opintoni.web.TestConstants.TEACHER_COURSE_REALISATION_ID;
@@ -22,7 +25,11 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 public class CourseImplementationCacheUpdaterTest extends SpringTest {
     private static final String COURSE_IMPLEMENTATION_RESPONSE = "teacher_course.json";
     private static final String UPDATED_COURSE_IMPLEMENTATION_RESPONSE = "updated_teacher_course.json";
-    private static final String UPDATED_COURSE_IMPLEMENTATION_TITLE = "Updated title";
+    private static final String UPDATED_COURSE_IMPLEMENTATIONS_RESPONSE = "updated_teacher_courses.json";
+    private static final String UPDATED_COURSE_TITLE = "Updated title";
+    private static final String SECOND_COURSE_REALISATION_ID = "99903630";
+
+    private static final String UPDATED_COURSE_REALISATION_IDS = String.join(",", TEACHER_COURSE_REALISATION_ID, SECOND_COURSE_REALISATION_ID);
 
     @Autowired
     private CoursePageClient coursePageRestClient;
@@ -32,6 +39,9 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
 
     @Autowired
     private CacheManager persistentCacheManager;
+
+    @Autowired
+    private Environment environment;
 
     @Autowired
     private CachedItemUpdatesCheckRepository cachedItemUpdatesCheckRepository;
@@ -55,11 +65,21 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
             .orElseThrow(() -> new RuntimeException("No course page update checks found")).lastChecked;
     }
 
+    private List<Locale> getAvailableLocales() {
+        List<String> availableLanguages = environment.getRequiredProperty("language.available", List.class);
+
+        return availableLanguages.stream().map(Locale::new).collect(Collectors.toList());
+    }
+
     private void assertGetCourseImplementationAndUpdateCachedItem(Locale locale) {
+        List<Locale> availableLocales = getAvailableLocales();
+
         coursePageServer.expectCourseImplementationRequest(TEACHER_COURSE_REALISATION_ID, COURSE_IMPLEMENTATION_RESPONSE, locale);
         LocalDateTime initialLastCheckDateTime = getLastCheckDateTime();
         coursePageServer.expectCourseImplementationChangesRequest(initialLastCheckDateTime);
-        coursePageServer.expectCourseImplementationRequest(TEACHER_COURSE_REALISATION_ID, UPDATED_COURSE_IMPLEMENTATION_RESPONSE, locale);
+
+        availableLocales.forEach(availableLocale ->
+            coursePageServer.expectCourseImplementationRequest(TEACHER_COURSE_REALISATION_ID, UPDATED_COURSE_IMPLEMENTATION_RESPONSE, availableLocale));
 
         CoursePageCourseImplementation courseImplementation = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
 
@@ -67,12 +87,33 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
 
         assertThat(courseImplementation).isEqualToComparingFieldByFieldRecursively(courseImplementationFromCache);
 
-        courseImplementationUpdatesChecker.getChangedCourseImplementationsAndUpdateCached();
+        courseImplementationUpdatesChecker.getCourseImplementationChangesAndUpdateCache();
 
-        courseImplementationFromCache = getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, locale);
+        CoursePageCourseImplementation implementationAfterUpdate = getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, locale);
 
-        assertThat(courseImplementationFromCache.title).isEqualTo(UPDATED_COURSE_IMPLEMENTATION_TITLE);
+        assertThat(implementationAfterUpdate.title).isEqualTo(UPDATED_COURSE_TITLE);
         assertThat(initialLastCheckDateTime).isBefore(getLastCheckDateTime());
+    }
+
+    @Test
+    public void thatNewCoursesAreInsertedToCache() {
+        List<Locale> availableLocales = getAvailableLocales();
+
+        LocalDateTime initialLastCheckDateTime = getLastCheckDateTime();
+
+        coursePageServer.expectCourseImplementationChangesRequestWhenMultipleChanges(initialLastCheckDateTime);
+
+        availableLocales.forEach(availableLocale ->
+            coursePageServer.expectCourseImplementationRequest(
+                UPDATED_COURSE_REALISATION_IDS,
+                UPDATED_COURSE_IMPLEMENTATIONS_RESPONSE, availableLocale));
+
+        courseImplementationUpdatesChecker.getCourseImplementationChangesAndUpdateCache();
+
+        availableLocales.stream().forEach(l -> {
+            assertThat(getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, l)).isNotNull();
+            assertThat(getCourseImplementationFromCache(SECOND_COURSE_REALISATION_ID, l)).isNotNull();
+        });
     }
 
     @Test
@@ -100,7 +141,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
 
         CoursePageCourseImplementation courseImplementation = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
 
-        courseImplementationUpdatesChecker.getChangedCourseImplementationsAndUpdateCached();
+        courseImplementationUpdatesChecker.getCourseImplementationChangesAndUpdateCache();
 
         CoursePageCourseImplementation courseImplementationFromCache = getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, locale);
 
@@ -114,7 +155,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
         coursePageServer.expectCourseImplementationChangesRequestToRespondError(getLastCheckDateTime());
 
         assertThatExceptionOfType(CoursePageIntegrationException.class).isThrownBy(() ->
-            courseImplementationUpdatesChecker.getChangedCourseImplementationsAndUpdateCached());
+            courseImplementationUpdatesChecker.getCourseImplementationChangesAndUpdateCache());
 
         assertThat(initialLastCheckDateTime).isEqualTo(getLastCheckDateTime());
     }

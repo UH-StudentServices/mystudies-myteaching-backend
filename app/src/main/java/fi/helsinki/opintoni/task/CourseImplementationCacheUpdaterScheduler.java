@@ -33,7 +33,7 @@ public class CourseImplementationCacheUpdaterScheduler {
     }
 
     @Scheduled(fixedDelayString = "${coursePage.checkUpdates.interval.seconds}000")
-    public void getChangedCourseImplementationsAndUpdateCached() {
-        courseImplementationCacheUpdater.getChangedCourseImplementationsAndUpdateCached();
+    public void getCourseImplementationChangesAndUpdateCache() {
+        courseImplementationCacheUpdater.getCourseImplementationChangesAndUpdateCache();
     }
 }

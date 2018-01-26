@@ -15,16 +15,22 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.coursepage;
+package fi.helsinki.opintoni.task;
 
-import java.util.List;
+import fi.helsinki.opintoni.cache.CacheConstants;
+import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.stereotype.Component;
+
 import java.util.Locale;
 
-public interface CoursePageClient {
-
-    CoursePageCourseImplementation getCoursePage(String courseImplementationId, Locale locale);
-
-    List<CoursePageCourseImplementation> getCoursePages(List<String> courseImplementationIds, Locale locale);
-
-    List<Long> getUpdatedCourseImplementationIds(long timestamp);
+@Component
+public class CourseImplementationCacheOperations
+{
+    @CachePut(value = CacheConstants.COURSE_PAGE,
+        key = "#implementation.courseImplementationId + '_' + #locale.getLanguage()",
+        cacheManager = "persistentCacheManager")
+    public CoursePageCourseImplementation cachePutCoursePageCourseImplementation(CoursePageCourseImplementation implementation, Locale locale) {
+        return implementation;
+    }
 }

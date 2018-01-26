@@ -65,6 +65,10 @@ public class CoursePageServer extends AbstractRestServiceServer {
         expectCourseImplementationChangesRequest(sinceDate, "coursepage/course_implementation_changes.json");
     }
 
+    public void expectCourseImplementationChangesRequestWhenMultipleChanges(LocalDateTime sinceDate) {
+        expectCourseImplementationChangesRequest(sinceDate, "coursepage/course_implementation_changes_multiple.json");
+    }
+
     public void expectCourseImplementationChangesRequestWhenNoChanges(LocalDateTime sinceDate) {
         expectCourseImplementationChangesRequest(sinceDate, "coursepage/course_implementation_changes_no_changes.json");
     }
