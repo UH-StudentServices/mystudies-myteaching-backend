@@ -89,9 +89,12 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
 
         courseImplementationUpdatesChecker.getCourseImplementationChangesAndUpdateCache();
 
-        CoursePageCourseImplementation implementationAfterUpdate = getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, locale);
+        availableLocales.forEach(availableLocale -> {
+            CoursePageCourseImplementation implementationAfterUpdate =
+                getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, locale);
+            assertThat(implementationAfterUpdate.title).isEqualTo(UPDATED_COURSE_TITLE);
+        });
 
-        assertThat(implementationAfterUpdate.title).isEqualTo(UPDATED_COURSE_TITLE);
         assertThat(initialLastCheckDateTime).isBefore(getLastCheckDateTime());
     }
 
@@ -99,9 +102,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
     public void thatNewCoursesAreInsertedToCache() {
         List<Locale> availableLocales = getAvailableLocales();
 
-        LocalDateTime initialLastCheckDateTime = getLastCheckDateTime();
-
-        coursePageServer.expectCourseImplementationChangesRequestWhenMultipleChanges(initialLastCheckDateTime);
+        coursePageServer.expectCourseImplementationChangesRequestWhenMultipleChanges(getLastCheckDateTime());
 
         availableLocales.forEach(availableLocale ->
             coursePageServer.expectCourseImplementationRequest(
