@@ -66,10 +66,9 @@ public class CoursePageRestClient implements CoursePageClient {
         ParameterizedTypeReference<List<T>> typeReference,
         Locale locale,
         Object... uriVariables) {
-        String url = null;
+        String url = getCoursePageApiUrl(path, locale);
 
         try {
-            url = getCoursePageApiUrl(path, locale);
             return restTemplate.exchange(url, HttpMethod.GET, null, typeReference, uriVariables).getBody();
         } catch (Exception e) {
             log.error("Caught exception when calling Course Pages URL " + url, e);
@@ -86,14 +85,19 @@ public class CoursePageRestClient implements CoursePageClient {
     public CoursePageCourseImplementation getCoursePage(String courseImplementationId, Locale locale) {
         log.trace("fetching course impl with id {} and locale {}", courseImplementationId, locale.toString());
 
-        List<CoursePageCourseImplementation> coursePageCourseImplementationList =
-            getCoursePages(singletonList(courseImplementationId), locale);
+        try {
+            List<CoursePageCourseImplementation> coursePageCourseImplementationList =
+                    getCoursePages(singletonList(courseImplementationId), locale);
 
-        if (coursePageCourseImplementationList != null && coursePageCourseImplementationList.size() > 0) {
-            return coursePageCourseImplementationList.get(0);
-        } else {
-            return new CoursePageCourseImplementation();
+            if (coursePageCourseImplementationList != null && coursePageCourseImplementationList.size() > 0) {
+                return coursePageCourseImplementationList.get(0);
+            }
+        } catch (CoursePageIntegrationException e) {
+            // Already logged in getCoursePageData()
         }
+
+        return new CoursePageCourseImplementation();
+
     }
 
     public List<CoursePageCourseImplementation> getCoursePages(List<String> courseImplementationIds, Locale locale) {

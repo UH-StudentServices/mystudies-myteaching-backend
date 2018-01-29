@@ -95,6 +95,4 @@ public class CoursePageRestClientTest extends SpringTest {
 
         assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN).moodleUrl).isEqualTo("http://moodle.helsinki.fi");
     }
-
-
 }
