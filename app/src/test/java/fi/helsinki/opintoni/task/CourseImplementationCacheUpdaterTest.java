@@ -130,6 +130,5 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
 
         CoursePageCourseImplementation dummy = coursePageRestClient.getCoursePage(nonExistingId, locale);
         assertThat(getCourseImplementationFromCache(nonExistingId, locale)).isNull();
-
     }
 }
