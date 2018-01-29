@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +33,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import static fi.helsinki.opintoni.cache.CacheConstants.COURSE_PAGE;
 import static java.util.Arrays.asList;
@@ -48,19 +48,22 @@ public class CourseImplementationCacheUpdater {
     private final CoursePageClient coursePageClient;
     private final CachedItemUpdatesCheckRepository cachedItemUpdatesCheckRepository;
     private final CacheManager persistentCacheManager;
+    private final CourseImplementationCacheOperations courseImplementationCache;
 
     private static final Logger log = LoggerFactory.getLogger(CourseImplementationCacheUpdater.class);
 
     @Autowired
     public CourseImplementationCacheUpdater(CoursePageClient coursePageClient,
                                             CachedItemUpdatesCheckRepository cachedItemUpdatesCheckRepository,
-                                            CacheManager persistentCacheManager) {
+                                            CacheManager persistentCacheManager,
+                                            CourseImplementationCacheOperations courseImplementationCache) {
         this.coursePageClient = coursePageClient;
         this.cachedItemUpdatesCheckRepository = cachedItemUpdatesCheckRepository;
         this.persistentCacheManager = persistentCacheManager;
+        this.courseImplementationCache = courseImplementationCache;
     }
 
-    public void getChangedCourseImplementationsAndUpdateCached() {
+    public void getCourseImplementationChangesAndUpdateCache() {
         CachedItemUpdatesCheck cachedItemUpdatesCheck = cachedItemUpdatesCheckRepository.findByCacheName(COURSE_PAGE)
             .orElseGet(this::initialCourseImplementationUpdatesCheck);
 
@@ -72,7 +75,9 @@ public class CourseImplementationCacheUpdater {
             coursePageClient.getUpdatedCourseImplementationIds(
                 cachedItemUpdatesCheck.lastChecked.atZone(TimeService.HELSINKI_ZONE_ID).toEpochSecond());
 
-        updateCachedCourses(updatedCourses);
+        if (!updatedCourses.isEmpty()) {
+            updateCourseCache(updatedCourses);
+        }
 
         cachedItemUpdatesCheck.lastChecked = updateCheckDateTime;
 
@@ -95,21 +100,18 @@ public class CourseImplementationCacheUpdater {
         return ManagementFactory.getRuntimeMXBean().getStartTime();
     }
 
-    private void updateCachedCourses(List<Long> updatedCourses) {
-        Cache courseImplementationCache = persistentCacheManager.getCache(COURSE_PAGE);
-        updatedCourses.stream().forEach(courseId ->
-            asList(availableLanguages).stream()
-                .map(Locale::new)
-                .forEach(locale -> {
-                    String cacheKey = String.format("%s_%s", courseId, locale.getLanguage());
+    private void updateCourseCache(List<Long> updatedCourseIds) {
+        List<String> courseIdsAsString = updatedCourseIds.stream()
+            .map(i -> i.toString())
+            .collect(Collectors.toList());
 
-                    if(courseImplementationCache.get(cacheKey) != null) {
-                        log.trace("Updating cache entry for course impl with key {}", cacheKey);
-
-                        courseImplementationCache.evict(cacheKey);
-                        coursePageClient.getCoursePage(courseId.toString(), locale);
-                    }
-                }));
+        asList(availableLanguages).stream()
+            .map(Locale::new)
+            .forEach(locale -> updateCourseCacheForLocale(courseIdsAsString, locale));
     }
 
+    private void updateCourseCacheForLocale(List<String> courseIds, Locale locale) {
+        coursePageClient.getCoursePages(courseIds, locale).stream()
+            .forEach(courseImplementation -> courseImplementationCache.insertOrUpdateCoursePageCourseImplementationInCache(courseImplementation, locale));
+    }
 }

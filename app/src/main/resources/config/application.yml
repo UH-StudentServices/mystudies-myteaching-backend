@@ -290,7 +290,7 @@ feed.client.implementation: remote
 
 language:
     available: fi,sv,en
-    default: en
+    default: fi
 
 pilotDegreeProgrammes:
     - KH40_001

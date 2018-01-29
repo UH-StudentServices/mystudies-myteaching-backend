@@ -310,7 +310,7 @@ feed.client.implementation: remote
 
 language:
     available: fi,sv,en
-    default: en
+    default: fi
 
 staticResourceCachingPeriod: 31536000
 

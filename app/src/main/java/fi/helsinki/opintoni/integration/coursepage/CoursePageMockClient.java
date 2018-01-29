@@ -19,10 +19,12 @@ package fi.helsinki.opintoni.integration.coursepage;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -52,6 +54,11 @@ public class CoursePageMockClient implements CoursePageClient {
         Resource courses = (courseImplementationId != null) ? course1 : course2;
         return getResponse(courses, new TypeReference<List<CoursePageCourseImplementation>>() {
         }).get(0);
+    }
+
+    @Override
+    public List<CoursePageCourseImplementation> getCoursePages(List<String> courseImplementationIds, Locale locale) {
+        return new ArrayList<>();
     }
 
     @Override

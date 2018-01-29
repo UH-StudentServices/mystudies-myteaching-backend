@@ -126,27 +126,27 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
 
     @Test
     public void thatLanguageCodeWithCountryInCookieWillResolveToDefaultLanguage() throws Exception {
-        performGetStudentEvents(LANGUAGE_CODE_WITH_COUNTRY, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
+        performGetStudentEvents(LANGUAGE_CODE_WITH_COUNTRY, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_FI);
     }
 
     @Test
     public void thatInvalidLanguageCodeWillResolveToDefaultLanguage() throws Exception {
-        performGetStudentEvents(INVALID_LANGUAGE_CODE, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
+        performGetStudentEvents(INVALID_LANGUAGE_CODE, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_FI);
     }
 
     @Test
     public void thatUnsupportedLanguageCodeWillResolveToDefaultLanguage() throws Exception {
-        performGetStudentEvents(UNSUPPORTED_LANG_CODE, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
+        performGetStudentEvents(UNSUPPORTED_LANG_CODE, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_FI);
     }
 
     @Test
     public void thatAcceptLanguageHeaderIsAlwaysResolvedToDefaultLanguage() throws Exception {
-        performGetStudentEvents(null, LANG_CODE_SV, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
+        performGetStudentEvents(null, LANG_CODE_SV, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_FI);
     }
 
     @Test
     public void thatIfLanguageCookieIsNotPresentDefaultLanguageIsUsed() throws Exception {
-        performGetStudentEvents(null, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_EN);
+        performGetStudentEvents(null, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_FI);
     }
 
     private void expectEvents(String langCode) {

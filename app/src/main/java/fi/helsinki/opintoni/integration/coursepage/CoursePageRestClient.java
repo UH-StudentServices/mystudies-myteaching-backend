@@ -20,14 +20,19 @@ package fi.helsinki.opintoni.integration.coursepage;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+
+import static java.util.Collections.singletonList;
 
 public class CoursePageRestClient implements CoursePageClient {
     private final String baseUrl;
@@ -75,35 +80,39 @@ public class CoursePageRestClient implements CoursePageClient {
     @Override
     @Cacheable(
         value = CacheConstants.COURSE_PAGE,
-        key = "#courseImplementationId + '_' + #locale.toString()",
+        key = "#courseImplementationId + '_' + #locale.getLanguage()",
         unless = "#result.courseImplementationId == null",
         cacheManager = "persistentCacheManager")
     public CoursePageCourseImplementation getCoursePage(String courseImplementationId, Locale locale) {
         log.trace("fetching course impl with id {} and locale {}", courseImplementationId, locale.toString());
 
-        try {
-            List<CoursePageCourseImplementation> coursePageCourseImplementationList = getCoursePageData(
-                    "/course_implementation/{courseImplementationId}",
-                    new ParameterizedTypeReference<List<CoursePageCourseImplementation>>() {},
-                    locale,
-                    courseImplementationId);
+        List<CoursePageCourseImplementation> coursePageCourseImplementationList =
+            getCoursePages(singletonList(courseImplementationId), locale);
 
-            if(coursePageCourseImplementationList != null && coursePageCourseImplementationList.size() > 0) {
-                return coursePageCourseImplementationList.get(0);
-            }
-        } catch (CoursePageIntegrationException e) {
-            // CoursePageIntegrationException already logged in getCoursePageData
+        if (coursePageCourseImplementationList != null && coursePageCourseImplementationList.size() > 0) {
+            return coursePageCourseImplementationList.get(0);
+        } else {
+            return new CoursePageCourseImplementation();
         }
-        return new CoursePageCourseImplementation();
+    }
+
+    public List<CoursePageCourseImplementation> getCoursePages(List<String> courseImplementationIds, Locale locale) {
+        return getCoursePageData(
+            "/course_implementation/{courseImplementationIds}",
+            new ParameterizedTypeReference<List<CoursePageCourseImplementation>>() {
+            },
+            locale,
+            String.join(",", courseImplementationIds));
     }
 
     @Override
     public List<Long> getUpdatedCourseImplementationIds(long timestamp) {
         List<Long> implementationIds = getCoursePageData(
             "/course_implementation/changes/since/{timestamp}",
-            new ParameterizedTypeReference<List<Long>>() {}, timestamp);
+            new ParameterizedTypeReference<List<Long>>() {
+            }, timestamp);
 
-        if(implementationIds != null) {
+        if (implementationIds != null) {
             return implementationIds;
         } else {
             return new ArrayList<>();
