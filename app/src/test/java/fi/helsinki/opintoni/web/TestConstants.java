@@ -35,5 +35,5 @@ public class TestConstants {
 
     public static final Long PORTFOLIO_ID = 2L;
 
-    public static final Locale DEFAULT_USER_LOCALE = new Locale(Language.EN.getCode());
+    public static final Locale DEFAULT_USER_LOCALE = new Locale(Language.FI.getCode());
 }
