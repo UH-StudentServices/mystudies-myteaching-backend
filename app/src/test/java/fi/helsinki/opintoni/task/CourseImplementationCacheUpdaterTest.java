@@ -9,7 +9,9 @@ import fi.helsinki.opintoni.repository.CachedItemUpdatesCheckRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
@@ -37,8 +39,9 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
     private CachedItemUpdatesCheckRepository cachedItemUpdatesCheckRepository;
 
     private CoursePageCourseImplementation getCourseImplementationFromCache(String implementationId, Locale locale) {
-        return (CoursePageCourseImplementation) persistentCacheManager.getCache(COURSE_PAGE)
-            .get(String.format("%s_%s", implementationId, locale.toString())).get();
+        Cache.ValueWrapper w = persistentCacheManager.getCache(COURSE_PAGE)
+            .get(String.format("%s_%s", implementationId, locale.toString()));
+        return w == null ? null : (CoursePageCourseImplementation)w.get();
     }
 
     @Before
@@ -117,5 +120,16 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
             courseImplementationUpdatesChecker.getChangedCourseImplementationsAndUpdateCached());
 
         assertThat(initialLastCheckDateTime).isEqualTo(getLastCheckDateTime());
+    }
+
+    @Test
+    public void thatDummyCourseImplementationIsNotCached() {
+        String nonExistingId = "does-not-exist";
+        Locale locale = Locale.ENGLISH;
+        coursePageServer.expectCourseImplementationRequestAndReturnStatus(nonExistingId, locale, HttpStatus.NOT_FOUND);
+
+        CoursePageCourseImplementation dummy = coursePageRestClient.getCoursePage(nonExistingId, locale);
+        assertThat(getCourseImplementationFromCache(nonExistingId, locale)).isNull();
+
     }
 }
