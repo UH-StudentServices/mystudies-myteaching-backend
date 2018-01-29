@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.service;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiEvent;
 import fi.helsinki.opintoni.service.converter.EventConverter;

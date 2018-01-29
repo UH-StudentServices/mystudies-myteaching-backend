@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.service.converter;
 
-import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
@@ -31,8 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Component
 public class EventConverter {
@@ -74,11 +71,6 @@ public class EventConverter {
             coursePage.moodleUrl,
             coursePage.hasMaterial,
             locationResolver.getLocation(event));
-    }
-
-    public EventDto toDto(OodiEvent event, Locale locale) {
-        CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(String.valueOf(event.realisationId), locale);
-        return toDto(event, coursePage, locale);
     }
 
     public EventDto toDto(OodiEvent event, CoursePageCourseImplementation coursePage, Locale locale) {
