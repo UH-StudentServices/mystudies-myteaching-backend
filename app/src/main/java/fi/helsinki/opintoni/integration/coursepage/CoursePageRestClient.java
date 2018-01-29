@@ -89,7 +89,7 @@ public class CoursePageRestClient implements CoursePageClient {
             List<CoursePageCourseImplementation> coursePageCourseImplementationList =
                     getCoursePages(singletonList(courseImplementationId), locale);
 
-            if (coursePageCourseImplementationList != null && coursePageCourseImplementationList.size() > 0) {
+            if (coursePageCourseImplementationList != null && !coursePageCourseImplementationList.isEmpty()) {
                 return coursePageCourseImplementationList.get(0);
             }
         } catch (CoursePageIntegrationException e) {
