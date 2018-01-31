@@ -39,7 +39,7 @@ public class AppConfigurationTest {
 
     @Test
     public void getProperty() {
-        assertThat(appConfiguration.get("enabled")).isEqualTo("true");
+        assertThat(appConfiguration.get("enabled")).isEqualTo("false");
     }
 
     @Test
