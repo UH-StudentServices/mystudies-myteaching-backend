@@ -30,7 +30,7 @@ public class AvatarImageServiceTest extends SpringTest {
 
     @Test
     public void thatDefaultAvatarImageUrlIsReturned() {
-        assertThat(avatarImageService.getAvatarImageUrl(1L)).isEqualTo("https://opi-1.student.helsinki.fi/assets/icons/avatar.png");
+        assertThat(avatarImageService.getAvatarImageUrl(1L)).isEqualTo("https://dev.student.helsinki.fi/assets/icons/avatar.png");
     }
 
     @Test
@@ -40,12 +40,12 @@ public class AvatarImageServiceTest extends SpringTest {
 
     @Test
     public void thatAvatarImageUrlIsReturned() {
-        assertThat(avatarImageService.getAvatarImageUrl(2L)).isEqualTo("https://opi-1.student.helsinki.fi/api/public/v1/images/avatar/200");
+        assertThat(avatarImageService.getAvatarImageUrl(2L)).isEqualTo("https://dev.student.helsinki.fi/api/public/v1/images/avatar/200");
     }
 
     @Test
     public void thatPortfolioAvatarImageUrlIsReturned() {
-        assertThat(avatarImageService.getPortfolioAvatarImageUrl(2L)).isEqualTo("https://opi-1.student.helsinki.fi/api/public/v1/images/avatar/200");
+        assertThat(avatarImageService.getPortfolioAvatarImageUrl(2L)).isEqualTo("https://dev.student.helsinki.fi/api/public/v1/images/avatar/200");
     }
 
 }

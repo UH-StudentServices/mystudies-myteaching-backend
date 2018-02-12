@@ -244,7 +244,7 @@ publicWww:
 
 googleAnalyticsAccount: UA-123
 
-hostUrl: https://opi-1.student.helsinki.fi
+hostUrl: https://dev.student.helsinki.fi
 appRelativeUrl: ${hostUrl}
 portfolioUrl:
   student: /portfolio

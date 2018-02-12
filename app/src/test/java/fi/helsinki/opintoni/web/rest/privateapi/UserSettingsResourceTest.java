@@ -140,7 +140,7 @@ public class UserSettingsResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.backgroundUri").value(
-                "https://opi-1.student.helsinki.fi/api/public/v1/images/backgrounds/Profile_1.jpg"
+                "https://dev.student.helsinki.fi/api/public/v1/images/backgrounds/Profile_1.jpg"
             ))
             .andExpect(jsonPath("$.backgroundType").value("DEFAULT"));
     }

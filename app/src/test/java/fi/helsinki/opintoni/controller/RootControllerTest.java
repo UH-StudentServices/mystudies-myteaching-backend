@@ -30,7 +30,7 @@ public class RootControllerTest extends SpringTest {
     public void thatUserIsRedirectedFromRootUrl() throws Exception {
         mockMvc.perform(get("/"))
             .andExpect(status().is3xxRedirection())
-            .andExpect(header().string("Location", "https://opi-1.student.helsinki.fi"));
+            .andExpect(header().string("Location", "https://dev.student.helsinki.fi"));
     }
 
 }

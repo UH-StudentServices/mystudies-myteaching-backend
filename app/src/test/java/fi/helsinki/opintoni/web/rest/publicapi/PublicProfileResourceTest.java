@@ -34,8 +34,8 @@ public class PublicProfileResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.avatarImageUrl")
-                .value("https://opi-1.student.helsinki.fi/api/public/v1/images/avatar/200"))
+                .value("https://dev.student.helsinki.fi/api/public/v1/images/avatar/200"))
             .andExpect(jsonPath("$.backgroundImageUrl")
-                .value("https://opi-1.student.helsinki.fi/api/public/v1/images/backgrounds/Profile_2.jpg"));
+                .value("https://dev.student.helsinki.fi/api/public/v1/images/backgrounds/Profile_2.jpg"));
     }
 }
