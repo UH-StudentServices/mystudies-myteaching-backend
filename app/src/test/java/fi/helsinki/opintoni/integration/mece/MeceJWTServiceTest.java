@@ -27,6 +27,7 @@ import java.security.Key;
 import java.util.Date;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class MeceJWTServiceTest {
 
@@ -44,9 +45,8 @@ public class MeceJWTServiceTest {
     @Test
     public void shouldReturnValidTokenWithPrincipal() {
         String token = meceJWTService.generateToken(PRINCIPAL);
-        assert Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token).getBody().getSubject().equals(PRINCIPAL);
-        assert Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token).getBody().getExpiration().after(new Date());
-
+        assertThat(Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token).getBody().getSubject()).isEqualTo(PRINCIPAL);
+        assertThat(Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token).getBody().getExpiration()).isAfter(new Date());
     }
 
     private Key getKey() {
