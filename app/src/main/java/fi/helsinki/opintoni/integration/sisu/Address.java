@@ -15,12 +15,10 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 package fi.helsinki.opintoni.integration.sisu;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class StudyGroupSet {
-    public LocalizedString name;
-    public List<StudySubGroup> studySubGroups = new ArrayList<>();
+public class Address {
+    public String streetAddress;
+    public String postalCode;
 }

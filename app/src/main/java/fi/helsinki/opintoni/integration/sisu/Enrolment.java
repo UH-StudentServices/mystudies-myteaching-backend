@@ -17,11 +17,12 @@
 
 package fi.helsinki.opintoni.integration.sisu;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Enrolment {
     public String courseUnitId;
     public String assessmentItemId;
     public String courseUnitRealisationId;
-    public Set<String> studySubGroupIds;
+    public Set<String> studySubGroupIds = new HashSet<>();
 }

@@ -51,6 +51,24 @@ public class SisuRestClient {
             new ParameterizedTypeReference<Assessment>() {});
     }
 
+    public Location getLocation(String locationId) {
+        return getSisuData(
+            String.format("/kori/api/locations/v1/%s", locationId),
+            new ParameterizedTypeReference<Location>() {});
+    }
+
+    public Building getBuilding(String buildingId) {
+        return getSisuData(
+            String.format("/kori/api/buildings/v1/%s", buildingId),
+            new ParameterizedTypeReference<Building>() {});
+    }
+
+    public StudyEvent getStudyEvent(String studyEventId) {
+        return getSisuData(
+            String.format("/kori/api/study-events/v1/%s", studyEventId), //Check url
+            new ParameterizedTypeReference<StudyEvent>() {});
+    }
+
     public <T> T getSisuData(String path, ParameterizedTypeReference<T> typeReference) {
         return restTemplate.exchange(
             String.join("/", baseUrl, path),

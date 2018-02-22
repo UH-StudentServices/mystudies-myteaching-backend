@@ -17,11 +17,12 @@
 
 package fi.helsinki.opintoni.integration.sisu;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StudySubGroup {
     public String localId;
     public LocalizedString name;
-    public List<String> studyEventIds;
-    public List<String> teacherIds;
+    public List<String> studyEventIds = new ArrayList<>();
+    public List<String> teacherIds = new ArrayList<>();
 }

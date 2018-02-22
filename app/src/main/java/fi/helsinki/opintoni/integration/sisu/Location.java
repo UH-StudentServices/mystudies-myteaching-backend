@@ -17,10 +17,7 @@
 
 package fi.helsinki.opintoni.integration.sisu;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class StudyGroupSet {
+public class Location {
     public LocalizedString name;
-    public List<StudySubGroup> studySubGroups = new ArrayList<>();
+    public String buildingId;
 }

@@ -17,13 +17,43 @@
 
 package fi.helsinki.opintoni.integration.sisu;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StudyEvent {
     public LocalDateTime startTime;
     public LocalizedString name;
-    public Date recursUntil;
+    public LocalDate recursUntil;
     public Interval recursEvery;
-    public String duration; //PT8H6M12.345S
+    public String duration;
+    public List<String> locationIds = new ArrayList<>();
+
+    public StudyEvent(StudyEvent previousRecurringStudyEvent) {
+        this.name = previousRecurringStudyEvent.name;
+        this.recursUntil = previousRecurringStudyEvent.recursUntil;
+        this.recursEvery = previousRecurringStudyEvent.recursEvery;
+        this.duration = previousRecurringStudyEvent.duration;
+        this.locationIds = previousRecurringStudyEvent.locationIds;
+        this.startTime = getNextRecurringEventStartTime(previousRecurringStudyEvent.startTime);
+    }
+
+    public StudyEvent() {
+    }
+
+    private LocalDateTime getNextRecurringEventStartTime(LocalDateTime previousStartTime) {
+        switch(this.recursEvery) {
+            case DAILY:
+                return previousStartTime.plusDays(1);
+            case WEEKLY:
+                return  previousStartTime.plusWeeks(1);
+            case MONTHLY:
+                return previousStartTime.plusMonths(1);
+            case EVERY_SECOND_WEEK:
+                return previousStartTime.plusMonths(2);
+            default:
+                throw new RuntimeException("No recurring interval provided");
+        }
+    }
 }

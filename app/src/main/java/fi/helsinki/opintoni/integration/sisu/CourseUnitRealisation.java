@@ -17,11 +17,12 @@
 
 package fi.helsinki.opintoni.integration.sisu;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CourseUnitRealisation {
+    public String id;
     public ActivityPeriod activityPeriod;
     public LocalizedString name;
-    public List<StudyGroupSet> studyGroupSets;
-    public String teachingLanguageUrn;
+    public List<StudyGroupSet> studyGroupSets = new ArrayList<>();
 }
