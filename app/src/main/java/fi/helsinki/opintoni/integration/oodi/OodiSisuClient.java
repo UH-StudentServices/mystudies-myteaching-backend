@@ -37,19 +37,19 @@ public class OodiSisuClient implements OodiClient {
     private static final String COURSE_REALISATION_ID_PREFIX = "hy-CUR-";
     private static final Integer TYPE_LECTURE_COURSE = 5;
 
-    private final SisuRestClient sisuRestClient;
+    private final SisuClient sisuClient;
     private final String sisuPersonId;
     private final Integer examTypeCode;
 
-    public OodiSisuClient(SisuRestClient sisuRestClient, Environment environment) {
-        this.sisuRestClient = sisuRestClient;
+    public OodiSisuClient(SisuClient sisuClient, Environment environment) {
+        this.sisuClient = sisuClient;
         this.sisuPersonId = environment.getProperty("testSisuPersonId");
         this.examTypeCode = Integer.valueOf( (String) (environment.getProperty("courses.examTypeCodes", List.class).get(0)));
     }
 
     @Override
     public List<OodiEnrollment> getEnrollments(String studentNumber) {
-        List<Enrolment> enrollments = sisuRestClient.getEnrolments(sisuPersonId);
+        List<Enrolment> enrollments = sisuClient.getEnrolments(sisuPersonId);
 
         return enrollments.stream()
             .map(this::enrolmentToOodiEnrollment)
@@ -58,7 +58,7 @@ public class OodiSisuClient implements OodiClient {
 
     @Override
     public List<OodiEvent> getStudentEvents(String studentNumber) {
-        List<Enrolment> enrolments = sisuRestClient.getEnrolments(sisuPersonId);
+        List<Enrolment> enrolments = sisuClient.getEnrolments(sisuPersonId);
 
         return enrolments.stream()
             .flatMap(this::expandOodiEventsFromEnrollmentStudyEvents)
@@ -87,7 +87,14 @@ public class OodiSisuClient implements OodiClient {
 
     @Override
     public List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId) {
-        return new ArrayList<>();
+        CourseUnitRealisation courseUnitRealisation = sisuClient.getCourseUnitRealisation(COURSE_REALISATION_ID_PREFIX + realisationId);
+
+        return courseUnitRealisation.responsibilityInfos.stream()
+            .filter(p -> CourseUnitRealisationResponsibilityInfoType.RESPONSIBLE_TEACHER.getUrn().equals(p.roleUrn) ||
+            CourseUnitRealisationResponsibilityInfoType.TEACHER.getUrn().equals(p.roleUrn))
+            .map(p -> sisuClient.getPerson(p.personId))
+            .map(this::publicPersonToOodiCourseUnitRealisationTeacher)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -105,11 +112,17 @@ public class OodiSisuClient implements OodiClient {
         return new OodiLearningOpportunity(); //May not be needed anymore because Course recommendations have been removed?
     }
 
+    private OodiCourseUnitRealisationTeacher publicPersonToOodiCourseUnitRealisationTeacher(PublicPerson publicPerson) {
+        OodiCourseUnitRealisationTeacher teacher = new OodiCourseUnitRealisationTeacher();
+        teacher.fullName = String.join(" ", publicPerson.firstName, publicPerson.lastName);
+        return teacher;
+    }
+
     private OodiEnrollment enrolmentToOodiEnrollment(Enrolment enrolment) {
         OodiEnrollment oodiEnrollment = new OodiEnrollment();
 
-        CourseUnitRealisation courseUnitRealisation = sisuRestClient.getCourseUnitRealisation(enrolment.courseUnitRealisationId);
-        Assessment assessment = sisuRestClient.getAssessment(enrolment.assessmentItemId);
+        CourseUnitRealisation courseUnitRealisation = sisuClient.getCourseUnitRealisation(enrolment.courseUnitRealisationId);
+        Assessment assessment = sisuClient.getAssessment(enrolment.assessmentItemId);
 
         oodiEnrollment.name = localizedStringToOodiLocalizedValueList(courseUnitRealisation.name);
         oodiEnrollment.learningOpportunityId = enrolment.courseUnitId;
@@ -132,7 +145,7 @@ public class OodiSisuClient implements OodiClient {
     }
 
     private Stream<OodiEvent> expandOodiEventsFromEnrollmentStudyEvents(Enrolment enrolment) {
-        CourseUnitRealisation courseUnitRealisation = sisuRestClient.getCourseUnitRealisation(enrolment.courseUnitRealisationId);
+        CourseUnitRealisation courseUnitRealisation = sisuClient.getCourseUnitRealisation(enrolment.courseUnitRealisationId);
 
         if(enrolment.studySubGroupIds != null) {
             return enrolment.studySubGroupIds.stream()
@@ -146,7 +159,7 @@ public class OodiSisuClient implements OodiClient {
     }
 
     private Stream<StudyEvent> findStudyEventsForSSG(StudySubGroup studySubGroup) {
-        return studySubGroup.studyEventIds.stream().map(sisuRestClient::getStudyEvent);
+        return studySubGroup.studyEventIds.stream().map(sisuClient::getStudyEvent);
     }
 
     private StudySubGroup getStudySubGroupById(String ssgId, CourseUnitRealisation courseUnitRealisation) {
@@ -162,8 +175,8 @@ public class OodiSisuClient implements OodiClient {
         StudySubGroup studySubGroup,
         CourseUnitRealisation courseUnitRealisation) {
 
-        Location location = !studyEvent.locationIds.isEmpty() ? sisuRestClient.getLocation(studyEvent.locationIds.get(0)) : null;
-        Building building = location != null ? sisuRestClient.getBuilding(location.buildingId) : null;
+        Location location = !studyEvent.locationIds.isEmpty() ? sisuClient.getLocation(studyEvent.locationIds.get(0)) : null;
+        Building building = location != null ? sisuClient.getBuilding(location.buildingId) : null;
 
         if(studyEvent.recursEvery.equals(Interval.NEVER)) {
             return Stream.of(studyEventToOodiEvent(studyEvent, studySubGroup, courseUnitRealisation, location, building));
@@ -198,6 +211,7 @@ public class OodiSisuClient implements OodiClient {
         CourseUnitRealisation courseUnitRealisation,
         Location location,
         Building building) {
+
         OodiEvent oodiEvent = new OodiEvent();
         oodiEvent.realisationName = localizedStringToOodiLocalizedValueList(studySubGroup.name);
         oodiEvent.realisationRootName = localizedStringToOodiLocalizedValueList(courseUnitRealisation.name);

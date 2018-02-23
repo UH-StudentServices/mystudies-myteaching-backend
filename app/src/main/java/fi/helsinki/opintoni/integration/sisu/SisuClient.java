@@ -17,13 +17,14 @@
 
 package fi.helsinki.opintoni.integration.sisu;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CourseUnitRealisation {
-    public String id;
-    public ActivityPeriod activityPeriod;
-    public LocalizedString name;
-    public List<StudyGroupSet> studyGroupSets = new ArrayList<>();
-    public List<PersonWithCourseUnitRealisationResponsibilityInfoType> responsibilityInfos = new ArrayList<>();
+public interface SisuClient {
+    List<Enrolment> getEnrolments(String personId);
+    CourseUnitRealisation getCourseUnitRealisation(String courseUnitRealisationId);
+    Assessment getAssessment(String assessmentId);
+    Location getLocation(String locationId);
+    PublicPerson getPerson(String personId);
+    Building getBuilding(String buildingId);
+    StudyEvent getStudyEvent(String studyEventId);
 }

@@ -252,6 +252,27 @@ cache:
     feeds:
         timeToLiveSeconds: 3600
         maxEntriesLocalHeap: 200
+    sisuCourseUnitRealisation:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
+    sisuPerson:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
+    sisuLocation:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
+    sisuBuilding:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
+    sisuStudyEvent:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
+    sisuAssessment:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
+    sisuEnrolments:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
 
 staticResourceCachingPeriod: 31536000
 

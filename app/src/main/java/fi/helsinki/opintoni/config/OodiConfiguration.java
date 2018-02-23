@@ -25,6 +25,7 @@ import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiRestClient;
 import fi.helsinki.opintoni.integration.oodi.OodiSisuClient;
 import fi.helsinki.opintoni.integration.oodi.mock.OodiMockClient;
+import fi.helsinki.opintoni.integration.sisu.SisuClient;
 import fi.helsinki.opintoni.integration.sisu.SisuRestClient;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -104,7 +105,12 @@ public class OodiConfiguration {
 
     @Bean
     public OodiClient oodiSisuClient() {
-        return new OodiSisuClient(new SisuRestClient(appConfiguration.get("sisu.baseUrl"), oodiRestTemplate()), env);
+        return new OodiSisuClient(sisuClient(), env);
+    }
+
+    @Bean
+    public SisuClient sisuClient() {
+        return new SisuRestClient(appConfiguration.get("sisu.baseUrl"), oodiRestTemplate());
     }
 
     @Bean

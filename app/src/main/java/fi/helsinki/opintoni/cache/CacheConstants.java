@@ -48,6 +48,14 @@ public class CacheConstants {
 
     public static final String FEEDS = "feeds";
 
+    public static final String SISU_COURSE_UNIT_REALISATION = "sisuCourseUnitRealisation";
+    public static final String SISU_PERSON = "sisuPerson";
+    public static final String SISU_LOCATION = "sisuLocation";
+    public static final String SISU_BUILDING = "sisuBuilding";
+    public static final String SISU_STUDY_EVENT = "sisuStudyEvent";
+    public static final String SISU_ASSESSMENT = "sisuAssessment";
+    public static final String SISU_ENROLMENTS = "sisuEnrolments";
+
     public static final ImmutableList<String> transientCacheNames = ImmutableList.<String>builder()
         .add(STUDENT_EVENTS)
         .add(STUDENT_ENROLLMENTS)
@@ -66,6 +74,13 @@ public class CacheConstants {
         .add(FEEDS)
         .add(GUIDE_GENERAL_NEWS)
         .add(GUIDE_PROGRAMME_NEWS)
+        .add(SISU_COURSE_UNIT_REALISATION)
+        .add(SISU_PERSON)
+        .add(SISU_LOCATION)
+        .add(SISU_BUILDING)
+        .add(SISU_STUDY_EVENT)
+        .add(SISU_ASSESSMENT)
+        .add(SISU_ENROLMENTS)
         .build();
 
     public static final ImmutableList<String> persistentCacheNames = ImmutableList.<String>builder()
