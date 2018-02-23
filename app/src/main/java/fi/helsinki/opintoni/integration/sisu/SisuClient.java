@@ -27,4 +27,7 @@ public interface SisuClient {
     PublicPerson getPerson(String personId);
     Building getBuilding(String buildingId);
     StudyEvent getStudyEvent(String studyEventId);
+    List<Attainment> getAttainments(String personId);
+    List<CourseUnit> getCourseUnits(String courseUnitGroupId);
+    GradeScale getGradeScale(String gradeScaleId);
 }

@@ -52,6 +52,30 @@ public class SisuRestClient implements SisuClient {
     }
 
     @Override
+    @Cacheable(value = CacheConstants.SISU_ATTAINMENTS, cacheManager = "transientCacheManager")
+    public List<Attainment> getAttainments(String personId) {
+        return getSisuData(
+            String.format("ori/api/attainments/v1/for-person?personId=%s", personId),
+            new ParameterizedTypeReference<List<Attainment>>() {});
+    }
+
+    @Override
+    @Cacheable(value = CacheConstants.SISU_COURSE_UNIT, cacheManager = "transientCacheManager")
+    public List<CourseUnit> getCourseUnits(String courseUnitGroupId) {
+        return getSisuData(
+            String.format("kori/api/course-units/v1?groupId=%s", courseUnitGroupId),
+            new ParameterizedTypeReference<List<CourseUnit>>() {});
+    }
+
+    @Override
+    @Cacheable(value = CacheConstants.SISU_GRADE_SCALE, cacheManager = "transientCacheManager")
+    public GradeScale getGradeScale(String gradeScaleId) {
+        return getSisuData(
+            String.format("kori/api/grade-scales/%s", gradeScaleId),
+            new ParameterizedTypeReference<GradeScale>() {});
+    }
+
+    @Override
     @Cacheable(value = CacheConstants.SISU_ASSESSMENT, cacheManager = "transientCacheManager")
     public Assessment getAssessment(String assessmentId) {
         return getSisuData(

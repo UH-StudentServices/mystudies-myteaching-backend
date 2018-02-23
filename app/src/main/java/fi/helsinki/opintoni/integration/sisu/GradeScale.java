@@ -15,9 +15,10 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 package fi.helsinki.opintoni.integration.sisu;
 
-public class Building {
-    public Address address;
+import java.util.List;
+
+public class GradeScale {
+    public List<Grade> grades;
 }

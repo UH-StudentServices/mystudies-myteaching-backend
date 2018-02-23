@@ -273,6 +273,15 @@ cache:
     sisuEnrolments:
         timeToLiveSeconds: 3600
         maxEntriesLocalHeap: 200
+    sisuAttainments:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
+    sisuCourseUnit:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
+    sisuGradeScale:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 200
 
 staticResourceCachingPeriod: 31536000
 

@@ -36,6 +36,7 @@ public class OodiSisuClient implements OodiClient {
     private static final String EXAM_SSG_NAME = "Tentti";
     private static final String COURSE_REALISATION_ID_PREFIX = "hy-CUR-";
     private static final Integer TYPE_LECTURE_COURSE = 5;
+    private static final String COURSE_UNIT_ATTAINMENT_TYPE = "CourseUnitAttainment";
 
     private final SisuClient sisuClient;
     private final String sisuPersonId;
@@ -72,7 +73,38 @@ public class OodiSisuClient implements OodiClient {
 
     @Override
     public List<OodiStudyAttainment> getStudyAttainments(String studentNumber) {
-        return new ArrayList<>();
+        List<Attainment> attainments = sisuClient.getAttainments(sisuPersonId);
+
+        return attainments.stream()
+            .filter(attainment -> COURSE_UNIT_ATTAINMENT_TYPE.equals(attainment.type))
+            .map(attainment -> {
+            List<CourseUnit> courseUnits = sisuClient.getCourseUnits(attainment.courseUnitGroupId);
+
+            CourseUnit courseUnit = courseUnits.stream().filter(c ->
+                attainment.courseUnitId.equals(c.id)).findFirst().orElse(null);
+
+            OodiStudyAttainment oodiStudyAttainment = new OodiStudyAttainment();
+
+            oodiStudyAttainment.attainmentDate = attainment.attainmentDate.atStartOfDay();
+            oodiStudyAttainment.credits = attainment.credits.intValue();
+            oodiStudyAttainment.learningOpportunityName = localizedStringToOodiLocalizedValueList(courseUnit.name);
+
+            GradeScale gradeScale = sisuClient.getGradeScale(attainment.gradeScaleId);
+
+            Grade grade = gradeScale.grades.stream().filter(g -> attainment.gradeId.equals(g.localId)).findFirst()
+                .orElseThrow(() -> new RuntimeException("Invalid grade"));
+
+            oodiStudyAttainment.grade = localizedStringToOodiLocalizedValueList(grade.abbreviation);
+
+            oodiStudyAttainment.teachers = attainment.acceptorPersons.stream()
+                .map(a -> sisuClient.getPerson(a.personId))
+                .map(p -> {
+                    OodiTeacher oodiTeacher = new OodiTeacher();
+                    oodiTeacher.shortName = String.join(" ", p.firstName, p.lastName);
+                    return oodiTeacher;
+                }).collect(Collectors.toList());
+            return oodiStudyAttainment;
+        }).collect(Collectors.toList());
     }
 
     @Override

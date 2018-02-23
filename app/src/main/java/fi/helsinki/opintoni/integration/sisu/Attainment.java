@@ -18,6 +18,16 @@
 
 package fi.helsinki.opintoni.integration.sisu;
 
-public class Building {
-    public Address address;
+import java.time.LocalDate;
+import java.util.List;
+
+public class Attainment {
+    public String type;
+    public Double credits;
+    public Integer gradeId;
+    public String gradeScaleId;
+    public LocalDate attainmentDate;
+    public String courseUnitId;
+    public String courseUnitGroupId;
+    public List<PersonWithAttainmentAcceptorType> acceptorPersons;
 }
