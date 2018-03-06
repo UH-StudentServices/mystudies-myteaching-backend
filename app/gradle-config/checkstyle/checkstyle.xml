@@ -124,7 +124,7 @@
       <message key="name.invalidPattern" value="Catch parameter name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="LocalVariableName">
-      <property name="format" value="^[a-z]([a-z0-9][a-zA-Z0-9]*)?$"/>
+      <property name="format" value="^[a-z]([a-z0-9]?[a-zA-Z0-9]*)?$"/>
       <property name="tokens" value="VARIABLE_DEF"/>
       <message key="name.invalidPattern" value="Local variable name ''{0}'' must match pattern ''{1}''."/>
     </module>
@@ -211,7 +211,7 @@
       <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
     </module>
     <module name="MethodName">
-      <property name="format" value="^[a-z][a-z0-9][a-zA-Z0-9_]*$"/>
+      <property name="format" value="^[a-z][a-z0-9]?[a-zA-Z0-9_]*$"/>
       <message key="name.invalidPattern" value="Method name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="SingleLineJavadoc">
