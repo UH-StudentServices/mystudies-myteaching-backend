@@ -21,40 +21,28 @@ buildscript {
         mavenLocal()
         jcenter()
     }
-    dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.3.RELEASE'
-        classpath 'com.moowork.gradle:gradle-node-plugin:0.8'
-        classpath "net.researchgate:gradle-release:2.0.0"
-        //classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.13'
-    }
 }
 
 plugins {
     id 'com.gorylenko.gradle-git-properties' version '1.4.17'
     id 'net.ltgt.errorprone' version '0.0.13'
+    id 'net.researchgate.release' version '2.6.0'
+    id 'org.springframework.boot' version '1.4.3.RELEASE'
+    id 'java'
+    id 'maven-publish'
+    id 'idea'
+    id 'jacoco'
+    id 'checkstyle'
 }
 
-apply plugin: 'java'
-//apply plugin: 'errorprone'
 sourceCompatibility=1.8
 targetCompatibility=1.8
-apply plugin: 'maven'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'idea'
-apply plugin: 'jacoco'
-apply plugin: 'checkstyle'
 
-//
-// Release (tag to git)
-// https://github.com/researchgate/gradle-release
-//
-apply plugin: 'net.researchgate.release'
 
 checkstyle {
     configFile = rootProject.file('gradle-config/checkstyle/checkstyle.xml')
     toolVersion = '8.8'
 }
-
 
 bootRepackage {
    mainClass = 'fi.helsinki.opintoni.Application'
@@ -188,7 +176,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.9'
+    gradleVersion = '4.6'
 }
 
 // Check for required properties
@@ -210,8 +198,6 @@ task wrapper(type: Wrapper) {
         throw new GradleException(msg)
     }
 }
-
-apply plugin: "maven-publish"
 
 publishing {
 
