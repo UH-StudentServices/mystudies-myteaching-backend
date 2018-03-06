@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandlers.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandlers.class);
 
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity handleNotFound() throws Exception {
@@ -64,7 +64,7 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<CommonError> handleException(Exception e) throws Exception {
         // Only log a brief info message on broken pipes
-        if(StringUtils.containsIgnoreCase(ExceptionUtils.getRootCauseMessage(e), "Broken pipe")) {
+        if (StringUtils.containsIgnoreCase(ExceptionUtils.getRootCauseMessage(e), "Broken pipe")) {
             LOGGER.info("Broken pipe occurred");
             return null;
         }

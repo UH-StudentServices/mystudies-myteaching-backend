@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 @Component
 public class UserSettingsConverter {
 
-    private final static Predicate<UserSettings> HAS_DEFAULT_BACKGROUND = (us) -> us.backgroundFilename != null;
+    private static final Predicate<UserSettings> HAS_DEFAULT_BACKGROUND = (us) -> us.backgroundFilename != null;
 
     private final UriBuilder uriBuilder;
 

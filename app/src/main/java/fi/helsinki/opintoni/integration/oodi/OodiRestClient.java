@@ -32,7 +32,7 @@ import java.util.Optional;
 
 public class OodiRestClient implements OodiClient {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(OodiRestClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OodiRestClient.class);
 
     private final String baseUrl;
     private final RestTemplate restTemplate;

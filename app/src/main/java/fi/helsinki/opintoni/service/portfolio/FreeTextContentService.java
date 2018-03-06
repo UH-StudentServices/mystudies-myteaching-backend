@@ -98,7 +98,7 @@ public class FreeTextContentService {
         freeTextContent.title = dto.title;
         freeTextContent.text = dto.text;
 
-        if(dto.portfolioSection != null) {
+        if (dto.portfolioSection != null) {
             freeTextContent.teacherPortfolioSection = TeacherPortfolioSection.valueOf(dto.portfolioSection);
         }
 

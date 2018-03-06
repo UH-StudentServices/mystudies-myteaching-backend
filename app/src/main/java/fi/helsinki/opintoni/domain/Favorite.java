@@ -58,5 +58,7 @@ public class Favorite extends AbstractAuditingEntity implements Ownership {
         return user.id;
     }
 
-    public boolean isPortfolio() { return portfolio; }
+    public boolean isPortfolio() {
+        return portfolio;
+    }
 }

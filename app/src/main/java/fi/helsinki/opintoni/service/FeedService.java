@@ -34,8 +34,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class FeedService {
-    private final static String FEED_CSS_SELECTOR = "link[type=application/rss+xml], link[type=application/atom+xml]";
-    private final static String FEED_HREF_ATTRIBUTE = "href";
+    private static final String FEED_CSS_SELECTOR = "link[type=application/rss+xml], link[type=application/atom+xml]";
+    private static final String FEED_HREF_ATTRIBUTE = "href";
 
     private final FeedConverter feedConverter;
     private final FeedClient feedClient;

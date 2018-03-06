@@ -77,7 +77,7 @@ import java.util.*;
 })
 public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final static int ONE_WEEK_IN_SECONDS = 604800;
+    private static final int ONE_WEEK_IN_SECONDS = 604800;
 
     private static final String SAML_CONFIG_FOLDER = "/config/saml";
 

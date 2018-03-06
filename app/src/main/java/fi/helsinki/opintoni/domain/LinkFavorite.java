@@ -79,7 +79,7 @@ public class LinkFavorite extends Favorite {
         private Integer thumbnailHeight;
         private boolean portfolio;
 
-        public LinkFavorite build(){
+        public LinkFavorite build() {
             return new LinkFavorite(this);
         }
 

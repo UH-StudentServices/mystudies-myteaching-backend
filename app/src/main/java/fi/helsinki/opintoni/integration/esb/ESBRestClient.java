@@ -31,7 +31,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class ESBRestClient implements ESBClient {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(OodiRestClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OodiRestClient.class);
 
     private final RestTemplate restTemplate;
     private final String baseUrl;

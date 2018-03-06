@@ -51,8 +51,8 @@ public class Application {
     /**
      * Initializes opintoni.
      * <p>
-     * Spring profiles can be configured with a program arguments --spring.profiles.active=your-active-profile
-     * <p>
+     *Spring profiles can be configured with a program arguments --spring.profiles.active=your-active-profile
+     * </p>
      */
     @PostConstruct
     public void initApplication() throws IOException {
@@ -87,7 +87,7 @@ public class Application {
     }
 
     /**
-     * Set a default profile if it has not been set
+     * Set a default profile if it has not been set.
      */
     private static void addDefaultProfile(SpringApplication app, SimpleCommandLinePropertySource source) {
         if (!source.containsProperty("spring.profiles.active")) {

@@ -58,7 +58,7 @@ public class PersistentCacheConfiguration extends CachingConfigurerSupport {
 
         @Override
         public void handleCacheGetError(RuntimeException exception, Cache cache, Object key) {
-           log.error("Caught exception when trying to get from cache", exception);
+            log.error("Caught exception when trying to get from cache", exception);
         }
 
         @Override
@@ -85,7 +85,7 @@ public class PersistentCacheConfiguration extends CachingConfigurerSupport {
 
         JedisShardInfo jedisShardInfo = new JedisShardInfo(redistHost, redisPort);
 
-        if(redisPassword != null) {
+        if (redisPassword != null) {
             jedisShardInfo.setPassword(redisPassword);
         }
 

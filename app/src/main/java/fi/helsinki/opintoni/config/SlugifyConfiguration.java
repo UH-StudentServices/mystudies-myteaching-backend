@@ -32,11 +32,11 @@ public class SlugifyConfiguration {
         Slugify slugify = new Slugify();
 
         slugify.setCustomReplacements(new HashMap<String, String>() {{
-            put("ä", "a");
-            put("å", "a");
-            put("ö", "o");
-        }});
-
+                put("ä", "a");
+                put("å", "a");
+                put("ö", "o");
+            }
+        });
         return slugify;
     }
 

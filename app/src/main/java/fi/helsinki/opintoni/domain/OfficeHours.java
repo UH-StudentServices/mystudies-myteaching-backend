@@ -17,12 +17,9 @@
 
 package fi.helsinki.opintoni.domain;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.persistence.*;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "office_hours")

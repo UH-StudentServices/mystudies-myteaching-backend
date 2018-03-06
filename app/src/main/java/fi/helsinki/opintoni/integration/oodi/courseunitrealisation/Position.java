@@ -31,7 +31,7 @@ public enum Position {
 
     public static Position getByValue(String value) {
         for (Position position : Position.values()) {
-            if(position.value.equals(value)) {
+            if (position.value.equals(value)) {
                 return position;
             }
         }

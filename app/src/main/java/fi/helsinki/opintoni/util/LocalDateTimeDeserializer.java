@@ -32,7 +32,7 @@ import static fi.helsinki.opintoni.service.TimeService.HELSINKI_ZONE_ID;
 
 public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(LocalDateTimeDeserializer.class);
+    private  static final Logger LOGGER = LoggerFactory.getLogger(LocalDateTimeDeserializer.class);
 
     public LocalDateTimeDeserializer() {
         this(null);
@@ -47,7 +47,7 @@ public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
         String dateString = jsonParser.getText();
         LocalDateTime localDateTime = null;
 
-        if(dateString != null && !dateString.isEmpty()) {
+        if( dateString != null && !dateString.isEmpty()) {
             try {
                 Instant instant = Instant.parse(dateString);
                 localDateTime = instant.atZone(HELSINKI_ZONE_ID).toLocalDateTime();

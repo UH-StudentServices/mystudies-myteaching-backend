@@ -74,8 +74,8 @@ public class ComponentHeadingService {
     public void delete(Long portfolioId, PortfolioComponent component) {
         componentHeadingRepository.findByPortfolioIdAndComponent(portfolioId, component)
             .map(componentHeading -> {
-               componentHeadingRepository.delete(componentHeading.id);
-               return true;
+                componentHeadingRepository.delete(componentHeading.id);
+                return true;
             });
     }
 }
