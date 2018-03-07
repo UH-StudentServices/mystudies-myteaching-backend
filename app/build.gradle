@@ -176,7 +176,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.6'
+    gradleVersion = '2.9'
 }
 
 // Check for required properties
