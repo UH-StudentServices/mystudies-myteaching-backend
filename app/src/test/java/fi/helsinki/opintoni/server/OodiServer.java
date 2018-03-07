@@ -26,6 +26,7 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 public class OodiServer extends AbstractRestServiceServer {
@@ -99,6 +100,12 @@ public class OodiServer extends AbstractRestServiceServer {
                     SampleDataFiles.toText("oodi/" + responseFile),
                     MediaType.APPLICATION_JSON)
             );
+    }
+
+    public void expectStudentStudyRightsRequestToRespondError(String studentNumber) {
+        server.expect(requestTo(studyRightsUrl(studentNumber)))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withServerError());
     }
 
     public void expectCourseUnitRealisationTeachersRequest(String realisationId) {

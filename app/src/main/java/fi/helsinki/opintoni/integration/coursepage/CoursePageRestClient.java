@@ -100,6 +100,7 @@ public class CoursePageRestClient implements CoursePageClient {
 
     }
 
+    @Override
     public List<CoursePageCourseImplementation> getCoursePages(List<String> courseImplementationIds, Locale locale) {
         return getCoursePageData(
             "/course_implementation/{courseImplementationIds}",
