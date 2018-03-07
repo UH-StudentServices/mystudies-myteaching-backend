@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PortfolioStudyAttainmentWhitelistServiceTest extends SpringTest {
 
-    private final static Long PORTFOLIO_ID = 1L;
+    private static final Long PORTFOLIO_ID = 1L;
     private static final Long OODI_ATTAINMENT_ID_1 = 1L;
     private static final Long OODI_ATTAINMENT_ID_2 = 2L;
     private static final Long OODI_ATTAINMENT_ID_3 = 3L;

@@ -34,7 +34,7 @@ public enum PortfolioRole {
 
     public static PortfolioRole fromValue(String role) {
         for (PortfolioRole portfolioRole : PortfolioRole.values()) {
-            if(portfolioRole.role.equals(role)){
+            if (portfolioRole.role.equals(role)) {
                 return portfolioRole;
             }
         }

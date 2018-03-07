@@ -24,7 +24,7 @@ import fi.helsinki.opintoni.dto.portfolio.ComponentOrderDto;
 import fi.helsinki.opintoni.repository.portfolio.ComponentOrderRepository;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-import fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentOrder.UpdateComponentOrderingRequest;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentorder.UpdateComponentOrderingRequest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -60,7 +60,7 @@ public class PrivateComponentOrderResourceTest extends SpringTest {
                 tuple(PortfolioComponent.WORK_EXPERIENCE, 2),
                 tuple(PortfolioComponent.ATTAINMENTS, 3),
                 tuple(PortfolioComponent.STUDIES, 4)
-        );
+            );
     }
 
     private UpdateComponentOrderingRequest updateRequest() {

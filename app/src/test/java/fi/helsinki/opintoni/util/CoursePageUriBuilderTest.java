@@ -19,12 +19,9 @@ package fi.helsinki.opintoni.util;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-import org.junit.Assert;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
-
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;

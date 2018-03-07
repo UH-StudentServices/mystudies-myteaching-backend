@@ -41,7 +41,7 @@ public class FeedConverter {
     }
 
     private List<FeedEntryDto> getEntries(SyndFeed syndFeed, int limit) {
-        if(syndFeed.getEntries() == null) {
+        if (syndFeed.getEntries() == null) {
             return null;
         } else {
             return syndFeed.getEntries().stream()

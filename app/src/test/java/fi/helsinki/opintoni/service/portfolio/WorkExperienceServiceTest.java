@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.service.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.portfolio.WorkExperienceDto;
-import fi.helsinki.opintoni.web.rest.privateapi.portfolio.workExperience.UpdateWorkExperience;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.workexperience.UpdateWorkExperience;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,7 +36,7 @@ public class WorkExperienceServiceTest extends SpringTest {
 
     @Test
     public void thatWorkExperienceIsSaved() {
-        Long portfolioId = 3L;
+        final Long portfolioId = 3L;
 
         UpdateWorkExperience workExperienceDto = new UpdateWorkExperience();
         workExperienceDto.jobTitle = "Jobtitle";

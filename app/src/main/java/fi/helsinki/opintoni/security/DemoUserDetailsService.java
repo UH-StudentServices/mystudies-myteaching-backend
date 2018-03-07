@@ -36,7 +36,8 @@ import static java.util.Collections.singletonList;
     Constants.SPRING_PROFILE_DEMO
 })
 public class DemoUserDetailsService implements UserDetailsService {
-    private final ImmutableMap<String, Supplier<UserDetails>> USER_CONF = ImmutableMap.of(
+
+    private final ImmutableMap<String, Supplier<UserDetails>> userConf = ImmutableMap.of(
         "e_jukola", this::newTeacher,
         "t_jukola", this::newOpenUniTeacher,
         "v_jukola", this::newStudent,
@@ -48,8 +49,8 @@ public class DemoUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) {
         String normalizedUsername = username.toLowerCase();
 
-        if(USER_CONF.containsKey(normalizedUsername)) {
-            return USER_CONF.get(normalizedUsername).get();
+        if (userConf.containsKey(normalizedUsername)) {
+            return userConf.get(normalizedUsername).get();
         } else {
             throw new UsernameNotFoundException("Unknown user: " + normalizedUsername);
         }
@@ -114,7 +115,7 @@ public class DemoUserDetailsService implements UserDetailsService {
             .email("doo_5@example.com")
             .commonName("Timo Jukola")
             .employeeNumber("007504")
-            .oodiPersonId( "109155647")
+            .oodiPersonId("109155647")
             .build();
     }
 }

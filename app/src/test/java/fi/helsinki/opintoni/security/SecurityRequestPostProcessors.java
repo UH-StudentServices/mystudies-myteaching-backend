@@ -37,7 +37,7 @@ public final class SecurityRequestPostProcessors {
         return new SecurityContextRequestPostProcessor(securityContext);
     }
 
-    private static abstract class SecurityContextRequestPostProcessorSupport {
+    private abstract static class SecurityContextRequestPostProcessorSupport {
 
         private final SecurityContextRepository repository = new HttpSessionSecurityContextRepository();
 
@@ -54,7 +54,7 @@ public final class SecurityRequestPostProcessors {
         }
     }
 
-    public final static class SecurityContextRequestPostProcessor
+    public static final class SecurityContextRequestPostProcessor
         extends SecurityContextRequestPostProcessorSupport implements RequestPostProcessor {
 
         private final SecurityContext securityContext;

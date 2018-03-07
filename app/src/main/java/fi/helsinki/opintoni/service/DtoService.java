@@ -35,6 +35,11 @@ public class DtoService {
             .orElseThrow(notFoundException("Not found"));
     }
 
+    public <T, R> R getDto(Supplier<T> getter,
+        Function<T, R> converter) {
+        return converter.apply(getter.get());
+    }
+
     public <T, R> List<R> getDtos(Long identifier,
                                   Function<Long, List<T>> getter,
                                   Function<T, R> converter) {
@@ -42,10 +47,4 @@ public class DtoService {
             .map(converter)
             .collect(Collectors.toList());
     }
-
-    public <T, R> R getDto(Supplier<T> getter,
-                           Function<T, R> converter) {
-        return converter.apply(getter.get());
-    }
-
 }

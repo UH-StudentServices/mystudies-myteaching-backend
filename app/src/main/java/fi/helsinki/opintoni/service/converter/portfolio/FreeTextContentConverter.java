@@ -30,7 +30,7 @@ public class FreeTextContentConverter {
         freeTextContentDto.text = freeTextContent.text;
         freeTextContentDto.instanceName = freeTextContent.instanceName;
 
-        if(freeTextContent.teacherPortfolioSection != null) {
+        if (freeTextContent.teacherPortfolioSection != null) {
             freeTextContentDto.portfolioSection = freeTextContent.teacherPortfolioSection.toString();
         }
 

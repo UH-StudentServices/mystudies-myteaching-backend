@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
-import antlr.StringUtils;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.sampledata.RSSFeedSampleData;
@@ -29,19 +28,13 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.Locale;
-
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class FavoriteResourceTest extends SpringTest {
 
@@ -186,7 +179,7 @@ public class FavoriteResourceTest extends SpringTest {
             .andExpect(jsonPath("$[1].url").value(feedUrl2));
     }
 
-    private ResultActions findRssFeed(String feedUrl) throws Exception{
+    private ResultActions findRssFeed(String feedUrl) throws Exception {
         String requestUrl = String.format(
             "/api/private/v1/favorites/rss/find?url=%s",
             feedUrl);

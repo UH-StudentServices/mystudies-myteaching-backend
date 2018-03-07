@@ -15,7 +15,7 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentOrder;
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentorder;
 
 import fi.helsinki.opintoni.dto.portfolio.ComponentOrderDto;
 

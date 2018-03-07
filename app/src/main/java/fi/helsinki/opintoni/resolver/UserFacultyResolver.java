@@ -22,11 +22,12 @@ import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiStudyRight;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.service.OodiUserRoleService;
-import static fi.helsinki.opintoni.service.converter.FacultyConverter.OPEN_UNIVERSITY_FACULTY_CODE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+import static fi.helsinki.opintoni.service.converter.FacultyConverter.OPEN_UNIVERSITY_FACULTY_CODE;
 
 @Component
 public class UserFacultyResolver {

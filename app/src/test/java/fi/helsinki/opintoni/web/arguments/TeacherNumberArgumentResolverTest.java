@@ -39,6 +39,7 @@ public class TeacherNumberArgumentResolverTest extends SpringTest {
     public void setUp() {
         resolver = new TeacherNumberArgumentResolver(securityUtils);
     }
+
     @Test
     public void supportsStringParameterWithTeacherNumberAnnotation() throws Exception {
         MethodParameter param = getMethodParam("helloTeacher", String.class);
@@ -79,7 +80,9 @@ public class TeacherNumberArgumentResolverTest extends SpringTest {
 
     private static class MyController {
         public void helloTeacher(@TeacherNumber String teacherNumber) {}
+
         public void hello(String teacherNumber) {}
+
         public void helloError(@TeacherNumber Long teacherNumber) {}
     }
 }

@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.integration.oodi;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.util.DateTimeUtil;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -78,7 +78,7 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
                     )
                 )
             )))
-            .andExpect(jsonPath("$.workExperience").value(Matchers.<List<WorkExperienceDto>>allOf(
+            .andExpect(jsonPath("$.workexperience").value(Matchers.<List<WorkExperienceDto>>allOf(
                 hasSize(1),
                 hasItem(
                     both(hasEntry("employer", "HY"))
@@ -88,8 +88,8 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
                         )
                 )
             )))
-            .andExpect(jsonPath("$.jobSearch").value(hasEntry("contactEmail", STUDENT_EMAIL)))
-            .andExpect(jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
+            .andExpect(jsonPath("$.jobsearch").value(hasEntry("contactEmail", STUDENT_EMAIL)))
+            .andExpect(jsonPath("$.freetextcontent").value(Matchers.<List<FreeTextContentDto>>allOf(
                 hasSize(2),
                 hasItem(
                     both(hasEntry("title", "Otsikko")).and(hasEntry("text", "Teksti"))
@@ -132,7 +132,7 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
     public void thatTeacherPortfolioContainsAllLinkedComponents() throws Exception {
         mockMvc.perform(get(TEACHER_PORTFOLIO_API_PATH + "/fi/opettaja")
             .with(securityContext(teacherSecurityContext())))
-            .andExpect(jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
+            .andExpect(jsonPath("$.freetextcontent").value(Matchers.<List<FreeTextContentDto>>allOf(
                 hasSize(2),
                 hasItem(
                     both(hasEntry("title", "Tekstikenttä osion sisällä"))

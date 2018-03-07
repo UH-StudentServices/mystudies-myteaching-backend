@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.service.usefullink;
 
 import fi.helsinki.opintoni.domain.UsefulLink;
 import fi.helsinki.opintoni.domain.User;
-import fi.helsinki.opintoni.resolver.UserFacultyResolver;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.service.OodiUserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;

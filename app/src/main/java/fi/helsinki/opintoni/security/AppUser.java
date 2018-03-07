@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.security;
 
 import com.google.common.collect.Sets;
-import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.security.authentication.BadCredentialsException;

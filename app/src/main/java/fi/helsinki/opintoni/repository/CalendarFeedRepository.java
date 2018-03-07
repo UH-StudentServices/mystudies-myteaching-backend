@@ -24,5 +24,6 @@ import java.util.Optional;
 
 public interface CalendarFeedRepository extends JpaRepository<CalendarFeed, Long> {
     Optional<CalendarFeed> findByUserId(Long userId);
+
     Optional<CalendarFeed> findByFeedId(String feedId);
 }

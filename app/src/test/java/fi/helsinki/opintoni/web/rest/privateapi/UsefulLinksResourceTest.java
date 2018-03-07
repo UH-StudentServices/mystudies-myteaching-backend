@@ -147,4 +147,4 @@ public class UsefulLinksResourceTest extends SpringTest {
             .andExpect(jsonPath("$[0].id").value(2))
             .andExpect(jsonPath("$[1].id").value(1));
     }
- }
+}

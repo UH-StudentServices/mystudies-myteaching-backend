@@ -67,7 +67,8 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
         AppUser.AppUserBuilder builder = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_PRINCIPAL_NAME))
             .eduPersonAffiliations(getEduPersonAffiliations(credential))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.fromValue(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_PRIMARY_AFFILIATION)))
+            .eduPersonPrimaryAffiliation(
+                SAMLEduPersonAffiliation.fromValue(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_PRIMARY_AFFILIATION)))
             .email(credential.getAttributeAsString(SAML_ATTRIBUTE_EMAIL))
             .commonName(credential.getAttributeAsString(SAML_ATTRIBUTE_COMMON_NAME))
             .oodiPersonId(credential.getAttributeAsString(SAML_ATTRIBUTE_OODI_UID))

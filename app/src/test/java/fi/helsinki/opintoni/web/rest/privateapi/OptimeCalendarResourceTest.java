@@ -29,10 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class OptimeCalendarResourceTest extends SpringTest {
 
-    private final String API_URL = "/api/private/v1/optime/calendar";
-    private final String TEACHER_NUMBER = "010540";
+    private static final String API_URL = "/api/private/v1/optime/calendar";
+    private static final String TEACHER_NUMBER = "010540";
 
-    private final String EXPECTED_CALENDAR_URL = "https://optime.example.com/IcalService/staff/99999";
+    private static final String EXPECTED_CALENDAR_URL = "https://optime.example.com/IcalService/staff/99999";
 
     @Test
     public void thatCalendarUrlIsReturned() throws Exception {

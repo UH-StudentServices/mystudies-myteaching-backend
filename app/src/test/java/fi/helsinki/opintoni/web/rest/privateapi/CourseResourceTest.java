@@ -18,39 +18,32 @@
 package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.localization.Language;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
-import javax.servlet.http.Cookie;
-import java.util.Locale;
-
-import static fi.helsinki.opintoni.localization.Language.EN;
-import static fi.helsinki.opintoni.localization.Language.FI;
-import static fi.helsinki.opintoni.localization.Language.SV;
+import static fi.helsinki.opintoni.localization.Language.*;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CourseResourceTest extends SpringTest {
 
-    private final static String LEARNING_OPPORTUNITY_ID_FIRST = "405437";
-    private final static String LEARNING_OPPORTUNITY_ID_SECOND = "405438";
-    private final static String LEARNING_OPPORTUNITY_IDS = "405437,405438";
+    private static final String LEARNING_OPPORTUNITY_ID_FIRST = "405437";
+    private static final String LEARNING_OPPORTUNITY_ID_SECOND = "405438";
+    private static final String LEARNING_OPPORTUNITY_IDS = "405437,405438";
 
-    private final static String EXPECTED_FIRST_COURSE_NAME_FI = "VIE-alueen historian tulkinnat (XAK291V)";
-    private final static String EXPECTED_FIRST_COURSE_NAME_EN = "Historical Interpretations of Russia and Eastern Europe (XAK291V)";
-    private final static String EXPECTED_FIRST_COURSE_NAME_SV = "Historiska tolkningar om Ryssland och Östeuropa (XAK291V)";
+    private static final String EXPECTED_FIRST_COURSE_NAME_FI = "VIE-alueen historian tulkinnat (XAK291V)";
+    private static final String EXPECTED_FIRST_COURSE_NAME_EN = "Historical Interpretations of Russia and Eastern Europe (XAK291V)";
+    private static final String EXPECTED_FIRST_COURSE_NAME_SV = "Historiska tolkningar om Ryssland och Östeuropa (XAK291V)";
 
-    private final static String EXPECTED_SECOND_COURSE_NAME_FI = "VIE-alueen historian tulkinnat (B)";;
-    private final static String EXPECTED_SECOND_COURSE_NAME_EN = "Historical Interpretations of Russia and Eastern Europe (B)";
-    private final static String EXPECTED_SECOND_COURSE_NAME_SV = "Historiska tolkningar om Ryssland och Östeuropa (B)";
+    private static final String EXPECTED_SECOND_COURSE_NAME_FI = "VIE-alueen historian tulkinnat (B)";
+    private static final String EXPECTED_SECOND_COURSE_NAME_EN = "Historical Interpretations of Russia and Eastern Europe (B)";
+    private static final String EXPECTED_SECOND_COURSE_NAME_SV = "Historiska tolkningar om Ryssland och Östeuropa (B)";
 
-    private void testCourseNamesWithLocale(Language lang, String expectedFirstName, String expectedSecondName) throws Exception{
+    private void testCourseNamesWithLocale(Language lang, String expectedFirstName, String expectedSecondName) throws Exception {
         defaultOodiCourseNamesRequestChain().courseName(LEARNING_OPPORTUNITY_ID_FIRST, "learningopportunity_a.json");
         defaultOodiCourseNamesRequestChain().courseName(LEARNING_OPPORTUNITY_ID_SECOND, "learningopportunity_b.json");
 

@@ -24,7 +24,6 @@ import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;
 import fi.helsinki.opintoni.repository.portfolio.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -88,20 +87,20 @@ public class PrivateFreeTextContentResourceTest extends SpringTest {
             .andExpect(jsonPath("$.instanceName").value(MANUALLY_ASSIGNED_INSTANCE_NAME));
     }
 
-   @Test
-   public void thatFreeTextContentItemIsUpdated() throws Exception {
-       FreeTextContentDto freeTextContentDto = new FreeTextContentDto();
-       freeTextContentDto.title = NEW_TITLE;
-       freeTextContentDto.text = NEW_TEXT;
+    @Test
+    public void thatFreeTextContentItemIsUpdated() throws Exception {
+        FreeTextContentDto freeTextContentDto = new FreeTextContentDto();
+        freeTextContentDto.title = NEW_TITLE;
+        freeTextContentDto.text = NEW_TEXT;
 
-       mockMvc.perform(put(resourcePath(STUDENT_PORTFOLIO_ID, FREE_TEXT_CONTENT_ITEM_ID))
-           .with(securityContext(studentSecurityContext()))
-           .content(WebTestUtils.toJsonBytes(freeTextContentDto))
-           .contentType(MediaType.APPLICATION_JSON))
-           .andExpect(status().isOk())
-           .andExpect(jsonPath("$.title").value(NEW_TITLE))
-           .andExpect(jsonPath("$.text").value(NEW_TEXT));
-   }
+        mockMvc.perform(put(resourcePath(STUDENT_PORTFOLIO_ID, FREE_TEXT_CONTENT_ITEM_ID))
+            .with(securityContext(studentSecurityContext()))
+            .content(WebTestUtils.toJsonBytes(freeTextContentDto))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.title").value(NEW_TITLE))
+            .andExpect(jsonPath("$.text").value(NEW_TEXT));
+    }
 
     @Test
     public void thatFreeTextContentItemIsDeletedAlongWithMatchingComponentVisibility() throws Exception {

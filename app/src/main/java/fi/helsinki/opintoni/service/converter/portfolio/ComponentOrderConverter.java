@@ -30,7 +30,7 @@ public class ComponentOrderConverter {
         componentOrderDto.component = componentOrder.component;
         componentOrderDto.orderValue = componentOrder.orderValue;
 
-        if(componentOrder.instanceName != null) {
+        if (componentOrder.instanceName != null) {
             componentOrderDto.instanceName = componentOrder.instanceName;
         }
 

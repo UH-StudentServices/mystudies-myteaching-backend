@@ -62,7 +62,8 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 "DTSTART;TZID=Europe/Helsinki:20161219T141500",
                 "DTEND;TZID=Europe/Helsinki:20161219T154500",
                 "SUMMARY:Formulat... Harjoitus II (en)",
-                "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11\\, Päärakennus\\, sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11",
+                "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11\\, Päärakennus\\, "
+                    + "sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11",
                 "UID:"),
             eventToString(
                 "BEGIN:VEVENT",

@@ -66,7 +66,7 @@ public class CourseConverter {
     public Optional<CourseDto> toDto(OodiEnrollment oodiEnrollment, Locale locale) {
         CourseDto dto = null;
 
-        if(!isPositionStudygroupset(oodiEnrollment.position)) {
+        if (!isPositionStudygroupset(oodiEnrollment.position)) {
             CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiEnrollment.realisationId, locale);
 
             dto = new CourseDto(
@@ -96,7 +96,7 @@ public class CourseConverter {
     public Optional<CourseDto> toDto(OodiTeacherCourse oodiTeacherCourse, Locale locale, boolean isChildCourseWithoutRoot) {
         CourseDto dto = null;
 
-        if(!isPositionStudygroupset(oodiTeacherCourse.position)) {
+        if (!isPositionStudygroupset(oodiTeacherCourse.position)) {
             CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiTeacherCourse.realisationId, locale);
 
             dto = new CourseDto(

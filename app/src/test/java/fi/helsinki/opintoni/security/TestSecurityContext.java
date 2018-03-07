@@ -39,14 +39,14 @@ public class TestSecurityContext {
         return teacherSecurityContext(TEACHER_USERNAME, PASSWORD);
     }
 
-    public static SecurityContext teacherWithoutPortfolioSecurityContext() {
-        return teacherSecurityContext(TEACHER_WITHOUT_PORTFOLIO_USERNAME, PASSWORD);
-    }
-
     public static SecurityContext teacherSecurityContext(String username, String password) {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(username, password));
         return securityContext;
+    }
+
+    public static SecurityContext teacherWithoutPortfolioSecurityContext() {
+        return teacherSecurityContext(TEACHER_WITHOUT_PORTFOLIO_USERNAME, PASSWORD);
     }
 
     public static SecurityContext hybridUserSecurityContext() {

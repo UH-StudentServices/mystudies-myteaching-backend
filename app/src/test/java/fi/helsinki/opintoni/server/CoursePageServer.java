@@ -73,14 +73,6 @@ public class CoursePageServer extends AbstractRestServiceServer {
         expectCourseImplementationChangesRequest(sinceDate, "coursepage/course_implementation_changes.json");
     }
 
-    public void expectCourseImplementationChangesRequestWhenMultipleChanges(LocalDateTime sinceDate) {
-        expectCourseImplementationChangesRequest(sinceDate, "coursepage/course_implementation_changes_multiple.json");
-    }
-
-    public void expectCourseImplementationChangesRequestWhenNoChanges(LocalDateTime sinceDate) {
-        expectCourseImplementationChangesRequest(sinceDate, "coursepage/course_implementation_changes_no_changes.json");
-    }
-
     private void expectCourseImplementationChangesRequest(LocalDateTime sinceDate, String responseFile) {
         server.expect(requestTo(courseImplementationChangesUrl(sinceDate)))
             .andExpect(method(HttpMethod.GET))
@@ -88,6 +80,14 @@ public class CoursePageServer extends AbstractRestServiceServer {
                 SampleDataFiles.toText(responseFile),
                 MediaType.APPLICATION_JSON
             ));
+    }
+
+    public void expectCourseImplementationChangesRequestWhenMultipleChanges(LocalDateTime sinceDate) {
+        expectCourseImplementationChangesRequest(sinceDate, "coursepage/course_implementation_changes_multiple.json");
+    }
+
+    public void expectCourseImplementationChangesRequestWhenNoChanges(LocalDateTime sinceDate) {
+        expectCourseImplementationChangesRequest(sinceDate, "coursepage/course_implementation_changes_no_changes.json");
     }
 
     public void expectCourseImplementationChangesRequestToRespondError(LocalDateTime sinceDate) {

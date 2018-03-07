@@ -117,9 +117,9 @@ public class PortfolioConverter {
     private void fetchPortfolioComponents(Portfolio portfolio,
                                           PortfolioDto portfolioDto,
                                           ComponentFetchStrategy componentFetchStrategy) {
-        if(componentFetchStrategy == ComponentFetchStrategy.ALL) {
+        if (componentFetchStrategy == ComponentFetchStrategy.ALL) {
             fetchAllComponents(portfolio, portfolioDto);
-        } else if(componentFetchStrategy == ComponentFetchStrategy.PUBLIC) {
+        } else if (componentFetchStrategy == ComponentFetchStrategy.PUBLIC) {
             fetchPublicComponents(portfolio, portfolioDto);
         }
     }
@@ -133,7 +133,7 @@ public class PortfolioConverter {
         List<ComponentVisibilityDto> visibilities = componentVisibilityService.findByPortfolioId(portfolio.id);
         Map<String, List<ComponentVisibilityDto>> visibilitiesByComponentType;
 
-        if(portfolio.portfolioRole == PortfolioRole.TEACHER) {
+        if (portfolio.portfolioRole == PortfolioRole.TEACHER) {
             List<TeacherPortfolioSection> publicSections = getPublicTeacherPortfolioSections(visibilities);
 
             visibilitiesByComponentType = visibilities.stream()

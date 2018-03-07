@@ -47,9 +47,16 @@ public class CoursePageRestClient implements CoursePageClient {
     public <T> List<T> getCoursePageData(
         String path,
         ParameterizedTypeReference<List<T>> typeReference,
-        Locale locale,
         Object... uriVariables) {
 
+        return getCoursePageData(path, typeReference, null, uriVariables);
+    }
+
+    public <T> List<T> getCoursePageData(
+        String path,
+        ParameterizedTypeReference<List<T>> typeReference,
+        Locale locale,
+        Object... uriVariables) {
         String url = getCoursePageApiUrl(path, locale);
 
         try {
@@ -58,14 +65,6 @@ public class CoursePageRestClient implements CoursePageClient {
             log.error("Caught exception when calling Course Pages URL " + url, e);
             throw new CoursePageIntegrationException(e.getMessage(), e);
         }
-    }
-
-    public <T> List<T> getCoursePageData(
-        String path,
-        ParameterizedTypeReference<List<T>> typeReference,
-        Object... uriVariables) {
-
-        return getCoursePageData(path, typeReference, null, uriVariables);
     }
 
     private String getCoursePageApiUrl(String path, Locale locale) {
@@ -98,6 +97,7 @@ public class CoursePageRestClient implements CoursePageClient {
 
     }
 
+    @Override
     public List<CoursePageCourseImplementation> getCoursePages(List<String> courseImplementationIds, Locale locale) {
         return getCoursePageData(
             "/course_implementation/{courseImplementationIds}",

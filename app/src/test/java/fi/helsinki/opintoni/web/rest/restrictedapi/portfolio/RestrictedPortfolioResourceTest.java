@@ -59,9 +59,9 @@ public class RestrictedPortfolioResourceTest extends RestrictedPortfolioTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.contactInformation").isEmpty())
             .andExpect(jsonPath("$.degrees").isEmpty())
-            .andExpect(jsonPath("$.workExperience").isEmpty())
-            .andExpect(jsonPath("$.jobSearch").isEmpty())
-            .andExpect(jsonPath("$.freeTextContent").isEmpty())
+            .andExpect(jsonPath("$.workexperience").isEmpty())
+            .andExpect(jsonPath("$.jobsearch").isEmpty())
+            .andExpect(jsonPath("$.freetextcontent").isEmpty())
             .andExpect(jsonPath("$.languageProficiencies").isEmpty())
             .andExpect(jsonPath("$.keywords").isEmpty())
             .andExpect(jsonPath("$.summary").isEmpty())
@@ -75,7 +75,7 @@ public class RestrictedPortfolioResourceTest extends RestrictedPortfolioTest {
         mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + TEACHER_PORTFOLIO_PATH)
             .with(securityContext(teacherSecurityContext())))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
+            .andExpect(jsonPath("$.freetextcontent").value(Matchers.<List<FreeTextContentDto>>allOf(
                 hasSize(1),
                 hasItem(
                     both(hasEntry("title", "Globaali tekstikenttä")).and(hasEntry("text", "bla bla bla"))
@@ -110,7 +110,7 @@ public class RestrictedPortfolioResourceTest extends RestrictedPortfolioTest {
         mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + STUDENT_PORTFOLIO_PATH)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
-            .andExpect((jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
+            .andExpect((jsonPath("$.freetextcontent").value(Matchers.<List<FreeTextContentDto>>allOf(
                 hasSize(1),
                 hasItem(
                     hasEntry("instanceName", PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME)

@@ -61,16 +61,16 @@ public class FavoriteService {
         return findByUserId(userId, false);
     }
 
-    public List<FavoriteDto> findByUserIdForPortfolio(final Long userId) {
-        return findByUserId(userId, true);
-    }
-
     private List<FavoriteDto> findByUserId(final Long userId, final boolean portfolio) {
         return favoriteRepository.findByUserIdOrderByOrderIndexAsc(userId)
             .stream()
             .filter(f -> f.isPortfolio() == portfolio)
             .map(favoriteConverter::toDto)
             .collect(Collectors.toList());
+    }
+
+    public List<FavoriteDto> findByUserIdForPortfolio(final Long userId) {
+        return findByUserId(userId, true);
     }
 
     public FavoriteDto saveRssFavorite(Long userId, SaveRssFavoriteRequest saveRssFavoriteRequest) {
@@ -141,10 +141,6 @@ public class FavoriteService {
         return insertTwitterFavorite(userId, request, false);
     }
 
-    public FavoriteDto insertTwitterFavoriteForPortfolio(Long userId, InsertTwitterFavoriteRequest request) {
-        return insertTwitterFavorite(userId, request, true);
-    }
-
     private FavoriteDto insertTwitterFavorite(Long userId, InsertTwitterFavoriteRequest request, boolean portfolio) {
         TwitterFavorite favorite = new TwitterFavorite();
         favorite.type = Favorite.Type.TWITTER;
@@ -157,6 +153,10 @@ public class FavoriteService {
 
         favoriteRepository.save(favorite);
         return favoriteConverter.toDto(favorite);
+    }
+
+    public FavoriteDto insertTwitterFavoriteForPortfolio(Long userId, InsertTwitterFavoriteRequest request) {
+        return insertTwitterFavorite(userId, request, true);
     }
 
     public void orderPortfolioFavorites(final Long userId, final List<Long> orderedFavoriteIds) {

@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivateCalendarFeedResourceTest extends SpringTest {
 
-    private final String CALENDAR_API_URL = "/api/private/v1/calendar";
+    private static final String CALENDAR_API_URL = "/api/private/v1/calendar";
 
     @Test
     public void thatCalendarFeedIsCreated() throws Exception {

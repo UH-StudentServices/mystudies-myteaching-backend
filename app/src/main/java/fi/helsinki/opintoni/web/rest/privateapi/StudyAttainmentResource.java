@@ -56,7 +56,7 @@ public class StudyAttainmentResource extends AbstractResource {
             @RequestParam(value = "limit", defaultValue = "8") int limit,
             @RequestParam(value = "lang", required = false) String langParam,
             Locale locale
-            ) {
+    ) {
         Locale queryLocale;
 
         if (langParam == null) {

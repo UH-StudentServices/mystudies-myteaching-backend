@@ -57,10 +57,10 @@ public class WebTestUtils {
         List<Integer> dateElements = new ArrayList<>();
         dateElements.addAll(fixedDateElements);
 
-        if(localDateTime.getNano() > 0) {
+        if (localDateTime.getNano() > 0) {
             dateElements.add(localDateTime.getSecond());
             dateElements.add(localDateTime.getNano());
-        } else if(localDateTime.getSecond() > 0) {
+        } else if (localDateTime.getSecond() > 0) {
             dateElements.add(localDateTime.getSecond());
         }
 

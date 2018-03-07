@@ -51,7 +51,9 @@ public class SAMLContextProviderReverseProxy extends SAMLContextProviderImpl {
             sb.append("https://").append(getServerName());
             sb.append(getContextPath());
             sb.append(getServletPath());
-            if (getPathInfo() != null) sb.append(getPathInfo());
+            if (getPathInfo() != null) {
+                sb.append(getPathInfo());
+            }
             return sb;
         }
 

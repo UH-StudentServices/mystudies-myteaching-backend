@@ -53,9 +53,9 @@ public class PrivateComponentHeadingResource extends AbstractResource {
     public ResponseEntity<ComponentHeadingDto> upsert(@UserId Long userId,
                                                       @PathVariable Long portfolioId,
                                                       @RequestBody ComponentHeadingDto requestDto) {
-       permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
+        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
 
-       return response(componentHeadingService.upsert(portfolioId, requestDto));
+        return response(componentHeadingService.upsert(portfolioId, requestDto));
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{component}")

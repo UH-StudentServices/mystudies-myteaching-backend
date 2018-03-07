@@ -17,21 +17,13 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
-
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.config.Constants;
-import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.WebConstants;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
-import javax.servlet.http.Cookie;
-import java.util.Locale;
-
-import static fi.helsinki.opintoni.localization.Language.*;
+import static fi.helsinki.opintoni.localization.Language.EN;
 import static fi.helsinki.opintoni.localization.Language.FI;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;

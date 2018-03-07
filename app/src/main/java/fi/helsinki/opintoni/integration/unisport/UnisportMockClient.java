@@ -40,7 +40,7 @@ public class UnisportMockClient implements UnisportClient {
 
     @Override
     public Optional<UnisportUser> getUnisportUserByPrincipal(String username) {
-        if(username.equals("opettaja@helsinki.fi")) {
+        if (username.equals("opettaja@helsinki.fi")) {
             return Optional.empty();
         } else {
             return Optional.ofNullable(getResponse(userResource, new TypeReference<UnisportUser>() {}));

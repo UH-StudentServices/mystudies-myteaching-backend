@@ -40,7 +40,7 @@ public enum SAMLEduPersonAffiliation {
 
     public static SAMLEduPersonAffiliation fromValue(String value) {
         for (SAMLEduPersonAffiliation samlEduPersonAffiliation : SAMLEduPersonAffiliation.values()) {
-            if(samlEduPersonAffiliation.value.equals(value)){
+            if (samlEduPersonAffiliation.value.equals(value)) {
                 return samlEduPersonAffiliation;
             }
         }

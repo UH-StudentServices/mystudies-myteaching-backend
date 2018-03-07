@@ -137,7 +137,7 @@ public class NotificationResourceTest extends SpringTest {
     public void thatNewScheduleIsInsertedToNotification() throws Exception {
         NotificationDto notification = createNotification();
 
-        long id = extractNotificationIdFromResponse(postNewNotification(notification).andReturn().getResponse().getContentAsString());
+        final long id = extractNotificationIdFromResponse(postNewNotification(notification).andReturn().getResponse().getContentAsString());
 
         NotificationScheduleDto notificationSchedule = new NotificationScheduleDto();
 
@@ -185,7 +185,8 @@ public class NotificationResourceTest extends SpringTest {
 
         notification.schedules.remove(scheduleIndexToRemove);
 
-        ResultActions deleteScheduleResult = mockMvc.perform(delete(NOTIFICATION_RESOURCE_PATH + String.format("/%s/schedules/%s", notificationId, scheduleIdToDelete))
+        ResultActions deleteScheduleResult = mockMvc.perform(
+            delete(NOTIFICATION_RESOURCE_PATH + String.format("/%s/schedules/%s", notificationId, scheduleIdToDelete))
             .with(securityContext(teacherSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());

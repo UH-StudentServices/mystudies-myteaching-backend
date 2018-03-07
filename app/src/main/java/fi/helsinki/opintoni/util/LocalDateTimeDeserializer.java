@@ -47,7 +47,7 @@ public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
         String dateString = jsonParser.getText();
         LocalDateTime localDateTime = null;
 
-        if( dateString != null && !dateString.isEmpty()) {
+        if (dateString != null && !dateString.isEmpty()) {
             try {
                 Instant instant = Instant.parse(dateString);
                 localDateTime = instant.atZone(HELSINKI_ZONE_ID).toLocalDateTime();

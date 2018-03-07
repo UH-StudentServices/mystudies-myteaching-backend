@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.web.requestchain;
 
 import fi.helsinki.opintoni.server.OodiServer;
-import fi.helsinki.opintoni.web.TestConstants;
 
 public class OodiCourseNamesRequestChain {
     private final OodiServer oodiServer;

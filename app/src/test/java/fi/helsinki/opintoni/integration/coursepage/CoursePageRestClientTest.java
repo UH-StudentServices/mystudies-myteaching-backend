@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.integration.coursepage;
 import fi.helsinki.opintoni.SpringTest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 
 import java.util.Locale;

@@ -63,7 +63,7 @@ public class CourseService {
         List<OodiTeacherCourse> oodiTeacherCourses = oodiClient
             .getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()));
 
-          Map<String, OodiTeacherCourse> coursesByRealisationIds = oodiTeacherCourses.stream()
+        Map<String, OodiTeacherCourse> coursesByRealisationIds = oodiTeacherCourses.stream()
               .collect(Collectors.toMap(c -> c.realisationId, Function.identity()));
 
         return oodiTeacherCourses

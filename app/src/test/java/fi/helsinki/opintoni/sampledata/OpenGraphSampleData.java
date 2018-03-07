@@ -23,7 +23,8 @@ public class OpenGraphSampleData {
 
     public static final String TYPE = "article";
 
-    public static final String DESCRIPTION = "Sofia Ruusila-Nousiainen kisaa Suomen fitness-huippuja vastaan Lahdessa 10–11. lokakuuta järjestettävässä bikini fitness -finaalissa.";
+    public static final String DESCRIPTION =
+        "Sofia Ruusila-Nousiainen kisaa Suomen fitness-huippuja vastaan Lahdessa 10–11. lokakuuta järjestettävässä bikini fitness -finaalissa.";
 
     public static final String IMAGE = "http://is11.snstatic.fi/img/1920/1443678724749.jpg";
 

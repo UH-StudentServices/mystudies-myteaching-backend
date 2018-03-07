@@ -26,6 +26,8 @@ import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.security.AppUser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,8 @@ import java.util.Locale;
 
 @Service
 public class UsefulLinkService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UsefulLinkService.class);
 
     private final RestTemplate linkUrlLoaderRestTemplate;
     private final UsefulLinkTransactionalService usefulLinkTransactionalService;
@@ -98,6 +102,7 @@ public class UsefulLinkService {
                 searchPageTitleDto.searchResult = document.title();
             }
         } catch (Exception e) {
+            LOGGER.error("Error when searching gor page title with url: {}: {}", searchPageTitleDto.searchUrl, e.getMessage());
         }
         return searchPageTitleDto;
     }

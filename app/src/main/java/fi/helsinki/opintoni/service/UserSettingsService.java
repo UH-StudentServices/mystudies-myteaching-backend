@@ -105,7 +105,7 @@ public class UserSettingsService {
             .map(u -> userSettingsRepository.findByUserId(u.id))
             .orElseThrow(notFoundException("Background not found"));
 
-        if(userSettings.backgroundFilename != null) {
+        if (userSettings.backgroundFilename != null) {
             return backgroundImageService.getDefaultBackgroundImage(userSettings.backgroundFilename);
         } else {
             return backgroundImageService.getCustomBackgroundImage(userSettings.uploadedBackgroundFilename);

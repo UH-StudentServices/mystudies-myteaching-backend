@@ -43,14 +43,15 @@ public class AvatarImageService {
         return getAvatarImageUrl(uriBuilder::getDefaultUserAvatarUrl, userId);
     }
 
-    public String getPortfolioAvatarImageUrl(Long userId) {
-        return getAvatarImageUrl(uriBuilder::getPortfolioDefaultUserAvatarUrl, userId);
-    }
-
     private String getAvatarImageUrl(Supplier<String> defaultAvatarUrlSupplier, Long userId) {
         UserSettings userSettings = userSettingsRepository.findByUserId(userId);
         return userSettings.hasAvatarImage() ?
             uriBuilder.getUserAvatarUrlByOodiPersonId(userSettings.user.oodiPersonId) :
             defaultAvatarUrlSupplier.get();
     }
+
+    public String getPortfolioAvatarImageUrl(Long userId) {
+        return getAvatarImageUrl(uriBuilder::getPortfolioDefaultUserAvatarUrl, userId);
+    }
+
 }

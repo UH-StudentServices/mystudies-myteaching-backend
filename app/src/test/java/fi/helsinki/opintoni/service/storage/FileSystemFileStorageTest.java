@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class FileSystemFileStorageTest {
 
-    private final String FILENAME = "alhfj09325qwnrfsalfkfas7809.jpg";
+    private static final String FILENAME = "alhfj09325qwnrfsalfkfas7809.jpg";
 
     @Mock
     private AppConfiguration appConfiguration;
@@ -66,7 +66,7 @@ public class FileSystemFileStorageTest {
         verify(fileService, times(1)).remove(argThat(new FileMatcher()));
     }
 
-    class FileMatcher implements ArgumentMatcher<File> {
+    static class FileMatcher implements ArgumentMatcher<File> {
 
         @Override
         public boolean matches(File file) {

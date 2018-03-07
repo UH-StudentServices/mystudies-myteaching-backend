@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.server;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
-import fi.helsinki.opintoni.sampledata.SampleDataFiles;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -58,7 +57,7 @@ public class GuideNewsServer extends AbstractRestServiceServer {
 
 
     public void expectGuideProgrammeNewsFi(String programmeDegreeCode, String responseFile) {
-        server.expect(requestTo(guideNewsPathFi + "?degree_programme_code="+programmeDegreeCode))
+        server.expect(requestTo(guideNewsPathFi + "?degree_programme_code=" + programmeDegreeCode))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(toText("newsfeeds/guide/" + responseFile), MediaType.TEXT_XML));
     }

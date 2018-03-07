@@ -34,9 +34,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PortfolioKeywordRelationshipServiceTest extends SpringTest {
 
-    private final static Long PORTFOLIO_ID_WITH_NO_KEYWORDS = 1L;
-    private final static Long PORTFOLIO_ID_WITH_EXISTING_KEYWORDS = 2L;
-    private final static String KEYWORD_TITLE = "Keyword 1";
+    private static final Long PORTFOLIO_ID_WITH_NO_KEYWORDS = 1L;
+    private static final Long PORTFOLIO_ID_WITH_EXISTING_KEYWORDS = 2L;
+    private static final String KEYWORD_TITLE = "Keyword 1";
 
     @Autowired
     private PortfolioKeywordRelationshipService portfolioKeywordRelationshipService;
