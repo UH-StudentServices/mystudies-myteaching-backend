@@ -6,6 +6,6 @@ cd app
 
 # store the last exit code in a variable
 RESULT=$?
-
+echo  $RESULT
 # return the './gradlew test' exit code
 exit $RESULT
