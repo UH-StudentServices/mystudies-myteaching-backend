@@ -20,16 +20,15 @@ package fi.helsinki.opintoni.integration.newsfeeds;
 import com.google.common.collect.ImmutableMap;
 import com.rometools.rome.feed.atom.Feed;
 import java.util.Locale;
-import java.util.Map;
 
 public class FlammaMockClient extends NewsFeedsMockClient implements FlammaClient {
 
     private static final String MOCK_DATA_BASE = "/sampledata/newsfeeds/flamma/";
 
     private static final ImmutableMap<String, String> STUDENT_FILES = ImmutableMap.of(
-        "fi", "atom-news.xml",
-        "sv", "atom-news-sv.xml",
-        "en", "atom-news-en.xml");
+        "fi", "atom-tiedotteet-opiskelijalle.xml",
+        "sv", "atom-tiedotteet-opiskelijalle-sv.xml",
+        "en", "atom-tiedotteet-opiskelijalle-en.xml");
 
     private static final ImmutableMap<String, String> TEACHER_FILES = ImmutableMap.of(
         "fi", "atom-tiedotteet-opetusasiat.xml",
