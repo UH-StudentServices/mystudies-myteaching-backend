@@ -260,8 +260,8 @@ tasks.create(name: 'installPrepushHook') << {
 task installGitHooks(type: Copy) {
     from '.'
     into '../.git/hooks'
-    include 'pre-push.sh'
-    rename ('pre-push.sh','pre-push')
+    include 'pre-push-for-git.sh'
+    rename ('pre-push-for-git.sh','pre-push')
 }
 
 installPrepushHook.dependsOn installGitHooks
