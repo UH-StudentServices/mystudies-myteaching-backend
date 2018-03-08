@@ -18,7 +18,7 @@
 
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>Flamma-uutiset</title>
-    <link href="https://flamma.helsinki.fi/infotaulu/atom-news.xml" rel="self" />
+    <link href="https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opiskelijalle.xml" rel="self" />
     <id>https://flamma.helsinki.fi/infotaulu/atom-news.xml</id>
     <author>Verkkoviestinta</author>
     <updated>2017-10-09T04:49:04Z</updated>

@@ -19,17 +19,10 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.config.Constants;
-import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.WebConstants;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.junit.Test;
 import org.springframework.http.MediaType;
-
-import javax.servlet.http.Cookie;
-import java.util.Locale;
 
 import static fi.helsinki.opintoni.localization.Language.*;
 import static fi.helsinki.opintoni.localization.Language.FI;
@@ -193,6 +186,32 @@ public class NewsResourceTest extends SpringTest {
 
         performGetNewsForStudentsWithChecks();
         performGetNewsForStudentsWithChecks();
+    }
+
+    @Test
+    public void thatFlammaNewsAreReturnedIfOodiIsDown() throws Exception {
+        flammaServer.expectStudentNews();
+        oodiServer.expectStudentStudyRightsRequestToRespondError(TestConstants.STUDENT_NUMBER);
+        guideNewsServer.expectGuideNewsFi();
+
+        mockMvc.perform(get("/api/private/v1/news/student")
+            .with(securityContext(studentSecurityContext()))
+            .characterEncoding("UTF-8")
+            .contentType(MediaType.APPLICATION_JSON)
+            .cookie(langCookie(FI))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(4)))
+
+            .andExpect(jsonPath("$[0].title").value("Flammatitle1"))
+            .andExpect(jsonPath("$[0].url").value("https://flamma.helsinki.fi/fi/flammatitle1"))
+            .andExpect(jsonPath("$[0].content").value("Flammacontent1"))
+
+            .andExpect(jsonPath("$[1].title").value("Guidetitle1"))
+            .andExpect(jsonPath("$[1].url").value("https://guide.student.helsinki.fi/fi/guidetitle1"))
+            .andExpect(jsonPath("$[1].content").value("Guidesummary1"));
     }
 
     private void performGetNewsForStudentsWithChecks() throws Exception {
