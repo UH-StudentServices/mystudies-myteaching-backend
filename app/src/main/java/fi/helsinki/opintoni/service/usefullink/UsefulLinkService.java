@@ -41,7 +41,7 @@ import java.util.Locale;
 @Service
 public class UsefulLinkService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UsefulLinkService.class);
+    private static final Logger log = LoggerFactory.getLogger(UsefulLinkService.class);
 
     private final RestTemplate linkUrlLoaderRestTemplate;
     private final UsefulLinkTransactionalService usefulLinkTransactionalService;
@@ -102,7 +102,7 @@ public class UsefulLinkService {
                 searchPageTitleDto.searchResult = document.title();
             }
         } catch (Exception e) {
-            LOGGER.error("Error when searching gor page title with url: {}: {}", searchPageTitleDto.searchUrl, e.getMessage());
+            log.error("Error when searching gor page title with url: {}: {}", searchPageTitleDto.searchUrl, e.getMessage());
         }
         return searchPageTitleDto;
     }

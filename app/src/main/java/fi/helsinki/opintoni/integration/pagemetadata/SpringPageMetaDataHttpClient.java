@@ -27,7 +27,7 @@ import java.util.Optional;
 
 public class SpringPageMetaDataHttpClient implements PageMetaDataHttpClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpringPageMetaDataHttpClient.class);
+    private static final Logger log = LoggerFactory.getLogger(SpringPageMetaDataHttpClient.class);
 
     private static final String USER_AGENT_KEY = "User-Agent";
     private static final String USER_AGENT = "Mozilla";
@@ -53,9 +53,9 @@ public class SpringPageMetaDataHttpClient implements PageMetaDataHttpClient {
                 pageBody = Optional.ofNullable(response.getBody());
             }
         } catch (Exception e) {
-            LOGGER.error("Error when fetching pageBody from {}: {}", pageUrl, e.getMessage());
+            log.error("Error when fetching pageBody from {}: {}", pageUrl, e.getMessage());
         }
-        
+
         return pageBody;
 
     }

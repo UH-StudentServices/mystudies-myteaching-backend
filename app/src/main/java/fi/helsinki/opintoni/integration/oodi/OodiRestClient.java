@@ -32,7 +32,7 @@ import java.util.Optional;
 
 public class OodiRestClient implements OodiClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OodiRestClient.class);
+    private static final Logger log = LoggerFactory.getLogger(OodiRestClient.class);
 
     private final String baseUrl;
     private final RestTemplate restTemplate;
@@ -130,7 +130,7 @@ public class OodiRestClient implements OodiClient {
                 .orElse(Lists.newArrayList());
 
         } catch (Exception e) {
-            LOGGER.error("Caught OodiIntegrationException", e);
+            log.error("Caught OodiIntegrationException", e);
             throw new OodiIntegrationException(e.getMessage(), e);
         }
         return data;
@@ -146,7 +146,7 @@ public class OodiRestClient implements OodiClient {
                 .map(r -> r.data)
                 .orElse(clazz.getConstructor().newInstance());
         } catch (Exception e) {
-            LOGGER.error("Caught OodiIntegrationException", e);
+            log.error("Caught OodiIntegrationException", e);
             throw new OodiIntegrationException(e.getMessage(), e);
         }
         return data;

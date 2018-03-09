@@ -32,7 +32,7 @@ import static fi.helsinki.opintoni.service.TimeService.HELSINKI_ZONE_ID;
 
 public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
 
-    private  static final Logger LOGGER = LoggerFactory.getLogger(LocalDateTimeDeserializer.class);
+    private  static final Logger log = LoggerFactory.getLogger(LocalDateTimeDeserializer.class);
 
     public LocalDateTimeDeserializer() {
         this(null);
@@ -52,7 +52,7 @@ public class LocalDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
                 Instant instant = Instant.parse(dateString);
                 localDateTime = instant.atZone(HELSINKI_ZONE_ID).toLocalDateTime();
             } catch (Exception e) {
-                LOGGER.error("Error when parsing value to date: " + dateString, e);
+                log.error("Error when parsing value to date: " + dateString, e);
             }
         }
 

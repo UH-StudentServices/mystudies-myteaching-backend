@@ -27,7 +27,7 @@ import java.util.Optional;
 
 public class FeedRemoteClient implements FeedClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FeedRemoteClient.class);
+    private static final Logger log = LoggerFactory.getLogger(FeedRemoteClient.class);
 
     private final FeedFetcher feedFetcher;
 
@@ -41,7 +41,7 @@ public class FeedRemoteClient implements FeedClient {
         try {
             feed = Optional.ofNullable(feedFetcher.retrieveFeed(new URL(feedUrl)));
         } catch (Exception e) {
-            LOGGER.error("Error when fetching feed from {}", feedUrl, e);
+            log.error("Error when fetching feed from {}", feedUrl, e);
         }
         return feed;
     }

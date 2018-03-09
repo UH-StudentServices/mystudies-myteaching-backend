@@ -32,7 +32,7 @@ import java.util.Collections;
 
 @Component
 public class PublicWwwRestClient {
-    private static final Logger LOGGER = LoggerFactory.getLogger(PublicWwwRestClient.class);
+    private static final Logger log = LoggerFactory.getLogger(PublicWwwRestClient.class);
 
     private final String baseUrl;
     private final RestTemplate restTemplate;
@@ -56,7 +56,7 @@ public class PublicWwwRestClient {
         try {
             return restTemplate.getForObject(uri, Channel.class);
         } catch (RestClientException e) {
-            LOGGER.error("Public WWW client threw exception: {}", e.getMessage());
+            log.error("Public WWW client threw exception: {}", e.getMessage());
 
             return new Channel("rss_2.0");
         }

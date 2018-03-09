@@ -31,7 +31,7 @@ import java.util.Optional;
 
 public class FeedMockClient implements FeedClient {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FeedMockClient.class);
+    private static final Logger log = LoggerFactory.getLogger(FeedMockClient.class);
 
     @Value("classpath:sampledata/feed/feed1.rss")
     private Resource mockFeed;
@@ -50,7 +50,7 @@ public class FeedMockClient implements FeedClient {
             SyndFeedInput input = new SyndFeedInput();
             feed = Optional.ofNullable(input.build(new XmlReader(mockFeed.getInputStream())));
         } catch (Exception e) {
-            LOGGER.error("Error when fetching mock feed data", e);
+            log.error("Error when fetching mock feed data", e);
         }
         return feed;
     }

@@ -24,7 +24,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 public class AtomRestClient {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AtomRestClient.class);
+    private static final Logger log = LoggerFactory.getLogger(AtomRestClient.class);
 
     private final RestTemplate restTemplate;
 
@@ -40,7 +40,7 @@ public class AtomRestClient {
         try {
             return restTemplate.getForObject(uri, Feed.class);
         } catch (RestClientException e) {
-            LOGGER.error("REST client with uri {} threw exception: {}", uri, e.getMessage());
+            log.error("REST client with uri {} threw exception: {}", uri, e.getMessage());
             return new Feed("atom_0.3");
         }
     }
