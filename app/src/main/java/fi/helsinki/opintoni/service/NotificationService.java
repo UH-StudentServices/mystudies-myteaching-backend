@@ -72,6 +72,13 @@ public class NotificationService {
             .map(notificationConverter::toDto).collect(Collectors.toList());
     }
 
+    public List<LocalizedNotificationDto> getNotifications(Locale locale) {
+        return notificationRepository.findAll().stream()
+            .filter(this::notificationShouldBeShown)
+            .map(notification -> notificationConverter.toDto(notification, locale))
+            .collect(Collectors.toList());
+    }
+
     public NotificationDto getNotification(long notificationId) {
         return notificationConverter.toDto(findNotificationById(notificationId));
     }
@@ -88,13 +95,6 @@ public class NotificationService {
         return notificationConverter.toDto(notificationRepository.save(notification));
     }
 
-    public List<LocalizedNotificationDto> getNotifications(Locale locale) {
-        return notificationRepository.findAll().stream()
-            .filter(this::notificationShouldBeShown)
-            .map(notification -> notificationConverter.toDto(notification, locale))
-            .collect(Collectors.toList());
-    }
-
     private boolean notificationShouldBeShown(Notification notification) {
         LocalDateTime nowDate = LocalDateTime.now();
 
@@ -103,7 +103,9 @@ public class NotificationService {
     }
 
     private boolean nowDateIsWithinNotificationDateRange(NotificationSchedule schedule, LocalDateTime now) {
-        return now.isEqual(schedule.startDate) || ( now.isAfter(schedule.startDate) && now.isBefore(schedule.endDate) ) || now.isEqual(schedule.endDate);
+        return now.isEqual(schedule.startDate) ||
+            (now.isAfter(schedule.startDate) && now.isBefore(schedule.endDate))
+            || now.isEqual(schedule.endDate);
     }
 
     private Notification findNotificationById(long notificationId) {

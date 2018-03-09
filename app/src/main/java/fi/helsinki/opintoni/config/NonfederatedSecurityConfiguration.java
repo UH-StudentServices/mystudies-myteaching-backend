@@ -25,9 +25,6 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 
 public interface NonfederatedSecurityConfiguration {
 
-
-
-
     default void useNonfederatedSecurityConfiguration(HttpSecurity http,
                                                       AuthenticationEntryPoint authenticationEntryPoint,
                                                       AuthenticationSuccessHandler authSuccessHandler,

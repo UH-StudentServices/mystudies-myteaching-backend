@@ -27,12 +27,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivateJobSearchResourcePermissionTest extends SpringTest {
-    private final String RESOURCE_URL = "/api/private/v1/portfolio/2/jobsearch";
+    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/jobsearch";
 
     @Test
     public void thatUserCannotSaveJobSearchToPortfolioSheDoesNotOwn() throws Exception {
-        mockMvc.perform(post(RESOURCE_URL).with(securityContext
-            (teacherSecurityContext()))
+        mockMvc.perform(post(RESOURCE_URL).with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
@@ -41,8 +40,7 @@ public class PrivateJobSearchResourcePermissionTest extends SpringTest {
 
     @Test
     public void thatUserCannotDeleteJobSearchFromPortfolioSheDoesNotOwn() throws Exception {
-        mockMvc.perform(delete(RESOURCE_URL).with(securityContext
-            (teacherSecurityContext()))
+        mockMvc.perform(delete(RESOURCE_URL).with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))

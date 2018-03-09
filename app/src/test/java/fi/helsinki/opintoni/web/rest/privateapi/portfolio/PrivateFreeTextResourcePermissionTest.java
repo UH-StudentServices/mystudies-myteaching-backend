@@ -30,7 +30,6 @@ import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityC
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 public class PrivateFreeTextResourcePermissionTest extends SpringTest {
 
     private static final String RESOURCE_PATH_SEGMENT = "freetextcontent";

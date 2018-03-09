@@ -34,8 +34,7 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 @Configuration
-public class ESBConfiguration
-{
+public class ESBConfiguration {
     private static final String CLIENT_IMPLEMENTATION_PROPERTY = "esb.client.implementation";
     private static final String ESB_BASE_URL_PROPERTY = "esb.base.url";
     private static final String REST_IMPLEMENTATION = "rest";
@@ -84,6 +83,5 @@ public class ESBConfiguration
                 return esbMockClient();
         }
     }
-
 
 }

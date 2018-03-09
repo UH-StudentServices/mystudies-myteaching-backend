@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
-
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.OrderUsefulLinksDto;

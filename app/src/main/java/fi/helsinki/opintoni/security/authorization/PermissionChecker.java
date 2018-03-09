@@ -46,6 +46,11 @@ public class PermissionChecker {
         verifyOwner(userId, ownership);
     }
 
+    public void verifyPermission(Long userId, List<Long> entityIds, Class<? extends Ownership> entityClass) {
+        List<? extends Ownership> entities = commonRepository.find(entityClass, entityIds);
+        entities.forEach(entity -> verifyOwner(userId, entity));
+    }
+
     public boolean hasPermission(Long userId, Long entityId, Class<? extends Ownership> entityClass) {
         Ownership ownership = commonRepository.find(entityClass, entityId);
 
@@ -54,11 +59,6 @@ public class PermissionChecker {
         }
 
         return isOwner(userId, ownership);
-    }
-
-    public void verifyPermission(Long userId, List<Long> entityIds, Class<? extends Ownership> entityClass) {
-        List<? extends Ownership> entities = commonRepository.find(entityClass, entityIds);
-        entities.forEach(entity -> verifyOwner(userId, entity));
     }
 
     private void throwNotFound(Long entityId, Class<? extends Ownership> entityClass) {

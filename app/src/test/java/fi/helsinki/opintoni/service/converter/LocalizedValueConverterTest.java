@@ -31,9 +31,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class LocalizedValueConverterTest extends SpringTest {
 
-    private final String FINNISH_VALUE = "Finnish value";
-    private final String SWEDISH_VALUE = "Swedish value";
-    private final String ENGLISH_VALUE = "English value";
+    private static final String FINNISH_VALUE = "Finnish value";
+    private static final String SWEDISH_VALUE = "Swedish value";
+    private static final String ENGLISH_VALUE = "English value";
 
     @Autowired
     LocalizedValueConverter localizedValueConverter;

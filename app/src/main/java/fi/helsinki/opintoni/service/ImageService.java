@@ -61,7 +61,6 @@ public class ImageService {
         return Base64.getDecoder().decode(imageBase64);
     }
 
-
     public byte[] createUserAvatar(String imageBase64) {
         BufferedImage bufferedImage = bytesToBufferedImage(base64ToBytes(imageBase64));
         return toThumbnail(bufferedImage);

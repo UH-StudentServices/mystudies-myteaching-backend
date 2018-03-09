@@ -20,15 +20,12 @@ package fi.helsinki.opintoni.integration.coursepage;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -55,12 +52,6 @@ public class CoursePageRestClient implements CoursePageClient {
         return getCoursePageData(path, typeReference, null, uriVariables);
     }
 
-    private String getCoursePageApiUrl(String path, Locale locale) {
-        String localeUrlSegment = locale != null ? "/" + locale.getLanguage() : "";
-
-        return baseUrl + localeUrlSegment + apiPath + path;
-    }
-
     public <T> List<T> getCoursePageData(
         String path,
         ParameterizedTypeReference<List<T>> typeReference,
@@ -74,6 +65,12 @@ public class CoursePageRestClient implements CoursePageClient {
             log.error("Caught exception when calling Course Pages URL " + url, e);
             throw new CoursePageIntegrationException(e.getMessage(), e);
         }
+    }
+
+    private String getCoursePageApiUrl(String path, Locale locale) {
+        String localeUrlSegment = locale != null ? "/" + locale.getLanguage() : "";
+
+        return baseUrl + localeUrlSegment + apiPath + path;
     }
 
     @Override

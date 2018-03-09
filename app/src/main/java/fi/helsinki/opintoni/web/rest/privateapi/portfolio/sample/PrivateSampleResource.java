@@ -18,8 +18,6 @@
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio.sample;
 
 import com.codahale.metrics.annotation.Timed;
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
-import fi.helsinki.opintoni.domain.portfolio.Sample;
 import fi.helsinki.opintoni.dto.portfolio.SampleDto;
 import fi.helsinki.opintoni.service.portfolio.SampleService;
 import fi.helsinki.opintoni.web.WebConstants;

@@ -19,11 +19,16 @@ package fi.helsinki.opintoni.integration.feed;
 
 import com.rometools.fetcher.FeedFetcher;
 import com.rometools.rome.feed.synd.SyndFeed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.Optional;
 
 public class FeedRemoteClient implements FeedClient {
+
+    private static final Logger log = LoggerFactory.getLogger(FeedRemoteClient.class);
+
     private final FeedFetcher feedFetcher;
 
     public FeedRemoteClient(FeedFetcher feedFetcher) {
@@ -35,7 +40,9 @@ public class FeedRemoteClient implements FeedClient {
         Optional<SyndFeed> feed = Optional.empty();
         try {
             feed = Optional.ofNullable(feedFetcher.retrieveFeed(new URL(feedUrl)));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            log.error("Error when fetching feed from {}", feedUrl, e);
+        }
         return feed;
     }
 }

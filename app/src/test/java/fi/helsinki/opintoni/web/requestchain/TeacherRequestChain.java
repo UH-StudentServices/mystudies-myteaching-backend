@@ -45,6 +45,11 @@ public class TeacherRequestChain {
         return this;
     }
 
+    public TeacherRequestChain courses(String responseFile) {
+        oodiServer.expectTeacherCoursesRequest(teacherNumber, sinceDateString, responseFile);
+        return this;
+    }
+
     public TeacherRequestChain defaultCoursesWithImplementationsAndRealisations() {
         return courses()
             .defaultCourseImplementation()
@@ -53,11 +58,6 @@ public class TeacherRequestChain {
             .and()
             .courseImplementationWithRealisationId(POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID)
             .and();
-    }
-
-    public TeacherRequestChain courses(String responseFile) {
-        oodiServer.expectTeacherCoursesRequest(teacherNumber, sinceDateString, responseFile);
-        return this;
     }
 
     public TeacherRequestChain events() {

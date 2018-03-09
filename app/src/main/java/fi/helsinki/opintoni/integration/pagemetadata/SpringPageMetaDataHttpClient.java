@@ -18,12 +18,17 @@
 package fi.helsinki.opintoni.integration.pagemetadata;
 
 import com.google.common.collect.Lists;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
 public class SpringPageMetaDataHttpClient implements PageMetaDataHttpClient {
+
+    private static final Logger log = LoggerFactory.getLogger(SpringPageMetaDataHttpClient.class);
+
     private static final String USER_AGENT_KEY = "User-Agent";
     private static final String USER_AGENT = "Mozilla";
     private static final String PARAMETERS_KEY = "parameters";
@@ -47,7 +52,9 @@ public class SpringPageMetaDataHttpClient implements PageMetaDataHttpClient {
             if (response.getStatusCode().equals(HttpStatus.OK)) {
                 pageBody = Optional.ofNullable(response.getBody());
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            log.error("Error when fetching pageBody from {}: {}", pageUrl, e.getMessage());
+        }
 
         return pageBody;
 

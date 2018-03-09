@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
-
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.dto.FavoriteDto;

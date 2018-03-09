@@ -25,6 +25,7 @@ import java.util.List;
 
 public interface FreeTextContentRepository extends JpaRepository<FreeTextContent, Long> {
     List<FreeTextContent> findByPortfolioId(Long portfolioId);
+
     List<FreeTextContent> findByPortfolioIdAndTeacherPortfolioSectionAndInstanceName(Long portfolioId,
                                                                                      TeacherPortfolioSection teacherPortfolioSection,
                                                                                      String instanceName);

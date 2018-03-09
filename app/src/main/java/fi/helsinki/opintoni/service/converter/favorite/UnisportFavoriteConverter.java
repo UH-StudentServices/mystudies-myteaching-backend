@@ -41,10 +41,6 @@ public class UnisportFavoriteConverter {
             .collect(Collectors.toList()));
     }
 
-    public UnisportReservationsDto unauthorizedReservationsDto() {
-        return new UnisportReservationsDto(authorizationUrl);
-    }
-
     private UnisportEventDto toDto(UnisportEvent unisportEvent) {
         return new UnisportEventDto(
             unisportEvent.url,
@@ -52,6 +48,10 @@ public class UnisportFavoriteConverter {
             unisportEvent.venue,
             unisportEvent.startTime,
             unisportEvent.endTime);
+    }
+
+    public UnisportReservationsDto unauthorizedReservationsDto() {
+        return new UnisportReservationsDto(authorizationUrl);
     }
 
 }

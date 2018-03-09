@@ -71,15 +71,6 @@ public class NotificationResource extends AbstractResource {
     }
 
     @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/{id}/schedules")
-    public ResponseEntity<NotificationDto> insertSchedule(
-        @PathVariable("id") long notificationId,
-        @Valid @RequestBody List<NotificationScheduleDto> notificationScheduleDto) {
-        return response(notificationService.insertSchedules(notificationId, notificationScheduleDto));
-    }
-
-    @RequestMapping(
         method = RequestMethod.DELETE,
         value = "/{id}/schedules/{scheduleId}")
     public ResponseEntity<NotificationDto> deleteNotification(
@@ -88,4 +79,12 @@ public class NotificationResource extends AbstractResource {
         return response(notificationService.deleteNotificationSchedule(notificationId, scheduleId));
     }
 
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/{id}/schedules")
+    public ResponseEntity<NotificationDto> insertSchedule(
+        @PathVariable("id") long notificationId,
+        @Valid @RequestBody List<NotificationScheduleDto> notificationScheduleDto) {
+        return response(notificationService.insertSchedules(notificationId, notificationScheduleDto));
+    }
 }

@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivatePortfolioFavoriteResourceTest extends SpringTest {
 
-    private final String RESOURCE_URL = "/api/private/v1/portfolio/2/favorites";
+    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/favorites";
 
     @Test
     public void thatPortfolioFavoritesAreReturned() throws Exception {

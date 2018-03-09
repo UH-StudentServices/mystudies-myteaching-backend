@@ -61,7 +61,6 @@ public class AuditEventConverterTest {
     }
 
     private List<PersistentAuditEvent> getPersistentAuditEvents() {
-        List<PersistentAuditEvent> persistentAuditEvents = Lists.newArrayList();
 
         PersistentAuditEvent persistentAuditEvent = new PersistentAuditEvent();
         persistentAuditEvent.setAuditEventDate(getJodaLocalDateTime());
@@ -70,6 +69,7 @@ public class AuditEventConverterTest {
         persistentAuditEvent.setId(1L);
         persistentAuditEvent.setPrincipal("principal");
 
+        List<PersistentAuditEvent> persistentAuditEvents = Lists.newArrayList();
         persistentAuditEvents.add(persistentAuditEvent);
 
         return persistentAuditEvents;

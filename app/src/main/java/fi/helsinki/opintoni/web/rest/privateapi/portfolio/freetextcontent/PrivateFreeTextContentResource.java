@@ -15,7 +15,7 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.web.rest.privateapi.portfolio.freeTextContent;
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.freetextcontent;
 
 import fi.helsinki.opintoni.domain.portfolio.FreeTextContent;
 import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;

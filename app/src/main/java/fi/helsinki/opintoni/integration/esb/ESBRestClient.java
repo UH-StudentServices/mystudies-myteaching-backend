@@ -31,7 +31,7 @@ import static com.google.common.collect.Lists.newArrayList;
 
 public class ESBRestClient implements ESBClient {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(OodiRestClient.class);
+    private static final Logger log = LoggerFactory.getLogger(OodiRestClient.class);
 
     private final RestTemplate restTemplate;
     private final String baseUrl;
@@ -53,7 +53,7 @@ public class ESBRestClient implements ESBClient {
                 baseUrl,
                 employeeNumber).getBody();
         } catch (Exception e) {
-            LOGGER.error("Error when fetching employee info from ESB", e);
+            log.error("Error when fetching employee info from ESB", e);
             return newArrayList();
         }
     }
@@ -70,7 +70,7 @@ public class ESBRestClient implements ESBClient {
                     },
                     baseUrl, staffId).getBody());
         } catch (Exception e) {
-            LOGGER.error("Error when fetching Optime staff information info from ESB", e);
+            log.error("Error when fetching Optime staff information info from ESB", e);
             return Optional.empty();
         }
     }

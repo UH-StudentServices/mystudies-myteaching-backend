@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
-
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.UserSettings;
 import fi.helsinki.opintoni.integration.mece.JWTService;
@@ -127,7 +126,6 @@ public class UserSettingsResourceTest extends SpringTest {
             .andExpect(jsonPath("$.backgroundUri", notNullValue()))
             .andExpect(jsonPath("$.backgroundType").value("CUSTOM"));
     }
-
 
     @Test
     public void thatBackgroundIsSelected() throws Exception {

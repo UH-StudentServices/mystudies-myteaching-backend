@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
-
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.portfolio.StudyAttainmentWhitelist;
 import fi.helsinki.opintoni.dto.portfolio.StudyAttainmentWhitelistDto;
@@ -34,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PortfolioStudyAttainmentWhitelistServiceTest extends SpringTest {
 
-    private final static Long PORTFOLIO_ID = 1L;
+    private static final Long PORTFOLIO_ID = 1L;
     private static final Long OODI_ATTAINMENT_ID_1 = 1L;
     private static final Long OODI_ATTAINMENT_ID_2 = 2L;
     private static final Long OODI_ATTAINMENT_ID_3 = 3L;
@@ -73,6 +72,5 @@ public class PortfolioStudyAttainmentWhitelistServiceTest extends SpringTest {
     public void shouldThrowNotFoundOnMissingWhitelist() {
         whitelistService.get(999L);
     }
-
 
 }

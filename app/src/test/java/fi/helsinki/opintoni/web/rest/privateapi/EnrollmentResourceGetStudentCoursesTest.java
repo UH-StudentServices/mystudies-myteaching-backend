@@ -37,7 +37,7 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
     private static final String WIKI_COURSE_MATERIAL_URL = "http://wiki.helsinki.fi";
 
     @Test
-    public void thatStudentCoursesAreReturned() throws Exception {
+    public void thatStudentCoursesAreReturnedWithCoursePageMaterial() throws Exception {
         expectCourseRequestChain()
             .defaultCourseUnitRealisationTeachers();
 
@@ -59,7 +59,7 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
     }
 
     @Test
-    public void thatCancelledCourseStatusIsReturned() throws Exception{
+    public void thatCancelledCourseStatusIsReturnedWithCoursePageMaterial() throws Exception {
         expectCancelledCourseRequestChain()
             .defaultCourseUnitRealisationTeachers();
 
@@ -67,7 +67,7 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
     }
 
     @Test
-    public void thatRealisationPositionStudygroupsetIsNotReturned() throws Exception{
+    public void thatRealisationPositionStudygroupsetIsNotReturned() throws Exception {
         expectStudygroupsetCourseRequestChain();
 
         mockMvc.perform(get("/api/private/v1/students/enrollments/courses")
@@ -79,36 +79,9 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
             .andExpect(jsonPath("$").isEmpty());
     }
 
-    private void expectCourseRequestChainWithImplementation(String responseFile) {
-        defaultStudentRequestChain()
-            .enrollments()
-            .courseImplementation(TestConstants.STUDENT_COURSE_REALISATION_ID, responseFile)
-            .and()
-            .defaultCourseUnitRealisationTeachers();
-    }
-
-    private StudentRequestChain expectCourseRequestChain() {
-        return defaultStudentRequestChain()
-            .enrollments()
-            .defaultImplementation()
-            .and();
-    }
-
-    private StudentRequestChain expectCancelledCourseRequestChain() {
-        return defaultStudentRequestChain()
-            .enrollments("enrollmentswithcancelled.json")
-            .defaultImplementation()
-            .and();
-    }
-
-    private StudentRequestChain expectStudygroupsetCourseRequestChain() {
-        return defaultStudentRequestChain()
-            .enrollments("enrollmentswithstudygroupset.json");
-    }
-
     private void thatStudentCoursesAreReturned(boolean expectedCancellation,
-                                               String expectedCourseMaterialUri,
-                                               CourseMaterialType expectedCourseMaterialType) throws Exception {
+        String expectedCourseMaterialUri,
+        CourseMaterialType expectedCourseMaterialType) throws Exception {
         mockMvc.perform(get("/api/private/v1/students/enrollments/courses")
             .with(securityContext(studentSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
@@ -138,6 +111,33 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[0].parentId").isEmpty())
             .andExpect(jsonPath("$[0].rootId").value("123456789"))
             .andExpect(jsonPath("$[0].isExam").value(true));
+    }
+
+    private void expectCourseRequestChainWithImplementation(String responseFile) {
+        defaultStudentRequestChain()
+            .enrollments()
+            .courseImplementation(TestConstants.STUDENT_COURSE_REALISATION_ID, responseFile)
+            .and()
+            .defaultCourseUnitRealisationTeachers();
+    }
+
+    private StudentRequestChain expectCourseRequestChain() {
+        return defaultStudentRequestChain()
+            .enrollments()
+            .defaultImplementation()
+            .and();
+    }
+
+    private StudentRequestChain expectCancelledCourseRequestChain() {
+        return defaultStudentRequestChain()
+            .enrollments("enrollmentswithcancelled.json")
+            .defaultImplementation()
+            .and();
+    }
+
+    private StudentRequestChain expectStudygroupsetCourseRequestChain() {
+        return defaultStudentRequestChain()
+            .enrollments("enrollmentswithstudygroupset.json");
     }
 
 }

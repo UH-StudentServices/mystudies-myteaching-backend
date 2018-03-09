@@ -67,6 +67,8 @@ public class UriBuilder {
             portfolio.language.getCode(), portfolio.path);
     }
 
-    public String getMeceDomain() { return appConfiguration.get("mece.domain"); }
+    public String getMeceDomain() {
+        return appConfiguration.get("mece.domain");
+    }
 
 }

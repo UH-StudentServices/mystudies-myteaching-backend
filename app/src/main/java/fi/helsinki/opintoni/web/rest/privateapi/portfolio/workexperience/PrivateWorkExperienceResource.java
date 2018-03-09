@@ -15,46 +15,46 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentOrder;
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.workexperience;
 
+import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
-import fi.helsinki.opintoni.dto.portfolio.ComponentOrderDto;
+import fi.helsinki.opintoni.dto.portfolio.WorkExperienceDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
-import fi.helsinki.opintoni.service.portfolio.ComponentOrderService;
+import fi.helsinki.opintoni.service.portfolio.WorkExperienceService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
+import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static fi.helsinki.opintoni.web.rest.RestConstants.MATCH_NUMBER;
-import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_API_V1;
-
 @RestController
 @RequestMapping(
-    value = PRIVATE_API_V1 + "/portfolio/{portfolioId:" + MATCH_NUMBER + "}/component-orders",
+    value = RestConstants.PRIVATE_API_V1 + "/portfolio/{portfolioId:" + RestConstants.MATCH_NUMBER + "}/workexperience",
     produces = WebConstants.APPLICATION_JSON_UTF8
 )
-public class PrivateComponentOrderResource extends AbstractResource {
+public class PrivateWorkExperienceResource extends AbstractResource {
 
-    private final ComponentOrderService componentOrderService;
+    private final WorkExperienceService workExperienceService;
     private final PermissionChecker permissionChecker;
 
     @Autowired
-    public PrivateComponentOrderResource(ComponentOrderService componentOrderService, PermissionChecker permissionChecker) {
-        this.componentOrderService = componentOrderService;
+    public PrivateWorkExperienceResource(WorkExperienceService workExperienceService,
+                                         PermissionChecker permissionChecker) {
+        this.workExperienceService = workExperienceService;
         this.permissionChecker = permissionChecker;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<List<ComponentOrderDto>> update(@UserId Long userId,
-                                                          @PathVariable Long portfolioId,
-                                                          @RequestBody UpdateComponentOrderingRequest request) {
+    @Timed
+    public ResponseEntity<List<WorkExperienceDto>> update(@UserId Long userId,
+                                                  @PathVariable Long portfolioId,
+                                                  @RequestBody List<UpdateWorkExperience> updateWorkExperiences) {
         permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
-
-        return response(componentOrderService.update(portfolioId, request.componentOrders));
+        return response(workExperienceService.updateWorkExperiences(portfolioId, updateWorkExperiences));
     }
 }

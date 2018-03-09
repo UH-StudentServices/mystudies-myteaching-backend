@@ -41,7 +41,6 @@ public class CreditsService extends DtoService {
         this.portfolioRepository = portfolioRepository;
     }
 
-
     public CreditsDto getCreditsByPortfolioId(Long portfolioId) {
         String oodiPersonId = getOodiPersonIdByPortfolioId(portfolioId);
 

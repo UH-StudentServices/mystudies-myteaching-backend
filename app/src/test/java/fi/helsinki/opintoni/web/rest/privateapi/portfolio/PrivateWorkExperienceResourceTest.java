@@ -48,7 +48,8 @@ public class PrivateWorkExperienceResourceTest extends SpringTest {
         workExperienceDto.employer = "Helsingin Yliopisto";
         workExperienceDto.jobTitle = "Toimitusjohtaja";
         workExperienceDto.employerUrl = "http://www.helsinki.fi/";
-        workExperienceDto.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+        workExperienceDto.text =
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
         workExperienceDto.startDate = LocalDate.of(2016, 6, 6);
         workExperienceDto.endDate = LocalDate.of(2016, 7, 6);
 

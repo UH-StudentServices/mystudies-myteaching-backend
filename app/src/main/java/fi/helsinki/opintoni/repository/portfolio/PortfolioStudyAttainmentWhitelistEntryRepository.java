@@ -20,5 +20,5 @@ package fi.helsinki.opintoni.repository.portfolio;
 import fi.helsinki.opintoni.domain.portfolio.StudyAttainmentWhitelistEntry;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PortfolioStudyAttainmentWhitelistEntryRepository extends JpaRepository<StudyAttainmentWhitelistEntry, Long>{
+public interface PortfolioStudyAttainmentWhitelistEntryRepository extends JpaRepository<StudyAttainmentWhitelistEntry, Long> {
 }

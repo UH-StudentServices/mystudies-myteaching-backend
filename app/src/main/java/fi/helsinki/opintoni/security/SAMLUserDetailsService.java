@@ -48,7 +48,6 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
     private static final String SAML_ATTRIBUTE_TEACHER_FACULTY_CODE = "urn:mace:funet.fi:helsinki.fi:hyAccountingCode";
     private static final String SAML_ATTRIBUTE_PREFERRED_LANGUAGE = "urn:oid:2.16.840.1.113730.3.1.39";
 
-
     private final UserService userService;
 
     @Autowired
@@ -67,7 +66,8 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
         AppUser.AppUserBuilder builder = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_PRINCIPAL_NAME))
             .eduPersonAffiliations(getEduPersonAffiliations(credential))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.fromValue(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_PRIMARY_AFFILIATION)))
+            .eduPersonPrimaryAffiliation(
+                SAMLEduPersonAffiliation.fromValue(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_PRIMARY_AFFILIATION)))
             .email(credential.getAttributeAsString(SAML_ATTRIBUTE_EMAIL))
             .commonName(credential.getAttributeAsString(SAML_ATTRIBUTE_COMMON_NAME))
             .oodiPersonId(credential.getAttributeAsString(SAML_ATTRIBUTE_OODI_UID))

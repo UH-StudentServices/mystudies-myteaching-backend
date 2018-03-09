@@ -43,7 +43,6 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
-
 @Service
 @Transactional
 public class PortfolioService {

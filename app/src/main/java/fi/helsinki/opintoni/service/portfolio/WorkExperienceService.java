@@ -24,7 +24,7 @@ import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.repository.portfolio.WorkExperienceRepository;
 import fi.helsinki.opintoni.service.DtoService;
 import fi.helsinki.opintoni.service.converter.WorkExperienceConverter;
-import fi.helsinki.opintoni.web.rest.privateapi.portfolio.workExperience.UpdateWorkExperience;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.workexperience.UpdateWorkExperience;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

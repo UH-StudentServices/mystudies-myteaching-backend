@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
-
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.portfolio.StudyAttainmentWhitelistDto;
@@ -35,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivatePortfolioAttainmentResourceTest extends SpringTest {
 
-    private final String RESOURCE_URL = "/api/private/v1/portfolio/2/attainment";
+    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/attainment";
 
     @Test
     public void thatAttainmentsAreReturned() throws Exception {

@@ -52,6 +52,4 @@ public class ContactInformationConverter {
     public ContactInformationDto toDto(ContactInformation contactInformation) {
         return toDto(contactInformation, contactInformation.portfolio.id);
     }
-
-
 }

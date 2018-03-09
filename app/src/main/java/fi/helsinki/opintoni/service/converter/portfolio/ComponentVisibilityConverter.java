@@ -29,11 +29,11 @@ public class ComponentVisibilityConverter {
         componentVisibilityDto.visibility = componentVisibility.visibility.toString();
         componentVisibilityDto.instanceName = componentVisibility.instanceName;
 
-        if(componentVisibility.component != null) {
+        if (componentVisibility.component != null) {
             componentVisibilityDto.component = componentVisibility.component.toString();
         }
 
-        if(componentVisibility.teacherPortfolioSection != null) {
+        if (componentVisibility.teacherPortfolioSection != null) {
             componentVisibilityDto.teacherPortfolioSection = componentVisibility.teacherPortfolioSection.toString();
         }
 

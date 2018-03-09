@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
-
 import fi.helsinki.opintoni.SpringTest;
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -30,12 +29,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivatePortfolioAttainmentResourcePermissionTest extends SpringTest {
 
-    private final String RESOURCE_URL = "/api/private/v1/portfolio/1/attainment/whitelist";
+    private static final String RESOURCE_URL = "/api/private/v1/portfolio/1/attainment/whitelist";
 
     @Test
     public void thatUserCannotGetStudyAttainmentWhitelistSheDoesNotOwnThroughPrivateApi() throws Exception {
-        mockMvc.perform(get(RESOURCE_URL).with(securityContext
-            (teacherSecurityContext()))
+        mockMvc.perform(get(RESOURCE_URL).with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
@@ -44,8 +42,7 @@ public class PrivatePortfolioAttainmentResourcePermissionTest extends SpringTest
 
     @Test
     public void thatUserCannotUpdateWhitelistToPortfolioSheDoesNotOwn() throws Exception {
-        mockMvc.perform(post(RESOURCE_URL).with(securityContext
-            (teacherSecurityContext()))
+        mockMvc.perform(post(RESOURCE_URL).with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))

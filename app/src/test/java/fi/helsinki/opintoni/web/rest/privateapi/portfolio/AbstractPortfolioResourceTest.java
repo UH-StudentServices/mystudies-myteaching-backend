@@ -18,16 +18,13 @@
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.test.web.servlet.ResultActions;
 
-import javax.servlet.http.Cookie;
-
-import static fi.helsinki.opintoni.localization.Language.*;
+import static fi.helsinki.opintoni.localization.Language.EN;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -53,12 +50,12 @@ public abstract class AbstractPortfolioResourceTest extends SpringTest {
         return createPortfolio(securityContext, STUDENT_PORTFOLIO_API_PATH);
     }
 
-    protected ResultActions createTeacherPortfolio(SecurityContext securityContext) throws Exception {
-        return createPortfolio(securityContext, TEACHER_PORTFOLIO_API_PATH);
-    }
-
     protected ResultActions createStudentPortfolio(SecurityContext securityContext, Language lang) throws Exception {
         return createPortfolio(securityContext, String.join("/", STUDENT_PORTFOLIO_API_PATH, lang.getCode()));
+    }
+
+    protected ResultActions createTeacherPortfolio(SecurityContext securityContext) throws Exception {
+        return createPortfolio(securityContext, TEACHER_PORTFOLIO_API_PATH);
     }
 
     protected ResultActions createTeacherPortfolio(SecurityContext securityContext, Language lang) throws Exception {

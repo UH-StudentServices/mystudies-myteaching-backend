@@ -99,7 +99,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
 
     @Test
     public void thatSomeLinksAreCreated() throws Exception {
-        UpdateContactInformation request = new UpdateContactInformation();
+        final UpdateContactInformation request = new UpdateContactInformation();
 
         UpdateSomeLink facebook = new UpdateSomeLink();
         facebook.type = "FACEBOOK";

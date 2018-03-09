@@ -21,7 +21,6 @@ import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.dto.portfolio.ComponentHeadingDto;
 import fi.helsinki.opintoni.web.WebTestUtils;
-import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 

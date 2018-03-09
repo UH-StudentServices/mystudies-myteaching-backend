@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.integration.newsfeeds;
 import com.google.common.collect.ImmutableMap;
 import com.rometools.rome.feed.atom.Feed;
 import java.util.Locale;
-import java.util.Map;
 
 public class GuideNewsMockClient extends NewsFeedsMockClient implements GuideNewsClient {
 
@@ -30,7 +29,6 @@ public class GuideNewsMockClient extends NewsFeedsMockClient implements GuideNew
         "fi", "feed.xml",
         "sv", "feed-sv.xml",
         "en", "feed-en.xml");
-
 
     @Override
     public Feed getGuideFeed(Locale locale) {

@@ -102,7 +102,7 @@ public class CourseImplementationCacheUpdater {
 
     private void updateCourseCache(List<Long> updatedCourseIds) {
         List<String> courseIdsAsString = updatedCourseIds.stream()
-            .map(i -> i.toString())
+            .map(Object::toString)
             .collect(Collectors.toList());
 
         asList(availableLanguages).stream()
@@ -112,6 +112,7 @@ public class CourseImplementationCacheUpdater {
 
     private void updateCourseCacheForLocale(List<String> courseIds, Locale locale) {
         coursePageClient.getCoursePages(courseIds, locale).stream()
-            .forEach(courseImplementation -> courseImplementationCache.insertOrUpdateCoursePageCourseImplementationInCache(courseImplementation, locale));
+            .forEach(courseImplementation
+                -> courseImplementationCache.insertOrUpdateCoursePageCourseImplementationInCache(courseImplementation, locale));
     }
 }

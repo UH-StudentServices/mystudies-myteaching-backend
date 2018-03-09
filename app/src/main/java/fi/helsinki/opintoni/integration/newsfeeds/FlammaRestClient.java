@@ -22,7 +22,7 @@ import java.util.Locale;
 import java.util.Map;
 import org.springframework.web.client.RestTemplate;
 
-public class FlammaRestClient extends AtomRestClient implements FlammaClient{
+public class FlammaRestClient extends AtomRestClient implements FlammaClient {
 
     private Map<String, String> studentFeedsByLocale;
     private Map<String, String> teacherFeedsByLocale;

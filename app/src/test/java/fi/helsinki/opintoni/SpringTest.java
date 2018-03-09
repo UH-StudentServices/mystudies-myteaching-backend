@@ -57,7 +57,6 @@ import org.springframework.web.context.WebApplicationContext;
 import javax.servlet.Filter;
 import javax.servlet.http.Cookie;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static java.util.Collections.singletonList;
@@ -154,6 +153,13 @@ public abstract class SpringTest {
         clearCaches(persistentCacheManager);
     }
 
+    private void clearCaches(CacheManager cacheManager) {
+        cacheManager.getCacheNames()
+            .stream()
+            .map(cacheManager::getCache)
+            .forEach(Cache::clear);
+    }
+
     @After
     public void verify() {
         oodiServer.verify();
@@ -165,13 +171,6 @@ public abstract class SpringTest {
         webPageServer.verify();
         unisportServer.verify();
         esbServer.verify();
-    }
-
-    private void clearCaches(CacheManager cacheManager) {
-        cacheManager.getCacheNames()
-            .stream()
-            .map(cacheManager::getCache)
-            .forEach(Cache::clear);
     }
 
     private void configureMockMvc() {
@@ -208,7 +207,10 @@ public abstract class SpringTest {
     }
 
     protected TeacherRequestChain defaultTeacherRequestChain() {
-        return new TeacherRequestChain(TestConstants.EMPLOYEE_NUMBER, DateTimeUtil.getSemesterStartDateString(LocalDate.now()), oodiServer, coursePageServer);
+        return new TeacherRequestChain(TestConstants.EMPLOYEE_NUMBER,
+            DateTimeUtil.getSemesterStartDateString(LocalDate.now()),
+            oodiServer,
+            coursePageServer);
     }
 
     protected TeacherRequestChain teacherRequestChain(String teacherNumber) {

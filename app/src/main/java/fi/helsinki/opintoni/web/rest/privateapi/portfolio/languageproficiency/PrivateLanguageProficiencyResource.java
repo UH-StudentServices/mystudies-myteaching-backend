@@ -15,7 +15,7 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.web.rest.privateapi.portfolio.languageProficiency;
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.languageproficiency;
 
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficienciesChangeDescriptorDto;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficiencyDto;

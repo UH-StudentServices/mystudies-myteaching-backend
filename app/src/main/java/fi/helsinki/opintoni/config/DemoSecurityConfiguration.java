@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.config;
 
 import fi.helsinki.opintoni.security.AuthFailureHandler;
-import fi.helsinki.opintoni.security.BaseAuthenticationSuccessHandler;
 import fi.helsinki.opintoni.security.HttpAuthenticationEntryPoint;
 import fi.helsinki.opintoni.security.LocalAuthenticationSuccessHandler;
 import fi.helsinki.opintoni.security.LocalLogoutSuccessHandler;

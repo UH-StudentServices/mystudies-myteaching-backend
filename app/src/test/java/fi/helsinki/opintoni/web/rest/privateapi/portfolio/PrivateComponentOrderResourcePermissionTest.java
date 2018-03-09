@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.web.WebTestUtils;
-import fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentOrder.UpdateComponentOrderingRequest;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.componentorder.UpdateComponentOrderingRequest;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 

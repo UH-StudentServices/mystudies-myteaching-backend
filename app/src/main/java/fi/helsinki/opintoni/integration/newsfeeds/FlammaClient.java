@@ -23,6 +23,7 @@ import java.util.Locale;
 public interface FlammaClient {
 
     Feed getStudentFeed(Locale locale);
+
     Feed getTeacherFeed(Locale locale);
 
 }

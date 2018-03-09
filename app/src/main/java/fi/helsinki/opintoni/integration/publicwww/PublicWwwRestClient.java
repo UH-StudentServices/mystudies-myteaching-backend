@@ -22,7 +22,6 @@ import fi.helsinki.opintoni.config.AppConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.converter.feed.RssChannelHttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -33,7 +32,7 @@ import java.util.Collections;
 
 @Component
 public class PublicWwwRestClient {
-    private final static Logger log = LoggerFactory.getLogger(PublicWwwRestClient.class);
+    private static final Logger log = LoggerFactory.getLogger(PublicWwwRestClient.class);
 
     private final String baseUrl;
     private final RestTemplate restTemplate;

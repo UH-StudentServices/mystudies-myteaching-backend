@@ -28,12 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivatePortfolioFavoriteResourcePermissionTest extends SpringTest {
 
-    private final String RESOURCE_URL = "/api/private/v1/portfolio/3/favorites";
+    private static final String RESOURCE_URL = "/api/private/v1/portfolio/3/favorites";
 
     @Test
     public void thatUserCannotLoadFavoritesForPortfolioFromPrivateApiThatSheDoesNotOwn() throws Exception {
-        mockMvc.perform(get(RESOURCE_URL).with(securityContext
-            (teacherSecurityContext()))
+        mockMvc.perform(get(RESOURCE_URL).with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
@@ -42,8 +41,7 @@ public class PrivatePortfolioFavoriteResourcePermissionTest extends SpringTest {
 
     @Test
     public void thatUserCannotInsertFavoritesToPortfolioSheDoesNotOwn() throws Exception {
-        mockMvc.perform(post(RESOURCE_URL + "/link").with(securityContext
-            (teacherSecurityContext()))
+        mockMvc.perform(post(RESOURCE_URL + "/link").with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
@@ -52,8 +50,7 @@ public class PrivatePortfolioFavoriteResourcePermissionTest extends SpringTest {
 
     @Test
     public void thatUserCannotReorderFavoritesOfPortfolioThatSheDoesNotOwn() throws Exception {
-        mockMvc.perform(post(RESOURCE_URL + "/order").with(securityContext
-            (teacherSecurityContext()))
+        mockMvc.perform(post(RESOURCE_URL + "/order").with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
@@ -62,8 +59,7 @@ public class PrivatePortfolioFavoriteResourcePermissionTest extends SpringTest {
 
     @Test
     public void thatUserCannotDeleteFavoritesOfPortfolioThatSheDoesNotOwn() throws Exception {
-        mockMvc.perform(delete(RESOURCE_URL + "/4").with(securityContext
-            (teacherSecurityContext()))
+        mockMvc.perform(delete(RESOURCE_URL + "/4").with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))

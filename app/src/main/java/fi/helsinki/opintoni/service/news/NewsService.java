@@ -17,21 +17,15 @@
 
 package fi.helsinki.opintoni.service.news;
 
-
 import fi.helsinki.opintoni.dto.NewsDto;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.SecurityUtils;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class NewsService {
@@ -47,7 +41,6 @@ public class NewsService {
 
     @Autowired
     private SecurityUtils securityUtils;
-
 
     @Value("${newsfeeds.maxItemsToReturn}")
     private int maxNews;

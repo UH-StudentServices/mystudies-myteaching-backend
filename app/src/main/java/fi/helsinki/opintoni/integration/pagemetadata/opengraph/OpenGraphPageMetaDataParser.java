@@ -61,7 +61,7 @@ public class OpenGraphPageMetaDataParser implements PageMetaDataParser {
     private String getOgAttributeValue(Element head, String key) {
         String value = null;
         Elements elementsByAttributeValue = head.getElementsByAttributeValue(PROPERTY, key);
-        if(elementsByAttributeValue != null && elementsByAttributeValue.size() == 1) {
+        if (elementsByAttributeValue != null && elementsByAttributeValue.size() == 1) {
             value = elementsByAttributeValue.get(0).attr(CONTENT);
         }
         return value;

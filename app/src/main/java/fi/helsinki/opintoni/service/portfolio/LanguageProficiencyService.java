@@ -64,11 +64,11 @@ public class LanguageProficiencyService {
             changeDescriptor.deletedIds.forEach(id -> deleteLanguageProficiency(id, userId));
         }
 
-        if(changeDescriptor.updatedLanguageProficiencies != null) {
+        if (changeDescriptor.updatedLanguageProficiencies != null) {
             changeDescriptor.updatedLanguageProficiencies.forEach((dto) -> updateLanguageProficiency(dto, userId));
         }
 
-        if(changeDescriptor.newLanguageProficiencies != null) {
+        if (changeDescriptor.newLanguageProficiencies != null) {
             changeDescriptor.newLanguageProficiencies.forEach((dto) -> addLanguageProficiency(portfolioId, dto));
         }
     }

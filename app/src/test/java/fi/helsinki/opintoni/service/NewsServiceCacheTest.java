@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.service;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.NewsDto;
 import fi.helsinki.opintoni.service.news.FlammaNewsService;
-import fi.helsinki.opintoni.service.news.NewsService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

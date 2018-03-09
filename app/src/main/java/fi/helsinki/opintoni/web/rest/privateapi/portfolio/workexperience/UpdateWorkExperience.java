@@ -15,8 +15,7 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.web.rest.privateapi.portfolio.workExperience;
-
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.workexperience;
 
 import java.time.LocalDate;
 

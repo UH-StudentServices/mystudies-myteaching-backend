@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
-
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.TodoItem;
 import fi.helsinki.opintoni.dto.TodoItemDto;

@@ -48,24 +48,24 @@ public class PrivateFeedbackResourceTest extends SpringTest {
     private static final String FEEDBACK_SENDER = "teppo.testaaja@helsinki.fi";
 
     @Value("${feedback.anonymous.fromAddress}")
-    private String FEEDBACK_NO_SENDER;
+    private String feedbackNoSender;
 
     @Value("${feedback.anonymous.replyToAddress}")
-    private String FEEDBACK_NO_REPLY;
+    private String feedbackNoReply;
 
     private static final String REPLY_TO_HEADER = "Reply-To";
 
     @Value("${feedback.recipient.student}")
-    private String FEEDBACK_STUDENT_RECIPIENT;
+    private String feedbackStudentRecipient;
 
     @Value("${feedback.recipient.teacher}")
-    private String FEEDBACK_TEACHER_RECIPIENT;
+    private String feedbackTeacherRecipient;
 
     @Value("${feedback.recipient.portfolio}")
-    private String FEEDBACK_PORTFOLIO_RECIPIENT;
+    private String feedbackPortfolioRecipient;
 
     @Value("${feedback.recipient.academicPortfolio}")
-    private String FEEDBACK_ACADEMIC_PORTFOLIO_RECIPIENT;
+    private String feedbackAcademicPortfolioRecipient;
 
     private static final String FEEDBACK_CONTENT_TYPE = "text/plain; charset=UTF-8";
     private static final String FEEDBACK_USER_AGENT = "test-user-agent";
@@ -137,9 +137,12 @@ public class PrivateFeedbackResourceTest extends SpringTest {
     private static final String FEEDBACK_CONTENT_PATTERN_PORTFOLIO_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, SITE_PORTFOLIO_SV);
     private static final String FEEDBACK_CONTENT_PATTERN_PORTFOLIO_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, SITE_PORTFOLIO_EN);
 
-    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_FI = String.format(FEEDBACK_CONTENT_PATTERN_FI, SITE_ACADEMIC_PORTFOLIO_FI);
-    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, SITE_ACADEMIC_PORTFOLIO_SV);
-    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, SITE_ACADEMIC_PORTFOLIO_EN);
+    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_FI =
+        String.format(FEEDBACK_CONTENT_PATTERN_FI, SITE_ACADEMIC_PORTFOLIO_FI);
+    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_SV =
+        String.format(FEEDBACK_CONTENT_PATTERN_SV, SITE_ACADEMIC_PORTFOLIO_SV);
+    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_EN =
+        String.format(FEEDBACK_CONTENT_PATTERN_EN, SITE_ACADEMIC_PORTFOLIO_EN);
 
     @Rule
     public final GreenMailRule greenMail = new GreenMailRule(ServerSetupTest.SMTP);
@@ -184,7 +187,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(
             FeedbackSite.STUDENT.toString(),
             FEEDBACK_LANG_FI,
-            FEEDBACK_STUDENT_RECIPIENT,
+            feedbackStudentRecipient,
             FEEDBACK_SUBJECT_MY_STUDIES_FI,
             FEEDBACK_CONTENT_PATTERN_MY_STUDIES_FI);
     }
@@ -194,7 +197,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(
             FeedbackSite.STUDENT.toString(),
             FEEDBACK_LANG_SV,
-            FEEDBACK_STUDENT_RECIPIENT,
+            feedbackStudentRecipient,
             FEEDBACK_SUBJECT_MY_STUDIES_SV,
             FEEDBACK_CONTENT_PATTERN_MY_STUDIES_SV);
     }
@@ -204,7 +207,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(
             FeedbackSite.STUDENT.toString(),
             FEEDBACK_LANG_EN,
-            FEEDBACK_STUDENT_RECIPIENT,
+            feedbackStudentRecipient,
             FEEDBACK_SUBJECT_MY_STUDIES_EN,
             FEEDBACK_CONTENT_PATTERN_MY_STUDIES_EN);
     }
@@ -214,7 +217,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(
             FeedbackSite.TEACHER.toString(),
             FEEDBACK_LANG_FI,
-            FEEDBACK_TEACHER_RECIPIENT,
+            feedbackTeacherRecipient,
             FEEDBACK_SUBJECT_MY_TEACHING_FI,
             FEEDBACK_CONTENT_PATTERN_MY_TEACHING_FI);
     }
@@ -224,7 +227,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(
             FeedbackSite.TEACHER.toString(),
             FEEDBACK_LANG_SV,
-            FEEDBACK_TEACHER_RECIPIENT,
+            feedbackTeacherRecipient,
             FEEDBACK_SUBJECT_MY_TEACHING_SV,
             FEEDBACK_CONTENT_PATTERN_MY_TEACHING_SV);
     }
@@ -234,7 +237,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(
             FeedbackSite.TEACHER.toString(),
             FEEDBACK_LANG_EN,
-            FEEDBACK_TEACHER_RECIPIENT,
+            feedbackTeacherRecipient,
             FEEDBACK_SUBJECT_MY_TEACHING_EN,
             FEEDBACK_CONTENT_PATTERN_MY_TEACHING_EN);
     }
@@ -244,7 +247,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(
             FeedbackSite.PORTFOLIO.toString(),
             FEEDBACK_LANG_FI,
-            FEEDBACK_PORTFOLIO_RECIPIENT,
+            feedbackPortfolioRecipient,
             FEEDBACK_SUBJECT_PORTFOLIO_FI,
             FEEDBACK_CONTENT_PATTERN_PORTFOLIO_FI);
     }
@@ -254,7 +257,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(
             FeedbackSite.PORTFOLIO.toString(),
             FEEDBACK_LANG_SV,
-            FEEDBACK_PORTFOLIO_RECIPIENT,
+            feedbackPortfolioRecipient,
             FEEDBACK_SUBJECT_PORTFOLIO_SV,
             FEEDBACK_CONTENT_PATTERN_PORTFOLIO_SV);
     }
@@ -264,7 +267,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(
             FeedbackSite.PORTFOLIO.toString(),
             FEEDBACK_LANG_EN,
-            FEEDBACK_PORTFOLIO_RECIPIENT,
+            feedbackPortfolioRecipient,
             FEEDBACK_SUBJECT_PORTFOLIO_EN,
             FEEDBACK_CONTENT_PATTERN_PORTFOLIO_EN);
     }
@@ -274,7 +277,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(
             FeedbackSite.ACADEMIC_PORTFOLIO.toString(),
             FEEDBACK_LANG_FI,
-            FEEDBACK_ACADEMIC_PORTFOLIO_RECIPIENT,
+            feedbackAcademicPortfolioRecipient,
             FEEDBACK_SUBJECT_ACADEMIC_PORTFOLIO_FI,
             FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_FI);
     }
@@ -284,7 +287,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(
             FeedbackSite.ACADEMIC_PORTFOLIO.toString(),
             FEEDBACK_LANG_SV,
-            FEEDBACK_ACADEMIC_PORTFOLIO_RECIPIENT,
+            feedbackAcademicPortfolioRecipient,
             FEEDBACK_SUBJECT_ACADEMIC_PORTFOLIO_SV,
             FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_SV);
     }
@@ -294,25 +297,23 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         thatFeedbackIsSent(
             FeedbackSite.ACADEMIC_PORTFOLIO.toString(),
             FEEDBACK_LANG_EN,
-            FEEDBACK_ACADEMIC_PORTFOLIO_RECIPIENT,
+            feedbackAcademicPortfolioRecipient,
             FEEDBACK_SUBJECT_ACADEMIC_PORTFOLIO_EN,
             FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_EN);
     }
-
 
     @Test
     public void thatAnonymousFeedbackIsSent() throws Exception {
         thatFeedbackIsSent(
             FeedbackSite.STUDENT.toString(),
             FEEDBACK_LANG_FI,
-            FEEDBACK_STUDENT_RECIPIENT,
+            feedbackStudentRecipient,
             FEEDBACK_SUBJECT_MY_STUDIES_FI,
             FEEDBACK_CONTENT_PATTERN_MY_STUDIES_FI,
             "",
-            FEEDBACK_NO_SENDER,
-            FEEDBACK_NO_REPLY);
+            feedbackNoSender,
+            feedbackNoReply);
     }
-
 
     @Test
     public void thatInvalidMessageStateCausesError() throws Exception {
@@ -385,7 +386,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
         assertThat((String)(message.getContent())).matches(expectedContentPattern);
     }
 
-    private JsonNode getMetadata(String lang, String site ) {
+    private JsonNode getMetadata(String lang, String site) {
         ImmutableMap<String, String> metadata = ImmutableMap.of(
             "userAgent", FEEDBACK_USER_AGENT,
             "faculty", FEEDBACK_FACULTY,

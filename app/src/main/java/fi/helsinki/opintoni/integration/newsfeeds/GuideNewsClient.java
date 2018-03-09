@@ -23,5 +23,6 @@ import java.util.Locale;
 public interface GuideNewsClient {
 
     Feed getGuideFeed(Locale locale);
+
     Feed getGuideFeed(Locale locale, String degreeProgrammeCode);
 }

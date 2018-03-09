@@ -28,14 +28,13 @@ import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.OfficeHoursConverter;
 import fi.helsinki.opintoni.util.NameSorting;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -49,7 +48,6 @@ public class OfficeHoursService {
     private final UserRepository userRepository;
     private final OfficeHoursConverter officeHoursConverter;
 
-
     @Autowired
     public OfficeHoursService(OfficeHoursRepository officeHoursRepository,
                               DegreeProgrammeRepository degreeProgrammeRepository,
@@ -60,7 +58,6 @@ public class OfficeHoursService {
         this.userRepository = userRepository;
         this.officeHoursConverter = officeHoursConverter;
     }
-
 
     public List<OfficeHoursDto> update(final Long userId, final List<OfficeHoursDto> officeHoursDtoList) {
         officeHoursRepository.deleteByUserId(userId);

@@ -17,26 +17,25 @@
 
 package fi.helsinki.opintoni.service.feedback;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fi.helsinki.opintoni.exception.http.BadRequestException;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.service.TimeService;
+import fi.helsinki.opintoni.web.rest.privateapi.SendFeedbackRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.fasterxml.jackson.databind.JsonNode;
-import fi.helsinki.opintoni.web.rest.privateapi.SendFeedbackRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.context.MessageSource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Locale;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import fi.helsinki.opintoni.localization.Language;
-
+import java.util.Locale;
 
 @Service
 @Transactional
@@ -60,7 +59,6 @@ public class FeedbackService {
     private final String academicPortfolioFeedbackToAddress;
     private final String anonymousFeedbackFromAddress;
     private final String anonymousFeedbackReplyToAddress;
-
 
     @Autowired
     public FeedbackService(MailSender mailSender,
@@ -88,7 +86,8 @@ public class FeedbackService {
         String faculty = getFaculty(request);
         String userAgent = getUserAgent(request);
         Locale locale = getLocale(request);
-        String body = buildMessageBody(content, timestamp, faculty, site, userAgent, locale);
+        final String body = buildMessageBody(content, timestamp, faculty, site, userAgent, locale);
+
         SimpleMailMessage message = new SimpleMailMessage();
         if ((request.email == null) || request.email.isEmpty()) {
             message.setFrom(anonymousFeedbackFromAddress);
@@ -111,6 +110,7 @@ public class FeedbackService {
         }
 
         message.setSubject(messageSource.getMessage("feedback.subject." + site, null, DEFAULT_SUBJECT, locale));
+
         message.setText(body);
         mailSender.send(message);
     }

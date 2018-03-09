@@ -37,5 +37,6 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
                                                               Language language);
 
     Optional<Portfolio> findById(Long id);
+
     Stream<Portfolio> findByUserId(Long userId);
 }

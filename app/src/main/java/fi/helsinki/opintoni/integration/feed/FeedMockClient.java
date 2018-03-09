@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -28,6 +30,8 @@ import org.springframework.core.io.Resource;
 import java.util.Optional;
 
 public class FeedMockClient implements FeedClient {
+
+    private static final Logger log = LoggerFactory.getLogger(FeedMockClient.class);
 
     @Value("classpath:sampledata/feed/feed1.rss")
     private Resource mockFeed;
@@ -45,7 +49,9 @@ public class FeedMockClient implements FeedClient {
         try {
             SyndFeedInput input = new SyndFeedInput();
             feed = Optional.ofNullable(input.build(new XmlReader(mockFeed.getInputStream())));
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            log.error("Error when fetching mock feed data", e);
+        }
         return feed;
     }
 }

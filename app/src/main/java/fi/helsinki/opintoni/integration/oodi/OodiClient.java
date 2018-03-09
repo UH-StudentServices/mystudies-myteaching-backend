@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.integration.oodi;
 
-import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
 
 import java.util.List;

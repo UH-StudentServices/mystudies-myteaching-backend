@@ -17,7 +17,7 @@
 
 package fi.helsinki.opintoni.integration.coursepage;
 
-public class CoursePageIntegrationException extends RuntimeException{
+public class CoursePageIntegrationException extends RuntimeException {
     public CoursePageIntegrationException(String message, Throwable cause) {
         super(message, cause);
     }

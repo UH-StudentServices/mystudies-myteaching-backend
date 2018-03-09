@@ -26,11 +26,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TimeZoneUtils {
-    private final String EUROPE_HELSINKI_TIMEZONE_ID = "Europe/Helsinki";
+    private static final String EUROPE_HELSINKI_TIMEZONE_ID = "Europe/Helsinki";
     private final TimeZoneRegistry timeZoneRegistry;
 
     public TimeZoneUtils() {
-       this.timeZoneRegistry =  TimeZoneRegistryFactory.getInstance().createRegistry();
+        this.timeZoneRegistry =  TimeZoneRegistryFactory.getInstance().createRegistry();
     }
 
     @Cacheable(value = CacheConstants.EUROPE_HELSINKI_TIMEZONE, cacheManager = "transientCacheManager")

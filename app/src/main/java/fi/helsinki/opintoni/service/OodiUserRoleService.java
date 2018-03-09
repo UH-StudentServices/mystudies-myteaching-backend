@@ -41,7 +41,9 @@ public class OodiUserRoleService {
 
     @Cacheable(value = CacheConstants.IS_OPEN_UNIVERSITY_TEACHER, cacheManager = "transientCacheManager")
     public boolean isOpenUniversityTeacher(String teacherNumber) {
-        List<OodiTeacherCourse> oodiTeacherCourses = oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()));
+        List<OodiTeacherCourse> oodiTeacherCourses =
+            oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()));
+
         return !oodiTeacherCourses.isEmpty() &&
             oodiTeacherCourses
                 .stream()
@@ -52,6 +54,7 @@ public class OodiUserRoleService {
     @Cacheable(value = CacheConstants.IS_OPEN_UNIVERSITY_STUDENT, cacheManager = "transientCacheManager")
     public boolean isOpenUniversityStudent(String studentNumber) {
         List<OodiEnrollment> oodiEnrollments = oodiClient.getEnrollments(studentNumber);
+
         return !oodiEnrollments.isEmpty() &&
             oodiEnrollments
                 .stream()

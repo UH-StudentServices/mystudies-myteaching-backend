@@ -15,10 +15,8 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.web.rest.privateapi.portfolio.jobSearch;
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.jobsearch;
 
-import fi.helsinki.opintoni.domain.portfolio.JobSearch;
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.dto.portfolio.JobSearchDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.portfolio.JobSearchService;

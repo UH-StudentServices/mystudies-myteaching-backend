@@ -54,7 +54,7 @@ public class UnisportRestClient implements UnisportClient {
                 baseUrl, new Locale("en"), username).getBody();
 
         } catch (HttpStatusCodeException e) {
-            if(!e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+            if (!e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
                 throw e;
             }
         }

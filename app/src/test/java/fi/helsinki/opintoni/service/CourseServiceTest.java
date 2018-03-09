@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.CourseDto;
-import fi.helsinki.opintoni.localization.Language;
+
 import fi.helsinki.opintoni.web.TestConstants;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -27,7 +27,6 @@ import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -36,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThat;
 
 public class CourseServiceTest extends SpringTest {
+
     @Autowired
     private CourseService courseService;
 

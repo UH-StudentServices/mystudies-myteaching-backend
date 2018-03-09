@@ -24,7 +24,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 public class AtomRestClient {
-    private final static Logger log = LoggerFactory.getLogger(AtomRestClient.class);
+    private static final Logger log = LoggerFactory.getLogger(AtomRestClient.class);
 
     private final RestTemplate restTemplate;
 

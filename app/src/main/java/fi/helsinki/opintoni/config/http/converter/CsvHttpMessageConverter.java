@@ -46,7 +46,6 @@ public class CsvHttpMessageConverter<T> extends AbstractHttpMessageConverter<Csv
         return CsvResponse.class.equals(clazz);
     }
 
-
     @Override
     protected CsvResponse<T> readInternal(Class<? extends CsvResponse<T>> clazz, HttpInputMessage inputMessage)
         throws IOException, HttpMessageNotReadableException {
