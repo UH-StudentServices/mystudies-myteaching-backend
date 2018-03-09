@@ -53,6 +53,18 @@ springBoot {
     mainClass = 'fi.helsinki.opintoni.Application'
 }
 
+jacoco {
+    toolVersion = "0.8.0"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.enabled true
+    }
+}
+
 apply from: 'liquibase.gradle'
 
 

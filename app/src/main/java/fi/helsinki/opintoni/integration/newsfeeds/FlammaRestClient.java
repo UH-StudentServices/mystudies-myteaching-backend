@@ -18,10 +18,9 @@
 package fi.helsinki.opintoni.integration.newsfeeds;
 
 import com.rometools.rome.feed.atom.Feed;
-import org.springframework.web.client.RestTemplate;
-
 import java.util.Locale;
 import java.util.Map;
+import org.springframework.web.client.RestTemplate;
 
 public class FlammaRestClient extends AtomRestClient implements FlammaClient {
 

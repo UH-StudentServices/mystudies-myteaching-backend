@@ -187,6 +187,32 @@ public class NewsResourceTest extends SpringTest {
         performGetNewsForStudentsWithChecks();
     }
 
+    @Test
+    public void thatFlammaNewsAreReturnedIfOodiIsDown() throws Exception {
+        flammaServer.expectStudentNews();
+        oodiServer.expectStudentStudyRightsRequestToRespondError(TestConstants.STUDENT_NUMBER);
+        guideNewsServer.expectGuideNewsFi();
+
+        mockMvc.perform(get("/api/private/v1/news/student")
+            .with(securityContext(studentSecurityContext()))
+            .characterEncoding("UTF-8")
+            .contentType(MediaType.APPLICATION_JSON)
+            .cookie(langCookie(FI))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(4)))
+
+            .andExpect(jsonPath("$[0].title").value("Flammatitle1"))
+            .andExpect(jsonPath("$[0].url").value("https://flamma.helsinki.fi/fi/flammatitle1"))
+            .andExpect(jsonPath("$[0].content").value("Flammacontent1"))
+
+            .andExpect(jsonPath("$[1].title").value("Guidetitle1"))
+            .andExpect(jsonPath("$[1].url").value("https://guide.student.helsinki.fi/fi/guidetitle1"))
+            .andExpect(jsonPath("$[1].content").value("Guidesummary1"));
+    }
+
     private void performGetNewsForStudentsWithChecks() throws Exception {
         mockMvc.perform(get("/api/private/v1/news/student")
             .with(securityContext(studentSecurityContext()))
