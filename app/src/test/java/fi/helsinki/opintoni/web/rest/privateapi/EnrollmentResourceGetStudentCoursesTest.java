@@ -37,7 +37,7 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
     private static final String WIKI_COURSE_MATERIAL_URL = "http://wiki.helsinki.fi";
 
     @Test
-    public void thatStudentCoursesAreReturnedDefault() throws Exception {
+    public void thatStudentCoursesAreReturnedWithCoursePageMaterial() throws Exception {
         expectCourseRequestChain()
             .defaultCourseUnitRealisationTeachers();
 
@@ -59,7 +59,7 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
     }
 
     @Test
-    public void thatCancelledCourseStatusIsReturned() throws Exception {
+    public void thatCancelledCourseStatusIsReturnedWithCoursePageMaterial() throws Exception {
         expectCancelledCourseRequestChain()
             .defaultCourseUnitRealisationTeachers();
 
