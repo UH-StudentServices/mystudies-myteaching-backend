@@ -107,7 +107,7 @@ public class PersistentCacheConfiguration extends CachingConfigurerSupport {
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.afterPropertiesSet();
 
-        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate, CacheConstants.persistentCacheNames);
+        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate, CacheConstants.PERSISTENT_CACHE_NAMES);
         cacheManager.setDefaultExpiration(defaultCacheExpiration);
 
         return cacheManager;

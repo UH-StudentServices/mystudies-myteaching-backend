@@ -119,7 +119,6 @@ public class OodiRestClient implements OodiClient {
             }, OodiLearningOpportunity.class, baseUrl, learningOpportunityId);
     }
 
-
     public <T> List<T> getOodiData(String url,
                                    ParameterizedTypeReference<OodiResponse<T>> typeReference,
                                    Object... uriVariables) {

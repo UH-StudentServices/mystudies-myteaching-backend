@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.publicapi;
 
-
 import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.dto.PublicOfficeHoursDto;
 import fi.helsinki.opintoni.service.OfficeHoursService;

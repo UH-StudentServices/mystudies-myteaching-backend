@@ -100,6 +100,4 @@ public class UserSettingsResource extends AbstractResource {
         userSettingsService.deleteUserAvatar(id);
         return response(true);
     }
-
-
 }

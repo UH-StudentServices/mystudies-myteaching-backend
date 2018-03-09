@@ -67,6 +67,4 @@ public class GuideNewsService extends FetchingNewsService {
                     .startsWith(GuideNewsConstants.OODI_STUDY_RIGHTS_MASTERS_PROGRAMME_CODE_PREFIX)
             );
     }
-
-
 }

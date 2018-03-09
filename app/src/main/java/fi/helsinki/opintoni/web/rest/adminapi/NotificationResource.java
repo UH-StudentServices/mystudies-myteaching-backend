@@ -87,7 +87,4 @@ public class NotificationResource extends AbstractResource {
         @Valid @RequestBody List<NotificationScheduleDto> notificationScheduleDto) {
         return response(notificationService.insertSchedules(notificationId, notificationScheduleDto));
     }
-
-
-
 }

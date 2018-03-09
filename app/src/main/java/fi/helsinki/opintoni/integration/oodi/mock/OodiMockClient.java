@@ -96,7 +96,6 @@ public class OodiMockClient implements OodiClient {
             LEARNING_OPPORTUNITY_B_ID, learningOpportunityB);
     }
 
-
     public OodiMockClient(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }

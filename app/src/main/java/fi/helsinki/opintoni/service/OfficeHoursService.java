@@ -48,7 +48,6 @@ public class OfficeHoursService {
     private final UserRepository userRepository;
     private final OfficeHoursConverter officeHoursConverter;
 
-
     @Autowired
     public OfficeHoursService(OfficeHoursRepository officeHoursRepository,
                               DegreeProgrammeRepository degreeProgrammeRepository,
@@ -59,7 +58,6 @@ public class OfficeHoursService {
         this.userRepository = userRepository;
         this.officeHoursConverter = officeHoursConverter;
     }
-
 
     public List<OfficeHoursDto> update(final Long userId, final List<OfficeHoursDto> officeHoursDtoList) {
         officeHoursRepository.deleteByUserId(userId);

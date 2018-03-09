@@ -79,7 +79,6 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new CommonError("Something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
     @ExceptionHandler(value = CalendarFeedNotFoundException.class)
     public ResponseEntity handleCalendarFeedNotFound() throws Exception {
         return new ResponseEntity(HttpStatus.NOT_FOUND);

@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.security.enumerated;
 
-
 public enum SAMLEduPersonAffiliation {
 
     FACULTY("faculty"),

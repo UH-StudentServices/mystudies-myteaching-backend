@@ -42,6 +42,4 @@ public class FlammaNewsService extends FetchingNewsService {
     public List<NewsDto> getTeacherNews(Locale locale) {
         return getAtomNews(() -> flammaClient.getTeacherFeed(locale));
     }
-
-
 }

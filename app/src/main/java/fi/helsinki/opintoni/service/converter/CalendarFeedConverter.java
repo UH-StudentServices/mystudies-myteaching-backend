@@ -38,6 +38,4 @@ public class CalendarFeedConverter {
         calendarFeedDto.feedUrl = uriBuilder.getCalendarFeedUrl(calendarFeed.feedId);
         return calendarFeedDto;
     }
-
-
 }

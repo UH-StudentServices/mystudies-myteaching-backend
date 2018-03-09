@@ -37,7 +37,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-
 @Service
 @Transactional
 public class FeedbackService {
@@ -60,7 +59,6 @@ public class FeedbackService {
     private final String academicPortfolioFeedbackToAddress;
     private final String anonymousFeedbackFromAddress;
     private final String anonymousFeedbackReplyToAddress;
-
 
     @Autowired
     public FeedbackService(MailSender mailSender,

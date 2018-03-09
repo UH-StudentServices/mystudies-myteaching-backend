@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.service.converter;
 
-
 import fi.helsinki.opintoni.integration.oodi.OodiLocalizedValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

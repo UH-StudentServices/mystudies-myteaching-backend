@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.service.news;
 
-
 import fi.helsinki.opintoni.dto.NewsDto;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.SecurityUtils;
@@ -42,7 +41,6 @@ public class NewsService {
 
     @Autowired
     private SecurityUtils securityUtils;
-
 
     @Value("${newsfeeds.maxItemsToReturn}")
     private int maxNews;

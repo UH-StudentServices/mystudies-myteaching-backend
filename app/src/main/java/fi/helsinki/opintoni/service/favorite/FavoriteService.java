@@ -36,7 +36,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-
 @Service
 @Transactional
 public class FavoriteService {
@@ -118,7 +117,6 @@ public class FavoriteService {
         favoriteRepository.save(favorite);
         return favoriteConverter.toDto(favorite);
     }
-
 
     public FavoriteDto insertUnicafeFavorite(Long userId, Integer restaurantId) {
         UnicafeFavorite favorite = new UnicafeFavorite();

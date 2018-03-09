@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.dto.portfolio;
 
-
 import java.time.LocalDate;
 
 public class DegreeDto {

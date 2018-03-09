@@ -15,7 +15,6 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 package fi.helsinki.opintoni.service.converter;
 
 import fi.helsinki.opintoni.domain.LocalizedText;

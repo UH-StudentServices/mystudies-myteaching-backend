@@ -30,7 +30,6 @@ public class GuideNewsMockClient extends NewsFeedsMockClient implements GuideNew
         "sv", "feed-sv.xml",
         "en", "feed-en.xml");
 
-
     @Override
     public Feed getGuideFeed(Locale locale) {
         return getFeedFromPath(MOCK_DATA_BASE + LANG_FILES.get(locale.getLanguage()));

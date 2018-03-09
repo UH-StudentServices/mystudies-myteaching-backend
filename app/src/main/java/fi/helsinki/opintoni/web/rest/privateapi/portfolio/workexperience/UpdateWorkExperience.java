@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio.workexperience;
 
-
 import java.time.LocalDate;
 
 public class UpdateWorkExperience {

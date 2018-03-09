@@ -27,9 +27,7 @@ import java.util.Optional;
 
 public class FeedRemoteClient implements FeedClient {
 
-
     private static final Logger LOGGER = LoggerFactory.getLogger(FeedRemoteClient.class);
-
 
     private final FeedFetcher feedFetcher;
 

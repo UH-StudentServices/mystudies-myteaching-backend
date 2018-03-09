@@ -48,7 +48,6 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
     private static final String SAML_ATTRIBUTE_TEACHER_FACULTY_CODE = "urn:mace:funet.fi:helsinki.fi:hyAccountingCode";
     private static final String SAML_ATTRIBUTE_PREFERRED_LANGUAGE = "urn:oid:2.16.840.1.113730.3.1.39";
 
-
     private final UserService userService;
 
     @Autowired

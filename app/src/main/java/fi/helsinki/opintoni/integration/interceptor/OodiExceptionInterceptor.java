@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.integration.interceptor;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.exception.http.RestClientServiceException;

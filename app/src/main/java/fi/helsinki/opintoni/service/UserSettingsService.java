@@ -39,7 +39,6 @@ import java.util.Optional;
 
 import static fi.helsinki.opintoni.exception.http.NotFoundException.notFoundException;
 
-
 @Service
 @Transactional
 public class UserSettingsService {
@@ -163,5 +162,4 @@ public class UserSettingsService {
             fileStorage.remove(userSettings.uploadedBackgroundFilename);
         }
     }
-
 }

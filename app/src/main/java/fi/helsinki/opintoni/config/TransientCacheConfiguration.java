@@ -74,7 +74,7 @@ public class TransientCacheConfiguration {
     }
 
     private void configureCaches() {
-        CacheConstants.transientCacheNames.forEach(cacheName -> {
+        CacheConstants.TRANSIENT_CACHE_NAMES.forEach(cacheName -> {
             cacheManager.addCache(cacheName);
             setDefaultCacheProperties(cacheName);
         });
