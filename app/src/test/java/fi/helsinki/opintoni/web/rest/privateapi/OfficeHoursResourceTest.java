@@ -17,40 +17,26 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.ADDITIONAL_INFO;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.ADDITIONAL_INFO_2;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_1;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_2;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_3;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS_2;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.LOCATION;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.LOCATION_2;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHER_NAME;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHER_NAME_2;
-import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
-import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
-import static fi.helsinki.opintoni.web.WebTestUtils.toJsonBytes;
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
 import fi.helsinki.opintoni.web.WebConstants;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
-public class OfficeHoursResourceTest extends SpringTest {
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.*;
+import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
+import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
+import static fi.helsinki.opintoni.web.WebTestUtils.toJsonBytes;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+public class OfficeHoursResourceTest extends SpringTest {
 
     @Test
     public void thatOfficeHoursReturnCorrectResponse() throws Exception {

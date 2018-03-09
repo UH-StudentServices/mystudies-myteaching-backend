@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
-
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.web.WebTestUtils;
 import org.junit.Test;

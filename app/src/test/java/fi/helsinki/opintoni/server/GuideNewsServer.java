@@ -55,7 +55,6 @@ public class GuideNewsServer extends AbstractRestServiceServer {
             .andRespond(withSuccess(toText(GUIDE_NEWS_FILE_EN), MediaType.TEXT_XML));
     }
 
-
     public void expectGuideProgrammeNewsFi(String programmeDegreeCode, String responseFile) {
         server.expect(requestTo(guideNewsPathFi + "?degree_programme_code=" + programmeDegreeCode))
             .andExpect(method(HttpMethod.GET))

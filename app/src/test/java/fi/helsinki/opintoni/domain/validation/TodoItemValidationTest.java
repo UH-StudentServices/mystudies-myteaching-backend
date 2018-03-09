@@ -61,7 +61,6 @@ public class TodoItemValidationTest {
         return validator.validate(todoItem);
     }
 
-
     private TodoItem getTodoItem() {
         TodoItem todoItem = new TodoItem();
         todoItem.setCreatedBy("createdBy");

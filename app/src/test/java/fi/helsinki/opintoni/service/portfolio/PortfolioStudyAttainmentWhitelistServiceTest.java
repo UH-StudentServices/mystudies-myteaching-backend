@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
-
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.portfolio.StudyAttainmentWhitelist;
 import fi.helsinki.opintoni.dto.portfolio.StudyAttainmentWhitelistDto;
@@ -73,6 +72,5 @@ public class PortfolioStudyAttainmentWhitelistServiceTest extends SpringTest {
     public void shouldThrowNotFoundOnMissingWhitelist() {
         whitelistService.get(999L);
     }
-
 
 }

@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.integration;
 
-
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.exception.http.BadRequestException;
 import fi.helsinki.opintoni.integration.pagemetadata.PageMetaData;

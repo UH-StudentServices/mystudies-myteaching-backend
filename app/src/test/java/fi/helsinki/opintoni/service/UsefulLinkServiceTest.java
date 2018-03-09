@@ -43,7 +43,6 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-
 public class UsefulLinkServiceTest extends SpringTest {
 
     private static final String EDU_PERSON_PRINCIPAL_NAME = "person@helsinki.fi";

@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.server;
 
-
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.integration.unisport.MockUnisportJWTService;
 import org.springframework.http.HttpMethod;

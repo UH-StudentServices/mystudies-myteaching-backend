@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
-
 import fi.helsinki.opintoni.SpringTest;
 import org.junit.Test;
 import org.springframework.http.MediaType;

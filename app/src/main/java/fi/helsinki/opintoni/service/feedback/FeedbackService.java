@@ -113,7 +113,6 @@ public class FeedbackService {
 
         message.setSubject(messageSource.getMessage("feedback.subject." + site, null, DEFAULT_SUBJECT, locale));
 
-
         message.setText(body);
         mailSender.send(message);
     }

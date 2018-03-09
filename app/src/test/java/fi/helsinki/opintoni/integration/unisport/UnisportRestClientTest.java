@@ -33,7 +33,6 @@ public class UnisportRestClientTest extends SpringTest {
     private static final long UNISPORT_USER_ID = 123;
     private static final String UNISPORT_EVENT_NAME = "Testikurssin tapahtuma";
 
-
     @Autowired
     private UnisportRestClient unisportRestClient;
 

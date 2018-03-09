@@ -302,7 +302,6 @@ public class PrivateFeedbackResourceTest extends SpringTest {
             FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_EN);
     }
 
-
     @Test
     public void thatAnonymousFeedbackIsSent() throws Exception {
         thatFeedbackIsSent(
@@ -315,7 +314,6 @@ public class PrivateFeedbackResourceTest extends SpringTest {
             feedbackNoSender,
             feedbackNoReply);
     }
-
 
     @Test
     public void thatInvalidMessageStateCausesError() throws Exception {

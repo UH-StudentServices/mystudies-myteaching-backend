@@ -41,7 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class FavoriteServiceSaveLinkFavoriteTest extends SpringTest {
 
-
     private static final Long USER_ID = 1L;
 
     @Autowired
