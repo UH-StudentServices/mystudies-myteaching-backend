@@ -50,7 +50,7 @@ public class FeedMockClient implements FeedClient {
             SyndFeedInput input = new SyndFeedInput();
             feed = Optional.ofNullable(input.build(new XmlReader(mockFeed.getInputStream())));
         } catch (Exception e) {
-            LOGGER.error("Error when fetching feed mock", e);
+            LOGGER.error("Error when fetching mock feed data", e);
         }
         return feed;
     }
