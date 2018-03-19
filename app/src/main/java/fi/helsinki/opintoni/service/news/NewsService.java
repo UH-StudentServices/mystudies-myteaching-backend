@@ -71,11 +71,13 @@ public class NewsService {
     }
 
     public List<NewsDto> getTeacherNews(Locale locale) {
-        return flammaNewsService.getTeacherNews(locale);
+        final List<NewsDto> newsDtos = flammaNewsService.getTeacherNews(locale);
+        return newsDtos.subList(0, Math.min(maxNews, newsDtos.size()));
     }
 
     public List<NewsDto> getOpenUniversityNews() {
-        return openUniversityNewsService.getOpenUniversityNews();
+        final List<NewsDto> newsDtos = openUniversityNewsService.getOpenUniversityNews();
+        return newsDtos.subList(0, Math.min(maxNews, newsDtos.size()));
     }
 
 }
