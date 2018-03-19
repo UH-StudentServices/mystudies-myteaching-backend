@@ -26,6 +26,7 @@
         <id>HY368145</id>
         <link href="https://flamma.helsinki.fi/fi/flammatitle1-en" />
         <title><![CDATA[Flammatitle1-en]]></title>
+        <category term="oppilas" />
         <link rel="enclosure" href="https://flamma.helsinki.fi/infotaulu/images/HY368144.jpg"/>
         <updated>2017-10-05T13:00:00</updated>
         <content><![CDATA[Flammacontent1-en]]></content>
@@ -42,6 +43,8 @@
         <id>HY368004</id>
         <link href="https://flamma.helsinki.fi/fi/flammatitle3-en" />
         <title><![CDATA[Flammatitle3-en]]></title>
+        <category term="oppilas" />
+        <category term="henkilokunta" />
         <link rel="enclosure" href="https://flamma.helsinki.fi/infotaulu/images/HY368006.jpg"/>
         <updated>2017-10-01T13:00:00</updated>
         <content><![CDATA[Flammacontent3-en]]></content>

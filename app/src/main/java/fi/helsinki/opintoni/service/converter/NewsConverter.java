@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.service.converter;
 
+import com.rometools.rome.feed.atom.Category;
 import com.rometools.rome.feed.atom.Entry;
 import com.rometools.rome.feed.rss.Item;
 import fi.helsinki.opintoni.dto.NewsDto;
@@ -24,6 +25,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
 import org.springframework.stereotype.Component;
+
+import static java.util.stream.Collectors.toSet;
 
 @Component
 public class NewsConverter {
@@ -35,6 +38,7 @@ public class NewsConverter {
         String stripped = Jsoup.clean(getContentOrSummaryFromEntry(atomFeedEntry), Whitelist.none());
         newsDto.content = Parser.unescapeEntities(stripped, false);
         newsDto.updated = atomFeedEntry.getUpdated();
+        newsDto.categories = atomFeedEntry.getCategories().stream().map(Category::getTerm).collect(toSet());
         return newsDto;
     }
 

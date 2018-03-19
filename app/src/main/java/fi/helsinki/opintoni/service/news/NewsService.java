@@ -27,6 +27,8 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.toSet;
+
 @Service
 public class NewsService {
 
@@ -45,9 +47,12 @@ public class NewsService {
     @Value("${newsfeeds.maxItemsToReturn}")
     private int maxNews;
 
+    @Value("${newsfeeds.studentFeedCategory}")
+    private String studentFeedCategory;
+
     public List<NewsDto> getStudentNews(Locale locale) {
-        Set<NewsDto> newsDtos = new HashSet<>();
-        newsDtos.addAll(flammaNewsService.getStudentNews(locale));
+        Set<NewsDto> newsDtos = flammaNewsService.getStudentNews(locale).stream()
+            .filter(item -> item.categories.contains(studentFeedCategory)).collect(toSet());
 
         List<NewsDto> guideNewsDtos = securityUtils.getAppUser()
             .map(AppUser::getStudentNumber)
