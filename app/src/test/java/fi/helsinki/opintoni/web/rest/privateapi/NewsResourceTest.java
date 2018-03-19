@@ -226,8 +226,9 @@ public class NewsResourceTest extends SpringTest {
             .andExpect(jsonPath("$", hasSize(4)))
             .andExpect(jsonPath("$[0].title").value("Flammatitle1"))
             .andExpect(jsonPath("$[1].title").value("Guidetitle1"))
-            .andExpect(jsonPath("$[2].title").value("Flammatitle2"))
-            .andExpect(jsonPath("$[3].title").value("Guidetitle2"));
+            .andExpect(jsonPath("$[2].title").value("Guidetitle2"))
+            .andExpect(jsonPath("$[3].title").value("Flammatitle3"))
+        ;
     }
 
 }

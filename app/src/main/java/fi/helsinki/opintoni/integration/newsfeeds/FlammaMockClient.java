@@ -26,9 +26,9 @@ public class FlammaMockClient extends NewsFeedsMockClient implements FlammaClien
     private static final String MOCK_DATA_BASE = "/sampledata/newsfeeds/flamma/";
 
     private static final ImmutableMap<String, String> STUDENT_FILES = ImmutableMap.of(
-        "fi", "atom-tiedotteet-opiskelijalle.xml",
-        "sv", "atom-tiedotteet-opiskelijalle-sv.xml",
-        "en", "atom-tiedotteet-opiskelijalle-en.xml");
+        "fi", "atom-bulletin.xml",
+        "sv", "atom-bulletin-sv.xml",
+        "en", "atom-bulletin-en.xml");
 
     private static final ImmutableMap<String, String> TEACHER_FILES = ImmutableMap.of(
         "fi", "atom-tiedotteet-opetusasiat.xml",

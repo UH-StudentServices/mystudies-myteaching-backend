@@ -17,8 +17,7 @@
 
 package fi.helsinki.opintoni.dto;
 
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 public class NewsDto {
 
@@ -26,6 +25,7 @@ public class NewsDto {
     public String url;
     public String content;
     public Date updated;
+    public Set<String> categories = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
