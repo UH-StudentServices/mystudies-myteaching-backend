@@ -24,7 +24,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 @Component
 public class AuditLogger {
-    private static final Logger logger = getLogger("AUDIT_LOGGER");
+    private static final Logger logger = getLogger(AuditLogger.class);
 
     public void log(String message) {
         logger.info(message);

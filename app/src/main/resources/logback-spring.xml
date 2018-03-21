@@ -21,7 +21,7 @@
     <springProfile name="!local-dev">
         <include resource="logback-default.xml"/>
         <include resource="logback-auditlog.xml"/>
-        <logger name="AUDIT_LOGGER" level="INFO" additivity="false">
+        <logger name="fi.helsinki.opintoni.util.AuditLogger" level="INFO" additivity="false">
             <appender-ref ref="AUDIT_FILE_LOGGER"/>
         </logger>
     </springProfile>
