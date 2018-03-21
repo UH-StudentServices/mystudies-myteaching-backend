@@ -28,9 +28,5 @@
 
     <springProfile name="local-dev">
         <include resource="logback-local.xml"/>
-        <include resource="logback-auditlog.xml"/>
-        <logger name="AUDIT_LOGGER" level="INFO" additivity="false">
-            <appender-ref ref="AUDIT_CONSOLE_LOGGER"/>
-        </logger>
     </springProfile>
 </configuration>

@@ -48,8 +48,6 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
 
     private static final Logger log = getLogger(BaseAuthenticationSuccessHandler.class);
 
-    private static final String USER_LOGIN_AUDIT_LOG_MESSAGE = "USER_LOGIN";
-
     private UserService userService;
 
     private Environment env;
@@ -103,14 +101,14 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
     private void logUserLogin(AppUser appUser, HttpServletRequest request) {
         String ipAddress = request.getHeader(HttpHeaders.X_FORWARDED_FOR);
 
-        if (ipAddress == null) {
+        if (ipAddress == null || ipAddress.isEmpty()) {
             ipAddress = request.getRemoteAddr();
         }
 
         auditLogger.log(
-            USER_LOGIN_AUDIT_LOG_MESSAGE,
-            ipAddress,
-            appUser.getEduPersonPrincipalName());
+            String.format("User logged in from ipAddress %s with eduPersonPrincipalName %s",
+                ipAddress,
+                appUser.getEduPersonPrincipalName()));
     }
 
     private Optional<User> getUserFromDb(AppUser appUser) {

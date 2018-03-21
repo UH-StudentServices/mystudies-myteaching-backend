@@ -12,34 +12,9 @@
             <maxHistory>730</maxHistory>
         </rollingPolicy>
 
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <timestamp/>
-                <version>1</version>
-                <pattern>
-                    <pattern>
-                        {
-                            "message": "#asJson{%message}"
-                        }
-                    </pattern>
-                </pattern>
-            </providers>
-        </encoder>
-    </appender>
-
-    <appender name="AUDIT_CONSOLE_LOGGER" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-            <providers>
-                <timestamp/>
-                <version>1</version>
-                <pattern>
-                    <pattern>
-                        {
-                            "message": "#asJson{%message}"
-                        }
-                    </pattern>
-                </pattern>
-            </providers>
+        <encoder>
+            <charset>utf-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n</pattern>
         </encoder>
     </appender>
 

@@ -26,11 +26,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class AuditLogger {
     private static final Logger logger = getLogger("AUDIT_LOGGER");
 
-    public void log(String message, String ipAddress, String eduPersonPrincipalName) {
-        logger.info(
-            "{\"message\": \"{}\",\"ipAddress\": \"{}\", \"eduPersonPrincipalName\": \"{}\"}",
-            message,
-            ipAddress,
-            eduPersonPrincipalName);
+    public void log(String message) {
+        logger.info(message);
     }
 }
