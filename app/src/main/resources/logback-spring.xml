@@ -20,6 +20,10 @@
 <configuration debug="true" scan="true">
     <springProfile name="!local-dev">
         <include resource="logback-default.xml"/>
+        <include resource="logback-auditlog.xml"/>
+        <logger name="fi.helsinki.opintoni.util.AuditLogger" level="INFO" additivity="false">
+            <appender-ref ref="AUDIT_FILE_LOGGER"/>
+        </logger>
     </springProfile>
 
     <springProfile name="local-dev">

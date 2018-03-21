@@ -1,0 +1,21 @@
+<included>
+    <property name="AUDIT_LOG_DIR" value="/var/log/opintoni/auditlog"/>
+
+    <appender name="AUDIT_FILE_LOGGER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${AUDIT_LOG_DIR}/opintoni-auditlog.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${AUDIT_LOG_DIR}/opintoni-auditlog.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- keep 2 years' worth of history -->
+            <maxHistory>730</maxHistory>
+        </rollingPolicy>
+
+        <encoder>
+            <charset>utf-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+</included>
