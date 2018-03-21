@@ -1,0 +1,46 @@
+<included>
+    <property name="AUDIT_LOG_DIR" value="/tmp/log/opintoni/auditlog"/>
+
+    <appender name="AUDIT_FILE_LOGGER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${AUDIT_LOG_DIR}/opintoni-auditlog.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${AUDIT_LOG_DIR}/opintoni-auditlog.%d{yyyy-MM-dd}.log</fileNamePattern>
+
+            <!-- keep 2 years' worth of history -->
+            <maxHistory>730</maxHistory>
+        </rollingPolicy>
+
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp/>
+                <version>1</version>
+                <pattern>
+                    <pattern>
+                        {
+                            "message": "#asJson{%message}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+    <appender name="AUDIT_CONSOLE_LOGGER" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp/>
+                <version>1</version>
+                <pattern>
+                    <pattern>
+                        {
+                            "message": "#asJson{%message}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+</included>

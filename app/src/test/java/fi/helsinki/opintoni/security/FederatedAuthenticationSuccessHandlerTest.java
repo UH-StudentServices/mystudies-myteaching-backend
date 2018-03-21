@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.service.SessionService;
 import fi.helsinki.opintoni.service.TimeService;
 import fi.helsinki.opintoni.service.UserService;
+import fi.helsinki.opintoni.util.AuditLogger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatcher;
@@ -49,7 +50,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FederatedAuthenticationSuccessHandlerTest {
-    private static final List<String> availableLanguages = newArrayList(FI.getCode(), EN.getCode(), SV.getCode());
+    private static final List<String> AVAILABLE_LANGUAGES = newArrayList(FI.getCode(), EN.getCode(), SV.getCode());
     private static final String UNSUPPORTED_LANGUAGE = "de";
     private static final String LANGUAGE_CODE_WITH_COUNTRY = "en-US";
     private static final String LANGUAGE_CODE_WITH_COUNTRY_UNDERSCORE = "en_US";
@@ -57,6 +58,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
     private static final String EDU_PRINCIPAL_NAME = "eduPrincipalName";
     private static final String OODI_PERSON_ID = "oodiPersonId";
+    private static final String REMOTE_ADDRESS = "1.2.3.4";
 
     private final Authentication authentication = mock(Authentication.class);
 
@@ -75,6 +77,9 @@ public class FederatedAuthenticationSuccessHandlerTest {
     @Mock
     private Environment env;
 
+    @Mock
+    private AuditLogger auditLogger;
+
     @InjectMocks
     private FederatedAuthenticationSuccessHandler handler;
 
@@ -88,7 +93,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
             .build();
 
         when(authentication.getPrincipal()).thenReturn(appUser);
-        when(env.getRequiredProperty("language.available", List.class)).thenReturn(availableLanguages);
+        when(env.getRequiredProperty("language.available", List.class)).thenReturn(AVAILABLE_LANGUAGES);
     }
 
     @Test
@@ -193,6 +198,22 @@ public class FederatedAuthenticationSuccessHandlerTest {
         handler.onAuthenticationSuccess(mock(HttpServletRequest.class), response, authentication);
 
         verify(response, times(1)).addCookie(argThat(new HasLoggedInCookieMatcher()));
+    }
+
+    @Test
+    public void thatLoginIsAuditLogged() throws IOException, ServletException {
+        setupMocks(FI.getCode());
+        HttpServletResponse response = mockResponse();
+        HttpServletRequest request = mock(HttpServletRequest.class);
+
+        when(request.getRemoteAddr()).thenReturn(REMOTE_ADDRESS);
+        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
+
+        handler.onAuthenticationSuccess(request, response, authentication);
+
+        AppUser appUser = (AppUser) authentication.getPrincipal();
+
+        verify(auditLogger, times(1)).log("USER_LOGIN", REMOTE_ADDRESS, appUser.getEduPersonPrincipalName());
     }
 
     private HttpServletResponse mockResponse() throws IOException {

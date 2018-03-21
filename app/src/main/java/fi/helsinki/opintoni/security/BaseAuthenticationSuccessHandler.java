@@ -17,12 +17,13 @@
 
 package fi.helsinki.opintoni.security;
 
+import com.google.common.net.HttpHeaders;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.integration.oodi.OodiIntegrationException;
 import fi.helsinki.opintoni.service.UserService;
+import fi.helsinki.opintoni.util.AuditLogger;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
@@ -41,19 +42,25 @@ import java.util.Optional;
 
 import static fi.helsinki.opintoni.config.Constants.NG_TRANSLATE_LANG_KEY;
 import static fi.helsinki.opintoni.config.Constants.OPINTONI_HAS_LOGGED_IN;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public abstract class BaseAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(BaseAuthenticationSuccessHandler.class);
+    private static final Logger log = getLogger(BaseAuthenticationSuccessHandler.class);
+
+    private static final String USER_LOGIN_AUDIT_LOG_MESSAGE = "USER_LOGIN";
 
     private UserService userService;
 
     private Environment env;
 
+    private AuditLogger auditLogger;
+
     @Autowired
-    public void initialize(UserService userService, Environment env) {
+    public void initialize(UserService userService, Environment env, AuditLogger auditLogger) {
         this.userService = userService;
         this.env = env;
+        this.auditLogger = auditLogger;
     }
 
     @Override
@@ -61,6 +68,8 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         AppUser appUser = (AppUser) authentication.getPrincipal();
+
+        logUserLogin(appUser, request);
 
         try {
             syncUserWithDatabase(appUser);
@@ -72,7 +81,6 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
             if (!env.acceptsProfiles(Constants.SPRING_PROFILE_DEMO)) {
                 addHasLoggedInCookie(response);
             }
-
             handleAuthSuccess(response);
         } catch (OodiIntegrationException e) {
             handleAuthFailure(response);
@@ -90,6 +98,19 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         } else {
             createNewUser(appUser);
         }
+    }
+
+    private void logUserLogin(AppUser appUser, HttpServletRequest request) {
+        String ipAddress = request.getHeader(HttpHeaders.X_FORWARDED_FOR);
+
+        if (ipAddress == null) {
+            ipAddress = request.getRemoteAddr();
+        }
+
+        auditLogger.log(
+            USER_LOGIN_AUDIT_LOG_MESSAGE,
+            ipAddress,
+            appUser.getEduPersonPrincipalName());
     }
 
     private Optional<User> getUserFromDb(AppUser appUser) {
