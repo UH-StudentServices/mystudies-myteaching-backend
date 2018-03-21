@@ -1,5 +1,5 @@
 <included>
-    <property name="AUDIT_LOG_DIR" value="/tmp/log/opintoni/auditlog"/>
+    <property name="AUDIT_LOG_DIR" value="/var/log/opintoni/auditlog"/>
 
     <appender name="AUDIT_FILE_LOGGER" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${AUDIT_LOG_DIR}/opintoni-auditlog.log</file>
