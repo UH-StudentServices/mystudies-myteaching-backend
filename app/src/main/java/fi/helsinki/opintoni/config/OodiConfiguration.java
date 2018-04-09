@@ -29,6 +29,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,8 +47,11 @@ import java.io.File;
 import java.security.KeyStore;
 import java.util.List;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 @Configuration
 public class OodiConfiguration {
+    private static final Logger logger = getLogger(OodiConfiguration.class);
 
     @Autowired
     private AppConfiguration appConfiguration;
@@ -89,6 +93,7 @@ public class OodiConfiguration {
         String keystorePassword = appConfiguration.get("oodi.keystorePassword");
 
         if (keystoreLocation != null && keystorePassword != null) {
+            logger.info("Using client certificate");
             char[] keystorePasswordCharArray = keystorePassword.toCharArray();
 
             try {
@@ -98,10 +103,11 @@ public class OodiConfiguration {
                 throw new RuntimeException("Failed to load Oodi keystore");
             }
         }
+        logger.info("Not using client certificate");
 
         return null;
     }
-    
+
     private ClientHttpRequestFactory clientHttpRequestFactory() {
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 
