@@ -44,7 +44,6 @@ import org.springframework.web.client.RestTemplate;
 import javax.net.ssl.SSLContext;
 import java.io.File;
 import java.security.KeyStore;
-import java.security.KeyStoreException;
 import java.util.List;
 
 @Configuration
@@ -76,21 +75,33 @@ public class OodiConfiguration {
         return Lists.newArrayList(converter);
     }
 
-    private KeyStore oodiKeyStore() {
-        try {
-            KeyStore keyStore = KeyStore.getInstance("PKCS12");
-            FileSystemResource keystoreFile = new FileSystemResource(
-                new File(appConfiguration.get("oodi.keystoreLocation")));
+    private KeyStore oodiKeyStore(String keystoreLocation, char[] keystorePassword) throws Exception {
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        FileSystemResource keystoreFile = new FileSystemResource(
+            new File(keystoreLocation));
 
-            keyStore.load(keystoreFile.getInputStream(), appConfiguration.get("oodi.keystorePassword").toCharArray());
-            return keyStore;
-        } catch (KeyStoreException e) {
-            throw new RuntimeException("Failed to instantiate keystore");
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load Oodi keystore");
-        }
+        keyStore.load(keystoreFile.getInputStream(), keystorePassword);
+        return keyStore;
     }
 
+    private SSLContext sslContext() {
+        String keystoreLocation = appConfiguration.get("oodi.keystoreLocation");
+        String keystorePassword = appConfiguration.get("oodi.keystorePassword");
+
+        if (keystoreLocation != null && keystorePassword != null) {
+            char[] keystorePasswordCharArray = keystorePassword.toCharArray();
+
+            try {
+                return SSLContextBuilder.create()
+                    .loadKeyMaterial(oodiKeyStore(keystoreLocation, keystorePasswordCharArray), keystorePasswordCharArray).build();
+            } catch (Exception e) {
+                throw new RuntimeException("Failed to load Oodi keystore");
+            }
+        }
+
+        return null;
+    }
+    
     private ClientHttpRequestFactory clientHttpRequestFactory() {
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 
@@ -103,21 +114,14 @@ public class OodiConfiguration {
         poolingHttpClientConnectionManager
             .setDefaultMaxPerRoute(appConfiguration.getInteger("httpClient.defaultMaxPerRoute"));
 
-        try {
-            SSLContext sslContext = SSLContextBuilder.create()
-                .loadKeyMaterial(oodiKeyStore(), appConfiguration.get("oodi.keystorePassword").toCharArray()).build();
+        CloseableHttpClient httpClient = HttpClientBuilder.create()
+            .setConnectionManager(poolingHttpClientConnectionManager)
+            .setSSLContext(sslContext())
+            .build();
 
-            CloseableHttpClient httpClient = HttpClientBuilder.create()
-                .setConnectionManager(poolingHttpClientConnectionManager)
-                .setSSLContext(sslContext)
-                .build();
+        factory.setHttpClient(httpClient);
 
-            factory.setHttpClient(httpClient);
-
-            return new BufferingClientHttpRequestFactory(factory);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load Oodi key material.");
-        }
+        return new BufferingClientHttpRequestFactory(factory);
     }
 
     @Bean
