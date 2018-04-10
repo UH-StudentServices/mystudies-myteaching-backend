@@ -25,6 +25,9 @@ import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiRestClient;
 import fi.helsinki.opintoni.integration.oodi.mock.OodiMockClient;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -88,24 +91,29 @@ public class OodiConfiguration {
         return keyStore;
     }
 
-    private SSLContext sslContext() {
+    private SSLContext sslContext(String keystoreLocation, String keystorePassword) {
+        char[] keystorePasswordCharArray = keystorePassword.toCharArray();
+
+        try {
+            return SSLContextBuilder.create()
+                .loadKeyMaterial(oodiKeyStore(keystoreLocation, keystorePasswordCharArray), keystorePasswordCharArray).build();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load Oodi keystore");
+        }
+    }
+
+    private PoolingHttpClientConnectionManager poolingHttpClientConnectionManager() {
         String keystoreLocation = appConfiguration.get("oodi.keystoreLocation");
         String keystorePassword = appConfiguration.get("oodi.keystorePassword");
 
         if (keystoreLocation != null && keystorePassword != null) {
-            logger.info("Using client certificate");
-            char[] keystorePasswordCharArray = keystorePassword.toCharArray();
+            SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext(keystoreLocation, keystorePassword));
+            Registry socketFactoryRegistry = RegistryBuilder.create().register("https", sslConnectionSocketFactory).build();
 
-            try {
-                return SSLContextBuilder.create()
-                    .loadKeyMaterial(oodiKeyStore(keystoreLocation, keystorePasswordCharArray), keystorePasswordCharArray).build();
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to load Oodi keystore");
-            }
+            return new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+        } else {
+            return new PoolingHttpClientConnectionManager();
         }
-        logger.info("Not using client certificate");
-
-        return null;
     }
 
     private ClientHttpRequestFactory clientHttpRequestFactory() {
@@ -114,15 +122,13 @@ public class OodiConfiguration {
         factory.setReadTimeout(appConfiguration.getInteger("httpClient.readTimeout"));
         factory.setConnectTimeout(appConfiguration.getInteger("httpClient.connectTimeout"));
 
-        PoolingHttpClientConnectionManager poolingHttpClientConnectionManager =
-            new PoolingHttpClientConnectionManager();
+        PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = poolingHttpClientConnectionManager();
         poolingHttpClientConnectionManager.setMaxTotal(appConfiguration.getInteger("httpClient.maxTotal"));
         poolingHttpClientConnectionManager
             .setDefaultMaxPerRoute(appConfiguration.getInteger("httpClient.defaultMaxPerRoute"));
 
         CloseableHttpClient httpClient = HttpClientBuilder.create()
             .setConnectionManager(poolingHttpClientConnectionManager)
-            .setSSLContext(sslContext())
             .build();
 
         factory.setHttpClient(httpClient);
