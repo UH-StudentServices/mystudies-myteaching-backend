@@ -103,8 +103,8 @@ public class OodiConfiguration {
     }
 
     private PoolingHttpClientConnectionManager poolingHttpClientConnectionManager() {
-        String keystoreLocation = appConfiguration.get("oodi.keystoreLocation");
-        String keystorePassword = appConfiguration.get("oodi.keystorePassword");
+        String keystoreLocation = appConfiguration.get("client.keystoreLocation");
+        String keystorePassword = appConfiguration.get("client.keystorePassword");
 
         if (keystoreLocation != null && keystorePassword != null) {
             SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext(keystoreLocation, keystorePassword));
