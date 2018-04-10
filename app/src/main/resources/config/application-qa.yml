@@ -42,7 +42,7 @@ metrics:
     jmx.enabled: true
 
 oodi:
-    base.url: https://esbmt2.it.helsinki.fi:443/doo-oodi/dev/testdb
+    base.url: https://esbmt2.it.helsinki.fi:443/devel/doo-oodi/dev/testdb
     client.implementation: rest
 
 coursePage:
