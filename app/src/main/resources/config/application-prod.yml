@@ -46,6 +46,7 @@ metrics:
 oodi:
     base.url: https://esbmt1.it.helsinki.fi:443/doo-oodi/v1/productiondb
     client.implementation: rest
+    useHttpClientCertificate: false
 
 coursePage:
     base.url: https://courses.helsinki.fi
