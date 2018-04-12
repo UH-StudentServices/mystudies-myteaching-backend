@@ -34,6 +34,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -64,6 +65,15 @@ public class OodiConfiguration {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Value("${httpClient.keystoreLocation:null}")
+    private String keystoreLocation;
+
+    @Value("${httpClient.keystorePassword:null}")
+    private String keystorePassword;
+
+    @Value("${oodi.useHttpClientCertificate:false}")
+    private boolean useHttpClientCertificate;
 
     @Bean
     public RestTemplate oodiRestTemplate() {
@@ -103,10 +113,6 @@ public class OodiConfiguration {
     }
 
     private PoolingHttpClientConnectionManager poolingHttpClientConnectionManager() {
-        String keystoreLocation = appConfiguration.get("httpClient.keystoreLocation");
-        String keystorePassword = appConfiguration.get("httpClient.keystorePassword");
-        Boolean useHttpClientCertificate = appConfiguration.getBoolean("oodi.useHttpClientCertificate", false);
-
         if (useHttpClientCertificate && keystoreLocation != null && keystorePassword != null) {
             SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext(keystoreLocation, keystorePassword));
             Registry socketFactoryRegistry = RegistryBuilder.create().register("https", sslConnectionSocketFactory).build();

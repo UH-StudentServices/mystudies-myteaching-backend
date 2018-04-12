@@ -22,10 +22,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import static com.google.common.collect.Lists.newArrayList;
 
@@ -37,17 +34,14 @@ import static com.google.common.collect.Lists.newArrayList;
 public class AppConfiguration {
 
     private final Environment environment;
-
-    private final Map<String, String> runtimePropertyOverrides = new HashMap<>();
-
+    
     @Autowired
     public AppConfiguration(Environment environment) {
         this.environment = environment;
     }
 
     public String get(String key) {
-        return Optional.ofNullable(runtimePropertyOverrides.get(key))
-            .orElseGet(() -> environment.getProperty(key));
+        return environment.getProperty(key);
     }
 
     public List<Integer> getIntegerValues(String key) {
@@ -58,23 +52,8 @@ public class AppConfiguration {
         return newArrayList(environment.getProperty(key, String[].class));
     }
 
-    public Boolean getBoolean(String key, boolean defaultValue) {
-        return environment.getProperty(key, Boolean.class, defaultValue);
-    }
-
     public int getInteger(String key) {
         return Integer.valueOf(get(key));
     }
 
-    public void override(String key, String value) {
-        runtimePropertyOverrides.put(key, value);
-    }
-
-    public void reset(String key) {
-        runtimePropertyOverrides.remove(key);
-    }
-
-    public void resetAll() {
-        runtimePropertyOverrides.clear();
-    }
 }
