@@ -58,6 +58,10 @@ public class AppConfiguration {
         return newArrayList(environment.getProperty(key, String[].class));
     }
 
+    public Boolean getBoolean(String key, boolean defaultValue) {
+        return environment.getProperty(key, Boolean.class, defaultValue);
+    }
+
     public int getInteger(String key) {
         return Integer.valueOf(get(key));
     }

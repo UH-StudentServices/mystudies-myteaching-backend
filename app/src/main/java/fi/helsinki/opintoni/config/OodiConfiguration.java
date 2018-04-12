@@ -105,7 +105,7 @@ public class OodiConfiguration {
     private PoolingHttpClientConnectionManager poolingHttpClientConnectionManager() {
         String keystoreLocation = appConfiguration.get("httpClient.keystoreLocation");
         String keystorePassword = appConfiguration.get("httpClient.keystorePassword");
-        Boolean useHttpClientCertificate = env.getProperty("oodi.useHttpClientCertificate", Boolean.class, false);
+        Boolean useHttpClientCertificate = appConfiguration.getBoolean("oodi.useHttpClientCertificate", false);
 
         if (useHttpClientCertificate && keystoreLocation != null && keystorePassword != null) {
             SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext(keystoreLocation, keystorePassword));
