@@ -194,7 +194,6 @@ courses:
 oodi:
     base.url: http://opi.helsinki.fi
     client.implementation: rest
-    useHttpClientCertificate: false
 
 coursePage:
     base.url: http://coursepage.helsinki.fi
