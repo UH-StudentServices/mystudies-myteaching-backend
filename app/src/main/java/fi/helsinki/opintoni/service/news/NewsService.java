@@ -44,8 +44,11 @@ public class NewsService {
     @Autowired
     private SecurityUtils securityUtils;
 
-    @Value("${newsfeeds.maxItemsToReturn}")
-    private int maxNews;
+    @Value("${newsfeeds.maxItems.student}")
+    private int studentMaxNews;
+
+    @Value("${newsfeeds.maxItems.teacher}")
+    private int teacherMaxNews;
 
     @Value("${newsfeeds.studentFeedCategory}")
     private String studentFeedCategory;
@@ -66,18 +69,18 @@ public class NewsService {
 
         return newsDtos.stream()
             .sorted(Comparator.comparing(dto -> dto.updated, Comparator.reverseOrder()))
-            .limit(maxNews)
+            .limit(studentMaxNews)
             .collect(Collectors.toList());
     }
 
     public List<NewsDto> getTeacherNews(Locale locale) {
         final List<NewsDto> newsDtos = flammaNewsService.getTeacherNews(locale);
-        return newsDtos.subList(0, Math.min(maxNews, newsDtos.size()));
+        return newsDtos.subList(0, Math.min(teacherMaxNews, newsDtos.size()));
     }
 
     public List<NewsDto> getOpenUniversityNews() {
         final List<NewsDto> newsDtos = openUniversityNewsService.getOpenUniversityNews();
-        return newsDtos.subList(0, Math.min(maxNews, newsDtos.size()));
+        return newsDtos.subList(0, Math.min(studentMaxNews, newsDtos.size()));
     }
 
 }
