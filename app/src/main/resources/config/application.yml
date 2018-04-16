@@ -180,7 +180,9 @@ appRelativeUrl:
 
 
 newsfeeds:
-    maxItemsToReturn: 4
+    maxItems:
+        student: 6
+        teacher: 4
     client.implementation: rest
     studentFeedCategory: oppilas
     studentFeedsByLocale:
