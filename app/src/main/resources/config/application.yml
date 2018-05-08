@@ -50,6 +50,8 @@ userDefaults :
           url: https://www.helsinki.fi/fi/feeds/news/rss
         - type: RSS
           url: http://helsinginyliopisto.etapahtuma.fi/Default.aspx?tabid=959&format=atom
+        - type: FLAMMA_NEWS
+        - type: FLAMMA_EVENTS
     defaultUsefulLinks :
         studentDefaultUsefulLinks :
             - url: http://helsinki.fi/office365
