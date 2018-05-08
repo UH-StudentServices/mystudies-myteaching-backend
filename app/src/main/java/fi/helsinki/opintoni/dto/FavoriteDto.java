@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.dto;
 
 import java.io.Serializable;
 
-public abstract class FavoriteDto implements Serializable {
+public class FavoriteDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

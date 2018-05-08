@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
 @Table(name = "favorite")
@@ -30,7 +31,9 @@ public class Favorite extends AbstractAuditingEntity implements Ownership {
         RSS,
         LINK,
         UNICAFE,
-        UNISPORT
+        UNISPORT,
+        FLAMMA_NEWS,
+        FLAMMA_EVENTS        
     }
 
     @Column(name = "portfolio")
@@ -60,5 +63,14 @@ public class Favorite extends AbstractAuditingEntity implements Ownership {
 
     public boolean isPortfolio() {
         return portfolio;
+    }
+    
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+            .append("id", id)
+            .append("type", type)
+            .append("orderIndex", orderIndex)
+            .toString();
     }
 }
