@@ -55,7 +55,6 @@ public class FavoriteConverter {
         }
     }
 
-    
     private TwitterFavoriteDto toTwitterDto(TwitterFavorite favorite) {
         return new TwitterFavoriteDto(
             favorite.id,

@@ -98,15 +98,14 @@ public class FavoriteService {
         return favoriteConverter.toDto(favorite);
     }
     
-    private final List<Favorite.Type> FLAMMA_TYPES = ImmutableList.of(
+    private static final ImmutableList<Favorite.Type> FLAMMA_TYPES = ImmutableList.of(
         Favorite.Type.FLAMMA_NEWS,Favorite.Type.FLAMMA_EVENTS);
     
-    
-    public FavoriteDto insertFlammaFavorite(Long userId, String typeString) {
-        
+    public FavoriteDto insertFlammaFavorite(Long userId, String typeString) {        
         Favorite.Type type = Favorite.Type.valueOf(typeString);
-        if(!FLAMMA_TYPES.contains(type)) {
-            throw new IllegalArgumentException(String.format("Illegal Flamma type: %s", typeString));
+        if (!FLAMMA_TYPES.contains(type)) {
+            throw new IllegalArgumentException(
+                    String.format("Illegal Flamma type: %s", typeString));
         }
         Favorite favorite = new Favorite();
         favorite.type = type;
