@@ -31,7 +31,7 @@ public class SlugifyConfiguration {
     public Slugify slugify() throws IOException {
         Slugify slugify = new Slugify();
 
-        slugify.setCustomReplacements(ImmutableMap.of(   
+        slugify.setCustomReplacements(ImmutableMap.of(
             "ä", "a", 
             "å", "a",
             "ö", "o"));            
