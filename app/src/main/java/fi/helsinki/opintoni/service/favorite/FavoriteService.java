@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.service.favorite;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.domain.*;
 import fi.helsinki.opintoni.dto.FavoriteDto;
@@ -94,6 +95,24 @@ public class FavoriteService {
 
         favoriteRepository.save(favorite);
 
+        return favoriteConverter.toDto(favorite);
+    }
+    
+    private static final ImmutableList<Favorite.Type> FLAMMA_TYPES = ImmutableList.of(
+        Favorite.Type.FLAMMA_NEWS,Favorite.Type.FLAMMA_EVENTS);
+    
+    public FavoriteDto insertFlammaFavorite(Long userId, String typeString) {        
+        Favorite.Type type = Favorite.Type.valueOf(typeString);
+        if (!FLAMMA_TYPES.contains(type)) {
+            throw new IllegalArgumentException(
+                    String.format("Illegal Flamma type: %s", typeString));
+        }
+        Favorite favorite = new Favorite();
+        favorite.type = type;
+        favorite.orderIndex = orderIndex(false).apply(userId) + 1;
+        favorite.user = userRepository.findOne(userId);
+
+        favoriteRepository.save(favorite);
         return favoriteConverter.toDto(favorite);
     }
 
@@ -192,6 +211,10 @@ public class FavoriteService {
             case TWITTER:
                 favorites.add(createTwitterFavorite(favorite.get("value")));
                 break;
+            case FLAMMA_EVENTS:
+            case FLAMMA_NEWS:
+                favorites.add(createFlammaFavorite(Favorite.Type.valueOf(favorite.get("type"))));
+                break;
             default:
                 throw new IllegalArgumentException("unexpected favorite type: " + favorite.get("type"));
         }
@@ -233,5 +256,11 @@ public class FavoriteService {
         twitterFavorite.feedType = TwitterFavorite.FeedType.USER_TIMELINE;
         twitterFavorite.value = value;
         return twitterFavorite;
+    }
+    
+    private Favorite createFlammaFavorite(Favorite.Type type) {
+        Favorite flammaFavorite = new Favorite();
+        flammaFavorite.type = type;  
+        return flammaFavorite;
     }
 }

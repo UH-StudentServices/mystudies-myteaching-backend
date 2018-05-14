@@ -123,13 +123,19 @@ public class FavoriteResource extends AbstractResource {
     public ResponseEntity<FavoriteDto> saveUnisportFavorite(@UserId Long userId) {
         return response(favoriteService.insertUnisportFavorite(userId));
     }
-
+   
     @RequestMapping(value = "/unisport", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<UnisportReservationsDto> getUnisportReservations(@Username String username, Locale locale) {
         return response(unisportService.getReservations(username, locale));
     }
 
+    @RequestMapping(value = "/flamma/{flammaType}", method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<FavoriteDto> saveFlammaFavorite(@UserId Long userId, @PathVariable("flammaType") String type) {
+        return response(favoriteService.insertFlammaFavorite(userId, type));
+    }
+    
     @Timed
     @RequestMapping(value = "/order", method = RequestMethod.POST)
     public ResponseEntity<List<FavoriteDto>> orderFavorites(@UserId Long userId,

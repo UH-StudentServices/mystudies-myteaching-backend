@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.service.converter;
 
-import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.domain.*;
 import fi.helsinki.opintoni.dto.*;
@@ -25,33 +24,39 @@ import fi.helsinki.opintoni.integration.unisport.UnisportClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.function.Function;
-
 @Component
 public class FavoriteConverter {
 
-    private final ImmutableMap<Class<?>, Function<Favorite, FavoriteDto>> converters;
     private final AppConfiguration appConfiguration;
     private final UnisportClient unisportClient;
-
+        
     @Autowired
     public FavoriteConverter(AppConfiguration appConfiguration, UnisportClient unisportClient) {
         this.appConfiguration = appConfiguration;
         this.unisportClient = unisportClient;
-        this.converters = ImmutableMap.of(
-            TwitterFavorite.class, favorite -> toDto((TwitterFavorite) favorite),
-            RssFavorite.class, favorite -> toDto((RssFavorite) favorite),
-            LinkFavorite.class, favorite -> toDto((LinkFavorite) favorite),
-            UnicafeFavorite.class, favorite -> toDto((UnicafeFavorite) favorite),
-            UnisportFavorite.class, favorite -> toDto((UnisportFavorite) favorite)
-        );
     }
 
     public FavoriteDto toDto(Favorite favorite) {
-        return converters.get(favorite.getClass()).apply(favorite);
+        switch(favorite.type) {
+            case TWITTER: 
+                return toTwitterDto((TwitterFavorite)favorite);
+            case RSS: 
+                return toRssDto((RssFavorite)favorite);
+            case LINK: 
+                return toLinkDto((LinkFavorite)favorite);
+            case UNICAFE: 
+                return toUnicafeDto((UnicafeFavorite)favorite);
+            case UNISPORT:
+                return toUnisportFavoriteDto((UnisportFavorite)favorite);
+            case FLAMMA_NEWS:
+            case FLAMMA_EVENTS:
+                return toFavoriteDto(favorite);
+            default: 
+                throw new IllegalArgumentException("No converter for type " + favorite.type.name());
+        }
     }
 
-    private TwitterFavoriteDto toDto(TwitterFavorite favorite) {
+    private TwitterFavoriteDto toTwitterDto(TwitterFavorite favorite) {
         return new TwitterFavoriteDto(
             favorite.id,
             favorite.type.name(),
@@ -59,14 +64,14 @@ public class FavoriteConverter {
             favorite.value);
     }
 
-    private RssFavoriteDto toDto(RssFavorite favorite) {
+    private RssFavoriteDto toRssDto(RssFavorite favorite) {
         return new RssFavoriteDto(
             favorite.id,
             favorite.type.name(),
             favorite.url);
     }
 
-    private LinkFavoriteDto toDto(LinkFavorite favorite) {
+    private LinkFavoriteDto toLinkDto(LinkFavorite favorite) {
         return new LinkFavoriteDto(
             favorite.id,
             favorite.type.name(),
@@ -77,15 +82,24 @@ public class FavoriteConverter {
             favorite.thumbnailWidth,
             favorite.thumbnailHeight);
     }
-
-    private UnisportFavoriteDto toDto(UnisportFavorite favorite) {
+    
+    private UnicafeFavoriteDto toUnicafeDto(UnicafeFavorite favorite) {
+        return new UnicafeFavoriteDto(
+            favorite.id, 
+            favorite.type.name(), 
+            favorite.restaurantId);
+    }
+    
+    private FavoriteDto toFavoriteDto(Favorite favorite) {
+        return new FavoriteDto(
+            favorite.id,
+            favorite.type.name());
+    }
+    
+    private UnisportFavoriteDto toUnisportFavoriteDto(Favorite favorite) {
         return new UnisportFavoriteDto(
             favorite.id,
-            favorite.type.name()
-        );
-    }
-
-    private UnicafeFavoriteDto toDto(UnicafeFavorite favorite) {
-        return new UnicafeFavoriteDto(favorite.id, favorite.type.name(), favorite.restaurantId);
+            favorite.type.name());
     }
 }
+
