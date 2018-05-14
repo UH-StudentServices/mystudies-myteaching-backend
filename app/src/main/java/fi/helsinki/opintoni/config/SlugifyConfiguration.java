@@ -18,11 +18,11 @@
 package fi.helsinki.opintoni.config;
 
 import com.github.slugify.Slugify;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 @Configuration
 public class SlugifyConfiguration {
@@ -31,12 +31,10 @@ public class SlugifyConfiguration {
     public Slugify slugify() throws IOException {
         Slugify slugify = new Slugify();
 
-        slugify.setCustomReplacements(new HashMap<String, String>() {{
-                put("ä", "a");
-                put("å", "a");
-                put("ö", "o");
-            }
-        });
+        slugify.setCustomReplacements(ImmutableMap.of(   
+            "ä", "a", 
+            "å", "a",
+            "ö", "o"));            
         return slugify;
     }
 
