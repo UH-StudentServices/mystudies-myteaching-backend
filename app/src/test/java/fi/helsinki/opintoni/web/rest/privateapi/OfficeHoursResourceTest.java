@@ -53,6 +53,26 @@ public class OfficeHoursResourceTest extends SpringTest {
     }
 
     @Test
+    public void thatOfficeHoursUpdateFailsWithCorrectStatus() throws Exception {
+        DegreeProgrammeDto programme1 = new DegreeProgrammeDto();
+        DegreeProgrammeDto programme2 = new DegreeProgrammeDto();
+        programme1.code = "12345678901234567"; //too long
+        programme2.code = DEGREE_CODE_2;
+        OfficeHoursDto officeHoursDto = new OfficeHoursDto(TEACHER_NAME, OFFICE_HOURS,
+            ADDITIONAL_INFO_2, LOCATION_2, Arrays.asList(programme1, programme2));
+
+        List<OfficeHoursDto> request = Arrays.asList(officeHoursDto);
+
+        mockMvc.perform(post("/api/private/v1/officehours")
+            .with(securityContext(teacherSecurityContext()))
+            .characterEncoding("UTF-8")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJsonBytes(request))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().is4xxClientError());
+    }
+    
+    @Test
     public void thatOfficeHoursAreUpdated() throws Exception {
         DegreeProgrammeDto programme1 = new DegreeProgrammeDto();
         DegreeProgrammeDto programme2 = new DegreeProgrammeDto();

@@ -40,6 +40,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
@@ -56,7 +57,7 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new CommonError("Forbidden"), HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(value = {BadRequestException.class, IllegalArgumentException.class})
+    @ExceptionHandler(value = {BadRequestException.class, IllegalArgumentException.class, ConstraintViolationException.class})
     public ResponseEntity<CommonError> handleBadRequest() throws Exception {
         return new ResponseEntity<>(new CommonError("Bad request"), HttpStatus.BAD_REQUEST);
     }
