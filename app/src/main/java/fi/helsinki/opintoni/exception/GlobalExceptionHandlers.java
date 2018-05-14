@@ -56,7 +56,7 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new CommonError("Forbidden"), HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(value = BadRequestException.class)
+    @ExceptionHandler(value = {BadRequestException.class, IllegalArgumentException.class})
     public ResponseEntity<CommonError> handleBadRequest() throws Exception {
         return new ResponseEntity<>(new CommonError("Bad request"), HttpStatus.BAD_REQUEST);
     }

@@ -47,6 +47,7 @@ public class FavoriteConverter {
             case UNICAFE: 
                 return toUnicafeDto((UnicafeFavorite)favorite);
             case UNISPORT:
+                return toUnisportFavoriteDto((UnisportFavorite)favorite);
             case FLAMMA_NEWS:
             case FLAMMA_EVENTS:
                 return toFavoriteDto(favorite);
@@ -91,6 +92,12 @@ public class FavoriteConverter {
     
     private FavoriteDto toFavoriteDto(Favorite favorite) {
         return new FavoriteDto(
+            favorite.id,
+            favorite.type.name());
+    }
+    
+    private UnisportFavoriteDto toUnisportFavoriteDto(Favorite favorite) {
+        return new UnisportFavoriteDto(
             favorite.id,
             favorite.type.name());
     }

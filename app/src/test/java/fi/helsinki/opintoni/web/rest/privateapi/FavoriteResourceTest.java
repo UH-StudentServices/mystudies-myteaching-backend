@@ -70,6 +70,30 @@ public class FavoriteResourceTest extends SpringTest {
     }
 
     @Test
+    public void thatFlammaFavoriteIsSaved() throws Exception {
+        mockMvc.perform(post("/api/private/v1/favorites/flamma/FLAMMA_NEWS").with(securityContext(studentSecurityContext()))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.id").value(any(Number.class)));
+        mockMvc.perform(post("/api/private/v1/favorites/flamma/FLAMMA_EVENTS").with(securityContext(studentSecurityContext()))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$.id").value(any(Number.class)));  
+    }
+    
+    @Test
+    public void thatFlammaFavoriteWithIllegalTypeIsRejected() throws Exception {
+        mockMvc.perform(post("/api/private/v1/favorites/flamma/XXX").with(securityContext(studentSecurityContext()))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().is4xxClientError());
+    }
+    
+    @Test
     public void thatUnisportReservationsAreReturned() throws Exception {
         unisportServer.expectAuthorization();
         unisportServer.expectUserReservations();
