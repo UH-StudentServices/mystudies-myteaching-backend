@@ -1446,11 +1446,11 @@
     
     <changeSet id="add flamma defaults for all users" author="Sami Siren">
         <sql>
-            insert into favorite (user_id, type, order_index, last_modified_by)
+            insert into favorite (user_id, type, order_index, created_by)
               select user_account.id, 'FLAMMA_NEWS', max(order_index)+1, 'system' from user_account left join favorite on user_account.id = favorite.user_id GROUP BY user_account.id; 
         </sql>
         <sql>
-            insert into favorite (user_id, type, order_index, last_modified_by)
+            insert into favorite (user_id, type, order_index, created_by)
               select user_account.id, 'FLAMMA_EVENTS', max(order_index)+1, 'system' from user_account left join favorite on user_account.id = favorite.user_id GROUP BY user_account.id;
         </sql>
     </changeSet>
