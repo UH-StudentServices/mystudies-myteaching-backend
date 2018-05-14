@@ -70,19 +70,23 @@ public class FavoriteResourceTest extends SpringTest {
     }
 
     @Test
-    public void thatFlammaFavoriteIsSaved() throws Exception {
+    public void thatFlammaNewsFavoriteIsSaved() throws Exception {
         mockMvc.perform(post("/api/private/v1/favorites/flamma/FLAMMA_NEWS").with(securityContext(studentSecurityContext()))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.id").value(any(Number.class)));
+    }
+
+    @Test
+    public void thatFlammaEventsFavoriteIsSaved() throws Exception {   
         mockMvc.perform(post("/api/private/v1/favorites/flamma/FLAMMA_EVENTS").with(securityContext(studentSecurityContext()))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.id").value(any(Number.class)));  
+            .andExpect(jsonPath("$.id").value(any(Number.class))); 
     }
     
     @Test
