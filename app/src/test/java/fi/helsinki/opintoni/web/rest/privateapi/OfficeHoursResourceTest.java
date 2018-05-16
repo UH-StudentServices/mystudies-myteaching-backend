@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
+import com.google.common.collect.ImmutableList;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
@@ -56,7 +57,7 @@ public class OfficeHoursResourceTest extends SpringTest {
     public void thatOfficeHoursUpdateFailsWithCorrectStatus() throws Exception {
         DegreeProgrammeDto programme1 = new DegreeProgrammeDto();
         DegreeProgrammeDto programme2 = new DegreeProgrammeDto();
-        programme1.code = "12345678901234567"; //too long
+        programme1.code = ""; //blank not allowed
         programme2.code = DEGREE_CODE_2;
         OfficeHoursDto officeHoursDto = new OfficeHoursDto(TEACHER_NAME, OFFICE_HOURS,
             ADDITIONAL_INFO_2, LOCATION_2, Arrays.asList(programme1, programme2));
@@ -70,6 +71,26 @@ public class OfficeHoursResourceTest extends SpringTest {
             .content(toJsonBytes(request))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().is4xxClientError());
+    }
+    
+    @Test
+    public void thatOfficeHoursUpdateSucceedsWithCodeOfRealisticLength() throws Exception {
+        DegreeProgrammeDto programme1 = new DegreeProgrammeDto();
+        DegreeProgrammeDto programme2 = new DegreeProgrammeDto();
+        programme1.code = "KH60_001 SH60_035";
+        programme2.code = DEGREE_CODE_2;
+        OfficeHoursDto officeHoursDto = new OfficeHoursDto(TEACHER_NAME, OFFICE_HOURS,
+            ADDITIONAL_INFO_2, LOCATION_2, ImmutableList.of(programme1, programme2));
+
+        List<OfficeHoursDto> request = ImmutableList.of(officeHoursDto);
+
+        mockMvc.perform(post("/api/private/v1/officehours")
+            .with(securityContext(teacherSecurityContext()))
+            .characterEncoding("UTF-8")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJsonBytes(request))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
     }
     
     @Test
