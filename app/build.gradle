@@ -25,7 +25,7 @@ buildscript {
 
 plugins {
     id 'com.gorylenko.gradle-git-properties' version '1.4.17'
-    id 'net.ltgt.errorprone' version '0.0.13'
+    id 'net.ltgt.errorprone' version '0.0.14'
     id 'net.researchgate.release' version '2.6.0'
     id 'org.springframework.boot' version '1.4.3.RELEASE'
     id 'java'
@@ -176,6 +176,7 @@ dependencies {
     compile group: 'org.slf4j', name:'jcl-over-slf4j', version: '1.7.7'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     compile group: 'com.rometools', name: 'rome', version: '1.5.1'
+    errorprone group: 'com.google.errorprone', name:'error_prone_core', version: error_prone_core_version
 
     testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: awaility_version
     testCompile group: 'com.jayway.jsonpath', name: 'json-path', version: json_path_version
