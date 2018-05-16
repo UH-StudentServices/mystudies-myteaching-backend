@@ -1454,4 +1454,8 @@
               select user_account.id, 'FLAMMA_EVENTS', max(order_index)+1, 'system' from user_account left join favorite on user_account.id = favorite.user_id GROUP BY user_account.id;
         </sql>
     </changeSet>
+    
+    <changeSet id="Update varchar length for degree_programme.degree_code" author="Sami Siren">
+        <modifyDataType tableName="degree_programme" columnName="degree_code" newDataType="varchar(255)" />
+    </changeSet>
 </databaseChangeLog>

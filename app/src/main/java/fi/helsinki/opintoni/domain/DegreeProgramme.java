@@ -32,7 +32,7 @@ public class DegreeProgramme extends AbstractAuditingEntity {
     public Long id;
 
     @NotBlank
-    @Size(max = 16)
+    @Size(max = 255)
     @Column(name = "degree_code")
     public String degreeCode;
 
