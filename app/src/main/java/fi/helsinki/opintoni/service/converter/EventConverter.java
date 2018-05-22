@@ -17,7 +17,10 @@
 
 package fi.helsinki.opintoni.service.converter;
 
+import com.google.common.collect.ImmutableList;
 import fi.helsinki.opintoni.dto.EventDto;
+import fi.helsinki.opintoni.dto.EventDtoBuilder;
+import fi.helsinki.opintoni.dto.OptimeExtrasDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
@@ -57,37 +60,40 @@ public class EventConverter {
     }
 
     public EventDto toDto(CoursePageEvent event, CoursePageCourseImplementation coursePage) {
-        return new EventDto(
-            eventTypeResolver.getEventTypeByCoursePageEvent(event),
-            EventDto.Source.COURSE_PAGE,
-            event.begin,
-            event.end,
-            coursePage.courseImplementationId,
-            event.title,
-            coursePage.title,
-            coursePage.url,
-            coursePageUriBuilder.getImageUri(coursePage),
-            courseMaterialDtoFactory.fromCoursePage(coursePage),
-            coursePage.moodleUrl,
-            coursePage.hasMaterial,
-            locationResolver.getLocation(event));
+        return new EventDtoBuilder()
+            .setType(eventTypeResolver.getEventTypeByCoursePageEvent(event))
+            .setSource(EventDto.Source.COURSE_PAGE)
+            .setStartDate(event.begin)
+            .setEndDate(event.end)
+            .setRealisationId(coursePage.courseImplementationId)
+            .setTitle(event.title)
+            .setCourseTitle(coursePage.title)
+            .setCourseUri(coursePage.url).setCourseImageUri(coursePageUriBuilder.getImageUri(coursePage))
+            .setCourseMaterialDto(courseMaterialDtoFactory.fromCoursePage(coursePage))
+            .setMoodleUri(coursePage.moodleUrl)
+            .setHasMaterial(coursePage.hasMaterial)
+            .setLocations(ImmutableList.of(locationResolver.getLocation(event)))
+            .createEventDto();
     }
 
     public EventDto toDto(OodiEvent event, CoursePageCourseImplementation coursePage, Locale locale) {
-        return new EventDto(
-            eventTypeResolver.getEventTypeByOodiTypeCode(event.typeCode),
-            EventDto.Source.OODI,
-            event.startDate,
-            event.endDate,
-            event.realisationId,
-            enrollmentNameConverter.getRealisationNameWithRootName(event.realisationName, event.realisationRootName, locale),
-            coursePage.title,
-            coursePage.url,
-            coursePageUriBuilder.getImageUri(coursePage),
-            courseMaterialDtoFactory.fromCoursePage(coursePage),
-            coursePage.moodleUrl,
-            coursePage.hasMaterial,
-            locationResolver.getLocation(event));
+        return new EventDtoBuilder()
+            .setType(eventTypeResolver.getEventTypeByOodiTypeCode(event.typeCode))
+            .setSource(EventDto.Source.OODI)
+            .setStartDate(event.startDate)
+            .setEndDate(event.endDate)
+            .setRealisationId(event.realisationId)
+            .setTitle(enrollmentNameConverter.getRealisationNameWithRootName(event.realisationName, event.realisationRootName, locale))
+            .setCourseTitle(coursePage.title)
+            .setCourseUri(coursePage.url)
+            .setCourseImageUri(coursePageUriBuilder.getImageUri(coursePage))
+            .setCourseMaterialDto(courseMaterialDtoFactory.fromCoursePage(coursePage))
+            .setMoodleUri(coursePage.moodleUrl)
+            .setHasMaterial(coursePage.hasMaterial)
+            .setLocations(ImmutableList.of(locationResolver.getLocation(event)))
+            .setOptimeExtras(event.optimeExtras == null ? null : 
+                new OptimeExtrasDto(event.optimeExtras.otherNotes, event.optimeExtras.roomNotes, event.optimeExtras.staffNotes))
+            .createEventDto();
     }
 
 }

@@ -31,86 +31,72 @@ public class EventDtoTest {
 
     @Test
     public void compareTo() {
-        EventDto februaryCourse = new EventDto(EventDto.Type.DEFAULT, EventDto.Source.COURSE_PAGE,
-            LocalDateTime.of(2018, 2, 1, 8, 0),
-            LocalDateTime.of(2018, 2, 1, 8, 0),
-            100,
-            EVENT_TITLE,
-            COURSE_TITLE,
-            "",
-            "",
-            null,
-            "",
-            false,
-            null);
-        EventDto januaryCourse = new EventDto(EventDto.Type.DEFAULT, EventDto.Source.COURSE_PAGE,
-            LocalDateTime.of(2018, 1, 1, 8, 0),
-            LocalDateTime.of(2018, 3, 1, 8, 0),
-            100,
-            EVENT_TITLE,
-            COURSE_TITLE,
-            "",
-            "",
-            null,
-            "",
-            false,
-            null);
+        EventDto februaryCourse = new EventDtoBuilder()
+            .setType(EventDto.Type.DEFAULT)
+            .setSource(EventDto.Source.OODI)
+            .setStartDate(LocalDateTime.of(2018, 2, 1, 8, 0))
+            .setEndDate(LocalDateTime.of(2018, 2, 1, 8, 0))
+            .setRealisationId(100)
+            .setTitle(EVENT_TITLE)
+            .setCourseTitle(COURSE_TITLE)
+            .setHasMaterial(false).createEventDto();
+
+        EventDto januaryCourse = new EventDtoBuilder()
+            .setType(EventDto.Type.DEFAULT)
+            .setSource(EventDto.Source.OODI)
+            .setStartDate(LocalDateTime.of(2018, 1, 1, 8, 0))
+            .setEndDate(LocalDateTime.of(2018, 3, 1, 8, 0))
+            .setRealisationId(100)
+            .setTitle(EVENT_TITLE)
+            .setCourseTitle(COURSE_TITLE)
+            .setHasMaterial(false).createEventDto();
 
         assertTrue(januaryCourse.compareTo(februaryCourse) < 0);
     }
 
     @Test
     public void getRealisationIdAndTimes() {
-        EventDto eventDto = new EventDto(EventDto.Type.DEFAULT, EventDto.Source.COURSE_PAGE,
-            LocalDateTime.of(2018, 1, 1, 8, 0),
-            LocalDateTime.of(2018, 3, 1, 8, 0),
-            100,
-            EVENT_TITLE,
-            COURSE_TITLE,
-            "",
-            "",
-            null,
-            "",
-            false,
-            null);
+        EventDto eventDto = new EventDtoBuilder()
+            .setType(EventDto.Type.DEFAULT)
+            .setSource(EventDto.Source.COURSE_PAGE)
+            .setStartDate(LocalDateTime.of(2018, 1, 1, 8, 0))
+            .setEndDate(LocalDateTime.of(2018, 3, 1, 8, 0))
+            .setRealisationId(100)
+            .setTitle(EVENT_TITLE)
+            .setCourseTitle(COURSE_TITLE)
+            .setHasMaterial(false).createEventDto();
 
         assertEquals("1002018-01-01T08:002018-03-01T08:00", EventDto.getRealisationIdAndTimes(eventDto));
     }
 
     @Test
     public void getTitleWhenSourceIsOodi() {
-        EventDto eventDataFromOodi = new EventDto(EventDto.Type.DEFAULT, EventDto.Source.OODI,
-            LocalDateTime.of(2018, 1, 1, 8, 0),
-            LocalDateTime.of(2018, 1, 1, 8, 0),
-            100,
-            EVENT_TITLE,
-            COURSE_TITLE,
-            "",
-            "",
-            null,
-            "",
-            false,
-            null);
+        EventDto eventDataFromOodi = new EventDtoBuilder()
+            .setType(EventDto.Type.DEFAULT)
+            .setSource(EventDto.Source.OODI)
+            .setStartDate(LocalDateTime.of(2018, 1, 1, 8, 0))
+            .setEndDate(LocalDateTime.of(2018, 1, 1, 8, 0))
+            .setRealisationId(100)
+            .setTitle(EVENT_TITLE)
+            .setCourseTitle(COURSE_TITLE)
+            .setHasMaterial(false).createEventDto();
 
         assertEquals(EVENT_TITLE, eventDataFromOodi.getFullEventTitle());
     }
 
     @Test
     public void getTitleWhenSourceIsCoursePage() {
-        EventDto eventDataFromOodi = new EventDto(EventDto.Type.DEFAULT, EventDto.Source.COURSE_PAGE,
-            LocalDateTime.of(2018, 1, 1, 8, 0),
-            LocalDateTime.of(2018, 1, 1, 8, 0),
-            100,
-            EVENT_TITLE,
-            COURSE_TITLE,
-            "",
-            "",
-            null,
-            "",
-            false,
-            null);
-
-        assertEquals(String.format("%s, %s", EVENT_TITLE, COURSE_TITLE), eventDataFromOodi.getFullEventTitle());
+        EventDto eventDto = new EventDtoBuilder()
+            .setType(EventDto.Type.DEFAULT)
+            .setSource(EventDto.Source.COURSE_PAGE)
+            .setStartDate(LocalDateTime.of(2018, 1, 1, 8, 0))
+            .setEndDate(LocalDateTime.of(2018, 1, 1, 8, 0))
+            .setRealisationId(100)
+            .setTitle(EVENT_TITLE)
+            .setCourseTitle(COURSE_TITLE)
+            .setHasMaterial(false).createEventDto();
+    
+        assertEquals(String.format("%s, %s", EVENT_TITLE, COURSE_TITLE), eventDto.getFullEventTitle());
     }
 
 }
