@@ -17,12 +17,11 @@
 
 package fi.helsinki.opintoni.dto;
 
+import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -52,8 +51,9 @@ public class EventDto implements Comparable<EventDto> {
     public final String moodleUri;
     public final List<LocationDto> locations;
     public final boolean hasMaterial;
+    public final OptimeExtrasDto optimeExtras;
 
-    public EventDto(Type type,
+    EventDto(Type type,
                     Source source,
                     LocalDateTime startDate,
                     LocalDateTime endDate,
@@ -65,7 +65,8 @@ public class EventDto implements Comparable<EventDto> {
                     CourseMaterialDto courseMaterialDto,
                     String moodleUri,
                     boolean hasMaterial,
-                    LocationDto location) {
+                    List<LocationDto> locations, 
+                    OptimeExtrasDto optimeExtras) {
         this.type = type;
         this.source = source;
         this.realisationId = realisationId;
@@ -78,37 +79,8 @@ public class EventDto implements Comparable<EventDto> {
         this.courseMaterial = courseMaterialDto;
         this.moodleUri = moodleUri;
         this.hasMaterial = hasMaterial;
-        this.locations = Collections.singletonList(location);
-    }
-
-    public EventDto(Type type,
-                    Source source,
-                    LocalDateTime startDate,
-                    LocalDateTime endDate,
-                    Integer realisationId,
-                    String title,
-                    String courseTitle,
-                    String courseUri,
-                    String courseImageUri,
-                    CourseMaterialDto courseMaterialDto,
-                    String moodleUri,
-                    boolean hasMaterial,
-                    List<LocationDto> locationsA,
-                    List<LocationDto> locationsB) {
-        this.type = type;
-        this.source = source;
-        this.realisationId = realisationId;
-        this.endDate = endDate;
-        this.startDate = startDate;
-        this.title = title;
-        this.courseTitle = courseTitle;
-        this.courseUri = courseUri;
-        this.courseImageUri = courseImageUri;
-        this.courseMaterial = courseMaterialDto;
-        this.moodleUri = moodleUri;
-        this.hasMaterial = hasMaterial;
-        this.locations = new ArrayList<LocationDto>(locationsA);
-        this.locations.addAll(locationsB);
+        this.locations = locations;
+        this.optimeExtras = optimeExtras;
     }
 
     @Override
@@ -151,8 +123,17 @@ public class EventDto implements Comparable<EventDto> {
             .collect(Collectors.joining(", "));
     }
 
+    private String getOodiEventTitle() {
+        return Lists.newArrayList(title, optimeExtras).stream()
+            .filter(Objects::nonNull)
+            .map(Object::toString)
+            .collect(Collectors.joining(", "));
+    }
+
     public String getFullEventTitle() {
-        return Source.OODI.equals(source) ? title : String.format("%s, %s", title, courseTitle);
+        return Source.OODI.equals(source)
+            ? getOodiEventTitle()
+            : String.format("%s, %s", title, courseTitle);
     }
 
 }

@@ -58,4 +58,7 @@ public class OodiEvent {
 
     @JsonProperty("cancelled")
     public boolean isCancelled;
+    
+    @JsonProperty("optimeExtras")
+    public OptimeExtras optimeExtras;
 }

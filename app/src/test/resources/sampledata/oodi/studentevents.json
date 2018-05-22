@@ -82,6 +82,11 @@
                 }
             ],
             "learningopportunity_id": "123456789",
+            "optimeExtras": {
+                "otherNotes": "testauksessa mukana",
+                "roomNotes": null,
+                "staffNotes": "Aku Ankka"
+            },
             "cancelled" : "false"
         },
         {

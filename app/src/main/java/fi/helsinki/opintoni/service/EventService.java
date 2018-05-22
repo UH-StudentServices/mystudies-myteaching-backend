@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.dto.EventDto;
+import fi.helsinki.opintoni.dto.EventDtoBuilder;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
@@ -85,22 +86,22 @@ public class EventService {
             .collect(Collectors.groupingBy((EventDto dto) -> EventDto.getRealisationIdAndTimes(dto),
                 Collectors.collectingAndThen(
                     Collectors.reducing((a,b) ->
-                        new EventDto(
-                            a.type,
-                            a.source,
-                            a.startDate,
-                            a.endDate,
-                            a.realisationId,
-                            a.title,
-                            a.courseTitle,
-                            a.courseUri,
-                            a.courseImageUri,
-                            a.courseMaterial,
-                            a.moodleUri,
-                            a.hasMaterial,
-                            a.locations,
-                            b.locations
-                        )
+                        new EventDtoBuilder()
+                            .setType(a.type)
+                            .setSource(a.source)
+                            .setStartDate(a.startDate)
+                            .setEndDate(a.endDate)
+                            .setRealisationId(a.realisationId)
+                            .setTitle(a.title)
+                            .setCourseTitle(a.courseTitle)
+                            .setCourseUri(a.courseUri)
+                            .setCourseImageUri(a.courseImageUri)
+                            .setCourseMaterialDto(a.courseMaterial)
+                            .setMoodleUri(a.moodleUri)
+                            .setHasMaterial(a.hasMaterial)
+                            .setLocations(Stream.concat(a.locations.stream(), b.locations.stream()).collect(Collectors.toList()))
+                            .setOptimeExtras(a.optimeExtras)
+                            .createEventDto()
                     ),
                     Optional::get
                 )

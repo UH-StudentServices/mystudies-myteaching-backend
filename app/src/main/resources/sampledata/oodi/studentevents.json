@@ -1,292 +1,4305 @@
 {
-    "md5": "7b70a7e92c923556a29c04460f35679e",
-    "status": 200,
     "data": [
         {
-            "weekday_code": 1,
-            "building_address1": "Viikinkaari 11",
-            "building_zipcode" : "00790",
-            "room_name_short": "Arppeanumin auditorio",
-            "realisation_type_code": 19,
-            "end_date": "2017-01-31T12:00:00.000Z",
-            "start_date": "2017-01-31T09:00:00.000Z",
-            "course_id": 123456789,
-            "simple_type_code": 2,
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-05T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
             "realisation_name": [
                 {
                     "langcode": "fi",
-                    "text": "Harjoitus"
-                },
-                {
-                    "langcode": "sv",
-                    "text": "Harjoitus (sv)"
-                },
-                {
-                    "langcode": "en",
-                    "text": "Harjoitus (en)"
+                    "text": "Studia Paedagogica: Education and learning in practice"
                 }
             ],
             "realisation_root_name": [
                 {
                     "langcode": "fi",
-                    "text": "Formulointi III"
-                },
-                {
-                    "langcode": "sv",
-                    "text": "Formulering III"
-                },
-                {
-                    "langcode": "en",
-                    "text": "Formulation III"
+                    "text": "Studia Paedagogica: Education and learning in practice"
                 }
             ],
-            "learningopportunity_id": "123456789",
-            "cancelled" : "false"
-        },
-        {
-            "weekday_code": 3,
-            "building_address1": "Viikinkaari 11",
-            "building_zipcode" : "00790",
-            "room_name_short": "Päärakennus, sali 1",
             "realisation_type_code": 17,
-            "end_date": "2016-12-31T13:45:00.000Z",
-            "start_date": "2016-12-31T12:15:00.000Z",
-            "course_id": 1234,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
             "simple_type_code": 1,
+            "start_date": "2017-09-05T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-05T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
             "realisation_name": [
                 {
                     "langcode": "fi",
-                    "text": "Harjoitus II"
-                },
-                {
-                    "langcode": "sv",
-                    "text": "Harjoitus II (sv)"
-                },
-                {
-                    "langcode": "en",
-                    "text": "Harjoitus II (en)"
+                    "text": "Studia Paedagogica: Education and learning in practice"
                 }
             ],
             "realisation_root_name": [
                 {
                     "langcode": "fi",
-                    "text": "Formulointi II"
-                },
-                {
-                    "langcode": "sv",
-                    "text": "Formulering II"
-                },
-                {
-                    "langcode": "en",
-                    "text": "Formulation II"
+                    "text": "Studia Paedagogica: Education and learning in practice"
                 }
             ],
-            "learningopportunity_id": "123456789",
-            "cancelled" : "false"
-        },
-        {
-            "weekday_code": 3,
-            "building_address1": "Viikinkaari 11",
-            "building_zipcode" : "00790",
-            "room_name_short": "Päärakennus, sali 2",
             "realisation_type_code": 17,
-            "end_date": "2016-12-31T13:45:00.000Z",
-            "start_date": "2016-12-31T12:15:00.000Z",
-            "course_id": 1234,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
             "simple_type_code": 1,
+            "start_date": "2017-09-05T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-05T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
             "realisation_name": [
                 {
                     "langcode": "fi",
-                    "text": "Harjoitus IIb"
-                },
-                {
-                    "langcode": "sv",
-                    "text": "Harjoitus IIb (sv)"
-                },
-                {
-                    "langcode": "en",
-                    "text": "Harjoitus IIb (en)"
+                    "text": "Studia Paedagogica: Education and learning in practice"
                 }
             ],
             "realisation_root_name": [
                 {
                     "langcode": "fi",
-                    "text": "Formulointi II"
-                },
-                {
-                    "langcode": "sv",
-                    "text": "Formulering II"
-                },
-                {
-                    "langcode": "en",
-                    "text": "Formulation II"
+                    "text": "Studia Paedagogica: Education and learning in practice"
                 }
             ],
-            "learningopportunity_id": "123456789",
-            "cancelled" : "false"
-        },
-        {
-            "weekday_code": 3,
-            "building_address1": "Viikinkaari 11",
-            "building_zipcode" : "00790",
-            "room_name_short": "Päärakennus, sali 1",
             "realisation_type_code": 17,
-            "end_date": "2016-12-30T13:45:00.000Z",
-            "start_date": "2016-12-30T12:15:00.000Z",
-            "course_id": 12345,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
             "simple_type_code": 1,
+            "start_date": "2017-09-05T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-05T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
             "realisation_name": [
                 {
                     "langcode": "fi",
-                    "text": "Harjoitus IV r1"
-                },
-                {
-                    "langcode": "sv",
-                    "text": "Harjoitus IV g1 (sv)"
-                },
-                {
-                    "langcode": "en",
-                    "text": "Harjoitus IV g1 (en)"
+                    "text": "Studia Paedagogica: Education and learning in practice"
                 }
             ],
             "realisation_root_name": [
                 {
                     "langcode": "fi",
-                    "text": "Formulointi IIII"
-                },
-                {
-                    "langcode": "sv",
-                    "text": "Formulering IIII"
-                },
-                {
-                    "langcode": "en",
-                    "text": "Formulation IIII"
+                    "text": "Studia Paedagogica: Education and learning in practice"
                 }
             ],
-            "learningopportunity_id": "1234567890",
-            "cancelled" : "false"
-        },
-        {
-            "weekday_code": 3,
-            "building_address1": "Viikinkaari 11",
-            "building_zipcode" : "00790",
-            "room_name_short": "Päärakennus, sali 2",
             "realisation_type_code": 17,
-            "end_date": "2016-12-30T13:45:00.000Z",
-            "start_date": "2016-12-30T12:15:00.000Z",
-            "course_id": 12345,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
             "simple_type_code": 1,
+            "start_date": "2017-09-05T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-12T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
             "realisation_name": [
                 {
                     "langcode": "fi",
-                    "text": "Harjoitus IV r2"
-                },
-                {
-                    "langcode": "sv",
-                    "text": "Harjoitus IV g2 (sv)"
-                },
-                {
-                    "langcode": "en",
-                    "text": "Harjoitus IV g2 (en)"
+                    "text": "Studia Paedagogica: Education and learning in practice"
                 }
             ],
             "realisation_root_name": [
                 {
                     "langcode": "fi",
-                    "text": "Formulointi IIII"
-                },
-                {
-                    "langcode": "sv",
-                    "text": "Formulering IIII"
-                },
-                {
-                    "langcode": "en",
-                    "text": "Formulation IIII"
+                    "text": "Studia Paedagogica: Education and learning in practice"
                 }
             ],
-            "learningopportunity_id": "1234567890",
-            "cancelled" : "false"
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-09-12T07:00:00.000Z",
+            "weekday_code": 2
         },
         {
-            "weekday_code": 3,
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-12T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-09-12T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-12T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-09-12T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-12T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-09-12T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-19T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-09-19T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-19T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-09-19T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-19T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-09-19T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-19T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-09-19T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-26T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-09-26T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-26T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-09-26T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-26T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-09-26T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-09-26T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-09-26T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-03T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-03T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-03T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-03T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-03T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-03T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-03T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-03T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-10T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-10T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-10T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-10T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-10T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-10T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-10T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-10T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-17T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-17T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-17T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-17T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-17T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-17T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-17T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-17T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-24T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-24T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-24T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-24T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-24T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-24T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-24T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-24T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-31T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-31T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-31T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-31T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-31T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-31T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-10-31T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-10-31T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
             "building_address1": "Fabianinkatu 33",
-            "building_zipcode" : "00790",
-            "room_name_short": "Päärakennus, sali 3",
-            "realisation_type_code": 17,
-            "end_date": "2016-12-30T13:45:00.000Z",
-            "start_date": "2016-12-30T12:15:00.000Z",
-            "course_id": 12345,
-            "simple_type_code": 1,
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-10-31T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305263,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
             "realisation_name": [
                 {
                     "langcode": "fi",
-                    "text": "Harjoitus IV r3"
-                },
-                {
-                    "langcode": "sv",
-                    "text": "Harjoitus IV g3 (sv)"
-                },
-                {
-                    "langcode": "en",
-                    "text": "Harjoitus IV g3 (en)"
+                    "text": "Kansainv\u00e4lisen lain historia"
                 }
             ],
             "realisation_root_name": [
                 {
                     "langcode": "fi",
-                    "text": "Formulointi IIII"
-                },
-                {
-                    "langcode": "sv",
-                    "text": "Formulering IIII"
-                },
-                {
-                    "langcode": "en",
-                    "text": "Formulation IIII"
+                    "text": "Kansainv\u00e4lisen lain historia"
                 }
             ],
-            "learningopportunity_id": "1234567890",
-            "cancelled" : "false"
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-10-31T10:15:00.000Z",
+            "weekday_code": 2
         },
-      {
-        "weekday_code": 3,
-        "building_address1": "Fabianinkatu 33",
-        "building_zipcode" : "00790",
-        "room_name_short": "Päärakennus, sali 3",
-        "realisation_type_code": 17,
-        "start_date": "2017-11-30T12:15:00.000Z",
-        "course_id": 12345,
-        "simple_type_code": 1,
-        "realisation_name": [
-          {
-            "langcode": "fi",
-            "text": "Harjoitus IV r3"
-          },
-          {
-            "langcode": "sv",
-            "text": "Harjoitus IV g3 (sv)"
-          },
-          {
-            "langcode": "en",
-            "text": "Harjoitus IV g3 (en)"
-          }
-        ],
-        "realisation_root_name": [
-          {
-            "langcode": "fi",
-            "text": "Formulointi IIII"
-          },
-          {
-            "langcode": "sv",
-            "text": "Formulering IIII"
-          },
-          {
-            "langcode": "en",
-            "text": "Formulation IIII"
-          }
-        ],
-        "learningopportunity_id": "1234567890",
-        "cancelled" : "false"
-      }
-    ]
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-11-02T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305262,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-11-02T10:15:00.000Z",
+            "weekday_code": 4
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-07T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-07T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-07T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-07T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-07T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-07T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-07T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-07T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-11-07T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305263,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-11-07T10:15:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-11-09T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305262,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-11-09T10:15:00.000Z",
+            "weekday_code": 4
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-14T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-14T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-14T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-14T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-14T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-14T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-14T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-14T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-11-14T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305263,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-11-14T10:15:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-11-16T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305262,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-11-16T10:15:00.000Z",
+            "weekday_code": 4
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-21T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-21T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-21T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-21T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-21T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-21T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-21T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-21T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-11-21T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305263,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-11-21T10:15:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-11-23T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305262,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-11-23T10:15:00.000Z",
+            "weekday_code": 4
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-28T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-28T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-28T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-28T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-28T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-28T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-11-28T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-11-28T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-11-28T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305263,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-11-28T10:15:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-11-30T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305262,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-11-30T10:15:00.000Z",
+            "weekday_code": 4
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-12-05T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-12-05T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-12-05T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-12-05T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-12-05T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-12-05T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-12-05T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-12-05T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-12-05T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305263,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-12-05T10:15:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-12-07T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305262,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-12-07T10:15:00.000Z",
+            "weekday_code": 4
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-12-12T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-12-12T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-12-12T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-12-12T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-12-12T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-12-12T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2017-12-16T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 28",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "51",
+            "building_zipcode": "00100",
+            "cancelled": "false",
+            "course_id": 121106713,
+            "end_date": "2017-12-12T10:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121251937,
+            "event_visible": "false",
+            "hidden": "false",
+            "learningopportunity_id": "EDUK000",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Studia Paedagogica: Education and learning in practice"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 54185472,
+            "room_name": "Aleksandria, atk K130",
+            "room_name_short": "Aleksandria, atk K130",
+            "simple_type_code": 1,
+            "start_date": "2017-12-12T08:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-12-12T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305263,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-12-12T10:15:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2017-12-13T22:00:00.000Z",
+            "automatic_end_time": "235900",
+            "building_address1": "Fabianinkatu 33",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "4",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 120305116,
+            "end_date": "2017-12-14T11:45:00.000Z",
+            "event_duration": 90,
+            "event_id": 120305262,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "HISK-222",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kansainv\u00e4lisen lain historia"
+                }
+            ],
+            "realisation_type_code": 5,
+            "room_id": 45770312,
+            "room_name": "P\u00e4\u00e4rakennus, sali 10",
+            "room_name_short": "P\u00e4\u00e4rakennus, sali 10",
+            "simple_type_code": 1,
+            "start_date": "2017-12-14T10:15:00.000Z",
+            "weekday_code": 4
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-03-03T20:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261102,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454223,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 166",
+            "room_name_short": "Athena, sali 166",
+            "simple_type_code": 1,
+            "start_date": "2018-03-03T20:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-03-10T20:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261102,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454223,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 166",
+            "room_name_short": "Athena, sali 166",
+            "simple_type_code": 1,
+            "start_date": "2018-03-10T20:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-03-17T20:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261102,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454223,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 166",
+            "room_name_short": "Athena, sali 166",
+            "simple_type_code": 1,
+            "start_date": "2018-03-17T20:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-03-24T20:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261102,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454223,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 166",
+            "room_name_short": "Athena, sali 166",
+            "simple_type_code": 1,
+            "start_date": "2018-03-24T20:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-03-31T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261105,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-03-31T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-04-07T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261103,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454472,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 167",
+            "room_name_short": "Athena, sali 167",
+            "simple_type_code": 1,
+            "start_date": "2018-04-07T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-04-14T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261103,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454472,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 167",
+            "room_name_short": "Athena, sali 167",
+            "simple_type_code": 1,
+            "start_date": "2018-04-14T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-04-21T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261103,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454472,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 167",
+            "room_name_short": "Athena, sali 167",
+            "simple_type_code": 1,
+            "start_date": "2018-04-21T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-04-28T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261103,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454472,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 167",
+            "room_name_short": "Athena, sali 167",
+            "simple_type_code": 1,
+            "start_date": "2018-04-28T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2018-04-30T21:00:00.000Z",
+            "automatic_end_time": "120000",
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121265643,
+            "end_date": "2018-05-01T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121265644,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "EDUDRA001",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi joka vahvistettu automaattisesti 1.5.2018"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi joka vahvistettu automaattisesti 1.5.2018"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-01T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2018-05-04T21:00:00.000Z",
+            "automatic_end_time": "120000",
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121265655,
+            "end_date": "2018-05-01T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121265656,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "EDUDRA001",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi joka vahvistetaan autom. 5.5.2018 klo 12"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi joka vahvistetaan autom. 5.5.2018 klo 12"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-01T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2018-05-04T21:00:00.000Z",
+            "automatic_end_time": "152500",
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121265653,
+            "end_date": "2018-05-01T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121265654,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "EDUDRA001",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi jolla ei automaattivahvistamista"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi jolla ei automaattivahvistamista"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-01T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-05-05T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261103,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454472,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 167",
+            "room_name_short": "Athena, sali 167",
+            "simple_type_code": 1,
+            "start_date": "2018-05-05T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2018-04-30T21:00:00.000Z",
+            "automatic_end_time": "120000",
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121265643,
+            "end_date": "2018-05-08T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121265644,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "EDUDRA001",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi joka vahvistettu automaattisesti 1.5.2018"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi joka vahvistettu automaattisesti 1.5.2018"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-08T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2018-05-04T21:00:00.000Z",
+            "automatic_end_time": "120000",
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121265655,
+            "end_date": "2018-05-08T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121265656,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "EDUDRA001",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi joka vahvistetaan autom. 5.5.2018 klo 12"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi joka vahvistetaan autom. 5.5.2018 klo 12"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-08T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2018-05-04T21:00:00.000Z",
+            "automatic_end_time": "152500",
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121265653,
+            "end_date": "2018-05-08T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121265654,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "EDUDRA001",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi jolla ei automaattivahvistamista"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi jolla ei automaattivahvistamista"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-08T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-05-12T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261106,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-12T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2018-04-30T21:00:00.000Z",
+            "automatic_end_time": "120000",
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121265643,
+            "end_date": "2018-05-15T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121265644,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "EDUDRA001",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi joka vahvistettu automaattisesti 1.5.2018"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi joka vahvistettu automaattisesti 1.5.2018"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-15T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "true",
+            "automatic_end_date": "2018-05-04T21:00:00.000Z",
+            "automatic_end_time": "120000",
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121265655,
+            "end_date": "2018-05-15T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121265656,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "EDUDRA001",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi joka vahvistetaan autom. 5.5.2018 klo 12"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi joka vahvistetaan autom. 5.5.2018 klo 12"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-15T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": "2018-05-04T21:00:00.000Z",
+            "automatic_end_time": "152500",
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121265653,
+            "end_date": "2018-05-15T09:00:00.000Z",
+            "event_duration": 120,
+            "event_id": 121265654,
+            "event_visible": "true",
+            "hidden": "false",
+            "learningopportunity_id": "EDUDRA001",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi jolla ei automaattivahvistamista"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Kurssi jolla ei automaattivahvistamista"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-15T07:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-05-19T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261106,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-19T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-05-26T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261104,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454477,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 168",
+            "room_name_short": "Athena, sali 168",
+            "simple_type_code": 1,
+            "start_date": "2018-05-26T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121261022,
+            "end_date": "2018-05-29T06:00:00.000Z",
+            "event_duration": 60,
+            "event_id": 121261026,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": {
+                "otherNotes": "testauksessa mukana",
+                "roomNotes": null,
+                "staffNotes": "Aku Ankka"
+            },
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen A"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen A"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-29T05:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121261022,
+            "end_date": "2018-05-29T07:00:00.000Z",
+            "event_duration": 60,
+            "event_id": 121261028,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": {
+                "otherNotes": "testauksessa mukana",
+                "roomNotes": null,
+                "staffNotes": "Jorma Hynninen"
+            },
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen A"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen A"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-05-29T06:00:00.000Z",
+            "weekday_code": 2
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-06-02T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261104,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454477,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 168",
+            "room_name_short": "Athena, sali 168",
+            "simple_type_code": 1,
+            "start_date": "2018-06-02T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121261022,
+            "end_date": "2018-06-04T06:00:00.000Z",
+            "event_duration": 60,
+            "event_id": 121261023,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen A"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen A"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-06-04T05:00:00.000Z",
+            "weekday_code": 1
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-06-09T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261104,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454477,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 168",
+            "room_name_short": "Athena, sali 168",
+            "simple_type_code": 1,
+            "start_date": "2018-06-09T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-06-16T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261104,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454477,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 168",
+            "room_name_short": "Athena, sali 168",
+            "simple_type_code": 1,
+            "start_date": "2018-06-16T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121261022,
+            "end_date": "2018-06-18T06:00:00.000Z",
+            "event_duration": 60,
+            "event_id": 121261024,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen A"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen A"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-06-18T05:00:00.000Z",
+            "weekday_code": 1
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-06-23T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261104,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454477,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 168",
+            "room_name_short": "Athena, sali 168",
+            "simple_type_code": 1,
+            "start_date": "2018-06-23T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-06-30T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261104,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454477,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 168",
+            "room_name_short": "Athena, sali 168",
+            "simple_type_code": 1,
+            "start_date": "2018-06-30T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": null,
+            "building_address2": null,
+            "building_country": null,
+            "building_id": null,
+            "building_zipcode": null,
+            "cancelled": "false",
+            "course_id": 121261022,
+            "end_date": "2018-07-02T06:00:00.000Z",
+            "event_duration": 60,
+            "event_id": 121261025,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen A"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen A"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": null,
+            "room_name": null,
+            "room_name_short": null,
+            "simple_type_code": 1,
+            "start_date": "2018-07-02T05:00:00.000Z",
+            "weekday_code": 1
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-07-07T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261104,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454477,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 168",
+            "room_name_short": "Athena, sali 168",
+            "simple_type_code": 1,
+            "start_date": "2018-07-07T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-07-14T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261104,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454477,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 168",
+            "room_name_short": "Athena, sali 168",
+            "simple_type_code": 1,
+            "start_date": "2018-07-14T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-07-21T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261104,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454477,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 168",
+            "room_name_short": "Athena, sali 168",
+            "simple_type_code": 1,
+            "start_date": "2018-07-21T19:15:00.000Z",
+            "weekday_code": 6
+        },
+        {
+            "allow_publishing": "false",
+            "automatic_enabled": "false",
+            "automatic_end_date": null,
+            "automatic_end_time": null,
+            "building_address1": "Siltavuorenpenger 3",
+            "building_address2": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
+            "cancelled": "false",
+            "course_id": 121261101,
+            "end_date": "2018-07-28T19:45:00.000Z",
+            "event_duration": 30,
+            "event_id": 121261104,
+            "event_visible": "true",
+            "hidden": "true",
+            "learningopportunity_id": "OODI-FLOW",
+            "optimeExtras": null,
+            "realisation_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Ryhm\u00e4 1"
+                }
+            ],
+            "realisation_root_name": [
+                {
+                    "langcode": "fi",
+                    "text": "Oodi-flown testaamiseen C"
+                }
+            ],
+            "realisation_type_code": 17,
+            "room_id": 82454477,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 168",
+            "room_name_short": "Athena, sali 168",
+            "simple_type_code": 1,
+            "start_date": "2018-07-28T19:15:00.000Z",
+            "weekday_code": 6
+        }
+    ],
+    "elapsed": 0.258576092,
+    "md5": "d6a5bc7bef1845b2c828485b754765c3",
+    "status": 200
 }
