@@ -44,9 +44,9 @@ metrics:
     jmx.enabled: true
 
 oodi:
-    base.url: https://esbmt2.it.helsinki.fi:443/doo-oodi/dev/testdb
-    client.implementation: mock
-    useHttpClientCertificate: false
+    base.url: https://esbmt2.it.helsinki.fi:443/secure/doo-oodi/dev/testdb
+    client.implementation: rest
+    useHttpClientCertificate: true
 
 coursePage:
     base.url: https://dev.courses.helsinki.fi
