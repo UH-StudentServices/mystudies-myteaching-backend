@@ -45,8 +45,8 @@ metrics:
 
 oodi:
     base.url: https://esbmt2.it.helsinki.fi:443/secure/doo-oodi/dev/testdb
-    client.implementation: rest
-    useHttpClientCertificate: true
+    client.implementation: mock
+    useHttpClientCertificate: false
 
 coursePage:
     base.url: https://dev.courses.helsinki.fi
