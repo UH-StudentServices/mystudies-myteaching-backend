@@ -40,12 +40,12 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
     private static final String CRLF = "\r\n";
 
     @Test
-    public void thatTheFeedIsDisplayed() throws Exception {
+    public void thatCalendarFeedIsDisplayed() throws Exception {
         Language language = Language.EN;
 
         expectEvents(language);
 
-        String expectedICalStart = String.join(CRLF,
+        String expectedFeedStart = String.join(CRLF,
             "BEGIN:VCALENDAR",
                 "VERSION:2.0",
                 "CALSCALE:GREGORIAN",
@@ -54,7 +54,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 "TZURL:http://tzurl.org/zoneinfo/Europe/Helsinki",
                 "X-LIC-LOCATION:Europe/Helsinki");
 
-        List<String> expectedIcalEvents = newArrayList(
+        List<String> expectedCalendarEvents = newArrayList(
             eventToString(
                 "BEGIN:VEVENT",
                 "DTSTART;TZID=Europe/Helsinki:20161219T141500",
@@ -93,25 +93,25 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
             )
         );
 
-        String expectedICalEnd = "END:VCALENDAR" + CRLF;
+        String expectedFeedEnd = "END:VCALENDAR" + CRLF;
 
         mockMvc.perform(get(String.format("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/%s", language.getCode())))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.TEXT_CALENDAR_UTF8))
             .andExpect(content().string(Matchers.allOf(newArrayList(
                 contentMatchers(
-                    expectedICalStart,
-                    expectedICalEnd,
-                    expectedIcalEvents)))));
+                    expectedFeedStart,
+                    expectedFeedEnd,
+                    expectedCalendarEvents)))));
     }
     
     @Test
-    public void thatTheFeedIsDisplayedWithOverlappingEventData() throws Exception {
+    public void thatCalendarFeedIsDisplayedWithOverlappingEventData() throws Exception {
         Language language = Language.EN;
 
         expectOverlapping(language);
        
-        List<String> expectedIcalEvents = newArrayList(
+        List<String> expectedCalendarEvents = newArrayList(
             eventToString(
                 "BEGIN:VEVENT",
                 "DTSTART;TZID=Europe/Helsinki:20161219T141500",
@@ -129,22 +129,22 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 contentMatchers(
                     null,
                     null,
-                    expectedIcalEvents)))));
+                    expectedCalendarEvents)))));
     }
 
-    private List<Matcher<String>> contentMatchers(String expectedICalStart, String expectedICalEnd, List<String> expectedIcalEvents) {
+    private List<Matcher<String>> contentMatchers(String expectedFeedStart, String expectedFeedEnd, List<String> expectedCalendarEvents) {
        
         List<Matcher<String>> matchers = newArrayList();
 
-        if (expectedICalStart != null) {
-            matchers.add(new StringStartsWith(expectedICalStart));
+        if (expectedFeedStart != null) {
+            matchers.add(new StringStartsWith(expectedFeedEnd));
         }
         
-        if (expectedICalEnd != null) {
-            matchers.add(new StringEndsWith(expectedICalEnd));
+        if (expectedFeedEnd != null) {
+            matchers.add(new StringEndsWith(expectedFeedEnd));
         }
         
-        matchers.addAll(expectedIcalEvents.stream()
+        matchers.addAll(expectedCalendarEvents.stream()
             .map(StringContains::containsString)
             .collect(Collectors.toList()));
 
