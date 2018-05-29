@@ -137,7 +137,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
         List<Matcher<String>> matchers = newArrayList();
 
         if (expectedFeedStart != null) {
-            matchers.add(new StringStartsWith(expectedFeedEnd));
+            matchers.add(new StringStartsWith(expectedFeedStart));
         }
         
         if (expectedFeedEnd != null) {
