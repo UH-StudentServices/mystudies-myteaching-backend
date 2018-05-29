@@ -168,7 +168,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
         defaultStudentRequestChain()
             .roles("roleswithstudentrole.json")
             .events()
-            .courseImplementationWithLocale("123456789", new Locale(language.getCode()), "course_with_overlapping_data.json")
+            .courseImplementationWithLocaleRequestChain("123456789", new Locale(language.getCode()), "course_with_overlapping_data.json")
             .and()
             .enrollments();
     }
