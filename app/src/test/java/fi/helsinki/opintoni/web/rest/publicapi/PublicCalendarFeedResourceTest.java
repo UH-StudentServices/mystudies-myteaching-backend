@@ -26,10 +26,9 @@ import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringEndsWith;
 import org.hamcrest.core.StringStartsWith;
 import org.junit.Test;
-
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
+import java.util.Locale;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -105,13 +104,46 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                     expectedICalEnd,
                     expectedIcalEvents)))));
     }
+    
+    @Test
+    public void thatTheFeedIsDisplayedWithOverlappingEventData() throws Exception {
+        Language language = Language.EN;
+
+        expectOverlapping(language);
+       
+        List<String> expectedIcalEvents = newArrayList(
+            eventToString(
+                "BEGIN:VEVENT",
+                "DTSTART;TZID=Europe/Helsinki:20161219T141500",
+                "DTEND;TZID=Europe/Helsinki:20161219T154500",
+                "SUMMARY:Formulat... Harjoitus II (en)\\, testauksessa mukana Aku Ankka",
+                "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11\\, Päärakennus\\, "
+                    + "sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11\\, overlapping where data",
+                "UID:")
+        );
+        
+        mockMvc.perform(get(String.format("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/%s", language.getCode())))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.TEXT_CALENDAR_UTF8))
+            .andExpect(content().string(Matchers.allOf(newArrayList(
+                contentMatchers(
+                    null,
+                    null,
+                    expectedIcalEvents)))));
+    }
 
     private List<Matcher<String>> contentMatchers(String expectedICalStart, String expectedICalEnd, List<String> expectedIcalEvents) {
+       
         List<Matcher<String>> matchers = newArrayList();
 
-        matchers.add(new StringStartsWith(expectedICalStart));
-        matchers.add(new StringEndsWith(expectedICalEnd));
-
+        if (expectedICalStart != null) {
+            matchers.add(new StringStartsWith(expectedICalStart));
+        }
+        
+        if (expectedICalEnd != null) {
+            matchers.add(new StringEndsWith(expectedICalEnd));
+        }
+        
         matchers.addAll(expectedIcalEvents.stream()
             .map(StringContains::containsString)
             .collect(Collectors.toList()));
@@ -131,4 +163,14 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
             .and()
             .enrollments();
     }
+
+    private void expectOverlapping(Language language) {
+        defaultStudentRequestChain()
+            .roles("roleswithstudentrole.json")
+            .events()
+            .courseImplementationWithLocale("123456789", new Locale(language.getCode()), "course_with_overlapping_data.json")
+            .and()
+            .enrollments();
+    }
+
 }

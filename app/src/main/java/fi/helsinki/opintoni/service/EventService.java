@@ -85,10 +85,10 @@ public class EventService {
             .concat(oodiEventDtos, coursePageEventDtos)
             .collect(Collectors.groupingBy((EventDto dto) -> EventDto.getRealisationIdAndTimes(dto),
                 Collectors.collectingAndThen(
-                    Collectors.reducing((a,b) ->
-                        new EventDtoBuilder()
+                    Collectors.reducing((a,b) -> new EventDtoBuilder()
                             .setType(a.type)
-                            .setSource(a.source)
+                            .setSource((a.source == EventDto.Source.OODI || b.source == EventDto.Source.OODI) 
+                              ? EventDto.Source.OODI : EventDto.Source.COURSE_PAGE)
                             .setStartDate(a.startDate)
                             .setEndDate(a.endDate)
                             .setRealisationId(a.realisationId)
@@ -100,9 +100,8 @@ public class EventService {
                             .setMoodleUri(a.moodleUri)
                             .setHasMaterial(a.hasMaterial)
                             .setLocations(Stream.concat(a.locations.stream(), b.locations.stream()).collect(Collectors.toList()))
-                            .setOptimeExtras(a.optimeExtras != null ? a.optimeExtras: b.optimeExtras)
-                            .createEventDto()
-                    ),
+                            .setOptimeExtras(a.optimeExtras != null ? a.optimeExtras : b.optimeExtras)
+                            .createEventDto()),
                     Optional::get
                 )
             )).values().stream()

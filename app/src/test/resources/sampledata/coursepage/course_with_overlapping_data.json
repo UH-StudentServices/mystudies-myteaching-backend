@@ -1,0 +1,17 @@
+[{
+  "courseImplementationId": 123456789,
+  "title": "Animal Biotechnology B (KEL/KEBIOT230)",
+  "headerImageUrl": "http://dev.student.helsinki.fi/image",
+  "url": "https://dev.student.helsinki.fi/tvt",
+  "hasMaterial": true,
+  "moodleUrl": "http://moodle.helsinki.fi",
+  "events": [
+    {
+      "title":"overlapping event title",
+      "end": "2016-12-19T13:45:00.000Z",
+      "begin": "2016-12-19T12:15:00.000Z",
+      "where":"overlapping where data",
+      "exam": true
+    }
+  ]
+}]
