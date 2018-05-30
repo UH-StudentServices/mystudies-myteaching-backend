@@ -26,10 +26,9 @@ import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringEndsWith;
 import org.hamcrest.core.StringStartsWith;
 import org.junit.Test;
-
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
+import java.util.Locale;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,12 +40,12 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
     private static final String CRLF = "\r\n";
 
     @Test
-    public void thatTheFeedIsDisplayed() throws Exception {
+    public void thatCalendarFeedIsDisplayed() throws Exception {
         Language language = Language.EN;
 
         expectEvents(language);
 
-        String expectedICalStart = String.join(CRLF,
+        String expectedFeedStart = String.join(CRLF,
             "BEGIN:VCALENDAR",
                 "VERSION:2.0",
                 "CALSCALE:GREGORIAN",
@@ -55,7 +54,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 "TZURL:http://tzurl.org/zoneinfo/Europe/Helsinki",
                 "X-LIC-LOCATION:Europe/Helsinki");
 
-        List<String> expectedIcalEvents = newArrayList(
+        List<String> expectedCalendarEvents = newArrayList(
             eventToString(
                 "BEGIN:VEVENT",
                 "DTSTART;TZID=Europe/Helsinki:20161219T141500",
@@ -94,25 +93,58 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
             )
         );
 
-        String expectedICalEnd = "END:VCALENDAR" + CRLF;
+        String expectedFeedEnd = "END:VCALENDAR" + CRLF;
 
         mockMvc.perform(get(String.format("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/%s", language.getCode())))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.TEXT_CALENDAR_UTF8))
             .andExpect(content().string(Matchers.allOf(newArrayList(
                 contentMatchers(
-                    expectedICalStart,
-                    expectedICalEnd,
-                    expectedIcalEvents)))));
+                    expectedFeedStart,
+                    expectedFeedEnd,
+                    expectedCalendarEvents)))));
+    }
+    
+    @Test
+    public void thatCalendarFeedIsDisplayedWithOverlappingEventData() throws Exception {
+        Language language = Language.EN;
+
+        expectOverlapping(language);
+       
+        List<String> expectedCalendarEvents = newArrayList(
+            eventToString(
+                "BEGIN:VEVENT",
+                "DTSTART;TZID=Europe/Helsinki:20161219T141500",
+                "DTEND;TZID=Europe/Helsinki:20161219T154500",
+                "SUMMARY:Formulat... Harjoitus II (en)\\, testauksessa mukana Aku Ankka",
+                "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11\\, Päärakennus\\, "
+                    + "sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11\\, overlapping where data",
+                "UID:")
+        );
+        
+        mockMvc.perform(get(String.format("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/%s", language.getCode())))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.TEXT_CALENDAR_UTF8))
+            .andExpect(content().string(Matchers.allOf(newArrayList(
+                contentMatchers(
+                    null,
+                    null,
+                    expectedCalendarEvents)))));
     }
 
-    private List<Matcher<String>> contentMatchers(String expectedICalStart, String expectedICalEnd, List<String> expectedIcalEvents) {
+    private List<Matcher<String>> contentMatchers(String expectedFeedStart, String expectedFeedEnd, List<String> expectedCalendarEvents) {
+       
         List<Matcher<String>> matchers = newArrayList();
 
-        matchers.add(new StringStartsWith(expectedICalStart));
-        matchers.add(new StringEndsWith(expectedICalEnd));
-
-        matchers.addAll(expectedIcalEvents.stream()
+        if (expectedFeedStart != null) {
+            matchers.add(new StringStartsWith(expectedFeedStart));
+        }
+        
+        if (expectedFeedEnd != null) {
+            matchers.add(new StringEndsWith(expectedFeedEnd));
+        }
+        
+        matchers.addAll(expectedCalendarEvents.stream()
             .map(StringContains::containsString)
             .collect(Collectors.toList()));
 
@@ -131,4 +163,14 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
             .and()
             .enrollments();
     }
+
+    private void expectOverlapping(Language language) {
+        defaultStudentRequestChain()
+            .roles("roleswithstudentrole.json")
+            .events()
+            .courseImplementationWithLocaleRequestChain("123456789", new Locale(language.getCode()), "course_with_overlapping_data.json")
+            .and()
+            .enrollments();
+    }
+
 }

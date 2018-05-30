@@ -52,9 +52,14 @@ public class StudentRequestChain {
             .expectImplementation();
     }
 
+    public CourseImplementationRequestChain<StudentRequestChain> courseImplementationWithLocaleRequestChain(
+        String coursePageImplementationId, Locale locale, String responseFile) {
+        return courseImplementationRequestChain(coursePageImplementationId, locale).expectImplementation(responseFile);
+    }
+        
     public CourseImplementationRequestChain<StudentRequestChain> courseImplementation(
         String coursePageImplementationId, String responseFile) {
-        return courseImplementationRequestChain(coursePageImplementationId, DEFAULT_USER_LOCALE).expectImplementation(responseFile);
+        return courseImplementationWithLocaleRequestChain(coursePageImplementationId, DEFAULT_USER_LOCALE, responseFile);
     }
 
     private CourseImplementationRequestChain<StudentRequestChain> courseImplementationRequestChain(String coursePageImplementationId, Locale locale) {

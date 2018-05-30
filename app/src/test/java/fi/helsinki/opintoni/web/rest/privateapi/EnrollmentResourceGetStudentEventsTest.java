@@ -54,10 +54,7 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
     private ResultActions performGetStudentEvents(
         String cookieLanguage,
         String acceptLanguageHeader,
-        String expectedResolvedLanguage,
         String expectedFirstEventTitle) throws Exception {
-
-        expectEvents(expectedResolvedLanguage);
 
         MockHttpServletRequestBuilder requestBuilder = get("/api/private/v1/students/enrollments/events")
             .with(securityContext(studentSecurityContext()))
@@ -81,7 +78,8 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
 
     @Test
     public void thatStudentEventsAreReturnedInFinnish() throws Exception {
-        performGetStudentEvents(LANG_CODE_FI, null, LANG_CODE_FI, EVENT_TITLE_FI)
+        expectEvents(LANG_CODE_FI);
+        performGetStudentEvents(LANG_CODE_FI, null, EVENT_TITLE_FI)
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(5)))
             .andExpect(jsonPath("$[0].realisationId").value(123456789))
@@ -113,46 +111,70 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
             .andExpect(jsonPath("$[3].source").value(EventDto.Source.COURSE_PAGE.name()))
             .andExpect(jsonPath("$[3].type").value(EventDto.Type.DEFAULT.name()));
     }
-
+    
+    @Test
+    public void thatStudentEventsContainCorrectDataWhenDataIsOverlapping() throws Exception {
+        expectEventsWithOverlap(LANG_CODE_FI);
+        performGetStudentEvents(LANG_CODE_FI, null, EVENT_TITLE_FI)
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(2)))
+            .andExpect(jsonPath("$[0].fullEventTitle").value("Formuloi... Harjoitus II, testauksessa mukana Aku Ankka"));
+    }
+    
     @Test
     public void thatStudentEventsAreReturnedInSwedish() throws Exception {
-        performGetStudentEvents(LANG_CODE_SV, null, LANG_CODE_SV, EVENT_TITLE_SV);
+        expectEvents(LANG_CODE_SV);
+        performGetStudentEvents(LANG_CODE_SV, null, EVENT_TITLE_SV);
     }
 
     @Test
     public void thatStudentEventsAreReturnedInEnglish() throws Exception {
-        performGetStudentEvents(LANG_CODE_EN, null, LANG_CODE_EN, EVENT_TITLE_EN);
+        expectEvents(LANG_CODE_EN);
+        performGetStudentEvents(LANG_CODE_EN, null, EVENT_TITLE_EN);
     }
 
     @Test
     public void thatLanguageCodeWithCountryInCookieWillResolveToDefaultLanguage() throws Exception {
-        performGetStudentEvents(LANGUAGE_CODE_WITH_COUNTRY, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_FI);
+        expectEvents(DEFAULT_USER_LOCALE.getLanguage());
+        performGetStudentEvents(LANGUAGE_CODE_WITH_COUNTRY, null, EVENT_TITLE_FI);
     }
 
     @Test
     public void thatInvalidLanguageCodeWillResolveToDefaultLanguage() throws Exception {
-        performGetStudentEvents(INVALID_LANGUAGE_CODE, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_FI);
+        expectEvents(DEFAULT_USER_LOCALE.getLanguage());
+        performGetStudentEvents(INVALID_LANGUAGE_CODE, null, EVENT_TITLE_FI);
     }
 
     @Test
     public void thatUnsupportedLanguageCodeWillResolveToDefaultLanguage() throws Exception {
-        performGetStudentEvents(UNSUPPORTED_LANG_CODE, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_FI);
+        expectEvents(DEFAULT_USER_LOCALE.getLanguage());
+        performGetStudentEvents(UNSUPPORTED_LANG_CODE, null, EVENT_TITLE_FI);
     }
 
     @Test
     public void thatAcceptLanguageHeaderIsAlwaysResolvedToDefaultLanguage() throws Exception {
-        performGetStudentEvents(null, LANG_CODE_SV, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_FI);
+        expectEvents(DEFAULT_USER_LOCALE.getLanguage());
+        performGetStudentEvents(null, LANG_CODE_SV, EVENT_TITLE_FI);
     }
 
     @Test
     public void thatIfLanguageCookieIsNotPresentDefaultLanguageIsUsed() throws Exception {
-        performGetStudentEvents(null, null, DEFAULT_USER_LOCALE.getLanguage(), EVENT_TITLE_FI);
+        expectEvents(DEFAULT_USER_LOCALE.getLanguage());
+        performGetStudentEvents(null, null, EVENT_TITLE_FI);
     }
 
     private void expectEvents(String langCode) {
         defaultStudentRequestChain()
             .events()
             .defaultImplementationWithLocale(new Locale(langCode))
+            .and()
+            .enrollments();
+    }
+    
+    private void expectEventsWithOverlap(String langCode) {
+        defaultStudentRequestChain()
+            .events()
+            .courseImplementationWithLocaleRequestChain("123456789", new Locale(langCode), "course_with_overlapping_data.json")
             .and()
             .enrollments();
     }
