@@ -32,7 +32,7 @@ public class SomeLink extends AbstractAuditingEntity {
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NotNull

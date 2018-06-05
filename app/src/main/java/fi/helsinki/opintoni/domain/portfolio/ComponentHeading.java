@@ -28,7 +28,7 @@ import javax.validation.constraints.NotNull;
 public class ComponentHeading extends AbstractAuditingEntity implements Ownership {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NotNull

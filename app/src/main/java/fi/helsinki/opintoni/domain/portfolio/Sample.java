@@ -30,7 +30,7 @@ import javax.validation.constraints.Size;
 public class Sample extends AbstractAuditingEntity implements Ownership {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @Size(max = 255)

@@ -27,7 +27,7 @@ import java.util.List;
 public class StudyAttainmentWhitelist {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public Long id;
 

@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
 public class User extends AbstractAuditingEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     /*

@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 @Table(name = "notification_schedules")
 public class NotificationSchedule extends AbstractAuditingEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @Column(name = "start_date")

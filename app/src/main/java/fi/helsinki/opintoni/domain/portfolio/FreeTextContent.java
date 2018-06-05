@@ -28,7 +28,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "free_text_content")
 public class FreeTextContent extends AbstractAuditingEntity implements Ownership {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NotNull

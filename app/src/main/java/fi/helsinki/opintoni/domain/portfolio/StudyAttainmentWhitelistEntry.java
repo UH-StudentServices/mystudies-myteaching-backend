@@ -24,7 +24,7 @@ import javax.persistence.*;
 public class StudyAttainmentWhitelistEntry {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @ManyToOne

@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @Table(name = "cached_item_updates_check")
 public class CachedItemUpdatesCheck {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NotBlank

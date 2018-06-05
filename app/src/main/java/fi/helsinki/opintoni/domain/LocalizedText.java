@@ -30,7 +30,7 @@ import java.util.Map;
 public class LocalizedText {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @ElementCollection(fetch = FetchType.EAGER)

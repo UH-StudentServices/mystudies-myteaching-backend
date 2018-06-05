@@ -36,7 +36,7 @@ public class ComponentVisibility extends AbstractAuditingEntity implements Owner
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NotNull

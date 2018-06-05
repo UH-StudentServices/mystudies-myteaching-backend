@@ -26,7 +26,7 @@ import java.util.List;
 public class OfficeHours extends AbstractAuditingEntity implements Ownership {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @Column(name = "name")

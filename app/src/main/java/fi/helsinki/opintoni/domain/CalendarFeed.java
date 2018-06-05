@@ -26,7 +26,7 @@ import javax.persistence.*;
 public class CalendarFeed extends AbstractAuditingEntity implements Ownership {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NotBlank
