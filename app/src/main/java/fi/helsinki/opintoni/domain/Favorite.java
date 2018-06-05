@@ -40,7 +40,7 @@ public class Favorite extends AbstractAuditingEntity implements Ownership {
     public boolean portfolio;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NotNull

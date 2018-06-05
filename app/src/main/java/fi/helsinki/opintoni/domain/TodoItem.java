@@ -33,7 +33,7 @@ public class TodoItem extends AbstractAuditingEntity implements Ownership {
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NotBlank

@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
 public class UserSettings extends AbstractAuditingEntity implements Ownership {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @Column(name = "background_filename")

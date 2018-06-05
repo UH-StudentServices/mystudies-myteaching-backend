@@ -30,7 +30,7 @@ import javax.validation.constraints.Size;
 public class JobSearch extends AbstractAuditingEntity implements Ownership {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NotNull

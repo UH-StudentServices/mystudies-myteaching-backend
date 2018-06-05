@@ -32,7 +32,7 @@ import java.time.LocalDate;
 public class WorkExperience extends AbstractAuditingEntity implements Ownership {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NotEmpty

@@ -26,7 +26,7 @@ import java.util.Set;
 @Table(name = "notifications")
 public class Notification extends AbstractAuditingEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @OneToMany(

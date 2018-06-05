@@ -28,7 +28,7 @@ import javax.validation.constraints.Size;
 public class DegreeProgramme extends AbstractAuditingEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NotBlank

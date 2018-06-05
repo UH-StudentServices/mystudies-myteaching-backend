@@ -1443,7 +1443,110 @@
             </column>
         </createTable>
     </changeSet>
-    
+    <changeSet id="drop hibernate_sequence if available" author="Sami Siren">
+        <preConditions onFail="MARK_RAN">
+            <sequenceExists sequenceName="hibernate_sequence" />
+        </preConditions>
+        <dropSequence sequenceName="hibernate_sequence"/>
+    </changeSet>
+    <changeSet id="reset sequences if sequences exists" author="Sami Siren">
+        <preConditions onFail="MARK_RAN">
+            <sequenceExists sequenceName="cached_item_updates_check_id_seq" />
+        </preConditions>
+        <sql>
+            alter cached_item_updates_check_id_seq restart with (select coalesce(max(id), 0) from cached_item_updates_check + 1;
+        </sql>
+        <sql>
+            alter calendar_feed_id_seq restart with (select coalesce(max(id), 0) from calendar_feed + 1;
+        </sql>
+        <sql>
+            alter component_heading_id_seq restart with (select coalesce(max(id), 0) from component_heading + 1;
+        </sql>
+        <sql>
+            alter component_order_id_seq restart with (select coalesce(max(id), 0) from component_order + 1;
+        </sql>
+        <sql>
+            alter component_visibility_id_seq restart with (select coalesce(max(id), 0) from component_visibility + 1;
+        </sql>
+        <sql>
+            alter contact_information_id_seq restart with (select coalesce(max(id), 0) from contact_information + 1;
+        </sql>
+        <sql>
+            alter degree_id_seq restart with (select coalesce(max(id), 0) from degree + 1;
+        </sql>
+        <sql>
+            alter degree_programme_id_seq restart with (select coalesce(max(id), 0) from degree_programme + 1;
+        </sql>
+        <sql>
+            alter favorite_id_seq restart with (select coalesce(max(id), 0) from favorite) + 1;
+        </sql>
+        <sql>
+            alter free_text_content_id_seq restart with (select coalesce(max(id), 0) from free_text_content + 1;
+        </sql>
+        <sql>
+            alter job_search_id_seq restart with (select coalesce(max(id), 0) from job_search + 1;
+        </sql>
+        <sql>
+            alter language_proficiency_id_seq restart with (select coalesce(max(id), 0) from language_proficiency + 1;
+        </sql>
+        <sql>
+            alter localized_text_id_seq restart with (select coalesce(max(id), 0) from localized_text + 1;
+        </sql>
+        <sql>
+            alter notification_schedules_id_seq restart with (select coalesce(max(id), 0) from notification_schedules + 1;
+        </sql>
+        <sql>
+            alter notifications_id_seq restart with (select coalesce(max(id), 0) from notifications + 1;
+        </sql>
+        <sql>
+            alter office_hours_degree_programme_id_seq restart with (select coalesce(max(id), 0) from office_hours_degree_programme + 1;
+        </sql>
+        <sql>
+            alter office_hours_id_seq restart with (select coalesce(max(id), 0) from office_hours + 1;
+        </sql>
+        <sql>
+            alter sequence persistent_audit_event_id_seq restart with (select coalesce(max(id), 0) from persistent_audit_event) + 1;
+        </sql>      
+        <sql>
+            alter portfolio_id_seq restart with (select coalesce(max(id), 0) from portfolio) + 1;
+        </sql>
+        <sql>
+            alter portfolio_keyword_id_seq restart with (select coalesce(max(id), 0) from portfolio_keyword + 1;
+        </sql>
+        <sql>
+            alter portfolio_keyword_relationship_id_seq restart with (select coalesce(max(id), 0) from portfolio_keyword_relationship + 1;
+        </sql>
+        <sql>
+            alter sample_id_seq restart with (select coalesce(max(id), 0) from sample + 1;
+        </sql>
+        <sql>
+            alter some_link_id_seq restart with (select coalesce(max(id), 0) from some_link + 1;
+        </sql>
+        <sql>
+            alter study_attainment_whitelist_entry_id_seq restart with (select coalesce(max(id), 0) from study_attainment_whitelist_entry + 1;
+        </sql>
+        <sql>
+            alter study_attainment_whitelist_id_seq restart with (select coalesce(max(id), 0) from study_attainment_whitelist + 1;
+        </sql>
+        <sql>
+            alter todo_item_id_seq restart with (select coalesce(max(id), 0) from todo_item) + 1;
+        </sql>    
+        <sql>
+            alter useful_link_id_seq restart with (select coalesce(max(id), 0) from useful_link) + 1;
+        </sql>    
+        <sql>
+            alter sequence user_id_seq restart with (select coalesce(max(id), 0) from user) + 1;
+        </sql>
+        <sql>
+            alter user_notification_id_seq restart with (select coalesce(max(id), 0) from user_notification) + 1;
+        </sql>
+        <sql>
+            alter user_settings_id_seq restart with (select coalesce(max(id), 0) from user_settings) + 1;
+        </sql>    
+        <sql>
+            alter work_experience_id_seq restart with (select coalesce(max(id), 0) from work_experience + 1;
+        </sql>
+    </changeSet>    
     <changeSet id="add flamma defaults for all users" author="Sami Siren">
         <sql>
             insert into favorite (user_id, type, order_index, created_by)
