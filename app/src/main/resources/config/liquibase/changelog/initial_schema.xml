@@ -1454,107 +1454,108 @@
             <sequenceExists sequenceName="cached_item_updates_check_id_seq" />
         </preConditions>
         <sql>
-            alter cached_item_updates_check_id_seq restart with (select coalesce(max(id), 0) from cached_item_updates_check + 1;
+            select setval('cached_item_updates_check_id_seq', (select coalesce(max(id)+1, 0) from cached_item_updates_check), false);
         </sql>
         <sql>
-            alter calendar_feed_id_seq restart with (select coalesce(max(id), 0) from calendar_feed + 1;
+            select setval('calendar_feed_id_seq', (select coalesce(max(id)+1,0) calendar_feed), false);
         </sql>
         <sql>
-            alter component_heading_id_seq restart with (select coalesce(max(id), 0) from component_heading + 1;
+            select setval('component_heading_id_seq', (select coalesce(max(id)+1,0) from component_heading), false);
         </sql>
         <sql>
-            alter component_order_id_seq restart with (select coalesce(max(id), 0) from component_order + 1;
+            select setval('component_order_id_seq restar', (select coalesce(max(id)+1,0) from component_order), false);
         </sql>
         <sql>
-            alter component_visibility_id_seq restart with (select coalesce(max(id), 0) from component_visibility + 1;
+            select setval('component_visibility_id_seq', (select coalesce(max(id)+1,0) from component_visibility), false);
         </sql>
         <sql>
-            alter contact_information_id_seq restart with (select coalesce(max(id), 0) from contact_information + 1;
+            select setval('contact_information_id_seq', (select coalesce(max(id)+1,0) from contact_information), false);
         </sql>
         <sql>
-            alter degree_id_seq restart with (select coalesce(max(id), 0) from degree + 1;
+            select setval('degree_id_seq', (select coalesce(max(id)+1,0) from degree), false);
         </sql>
         <sql>
-            alter degree_programme_id_seq restart with (select coalesce(max(id), 0) from degree_programme + 1;
+            select setval('degree_programme_id_seq', (select coalesce(max(id)+1,0) from degree_programme), false);
         </sql>
         <sql>
-            alter favorite_id_seq restart with (select coalesce(max(id), 0) from favorite) + 1;
+            select setval('favorite_id_seq', (select coalesce(max(id)+1,0) from favorite), false);
         </sql>
         <sql>
-            alter free_text_content_id_seq restart with (select coalesce(max(id), 0) from free_text_content + 1;
+            select setval('free_text_content_id_seq', (select coalesce(max(id)+1,0) from free_text_content), false);
         </sql>
         <sql>
-            alter job_search_id_seq restart with (select coalesce(max(id), 0) from job_search + 1;
+            select setval('job_search_id_seq', (select coalesce(max(id)+1,0) from job_search), false);
         </sql>
         <sql>
-            alter language_proficiency_id_seq restart with (select coalesce(max(id), 0) from language_proficiency + 1;
+            select setval('language_proficiency_id_seq', (select coalesce(max(id)+1,0) from language_proficiency), false);
         </sql>
         <sql>
-            alter localized_text_id_seq restart with (select coalesce(max(id), 0) from localized_text + 1;
+            select setval('localized_text_id_seq', (select coalesce(max(id)+1,0) from localized_text), false);
         </sql>
         <sql>
-            alter notification_schedules_id_seq restart with (select coalesce(max(id), 0) from notification_schedules + 1;
+            select setval('notification_schedules_id_seq', (select coalesce(max(id)+1,0) from notification_schedules), false);
         </sql>
         <sql>
-            alter notifications_id_seq restart with (select coalesce(max(id), 0) from notifications + 1;
+            select setval('notifications_id_seq', (select coalesce(max(id)+1,0) from notifications), false);
         </sql>
         <sql>
-            alter office_hours_degree_programme_id_seq restart with (select coalesce(max(id), 0) from office_hours_degree_programme + 1;
+            select setval('office_hours_degree_programme_id_seq', (select coalesce(max(id)+1,0) from office_hours_degree_programme), false);
         </sql>
         <sql>
-            alter office_hours_id_seq restart with (select coalesce(max(id), 0) from office_hours + 1;
+            select setval('office_hours_id_seq', (select coalesce(max(id)+1,0) from office_hours), false);
         </sql>
         <sql>
-            alter sequence persistent_audit_event_id_seq restart with (select coalesce(max(id), 0) from persistent_audit_event) + 1;
+            select setval('sequence persistent_audit_event_id_seq', (select coalesce(max(id)+1,0) from persistent_audit_event), false);
         </sql>      
         <sql>
-            alter portfolio_id_seq restart with (select coalesce(max(id), 0) from portfolio) + 1;
+            select setval('portfolio_id_seq', (select coalesce(max(id)+1,0) from portfolio), false);
         </sql>
         <sql>
-            alter portfolio_keyword_id_seq restart with (select coalesce(max(id), 0) from portfolio_keyword + 1;
+            select setval('portfolio_keyword_id_seq', (select coalesce(max(id)+1,0) from portfolio_keyword), false);
         </sql>
         <sql>
-            alter portfolio_keyword_relationship_id_seq restart with (select coalesce(max(id), 0) from portfolio_keyword_relationship + 1;
+            select setval('portfolio_keyword_relationship_id_seq', (select coalesce(max(id)+1,0) from portfolio_keyword_relationship), false);
         </sql>
         <sql>
-            alter sample_id_seq restart with (select coalesce(max(id), 0) from sample + 1;
+            select setval('sample_id_seq', (select coalesce(max(id)+1,0) from sample), false);
         </sql>
         <sql>
-            alter some_link_id_seq restart with (select coalesce(max(id), 0) from some_link + 1;
+            select setval('some_link_id_seq', (select coalesce(max(id)+1,0) from some_link), false);
         </sql>
         <sql>
-            alter study_attainment_whitelist_entry_id_seq restart with (select coalesce(max(id), 0) from study_attainment_whitelist_entry + 1;
+            select setval('study_attainment_whitelist_entry_id_seq', (select coalesce(max(id)+1,0) from study_attainment_whitelist_entry), false);
+
         </sql>
         <sql>
-            alter study_attainment_whitelist_id_seq restart with (select coalesce(max(id), 0) from study_attainment_whitelist + 1;
+            select setval('study_attainment_whitelist_id_seq', (select coalesce(max(id)+1,0) from study_attainment_whitelist), false);
         </sql>
         <sql>
-            alter todo_item_id_seq restart with (select coalesce(max(id), 0) from todo_item) + 1;
+            select setval('todo_item_id_seq', (select coalesce(max(id)+1,0) from todo_item), false);
         </sql>    
         <sql>
-            alter useful_link_id_seq restart with (select coalesce(max(id), 0) from useful_link) + 1;
+            select setval('useful_link_id_seq', (select coalesce(max(id)+1,0) from useful_link), false);
         </sql>    
         <sql>
-            alter sequence user_id_seq restart with (select coalesce(max(id), 0) from user) + 1;
+            select setval('user_id_seq', (select coalesce(max(id)+1,0) from user)), false);
         </sql>
         <sql>
-            alter user_notification_id_seq restart with (select coalesce(max(id), 0) from user_notification) + 1;
+            select setval('user_notification_id_seq', (select coalesce(max(id)+1,0) from user_notification), false);
         </sql>
         <sql>
-            alter user_settings_id_seq restart with (select coalesce(max(id), 0) from user_settings) + 1;
+            select setval('user_settings_id_seq', (select coalesce(max(id)+1,0) from user_settings), false);
         </sql>    
         <sql>
-            alter work_experience_id_seq restart with (select coalesce(max(id), 0) from work_experience + 1;
+            select setval('work_experience_id_seq', (select coalesce(max(id)+1,0) from work_experience), false);
         </sql>
     </changeSet>    
     <changeSet id="add flamma defaults for all users" author="Sami Siren">
         <sql>
             insert into favorite (user_id, type, order_index, created_by)
-              select user_account.id, 'FLAMMA_NEWS', max(order_index)+1, 'system' from user_account left join favorite on user_account.id = favorite.user_id GROUP BY user_account.id; 
+              select user_account.id, 'FLAMMA_NEWS', coalesce(max(order_index)+1,0), 'system' from user_account left join favorite on user_account.id = favorite.user_id GROUP BY user_account.id;
         </sql>
         <sql>
             insert into favorite (user_id, type, order_index, created_by)
-              select user_account.id, 'FLAMMA_EVENTS', max(order_index)+1, 'system' from user_account left join favorite on user_account.id = favorite.user_id GROUP BY user_account.id;
+              select user_account.id, 'FLAMMA_EVENTS', coalesce(max(order_index)+1,0), 'system' from user_account left join favorite on user_account.id = favorite.user_id GROUP BY user_account.id;
         </sql>
     </changeSet>
     
