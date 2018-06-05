@@ -1451,101 +1451,102 @@
     </changeSet>
     <changeSet id="reset sequences if sequences exists" author="Sami Siren">
         <preConditions onFail="MARK_RAN">
-            <sequenceExists sequenceName="cached_item_updates_check_id_seq" />
+            <sqlCheck expectedResult="1" >
+                select count(*) from cached_item_updates_check_id_seq;
+            </sqlCheck>
         </preConditions>
         <sql>
-            select setval('cached_item_updates_check_id_seq', (select coalesce(max(id)+1, 0) from cached_item_updates_check), false);
+            select setval('cached_item_updates_check_id_seq', (select coalesce(max(id)+1, 1) from cached_item_updates_check), false);
         </sql>
         <sql>
-            select setval('calendar_feed_id_seq', (select coalesce(max(id)+1,0) calendar_feed), false);
+            select setval('calendar_feed_id_seq', (select coalesce(max(id)+1,1) from calendar_feed), false);
         </sql>
         <sql>
-            select setval('component_heading_id_seq', (select coalesce(max(id)+1,0) from component_heading), false);
+            select setval('component_heading_id_seq', (select coalesce(max(id)+1,1) from component_heading), false);
         </sql>
         <sql>
-            select setval('component_order_id_seq restar', (select coalesce(max(id)+1,0) from component_order), false);
+            select setval('component_heading_id_seq', (select coalesce(max(id)+1,1) from component_heading), false);
         </sql>
         <sql>
-            select setval('component_visibility_id_seq', (select coalesce(max(id)+1,0) from component_visibility), false);
+            select setval('component_visibility_id_seq', (select coalesce(max(id)+1,1) from component_visibility), false);
         </sql>
         <sql>
-            select setval('contact_information_id_seq', (select coalesce(max(id)+1,0) from contact_information), false);
+            select setval('contact_information_id_seq', (select coalesce(max(id)+1,1) from contact_information), false);
         </sql>
         <sql>
-            select setval('degree_id_seq', (select coalesce(max(id)+1,0) from degree), false);
+            select setval('degree_id_seq', (select coalesce(max(id)+1,1) from degree), false);
         </sql>
         <sql>
-            select setval('degree_programme_id_seq', (select coalesce(max(id)+1,0) from degree_programme), false);
+            select setval('degree_programme_id_seq', (select coalesce(max(id)+1,1) from degree_programme), false);
         </sql>
         <sql>
-            select setval('favorite_id_seq', (select coalesce(max(id)+1,0) from favorite), false);
+            select setval('favorite_id_seq', (select coalesce(max(id)+1,1) from favorite), false);
         </sql>
         <sql>
-            select setval('free_text_content_id_seq', (select coalesce(max(id)+1,0) from free_text_content), false);
+            select setval('free_text_content_id_seq', (select coalesce(max(id)+1,1) from free_text_content), false);
         </sql>
         <sql>
-            select setval('job_search_id_seq', (select coalesce(max(id)+1,0) from job_search), false);
+            select setval('job_search_id_seq', (select coalesce(max(id)+1,1) from job_search), false);
         </sql>
         <sql>
-            select setval('language_proficiency_id_seq', (select coalesce(max(id)+1,0) from language_proficiency), false);
+            select setval('language_proficiency_id_seq', (select coalesce(max(id)+1,1) from language_proficiency), false);
         </sql>
         <sql>
-            select setval('localized_text_id_seq', (select coalesce(max(id)+1,0) from localized_text), false);
+            select setval('localized_text_id_seq', (select coalesce(max(id)+1,1) from localized_text), false);
         </sql>
         <sql>
-            select setval('notification_schedules_id_seq', (select coalesce(max(id)+1,0) from notification_schedules), false);
+            select setval('notification_schedules_id_seq', (select coalesce(max(id)+1,1) from notification_schedules), false);
         </sql>
         <sql>
-            select setval('notifications_id_seq', (select coalesce(max(id)+1,0) from notifications), false);
+            select setval('notifications_id_seq', (select coalesce(max(id)+1,1) from notifications), false);
         </sql>
         <sql>
-            select setval('office_hours_degree_programme_id_seq', (select coalesce(max(id)+1,0) from office_hours_degree_programme), false);
+            select setval('office_hours_degree_programme_id_seq', (select coalesce(max(id)+1,1) from office_hours_degree_programme), false);
         </sql>
         <sql>
-            select setval('office_hours_id_seq', (select coalesce(max(id)+1,0) from office_hours), false);
+            select setval('office_hours_id_seq', (select coalesce(max(id)+1,1) from office_hours), false);
         </sql>
         <sql>
-            select setval('sequence persistent_audit_event_id_seq', (select coalesce(max(id)+1,0) from persistent_audit_event), false);
+            select setval('persistent_audit_event_event_id_seq', (select coalesce(max(event_id)+1,1) from persistent_audit_event), false);
         </sql>      
         <sql>
-            select setval('portfolio_id_seq', (select coalesce(max(id)+1,0) from portfolio), false);
+            select setval('portfolio_id_seq', (select coalesce(max(id)+1,1) from portfolio), false);
         </sql>
         <sql>
-            select setval('portfolio_keyword_id_seq', (select coalesce(max(id)+1,0) from portfolio_keyword), false);
+            select setval('portfolio_keyword_id_seq', (select coalesce(max(id)+1,1) from portfolio_keyword), false);
         </sql>
         <sql>
-            select setval('portfolio_keyword_relationship_id_seq', (select coalesce(max(id)+1,0) from portfolio_keyword_relationship), false);
+            select setval('portfolio_keyword_relationship_id_seq', (select coalesce(max(id)+1,1) from portfolio_keyword_relationship), false);
         </sql>
         <sql>
-            select setval('sample_id_seq', (select coalesce(max(id)+1,0) from sample), false);
+            select setval('sample_id_seq', (select coalesce(max(id)+1,1) from sample), false);
         </sql>
         <sql>
-            select setval('some_link_id_seq', (select coalesce(max(id)+1,0) from some_link), false);
+            select setval('some_link_id_seq', (select coalesce(max(id)+1,1) from some_link), false);
         </sql>
         <sql>
-            select setval('study_attainment_whitelist_entry_id_seq', (select coalesce(max(id)+1,0) from study_attainment_whitelist_entry), false);
-
+            select setval('study_attainment_whitelist_entry_id_seq', (select coalesce(max(id)+1,1) from study_attainment_whitelist_entry), false);
         </sql>
         <sql>
-            select setval('study_attainment_whitelist_id_seq', (select coalesce(max(id)+1,0) from study_attainment_whitelist), false);
+            select setval('study_attainment_whitelist_id_seq', (select coalesce(max(id)+1,1) from study_attainment_whitelist), false);
         </sql>
         <sql>
-            select setval('todo_item_id_seq', (select coalesce(max(id)+1,0) from todo_item), false);
+            select setval('todo_item_id_seq', (select coalesce(max(id)+1,1) from todo_item), false);
         </sql>    
         <sql>
-            select setval('useful_link_id_seq', (select coalesce(max(id)+1,0) from useful_link), false);
+            select setval('useful_link_id_seq', (select coalesce(max(id)+1,1) from useful_link), false);
         </sql>    
         <sql>
-            select setval('user_id_seq', (select coalesce(max(id)+1,0) from user)), false);
+            select setval('user_id_seq', (select coalesce(max(id)+1,1) from user_account)), false);
         </sql>
         <sql>
-            select setval('user_notification_id_seq', (select coalesce(max(id)+1,0) from user_notification), false);
+            select setval('user_notification_id_seq', (select coalesce(max(id)+1,1) from user_notification), false);
         </sql>
         <sql>
-            select setval('user_settings_id_seq', (select coalesce(max(id)+1,0) from user_settings), false);
+            select setval('user_settings_id_seq', (select coalesce(max(id)+1,1) from user_settings), false);
         </sql>    
         <sql>
-            select setval('work_experience_id_seq', (select coalesce(max(id)+1,0) from work_experience), false);
+            select setval('work_experience_id_seq', (select coalesce(max(id)+1,1) from work_experience), false);
         </sql>
     </changeSet>    
     <changeSet id="add flamma defaults for all users" author="Sami Siren">
