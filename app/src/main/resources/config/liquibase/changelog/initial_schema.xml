@@ -1449,12 +1449,7 @@
         </preConditions>
         <dropSequence sequenceName="hibernate_sequence"/>
     </changeSet>
-    <changeSet id="reset sequences if sequences exists" author="Sami Siren">
-        <preConditions onFail="MARK_RAN">
-            <sqlCheck expectedResult="1" >
-                select count(*) from cached_item_updates_check_id_seq;
-            </sqlCheck>
-        </preConditions>
+    <changeSet id="reset sequences if sequences exists" author="Sami Siren" dbms="postgresql">
         <sql>
             select setval('cached_item_updates_check_id_seq', (select coalesce(max(id)+1, 1) from cached_item_updates_check), false);
         </sql>
