@@ -206,8 +206,9 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         ExtendedMetadataDelegate extendedMetadataDelegate = new ExtendedMetadataDelegate(httpMetadataProvider,
             idpExtendedMetadata());
-        extendedMetadataDelegate.setMetadataTrustCheck(true);
-        extendedMetadataDelegate.setMetadataRequireSignature(true);
+        extendedMetadataDelegate.setMetadataTrustCheck(false);
+        extendedMetadataDelegate.setMetadataRequireSignature(false);
+
         return extendedMetadataDelegate;
     }
 
@@ -215,6 +216,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
         ExtendedMetadata extendedMetadata = new ExtendedMetadata();
         extendedMetadata.setIdpDiscoveryEnabled(false);
         extendedMetadata.setSignMetadata(true);
+
         return extendedMetadata;
     }
 
