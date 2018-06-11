@@ -235,7 +235,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     private FilesystemResource getSpMetadata(String alias) throws Exception {
-        return new FilesystemResource(appConfiguration.get("saml.metadataLocation." + alias));
+        return new FilesystemResource(appConfiguration.get("saml." + alias + ".metadataLocation"));
     }
 
     public ExtendedMetadata spExtendedMetadata(String alias) {
@@ -247,11 +247,12 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
         extendedMetadata.setAlias(alias);
         extendedMetadata.setSigningKey(getKeystoreAlias(alias));
         extendedMetadata.setEncryptionKey(getKeystoreAlias(alias));
+
         return extendedMetadata;
     }
 
     private String getKeystoreAlias(String alias) {
-        return alias + ".helsinki.fi";
+        return appConfiguration.get("saml." + alias + ".domain");
     }
 
     @Bean
