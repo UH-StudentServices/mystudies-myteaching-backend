@@ -45,9 +45,7 @@ import org.springframework.security.saml.context.SAMLContextProvider;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
 import org.springframework.security.saml.log.SAMLDefaultLogger;
-import org.springframework.security.saml.metadata.CachingMetadataManager;
-import org.springframework.security.saml.metadata.ExtendedMetadata;
-import org.springframework.security.saml.metadata.ExtendedMetadataDelegate;
+import org.springframework.security.saml.metadata.*;
 import org.springframework.security.saml.parser.ParserPoolHolder;
 import org.springframework.security.saml.processor.HTTPPostBinding;
 import org.springframework.security.saml.processor.SAMLBinding;
@@ -72,9 +70,17 @@ import java.util.*;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Profile({
     Constants.SPRING_PROFILE_QA,
-    Constants.SPRING_PROFILE_PRODUCTION
+    Constants.SPRING_PROFILE_PRODUCTION,
+    Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT
 })
 public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    private final static String KEYSTORE_LOCATION = "local path to keystore";
+    private final static String KEYSTORE_PASSWORD = "keystore password here";
+    private final static String DOMAIN = "(qa.)teacher.helsinki.fi"; // OR "(qa.)student.helsinki.fi"
+    private final static String LOGIN_ALIAS = "teacher"; // OR "student"
+    private static final String BASE_URL = "https://(qa.)teacher.helsinki.fi"; // OR "https://(qa.)student.helsinki.fi"
+    private static final String ENTITY_ID = "https://(qa.)teacher.helsinki.fi/shibboleth"; // OR "https://(qa.)student.helsinki.fi/shibboleth"
 
     private static final int ONE_WEEK_IN_SECONDS = 604800;
 
@@ -162,12 +168,13 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public KeyManager keyManager() {
         FileSystemResource fileSystemResource = new FileSystemResource(
-            new File(appConfiguration.get("saml.keystoreLocation")));
-        String storePass = appConfiguration.get("saml.keystorePassword");
+            new File(KEYSTORE_LOCATION));
+        String storePass = KEYSTORE_PASSWORD;
         Map<String, String> passwords = new HashMap<>();
-        passwords.put(getKeystoreAlias(appConfiguration.get("saml.teacher.alias")), storePass);
-        passwords.put(getKeystoreAlias(appConfiguration.get("saml.student.alias")), storePass);
-        return new JKSKeyManager(fileSystemResource, storePass, passwords, appConfiguration.get("saml.teacher.alias"));
+        passwords.put(DOMAIN, storePass);
+        String defaultKey = DOMAIN;
+
+        return new JKSKeyManager(fileSystemResource, storePass, passwords, defaultKey);
     }
 
     @Bean
@@ -232,15 +239,32 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new FilesystemResource(appConfiguration.get("saml." + alias + ".metadataLocation"));
     }
 
+    @Bean
+    public MetadataGenerator metadataGenerator() {
+        MetadataGenerator metadataGenerator = new MetadataGenerator();
+        metadataGenerator.setEntityId(ENTITY_ID);
+        metadataGenerator.setEntityBaseURL(BASE_URL);
+        metadataGenerator.setExtendedMetadata(spExtendedMetadata(LOGIN_ALIAS));
+        metadataGenerator.setIncludeDiscoveryExtension(false);
+        metadataGenerator.setKeyManager(keyManager());
+        return metadataGenerator;
+    }
+
+    @Bean
+    public MetadataGeneratorFilter metadataGeneratorFilter() {
+        return new MetadataGeneratorFilter(metadataGenerator());
+    }
+
     public ExtendedMetadata spExtendedMetadata(String alias) {
         ExtendedMetadata extendedMetadata = new ExtendedMetadata();
         extendedMetadata.setIdpDiscoveryEnabled(false);
         extendedMetadata.setSignMetadata(true);
         extendedMetadata.setLocal(true);
         extendedMetadata.setIdpDiscoveryEnabled(false);
-        extendedMetadata.setAlias(alias);
-        extendedMetadata.setSigningKey(getKeystoreAlias(alias));
-        extendedMetadata.setEncryptionKey(getKeystoreAlias(alias));
+
+        extendedMetadata.setSigningKey(DOMAIN);
+        extendedMetadata.setEncryptionKey(DOMAIN);
+        extendedMetadata.setAlias(LOGIN_ALIAS);
 
         return extendedMetadata;
     }
@@ -253,9 +277,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Qualifier("metadata")
     public CachingMetadataManager metadata() throws Exception {
         List<MetadataProvider> providers = new ArrayList<>();
-        providers.add(idpMetadata());
-        providers.add(spMetadata(appConfiguration.get("saml.teacher.alias")));
-        providers.add(spMetadata(appConfiguration.get("saml.student.alias")));
+
         return new CachingMetadataManager(providers);
     }
 
@@ -305,6 +327,11 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public MetadataDisplayFilter metadataDisplayFilter() {
+        return new MetadataDisplayFilter();
+    }
+
+    @Bean
     public FilterChainProxy samlFilter() throws Exception {
         List<SecurityFilterChain> chains = new ArrayList<>();
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/login/**"),
@@ -313,6 +340,8 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
             samlLogoutFilter()));
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SSO/**"),
             samlWebSSOProcessingFilter()));
+        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/metadata/**"),
+            metadataDisplayFilter()));
         return new FilterChainProxy(chains);
     }
 
@@ -342,7 +371,6 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/public/v1/**").permitAll()
             .antMatchers("/api/public/v2/**").permitAll()
             .antMatchers("/api/admin/**").access(Constants.ADMIN_ROLE_REQUIRED)
-            .antMatchers("/metrics/metrics/*").access(securityUtils.getWhitelistedIpAccess())
             .anyRequest().authenticated();
     }
 

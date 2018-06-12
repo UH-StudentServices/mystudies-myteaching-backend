@@ -39,7 +39,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @Profile({
     Constants.SPRING_PROFILE_TEST,
-    Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT,
     Constants.SPRING_PROFILE_DEVELOPMENT
 })
 public class LocalSecurityConfiguration extends WebSecurityConfigurerAdapter implements NonfederatedSecurityConfiguration {
