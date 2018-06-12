@@ -21,12 +21,11 @@ import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.domain.Favorite;
 import fi.helsinki.opintoni.domain.UnicafeFavorite;
 import fi.helsinki.opintoni.dto.FavoriteDto;
-import fi.helsinki.opintoni.dto.FeedDto;
 import fi.helsinki.opintoni.dto.FindFeedDto;
 import fi.helsinki.opintoni.dto.favorite.UnisportReservationsDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
-import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import fi.helsinki.opintoni.service.FeedService;
+import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import fi.helsinki.opintoni.service.favorite.UnisportService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
@@ -76,12 +75,6 @@ public class FavoriteResource extends AbstractResource {
         return response(favoriteService.saveRssFavorite(userId, request));
     }
 
-    @RequestMapping(value = "/rss", method = RequestMethod.GET)
-    @Timed
-    public ResponseEntity<FeedDto> getRssFeed(@RequestParam("url") String feedUrl, @RequestParam("limit") int limit) {
-        return response(feedService.getFeed(feedUrl, limit));
-    }
-
     @RequestMapping(value = "/rss/find", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<List<FindFeedDto>> findRssFeed(@RequestParam("url") String feedUrl) {
@@ -123,7 +116,7 @@ public class FavoriteResource extends AbstractResource {
     public ResponseEntity<FavoriteDto> saveUnisportFavorite(@UserId Long userId) {
         return response(favoriteService.insertUnisportFavorite(userId));
     }
-   
+
     @RequestMapping(value = "/unisport", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<UnisportReservationsDto> getUnisportReservations(@Username String username, Locale locale) {
@@ -135,7 +128,7 @@ public class FavoriteResource extends AbstractResource {
     public ResponseEntity<FavoriteDto> saveFlammaFavorite(@UserId Long userId, @PathVariable("flammaType") String type) {
         return response(favoriteService.insertFlammaFavorite(userId, type));
     }
-    
+
     @Timed
     @RequestMapping(value = "/order", method = RequestMethod.POST)
     public ResponseEntity<List<FavoriteDto>> orderFavorites(@UserId Long userId,

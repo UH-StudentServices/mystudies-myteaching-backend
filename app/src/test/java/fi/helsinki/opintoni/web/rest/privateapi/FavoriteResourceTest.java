@@ -80,15 +80,15 @@ public class FavoriteResourceTest extends SpringTest {
     }
 
     @Test
-    public void thatFlammaEventsFavoriteIsSaved() throws Exception {   
+    public void thatFlammaEventsFavoriteIsSaved() throws Exception {
         mockMvc.perform(post("/api/private/v1/favorites/flamma/FLAMMA_EVENTS").with(securityContext(studentSecurityContext()))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.id").value(any(Number.class))); 
+            .andExpect(jsonPath("$.id").value(any(Number.class)));
     }
-    
+
     @Test
     public void thatFlammaFavoriteWithIllegalTypeIsRejected() throws Exception {
         mockMvc.perform(post("/api/private/v1/favorites/flamma/XXX").with(securityContext(studentSecurityContext()))
@@ -96,7 +96,7 @@ public class FavoriteResourceTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().is4xxClientError());
     }
-    
+
     @Test
     public void thatUnisportReservationsAreReturned() throws Exception {
         unisportServer.expectAuthorization();
@@ -157,28 +157,6 @@ public class FavoriteResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(1)));
-    }
-
-    @Test
-    public void thatRSSFeedIsReturned() throws Exception {
-        String feedUrl = getMockFeedApiUrl();
-
-        String requestUrl = String.format("/api/private/v1/favorites/rss?url=%s&limit=3", feedUrl);
-
-        mockMvc.perform(get(requestUrl).with(securityContext(studentSecurityContext()))
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.title").value("RSS feed"))
-            .andExpect(jsonPath("$.link").value("http://www.helsinki.fi"))
-            .andExpect(jsonPath("$.entries[0].title").value("Feed entry title"))
-            .andExpect(jsonPath("$.entries[0].link").value("http://www.helsinki.fi/entry"))
-            .andExpect(jsonPath("$.entries[0].description").value("Feed description"))
-            .andExpect(jsonPath("$.entries[0].date[0]").value(2015))
-            .andExpect(jsonPath("$.entries[0].date[1]").value(12))
-            .andExpect(jsonPath("$.entries[0].date[2]").value(4))
-            .andExpect(jsonPath("$.entries[0].date[3]").value(11))
-            .andExpect(jsonPath("$.entries[0].date[4]").value(8))
-            .andExpect(jsonPath("$.entries[0].date[5]").value(42));
     }
 
     @Test
