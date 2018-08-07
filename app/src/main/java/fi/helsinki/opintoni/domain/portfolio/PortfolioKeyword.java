@@ -21,10 +21,7 @@ import fi.helsinki.opintoni.domain.AbstractAuditingEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -32,7 +29,7 @@ import javax.validation.constraints.Size;
 public class PortfolioKeyword extends AbstractAuditingEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @NotBlank
