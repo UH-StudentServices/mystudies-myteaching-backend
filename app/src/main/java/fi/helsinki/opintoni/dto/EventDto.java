@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.dto;
 
-import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
@@ -123,17 +122,14 @@ public class EventDto implements Comparable<EventDto> {
             .collect(Collectors.joining(", "));
     }
 
-    private String getOodiEventTitle() {
-        return Lists.newArrayList(title, optimeExtras).stream()
-            .filter(Objects::nonNull)
-            .map(Object::toString)
-            .collect(Collectors.joining(", "));
+    public String getOptimeExtrasAsString() {
+        return optimeExtras == null ?
+                "" :
+                optimeExtras.toString();
     }
 
     public String getFullEventTitle() {
-        return Source.OODI.equals(source)
-            ? getOodiEventTitle()
-            : String.format("%s, %s", title, courseTitle);
+        return Source.OODI.equals(source) ? title : String.format("%s, %s", title, courseTitle);
     }
 
 }

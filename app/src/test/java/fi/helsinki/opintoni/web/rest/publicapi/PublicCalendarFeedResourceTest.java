@@ -59,7 +59,8 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 "BEGIN:VEVENT",
                 "DTSTART;TZID=Europe/Helsinki:20161219T141500",
                 "DTEND;TZID=Europe/Helsinki:20161219T154500",
-                "SUMMARY:Formulat... Harjoitus II (en)\\, testauksessa mukana Aku Ankka",
+                "SUMMARY:Formulat... Harjoitus II (en)",
+                "DESCRIPTION:Aku Ankka\\, testauksessa mukana",
                 "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11\\, Päärakennus\\, "
                     + "sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11",
                 "UID:"),
@@ -104,24 +105,25 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                     expectedFeedEnd,
                     expectedCalendarEvents)))));
     }
-    
+
     @Test
     public void thatCalendarFeedIsDisplayedWithOverlappingEventData() throws Exception {
         Language language = Language.EN;
 
         expectOverlapping(language);
-       
+
         List<String> expectedCalendarEvents = newArrayList(
             eventToString(
                 "BEGIN:VEVENT",
                 "DTSTART;TZID=Europe/Helsinki:20161219T141500",
                 "DTEND;TZID=Europe/Helsinki:20161219T154500",
-                "SUMMARY:Formulat... Harjoitus II (en)\\, testauksessa mukana Aku Ankka",
+                "SUMMARY:Formulat... Harjoitus II (en)",
+                "DESCRIPTION:Aku Ankka\\, testauksessa mukana",
                 "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11\\, Päärakennus\\, "
                     + "sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11\\, overlapping where data",
                 "UID:")
         );
-        
+
         mockMvc.perform(get(String.format("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/%s", language.getCode())))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.TEXT_CALENDAR_UTF8))
@@ -133,17 +135,17 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
     }
 
     private List<Matcher<String>> contentMatchers(String expectedFeedStart, String expectedFeedEnd, List<String> expectedCalendarEvents) {
-       
+
         List<Matcher<String>> matchers = newArrayList();
 
         if (expectedFeedStart != null) {
             matchers.add(new StringStartsWith(expectedFeedStart));
         }
-        
+
         if (expectedFeedEnd != null) {
             matchers.add(new StringEndsWith(expectedFeedEnd));
         }
-        
+
         matchers.addAll(expectedCalendarEvents.stream()
             .map(StringContains::containsString)
             .collect(Collectors.toList()));
