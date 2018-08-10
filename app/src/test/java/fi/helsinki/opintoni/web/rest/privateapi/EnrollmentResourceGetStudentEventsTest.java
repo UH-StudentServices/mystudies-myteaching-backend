@@ -111,16 +111,17 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
             .andExpect(jsonPath("$[3].source").value(EventDto.Source.COURSE_PAGE.name()))
             .andExpect(jsonPath("$[3].type").value(EventDto.Type.DEFAULT.name()));
     }
-    
+
     @Test
     public void thatStudentEventsContainCorrectDataWhenDataIsOverlapping() throws Exception {
         expectEventsWithOverlap(LANG_CODE_FI);
         performGetStudentEvents(LANG_CODE_FI, null, EVENT_TITLE_FI)
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(2)))
-            .andExpect(jsonPath("$[0].fullEventTitle").value("Formuloi... Harjoitus II, testauksessa mukana Aku Ankka"));
+            .andExpect(jsonPath("$[0].fullEventTitle").value("Formuloi... Harjoitus II"))
+            .andExpect(jsonPath("$[0].optimeExtrasAsString").value("Aku Ankka, testauksessa mukana"));
     }
-    
+
     @Test
     public void thatStudentEventsAreReturnedInSwedish() throws Exception {
         expectEvents(LANG_CODE_SV);
@@ -170,7 +171,7 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
             .and()
             .enrollments();
     }
-    
+
     private void expectEventsWithOverlap(String langCode) {
         defaultStudentRequestChain()
             .events()

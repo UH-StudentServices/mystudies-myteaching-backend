@@ -3749,14 +3749,14 @@
             "automatic_enabled": "false",
             "automatic_end_date": null,
             "automatic_end_time": null,
-            "building_address1": null,
+            "building_address1": "Siltavuorenpenger 3",
             "building_address2": null,
-            "building_country": null,
-            "building_id": null,
-            "building_zipcode": null,
+            "building_country": "FI",
+            "building_id": "41",
+            "building_zipcode": "00170",
             "cancelled": "false",
             "course_id": 121261022,
-            "end_date": "2018-05-29T06:00:00.000Z",
+            "end_date": "2018-08-11T06:00:00.000Z",
             "event_duration": 60,
             "event_id": 121261026,
             "event_visible": "true",
@@ -3780,11 +3780,11 @@
                 }
             ],
             "realisation_type_code": 17,
-            "room_id": null,
-            "room_name": null,
-            "room_name_short": null,
+            "room_id": 82454477,
+            "room_name": "Athena, Siltavuorenpenger 3A, sali 168",
+            "room_name_short": "Athena, sali 168",
             "simple_type_code": 1,
-            "start_date": "2018-05-29T05:00:00.000Z",
+            "start_date": "2018-08-11T05:00:00.000Z",
             "weekday_code": 2
         },
         {
@@ -3799,15 +3799,15 @@
             "building_zipcode": null,
             "cancelled": "false",
             "course_id": 121261022,
-            "end_date": "2018-05-29T07:00:00.000Z",
+            "end_date": "2018-08-11T07:00:00.000Z",
             "event_duration": 60,
             "event_id": 121261028,
             "event_visible": "true",
             "hidden": "true",
             "learningopportunity_id": "OODI-FLOW",
             "optimeExtras": {
-                "otherNotes": "testauksessa mukana",
-                "roomNotes": null,
+                "otherNotes": "Jos Optimessa olisi todella pitkä selitys tässä kohtaa, esimerkiksi noin sataneljäkymmentä merkkiä, niin miltä se näyttäisi eri näkymissä?",
+                "roomNotes": "huone 5",
                 "staffNotes": "Jorma Hynninen"
             },
             "realisation_name": [
@@ -3827,7 +3827,7 @@
             "room_name": null,
             "room_name_short": null,
             "simple_type_code": 1,
-            "start_date": "2018-05-29T06:00:00.000Z",
+            "start_date": "2018-08-11T06:00:00.000Z",
             "weekday_code": 2
         },
         {

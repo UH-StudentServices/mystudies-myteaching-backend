@@ -114,6 +114,9 @@ public class CalendarService {
         eventProperties.add(new DtStart(convertStartDateToCalDate(eventDto)));
         eventProperties.add(new DtEnd(convertEndDateToCalDate(eventDto)));
         eventProperties.add(new Summary(eventDto.getFullEventTitle()));
+        if (!eventDto.getOptimeExtrasAsString().isEmpty()) {
+            eventProperties.add(new Description(eventDto.getOptimeExtrasAsString()));
+        }
         eventProperties.add(new Location((eventDto.getLocationsAsString())));
         eventProperties.add(generateUid());
 

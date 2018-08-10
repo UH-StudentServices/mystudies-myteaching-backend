@@ -22,12 +22,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class OptimeExtrasDto {
-    
+
     public String otherNotes;
 
     public String roomNotes;
 
-    public String staffNotes; 
+    public String staffNotes;
 
     public OptimeExtrasDto(String otherNotes, String roomNotes, String staffNotes) {
         this.otherNotes = otherNotes;
@@ -37,9 +37,9 @@ public class OptimeExtrasDto {
 
     @Override
     public String toString() {
-        return Lists.newArrayList(otherNotes, roomNotes, staffNotes)
+        return Lists.newArrayList(roomNotes, staffNotes, otherNotes)
             .stream()
             .filter(Objects::nonNull)
-            .collect(Collectors.joining(" "));
+            .collect(Collectors.joining(", "));
     }
 }
