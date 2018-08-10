@@ -322,3 +322,7 @@ meceSecretKey: W778UXMJ7PFQTKG2RM8NR2H7T3QE5ZTL
 
 pilotDegreeProgrammes:
     - A2004
+
+fileService:
+    client.implementation: mock
+    client.storage: memory
