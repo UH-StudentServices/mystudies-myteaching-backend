@@ -18,7 +18,7 @@
 package fi.helsinki.opintoni.dto;
 
 import com.google.common.collect.Lists;
-import java.util.Objects;
+
 import java.util.stream.Collectors;
 
 public class OptimeExtrasDto {
@@ -39,7 +39,7 @@ public class OptimeExtrasDto {
     public String toString() {
         return Lists.newArrayList(roomNotes, staffNotes, otherNotes)
             .stream()
-            .filter(Objects::nonNull)
+            .filter(s -> s != null && !s.isEmpty())
             .collect(Collectors.joining(", "));
     }
 }

@@ -3763,8 +3763,8 @@
             "hidden": "true",
             "learningopportunity_id": "OODI-FLOW",
             "optimeExtras": {
-                "otherNotes": "testauksessa mukana",
-                "roomNotes": null,
+                "otherNotes": null,
+                "roomNotes": "",
                 "staffNotes": "Aku Ankka"
             },
             "realisation_name": [
