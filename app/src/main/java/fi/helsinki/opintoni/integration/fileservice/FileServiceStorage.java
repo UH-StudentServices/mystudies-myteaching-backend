@@ -22,11 +22,11 @@ import java.util.Set;
 
 public interface FileServiceStorage {
 
-    void put(String name, byte[] data) throws IOException;
+    void put(String path, byte[] data) throws IOException;
 
-    byte[] get(String name);
+    byte[] get(String path);
 
-    void remove(String name) throws IOException;
+    void remove(String path) throws IOException;
 
     Set<String> fileList(String prefix);
 

@@ -27,18 +27,18 @@ public class FileServiceMemoryStorage implements FileServiceStorage {
     private final HashMap<String, byte[]> bytesToFilename = new HashMap<>();
 
     @Override
-    public void put(String name, byte[] data) {
-        bytesToFilename.put(name, data);
+    public void put(String path, byte[] data) {
+        bytesToFilename.put(path, data);
     }
 
     @Override
-    public byte[] get(String name) {
-        return bytesToFilename.get(name);
+    public byte[] get(String path) {
+        return bytesToFilename.get(path);
     }
 
     @Override
-    public void remove(String name) {
-        bytesToFilename.remove(name);
+    public void remove(String path) {
+        bytesToFilename.remove(path);
     }
 
     @Override

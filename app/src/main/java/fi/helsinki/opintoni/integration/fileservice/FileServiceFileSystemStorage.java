@@ -42,7 +42,7 @@ public class FileServiceFileSystemStorage implements FileServiceStorage {
 
     @Override
     public Set<String> fileList(String prefix) {
-        File folder = getPath(prefix).toFile();
+        File folder = getFileSystemPath(prefix).toFile();
         if (!folder.exists() || !folder.isDirectory()) {
             return new HashSet<>();
         }
@@ -55,7 +55,7 @@ public class FileServiceFileSystemStorage implements FileServiceStorage {
 
     @Override
     public void clear() {
-        File filesRoot = getPath("").toFile();
+        File filesRoot = getFileSystemPath("").toFile();
         if (filesRoot.exists() || filesRoot.isDirectory()) {
             File[] childs = filesRoot.listFiles();
             if (childs == null) {
@@ -68,8 +68,8 @@ public class FileServiceFileSystemStorage implements FileServiceStorage {
     }
 
     @Override
-    public void put(String name, byte[] data) throws IOException {
-        File file = getPath(name).toFile();
+    public void put(String path, byte[] data) throws IOException {
+        File file = getFileSystemPath(path).toFile();
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
@@ -77,29 +77,29 @@ public class FileServiceFileSystemStorage implements FileServiceStorage {
     }
 
     @Override
-    public byte[] get(String name) {
+    public byte[] get(String path) {
         byte[] data;
         try {
-            InputStream is = new FileInputStream(getPath(name).toString());
+            InputStream is = new FileInputStream(getFileSystemPath(path).toString());
             data = IOUtils.toByteArray(is);
             is.close();
         } catch (IOException e) {
-            logger.error("Couldn't get file {}", name, e);
+            logger.error("Couldn't get file {}", path, e);
             return null;
         }
         return data;
     }
 
     @Override
-    public void remove(String name) throws IOException {
-        File file = getPath(name).toFile();
+    public void remove(String path) throws IOException {
+        File file = getFileSystemPath(path).toFile();
         if (!file.delete()) {
-            throw new IOException("Failed to delete file " + name);
+            throw new IOException("Failed to delete file " + path);
         }
     }
 
-    private Path getPath(String portfolioPath) {
-        String[] pathParts = portfolioPath.split("/");
+    private Path getFileSystemPath(String path) {
+        String[] pathParts = path.split("/");
         return FileSystems.getDefault().getPath(storagePath, pathParts);
     }
 }

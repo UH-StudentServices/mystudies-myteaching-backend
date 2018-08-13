@@ -21,15 +21,11 @@ import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.integration.fileservice.FileServiceClient;
 import fi.helsinki.opintoni.integration.fileservice.FileServiceInOutStream;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PortfolioFilesService {
-
-    private static final Logger logger = LoggerFactory.getLogger(PortfolioFilesService.class);
 
     private final FileServiceClient fileServiceClient;
     private final PortfolioRepository portfolioRepository;
@@ -43,7 +39,7 @@ public class PortfolioFilesService {
 
     public void addFile(String filename, byte[] data, long userId) {
         String portfolioName = getPortfolioPath(userId);
-        fileServiceClient.addFile(buildPortfolioFilename(portfolioName, filename), data);
+        fileServiceClient.addFile(buildFilePath(portfolioName, filename), data);
     }
 
     public FileServiceInOutStream getFileListing(long userId) {
@@ -56,11 +52,11 @@ public class PortfolioFilesService {
 
     public void deleteFile(String filename, long userId) {
         String portfolioName = getPortfolioPath(userId);
-        fileServiceClient.deleteFile(buildPortfolioFilename(portfolioName, filename));
+        fileServiceClient.deleteFile(buildFilePath(portfolioName, filename));
     }
 
-    private String buildPortfolioFilename(String portfolioName, String filename) {
-        return String.join("/", portfolioName, filename);
+    private String buildFilePath(String portfolioPath, String filename) {
+        return String.join("/", portfolioPath, filename);
     }
 
     private String getPortfolioPath(long userId) {
