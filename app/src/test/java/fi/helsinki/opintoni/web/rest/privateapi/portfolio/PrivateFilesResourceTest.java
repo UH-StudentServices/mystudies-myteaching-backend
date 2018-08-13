@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static com.google.common.base.Charsets.UTF_8;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.hybridUserSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
@@ -95,7 +96,7 @@ public class PrivateFilesResourceTest extends SpringTest {
     }
 
     private ResultActions performPostFile() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", TEST_FILE_NAME, "text/plain", TEST_FILE_CONTENT.getBytes());
+        MockMultipartFile file = new MockMultipartFile("file", TEST_FILE_NAME, "text/plain", TEST_FILE_CONTENT.getBytes(UTF_8));
         return mockMvc.perform(fileUpload(CONTROL_RESOURCE_URL).file(file)
             .with(securityContext(studentSecurityContext())));
     }

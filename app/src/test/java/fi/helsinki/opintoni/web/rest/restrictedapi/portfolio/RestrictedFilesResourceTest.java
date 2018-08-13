@@ -23,6 +23,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.hybridUserSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -57,7 +58,7 @@ public class RestrictedFilesResourceTest extends RestrictedPortfolioTest {
     }
 
     private void addPortfolioFile() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", TEST_FILE_NAME, "text/plain", TEST_FILE_CONTENT.getBytes());
+        MockMultipartFile file = new MockMultipartFile("file", TEST_FILE_NAME, "text/plain", TEST_FILE_CONTENT.getBytes(UTF_8));
         mockMvc.perform(fileUpload(PRIVATE_RESOURCE_URL).file(file)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isNoContent());

@@ -28,8 +28,8 @@ public class FileServiceConfiguration {
     private static final String CLIENT_IMPLEMENTATION_PROPERTY = "fileService.client.implementation";
     private static final String CLIENT_STORAGE_IMPLEMENTATION_PROPERTY = "fileService.client.storage";
     private static final String CLIENT_STORAGE_FILE_SYSTEM_PATH_PROPERTY = "fileService.client.path";
-    private static final String BASE_URL_PROPERTRY = "fileService.base.url";
-    private static final String TOKEN_PROPERTRY = "fileService.token";
+    private static final String BASE_URL_PROPERTY = "fileService.base.url";
+    private static final String TOKEN_PROPERTY = "fileService.token";
     private static final String MOCK_CLIENT = "mock";
     private static final String REST_CLIENT = "rest";
     private static final String MEMORY_STORAGE = "memory";
@@ -40,8 +40,8 @@ public class FileServiceConfiguration {
 
     private FileServiceClient restClient() {
         return new FileServiceRestClient(
-            appConfiguration.get(BASE_URL_PROPERTRY),
-            appConfiguration.get(TOKEN_PROPERTRY)
+            appConfiguration.get(BASE_URL_PROPERTY),
+            appConfiguration.get(TOKEN_PROPERTY)
         );
     }
 
