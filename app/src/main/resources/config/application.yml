@@ -347,3 +347,8 @@ pilotDegreeProgrammes:
     - MH50_003
     - MH50_009
 
+fileService:
+    client:
+        implementation: mock
+        storage: fileSystem
+        path: /opt/opintoni/files/portfolio

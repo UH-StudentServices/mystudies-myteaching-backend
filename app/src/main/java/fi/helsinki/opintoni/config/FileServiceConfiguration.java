@@ -18,19 +18,16 @@
 package fi.helsinki.opintoni.config;
 
 import fi.helsinki.opintoni.integration.fileservice.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class FileServiceConfiguration {
-    private static final Logger logger = LoggerFactory.getLogger(FileServiceConfiguration.class);
 
     private static final String CLIENT_IMPLEMENTATION_PROPERTY = "fileService.client.implementation";
     private static final String CLIENT_STORAGE_IMPLEMENTATION_PROPERTY = "fileService.client.storage";
-    private static final String CLIENT_STORAGE_FILE_SYSTEM_IMPLEMENTATION_PATH = "fileService.client.storage.path";
+    private static final String CLIENT_STORAGE_FILE_SYSTEM_PATH_PROPERTY = "fileService.client.path";
     private static final String BASE_URL_PROPERTRY = "fileService.base.url";
     private static final String TOKEN_PROPERTRY = "fileService.token";
     private static final String MOCK_CLIENT = "mock";
@@ -48,27 +45,36 @@ public class FileServiceConfiguration {
         );
     }
 
-    private String getMockImplementation() {
-        return appConfiguration.get(CLIENT_STORAGE_IMPLEMENTATION_PROPERTY);
+    private FileServiceClient mockClient() {
+        return new FileServiceMockClient(fileServiceStorage());
     }
 
-    private FileServiceClient mockClient() {
-        FileServiceStorage mockStorage;
-        switch (getMockImplementation()) {
-            case MEMORY_STORAGE:
-                mockStorage = new FileServiceMemoryStorage();
-                break;
-            case FILE_SYSTEM_STORAGE:
-                mockStorage = new FileServiceFileSystemStorage(appConfiguration.get(CLIENT_STORAGE_FILE_SYSTEM_IMPLEMENTATION_PATH));
-                break;
-            default:
-                mockStorage = new FileServiceMemoryStorage();
-        }
-        return new FileServiceMockClient(mockStorage);
+    private FileServiceStorage memoryStorage() {
+        return new FileServiceMemoryStorage();
+    }
+
+    private FileServiceStorage fileSystemStorage() {
+        return new FileServiceFileSystemStorage(appConfiguration.get(CLIENT_STORAGE_FILE_SYSTEM_PATH_PROPERTY));
     }
 
     private String getClientImplementation() {
         return appConfiguration.get(CLIENT_IMPLEMENTATION_PROPERTY);
+    }
+
+    private String getFileServiceStorageImplementation() {
+        return appConfiguration.get(CLIENT_STORAGE_IMPLEMENTATION_PROPERTY);
+    }
+
+    @Bean
+    public FileServiceStorage fileServiceStorage() {
+        switch (getFileServiceStorageImplementation()) {
+            case FILE_SYSTEM_STORAGE:
+                return fileSystemStorage();
+            case MEMORY_STORAGE:
+                return memoryStorage();
+            default:
+                return memoryStorage();
+        }
     }
 
     @Bean

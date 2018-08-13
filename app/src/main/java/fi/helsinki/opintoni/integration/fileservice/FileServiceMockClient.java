@@ -89,6 +89,9 @@ public class FileServiceMockClient implements FileServiceClient {
     }
 
     private String fullName(String prefix, String filename) {
+        if (filename.startsWith(prefix + "/")) {
+            return filename;
+        }
         return String.join("/", prefix, filename);
     }
 

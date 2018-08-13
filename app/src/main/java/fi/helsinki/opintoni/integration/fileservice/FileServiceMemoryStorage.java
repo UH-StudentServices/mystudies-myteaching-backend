@@ -45,4 +45,9 @@ public class FileServiceMemoryStorage implements FileServiceStorage {
     public Set<String> fileList(String prefix) {
         return bytesToFilename.keySet().stream().filter(key -> key.startsWith(prefix)).collect(toSet());
     }
+
+    @Override
+    public void clear() {
+        bytesToFilename.clear();
+    }
 }

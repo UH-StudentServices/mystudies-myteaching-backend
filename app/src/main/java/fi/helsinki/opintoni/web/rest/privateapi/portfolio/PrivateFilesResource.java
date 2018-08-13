@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import fi.helsinki.opintoni.integration.fileservice.FileServiceInOutStream;
 import fi.helsinki.opintoni.service.portfolio.PortfolioFilesService;
-import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
@@ -33,8 +32,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.PRIVATE_API_V1 + "/portfolio/files",
-    produces = WebConstants.APPLICATION_JSON_UTF8)
+    value = RestConstants.PRIVATE_API_V1 + "/portfolio/files")
 public class PrivateFilesResource extends AbstractResource {
 
     private final PortfolioFilesService portfolioFilesService;
@@ -42,6 +40,18 @@ public class PrivateFilesResource extends AbstractResource {
     @Autowired
     public PrivateFilesResource(PortfolioFilesService portfolioFilesService) {
         this.portfolioFilesService = portfolioFilesService;
+    }
+
+    @GetMapping(value = "/{portfolioRole}/{lang}/{path}/{filename:.+}")
+    public ResponseEntity<InputStreamResource> getFile(@PathVariable("portfolioRole") String portfolioRole, // Needed for visibility resolving
+                                                       @PathVariable("lang") String lang, // Needed for visibility resolving
+                                                       @PathVariable("path") String path,
+                                                       @PathVariable("filename") String filename) {
+        FileServiceInOutStream inOutStream = portfolioFilesService.getFile(path, filename);
+        InputStreamResource isr = new InputStreamResource(inOutStream.getInputStream());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentLength(inOutStream.getSize());
+        return new ResponseEntity<>(isr, headers, HttpStatus.OK);
     }
 
     @GetMapping

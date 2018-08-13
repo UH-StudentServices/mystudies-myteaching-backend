@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
-import com.google.common.base.Splitter;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.integration.fileservice.FileServiceClient;
 import fi.helsinki.opintoni.integration.fileservice.FileServiceInOutStream;
@@ -26,8 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class PortfolioFilesService {
@@ -45,20 +42,20 @@ public class PortfolioFilesService {
     }
 
     public void addFile(String filename, byte[] data, long userId) {
-        String portfolioName = getPortfolioName(userId);
+        String portfolioName = getPortfolioPath(userId);
         fileServiceClient.addFile(buildPortfolioFilename(portfolioName, filename), data);
     }
 
     public FileServiceInOutStream getFileListing(long userId) {
-        return fileServiceClient.getFileListing(getPortfolioName(userId));
+        return fileServiceClient.getFileListing(getPortfolioPath(userId));
     }
 
-    public FileServiceInOutStream getFile(String filename) {
-        return fileServiceClient.getFile(filename);
+    public FileServiceInOutStream getFile(String portfolioPath, String filename) {
+        return fileServiceClient.getFile(String.join("/", portfolioPath, filename));
     }
 
     public void deleteFile(String filename, long userId) {
-        String portfolioName = getPortfolioName(userId);
+        String portfolioName = getPortfolioPath(userId);
         fileServiceClient.deleteFile(buildPortfolioFilename(portfolioName, filename));
     }
 
@@ -66,9 +63,8 @@ public class PortfolioFilesService {
         return String.join("/", portfolioName, filename);
     }
 
-    private String getPortfolioName(long userId) {
-        List<String> path = Splitter.on("/").splitToList(portfolioRepository.findByUserId(userId).findFirst()
-            .orElseThrow(() -> new NotFoundException("Portfolio not found")).path);
-        return path.get(path.size() - 1);
+    private String getPortfolioPath(long userId) {
+        return portfolioRepository.findByUserId(userId).findFirst()
+            .orElseThrow(() -> new NotFoundException("Portfolio not found")).path;
     }
 }

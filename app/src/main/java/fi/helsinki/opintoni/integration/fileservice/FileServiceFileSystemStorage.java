@@ -54,6 +54,20 @@ public class FileServiceFileSystemStorage implements FileServiceStorage {
     }
 
     @Override
+    public void clear() {
+        File filesRoot = getPath("").toFile();
+        if (filesRoot.exists() || filesRoot.isDirectory()) {
+            File[] childs = filesRoot.listFiles();
+            if (childs == null) {
+                return;
+            }
+            for (File child : childs) {
+                child.delete();
+            }
+        }
+    }
+
+    @Override
     public void put(String name, byte[] data) throws IOException {
         File file = getPath(name).toFile();
         if (!file.getParentFile().exists()) {

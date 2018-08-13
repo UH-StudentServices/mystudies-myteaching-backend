@@ -29,4 +29,6 @@ public interface FileServiceStorage {
     void remove(String name) throws IOException;
 
     Set<String> fileList(String prefix);
+
+    void clear();
 }
