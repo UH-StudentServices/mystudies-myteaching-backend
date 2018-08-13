@@ -8,6 +8,12 @@ server:
             path: /
             domain: helsinki.fi
 
+spring:
+    http:
+        multipart:
+            max-file-size: 16MB
+            max-request-size: 18MB
+
 # Disable the spring security default configuration from spring-boot-actuator
 management.security.enabled: true
 security.basic.enabled: false
@@ -341,3 +347,8 @@ pilotDegreeProgrammes:
     - MH50_003
     - MH50_009
 
+fileService:
+    client:
+        implementation: mock
+        storage: fileSystem
+        path: /opt/opintoni/files/portfolio

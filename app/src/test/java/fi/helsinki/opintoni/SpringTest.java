@@ -19,6 +19,7 @@ package fi.helsinki.opintoni;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.config.Constants;
+import fi.helsinki.opintoni.integration.fileservice.FileServiceStorage;
 import fi.helsinki.opintoni.integration.newsfeeds.FlammaRestClient;
 import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsRestClient;
 import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
@@ -28,9 +29,7 @@ import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.server.*;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
-import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
-import fi.helsinki.opintoni.web.requestchain.TeacherRequestChain;
-import fi.helsinki.opintoni.web.requestchain.OodiCourseNamesRequestChain;
+import fi.helsinki.opintoni.web.requestchain.*;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
@@ -104,7 +103,8 @@ public abstract class SpringTest {
     @Autowired
     protected RestTemplate metaDataRestTemplate;
 
-    @Autowired RestTemplate unisportRestTemplate;
+    @Autowired
+    RestTemplate unisportRestTemplate;
 
     @Autowired
     private Filter springSecurityFilterChain;
@@ -126,6 +126,9 @@ public abstract class SpringTest {
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private FileServiceStorage fileServiceStorage;
 
     @Before
     public void initRestServer() {
@@ -158,6 +161,11 @@ public abstract class SpringTest {
             .stream()
             .map(cacheManager::getCache)
             .forEach(Cache::clear);
+    }
+
+    @Before
+    public void clearFileStorage() {
+        fileServiceStorage.clear();
     }
 
     @After
@@ -226,15 +234,15 @@ public abstract class SpringTest {
     }
 
     protected OodiCourseNamesRequestChain defaultOodiCourseNamesRequestChain() {
-        return  new OodiCourseNamesRequestChain(oodiServer);
+        return new OodiCourseNamesRequestChain(oodiServer);
     }
 
     protected String getRemoteMockApiUrl(String path) {
         return String.format("http://%s:%s%s/%s",
-                environment.getProperty("server.address"),
-                environment.getProperty("server.port"),
-                RestConstants.PUBLIC_API_V1,
-                path);
+            environment.getProperty("server.address"),
+            environment.getProperty("server.port"),
+            RestConstants.PUBLIC_API_V1,
+            path);
     }
 
     protected String getMockFeedApiUrl() {
