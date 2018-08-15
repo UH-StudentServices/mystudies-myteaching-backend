@@ -1558,4 +1558,29 @@
     <changeSet id="Update varchar length for degree_programme.degree_code" author="Sami Siren">
         <modifyDataType tableName="degree_programme" columnName="degree_code" newDataType="varchar(255)" />
     </changeSet>
+
+    <changeSet id="OO-1113 flexible degree date and orderable degrees" author="Joni Korhonen" dbms="postgresql">
+        <renameColumn tableName="degree" oldColumnName="date_of_degree" newColumnName="date_of_degree_old" />
+        <addColumn tableName="degree">
+            <column name="date_of_degree" type="varchar(255)" />
+            <column name="order_index" type="int" />
+        </addColumn>
+        <sql>
+            update degree d set
+                date_of_degree = to_char(d.date_of_degree_old, 'DD.MM.YYYY'),
+                order_index = s.row - 1 from (select id, row_number() over(partition by portfolio_id order by date_of_degree_old asc) as row from degree) as s where s.id = d.id;
+        </sql>
+        <dropColumn tableName="degree" columnName="date_of_degree_old" />
+        <addNotNullConstraint tableName="degree" columnName="date_of_degree" />
+    </changeSet>
+
+    <changeSet id="OO-1113 flexible degree date and orderable degrees (h2)" author="Joni Korhonen" dbms="h2">
+        <dropColumn tableName="degree" columnName="date_of_degree" />
+        <addColumn tableName="degree">
+            <column name="date_of_degree" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="order_index" type="int" />
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
