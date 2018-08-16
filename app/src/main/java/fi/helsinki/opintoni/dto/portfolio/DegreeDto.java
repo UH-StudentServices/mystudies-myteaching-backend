@@ -22,6 +22,7 @@ import java.time.LocalDate;
 public class DegreeDto {
 
     public String title;
+    public String institution;
     public String description;
 
     public LocalDate dateOfDegree;

@@ -62,6 +62,7 @@ public class DegreeService extends DtoService {
         updateDegrees.forEach(updateDegree -> {
             Degree degree = new Degree();
             degree.title = updateDegree.title;
+            degree.institution = updateDegree.institution;
             degree.description = updateDegree.description;
             degree.dateOfDegree = updateDegree.dateOfDegree;
             degree.portfolio = portfolio;
