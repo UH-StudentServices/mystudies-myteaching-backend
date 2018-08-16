@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -60,4 +61,14 @@ public class WorkExperienceServiceTest extends SpringTest {
         assertThat(savedWorkExperienceDto.endDate).isEqualTo(workExperienceDto.endDate);
         assertThat(savedWorkExperienceDto.text).isEqualTo(workExperienceDto.text);
     }
+
+    @Test
+    public void workExperiencesAreOrderedCorrectly() {
+        workExperienceService.orderWorkExperiences(2L, Arrays.asList(3L, 1L, 2L));
+
+        final List<WorkExperienceDto> workExperiences = workExperienceService.findByPortfolioId(2L);
+        assertThat(workExperiences.get(0).id).isEqualTo(3L);
+        assertThat(workExperiences.get(1).id).isEqualTo(1L);
+    }
+
 }

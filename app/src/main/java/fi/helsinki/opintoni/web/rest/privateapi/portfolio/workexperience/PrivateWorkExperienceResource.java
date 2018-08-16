@@ -61,14 +61,14 @@ public class PrivateWorkExperienceResource extends AbstractResource {
     @Timed
     @RequestMapping(value = "/order", method = RequestMethod.POST)
     public ResponseEntity<List<WorkExperienceDto>> orderWorkExperiences(@UserId Long userId,
+                                                            @PathVariable Long portfolioId,
                                                             @RequestBody OrderWorkExperiencesRequest request) {
 
-        permissionChecker.verifyPermission(userId, request.workExperienceIds, Favorite.class);
+        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
 
         return response(() -> {
-            workExperienceService.orderWorkExperiences(userId, request.workExperienceIds);
-            return workExperienceService.findByUserId(userId);
+            workExperienceService.orderWorkExperiences(portfolioId, request.workExperienceIds);
+            return workExperienceService.findByPortfolioId(portfolioId);
         });
     }
-
 }

@@ -49,15 +49,16 @@ public class WorkExperienceService extends DtoService {
     }
 
     public List<WorkExperienceDto> findByPortfolioId(Long portfolioId) {
-        return getDtos(portfolioId, workExperienceRepository::findByPortfolioId, workExperienceConverter::toDto);
+        return getDtos(portfolioId, workExperienceRepository::findByPortfolioIdOrderByOrderIndexAsc, workExperienceConverter::toDto);
     }
 
     public List<WorkExperienceDto> updateWorkExperiences(Long portfolioId, List<UpdateWorkExperience> updateWorkExperiences) {
         Portfolio portfolio = portfolioRepository.findOne(portfolioId);
 
         workExperienceRepository.deleteByPortfolioId(portfolio.id);
+        int orderIndex = 0;
 
-        updateWorkExperiences.forEach(updateWorkExperience -> {
+        for (UpdateWorkExperience updateWorkExperience: updateWorkExperiences) {
             WorkExperience workExperience = new WorkExperience();
             workExperience.employer = updateWorkExperience.employer;
             workExperience.employerUrl = updateWorkExperience.employerUrl;
@@ -66,12 +67,19 @@ public class WorkExperienceService extends DtoService {
             workExperience.endDate = updateWorkExperience.endDate;
             workExperience.text = updateWorkExperience.text;
             workExperience.portfolio = portfolio;
-
+            workExperience.orderIndex = orderIndex++;
             workExperienceRepository.save(workExperience);
-        });
+        }
 
         return getDtos(portfolioId,
-            workExperienceRepository::findByPortfolioId,
+            workExperienceRepository::findByPortfolioIdOrderByOrderIndexAsc,
             workExperienceConverter::toDto);
+    }
+
+    public void orderWorkExperiences(final Long portfolioId, final List<Long> orderedWorkExperienceIds) {
+        workExperienceRepository
+            .findByPortfolioIdOrderByOrderIndexAsc(portfolioId).stream()
+            .filter(w -> orderedWorkExperienceIds.contains(w.id))
+            .forEach(w -> w.orderIndex = orderedWorkExperienceIds.indexOf(w.id));
     }
 }

@@ -15,19 +15,12 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.repository.portfolio;
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.workexperience;
 
-import fi.helsinki.opintoni.domain.portfolio.WorkExperience;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.google.common.collect.Lists;
 
 import java.util.List;
 
-public interface WorkExperienceRepository extends JpaRepository<WorkExperience, Long> {
-
-    void deleteByPortfolioId(Long portfolioId);
-
-    List<WorkExperience> findByPortfolioId(Long portfolioId);
-
-    List<WorkExperience> findByPortfolioIdOrderByOrderIndexAsc(Long portfolioId);
-
+public class OrderWorkExperiencesRequest {
+    public List<Long> workExperienceIds = Lists.newArrayList();
 }
