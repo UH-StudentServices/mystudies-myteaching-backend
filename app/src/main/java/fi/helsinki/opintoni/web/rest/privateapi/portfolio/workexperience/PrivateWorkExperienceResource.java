@@ -57,18 +57,4 @@ public class PrivateWorkExperienceResource extends AbstractResource {
         permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
         return response(workExperienceService.updateWorkExperiences(portfolioId, updateWorkExperiences));
     }
-
-    @Timed
-    @RequestMapping(value = "/order", method = RequestMethod.POST)
-    public ResponseEntity<List<WorkExperienceDto>> orderWorkExperiences(@UserId Long userId,
-                                                            @PathVariable Long portfolioId,
-                                                            @RequestBody OrderWorkExperiencesRequest request) {
-
-        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
-
-        return response(() -> {
-            workExperienceService.orderWorkExperiences(portfolioId, request.workExperienceIds);
-            return workExperienceService.findByPortfolioId(portfolioId);
-        });
-    }
 }

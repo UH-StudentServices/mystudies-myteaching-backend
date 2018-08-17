@@ -63,12 +63,36 @@ public class WorkExperienceServiceTest extends SpringTest {
     }
 
     @Test
-    public void workExperiencesAreOrderedCorrectly() {
-        workExperienceService.orderWorkExperiences(2L, Arrays.asList(3L, 1L, 2L));
+    public void thatWorkExperienceIsReturnedInSameOrderAsSaved() {
+        final Long portfolioId = 3L;
 
-        final List<WorkExperienceDto> workExperiences = workExperienceService.findByPortfolioId(2L);
-        assertThat(workExperiences.get(0).id).isEqualTo(3L);
-        assertThat(workExperiences.get(1).id).isEqualTo(1L);
+        UpdateWorkExperience workExperienceDto1 = new UpdateWorkExperience();
+        workExperienceDto1.jobTitle = "Z First Jobtitle";
+        workExperienceDto1.employer = "Z Employer name 1";
+        workExperienceDto1.text = "Z This is text chapter telling what the user has done at the Employer.";
+        workExperienceDto1.startDate = LocalDate.now();
+        workExperienceDto1.endDate = LocalDate.now();
+        UpdateWorkExperience workExperienceDto2 = new UpdateWorkExperience();
+        workExperienceDto2.jobTitle = "A Second Jobtitle";
+        workExperienceDto2.employer = "A Employer name 2";
+        workExperienceDto2.text = "A This is text chapter telling what the user has done at the Employer.";
+        workExperienceDto2.startDate = LocalDate.now();
+        workExperienceDto2.endDate = LocalDate.now();
+
+        workExperienceService.updateWorkExperiences(portfolioId, Arrays.asList(workExperienceDto1, workExperienceDto2));
+
+        List<WorkExperienceDto> workExperienceDtos = workExperienceService.findByPortfolioId(portfolioId);
+
+        WorkExperienceDto savedWorkExperienceDto1 = workExperienceDtos.get(0);
+        WorkExperienceDto savedWorkExperienceDto2 = workExperienceDtos.get(1);
+
+        assertThat(workExperienceDtos).hasSize(2);
+        assertThat(savedWorkExperienceDto1.jobTitle).isEqualTo(workExperienceDto1.jobTitle);
+        assertThat(savedWorkExperienceDto1.employer).isEqualTo(workExperienceDto1.employer);
+        assertThat(savedWorkExperienceDto1.text).isEqualTo(workExperienceDto1.text);
+        assertThat(savedWorkExperienceDto2.jobTitle).isEqualTo(workExperienceDto2.jobTitle);
+        assertThat(savedWorkExperienceDto2.employer).isEqualTo(workExperienceDto2.employer);
+        assertThat(savedWorkExperienceDto2.text).isEqualTo(workExperienceDto2.text);
     }
 
 }

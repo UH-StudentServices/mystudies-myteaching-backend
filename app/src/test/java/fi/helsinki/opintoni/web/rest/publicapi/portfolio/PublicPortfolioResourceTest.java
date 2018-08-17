@@ -159,4 +159,16 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
                 )
             ))));
     }
+
+    @Test
+    public void thatStudentPortfolioWorkExperiencesAreOrderedProperly() throws Exception {
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PORTFOLIO_PATH)
+            .with(securityContext(studentSecurityContext())))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.workExperience").value(
+                contains(hasEntry("jobTitle", "Harjoittelija"),
+                    hasEntry("jobTitle", "Rehtori"),
+                    hasEntry("jobTitle", "Tuholaistorjuja"))
+            ));
+    }
 }

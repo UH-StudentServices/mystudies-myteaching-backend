@@ -75,11 +75,4 @@ public class WorkExperienceService extends DtoService {
             workExperienceRepository::findByPortfolioIdOrderByOrderIndexAsc,
             workExperienceConverter::toDto);
     }
-
-    public void orderWorkExperiences(final Long portfolioId, final List<Long> orderedWorkExperienceIds) {
-        workExperienceRepository
-            .findByPortfolioIdOrderByOrderIndexAsc(portfolioId).stream()
-            .filter(w -> orderedWorkExperienceIds.contains(w.id))
-            .forEach(w -> w.orderIndex = orderedWorkExperienceIds.indexOf(w.id));
-    }
 }
