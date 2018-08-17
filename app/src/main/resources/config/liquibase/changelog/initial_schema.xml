@@ -1567,8 +1567,16 @@
         </addColumn>
         <sql>
             update degree d set
-                date_of_degree = to_char(d.date_of_degree_old, 'DD.MM.YYYY'),
-                order_index = s.row - 1 from (select id, row_number() over(partition by portfolio_id order by date_of_degree_old asc) as row from degree) as s where s.id = d.id;
+                date_of_degree =
+                    case when p.language = 'en' then to_char(d.date_of_degree_old, 'DD Mon YYYY')
+                         else to_char(d.date_of_degree_old, 'DD.MM.YYYY')
+                    end,
+                order_index =
+                    s.row - 1 from (
+                        select id, row_number() over(partition by portfolio_id order by date_of_degree_old asc) as row from degree
+                    ) as s where s.id = d.id
+            from portfolio p
+            where d.portfolio_id = p.id;
         </sql>
         <dropColumn tableName="degree" columnName="date_of_degree_old" />
         <addNotNullConstraint tableName="degree" columnName="date_of_degree" />
