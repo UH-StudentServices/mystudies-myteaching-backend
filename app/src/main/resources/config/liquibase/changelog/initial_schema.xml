@@ -1564,4 +1564,22 @@
             <column name="order_index" type="int" />
         </addColumn>
     </changeSet>
+
+    <changeSet id="Create default orders for work_experience" author="Jukka Purma" dbms="postgresql">
+        <!-- Try this out in http://sqlfiddle.com/#!17/66293/11 . Because updateWorkexperience deletes
+         and recreates all portfolio's work_experience items on each update, their ids already reflect the order in
+         which they were added. (This also means that we wouldn't even need order_index yet, but the data is
+         more resilient if ids won't have that kind of secret secondary function.). -->
+        <sql>
+            WITH subquery AS (
+                SELECT id, row_number() OVER (PARTITION BY portfolio_id) AS rnum
+                FROM work_experience
+                ORDER BY id ASC
+            )
+            UPDATE work_experience
+            SET order_index=subquery.rnum
+            FROM subquery
+            WHERE work_experience.id=subquery.id;
+        </sql>
+    </changeSet>
 </databaseChangeLog>
