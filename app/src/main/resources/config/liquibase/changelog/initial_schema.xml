@@ -1642,4 +1642,17 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="OO-901 Add relation between portfolio and favorites" author="Tomi Mäkinen">
+        <dropColumn tableName="favorite" columnName="portfolio" />
+        <addColumn tableName="favorite">
+            <column name="portfolio_id" type="bigint" />
+        </addColumn>
+        <addForeignKeyConstraint baseColumnNames="portfolio_id"
+                                 baseTableName="favorite"
+                                 constraintName="fk_favorite_portfolio"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portfolio"
+                                 onDelete="CASCADE"/>
+    </changeSet>
 </databaseChangeLog>

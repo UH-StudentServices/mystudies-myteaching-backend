@@ -40,7 +40,7 @@ public class FavoriteServiceOrderFavoritesTest extends AbstractFavoriteServiceTe
     public void favoritesAreOrderedCorrectlyForPortfolio() {
         favoriteService.orderPortfolioFavorites(1L, Arrays.asList(5L, 4L));
 
-        final List<FavoriteDto> favorites = favoriteService.findByUserIdForPortfolio(1L);
+        final List<FavoriteDto> favorites = favoriteService.findByPortfolioId(1L);
         assertThat(favorites.get(0).id).isEqualTo(5L);
         assertThat(favorites.get(1).id).isEqualTo(4L);
     }

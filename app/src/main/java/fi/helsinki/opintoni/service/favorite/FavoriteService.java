@@ -20,9 +20,12 @@ package fi.helsinki.opintoni.service.favorite;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.domain.*;
+import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.dto.FavoriteDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.FavoriteRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
+import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.converter.FavoriteConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.InsertLinkFavoriteRequest;
 import fi.helsinki.opintoni.web.rest.privateapi.InsertTwitterFavoriteRequest;
@@ -44,33 +47,35 @@ public class FavoriteService {
     private final FavoriteRepository favoriteRepository;
     private final FavoriteConverter favoriteConverter;
     private final UserRepository userRepository;
+    private final PortfolioRepository portfolioRepository;
     private final FavoriteProperties favoriteProperties;
 
     @Autowired
     public FavoriteService(FavoriteRepository favoriteRepository,
                            FavoriteConverter favoriteConverter,
                            UserRepository userRepository,
-                           FavoriteProperties favoriteProperties) {
+                           FavoriteProperties favoriteProperties,
+                           PortfolioRepository portfolioRepository) {
         this.favoriteRepository = favoriteRepository;
         this.favoriteConverter = favoriteConverter;
         this.userRepository = userRepository;
         this.favoriteProperties = favoriteProperties;
+        this.portfolioRepository = portfolioRepository;
+    }
+
+    public List<FavoriteDto> findByPortfolioId(final Long portfolioId) {
+        return favoriteRepository.findByPortfolioIdOrderByOrderIndexAsc(portfolioId)
+                .stream()
+                .map(favoriteConverter::toDto)
+                .collect(Collectors.toList());
     }
 
     public List<FavoriteDto> findByUserId(final Long userId) {
-        return findByUserId(userId, false);
-    }
-
-    private List<FavoriteDto> findByUserId(final Long userId, final boolean portfolio) {
         return favoriteRepository.findByUserIdOrderByOrderIndexAsc(userId)
             .stream()
-            .filter(f -> f.isPortfolio() == portfolio)
+            .filter(f -> f.isPortfolio() == false)
             .map(favoriteConverter::toDto)
             .collect(Collectors.toList());
-    }
-
-    public List<FavoriteDto> findByUserIdForPortfolio(final Long userId) {
-        return findByUserId(userId, true);
     }
 
     public FavoriteDto saveRssFavorite(Long userId, SaveRssFavoriteRequest saveRssFavoriteRequest) {
@@ -97,11 +102,11 @@ public class FavoriteService {
 
         return favoriteConverter.toDto(favorite);
     }
-    
+
     private static final ImmutableList<Favorite.Type> FLAMMA_TYPES = ImmutableList.of(
         Favorite.Type.FLAMMA_NEWS,Favorite.Type.FLAMMA_EVENTS);
-    
-    public FavoriteDto insertFlammaFavorite(Long userId, String typeString) {        
+
+    public FavoriteDto insertFlammaFavorite(Long userId, String typeString) {
         Favorite.Type type = Favorite.Type.valueOf(typeString);
         if (!FLAMMA_TYPES.contains(type)) {
             throw new IllegalArgumentException(
@@ -117,7 +122,8 @@ public class FavoriteService {
     }
 
     public FavoriteDto insertLinkFavoriteForPortfolio(final Long userId,
-                                                      final InsertLinkFavoriteRequest insertRequest) {
+                                                      final InsertLinkFavoriteRequest insertRequest,
+                                                      final Long portfolioId) {
         LinkFavorite.Builder builder = new LinkFavorite.Builder();
 
         LinkFavorite favorite = builder
@@ -130,7 +136,7 @@ public class FavoriteService {
             .thumbnailUrl(insertRequest.thumbnailUrl)
             .thumbnailHeight(insertRequest.thumbnailHeight)
             .thumbnailWidth(insertRequest.thumbnailWidth)
-            .portfolio(true)
+            .portfolio(portfolioRepository.findOne(portfolioId))
             .build();
 
         favoriteRepository.save(favorite);
@@ -155,14 +161,14 @@ public class FavoriteService {
     }
 
     public FavoriteDto insertTwitterFavorite(Long userId, InsertTwitterFavoriteRequest request) {
-        return insertTwitterFavorite(userId, request, false);
+        return insertTwitterFavorite(userId, request, null);
     }
 
-    private FavoriteDto insertTwitterFavorite(Long userId, InsertTwitterFavoriteRequest request, boolean portfolio) {
+    private FavoriteDto insertTwitterFavorite(Long userId, InsertTwitterFavoriteRequest request, Portfolio portfolio) {
         TwitterFavorite favorite = new TwitterFavorite();
         favorite.type = Favorite.Type.TWITTER;
         favorite.user = userRepository.findOne(userId);
-        favorite.orderIndex = orderIndex(portfolio).apply(userId) + 1;
+        favorite.orderIndex = orderIndex(portfolio != null).apply(userId) + 1;
         favorite.portfolio = portfolio;
 
         favorite.feedType = TwitterFavorite.FeedType.valueOf(request.feedType);
@@ -172,8 +178,10 @@ public class FavoriteService {
         return favoriteConverter.toDto(favorite);
     }
 
-    public FavoriteDto insertTwitterFavoriteForPortfolio(Long userId, InsertTwitterFavoriteRequest request) {
-        return insertTwitterFavorite(userId, request, true);
+    public FavoriteDto insertTwitterFavoriteForPortfolio(Long userId, InsertTwitterFavoriteRequest request, Long portfolioId) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new NotFoundException("Portfolio not found"));
+        return insertTwitterFavorite(userId, request, portfolio);
     }
 
     public void orderPortfolioFavorites(final Long userId, final List<Long> orderedFavoriteIds) {
@@ -257,10 +265,10 @@ public class FavoriteService {
         twitterFavorite.value = value;
         return twitterFavorite;
     }
-    
+
     private Favorite createFlammaFavorite(Favorite.Type type) {
         Favorite flammaFavorite = new Favorite();
-        flammaFavorite.type = type;  
+        flammaFavorite.type = type;
         return flammaFavorite;
     }
 }

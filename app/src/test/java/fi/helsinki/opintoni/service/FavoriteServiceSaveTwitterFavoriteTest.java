@@ -31,7 +31,7 @@ public class FavoriteServiceSaveTwitterFavoriteTest extends AbstractFavoriteServ
         request.feedType = "USER_TIMELINE";
         request.value = "helsinkiuni";
 
-        TwitterFavoriteDto dto = (TwitterFavoriteDto) favoriteService.insertTwitterFavoriteForPortfolio(1L, request);
+        TwitterFavoriteDto dto = (TwitterFavoriteDto) favoriteService.insertTwitterFavoriteForPortfolio(1L, request, 1L);
 
         assertThat(dto.feedType).isEqualTo("USER_TIMELINE");
         assertThat(dto.value).isEqualTo("helsinkiuni");

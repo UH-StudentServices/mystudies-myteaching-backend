@@ -30,30 +30,6 @@
             <column name="created_date" type="timestamp"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/favorites.csv"
-                  separator=";"
-                  tableName="favorite">
-            <column name="created_date" type="timestamp"/>
-        </loadData>
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/twitter_favorites.csv"
-                  separator=";"
-                  tableName="twitter_favorite">
-            <column name="created_date" type="timestamp"/>
-        </loadData>
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/rss_favorites.csv"
-                  separator=";"
-                  tableName="rss_favorite">
-            <column name="created_date" type="timestamp"/>
-        </loadData>
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/link_favorites.csv"
-                  separator=";"
-                  tableName="link_favorite">
-            <column name="created_date" type="timestamp"/>
-        </loadData>
-        <loadData encoding="UTF-8"
                   file="config/liquibase/testdata/user_settings.csv"
                   separator=";"
                   tableName="user_settings">
@@ -75,6 +51,30 @@
                   file="config/liquibase/testdata/portfolio/portfolios.csv"
                   separator=";"
                   tableName="portfolio">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/favorites.csv"
+                  separator=";"
+                  tableName="favorite">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/twitter_favorites.csv"
+                  separator=";"
+                  tableName="twitter_favorite">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/rss_favorites.csv"
+                  separator=";"
+                  tableName="rss_favorite">
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/link_favorites.csv"
+                  separator=";"
+                  tableName="link_favorite">
             <column name="created_date" type="timestamp"/>
         </loadData>
         <loadData encoding="UTF-8"

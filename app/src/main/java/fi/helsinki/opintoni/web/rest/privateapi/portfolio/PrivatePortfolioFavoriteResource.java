@@ -19,10 +19,12 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.domain.Favorite;
+import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import fi.helsinki.opintoni.service.portfolio.PortfolioFavoriteService;
+import fi.helsinki.opintoni.service.portfolio.PortfolioService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
@@ -51,7 +53,8 @@ public class PrivatePortfolioFavoriteResource extends AbstractResource {
     @Autowired
     public PrivatePortfolioFavoriteResource(PortfolioFavoriteService portfolioFavoriteService,
                                             FavoriteService favoriteService,
-                                            PermissionChecker permissionChecker) {
+                                            PermissionChecker permissionChecker,
+                                            PortfolioService portfolioService) {
         this.portfolioFavoriteService = portfolioFavoriteService;
         this.favoriteService = favoriteService;
         this.permissionChecker = permissionChecker;
@@ -60,44 +63,50 @@ public class PrivatePortfolioFavoriteResource extends AbstractResource {
     @RequestMapping(value = "/link", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<FavoriteDto> saveLinkFavorite(@UserId Long userId,
-                                                        @RequestBody InsertLinkFavoriteRequest linkFavorite) {
-        return response(favoriteService.insertLinkFavoriteForPortfolio(userId, linkFavorite));
+                                                        @RequestBody InsertLinkFavoriteRequest linkFavorite,
+                                                        @PathVariable Long portfolioId) {
+        return response(favoriteService.insertLinkFavoriteForPortfolio(userId, linkFavorite, portfolioId));
     }
 
     @RequestMapping(value = "/twitter", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<FavoriteDto> saveTwitterFavorite(@UserId Long userId,
-                                                           @Valid @RequestBody InsertTwitterFavoriteRequest request) {
-        return response(favoriteService.insertTwitterFavoriteForPortfolio(userId, request));
+                                                           @Valid @RequestBody InsertTwitterFavoriteRequest request,
+                                                           @PathVariable Long portfolioId) {
+        return response(favoriteService.insertTwitterFavoriteForPortfolio(userId, request, portfolioId));
     }
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)
     @Timed
     public ResponseEntity<List<FavoriteDto>> orderFavorites(@UserId Long userId,
-                                                            @RequestBody OrderFavoritesRequest request) {
+                                                            @RequestBody OrderFavoritesRequest request,
+                                                            @PathVariable Long portfolioId) {
         permissionChecker.verifyPermission(userId, request.favoriteIds, Favorite.class);
 
         return response(() -> {
             favoriteService.orderPortfolioFavorites(userId, request.favoriteIds);
-            return favoriteService.findByUserIdForPortfolio(userId);
+            return favoriteService.findByPortfolioId(portfolioId);
         });
     }
 
     @RequestMapping(method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<List<FavoriteDto>> findByPortfolioId(@PathVariable Long portfolioId) {
+    public ResponseEntity<List<FavoriteDto>> findByPortfolioId(@PathVariable Long portfolioId,
+                                                               @UserId Long userId) {
+        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
         return response(portfolioFavoriteService.findByPortfolioId(portfolioId));
     }
 
     @RequestMapping(value = "/{favoriteId}", method = RequestMethod.DELETE)
     @Timed
     public ResponseEntity<List<FavoriteDto>> deleteFavorite(@UserId Long userId,
-                                                            @PathVariable("favoriteId") Long favoriteId) {
+                                                            @PathVariable("favoriteId") Long favoriteId,
+                                                            @PathVariable Long portfolioId) {
         permissionChecker.verifyPermission(userId, favoriteId, Favorite.class);
 
         return response(() -> {
             favoriteService.deleteFavorite(favoriteId);
-            return favoriteService.findByUserIdForPortfolio(userId);
+            return favoriteService.findByPortfolioId(portfolioId);
         });
     }
 }
