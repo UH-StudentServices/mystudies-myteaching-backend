@@ -64,6 +64,9 @@ public class WorkExperience extends AbstractAuditingEntity implements Ownership 
     @JoinColumn(name = "portfolio_id")
     public Portfolio portfolio;
 
+    @Column(name = "order_index")
+    public int orderIndex;
+
     @Override
     public Long getOwnerId() {
         return portfolio.getOwnerId();

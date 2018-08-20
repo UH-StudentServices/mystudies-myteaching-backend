@@ -1503,7 +1503,7 @@
         </sql>
         <sql>
             select setval('persistent_audit_event_event_id_seq', (select coalesce(max(event_id)+1,1) from persistent_audit_event), false);
-        </sql>      
+        </sql>
         <sql>
             select setval('portfolio_id_seq', (select coalesce(max(id)+1,1) from portfolio), false);
         </sql>
@@ -1527,10 +1527,10 @@
         </sql>
         <sql>
             select setval('todo_item_id_seq', (select coalesce(max(id)+1,1) from todo_item), false);
-        </sql>    
+        </sql>
         <sql>
             select setval('useful_link_id_seq', (select coalesce(max(id)+1,1) from useful_link), false);
-        </sql>    
+        </sql>
         <sql>
             select setval('user_id_seq', (select coalesce(max(id)+1,1) from user_account)), false);
         </sql>
@@ -1539,11 +1539,11 @@
         </sql>
         <sql>
             select setval('user_settings_id_seq', (select coalesce(max(id)+1,1) from user_settings), false);
-        </sql>    
+        </sql>
         <sql>
             select setval('work_experience_id_seq', (select coalesce(max(id)+1,1) from work_experience), false);
         </sql>
-    </changeSet>    
+    </changeSet>
     <changeSet id="add flamma defaults for all users" author="Sami Siren">
         <sql>
             insert into favorite (user_id, type, order_index, created_by)
@@ -1554,8 +1554,32 @@
               select user_account.id, 'FLAMMA_EVENTS', coalesce(max(order_index)+1,0), 'system' from user_account left join favorite on user_account.id = favorite.user_id GROUP BY user_account.id;
         </sql>
     </changeSet>
-    
+
     <changeSet id="Update varchar length for degree_programme.degree_code" author="Sami Siren">
         <modifyDataType tableName="degree_programme" columnName="degree_code" newDataType="varchar(255)" />
+    </changeSet>
+
+    <changeSet id="Add column order_index into portfolio's table work_experience" author="Jukka Purma">
+        <addColumn tableName="work_experience">
+            <column name="order_index" type="int" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Create default orders for work_experience" author="Jukka Purma" dbms="postgresql">
+        <!-- Try this out in http://sqlfiddle.com/#!17/66293/11 . Because updateWorkexperience deletes
+         and recreates all portfolio's work_experience items on each update, their ids already reflect the order in
+         which they were added. (This also means that we wouldn't even need order_index yet, but the data is
+         more resilient if ids won't have that kind of secret secondary function.). -->
+        <sql>
+            WITH subquery AS (
+                SELECT id, row_number() OVER (PARTITION BY portfolio_id) AS rnum
+                FROM work_experience
+                ORDER BY id ASC
+            )
+            UPDATE work_experience
+            SET order_index=subquery.rnum
+            FROM subquery
+            WHERE work_experience.id=subquery.id;
+        </sql>
     </changeSet>
 </databaseChangeLog>
