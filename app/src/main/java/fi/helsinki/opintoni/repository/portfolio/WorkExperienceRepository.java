@@ -27,4 +27,7 @@ public interface WorkExperienceRepository extends JpaRepository<WorkExperience, 
     void deleteByPortfolioId(Long portfolioId);
 
     List<WorkExperience> findByPortfolioId(Long portfolioId);
+
+    List<WorkExperience> findByPortfolioIdOrderByOrderIndexAsc(Long portfolioId);
+
 }

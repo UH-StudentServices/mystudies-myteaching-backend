@@ -78,7 +78,7 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
                 )
             )))
             .andExpect(jsonPath("$.workExperience").value(Matchers.<List<WorkExperienceDto>>allOf(
-                hasSize(1),
+                hasSize(3),
                 hasItem(
                     both(hasEntry("employer", "HY"))
                         .and(hasEntry("jobTitle", "Harjoittelija"))
