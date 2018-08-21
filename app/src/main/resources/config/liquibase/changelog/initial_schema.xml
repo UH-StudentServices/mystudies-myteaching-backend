@@ -1559,6 +1559,30 @@
         <modifyDataType tableName="degree_programme" columnName="degree_code" newDataType="varchar(255)" />
     </changeSet>
 
+    <changeSet id="Add column order_index into portfolio's table work_experience" author="Jukka Purma">
+        <addColumn tableName="work_experience">
+            <column name="order_index" type="int" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="Create default orders for work_experience" author="Jukka Purma" dbms="postgresql">
+        <!-- Try this out in http://sqlfiddle.com/#!17/66293/11 . Because updateWorkexperience deletes
+         and recreates all portfolio's work_experience items on each update, their ids already reflect the order in
+         which they were added. (This also means that we wouldn't even need order_index yet, but the data is
+         more resilient if ids won't have that kind of secret secondary function.). -->
+        <sql>
+            WITH subquery AS (
+                SELECT id, row_number() OVER (PARTITION BY portfolio_id) AS rnum
+                FROM work_experience
+                ORDER BY id ASC
+            )
+            UPDATE work_experience
+            SET order_index=subquery.rnum
+            FROM subquery
+            WHERE work_experience.id=subquery.id;
+        </sql>
+    </changeSet>
+
     <changeSet id="OO-1113 flexible degree date and orderable degrees" author="Joni Korhonen" dbms="postgresql">
         <renameColumn tableName="degree" oldColumnName="date_of_degree" newColumnName="date_of_degree_old" />
         <addColumn tableName="degree">
@@ -1569,14 +1593,14 @@
             update degree d set
                 date_of_degree =
                     case when p.language = 'en' then to_char(d.date_of_degree_old, 'DD Mon YYYY')
-                         else to_char(d.date_of_degree_old, 'DD.MM.YYYY')
+                    else to_char(d.date_of_degree_old, 'DD.MM.YYYY')
                     end,
                 order_index =
                     (select s.row - 1 from (
                         select id, row_number() over(partition by portfolio_id order by date_of_degree_old asc) as row from degree
                     ) as s where s.id = d.id)
-            from portfolio p
-            where d.portfolio_id = p.id;
+                from portfolio p
+                where d.portfolio_id = p.id;
         </sql>
         <dropColumn tableName="degree" columnName="date_of_degree_old" />
         <addNotNullConstraint tableName="degree" columnName="date_of_degree" />
