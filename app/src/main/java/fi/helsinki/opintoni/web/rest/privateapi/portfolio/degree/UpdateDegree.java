@@ -17,12 +17,10 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio.degree;
 
-import java.time.LocalDate;
-
 public class UpdateDegree {
 
     public String title;
     public String description;
 
-    public LocalDate dateOfDegree;
+    public String dateOfDegree;
 }

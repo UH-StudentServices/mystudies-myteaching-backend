@@ -1582,4 +1582,37 @@
             WHERE work_experience.id=subquery.id;
         </sql>
     </changeSet>
+
+    <changeSet id="OO-1113 flexible degree date and orderable degrees" author="Joni Korhonen" dbms="postgresql">
+        <renameColumn tableName="degree" oldColumnName="date_of_degree" newColumnName="date_of_degree_old" />
+        <addColumn tableName="degree">
+            <column name="date_of_degree" type="varchar(255)" />
+            <column name="order_index" type="int" />
+        </addColumn>
+        <sql>
+            update degree d set
+                date_of_degree =
+                    case when p.language = 'en' then to_char(d.date_of_degree_old, 'DD Mon YYYY')
+                    else to_char(d.date_of_degree_old, 'DD.MM.YYYY')
+                    end,
+                order_index =
+                    (select s.row - 1 from (
+                        select id, row_number() over(partition by portfolio_id order by date_of_degree_old desc) as row from degree
+                    ) as s where s.id = d.id)
+                from portfolio p
+                where d.portfolio_id = p.id;
+        </sql>
+        <dropColumn tableName="degree" columnName="date_of_degree_old" />
+        <addNotNullConstraint tableName="degree" columnName="date_of_degree" />
+    </changeSet>
+
+    <changeSet id="OO-1113 flexible degree date and orderable degrees (h2)" author="Joni Korhonen" dbms="h2">
+        <dropColumn tableName="degree" columnName="date_of_degree" />
+        <addColumn tableName="degree">
+            <column name="date_of_degree" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="order_index" type="int" />
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
