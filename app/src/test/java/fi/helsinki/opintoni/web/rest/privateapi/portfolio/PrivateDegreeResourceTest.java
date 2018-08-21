@@ -23,8 +23,6 @@ import fi.helsinki.opintoni.web.rest.privateapi.portfolio.degree.UpdateDegree;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
-import java.time.LocalDate;
-
 import static com.google.common.collect.Lists.newArrayList;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
@@ -41,7 +39,7 @@ public class PrivateDegreeResourceTest extends SpringTest {
         updateDegree.title = "Degree Title";
         updateDegree.institution = "University of Helsinki";
         updateDegree.description = "Degree description";
-        updateDegree.dateOfDegree = LocalDate.of(2016, 6, 6);
+        updateDegree.dateOfDegree = "6.6.2016";
 
         mockMvc.perform(post("/api/private/v1/portfolio/2/degree")
             .with(securityContext(studentSecurityContext()))
@@ -53,9 +51,7 @@ public class PrivateDegreeResourceTest extends SpringTest {
             .andExpect(jsonPath("$[0].title").value("Degree Title"))
             .andExpect(jsonPath("$[0].institution").value("University of Helsinki"))
             .andExpect(jsonPath("$[0].description").value("Degree description"))
-            .andExpect(jsonPath("$[0].dateOfDegree[0]").value(2016))
-            .andExpect(jsonPath("$[0].dateOfDegree[1]").value(6))
-            .andExpect(jsonPath("$[0].dateOfDegree[2]").value(6));
+            .andExpect(jsonPath("$[0].dateOfDegree").value("6.6.2016"));
     }
 
     @Test
