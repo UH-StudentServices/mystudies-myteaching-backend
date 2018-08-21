@@ -1597,7 +1597,7 @@
                     end,
                 order_index =
                     (select s.row - 1 from (
-                        select id, row_number() over(partition by portfolio_id order by date_of_degree_old asc) as row from degree
+                        select id, row_number() over(partition by portfolio_id order by id asc) as row from degree
                     ) as s where s.id = d.id)
                 from portfolio p
                 where d.portfolio_id = p.id;
