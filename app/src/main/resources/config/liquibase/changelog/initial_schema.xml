@@ -1582,4 +1582,25 @@
             WHERE work_experience.id=subquery.id;
         </sql>
     </changeSet>
+
+    <changeSet id="Portfolio background" author="Juuso Lehtinen">
+        <createTable tableName="portfolio_background">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="background_filename" type="varchar(500)" />
+            <column name="uploaded_background_filename" type="varchar(500)"/>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_background_portfolio" references="portfolio(id)" deleteCascade="true"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
