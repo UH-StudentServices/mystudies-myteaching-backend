@@ -42,6 +42,10 @@ public class Degree extends AbstractAuditingEntity implements Ownership {
     @Size(max = 255)
     public String title;
 
+    @Size(max = 255)
+    @Column(name = "institution")
+    public String institution;
+
     @Size(max = 500)
     public String description;
 

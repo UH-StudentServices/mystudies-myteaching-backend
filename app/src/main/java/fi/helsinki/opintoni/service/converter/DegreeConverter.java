@@ -27,6 +27,7 @@ public class DegreeConverter {
     public DegreeDto toDto(Degree degree) {
         DegreeDto degreeDto = new DegreeDto();
         degreeDto.title = degree.title;
+        degreeDto.institution = degree.institution;
         degreeDto.description = degree.description;
         degreeDto.dateOfDegree = degree.dateOfDegree;
         return degreeDto;

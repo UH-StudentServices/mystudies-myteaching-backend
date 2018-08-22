@@ -1615,4 +1615,10 @@
             <column name="order_index" type="int" />
         </addColumn>
     </changeSet>
+
+    <changeSet id="OO-1114 Add institution to degrees" author="Joni Korhonen">
+        <addColumn tableName="degree">
+            <column name="institution" type="varchar(255)" />
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio.degree;
 public class UpdateDegree {
 
     public String title;
+    public String institution;
     public String description;
 
     public String dateOfDegree;

@@ -37,6 +37,7 @@ public class PrivateDegreeResourceTest extends SpringTest {
     public void thatDegreesAreUpdated() throws Exception {
         UpdateDegree updateDegree = new UpdateDegree();
         updateDegree.title = "Degree Title";
+        updateDegree.institution = "University of Helsinki";
         updateDegree.description = "Degree description";
         updateDegree.dateOfDegree = "6.6.2016";
 
@@ -48,6 +49,7 @@ public class PrivateDegreeResourceTest extends SpringTest {
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(1)))
             .andExpect(jsonPath("$[0].title").value("Degree Title"))
+            .andExpect(jsonPath("$[0].institution").value("University of Helsinki"))
             .andExpect(jsonPath("$[0].description").value("Degree description"))
             .andExpect(jsonPath("$[0].dateOfDegree").value("6.6.2016"));
     }

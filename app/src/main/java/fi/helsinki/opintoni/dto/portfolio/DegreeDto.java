@@ -21,6 +21,7 @@ public class DegreeDto {
 
     public Long id;
     public String title;
+    public String institution;
     public String description;
 
     public String dateOfDegree;
