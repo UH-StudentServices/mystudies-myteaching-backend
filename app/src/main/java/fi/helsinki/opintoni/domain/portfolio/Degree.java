@@ -19,13 +19,11 @@ package fi.helsinki.opintoni.domain.portfolio;
 
 import fi.helsinki.opintoni.domain.AbstractAuditingEntity;
 import fi.helsinki.opintoni.domain.Ownership;
-import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "degree")
@@ -35,17 +33,24 @@ public class Degree extends AbstractAuditingEntity implements Ownership {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @NotNull
-    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDate")
+    @NotEmpty
+    @Size(max = 255)
     @Column(name = "date_of_degree", nullable = false)
-    public LocalDate dateOfDegree;
+    public String dateOfDegree;
 
     @NotEmpty
     @Size(max = 255)
     public String title;
 
+    @Size(max = 255)
+    @Column(name = "institution")
+    public String institution;
+
     @Size(max = 500)
     public String description;
+
+    @Column(name = "order_index")
+    public Integer orderIndex;
 
     @NotNull
     @ManyToOne

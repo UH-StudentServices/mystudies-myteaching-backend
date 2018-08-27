@@ -24,5 +24,5 @@ import java.util.List;
 
 public interface DegreeRepository extends JpaRepository<Degree, Long> {
 
-    List<Degree> findByPortfolioId(Long portfolioId);
+    List<Degree> findByPortfolioIdOrderByOrderIndexAsc(Long portfolioId);
 }

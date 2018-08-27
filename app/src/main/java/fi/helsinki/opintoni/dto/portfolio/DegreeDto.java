@@ -17,12 +17,12 @@
 
 package fi.helsinki.opintoni.dto.portfolio;
 
-import java.time.LocalDate;
-
 public class DegreeDto {
 
+    public Long id;
     public String title;
+    public String institution;
     public String description;
 
-    public LocalDate dateOfDegree;
+    public String dateOfDegree;
 }

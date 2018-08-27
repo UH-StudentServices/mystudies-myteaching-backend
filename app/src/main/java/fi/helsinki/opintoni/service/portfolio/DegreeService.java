@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @Transactional
@@ -50,26 +51,29 @@ public class DegreeService extends DtoService {
 
     public List<DegreeDto> findByPortfolioId(Long portfolioId) {
         return getDtos(portfolioId,
-            degreeRepository::findByPortfolioId,
+            degreeRepository::findByPortfolioIdOrderByOrderIndexAsc,
             degreeConverter::toDto);
     }
 
     public List<DegreeDto> updateDegrees(Long portfolioId, List<UpdateDegree> updateDegrees) {
         Portfolio portfolio = portfolioRepository.findOne(portfolioId);
 
-        degreeRepository.delete(degreeRepository.findByPortfolioId(portfolio.id));
+        degreeRepository.delete(degreeRepository.findByPortfolioIdOrderByOrderIndexAsc(portfolio.id));
 
+        AtomicInteger orderCounter = new AtomicInteger(0);
         updateDegrees.forEach(updateDegree -> {
             Degree degree = new Degree();
             degree.title = updateDegree.title;
+            degree.institution = updateDegree.institution;
             degree.description = updateDegree.description;
             degree.dateOfDegree = updateDegree.dateOfDegree;
             degree.portfolio = portfolio;
+            degree.orderIndex = orderCounter.getAndIncrement();
             degreeRepository.save(degree);
         });
 
         return getDtos(portfolioId,
-            degreeRepository::findByPortfolioId,
+            degreeRepository::findByPortfolioIdOrderByOrderIndexAsc,
             degreeConverter::toDto);
     }
 }
