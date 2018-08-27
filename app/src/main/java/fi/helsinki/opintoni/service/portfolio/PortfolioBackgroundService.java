@@ -21,9 +21,13 @@ import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioBackground;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioBackgroundRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
+import fi.helsinki.opintoni.service.ImageService;
 import fi.helsinki.opintoni.service.UserSettingsService;
+import fi.helsinki.opintoni.service.storage.FileStorage;
+import fi.helsinki.opintoni.util.FileNameUtil;
 import fi.helsinki.opintoni.util.UriBuilder;
 import fi.helsinki.opintoni.web.rest.privateapi.usersettings.SelectBackgroundRequest;
+import fi.helsinki.opintoni.web.rest.privateapi.usersettings.UploadImageBase64Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,16 +44,22 @@ public class PortfolioBackgroundService {
     private final PortfolioBackgroundRepository portfolioBackgroundRepository;
     private final PortfolioRepository portfolioRepository;
     private final UserSettingsService userSettingsService;
+    private final ImageService imageService;
+    private final FileStorage fileStorage;
     private final UriBuilder uriBuilder;
 
     @Autowired
     public PortfolioBackgroundService(PortfolioBackgroundRepository portfolioBackgroundRepository,
                                       PortfolioRepository portfolioRepository,
                                       UserSettingsService userSettingsService,
+                                      ImageService imageService,
+                                      FileStorage fileStorage,
                                       UriBuilder uriBuilder) {
         this.portfolioBackgroundRepository = portfolioBackgroundRepository;
         this.portfolioRepository = portfolioRepository;
         this.userSettingsService = userSettingsService;
+        this.imageService = imageService;
+        this.fileStorage = fileStorage;
         this.uriBuilder = uriBuilder;
     }
 
@@ -71,20 +81,47 @@ public class PortfolioBackgroundService {
         return userSettingsService.findByUserId(portfolio.user.id).backgroundUri;
     }
 
-    public void selectBackground(Long id, SelectBackgroundRequest request) {
-        Optional<PortfolioBackground> portfolioBackgroundOptional = portfolioBackgroundRepository.findByPortfolioId(id);
-        PortfolioBackground portfolioBackground;
-
-        if (!portfolioBackgroundOptional.isPresent()) {
-            portfolioBackground = new PortfolioBackground();
-            portfolioBackground.portfolio = portfolioRepository.findOne(id);
-        } else {
-            portfolioBackground = portfolioBackgroundOptional.get();
-        }
+    public void selectBackground(Long portfolioId, SelectBackgroundRequest request) {
+        PortfolioBackground portfolioBackground = getPortfolioBackgroundEntity(portfolioId);
+        removeOldBackgroundFile(portfolioBackground);
 
         portfolioBackground.backgroundFilename = request.filename;
         portfolioBackground.uploadedBackgroundFilename = null;
 
         portfolioBackgroundRepository.save(portfolioBackground);
+    }
+
+    public void uploadBackground(Long portfolioId, UploadImageBase64Request request) {
+        PortfolioBackground portfolioBackground = getPortfolioBackgroundEntity(portfolioId);
+        byte[] bytes = imageService.createUserBackground(request.imageBase64);
+        String fileName = FileNameUtil.getImageFileName();
+
+        removeOldBackgroundFile(portfolioBackground);
+        fileStorage.put(fileName, bytes);
+
+        portfolioBackground.backgroundFilename = null;
+        portfolioBackground.uploadedBackgroundFilename = fileName;
+
+        portfolioBackgroundRepository.save(portfolioBackground);
+    }
+
+    private PortfolioBackground getPortfolioBackgroundEntity(Long portfolioId) {
+        Optional<PortfolioBackground> portfolioBackgroundOptional = portfolioBackgroundRepository.findByPortfolioId(portfolioId);
+        PortfolioBackground portfolioBackground;
+
+        if (!portfolioBackgroundOptional.isPresent()) {
+            portfolioBackground = new PortfolioBackground();
+            portfolioBackground.portfolio = portfolioRepository.findOne(portfolioId);
+        } else {
+            portfolioBackground = portfolioBackgroundOptional.get();
+        }
+
+        return portfolioBackground;
+    }
+
+    private void removeOldBackgroundFile(PortfolioBackground portfolioBackground) {
+        if (portfolioBackground.uploadedBackgroundFilename != null) {
+            fileStorage.remove(portfolioBackground.uploadedBackgroundFilename);
+        }
     }
 }

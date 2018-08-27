@@ -17,7 +17,9 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio.background;
 
+import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioBackgroundDto;
+import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.portfolio.PortfolioBackgroundService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
@@ -36,15 +38,20 @@ import org.springframework.web.bind.annotation.*;
 public class PortfolioBackgroundResource extends AbstractResource {
 
     private final PortfolioBackgroundService portfolioBackgroundService;
+    private final PermissionChecker permissionChecker;
 
-    public PortfolioBackgroundResource(PortfolioBackgroundService portfolioBackgroundService) {
+    public PortfolioBackgroundResource(PortfolioBackgroundService portfolioBackgroundService,
+                                       PermissionChecker permissionChecker) {
         this.portfolioBackgroundService = portfolioBackgroundService;
+        this.permissionChecker = permissionChecker;
     }
 
     @RequestMapping(value = "/upload", method = RequestMethod.PUT)
     public ResponseEntity<Boolean> uploadBackground(@UserId Long userId,
                                                     @PathVariable Long portfolioId,
                                                     @RequestBody UploadImageBase64Request request) {
+        permissionChecker.hasPermission(userId, portfolioId, Portfolio.class);
+        portfolioBackgroundService.uploadBackground(portfolioId, request);
         return response(true);
     }
 
@@ -52,13 +59,16 @@ public class PortfolioBackgroundResource extends AbstractResource {
     public ResponseEntity<Boolean> selectBackground(@UserId Long userId,
                                                     @PathVariable Long portfolioId,
                                                     @RequestBody SelectBackgroundRequest request) {
+        permissionChecker.hasPermission(userId, portfolioId, Portfolio.class);
         portfolioBackgroundService.selectBackground(portfolioId, request);
         return response(true);
     }
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<PortfolioBackgroundDto> getPortfolioBackgroundUri(@PathVariable Long portfolioId) {
+    public ResponseEntity<PortfolioBackgroundDto> getPortfolioBackgroundUri(@UserId Long userId,
+                                                                            @PathVariable Long portfolioId) {
+        permissionChecker.hasPermission(userId, portfolioId, Portfolio.class);
         String portfolioBackgroundUri = portfolioBackgroundService.getPortfolioBackgroundUri(portfolioId);
         return response(new PortfolioBackgroundDto(portfolioBackgroundUri));
     }
