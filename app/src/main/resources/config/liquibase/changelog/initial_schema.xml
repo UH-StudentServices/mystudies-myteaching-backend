@@ -1664,4 +1664,33 @@
                                  referencedTableName="portfolio"
                                  onDelete="CASCADE"/>
     </changeSet>
+
+    <changeSet id="OO-1111 Improve language skills feature" author="Tomi Mäkinen">
+        <createTable tableName="portfolio_language_proficiency">
+            <column name="id" type="serial" autoIncrement="true">
+                <constraints primaryKey="true"  nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_language_skill_portfolio"
+                             references="portfolio(id)"
+                             deleteCascade="true"/>
+            </column>
+            <column name="language_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="proficiency" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

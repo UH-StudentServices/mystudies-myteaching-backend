@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
+import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioLanguageProficiency;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficienciesChangeDescriptorDto;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficiencyDto;
@@ -35,67 +36,62 @@ import java.util.stream.Collectors;
 @Transactional
 public class LanguageProficiencyService {
 
-    private final PortfolioRepository portfolioRepository;
-    private final LanguageProficiencyRepository languageProficiencyRepository;
-    private final LanguageProficiencyConverter languageProficiencyConverter;
     private final PermissionChecker permissionChecker;
+    private final LanguageProficiencyRepository languageProficiencyRepository;
+    private final PortfolioRepository portfolioRepository;
 
     @Autowired
-    public LanguageProficiencyService(PortfolioRepository portfolioRepository,
+    public LanguageProficiencyService(PermissionChecker permissionChecker,
                                       LanguageProficiencyRepository languageProficiencyRepository,
-                                      LanguageProficiencyConverter languageProficiencyConverter,
-                                      PermissionChecker permissionChecker) {
-        this.portfolioRepository = portfolioRepository;
-        this.languageProficiencyRepository = languageProficiencyRepository;
-        this.languageProficiencyConverter = languageProficiencyConverter;
+                                      PortfolioRepository portfolioRepository) {
         this.permissionChecker = permissionChecker;
+        this.languageProficiencyRepository = languageProficiencyRepository;
+        this.portfolioRepository = portfolioRepository;
     }
 
     public List<LanguageProficiencyDto> findByPortfolioId(Long id) {
         return languageProficiencyRepository.findByPortfolioId(id).stream()
-            .map(languageProficiencyConverter::toDto)
-            .collect(Collectors.toList());
+                .map(LanguageProficiencyConverter::toDto)
+                .collect(Collectors.toList());
     }
 
     public void updateLanguageProficiencies(LanguageProficienciesChangeDescriptorDto changeDescriptor,
                                             Long portfolioId,
                                             Long userId) {
         if (changeDescriptor.deletedIds != null) {
-            changeDescriptor.deletedIds.forEach(id -> deleteLanguageProficiency(id, userId));
+            changeDescriptor.deletedIds.forEach(id -> deleteLanguageProficiency(userId, id));
         }
 
         if (changeDescriptor.updatedLanguageProficiencies != null) {
-            changeDescriptor.updatedLanguageProficiencies.forEach((dto) -> updateLanguageProficiency(dto, userId));
+            changeDescriptor.updatedLanguageProficiencies.forEach((dto) -> updateLanguageProficiency(userId, dto));
         }
 
         if (changeDescriptor.newLanguageProficiencies != null) {
-            changeDescriptor.newLanguageProficiencies.forEach((dto) -> addLanguageProficiency(portfolioId, dto));
+            changeDescriptor.newLanguageProficiencies.forEach((dto) -> addLanguageProficiency(portfolioId, userId, dto));
         }
     }
 
-    private void addLanguageProficiency(Long portfolioId, LanguageProficiencyDto languageProficiencyDto) {
+    private void addLanguageProficiency(Long portfolioId, Long userId, LanguageProficiencyDto languageProficiencyDto) {
+        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
         PortfolioLanguageProficiency portfolioLanguageProficiency = new PortfolioLanguageProficiency();
-        portfolioLanguageProficiency.languageCode = languageProficiencyDto.language;
+        portfolioLanguageProficiency.languageName = languageProficiencyDto.languageName;
         portfolioLanguageProficiency.proficiency = languageProficiencyDto.proficiency;
+        portfolioLanguageProficiency.description = languageProficiencyDto.description;
         portfolioLanguageProficiency.portfolio = portfolioRepository.findOne(portfolioId);
-
         languageProficiencyRepository.save(portfolioLanguageProficiency);
     }
 
-    private void updateLanguageProficiency(LanguageProficiencyDto languageProficiencyDto, Long userId) {
-        validateOwnership(userId, languageProficiencyDto.id);
-        PortfolioLanguageProficiency languageProficiency =
-            languageProficiencyRepository.findOne(languageProficiencyDto.id);
-        languageProficiency.languageCode= languageProficiencyDto.language;
-        languageProficiency.proficiency = languageProficiencyDto.proficiency;
+    private void updateLanguageProficiency(Long userId, LanguageProficiencyDto languageProficiencyDto) {
+        permissionChecker.verifyPermission(userId, languageProficiencyDto.id, PortfolioLanguageProficiency.class);
+        PortfolioLanguageProficiency portfolioLanguageProficiency = languageProficiencyRepository.findOne(languageProficiencyDto.id);
+        portfolioLanguageProficiency.languageName = languageProficiencyDto.languageName;
+        portfolioLanguageProficiency.proficiency = languageProficiencyDto.proficiency;
+        portfolioLanguageProficiency.description = languageProficiencyDto.description;
+        languageProficiencyRepository.save(portfolioLanguageProficiency);
     }
 
-    private void deleteLanguageProficiency(Long languageProficiencyId, Long userId) {
-        validateOwnership(userId, languageProficiencyId);
-        languageProficiencyRepository.delete(languageProficiencyId);
-    }
-
-    private void validateOwnership(Long userId, Long languageProficiencyId) {
-        permissionChecker.verifyPermission(userId, languageProficiencyId, PortfolioLanguageProficiency.class);
+    private void deleteLanguageProficiency(Long userId, Long portfolioLanguageProficiencyId) {
+        permissionChecker.verifyPermission(userId, portfolioLanguageProficiencyId, PortfolioLanguageProficiency.class);
+        languageProficiencyRepository.delete(portfolioLanguageProficiencyId);
     }
 }

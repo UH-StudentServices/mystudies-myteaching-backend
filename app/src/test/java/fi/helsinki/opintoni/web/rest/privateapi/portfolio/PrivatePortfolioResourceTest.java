@@ -57,122 +57,128 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
     @Test
     public void thatAnyExistingOwnPortfolioIsReturnedWhenQueryingByRoleOnly() throws Exception {
         mockMvc.perform(get(STUDENT_PORTFOLIO_API_PATH)
-            .with(securityContext(studentSecurityContext())))
-            .andExpect(jsonPath("$.id").value(isOneOf(2, 5)));
+                .with(securityContext(studentSecurityContext())))
+                .andExpect(jsonPath("$.id").value(isOneOf(2, 5)));
     }
 
     @Test
     public void thatStudentPortfolioContainsAllLinkedComponents() throws Exception {
         mockMvc.perform(get(STUDENT_PORTFOLIO_API_PATH + "/en/olli-opiskelija")
-            .with(securityContext(studentSecurityContext())))
-            .andExpect(jsonPath("$.contactInformation").value(
-                both(hasEntry("email", STUDENT_EMAIL)).and(hasEntry("phoneNumber", "+358112223333"))
-            ))
-            .andExpect(jsonPath("$.degrees").value(Matchers.<List<DegreeDto>>allOf(
-                hasSize(1),
-                hasItem(
-                    both(
-                        hasEntry("title", "Luonnontieteiden kandidaatti")).and(
-                        hasEntry("description", "Globaalit rakenneoptimointimenetelmät")
-                    )
-                )
-            )))
-            .andExpect(jsonPath("$.workExperience").value(Matchers.<List<WorkExperienceDto>>allOf(
-                hasSize(3),
-                hasItem(
-                    both(hasEntry("employer", "HY"))
-                        .and(hasEntry("jobTitle", "Harjoittelija"))
-                        .and(hasEntry("employerUrl", "http://www.helsinki.fi/"))
-                        .and(hasEntry("text", "Lorem ipsum")
+                .with(securityContext(studentSecurityContext())))
+                .andExpect(jsonPath("$.contactInformation").value(
+                        both(hasEntry("email", STUDENT_EMAIL)).and(hasEntry("phoneNumber", "+358112223333"))
+                ))
+                .andExpect(jsonPath("$.degrees").value(Matchers.<List<DegreeDto>>allOf(
+                        hasSize(1),
+                        hasItem(
+                                both(
+                                        hasEntry("title", "Luonnontieteiden kandidaatti")).and(
+                                        hasEntry("description", "Globaalit rakenneoptimointimenetelmät")
+                                )
                         )
-                )
-            )))
-            .andExpect(jsonPath("$.jobSearch").value(hasEntry("contactEmail", STUDENT_EMAIL)))
-            .andExpect(jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
-                hasSize(2),
-                hasItem(
-                    both(hasEntry("title", "Otsikko")).and(hasEntry("text", "Teksti"))
-                ),
-                hasItem(
-                    both(hasEntry("title", "Otsikko 2")).and(hasEntry("text", "Teksti 2"))
-                )
-            )))
-            .andExpect(jsonPath("$.languageProficiencies").value(Matchers.<List<LanguageProficiencyDto>>allOf(
-                hasSize(3),
-                hasItem(
-                    both(hasEntry("id", 1)).and(hasEntry("language", "en")).and(hasEntry("proficiency", 4))
-                ),
-                hasItem(
-                    both(hasEntry("id", 2)).and(hasEntry("language", "fi")).and(hasEntry("proficiency", 5))
-                ),
-                hasItem(
-                    both(hasEntry("id", 4)).and(hasEntry("language", "hi")).and(hasEntry("proficiency", 2))
-                )
-            )))
-            .andExpect(jsonPath("$.keywords").value(Matchers.<List<KeywordDto>>allOf(
-                hasSize(1),
-                hasItem(
-                    hasEntry("title", "Keyword 1")
-                )
-            )))
-            .andExpect(jsonPath("$.summary", is("Summary")))
-            .andExpect(jsonPath("$.favorites").value(Matchers.<List<FavoriteDto>>allOf(
-                hasSize(2),
-                hasItem(
-                    hasEntry("id", 6)
-                ),
-                hasItem(
-                    hasEntry("id", 8)
-                )
-            )));
+                )))
+                .andExpect(jsonPath("$.workExperience").value(Matchers.<List<WorkExperienceDto>>allOf(
+                        hasSize(3),
+                        hasItem(
+                                both(hasEntry("employer", "HY"))
+                                        .and(hasEntry("jobTitle", "Harjoittelija"))
+                                        .and(hasEntry("employerUrl", "http://www.helsinki.fi/"))
+                                        .and(hasEntry("text", "Lorem ipsum")
+                                        )
+                        )
+                )))
+                .andExpect(jsonPath("$.jobSearch").value(hasEntry("contactEmail", STUDENT_EMAIL)))
+                .andExpect(jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
+                        hasSize(2),
+                        hasItem(
+                                both(hasEntry("title", "Otsikko")).and(hasEntry("text", "Teksti"))
+                        ),
+                        hasItem(
+                                both(hasEntry("title", "Otsikko 2")).and(hasEntry("text", "Teksti 2"))
+                        )
+                )))
+                .andExpect(jsonPath("$.keywords").value(Matchers.<List<KeywordDto>>allOf(
+                        hasSize(1),
+                        hasItem(
+                                hasEntry("title", "Keyword 1")
+                        )
+                )))
+                .andExpect(jsonPath("$.summary", is("Summary")))
+                .andExpect(jsonPath("$.languageProficiencies").value(Matchers.<List<LanguageProficiencyDto>>allOf(
+                        hasSize(3),
+                        hasItem(
+                                both(hasEntry("id", 1))
+                                        .and(hasEntry("languageName", "English"))
+                                        .and(hasEntry("proficiency", "Full professional"))
+                        ),
+                        hasItem(
+                                both(hasEntry("id", 2))
+                                        .and(hasEntry("languageName", "Finnish"))
+                                        .and(hasEntry("proficiency", "Native"))
+                        ),
+                        hasItem(
+                                both(hasEntry("id", 4))
+                                        .and(hasEntry("languageName", "Hindi"))
+                                        .and(hasEntry("proficiency", "Elementary"))
+                        )
+                )))
+                .andExpect(jsonPath("$.favorites").value(Matchers.<List<FavoriteDto>>allOf(
+                        hasSize(2),
+                        hasItem(
+                                hasEntry("id", 6)
+                        ),
+                        hasItem(
+                                hasEntry("id", 8)
+                        )
+                )));
     }
 
     @Test
     public void thatTeacherPortfolioContainsAllLinkedComponents() throws Exception {
         mockMvc.perform(get(TEACHER_PORTFOLIO_API_PATH + "/fi/opettaja")
-            .with(securityContext(teacherSecurityContext())))
-            .andExpect(jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
-                hasSize(2),
-                hasItem(
-                    both(hasEntry("title", "Tekstikenttä osion sisällä"))
-                        .and(hasEntry("text", "bla bla bla"))
-                        .and(hasEntry("portfolioSection", "RESEARCH"))
-                ),
-                hasItem(
-                    both(hasEntry("title", "Globaali tekstikenttä"))
-                        .and(hasEntry("text", "bla bla bla"))
-                )
-            )));
+                .with(securityContext(teacherSecurityContext())))
+                .andExpect(jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
+                        hasSize(2),
+                        hasItem(
+                                both(hasEntry("title", "Tekstikenttä osion sisällä"))
+                                        .and(hasEntry("text", "bla bla bla"))
+                                        .and(hasEntry("portfolioSection", "RESEARCH"))
+                        ),
+                        hasItem(
+                                both(hasEntry("title", "Globaali tekstikenttä"))
+                                        .and(hasEntry("text", "bla bla bla"))
+                        )
+                )));
     }
 
     @Test
     public void thatPortfolioIsFoundByPath() throws Exception {
         mockMvc.perform(get(STUDENT_PORTFOLIO_API_PATH + "/en/olli-opiskelija")
-            .with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.backgroundUri").value(
-                "https://dev.student.helsinki.fi/api/public/v1/images/backgrounds/Profile_3.jpg"
-            ))
-            .andExpect(jsonPath("$.componentVisibilities").isArray())
-            .andExpect(jsonPath("$.componentVisibilities[0].component").value("WORK_EXPERIENCE"))
-            .andExpect(jsonPath("$.componentVisibilities[0].visibility").value("PUBLIC"))
-            .andExpect(jsonPath("$.componentOrders").value(Matchers.<List<ComponentOrderDto>>allOf(
-                hasSize(3),
-                hasItem(
-                    both(hasEntry("component", PortfolioComponent.STUDIES.toString()))
-                        .and(hasEntry("orderValue", 1))
-                ),
-                hasItem(
-                    both(hasEntry("component", PortfolioComponent.DEGREES.toString()))
-                        .and(hasEntry("orderValue", 2))
-                ),
-                hasItem(
-                    both(hasEntry("component", PortfolioComponent.ATTAINMENTS.toString()))
-                        .and(hasEntry("orderValue", 3))
-                )
-            )));
+                .with(securityContext(studentSecurityContext()))
+                .characterEncoding("UTF-8")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.backgroundUri").value(
+                        "https://dev.student.helsinki.fi/api/public/v1/images/backgrounds/Profile_3.jpg"
+                ))
+                .andExpect(jsonPath("$.componentVisibilities").isArray())
+                .andExpect(jsonPath("$.componentVisibilities[0].component").value("WORK_EXPERIENCE"))
+                .andExpect(jsonPath("$.componentVisibilities[0].visibility").value("PUBLIC"))
+                .andExpect(jsonPath("$.componentOrders").value(Matchers.<List<ComponentOrderDto>>allOf(
+                        hasSize(3),
+                        hasItem(
+                                both(hasEntry("component", PortfolioComponent.STUDIES.toString()))
+                                        .and(hasEntry("orderValue", 1))
+                        ),
+                        hasItem(
+                                both(hasEntry("component", PortfolioComponent.DEGREES.toString()))
+                                        .and(hasEntry("orderValue", 2))
+                        ),
+                        hasItem(
+                                both(hasEntry("component", PortfolioComponent.ATTAINMENTS.toString()))
+                                        .and(hasEntry("orderValue", 3))
+                        )
+                )));
     }
 
     @Test
@@ -180,10 +186,10 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
         deleteExistingStudentPortfolios();
 
         createStudentPortfolio(studentSecurityContext())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.url").value(STUDENT_PORTFOLIO_PATH))
-            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.url").value(STUDENT_PORTFOLIO_PATH))
+                .andExpect(jsonPath("$.lang").value(SESSION_LANG));
     }
 
     @Test
@@ -193,10 +199,10 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
         deleteExistingTeacherPortfolio();
 
         createTeacherPortfolio(teacherSecurityContext())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.url").value(TEACHER_PORTFOLIO_PATH))
-            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.url").value(TEACHER_PORTFOLIO_PATH))
+                .andExpect(jsonPath("$.lang").value(SESSION_LANG));
     }
 
     @Test
@@ -204,15 +210,15 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
         esbServer.expectEmployeeContactInformationRequest("010540");
 
         mockMvc.perform(post(TEACHER_PORTFOLIO_API_PATH)
-            .with(securityContext(teacherWithoutPortfolioSecurityContext())))
-            .andExpect(jsonPath("$.contactInformation.email").value("olli.opettaja@helsinki.fi"))
-            .andExpect(jsonPath("$.contactInformation.workNumber").value("54321"))
-            .andExpect(jsonPath("$.contactInformation.workMobile").value("12345678"))
-            .andExpect(jsonPath("$.contactInformation.title").value("universitetslektor"))
-            .andExpect(jsonPath("$.contactInformation.faculty").value("Käyttäytymistieteellinen tiedekunta"))
-            .andExpect(jsonPath("$.contactInformation.financialUnit").value("OIKTDK, Oikeustieteellinen tiedekunta (OIKTDK)"))
-            .andExpect(jsonPath("$.contactInformation.workAddress").value("PL 9 (Siltavuorenpenger 1A)"))
-            .andExpect(jsonPath("$.contactInformation.workPostcode").value("00014 HELSINGIN YLIOPISTO"));
+                .with(securityContext(teacherWithoutPortfolioSecurityContext())))
+                .andExpect(jsonPath("$.contactInformation.email").value("olli.opettaja@helsinki.fi"))
+                .andExpect(jsonPath("$.contactInformation.workNumber").value("54321"))
+                .andExpect(jsonPath("$.contactInformation.workMobile").value("12345678"))
+                .andExpect(jsonPath("$.contactInformation.title").value("universitetslektor"))
+                .andExpect(jsonPath("$.contactInformation.faculty").value("Käyttäytymistieteellinen tiedekunta"))
+                .andExpect(jsonPath("$.contactInformation.financialUnit").value("OIKTDK, Oikeustieteellinen tiedekunta (OIKTDK)"))
+                .andExpect(jsonPath("$.contactInformation.workAddress").value("PL 9 (Siltavuorenpenger 1A)"))
+                .andExpect(jsonPath("$.contactInformation.workPostcode").value("00014 HELSINGIN YLIOPISTO"));
     }
 
     @Test
@@ -220,12 +226,12 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
         deleteExistingStudentPortfolios();
 
         createStudentPortfolio(studentSecurityContext())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lang").value(SESSION_LANG));
 
         createStudentPortfolio(studentSecurityContext(), Language.FI)
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.lang").value(Language.FI.getCode()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lang").value(Language.FI.getCode()));
     }
 
     @Test
@@ -233,13 +239,13 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
         deleteExistingStudentPortfolios();
 
         createStudentPortfolio(studentSecurityContext())
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         createStudentPortfolio(studentSecurityContext())
-            .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError());
 
         createStudentPortfolio(studentSecurityContext(), Language.EN)
-            .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -250,12 +256,12 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
         deleteExistingTeacherPortfolio();
 
         createTeacherPortfolio(teacherSecurityContext())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lang").value(SESSION_LANG));
 
         createTeacherPortfolio(teacherSecurityContext(), Language.FI)
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.lang").value(Language.FI.getCode()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lang").value(Language.FI.getCode()));
     }
 
     @Test
@@ -265,13 +271,13 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
         deleteExistingTeacherPortfolio();
 
         createTeacherPortfolio(teacherSecurityContext())
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         createTeacherPortfolio(teacherSecurityContext())
-            .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError());
 
         createTeacherPortfolio(teacherSecurityContext(), Language.EN)
-            .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -279,39 +285,39 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
         expectEmployeeContactInformationRequestToESB();
 
         createStudentPortfolio(hybridUserSecurityContext())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.url").value(HYBRID_USER_PORTFOLIO_PATH))
-            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.url").value(HYBRID_USER_PORTFOLIO_PATH))
+                .andExpect(jsonPath("$.lang").value(SESSION_LANG));
 
         createTeacherPortfolio(hybridUserSecurityContext())
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.url").value(HYBRID_USER_PORTFOLIO_PATH))
-            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.url").value(HYBRID_USER_PORTFOLIO_PATH))
+                .andExpect(jsonPath("$.lang").value(SESSION_LANG));
     }
 
     @Test
     public void thatHybridUserCanCreateMultipleStudentPortfoliosInDifferentLangs() throws Exception {
         createStudentPortfolio(hybridUserSecurityContext())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lang").value(SESSION_LANG));
 
         createStudentPortfolio(hybridUserSecurityContext(), Language.FI)
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.lang").value(Language.FI.getCode()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lang").value(Language.FI.getCode()));
     }
 
     @Test
     public void thatHybridUserCannotCreateMultipleStudentPortfoliosInSameLang() throws Exception {
         createStudentPortfolio(hybridUserSecurityContext())
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         createStudentPortfolio(hybridUserSecurityContext())
-            .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError());
 
         createStudentPortfolio(hybridUserSecurityContext(), Language.EN)
-            .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -320,12 +326,12 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
         expectEmployeeContactInformationRequestToESB();
 
         createTeacherPortfolio(hybridUserSecurityContext())
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.lang").value(SESSION_LANG));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lang").value(SESSION_LANG));
 
         createTeacherPortfolio(hybridUserSecurityContext(), Language.FI)
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.lang").value(Language.FI.getCode()));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.lang").value(Language.FI.getCode()));
     }
 
     @Test
@@ -333,13 +339,13 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
         expectEmployeeContactInformationRequestToESB();
 
         createTeacherPortfolio(hybridUserSecurityContext())
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         createTeacherPortfolio(hybridUserSecurityContext())
-            .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError());
 
         createTeacherPortfolio(hybridUserSecurityContext(), Language.EN)
-            .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -354,18 +360,18 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
         portfolioDto.visibility = updatedVisibility;
 
         mockMvc.perform(put(PRIVATE_PORTFOLIO_API_PATH + "/2").with(securityContext(studentSecurityContext()))
-            .characterEncoding("UTF-8")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(WebTestUtils.toJsonBytes(portfolioDto))
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.ownerName").value(updatedOwnerName))
-            .andExpect(jsonPath("$.intro").value(updatedIntro))
-            .andExpect(jsonPath("$.visibility").value(updatedVisibility.name()));
+                .characterEncoding("UTF-8")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(WebTestUtils.toJsonBytes(portfolioDto))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.ownerName").value(updatedOwnerName))
+                .andExpect(jsonPath("$.intro").value(updatedIntro))
+                .andExpect(jsonPath("$.visibility").value(updatedVisibility.name()));
 
         assertThat(portfolioService.findById(2L).visibility)
-            .isEqualTo(PortfolioVisibility.PUBLIC);
+                .isEqualTo(PortfolioVisibility.PUBLIC);
     }
 
     private void deleteExistingStudentPortfolios() {

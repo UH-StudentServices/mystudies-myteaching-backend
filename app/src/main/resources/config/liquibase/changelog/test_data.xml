@@ -205,6 +205,11 @@
                   separator=";"
                   tableName="notification_schedules">
         </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/portfolio_language_proficiency.csv"
+                  separator=";"
+                  tableName="portfolio_language_proficiency">
+        </loadData>
     </changeSet>
 
 </databaseChangeLog>
