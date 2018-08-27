@@ -31,7 +31,10 @@ import java.util.Optional;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.web.WebTestUtils.toJsonBytes;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivatePortfolioBackgroundResourceTest extends SpringTest {
@@ -40,6 +43,16 @@ public class PrivatePortfolioBackgroundResourceTest extends SpringTest {
 
     @Autowired
     private PortfolioBackgroundRepository portfolioBackgroundRepository;
+
+    @Test
+    public void thatBackgroundUriCanBeGet() throws Exception {
+        mockMvc.perform(get(RESOURCE_URL)
+            .with(securityContext(studentSecurityContext()))
+            .characterEncoding("UTF-8")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.backgroundUri").value(containsString("Profile_")));
+    }
 
     @Test
     public void thatBackgroundCanBeSelectedFromDefaults() throws Exception {

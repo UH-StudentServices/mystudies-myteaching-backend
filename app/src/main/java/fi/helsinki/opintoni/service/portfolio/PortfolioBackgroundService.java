@@ -53,6 +53,10 @@ public class PortfolioBackgroundService {
         this.uriBuilder = uriBuilder;
     }
 
+    public String getPortfolioBackgroundUri(Long portfolioId) {
+        return getPortfolioBackgroundUri(portfolioRepository.findById(portfolioId).get());
+    }
+
     public String getPortfolioBackgroundUri(Portfolio portfolio) {
         Optional<PortfolioBackground> backgroundOptional = portfolioBackgroundRepository.findByPortfolioId(portfolio.id);
 

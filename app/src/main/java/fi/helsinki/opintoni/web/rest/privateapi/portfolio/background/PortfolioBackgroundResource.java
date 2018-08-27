@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio.background;
 
+import fi.helsinki.opintoni.dto.portfolio.PortfolioBackgroundDto;
 import fi.helsinki.opintoni.service.portfolio.PortfolioBackgroundService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
@@ -53,5 +54,12 @@ public class PortfolioBackgroundResource extends AbstractResource {
                                                     @RequestBody SelectBackgroundRequest request) {
         portfolioBackgroundService.selectBackground(portfolioId, request);
         return response(true);
+    }
+
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<PortfolioBackgroundDto> getPortfolioBackgroundUri(@PathVariable Long portfolioId) {
+        String portfolioBackgroundUri = portfolioBackgroundService.getPortfolioBackgroundUri(portfolioId);
+        return response(new PortfolioBackgroundDto(portfolioBackgroundUri));
     }
 }
