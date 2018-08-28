@@ -171,4 +171,12 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
                     hasEntry("jobTitle", "Tuholaistorjuja"))
             ));
     }
+
+    @Test
+    public void thatBackgroundUriIsGetCorrectly() throws Exception {
+        mockMvc.perform(get(RestConstants.PRIVATE_API_V1 + STUDENT_PORTFOLIO_PATH)
+            .with(securityContext(studentSecurityContext())))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.backgroundUri").value(containsString("Profile_")));
+    }
 }

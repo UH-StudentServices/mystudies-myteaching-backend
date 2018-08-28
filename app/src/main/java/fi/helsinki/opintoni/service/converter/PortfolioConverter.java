@@ -18,14 +18,11 @@
 package fi.helsinki.opintoni.service.converter;
 
 import fi.helsinki.opintoni.domain.portfolio.*;
-import fi.helsinki.opintoni.dto.UserSettingsDto;
 import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.AvatarImageService;
-import fi.helsinki.opintoni.service.CreditsService;
-import fi.helsinki.opintoni.service.UserSettingsService;
 import fi.helsinki.opintoni.service.portfolio.*;
 import fi.helsinki.opintoni.util.UriBuilder;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
@@ -44,11 +41,9 @@ public class PortfolioConverter {
     private final ComponentVisibilityService componentVisibilityService;
     private final ComponentOrderService componentOrderService;
     private final ComponentHeadingService componentHeadingService;
-    private final UserSettingsService userSettingsService;
     private final AvatarImageService avatarImageService;
     private final LanguageProficiencyService languageProficiencyService;
     private final FreeTextContentService freeTextContentService;
-    private final CreditsService creditsService;
     private final PortfolioFavoriteService favoriteService;
     private final WorkExperienceService workExperienceService;
     private final SampleService sampleService;
@@ -57,17 +52,16 @@ public class PortfolioConverter {
     private final DegreeService degreeService;
     private final PortfolioKeywordRelationshipService keywordRelationshipService;
     private final PortfolioRepository portfolioRepository;
+    private final PortfolioBackgroundService portfolioBackgroundService;
 
     @Autowired
     public PortfolioConverter(UriBuilder uriBuilder,
                               ComponentVisibilityService componentVisibilityService,
                               ComponentOrderService componentOrderService,
                               ComponentHeadingService componentHeadingService,
-                              UserSettingsService userSettingsService,
                               AvatarImageService avatarImageService,
                               LanguageProficiencyService languageProficiencyService,
                               FreeTextContentService freeTextContentService,
-                              CreditsService creditsService,
                               PortfolioFavoriteService favoriteService,
                               WorkExperienceService workExperienceService,
                               SampleService sampleService,
@@ -75,16 +69,15 @@ public class PortfolioConverter {
                               ContactInformationService contactInformationService,
                               DegreeService degreeService,
                               PortfolioKeywordRelationshipService keywordRelationshipService,
-                              PortfolioRepository portfolioRepository) {
+                              PortfolioRepository portfolioRepository,
+                              PortfolioBackgroundService portfolioBackgroundService) {
         this.uriBuilder = uriBuilder;
         this.componentVisibilityService = componentVisibilityService;
         this.componentOrderService = componentOrderService;
         this.componentHeadingService = componentHeadingService;
-        this.userSettingsService = userSettingsService;
         this.avatarImageService = avatarImageService;
         this.languageProficiencyService = languageProficiencyService;
         this.freeTextContentService = freeTextContentService;
-        this.creditsService = creditsService;
         this.favoriteService = favoriteService;
         this.workExperienceService = workExperienceService;
         this.sampleService = sampleService;
@@ -93,6 +86,7 @@ public class PortfolioConverter {
         this.degreeService = degreeService;
         this.keywordRelationshipService = keywordRelationshipService;
         this.portfolioRepository = portfolioRepository;
+        this.portfolioBackgroundService = portfolioBackgroundService;
     }
 
     public PortfolioDto toDto(Portfolio portfolio, ComponentFetchStrategy componentFetchStrategy) {
@@ -102,7 +96,7 @@ public class PortfolioConverter {
         portfolioDto.url = uriBuilder.getPortfolioUrl(portfolio);
         portfolioDto.intro = portfolio.intro;
         portfolioDto.ownerName = portfolio.ownerName;
-        portfolioDto.backgroundUri = getBackgroundUri(portfolio);
+        portfolioDto.backgroundUri = portfolioBackgroundService.getPortfolioBackgroundUri(portfolio);
         portfolioDto.visibility = portfolio.visibility;
         portfolioDto.avatarUrl = avatarImageService.getPortfolioAvatarImageUrl(portfolio.getOwnerId());
         portfolioDto.componentVisibilities = componentVisibilityService.findByPortfolioId(portfolio.id);
@@ -223,11 +217,6 @@ public class PortfolioConverter {
                 // Do not eagerly fetch components that involve external API calls
                 break;
         }
-    }
-
-    private String getBackgroundUri(Portfolio portfolio) {
-        UserSettingsDto userSettingsDto = userSettingsService.findByUserId(portfolio.user.id);
-        return userSettingsDto.backgroundUri;
     }
 
     public enum ComponentFetchStrategy {

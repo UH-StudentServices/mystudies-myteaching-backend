@@ -25,10 +25,10 @@ import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.UserSettingsRepository;
 import fi.helsinki.opintoni.service.converter.UserSettingsConverter;
 import fi.helsinki.opintoni.service.storage.FileStorage;
+import fi.helsinki.opintoni.util.FileNameUtil;
 import fi.helsinki.opintoni.web.rest.privateapi.usersettings.SelectBackgroundRequest;
 import fi.helsinki.opintoni.web.rest.privateapi.usersettings.UpdateUserSettingsRequest;
 import fi.helsinki.opintoni.web.rest.privateapi.usersettings.UploadImageBase64Request;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -134,17 +134,13 @@ public class UserSettingsService {
         removeOldUploadedBackgroundFile(userSettings);
 
         byte[] bytes = imageService.createUserBackground(request.imageBase64);
-        String filename = getFilename();
+        String filename = FileNameUtil.getImageFileName();
         fileStorage.put(filename, bytes);
 
         userSettings.uploadedBackgroundFilename = filename;
         userSettings.backgroundFilename = null;
 
         return userSettingsConverter.toDto(userSettingsRepository.save(userSettings));
-    }
-
-    private String getFilename() {
-        return RandomStringUtils.randomAlphanumeric(64) + ".jpg";
     }
 
     public UserSettingsDto selectBackground(Long id, SelectBackgroundRequest request) {
