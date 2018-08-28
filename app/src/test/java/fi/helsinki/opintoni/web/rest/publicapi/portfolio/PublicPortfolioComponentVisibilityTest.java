@@ -40,11 +40,6 @@ public class PublicPortfolioComponentVisibilityTest extends PublicPortfolioTest 
         returnsForbidden(PUBLIC_STUDENT_PORTFOLIO_API_PATH + "/attainment");
     }
 
-    @Test
-    public void thatPrivateCreditsAreNotReturned() throws Exception {
-        returnsForbidden(PUBLIC_STUDENT_PORTFOLIO_API_PATH + "/credits");
-    }
-
     private void returnsForbidden(String url) throws Exception {
         mockMvc.perform(get(url))
             .andExpect(status().isForbidden());

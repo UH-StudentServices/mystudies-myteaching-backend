@@ -37,11 +37,6 @@ public class RestrictedPortfolioComponentVisibilityTest extends RestrictedPortfo
         returnsForbidden(RESTRICTED_STUDENT_PORTFOLIO_API_PATH + "/attainment");
     }
 
-    @Test
-    public void thatPrivateCreditsAreNotReturned() throws Exception {
-        returnsForbidden(RESTRICTED_STUDENT_PORTFOLIO_API_PATH + "/credits");
-    }
-
     private void returnsForbidden(String url) throws Exception {
         mockMvc.perform(get(url).with(securityContext(studentSecurityContext())))
             .andExpect(status().isForbidden());
