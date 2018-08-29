@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -72,14 +73,14 @@ public class FavoriteService {
 
     public List<FavoriteDto> findByUserId(final Long userId) {
         return favoriteRepository.findByUserIdOrderByOrderIndexAsc(userId)
-            .stream()
-            .filter(f -> f.isPortfolio() == false)
-            .map(favoriteConverter::toDto)
-            .collect(Collectors.toList());
+                .stream()
+                .filter(f -> f.isPortfolio() == false)
+                .map(favoriteConverter::toDto)
+                .collect(Collectors.toList());
     }
 
     public FavoriteDto saveRssFavorite(Long userId, SaveRssFavoriteRequest saveRssFavoriteRequest) {
-        int maxOrderIndex = orderIndex(false).apply(userId);
+        int maxOrderIndex = orderIndex().apply(userId);
 
         RssFavorite favorite = new RssFavorite();
         favorite.url = saveRssFavoriteRequest.url;
@@ -95,7 +96,7 @@ public class FavoriteService {
     public FavoriteDto insertUnisportFavorite(Long userId) {
         UnisportFavorite favorite = new UnisportFavorite();
         favorite.type = Favorite.Type.UNISPORT;
-        favorite.orderIndex = orderIndex(false).apply(userId) + 1;
+        favorite.orderIndex = orderIndex().apply(userId) + 1;
         favorite.user = userRepository.findOne(userId);
 
         favoriteRepository.save(favorite);
@@ -104,7 +105,7 @@ public class FavoriteService {
     }
 
     private static final ImmutableList<Favorite.Type> FLAMMA_TYPES = ImmutableList.of(
-        Favorite.Type.FLAMMA_NEWS,Favorite.Type.FLAMMA_EVENTS);
+            Favorite.Type.FLAMMA_NEWS, Favorite.Type.FLAMMA_EVENTS);
 
     public FavoriteDto insertFlammaFavorite(Long userId, String typeString) {
         Favorite.Type type = Favorite.Type.valueOf(typeString);
@@ -114,7 +115,7 @@ public class FavoriteService {
         }
         Favorite favorite = new Favorite();
         favorite.type = type;
-        favorite.orderIndex = orderIndex(false).apply(userId) + 1;
+        favorite.orderIndex = orderIndex().apply(userId) + 1;
         favorite.user = userRepository.findOne(userId);
 
         favoriteRepository.save(favorite);
@@ -127,17 +128,17 @@ public class FavoriteService {
         LinkFavorite.Builder builder = new LinkFavorite.Builder();
 
         LinkFavorite favorite = builder
-            .user(userRepository.findOne(userId))
-            .orderIndex(orderIndex(true).apply(userId) + 1)
-            .providerName(insertRequest.providerName)
-            .url(insertRequest.url)
-            .title(insertRequest.title)
-            .type(Favorite.Type.LINK)
-            .thumbnailUrl(insertRequest.thumbnailUrl)
-            .thumbnailHeight(insertRequest.thumbnailHeight)
-            .thumbnailWidth(insertRequest.thumbnailWidth)
-            .portfolio(portfolioRepository.findOne(portfolioId))
-            .build();
+                .user(userRepository.findOne(userId))
+                .orderIndex(portfolioOrderIndex().apply(userId, portfolioId) + 1)
+                .providerName(insertRequest.providerName)
+                .url(insertRequest.url)
+                .title(insertRequest.title)
+                .type(Favorite.Type.LINK)
+                .thumbnailUrl(insertRequest.thumbnailUrl)
+                .thumbnailHeight(insertRequest.thumbnailHeight)
+                .thumbnailWidth(insertRequest.thumbnailWidth)
+                .portfolio(portfolioRepository.findOne(portfolioId))
+                .build();
 
         favoriteRepository.save(favorite);
         return favoriteConverter.toDto(favorite);
@@ -147,7 +148,7 @@ public class FavoriteService {
         UnicafeFavorite favorite = new UnicafeFavorite();
         favorite.type = Favorite.Type.UNICAFE;
         favorite.user = userRepository.findOne(userId);
-        favorite.orderIndex = orderIndex(false).apply(userId) + 1;
+        favorite.orderIndex = orderIndex().apply(userId) + 1;
         favorite.restaurantId = restaurantId;
 
         favoriteRepository.save(favorite);
@@ -168,7 +169,7 @@ public class FavoriteService {
         TwitterFavorite favorite = new TwitterFavorite();
         favorite.type = Favorite.Type.TWITTER;
         favorite.user = userRepository.findOne(userId);
-        favorite.orderIndex = orderIndex(portfolio != null).apply(userId) + 1;
+        favorite.orderIndex = orderIndex().apply(userId) + 1;
         favorite.portfolio = portfolio;
 
         favorite.feedType = TwitterFavorite.FeedType.valueOf(request.feedType);
@@ -194,22 +195,26 @@ public class FavoriteService {
 
     private void orderFavorites(final Long userId, final List<Long> orderedFavoriteIds, final boolean portfolio) {
         favoriteRepository
-            .findByUserIdOrderByOrderIndexAsc(userId).stream()
-            .filter(f -> f.isPortfolio() == portfolio)
-            .filter(f -> orderedFavoriteIds.contains(f.id))
-            .forEach(f -> f.orderIndex = orderedFavoriteIds.indexOf(f.id));
+                .findByUserIdOrderByOrderIndexAsc(userId).stream()
+                .filter(f -> f.isPortfolio() == portfolio)
+                .filter(f -> orderedFavoriteIds.contains(f.id))
+                .forEach(f -> f.orderIndex = orderedFavoriteIds.indexOf(f.id));
     }
 
     public void deleteFavorite(final Long favoriteId) {
         favoriteRepository.delete(favoriteId);
     }
 
-    private Function<Long, Integer> orderIndex(boolean portfolio) {
-        return portfolio ? favoriteRepository::getMaxOrderIndexInPortfolio : favoriteRepository::getMaxOrderIndex;
+    private BiFunction<Long, Long, Integer> portfolioOrderIndex() {
+        return favoriteRepository::getMaxOrderIndexInPortfolio;
+    }
+
+    private Function<Long, Integer> orderIndex() {
+        return favoriteRepository::getMaxOrderIndex;
     }
 
     private void createFavorite(Map<String, String> favorite, List<Favorite> favorites) {
-        switch(Favorite.Type.valueOf(favorite.get("type"))) {
+        switch (Favorite.Type.valueOf(favorite.get("type"))) {
             case UNICAFE:
                 favorites.add(createUnicafeFavorite(Integer.parseInt(favorite.get("restaurantId"))));
                 break;
@@ -236,12 +241,12 @@ public class FavoriteService {
         defaultFavorites.forEach(f -> createFavorite(f, favorites));
 
         IntStream.range(0, favorites.size())
-            .forEach(index -> {
-                Favorite favorite = favorites.get(index);
-                favorite.user = user;
-                favorite.orderIndex = index;
-                favoriteRepository.save(favorite);
-            });
+                .forEach(index -> {
+                    Favorite favorite = favorites.get(index);
+                    favorite.user = user;
+                    favorite.orderIndex = index;
+                    favoriteRepository.save(favorite);
+                });
     }
 
     private Favorite createUnicafeFavorite(int restaurantId) {

@@ -29,9 +29,9 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
     List<Favorite> findByPortfolioIdOrderByOrderIndexAsc(Long portfolioId);
 
-    @Query("select coalesce(max(f.orderIndex), 0) from #{#entityName} f where f.user.id = ?1 and portfolio = false")
+    @Query("select coalesce(max(f.orderIndex), 0) from #{#entityName} f where f.user.id = ?1 and f.portfolio.id is null")
     int getMaxOrderIndex(Long userId);
 
-    @Query("select coalesce(max(f.orderIndex), 0) from #{#entityName} f where f.user.id = ?1 and portfolio = true")
-    int getMaxOrderIndexInPortfolio(Long userId);
+    @Query("select coalesce(max(f.orderIndex), 0) from #{#entityName} f where f.user.id = ?1 and f.portfolio.id = ?2")
+    int getMaxOrderIndexInPortfolio(Long userId, Long portfolioId);
 }
