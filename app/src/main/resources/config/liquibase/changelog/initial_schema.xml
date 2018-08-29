@@ -1692,5 +1692,25 @@
             <column name="last_modified_by" type="varchar(255)"/>
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
+        <createTable tableName="languagecode_migration_table">
+            <column name="translationLanguageCode" type="varchar(255)"></column>
+            <column name="languageCode" type="varchar(255)"></column>
+            <column name="languageTranslation" type="varchar(255)"></column>
+        </createTable>
+        <createTable tableName="proficiency_migration_table">
+            <column name="translationLanguageCode" type="varchar(255)"></column>
+            <column name="proficiencyValue" type="varchar(255)"></column>
+            <column name="languageTranslation" type="varchar(255)"></column>
+        </createTable>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/changelog/data/language_migration_data.csv"
+                  separator=";"
+                  tableName="languagecode_migration_table">
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/changelog/data/proficiency_migration_data.csv"
+                  separator=";"
+                  tableName="proficiency_migration_table">
+        </loadData>
     </changeSet>
 </databaseChangeLog>
