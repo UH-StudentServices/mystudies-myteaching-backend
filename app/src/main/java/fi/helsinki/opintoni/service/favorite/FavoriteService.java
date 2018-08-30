@@ -66,17 +66,17 @@ public class FavoriteService {
 
     public List<FavoriteDto> findByPortfolioId(final Long portfolioId) {
         return favoriteRepository.findByPortfolioIdOrderByOrderIndexAsc(portfolioId)
-                .stream()
-                .map(favoriteConverter::toDto)
-                .collect(Collectors.toList());
+            .stream()
+            .map(favoriteConverter::toDto)
+            .collect(Collectors.toList());
     }
 
     public List<FavoriteDto> findByUserId(final Long userId) {
         return favoriteRepository.findByUserIdOrderByOrderIndexAsc(userId)
-                .stream()
-                .filter(f -> f.isPortfolio() == false)
-                .map(favoriteConverter::toDto)
-                .collect(Collectors.toList());
+            .stream()
+            .filter(f -> f.isPortfolio() == false)
+            .map(favoriteConverter::toDto)
+            .collect(Collectors.toList());
     }
 
     public FavoriteDto saveRssFavorite(Long userId, SaveRssFavoriteRequest saveRssFavoriteRequest) {
@@ -105,13 +105,13 @@ public class FavoriteService {
     }
 
     private static final ImmutableList<Favorite.Type> FLAMMA_TYPES = ImmutableList.of(
-            Favorite.Type.FLAMMA_NEWS, Favorite.Type.FLAMMA_EVENTS);
+        Favorite.Type.FLAMMA_NEWS, Favorite.Type.FLAMMA_EVENTS);
 
     public FavoriteDto insertFlammaFavorite(Long userId, String typeString) {
         Favorite.Type type = Favorite.Type.valueOf(typeString);
         if (!FLAMMA_TYPES.contains(type)) {
             throw new IllegalArgumentException(
-                    String.format("Illegal Flamma type: %s", typeString));
+                String.format("Illegal Flamma type: %s", typeString));
         }
         Favorite favorite = new Favorite();
         favorite.type = type;
@@ -128,17 +128,17 @@ public class FavoriteService {
         LinkFavorite.Builder builder = new LinkFavorite.Builder();
 
         LinkFavorite favorite = builder
-                .user(userRepository.findOne(userId))
-                .orderIndex(portfolioOrderIndex().apply(userId, portfolioId) + 1)
-                .providerName(insertRequest.providerName)
-                .url(insertRequest.url)
-                .title(insertRequest.title)
-                .type(Favorite.Type.LINK)
-                .thumbnailUrl(insertRequest.thumbnailUrl)
-                .thumbnailHeight(insertRequest.thumbnailHeight)
-                .thumbnailWidth(insertRequest.thumbnailWidth)
-                .portfolio(portfolioRepository.findOne(portfolioId))
-                .build();
+            .user(userRepository.findOne(userId))
+            .orderIndex(portfolioOrderIndex().apply(userId, portfolioId) + 1)
+            .providerName(insertRequest.providerName)
+            .url(insertRequest.url)
+            .title(insertRequest.title)
+            .type(Favorite.Type.LINK)
+            .thumbnailUrl(insertRequest.thumbnailUrl)
+            .thumbnailHeight(insertRequest.thumbnailHeight)
+            .thumbnailWidth(insertRequest.thumbnailWidth)
+            .portfolio(portfolioRepository.findOne(portfolioId))
+            .build();
 
         favoriteRepository.save(favorite);
         return favoriteConverter.toDto(favorite);
@@ -181,7 +181,7 @@ public class FavoriteService {
 
     public FavoriteDto insertTwitterFavoriteForPortfolio(Long userId, InsertTwitterFavoriteRequest request, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId)
-                .orElseThrow(() -> new NotFoundException("Portfolio not found"));
+            .orElseThrow(() -> new NotFoundException("Portfolio not found"));
         return insertTwitterFavorite(userId, request, portfolio);
     }
 
@@ -195,10 +195,10 @@ public class FavoriteService {
 
     private void orderFavorites(final Long userId, final List<Long> orderedFavoriteIds, final boolean portfolio) {
         favoriteRepository
-                .findByUserIdOrderByOrderIndexAsc(userId).stream()
-                .filter(f -> f.isPortfolio() == portfolio)
-                .filter(f -> orderedFavoriteIds.contains(f.id))
-                .forEach(f -> f.orderIndex = orderedFavoriteIds.indexOf(f.id));
+            .findByUserIdOrderByOrderIndexAsc(userId).stream()
+            .filter(f -> f.isPortfolio() == portfolio)
+            .filter(f -> orderedFavoriteIds.contains(f.id))
+            .forEach(f -> f.orderIndex = orderedFavoriteIds.indexOf(f.id));
     }
 
     public void deleteFavorite(final Long favoriteId) {
@@ -241,12 +241,12 @@ public class FavoriteService {
         defaultFavorites.forEach(f -> createFavorite(f, favorites));
 
         IntStream.range(0, favorites.size())
-                .forEach(index -> {
-                    Favorite favorite = favorites.get(index);
-                    favorite.user = user;
-                    favorite.orderIndex = index;
-                    favoriteRepository.save(favorite);
-                });
+            .forEach(index -> {
+                Favorite favorite = favorites.get(index);
+                favorite.user = user;
+                favorite.orderIndex = index;
+                favoriteRepository.save(favorite);
+            });
     }
 
     private Favorite createUnicafeFavorite(int restaurantId) {

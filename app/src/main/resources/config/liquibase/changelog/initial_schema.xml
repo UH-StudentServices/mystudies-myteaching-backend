@@ -1651,7 +1651,7 @@
             UPDATE
             favorite
             SET
-            favorite.portfolio_id =
+            portfolio_id =
             (select min(id) as portfolio_id from portfolio where portfolio.user_id = favorite.user_id group by user_id)
             WHERE
             favorite.portfolio=true
