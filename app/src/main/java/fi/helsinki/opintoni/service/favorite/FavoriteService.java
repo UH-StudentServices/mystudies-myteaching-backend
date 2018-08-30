@@ -74,7 +74,7 @@ public class FavoriteService {
     public List<FavoriteDto> findByUserId(final Long userId) {
         return favoriteRepository.findByUserIdOrderByOrderIndexAsc(userId)
             .stream()
-            .filter(f -> f.isPortfolio() == false)
+            .filter(f -> !f.isPortfolio())
             .map(favoriteConverter::toDto)
             .collect(Collectors.toList());
     }
@@ -126,7 +126,7 @@ public class FavoriteService {
                                                       final InsertLinkFavoriteRequest insertRequest,
                                                       final Long portfolioId) {
         LinkFavorite.Builder builder = new LinkFavorite.Builder();
-
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException("Portfolio not found"));
         LinkFavorite favorite = builder
             .user(userRepository.findOne(userId))
             .orderIndex(portfolioOrderIndex().apply(userId, portfolioId) + 1)
@@ -137,7 +137,7 @@ public class FavoriteService {
             .thumbnailUrl(insertRequest.thumbnailUrl)
             .thumbnailHeight(insertRequest.thumbnailHeight)
             .thumbnailWidth(insertRequest.thumbnailWidth)
-            .portfolio(portfolioRepository.findOne(portfolioId))
+            .portfolio(portfolio)
             .build();
 
         favoriteRepository.save(favorite);

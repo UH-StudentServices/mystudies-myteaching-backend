@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.domain.Favorite;
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.favorite.FavoriteService;
@@ -93,7 +92,6 @@ public class PrivatePortfolioFavoriteResource extends AbstractResource {
     @Timed
     public ResponseEntity<List<FavoriteDto>> findByPortfolioId(@PathVariable Long portfolioId,
                                                                @UserId Long userId) {
-        permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
         return response(portfolioFavoriteService.findByPortfolioId(portfolioId));
     }
 
