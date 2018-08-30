@@ -17,9 +17,7 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.dto.FavoriteDto;
-import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,28 +25,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static fi.helsinki.opintoni.exception.http.NotFoundException.notFoundException;
-
 @Service
 @Transactional
 public class PortfolioFavoriteService {
 
-    private final PortfolioRepository portfolioRepository;
     private final FavoriteService favoriteService;
 
     @Autowired
-    public PortfolioFavoriteService(FavoriteService favoriteService, PortfolioRepository portfolioRepository) {
+    public PortfolioFavoriteService(FavoriteService favoriteService) {
         this.favoriteService = favoriteService;
-        this.portfolioRepository = portfolioRepository;
     }
 
     public List<FavoriteDto> findByPortfolioId(Long portfolioId) {
-        return portfolioRepository.findById(portfolioId)
-            .map(this::findFavoritesForPortfolio)
-            .orElseThrow(notFoundException("Portfolio not found"));
+        return favoriteService.findByPortfolioId(portfolioId);
     }
 
-    private List<FavoriteDto> findFavoritesForPortfolio(Portfolio portfolio) {
-        return favoriteService.findByUserIdForPortfolio(portfolio.getOwnerId());
-    }
 }

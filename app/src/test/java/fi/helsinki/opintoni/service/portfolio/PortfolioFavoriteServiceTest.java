@@ -35,7 +35,7 @@ public class PortfolioFavoriteServiceTest extends SpringTest {
 
     @Test
     public void thatFavoritesAreFoundForPortfolio() {
-        List<FavoriteDto> favoriteDtoList = portfolioFavoriteService.findByPortfolioId(3L);
+        List<FavoriteDto> favoriteDtoList = portfolioFavoriteService.findByPortfolioId(1L);
 
         assertThat(favoriteDtoList).hasSize(3);
         assertThat(favoriteDtoList.get(0).getClass()).isEqualTo(LinkFavoriteDto.class);

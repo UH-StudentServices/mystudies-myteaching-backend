@@ -19,6 +19,8 @@ package fi.helsinki.opintoni.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
@@ -33,11 +35,8 @@ public class Favorite extends AbstractAuditingEntity implements Ownership {
         UNICAFE,
         UNISPORT,
         FLAMMA_NEWS,
-        FLAMMA_EVENTS        
+        FLAMMA_EVENTS
     }
-
-    @Column(name = "portfolio")
-    public boolean portfolio;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,15 +55,19 @@ public class Favorite extends AbstractAuditingEntity implements Ownership {
     @JoinColumn(name = "user_id")
     public User user;
 
+    @ManyToOne
+    @JoinColumn(name = "portfolio_id")
+    public Portfolio portfolio;
+
     @Override
     public Long getOwnerId() {
         return user.id;
     }
 
     public boolean isPortfolio() {
-        return portfolio;
+        return portfolio != null;
     }
-    
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)

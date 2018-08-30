@@ -1642,4 +1642,26 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="OO-901 Add relation between portfolio and favorites" author="Tomi Mäkinen">
+        <addColumn tableName="favorite">
+            <column name="portfolio_id" type="bigint" />
+        </addColumn>
+        <sql>
+            UPDATE
+            favorite
+            SET
+            portfolio_id =
+            (select min(id) as portfolio_id from portfolio where portfolio.user_id = favorite.user_id group by user_id)
+            WHERE
+            favorite.portfolio=true
+        </sql>
+        <dropColumn tableName="favorite" columnName="portfolio" />
+        <addForeignKeyConstraint baseColumnNames="portfolio_id"
+                                 baseTableName="favorite"
+                                 constraintName="fk_favorite_portfolio"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portfolio"
+                                 onDelete="CASCADE"/>
+    </changeSet>
 </databaseChangeLog>

@@ -37,7 +37,7 @@ public class FavoriteServiceFindByUserIdTest extends AbstractFavoriteServiceTest
 
     @Test
     public void usersFavoritesAreReturnedOrderedAndWithCorrectDataForPortfolio() {
-        List<FavoriteDto> favorites = favoriteService.findByUserIdForPortfolio(1L);
+        List<FavoriteDto> favorites = favoriteService.findByPortfolioId(1L);
         assertThat(favorites.size() == 3).isTrue();
 
         assertLinkFavorite(favorites.get(0), 4L, "http://www.helsinki.fi", "Helsingin yliopisto");

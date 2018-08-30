@@ -42,6 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FavoriteServiceSaveLinkFavoriteTest extends SpringTest {
 
     private static final Long USER_ID = 1L;
+    private static final Long PORTFOLIO_ID = 5L;
 
     @Autowired
     private FavoriteService favoriteService;
@@ -62,7 +63,7 @@ public class FavoriteServiceSaveLinkFavoriteTest extends SpringTest {
     @Test
     public void linkFavoriteIsPersistedCorrectlyForPortfolio() throws Exception {
         LinkFavoriteDto favorite =
-            (LinkFavoriteDto) favoriteService.insertLinkFavoriteForPortfolio(USER_ID, insertRequest);
+            (LinkFavoriteDto) favoriteService.insertLinkFavoriteForPortfolio(USER_ID, insertRequest, PORTFOLIO_ID);
 
         assertThat(favorite.url).isEqualTo(EmbedLySampleData.URL);
         assertThat(favorite.providerName).isEqualTo(EmbedLySampleData.PROVIDER_NAME);
