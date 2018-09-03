@@ -157,12 +157,6 @@
             <column name="created_date" type="timestamp"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/language_proficiencies.csv"
-                  separator=";"
-                  tableName="language_proficiency">
-            <column name="created_date" type="timestamp"/>
-        </loadData>
-        <loadData encoding="UTF-8"
                   file="config/liquibase/testdata/office_hours.csv"
                   separator=";"
                   tableName="office_hours">
