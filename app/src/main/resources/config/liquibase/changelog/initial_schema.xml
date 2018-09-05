@@ -1693,14 +1693,14 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
         <createTable tableName="languagecode_migration_table">
-            <column name="translationLanguageCode" type="varchar(255)"></column>
-            <column name="languageCode" type="varchar(255)"></column>
-            <column name="languageTranslation" type="varchar(255)"></column>
+            <column name="translationlanguagecode" type="varchar(255)"></column>
+            <column name="languagecode" type="varchar(255)"></column>
+            <column name="languagetranslation" type="varchar(255)"></column>
         </createTable>
         <createTable tableName="proficiency_migration_table">
-            <column name="translationLanguageCode" type="varchar(255)"></column>
-            <column name="proficiencyValue" type="int"></column>
-            <column name="languageTranslation" type="varchar(255)"></column>
+            <column name="translationlanguagecode" type="varchar(255)"></column>
+            <column name="proficiencyvalue" type="int"></column>
+            <column name="languagetranslation" type="varchar(255)"></column>
         </createTable>
         <loadData encoding="UTF-8"
                   file="config/liquibase/changelog/data/language_migration_data.csv"
@@ -1714,11 +1714,11 @@
         </loadData>
         <sql>
             INSERT INTO portfolio_language_proficiency (portfolio_id, language_name, proficiency, created_by, created_date, last_modified_by, last_modified_date)
-            SELECT lp.portfolio_id, lc_mig.languageTranslation as language_name, pro_mig.languageTranslation as proficiency, lp.created_by, lp.created_date, lp.last_modified_by, lp.last_modified_date
+            SELECT lp.portfolio_id, lc_mig.languagetranslation as language_name, pro_mig.languagetranslation as proficiency, lp.created_by, lp.created_date, lp.last_modified_by, lp.last_modified_date
             FROM language_proficiency as lp
             INNER JOIN portfolio as p ON lp.portfolio_id = p.id
-            INNER JOIN languagecode_migration_table as lc_mig ON lc_mig.translationLanguageCode = p.language AND lc_mig.languageCode = lp.language_code
-            INNER JOIN proficiency_migration_table as pro_mig ON pro_mig.translationLanguageCode = p.language AND pro_mig.proficiencyValue = lp.proficiency;
+            INNER JOIN languagecode_migration_table as lc_mig ON lc_mig.translationlanguagecode = p.language AND lc_mig.languagecode = lp.language_code
+            INNER JOIN proficiency_migration_table as pro_mig ON pro_mig.translationlanguagecode = p.language AND pro_mig.proficiencyvalue = lp.proficiency;
         </sql>
         <dropTable tableName="languagecode_migration_table" />
         <dropTable tableName="proficiency_migration_table" />
