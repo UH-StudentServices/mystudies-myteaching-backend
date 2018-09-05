@@ -1722,6 +1722,7 @@
         </sql>
         <dropTable tableName="languagecode_migration_table" />
         <dropTable tableName="proficiency_migration_table" />
+        <dropUniqueConstraint tableName="language_proficiency" constraintName="unique_lang_code_portfolio_id_pair" />
         <dropTable tableName="language_proficiency" />
     </changeSet>
 </databaseChangeLog>
