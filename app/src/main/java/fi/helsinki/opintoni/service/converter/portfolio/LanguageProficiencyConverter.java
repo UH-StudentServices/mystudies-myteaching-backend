@@ -19,15 +19,14 @@ package fi.helsinki.opintoni.service.converter.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.PortfolioLanguageProficiency;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficiencyDto;
-import org.springframework.stereotype.Component;
 
-@Component
 public class LanguageProficiencyConverter {
-    public LanguageProficiencyDto toDto(PortfolioLanguageProficiency languageProficiency) {
+    public static LanguageProficiencyDto toDto(PortfolioLanguageProficiency portfolioLanguageProficiency) {
         LanguageProficiencyDto languageProficiencyDto = new LanguageProficiencyDto();
-        languageProficiencyDto.id = languageProficiency.id;
-        languageProficiencyDto.language = languageProficiency.languageCode;
-        languageProficiencyDto.proficiency = languageProficiency.proficiency;
+        languageProficiencyDto.id = portfolioLanguageProficiency.id;
+        languageProficiencyDto.languageName = portfolioLanguageProficiency.languageName;
+        languageProficiencyDto.proficiency = portfolioLanguageProficiency.proficiency;
+        languageProficiencyDto.description = portfolioLanguageProficiency.description;
         return languageProficiencyDto;
     }
 }

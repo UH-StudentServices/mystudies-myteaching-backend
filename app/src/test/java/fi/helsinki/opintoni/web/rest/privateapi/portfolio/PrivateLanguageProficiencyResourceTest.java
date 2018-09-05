@@ -19,8 +19,6 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import com.google.common.collect.ImmutableList;
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.domain.portfolio.LanguageProficiency;
-import fi.helsinki.opintoni.domain.portfolio.PortfolioLanguage;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficienciesChangeDescriptorDto;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficiencyDto;
 import fi.helsinki.opintoni.web.rest.RestConstants;
@@ -34,10 +32,7 @@ import java.util.List;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.web.WebTestUtils.toJsonBytes;
-import static org.hamcrest.Matchers.both;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,61 +44,64 @@ public class PrivateLanguageProficiencyResourceTest extends SpringTest {
     private static final long HINDI_LANGUAGE_PROFICIENCY_ID = 4L;
     private static final long ANOTHER_USERS_LANGUAGE_PROFICIENCY_ID = 3L;
 
+    private static final String CHINESE = "Chinese";
+    private static final String ENGLISH = "English";
+    private static final String FINNISH = "Finnish";
+    private static final String GREEK = "Greek";
+    private static final String SWEDISH = "Swedish";
+
+    private static final String ELEMENTARY_PROFICIENCY = "Elementary ";
+    private static final String FULL_PROFESSIONAL_PROFICIENCY = "Full professional";
+    private static final String LIMITED_WORKING_PROFICIENCY = "Limited working";
+    private static final String NATIVE_PROFICIENCY = "Native";
+
     @Test
     public void thatLanguageProficiencyChangesArePersisted() throws Exception {
         LanguageProficienciesChangeDescriptorDto updateBatch = new LanguageProficienciesChangeDescriptorDto();
 
-        LanguageProficiencyDto greek = newLanguageProficiency(PortfolioLanguage.GREEK,
-            LanguageProficiency.ELEMENTARY_PROFICIENCY,
-            null);
-        LanguageProficiencyDto chinese = newLanguageProficiency(PortfolioLanguage.CHINESE,
-            LanguageProficiency.LIMITED_WORKING_PROFICIENCY,
-            null);
+        LanguageProficiencyDto greek = newLanguageProficiency(GREEK,
+                ELEMENTARY_PROFICIENCY,
+                "",
+                null);
+        LanguageProficiencyDto chinese = newLanguageProficiency(CHINESE,
+                LIMITED_WORKING_PROFICIENCY,
+                "",
+                null);
 
         updateBatch.newLanguageProficiencies = ImmutableList.of(greek, chinese);
 
-        LanguageProficiencyDto english = newLanguageProficiency(PortfolioLanguage.ENGLISH,
-            LanguageProficiency.NATIVE_PROFICIENCY,
-            ENGLISH_LANGUAGE_PROFICIENCY_ID);
+        LanguageProficiencyDto english = newLanguageProficiency(ENGLISH,
+                NATIVE_PROFICIENCY,
+                "",
+                ENGLISH_LANGUAGE_PROFICIENCY_ID);
 
         updateBatch.updatedLanguageProficiencies = ImmutableList.of(english);
         updateBatch.deletedIds = ImmutableList.of(HINDI_LANGUAGE_PROFICIENCY_ID);
 
         persistUpdateBatchWithStatus(updateBatch, jsonPath("$").value(Matchers.<List<LanguageProficiencyDto>>allOf(
-            hasSize(4),
-            hasItem(
-                both(hasEntry("id", 1)).and(hasEntry("language", "en")).and(hasEntry("proficiency", 5))
-            ),
-            hasItem(
-                both(hasEntry("id", 2)).and(hasEntry("language", "fi")).and(hasEntry("proficiency", 5))
-            ),
-            hasItem(
-                both(hasEntry("id", 5)).and(hasEntry("language", "el")).and(hasEntry("proficiency", 1))
-            ),
-            hasItem(
-                both(hasEntry("id", 6)).and(hasEntry("language", "zh")).and(hasEntry("proficiency", 2))
-            )
+                hasSize(4),
+                hasItem(
+                        both(hasEntry("id", 1)).and(hasEntry("languageName", ENGLISH)).and(hasEntry("proficiency", NATIVE_PROFICIENCY))
+                ),
+                hasItem(
+                        both(hasEntry("id", 2)).and(hasEntry("languageName", FINNISH)).and(hasEntry("proficiency", NATIVE_PROFICIENCY))
+                ),
+                hasItem(
+                        both(hasEntry("id", 5)).and(hasEntry("languageName", GREEK)).and(hasEntry("proficiency", ELEMENTARY_PROFICIENCY))
+                ),
+                hasItem(
+                        both(hasEntry("id", 6)).and(hasEntry("languageName", CHINESE)).and(hasEntry("proficiency", LIMITED_WORKING_PROFICIENCY))
+                )
         )));
-    }
-
-    @Test
-    public void thatAnotherLanguageProficiencyCannotBeInsertedForLanguageForWhichProficiencyAlreadyExists() throws Exception {
-        LanguageProficienciesChangeDescriptorDto updateBatch = new LanguageProficienciesChangeDescriptorDto();
-        LanguageProficiencyDto english = newLanguageProficiency(PortfolioLanguage.ENGLISH,
-            LanguageProficiency.NATIVE_PROFICIENCY,
-            null);
-
-        updateBatch.newLanguageProficiencies = ImmutableList.of(english);
-
-        persistUpdateBatchWithStatus(updateBatch, status().isInternalServerError());
     }
 
     @Test
     public void thatUserCannotUpdateLanguageProficienciesUnderAnothersPortfolio() throws Exception {
         LanguageProficienciesChangeDescriptorDto updateBatch = new LanguageProficienciesChangeDescriptorDto();
-        LanguageProficiencyDto swedish = newLanguageProficiency(PortfolioLanguage.SWEDISH,
-            LanguageProficiency.FULL_PROFESSIONAL_PROFICIENCY,
-            ANOTHER_USERS_LANGUAGE_PROFICIENCY_ID);
+        LanguageProficiencyDto swedish = newLanguageProficiency(SWEDISH,
+                FULL_PROFESSIONAL_PROFICIENCY,
+                "",
+                ANOTHER_USERS_LANGUAGE_PROFICIENCY_ID);
 
         updateBatch.updatedLanguageProficiencies = ImmutableList.of(swedish);
 
@@ -121,18 +119,20 @@ public class PrivateLanguageProficiencyResourceTest extends SpringTest {
     private void persistUpdateBatchWithStatus(LanguageProficienciesChangeDescriptorDto updateBatch,
                                               ResultMatcher status) throws Exception {
         mockMvc.perform(patch(RestConstants.PRIVATE_API_V1 + API_PATH)
-            .with(securityContext(studentSecurityContext()))
-            .content(toJsonBytes(updateBatch))
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status);
+                .with(securityContext(studentSecurityContext()))
+                .content(toJsonBytes(updateBatch))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status);
     }
 
-    private LanguageProficiencyDto newLanguageProficiency(PortfolioLanguage language,
-                                                          LanguageProficiency proficiency,
+    private LanguageProficiencyDto newLanguageProficiency(String languageName,
+                                                          String proficiency,
+                                                          String description,
                                                           Long id) {
         LanguageProficiencyDto dto = new LanguageProficiencyDto();
-        dto.language = language;
+        dto.languageName = languageName;
         dto.proficiency = proficiency;
+        dto.description = description;
         dto.id = id;
 
         return dto;
