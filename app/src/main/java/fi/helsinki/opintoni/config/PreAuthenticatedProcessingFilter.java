@@ -1,3 +1,20 @@
+/*
+ * This file is part of MystudiesMyteaching application.
+ *
+ * MystudiesMyteaching application is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * MystudiesMyteaching application is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package fi.helsinki.opintoni.config;
 
 import fi.helsinki.opintoni.security.AppUser;
@@ -27,11 +44,11 @@ public class PreAuthenticatedProcessingFilter extends AbstractPreAuthenticatedPr
     public PreAuthenticatedProcessingFilter(UserService userService, Environment environment, AuditLogger auditLogger) {
         super();
 
-       LocalAuthenticationSuccessHandler successHandler = new LocalAuthenticationSuccessHandler();
-       successHandler.initialize(userService, environment, auditLogger);
+        LocalAuthenticationSuccessHandler successHandler = new LocalAuthenticationSuccessHandler();
+        successHandler.initialize(userService, environment, auditLogger);
 
-       this.successHandler = successHandler;
-       this.failureHandler = new AuthFailureHandler();
+        this.successHandler = successHandler;
+        this.failureHandler = new AuthFailureHandler();
     }
 
     @Override
@@ -63,14 +80,16 @@ public class PreAuthenticatedProcessingFilter extends AbstractPreAuthenticatedPr
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, Authentication authResult)
+        throws IOException, ServletException {
         super.successfulAuthentication(request, response, authResult);
 
         successHandler.onAuthenticationSuccess(request, response, authResult);
     }
 
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed)
+        throws IOException, ServletException {
         super.unsuccessfulAuthentication(request, response, failed);
 
         failureHandler.onAuthenticationFailure(request, response, failed);

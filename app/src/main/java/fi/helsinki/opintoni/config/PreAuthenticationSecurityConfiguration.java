@@ -51,7 +51,6 @@ public class PreAuthenticationSecurityConfiguration extends WebSecurityConfigure
     @Autowired
     private AuditLogger auditLogger;
 
-
     @Autowired
     public void registerUserDetailsService(AuthenticationManagerBuilder auth) throws Exception {
         PreAuthenticatedAuthenticationProvider preAuthenticatedAuthenticationProvider =  new PreAuthenticatedAuthenticationProvider();
@@ -63,7 +62,8 @@ public class PreAuthenticationSecurityConfiguration extends WebSecurityConfigure
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        PreAuthenticatedProcessingFilter preAuthenticatedProcessingFilter = new PreAuthenticatedProcessingFilter(userService, environment, auditLogger);
+        PreAuthenticatedProcessingFilter preAuthenticatedProcessingFilter =
+            new PreAuthenticatedProcessingFilter(userService, environment, auditLogger);
         preAuthenticatedProcessingFilter.setAuthenticationManager(authenticationManager());
 
         http
