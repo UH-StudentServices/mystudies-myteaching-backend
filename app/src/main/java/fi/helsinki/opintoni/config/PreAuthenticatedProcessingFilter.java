@@ -8,6 +8,7 @@ import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.service.UserService;
 import fi.helsinki.opintoni.util.AuditLogger;
 import org.springframework.core.env.Environment;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
@@ -35,16 +36,25 @@ public class PreAuthenticatedProcessingFilter extends AbstractPreAuthenticatedPr
 
     @Override
     protected Object getPreAuthenticatedPrincipal(HttpServletRequest request) {
-        //TODO: Extract user data from request headers when headers are sent by proxy
-        return new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName("opiskelija@helsinki.fi")
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
-            .email("opiskelija@mail.helsinki.fi")
-            .commonName("Olli Opiskelija")
-            .studentNumber("010189791")
-            .oodiPersonId("1001")
-            .build();
+        String eduPersonPrincipalName = request.getHeader("HY-USER-eduPersonPrincipalName");
+        String email = request.getHeader("HY-USER-mail");
+        String commonName = request.getHeader("HY-USER-commonName");
+        String studentNumber = request.getHeader("HY-USER-studentNumber");
+        String oodiPersonId = request.getHeader("HY-USER-oodiUid");
+
+        try {
+            return new AppUser.AppUserBuilder()
+                .eduPersonPrincipalName(eduPersonPrincipalName)
+                .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
+                .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
+                .email(email)
+                .commonName(commonName)
+                .studentNumber(studentNumber)
+                .oodiPersonId(oodiPersonId)
+                .build();
+        } catch (BadCredentialsException e) {
+            return null;
+        }
     }
 
     @Override
