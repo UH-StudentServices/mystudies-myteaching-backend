@@ -26,8 +26,13 @@ import static com.google.common.base.Charsets.UTF_8;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.hybridUserSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivateFilesResourceTest extends SpringTest {
 
@@ -35,12 +40,23 @@ public class PrivateFilesResourceTest extends SpringTest {
     private static final String PUBLIC_RESOURCE_URL = "/api/public/v1/portfolio/files/student/en/olli-opiskelija/test.txt";
     private static final String RESTRICTED_RESOURCE_URL = "/api/restricted/v1/portfolio/files/student/en/olli-opiskelija/test.txt";
     private static final String PRIVATE_RESOURCE_URL = "/api/private/v1/portfolio/files/student/en/olli-opiskelija/test.txt";
+    private static final String TEST_FILE_PATH = "olli-opiskelija/test.txt";
     private static final String TEST_FILE_NAME = "test.txt";
     private static final String TEST_FILE_CONTENT = "test";
 
     @Test
     public void thatPortfolioFileIsSaved() throws Exception {
-        performPostFile().andExpect(status().isNoContent());
+        performPostFile().andExpect(status().isOk())
+            .andExpect(jsonPath("$.uploaded").value(1))
+            .andExpect(jsonPath("$.fileName").value(TEST_FILE_NAME))
+            .andExpect(jsonPath("$.url").value(PUBLIC_RESOURCE_URL));
+
+        mockMvc.perform(get(CONTROL_RESOURCE_URL)
+            .with(securityContext(studentSecurityContext())))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$[0].name").value(TEST_FILE_PATH));
 
         performGetOwnedFile()
             .andExpect(status().isOk())
@@ -76,6 +92,7 @@ public class PrivateFilesResourceTest extends SpringTest {
             .andExpect(status().isNotFound());
     }
 
+
     @Test
     public void thatPrivatePortfolioFilesReturnsNotFoundForLoggedInUser() throws Exception {
         performPostFile();
@@ -96,7 +113,7 @@ public class PrivateFilesResourceTest extends SpringTest {
     }
 
     private ResultActions performPostFile() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", TEST_FILE_NAME, "text/plain", TEST_FILE_CONTENT.getBytes(UTF_8));
+        MockMultipartFile file = new MockMultipartFile("upload", TEST_FILE_NAME, "text/plain", TEST_FILE_CONTENT.getBytes(UTF_8));
         return mockMvc.perform(fileUpload(CONTROL_RESOURCE_URL).file(file)
             .with(securityContext(studentSecurityContext())));
     }

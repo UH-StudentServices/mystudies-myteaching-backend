@@ -32,7 +32,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.PRIVATE_API_V1 + "/portfolio/files")
+    value = RestConstants.PRIVATE_FILES_API_V1)
 public class PrivateFilesResource extends AbstractResource {
 
     private final PortfolioFilesService portfolioFilesService;
@@ -64,11 +64,13 @@ public class PrivateFilesResource extends AbstractResource {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addFile(@RequestParam("file") MultipartFile file, @UserId Long userId) {
+    public ResponseEntity<FileUploadResponse> addFile(@RequestParam("upload") MultipartFile file, @UserId Long userId) {
         try {
             byte[] data = file.getBytes();
-            portfolioFilesService.addFile(file.getOriginalFilename(), data, userId);
+            String fileName = file.getOriginalFilename();
+            String portfolioPath = portfolioFilesService.addFile(fileName, data, userId);
+            FileUploadResponse ret = new FileUploadResponse(true, fileName, "student/fi/" + portfolioPath, null);
+            return new ResponseEntity<>(ret, new HttpHeaders(), HttpStatus.OK);
         } catch (IOException e) {
             throw new RuntimeException("Failed to upload file", e);
         }

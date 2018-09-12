@@ -37,9 +37,10 @@ public class PortfolioFilesService {
         this.portfolioRepository = portfolioRepository;
     }
 
-    public void addFile(String filename, byte[] data, long userId) {
-        String portfolioName = getPortfolioPath(userId);
-        fileServiceClient.addFile(buildFilePath(portfolioName, filename), data);
+    public String addFile(String filename, byte[] data, long userId) {
+        String portfolioPath = buildFilePath(getPortfolioPath(userId), filename);
+        fileServiceClient.addFile(portfolioPath, data);
+        return portfolioPath;
     }
 
     public FileServiceInOutStream getFileListing(long userId) {

@@ -22,6 +22,7 @@ import java.util.Set;
 
 public interface FileServiceStorage {
 
+    // Does this overwrite the existing file with same path?
     void put(String path, byte[] data) throws IOException;
 
     byte[] get(String path);

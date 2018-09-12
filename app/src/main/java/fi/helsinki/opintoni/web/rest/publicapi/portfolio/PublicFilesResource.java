@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.PUBLIC_API_V1 + "/portfolio/files")
+    value = RestConstants.PUBLIC_FILES_API_V1)
 public class PublicFilesResource extends AbstractResource {
 
     private final PortfolioFilesService portfolioFilesService;
