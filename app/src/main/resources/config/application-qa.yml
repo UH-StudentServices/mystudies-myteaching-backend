@@ -47,7 +47,7 @@ oodi:
     useHttpClientCertificate: true
 
 coursePage:
-    base.url: https://dev.courses.helsinki.fi
+    base.url: http://dev.courses.helsinki.fi:9090
     api.path: /api/v1
     client.implementation: rest
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
