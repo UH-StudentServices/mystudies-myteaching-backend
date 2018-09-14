@@ -3,6 +3,7 @@
   "headerImageUrl": "http://dev.student.helsinki.fi/image",
   "url": "https://dev.student.helsinki.fi/tvt",
   "hasMaterial": true,
+  "courseImplementationId": 123456789,
   "events": [
     {
       "title":"Test exam 04159adb2253",
@@ -22,6 +23,12 @@
       "title":"Ei päättymisaikaa",
       "begin":"2040-10-28T11:00:00Z",
       "end":"",
+      "where":"Paikka X",
+      "exam": false
+    },
+    {
+      "title":"Ei alkuaikaa",
+      "end":"2040-10-31T11:00:00Z",
       "where":"Paikka X",
       "exam": false
     }
