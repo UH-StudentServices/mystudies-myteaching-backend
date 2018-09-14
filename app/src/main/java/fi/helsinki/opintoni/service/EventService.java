@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -77,34 +78,33 @@ public class EventService {
 
         Stream<EventDto> oodiEventDtos = oodiEvents.stream()
             .filter(oodiEvent -> !oodiEvent.isCancelled)
+            .filter(oodiEvent -> oodiEvent.startDate != null)
             .map(oodiEvent -> eventConverter.toDto(oodiEvent, getCoursePage(coursePages, getRealisationId(oodiEvent)), locale));
 
-        Stream<EventDto> coursePageEventDtos = coursePages.values().stream().flatMap(c -> c.events.stream().map(e -> eventConverter.toDto(e, c)));
+        Stream<EventDto> coursePageEventDtos = coursePages.values().stream()
+            .flatMap(c -> c.events.stream()
+                .filter(e -> e.begin != null)
+                .map(e -> eventConverter.toDto(e, c)));
 
         return Stream
             .concat(oodiEventDtos, coursePageEventDtos)
-            .collect(Collectors.groupingBy((EventDto dto) -> EventDto.getRealisationIdAndTimes(dto),
-                Collectors.collectingAndThen(
-                    Collectors.reducing((a,b) -> new EventDtoBuilder()
-                            .setType(a.type)
-                            .setSource((a.source == EventDto.Source.OODI || b.source == EventDto.Source.OODI) 
-                              ? EventDto.Source.OODI : EventDto.Source.COURSE_PAGE)
-                            .setStartDate(a.startDate)
-                            .setEndDate(a.endDate)
-                            .setRealisationId(a.realisationId)
-                            .setTitle(a.title)
-                            .setCourseTitle(a.courseTitle)
-                            .setCourseUri(a.courseUri)
-                            .setCourseImageUri(a.courseImageUri)
-                            .setCourseMaterialDto(a.courseMaterial)
-                            .setMoodleUri(a.moodleUri)
-                            .setHasMaterial(a.hasMaterial)
-                            .setLocations(Stream.concat(a.locations.stream(), b.locations.stream()).collect(Collectors.toList()))
-                            .setOptimeExtras(a.optimeExtras != null ? a.optimeExtras : b.optimeExtras)
-                            .createEventDto()),
-                    Optional::get
-                )
-            )).values().stream()
+            .collect(Collectors.toMap(EventDto::getRealisationIdAndTimes, Function.identity(), (a, b) -> new EventDtoBuilder()
+                .setType(a.type)
+                .setSource((a.source == EventDto.Source.OODI || b.source == EventDto.Source.OODI)
+                    ? EventDto.Source.OODI : EventDto.Source.COURSE_PAGE)
+                .setStartDate(a.startDate)
+                .setEndDate(a.endDate)
+                .setRealisationId(a.realisationId)
+                .setTitle(a.title)
+                .setCourseTitle(a.courseTitle)
+                .setCourseUri(a.courseUri)
+                .setCourseImageUri(a.courseImageUri)
+                .setCourseMaterialDto(a.courseMaterial)
+                .setMoodleUri(a.moodleUri)
+                .setHasMaterial(a.hasMaterial)
+                .setLocations(Stream.concat(a.locations.stream(), b.locations.stream()).collect(Collectors.toList()))
+                .setOptimeExtras(a.optimeExtras != null ? a.optimeExtras : b.optimeExtras)
+                .createEventDto())).values().stream()
             .sorted()
             .collect(Collectors.toList());
     }
