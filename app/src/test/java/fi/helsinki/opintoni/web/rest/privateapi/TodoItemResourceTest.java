@@ -53,7 +53,6 @@ public class TodoItemResourceTest extends SpringTest {
             .andExpect(jsonPath("$[1].content").value("Do this also"))
             .andExpect(jsonPath("$[1].status").value("OPEN"))
             .andExpect(jsonPath("$[2].id").value(3))
-            .andExpect(jsonPath("$[2].createdDate").value(123L))
             .andExpect(jsonPath("$[2].content").value("Really old item"));
     }
 
