@@ -22,7 +22,6 @@ import fi.helsinki.opintoni.dto.TodoItemDto;
 import fi.helsinki.opintoni.repository.TodoItemRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.TodoItemConverter;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,8 +56,8 @@ public class TodoItemService {
         todoItemRepository.delete(todoItemId);
     }
 
-    public List<TodoItemDto> findByCreatedDateAfterAndUserId(DateTime createdDate, Long userId) {
-        return todoItemRepository.findByCreatedDateAfterAndUserId(createdDate, userId)
+    public List<TodoItemDto> findByUserId(Long userId) {
+        return todoItemRepository.findByUserId(userId)
             .stream()
             .map(todoItemConverter::toDto)
             .collect(Collectors.toList());

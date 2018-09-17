@@ -43,7 +43,7 @@ public class TodoItemResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(2)))
+            .andExpect(jsonPath("$", hasSize(3)))
             .andExpect(jsonPath("$[0].id").value(1))
             .andExpect(jsonPath("$[0].createdDate").value(any(Number.class)))
             .andExpect(jsonPath("$[0].content").value("Do this"))
@@ -51,7 +51,10 @@ public class TodoItemResourceTest extends SpringTest {
             .andExpect(jsonPath("$[1].id").value(2))
             .andExpect(jsonPath("$[1].createdDate").value(any(Number.class)))
             .andExpect(jsonPath("$[1].content").value("Do this also"))
-            .andExpect(jsonPath("$[1].status").value("OPEN"));
+            .andExpect(jsonPath("$[1].status").value("OPEN"))
+            .andExpect(jsonPath("$[2].id").value(3))
+            .andExpect(jsonPath("$[2].createdDate").value(123L))
+            .andExpect(jsonPath("$[2].content").value("Really old item"));
     }
 
     @Test
@@ -83,7 +86,7 @@ public class TodoItemResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(1)));
+            .andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test
