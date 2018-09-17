@@ -55,7 +55,7 @@ public class TodoItemResource extends AbstractResource {
     @RequestMapping(method = RequestMethod.GET)
     @Timed
     public ResponseEntity<List<TodoItemDto>> getAll(@UserId Long userId) {
-        return response(getAllTodoItemsWithTooOldExcluded(userId));
+        return response(todoItemService.findByUserId(userId));
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -81,11 +81,7 @@ public class TodoItemResource extends AbstractResource {
         permissionChecker.verifyPermission(userId, todoItemId, TodoItem.class);
         return response(() -> {
             todoItemService.delete(todoItemId);
-            return getAllTodoItemsWithTooOldExcluded(userId);
+            return todoItemService.findByUserId(userId);
         });
-    }
-
-    private List<TodoItemDto> getAllTodoItemsWithTooOldExcluded(@UserId Long userId) {
-        return todoItemService.findByCreatedDateAfterAndUserId(timeService.monthsAgo(4), userId);
     }
 }
