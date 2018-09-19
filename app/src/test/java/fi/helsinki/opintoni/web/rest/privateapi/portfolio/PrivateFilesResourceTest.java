@@ -47,7 +47,7 @@ public class PrivateFilesResourceTest extends SpringTest {
     @Test
     public void thatPortfolioFileIsSaved() throws Exception {
         MvcResult result = performPostFile().andExpect(status().isOk())
-            .andExpect(jsonPath("$.uploaded").value(1))
+            .andExpect(jsonPath("$.uploaded").value(true))
             .andExpect(jsonPath("$.fileName").value(TEST_FILE_NAME))
             .andReturn();
 
