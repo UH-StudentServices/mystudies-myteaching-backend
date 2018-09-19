@@ -28,15 +28,13 @@ public class FileUploadResponse {
     public int uploaded; // This is int because CKEditor wants 1 = true, 0 = false
     public String fileName;
     public String url;
-    public FileUploadError error;
 
     public FileUploadResponse() {}
 
-    public FileUploadResponse(boolean ok, String fileName, String filePath, String errorMessage) {
+    public FileUploadResponse(boolean ok, String fileName, String filePath) {
         this.uploaded = ok ? 1 : 0;
         this.fileName = fileName;
         this.url = String.join("/", getBaseUrl(), PUBLIC_API_V1, "files", filePath);
-        this.error = errorMessage == null ? null : new FileUploadError(errorMessage);
     }
 
     private String getBaseUrl() {
@@ -44,16 +42,6 @@ public class FileUploadResponse {
         builder.scheme("http");
         builder.replacePath("");
         return builder.build().toString();
-    }
-
-    public static class FileUploadError {
-        public String message;
-
-        public FileUploadError() {}
-
-        public FileUploadError(String message) {
-            this.message = message;
-        }
     }
 
 }

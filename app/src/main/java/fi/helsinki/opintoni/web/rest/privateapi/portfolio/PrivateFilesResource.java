@@ -57,7 +57,7 @@ public class PrivateFilesResource extends AbstractResource {
             byte[] data = file.getBytes();
             String fileName = file.getOriginalFilename();
             String portfolioPath = portfolioFilesService.addFile(fileName, data, userId);
-            FileUploadResponse ret = new FileUploadResponse(true, fileName, portfolioPath, null);
+            FileUploadResponse ret = new FileUploadResponse(true, fileName, portfolioPath);
             return new ResponseEntity<>(ret, new HttpHeaders(), HttpStatus.OK);
         } catch (IOException e) {
             throw new RuntimeException("Failed to upload file", e);
