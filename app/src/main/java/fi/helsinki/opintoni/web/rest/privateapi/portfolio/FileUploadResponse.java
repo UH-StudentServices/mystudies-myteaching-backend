@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_FILES_API_V1;
+import static fi.helsinki.opintoni.web.rest.RestConstants.PUBLIC_API_V1;
 
 /**
  * Tailored to match what CKEditor wants to see.
@@ -27,15 +28,15 @@ public class FileUploadResponse {
     public int uploaded; // This is int because CKEditor wants 1 = true, 0 = false
     public String fileName;
     public String url;
-    public Error error;
+    public FileUploadError error;
 
     public FileUploadResponse() {}
 
-    public FileUploadResponse(boolean ok, String fileName, String path, String errorMessage) {
+    public FileUploadResponse(boolean ok, String fileName, String filePath, String errorMessage) {
         this.uploaded = ok ? 1 : 0;
         this.fileName = fileName;
-        this.url = String.join("/", getBaseUrl(), PRIVATE_FILES_API_V1, path);
-        this.error = errorMessage == null ? null : new Error(errorMessage);
+        this.url = String.join("/", getBaseUrl(), PUBLIC_API_V1, "files", filePath);
+        this.error = errorMessage == null ? null : new FileUploadError(errorMessage);
     }
 
     private String getBaseUrl() {
@@ -45,13 +46,12 @@ public class FileUploadResponse {
         return builder.build().toString();
     }
 
-
-    public class Error {
+    public static class FileUploadError {
         public String message;
 
-        public Error() {}
+        public FileUploadError() {}
 
-        public Error(String message) {
+        public FileUploadError(String message) {
             this.message = message;
         }
     }

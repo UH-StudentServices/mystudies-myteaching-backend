@@ -18,15 +18,17 @@
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
-import static fi.helsinki.opintoni.security.TestSecurityContext.hybridUserSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -37,42 +39,46 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PrivateFilesResourceTest extends SpringTest {
 
     private static final String CONTROL_RESOURCE_URL = "/api/private/v1/portfolio/files";
-    private static final String PUBLIC_RESOURCE_URL = "/api/public/v1/portfolio/files/student/en/olli-opiskelija/test.txt";
-    private static final String RESTRICTED_RESOURCE_URL = "/api/restricted/v1/portfolio/files/student/en/olli-opiskelija/test.txt";
-    private static final String PRIVATE_RESOURCE_URL = "/api/private/v1/portfolio/files/student/en/olli-opiskelija/test.txt";
-    private static final String TEST_FILE_PATH = "olli-opiskelija/test.txt";
+    private static final String PUBLIC_RESOURCE_URL = "/api/public/v1/files";
+    private static final String TEST_FILE_URL = "http://localhost//api/public/v1/files/olli-opiskelija/.*/test.txt";
     private static final String TEST_FILE_NAME = "test.txt";
     private static final String TEST_FILE_CONTENT = "test";
 
     @Test
     public void thatPortfolioFileIsSaved() throws Exception {
-        performPostFile().andExpect(status().isOk())
+        MvcResult result = performPostFile().andExpect(status().isOk())
             .andExpect(jsonPath("$.uploaded").value(1))
             .andExpect(jsonPath("$.fileName").value(TEST_FILE_NAME))
-            .andExpect(jsonPath("$.url").value(PUBLIC_RESOURCE_URL));
+            .andReturn();
+
+        String url = new JSONObject(result.getResponse().getContentAsString()).get("url").toString();
+        assertTrue(url.matches(TEST_FILE_URL));
+
+        String filePath = getFilePath(url);
 
         mockMvc.perform(get(CONTROL_RESOURCE_URL)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(1)))
-            .andExpect(jsonPath("$[0].name").value(TEST_FILE_PATH));
+            .andExpect(jsonPath("$[0].name").value(filePath));
 
-        performGetOwnedFile()
+        performGetOwnedFile(filePath)
             .andExpect(status().isOk())
             .andExpect(content().string(TEST_FILE_CONTENT));
     }
 
     @Test
     public void thatPortfolioFileIsRemoved() throws Exception {
-        performPostFile().andExpect(status().isNoContent());
-        performGetOwnedFile().andExpect(status().isOk());
+        String url = postAndGetFileUrl();
+        String filePath = getFilePath(url);
+        performGetOwnedFile(filePath).andExpect(status().isOk());
 
-        mockMvc.perform(delete(CONTROL_RESOURCE_URL + "/" + TEST_FILE_NAME)
+        mockMvc.perform(delete(String.join("/",CONTROL_RESOURCE_URL, getUid(url), TEST_FILE_NAME))
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isNoContent());
 
-        performGetOwnedFile().andExpect(status().isNotFound());
+        performGetOwnedFile(filePath).andExpect(status().isNotFound());
     }
 
     @Test
@@ -85,31 +91,20 @@ public class PrivateFilesResourceTest extends SpringTest {
     }
 
     @Test
-    public void thatPrivatePortfolioFilesReturnsNotFoundForUnauthenticatedUser() throws Exception {
-        performPostFile();
-
-        mockMvc.perform(get(PUBLIC_RESOURCE_URL))
-            .andExpect(status().isNotFound());
-    }
-
-
-    @Test
-    public void thatPrivatePortfolioFilesReturnsNotFoundForLoggedInUser() throws Exception {
-        performPostFile();
-
-        mockMvc.perform(get(RESTRICTED_RESOURCE_URL)
-            .with(securityContext(hybridUserSecurityContext())))
-            .andExpect(status().isNotFound());
-    }
-
-    @Test
     public void thatPrivatePortfolioFilesAreReturnedForOwner() throws Exception {
-        performPostFile();
+        String url = postAndGetFileUrl();
 
-        mockMvc.perform(get(PRIVATE_RESOURCE_URL)
+        mockMvc.perform(get(url)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(content().string(TEST_FILE_CONTENT));
+    }
+
+    private String postAndGetFileUrl() throws Exception {
+        ResultActions result = performPostFile();
+        String content = result.andReturn().getResponse().getContentAsString();
+        JSONObject jsonObject = new JSONObject(content);
+        return jsonObject.get("url").toString();
     }
 
     private ResultActions performPostFile() throws Exception {
@@ -118,8 +113,18 @@ public class PrivateFilesResourceTest extends SpringTest {
             .with(securityContext(studentSecurityContext())));
     }
 
-    private ResultActions performGetOwnedFile() throws Exception {
-        return mockMvc.perform(get(PRIVATE_RESOURCE_URL)
+    private ResultActions performGetOwnedFile(String filePath) throws Exception {
+        return mockMvc.perform(get(String.join("/", PUBLIC_RESOURCE_URL, filePath))
             .with(securityContext(studentSecurityContext())));
+    }
+
+    private String getFilePath(String url) {
+        return String.join("/", "olli-opiskelija", getUid(url), TEST_FILE_NAME);
+    }
+
+    @SuppressWarnings("StringSplitter")
+    private String getUid(String url) {
+        String[] parts = url.split("/");
+        return parts[parts.length - 2];
     }
 }

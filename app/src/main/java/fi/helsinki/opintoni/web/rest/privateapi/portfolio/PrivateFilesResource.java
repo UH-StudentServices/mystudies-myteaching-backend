@@ -42,18 +42,6 @@ public class PrivateFilesResource extends AbstractResource {
         this.portfolioFilesService = portfolioFilesService;
     }
 
-    @GetMapping(value = "/{portfolioRole}/{lang}/{path}/{filename:.+}")
-    public ResponseEntity<InputStreamResource> getFile(@PathVariable("portfolioRole") String portfolioRole, // Needed for visibility resolving
-                                                       @PathVariable("lang") String lang, // Needed for visibility resolving
-                                                       @PathVariable("path") String path,
-                                                       @PathVariable("filename") String filename) {
-        FileServiceInOutStream inOutStream = portfolioFilesService.getFile(path, filename);
-        InputStreamResource isr = new InputStreamResource(inOutStream.getInputStream());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentLength(inOutStream.getSize());
-        return new ResponseEntity<>(isr, headers, HttpStatus.OK);
-    }
-
     @GetMapping
     public ResponseEntity<InputStreamResource> getFileListing(@UserId Long userId) {
         FileServiceInOutStream inOutStream = portfolioFilesService.getFileListing(userId);
@@ -69,16 +57,18 @@ public class PrivateFilesResource extends AbstractResource {
             byte[] data = file.getBytes();
             String fileName = file.getOriginalFilename();
             String portfolioPath = portfolioFilesService.addFile(fileName, data, userId);
-            FileUploadResponse ret = new FileUploadResponse(true, fileName, "student/fi/" + portfolioPath, null);
+            FileUploadResponse ret = new FileUploadResponse(true, fileName, portfolioPath, null);
             return new ResponseEntity<>(ret, new HttpHeaders(), HttpStatus.OK);
         } catch (IOException e) {
             throw new RuntimeException("Failed to upload file", e);
         }
     }
 
-    @DeleteMapping("/{filename:.+}")
+    @DeleteMapping("/{uid}/{filename:.+}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteFile(@PathVariable("filename") String filename, @UserId Long userId) {
-        portfolioFilesService.deleteFile(filename, userId);
+    public void deleteFile(@PathVariable("filename") String filename,
+                           @PathVariable("uid") String uid,
+                           @UserId Long userId) {
+        portfolioFilesService.deleteFile(filename, uid, userId);
     }
 }

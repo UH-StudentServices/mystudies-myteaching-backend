@@ -15,7 +15,7 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.web.rest.publicapi.portfolio;
+package fi.helsinki.opintoni.web.rest.publicapi;
 
 import fi.helsinki.opintoni.integration.fileservice.FileServiceInOutStream;
 import fi.helsinki.opintoni.service.portfolio.PortfolioFilesService;
@@ -23,12 +23,16 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(
-    value = RestConstants.PUBLIC_FILES_API_V1)
+@RequestMapping(value = RestConstants.PUBLIC_API_V1)
 public class PublicFilesResource extends AbstractResource {
 
     private final PortfolioFilesService portfolioFilesService;
@@ -38,15 +42,15 @@ public class PublicFilesResource extends AbstractResource {
         this.portfolioFilesService = portfolioFilesService;
     }
 
-    @GetMapping("/{portfolioRole}/{lang}/{path}/{filename:.+}")
-    public ResponseEntity<InputStreamResource> getFile(@PathVariable("portfolioRole") String portfolioRole, // Needed for visibility resolving
-                                                       @PathVariable("lang") String lang, // Needed for visibility resolving
-                                                       @PathVariable("path") String path,
+    @GetMapping("/files/{path}/{uid}/{filename:.+}")
+    public ResponseEntity<InputStreamResource> getFile(@PathVariable("path") String path,
+                                                       @PathVariable("uid") String uid,
                                                        @PathVariable("filename") String filename) {
-        FileServiceInOutStream inOutStream = portfolioFilesService.getFile(path, filename);
+        FileServiceInOutStream inOutStream = portfolioFilesService.getFile(path, uid, filename);
         InputStreamResource isr = new InputStreamResource(inOutStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentLength(inOutStream.getSize());
         return new ResponseEntity<>(isr, headers, HttpStatus.OK);
     }
+
 }

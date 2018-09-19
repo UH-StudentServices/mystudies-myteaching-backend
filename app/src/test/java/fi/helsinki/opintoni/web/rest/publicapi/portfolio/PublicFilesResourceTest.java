@@ -17,8 +17,11 @@
 
 package fi.helsinki.opintoni.web.rest.publicapi.portfolio;
 
+import fi.helsinki.opintoni.SpringTest;
+import org.json.JSONObject;
 import org.junit.Test;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
@@ -28,27 +31,31 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PublicFilesResourceTest extends PublicPortfolioTest {
+public class PublicFilesResourceTest extends SpringTest {
 
-    private static final String PRIVATE_RESOURCE_URL = "/api/private/v1/portfolio/files";
-    private static final String PUBLIC_RESOURCE_URL = "/api/public/v1/portfolio/files/student/en/olli-opiskelija/test.txt";
+    private static final String CONTROL_RESOURCE_URL = "/api/private/v1/portfolio/files";
     private static final String TEST_FILE_NAME = "test.txt";
     private static final String TEST_FILE_CONTENT = "test";
 
     @Test
     public void thatPublicPortfolioFilesAreReturnedForUnauthenticatedUser() throws Exception {
-        addPortfolioFile();
-        saveStudentPortfolioAsPublic();
+        String url = postAndGetFileUrl();
 
-        mockMvc.perform(get(PUBLIC_RESOURCE_URL))
+        mockMvc.perform(get(url))
             .andExpect(status().isOk())
             .andExpect(content().string(TEST_FILE_CONTENT));
     }
 
-    private void addPortfolioFile() throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", TEST_FILE_NAME, "text/plain", TEST_FILE_CONTENT.getBytes(UTF_8));
-        mockMvc.perform(fileUpload(PRIVATE_RESOURCE_URL).file(file)
-            .with(securityContext(studentSecurityContext())))
-            .andExpect(status().isNoContent());
+    private String postAndGetFileUrl() throws Exception {
+        ResultActions result = performPostFile();
+        String content = result.andReturn().getResponse().getContentAsString();
+        JSONObject jsonObject = new JSONObject(content);
+        return jsonObject.get("url").toString();
+    }
+
+    private ResultActions performPostFile() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("upload", TEST_FILE_NAME, "text/plain", TEST_FILE_CONTENT.getBytes(UTF_8));
+        return mockMvc.perform(fileUpload(CONTROL_RESOURCE_URL).file(file)
+            .with(securityContext(studentSecurityContext())));
     }
 }

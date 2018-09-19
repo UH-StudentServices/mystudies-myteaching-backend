@@ -24,6 +24,8 @@ import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class PortfolioFilesService {
 
@@ -38,7 +40,7 @@ public class PortfolioFilesService {
     }
 
     public String addFile(String filename, byte[] data, long userId) {
-        String portfolioPath = buildFilePath(getPortfolioPath(userId), filename);
+        String portfolioPath = buildFilePath(getPortfolioPath(userId), UUID.randomUUID().toString(), filename);
         fileServiceClient.addFile(portfolioPath, data);
         return portfolioPath;
     }
@@ -47,17 +49,16 @@ public class PortfolioFilesService {
         return fileServiceClient.getFileListing(getPortfolioPath(userId));
     }
 
-    public FileServiceInOutStream getFile(String portfolioPath, String filename) {
-        return fileServiceClient.getFile(String.join("/", portfolioPath, filename));
+    public FileServiceInOutStream getFile(String portfolioPath, String uid, String filename) {
+        return fileServiceClient.getFile(String.join("/", portfolioPath, uid, filename));
     }
 
-    public void deleteFile(String filename, long userId) {
-        String portfolioName = getPortfolioPath(userId);
-        fileServiceClient.deleteFile(buildFilePath(portfolioName, filename));
+    public void deleteFile(String filename, String uid, long userId) {
+        fileServiceClient.deleteFile(buildFilePath(getPortfolioPath(userId), uid, filename));
     }
 
-    private String buildFilePath(String portfolioPath, String filename) {
-        return String.join("/", portfolioPath, filename);
+    private String buildFilePath(String portfolioPath, String uid, String filename) {
+        return String.join("/", portfolioPath, uid, filename);
     }
 
     private String getPortfolioPath(long userId) {
