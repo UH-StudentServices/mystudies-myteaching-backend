@@ -21,10 +21,9 @@ import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.integration.fileservice.FileServiceClient;
 import fi.helsinki.opintoni.integration.fileservice.FileServiceInOutStream;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class PortfolioFilesService {
@@ -40,7 +39,7 @@ public class PortfolioFilesService {
     }
 
     public String addFile(String filename, byte[] data, long userId) {
-        String portfolioPath = buildFilePath(getPortfolioPath(userId), UUID.randomUUID().toString(), filename);
+        String portfolioPath = buildFilePath(getPortfolioPath(userId), DigestUtils.md5Hex(filename), filename);
         fileServiceClient.addFile(portfolioPath, data);
         return portfolioPath;
     }
