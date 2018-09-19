@@ -122,9 +122,8 @@ public class PrivateFilesResourceTest extends SpringTest {
         return String.join("/", "olli-opiskelija", getUid(url), TEST_FILE_NAME);
     }
 
-    @SuppressWarnings("StringSplitter")
     private String getUid(String url) {
-        String[] parts = url.split("/");
+        String[] parts = url.split("/", -1);
         return parts[parts.length - 2];
     }
 }

@@ -25,14 +25,14 @@ import static fi.helsinki.opintoni.web.rest.RestConstants.PUBLIC_API_V1;
  * Tailored to match what CKEditor wants to see.
  */
 public class FileUploadResponse {
-    public int uploaded; // This is int because CKEditor wants 1 = true, 0 = false
+    public boolean uploaded;
     public String fileName;
     public String url;
 
     public FileUploadResponse() {}
 
     public FileUploadResponse(boolean ok, String fileName, String filePath) {
-        this.uploaded = ok ? 1 : 0;
+        this.uploaded = ok;
         this.fileName = fileName;
         this.url = String.join("/", getBaseUrl(), PUBLIC_API_V1, "files", filePath);
     }
