@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PublicFilesResourceTest extends SpringTest {
 
-    private static final String CONTROL_RESOURCE_URL = "/api/private/v1/portfolio/files";
+    private static final String PRIVATE_FILES_RESOURCE_PATH = "/api/private/v1/portfolio/files";
     private static final String TEST_FILE_NAME = "test.txt";
     private static final String TEST_FILE_CONTENT = "test";
 
@@ -55,7 +55,7 @@ public class PublicFilesResourceTest extends SpringTest {
 
     private ResultActions performPostFile() throws Exception {
         MockMultipartFile file = new MockMultipartFile("upload", TEST_FILE_NAME, "text/plain", TEST_FILE_CONTENT.getBytes(UTF_8));
-        return mockMvc.perform(fileUpload(CONTROL_RESOURCE_URL).file(file)
+        return mockMvc.perform(fileUpload(PRIVATE_FILES_RESOURCE_PATH).file(file)
             .with(securityContext(studentSecurityContext())));
     }
 }
