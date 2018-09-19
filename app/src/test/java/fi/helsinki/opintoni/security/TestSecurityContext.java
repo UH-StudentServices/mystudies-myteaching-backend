@@ -24,7 +24,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class TestSecurityContext {
 
     private static final String STUDENT_USERNAME = "opiskelija";
-    private static final String MAG_USERNAME = "mag_simp";
     private static final String TEACHER_USERNAME = "opettaja";
     private static final String PASSWORD = "password";
     private static final String HYBRID_USER_USERNAME = "hybriduser";
@@ -33,12 +32,6 @@ public class TestSecurityContext {
     public static SecurityContext studentSecurityContext() {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(STUDENT_USERNAME, PASSWORD));
-        return securityContext;
-    }
-
-    public static SecurityContext magSimpSecurityContext() {
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(MAG_USERNAME, PASSWORD));
         return securityContext;
     }
 
