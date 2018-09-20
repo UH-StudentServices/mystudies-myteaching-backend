@@ -34,7 +34,7 @@ public class FileUploadResponse {
     public FileUploadResponse(boolean ok, String fileName, String filePath) {
         this.uploaded = ok;
         this.fileName = fileName;
-        this.url = String.join("/", getBaseUrl(), PUBLIC_API_V1, "files", filePath);
+        this.url = String.join("/", getBaseUrl(), PUBLIC_API_V1, "portfolio/files", filePath);
     }
 
     private String getBaseUrl() {

@@ -39,8 +39,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PrivateFilesResourceTest extends SpringTest {
 
     private static final String PRIVATE_FILES_RESOURCE_PATH = "/api/private/v1/portfolio/files";
-    private static final String PUBLIC_RESOURCE_URL = "/api/public/v1/files";
-    private static final String TEST_FILE_URL = "http://localhost//api/public/v1/files/olli-opiskelija/.*/test.txt";
+    private static final String PUBLIC_RESOURCE_URL = "/api/public/v1/portfolio/files";
+    private static final String TEST_FILE_URL = "http://localhost//api/public/v1/portfolio/files/olli-opiskelija/.*/test.txt";
     private static final String TEST_FILE_NAME = "test.txt";
     private static final String TEST_FILE_CONTENT = "test";
 

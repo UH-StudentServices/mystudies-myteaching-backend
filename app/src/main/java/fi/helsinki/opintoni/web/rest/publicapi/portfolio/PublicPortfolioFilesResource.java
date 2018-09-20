@@ -15,7 +15,7 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.web.rest.publicapi;
+package fi.helsinki.opintoni.web.rest.publicapi.portfolio;
 
 import fi.helsinki.opintoni.integration.fileservice.FileServiceInOutStream;
 import fi.helsinki.opintoni.service.portfolio.PortfolioFilesService;
@@ -32,13 +32,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = RestConstants.PUBLIC_API_V1)
-public class PublicFilesResource extends AbstractResource {
+@RequestMapping(value = RestConstants.PUBLIC_API_V1 + "/portfolio")
+public class PublicPortfolioFilesResource extends AbstractResource {
 
     private final PortfolioFilesService portfolioFilesService;
 
     @Autowired
-    public PublicFilesResource(PortfolioFilesService portfolioFilesService) {
+    public PublicPortfolioFilesResource(PortfolioFilesService portfolioFilesService) {
         this.portfolioFilesService = portfolioFilesService;
     }
 

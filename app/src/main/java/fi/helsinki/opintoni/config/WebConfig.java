@@ -97,7 +97,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         registry
             .addInterceptor(publicPortfolioInterceptor)
-            .addPathPatterns(RestConstants.PUBLIC_API_V1 + "/portfolio/**");
+            .addPathPatterns(RestConstants.PUBLIC_API_V1 + "/portfolio/**")
+            .excludePathPatterns(RestConstants.PUBLIC_API_V1 + "/portfolio/files/**");
     }
 
     @Bean
