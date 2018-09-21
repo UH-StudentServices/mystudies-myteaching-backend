@@ -63,7 +63,7 @@ public class PrivateFilesResourceTest extends SpringTest {
             .andExpect(jsonPath("$", hasSize(1)))
             .andExpect(jsonPath("$[0].name").value(filePath));
 
-        performGetOwnedFile(filePath)
+        performGetFile(filePath)
             .andExpect(status().isOk())
             .andExpect(content().string(TEST_FILE_CONTENT));
     }
@@ -72,13 +72,13 @@ public class PrivateFilesResourceTest extends SpringTest {
     public void thatPortfolioFileIsRemoved() throws Exception {
         String url = postAndGetFileUrl();
         String filePath = getFilePath(url);
-        performGetOwnedFile(filePath).andExpect(status().isOk());
+        performGetFile(filePath).andExpect(status().isOk());
 
         mockMvc.perform(delete(String.join("/", PRIVATE_FILES_RESOURCE_PATH, getUid(url), TEST_FILE_NAME))
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isNoContent());
 
-        performGetOwnedFile(filePath).andExpect(status().isNotFound());
+        performGetFile(filePath).andExpect(status().isNotFound());
     }
 
     @Test
@@ -113,7 +113,7 @@ public class PrivateFilesResourceTest extends SpringTest {
             .with(securityContext(studentSecurityContext())));
     }
 
-    private ResultActions performGetOwnedFile(String filePath) throws Exception {
+    private ResultActions performGetFile(String filePath) throws Exception {
         return mockMvc.perform(get(String.join("/", PUBLIC_RESOURCE_URL, filePath))
             .with(securityContext(studentSecurityContext())));
     }

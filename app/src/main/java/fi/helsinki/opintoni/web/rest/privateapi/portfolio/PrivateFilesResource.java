@@ -23,12 +23,14 @@ import fi.helsinki.opintoni.web.arguments.UserId;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping(
@@ -37,9 +39,12 @@ public class PrivateFilesResource extends AbstractResource {
 
     private final PortfolioFilesService portfolioFilesService;
 
+    private final Environment environment;
+
     @Autowired
-    public PrivateFilesResource(PortfolioFilesService portfolioFilesService) {
+    public PrivateFilesResource(PortfolioFilesService portfolioFilesService, Environment environment) {
         this.portfolioFilesService = portfolioFilesService;
+        this.environment = environment;
     }
 
     @GetMapping
@@ -57,11 +62,16 @@ public class PrivateFilesResource extends AbstractResource {
             byte[] data = file.getBytes();
             String fileName = file.getOriginalFilename();
             String portfolioPath = portfolioFilesService.addFile(fileName, data, userId);
-            FileUploadResponse ret = new FileUploadResponse(true, fileName, portfolioPath);
+            String protocol = isLocalDev() ? "http" : "https";
+            FileUploadResponse ret = new FileUploadResponse(true, fileName, portfolioPath, protocol);
             return new ResponseEntity<>(ret, new HttpHeaders(), HttpStatus.OK);
         } catch (IOException e) {
             throw new RuntimeException("Failed to upload file", e);
         }
+    }
+
+    private boolean isLocalDev() {
+        return Arrays.asList(environment.getActiveProfiles()).contains("local-dev");
     }
 
     @DeleteMapping("/{uid}/{filename:.+}")

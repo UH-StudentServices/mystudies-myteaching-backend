@@ -31,15 +31,15 @@ public class FileUploadResponse {
 
     public FileUploadResponse() {}
 
-    public FileUploadResponse(boolean ok, String fileName, String filePath) {
+    public FileUploadResponse(boolean ok, String fileName, String filePath, String protocol) {
         this.uploaded = ok;
         this.fileName = fileName;
-        this.url = String.join("/", getBaseUrl(), PUBLIC_API_V1, "portfolio/files", filePath);
+        this.url = String.join("/", getBaseUrl(protocol), PUBLIC_API_V1, "portfolio/files", filePath);
     }
 
-    private String getBaseUrl() {
+    private String getBaseUrl(String protocol) {
         ServletUriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequestUri();
-        builder.scheme("http");
+        builder.scheme(protocol);
         builder.replacePath("");
         return builder.build().toString();
     }
