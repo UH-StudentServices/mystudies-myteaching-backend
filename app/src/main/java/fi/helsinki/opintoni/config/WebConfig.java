@@ -28,12 +28,14 @@ import fi.helsinki.opintoni.web.arguments.StudentNumberArgumentResolver;
 import fi.helsinki.opintoni.web.arguments.TeacherNumberArgumentResolver;
 import fi.helsinki.opintoni.web.arguments.UserIdArgumentResolver;
 import fi.helsinki.opintoni.web.arguments.UsernameArgumentResolver;
+import fi.helsinki.opintoni.web.rest.converter.StringToLanguage;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.BufferedImageHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver;
@@ -77,6 +79,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             new TeacherNumberArgumentResolver(securityUtils),
             new UserIdArgumentResolver(userService, securityUtils),
             new UsernameArgumentResolver(userService, securityUtils)));
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(new StringToLanguage());
     }
 
     @Override
