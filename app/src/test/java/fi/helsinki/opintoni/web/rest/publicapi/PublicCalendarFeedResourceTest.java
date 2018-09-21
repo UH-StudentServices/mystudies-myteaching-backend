@@ -153,6 +153,13 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
         return matchers;
     }
 
+    @Test
+    public void that404IsReturnedWhenUsingIllegalLocale() throws Exception {
+        final String lang = "e";
+        mockMvc.perform(get(String.format("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/%s", lang)))
+            .andExpect(status().isNotFound());
+    }
+
     private String eventToString(String... args) {
         return String.join(CRLF, args);
     }

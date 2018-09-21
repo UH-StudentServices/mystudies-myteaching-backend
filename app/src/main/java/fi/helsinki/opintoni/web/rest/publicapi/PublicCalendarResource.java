@@ -18,18 +18,15 @@
 package fi.helsinki.opintoni.web.rest.publicapi;
 
 import com.codahale.metrics.annotation.Timed;
+import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.service.CalendarService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Locale;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(
@@ -44,9 +41,14 @@ public class PublicCalendarResource extends AbstractResource {
         this.calendarService = calendarService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value="/{feedId}/{locale}")
+    @RequestMapping(method = RequestMethod.GET, value="/{feedId}/{language}")
     @Timed
-    public ResponseEntity<String> showCalendarFeed(@PathVariable("feedId") String feedId, @PathVariable("locale") Locale locale) throws Exception {
-        return response(calendarService.showCalendarFeed(feedId, locale));
+    public ResponseEntity<String> showCalendarFeed(@PathVariable("feedId") String feedId, @PathVariable("language") Language language) {
+        return response(calendarService.showCalendarFeed(feedId, language.toLocale()));
+    }
+
+    @ExceptionHandler({ConversionFailedException.class})
+    public ResponseEntity handleException() {
+        return ResponseEntity.notFound().build();
     }
 }

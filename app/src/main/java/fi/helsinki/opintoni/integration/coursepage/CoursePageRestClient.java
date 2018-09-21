@@ -52,7 +52,7 @@ public class CoursePageRestClient implements CoursePageClient {
         return getCoursePageData(path, typeReference, null, uriVariables);
     }
 
-    public <T> List<T> getCoursePageData(
+    private <T> List<T> getCoursePageData(
         String path,
         ParameterizedTypeReference<List<T>> typeReference,
         Locale locale,
