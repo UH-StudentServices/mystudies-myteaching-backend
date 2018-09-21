@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import static fi.helsinki.opintoni.web.rest.RestConstants.PUBLIC_API_V1;
+import static fi.helsinki.opintoni.web.rest.RestConstants.PUBLIC_FILES_API_V1;
 
 /**
  * Tailored to match what CKEditor wants to see.
@@ -34,7 +34,7 @@ public class FileUploadResponse {
     public FileUploadResponse(boolean ok, String fileName, String filePath, String protocol) {
         this.uploaded = ok;
         this.fileName = fileName;
-        this.url = String.join("/", getBaseUrl(protocol), PUBLIC_API_V1, "portfolio/files", filePath);
+        this.url = String.join("/", getBaseUrl(protocol), PUBLIC_FILES_API_V1, filePath);
     }
 
     private String getBaseUrl(String protocol) {

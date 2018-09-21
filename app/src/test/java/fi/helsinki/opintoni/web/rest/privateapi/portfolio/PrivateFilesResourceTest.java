@@ -27,8 +27,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import static com.google.common.base.Charsets.UTF_8;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -52,7 +52,7 @@ public class PrivateFilesResourceTest extends SpringTest {
             .andReturn();
 
         String url = new JSONObject(result.getResponse().getContentAsString()).get("url").toString();
-        assertTrue(url.matches(TEST_FILE_URL));
+        assertThat(url).matches(TEST_FILE_URL);
 
         mockMvc.perform(get(PRIVATE_FILES_RESOURCE_PATH)
             .with(securityContext(studentSecurityContext())))
