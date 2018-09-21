@@ -28,7 +28,7 @@ import javax.validation.constraints.NotNull;
 public class SomeLink extends AbstractAuditingEntity {
 
     public enum Type {
-        FACEBOOK, YOUTUBE, TWITTER, TUHAT, RESEARCH_GATE
+        FACEBOOK, YOUTUBE, TWITTER, TUHAT, RESEARCH_GATE, ACADEMIA
     }
 
     @Id
