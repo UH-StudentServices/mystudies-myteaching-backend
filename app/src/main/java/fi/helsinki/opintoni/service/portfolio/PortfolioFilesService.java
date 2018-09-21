@@ -21,7 +21,6 @@ import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.integration.fileservice.FileServiceClient;
 import fi.helsinki.opintoni.integration.fileservice.FileServiceInOutStream;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +38,7 @@ public class PortfolioFilesService {
     }
 
     public String addFile(String filename, byte[] data, long userId) {
-        String portfolioPath = buildFilePath(getPortfolioPath(userId), DigestUtils.md5Hex(filename), filename);
+        String portfolioPath = buildFilePath(getPortfolioPath(userId), filename);
         fileServiceClient.addFile(portfolioPath, data);
         return portfolioPath;
     }
@@ -48,16 +47,16 @@ public class PortfolioFilesService {
         return fileServiceClient.getFileListing(getPortfolioPath(userId));
     }
 
-    public FileServiceInOutStream getFile(String portfolioPath, String uid, String filename) {
-        return fileServiceClient.getFile(String.join("/", portfolioPath, uid, filename));
+    public FileServiceInOutStream getFile(String portfolioPath, String filename) {
+        return fileServiceClient.getFile(String.join("/", portfolioPath, filename));
     }
 
-    public void deleteFile(String filename, String uid, long userId) {
-        fileServiceClient.deleteFile(buildFilePath(getPortfolioPath(userId), uid, filename));
+    public void deleteFile(String filename, long userId) {
+        fileServiceClient.deleteFile(buildFilePath(getPortfolioPath(userId), filename));
     }
 
-    private String buildFilePath(String portfolioPath, String uid, String filename) {
-        return String.join("/", portfolioPath, uid, filename);
+    private String buildFilePath(String portfolioPath, String filename) {
+        return String.join("/", portfolioPath, filename);
     }
 
     private String getPortfolioPath(long userId) {

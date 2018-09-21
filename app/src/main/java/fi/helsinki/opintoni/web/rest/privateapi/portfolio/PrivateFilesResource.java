@@ -74,11 +74,9 @@ public class PrivateFilesResource extends AbstractResource {
         return Arrays.asList(environment.getActiveProfiles()).contains("local-dev");
     }
 
-    @DeleteMapping("/{uid}/{filename:.+}")
+    @DeleteMapping("/{filename:.+}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteFile(@PathVariable("filename") String filename,
-                           @PathVariable("uid") String uid,
-                           @UserId Long userId) {
-        portfolioFilesService.deleteFile(filename, uid, userId);
+    public void deleteFile(@PathVariable("filename") String filename, @UserId Long userId) {
+        portfolioFilesService.deleteFile(filename, userId);
     }
 }

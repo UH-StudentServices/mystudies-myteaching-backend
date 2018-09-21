@@ -32,21 +32,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = RestConstants.PUBLIC_API_V1 + "/portfolio")
-public class PublicPortfolioFilesResource extends AbstractResource {
+@RequestMapping(value = RestConstants.PUBLIC_API_V1 + "/portfolio/files")
+public class PublicFilesResource extends AbstractResource {
 
     private final PortfolioFilesService portfolioFilesService;
 
     @Autowired
-    public PublicPortfolioFilesResource(PortfolioFilesService portfolioFilesService) {
+    public PublicFilesResource(PortfolioFilesService portfolioFilesService) {
         this.portfolioFilesService = portfolioFilesService;
     }
 
-    @GetMapping("/files/{path}/{uid}/{filename:.+}")
+    @GetMapping("/{path}/{filename:.+}")
     public ResponseEntity<InputStreamResource> getFile(@PathVariable("path") String path,
-                                                       @PathVariable("uid") String uid,
                                                        @PathVariable("filename") String filename) {
-        FileServiceInOutStream inOutStream = portfolioFilesService.getFile(path, uid, filename);
+        FileServiceInOutStream inOutStream = portfolioFilesService.getFile(path, filename);
         InputStreamResource isr = new InputStreamResource(inOutStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentLength(inOutStream.getSize());

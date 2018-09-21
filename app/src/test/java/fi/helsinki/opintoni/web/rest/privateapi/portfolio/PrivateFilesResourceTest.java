@@ -40,7 +40,7 @@ public class PrivateFilesResourceTest extends SpringTest {
 
     private static final String PRIVATE_FILES_RESOURCE_PATH = "/api/private/v1/portfolio/files";
     private static final String PUBLIC_RESOURCE_URL = "/api/public/v1/portfolio/files";
-    private static final String TEST_FILE_URL = "http://localhost//api/public/v1/portfolio/files/olli-opiskelija/.*/test.txt";
+    private static final String TEST_FILE_URL = "https://localhost//api/public/v1/portfolio/files/olli-opiskelija/test.txt";
     private static final String TEST_FILE_NAME = "test.txt";
     private static final String TEST_FILE_CONTENT = "test";
 
@@ -54,31 +54,28 @@ public class PrivateFilesResourceTest extends SpringTest {
         String url = new JSONObject(result.getResponse().getContentAsString()).get("url").toString();
         assertTrue(url.matches(TEST_FILE_URL));
 
-        String filePath = getFilePath(url);
-
         mockMvc.perform(get(PRIVATE_FILES_RESOURCE_PATH)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(1)))
-            .andExpect(jsonPath("$[0].name").value(filePath));
+            .andExpect(jsonPath("$[0].name").value(getFilePath()));
 
-        performGetFile(filePath)
+        performGetFile(getFilePath())
             .andExpect(status().isOk())
             .andExpect(content().string(TEST_FILE_CONTENT));
     }
 
     @Test
     public void thatPortfolioFileIsRemoved() throws Exception {
-        String url = postAndGetFileUrl();
-        String filePath = getFilePath(url);
-        performGetFile(filePath).andExpect(status().isOk());
+        postAndGetFileUrl();
+        performGetFile(getFilePath()).andExpect(status().isOk());
 
-        mockMvc.perform(delete(String.join("/", PRIVATE_FILES_RESOURCE_PATH, getUid(url), TEST_FILE_NAME))
+        mockMvc.perform(delete(String.join("/", PRIVATE_FILES_RESOURCE_PATH, TEST_FILE_NAME))
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isNoContent());
 
-        performGetFile(filePath).andExpect(status().isNotFound());
+        performGetFile(getFilePath()).andExpect(status().isNotFound());
     }
 
     @Test
@@ -118,12 +115,7 @@ public class PrivateFilesResourceTest extends SpringTest {
             .with(securityContext(studentSecurityContext())));
     }
 
-    private String getFilePath(String url) {
-        return String.join("/", "olli-opiskelija", getUid(url), TEST_FILE_NAME);
-    }
-
-    private String getUid(String url) {
-        String[] parts = url.split("/", -1);
-        return parts[parts.length - 2];
+    private String getFilePath() {
+        return String.join("/", "olli-opiskelija", TEST_FILE_NAME);
     }
 }
