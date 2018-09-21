@@ -23,35 +23,28 @@ import fi.helsinki.opintoni.web.arguments.UserId;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.PRIVATE_API_V1 + "/portfolio/files")
+    value = RestConstants.PRIVATE_FILES_API_V1)
 public class PrivateFilesResource extends AbstractResource {
 
     private final PortfolioFilesService portfolioFilesService;
 
-    @Autowired
-    public PrivateFilesResource(PortfolioFilesService portfolioFilesService) {
-        this.portfolioFilesService = portfolioFilesService;
-    }
+    private final Environment environment;
 
-    @GetMapping(value = "/{portfolioRole}/{lang}/{path}/{filename:.+}")
-    public ResponseEntity<InputStreamResource> getFile(@PathVariable("portfolioRole") String portfolioRole, // Needed for visibility resolving
-                                                       @PathVariable("lang") String lang, // Needed for visibility resolving
-                                                       @PathVariable("path") String path,
-                                                       @PathVariable("filename") String filename) {
-        FileServiceInOutStream inOutStream = portfolioFilesService.getFile(path, filename);
-        InputStreamResource isr = new InputStreamResource(inOutStream.getInputStream());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentLength(inOutStream.getSize());
-        return new ResponseEntity<>(isr, headers, HttpStatus.OK);
+    @Autowired
+    public PrivateFilesResource(PortfolioFilesService portfolioFilesService, Environment environment) {
+        this.portfolioFilesService = portfolioFilesService;
+        this.environment = environment;
     }
 
     @GetMapping
@@ -64,14 +57,21 @@ public class PrivateFilesResource extends AbstractResource {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addFile(@RequestParam("file") MultipartFile file, @UserId Long userId) {
+    public ResponseEntity<FileUploadResponse> addFile(@RequestParam("upload") MultipartFile file, @UserId Long userId) {
         try {
             byte[] data = file.getBytes();
-            portfolioFilesService.addFile(file.getOriginalFilename(), data, userId);
+            String fileName = file.getOriginalFilename();
+            String portfolioPath = portfolioFilesService.addFile(fileName, data, userId);
+            String protocol = isLocalDev() ? "http" : "https";
+            FileUploadResponse ret = new FileUploadResponse(true, fileName, portfolioPath, protocol);
+            return new ResponseEntity<>(ret, new HttpHeaders(), HttpStatus.OK);
         } catch (IOException e) {
             throw new RuntimeException("Failed to upload file", e);
         }
+    }
+
+    private boolean isLocalDev() {
+        return Arrays.asList(environment.getActiveProfiles()).contains("local-dev");
     }
 
     @DeleteMapping("/{filename:.+}")

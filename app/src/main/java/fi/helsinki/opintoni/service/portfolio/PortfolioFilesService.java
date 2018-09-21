@@ -37,9 +37,10 @@ public class PortfolioFilesService {
         this.portfolioRepository = portfolioRepository;
     }
 
-    public void addFile(String filename, byte[] data, long userId) {
-        String portfolioName = getPortfolioPath(userId);
-        fileServiceClient.addFile(buildFilePath(portfolioName, filename), data);
+    public String addFile(String filename, byte[] data, long userId) {
+        String portfolioPath = buildFilePath(getPortfolioPath(userId), filename);
+        fileServiceClient.addFile(portfolioPath, data);
+        return portfolioPath;
     }
 
     public FileServiceInOutStream getFileListing(long userId) {
@@ -51,8 +52,7 @@ public class PortfolioFilesService {
     }
 
     public void deleteFile(String filename, long userId) {
-        String portfolioName = getPortfolioPath(userId);
-        fileServiceClient.deleteFile(buildFilePath(portfolioName, filename));
+        fileServiceClient.deleteFile(buildFilePath(getPortfolioPath(userId), filename));
     }
 
     private String buildFilePath(String portfolioPath, String filename) {
