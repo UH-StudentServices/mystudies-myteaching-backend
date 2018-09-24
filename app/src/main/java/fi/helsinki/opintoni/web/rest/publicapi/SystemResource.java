@@ -19,11 +19,15 @@ package fi.helsinki.opintoni.web.rest.publicapi;
 
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.RestConstants;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.sql.DataSource;
 
 /*
     This API is used by other services. Do not delete!
@@ -32,18 +36,61 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(RestConstants.PUBLIC_API_V1)
 public class SystemResource {
 
-    @RequestMapping(value = "/health-check",
-        method = RequestMethod.GET,
+    private static final String OK_STATUS_MESSAGE = "ok";
+    private static final String REDIS_ERROR_MESSAGE = "Redis connection failed";
+    private static final String DATABASE_ERROR_MESSAGE = "Database connection failed";
+    private static final int DATABASE_CHECK_TIMEOUT = 1;
+
+    private final RedisConnectionFactory redisConnectionFactory;
+    private final DataSource dataSource;
+
+    public SystemResource(RedisConnectionFactory redisConnectionFactory, DataSource dataSource) {
+        this.redisConnectionFactory = redisConnectionFactory;
+        this.dataSource = dataSource;
+    }
+
+    @GetMapping(
+        value = "/health-check",
         produces = WebConstants.APPLICATION_JSON_UTF8)
     public ResponseEntity<HealthStatus> getHealthStatus() {
-        return new ResponseEntity<>(new HealthStatus(), HttpStatus.OK);
+        if (!hasRedisConnection()) {
+            return new ResponseEntity<>(new HealthStatus(REDIS_ERROR_MESSAGE), HttpStatus.SERVICE_UNAVAILABLE);
+        }
+
+        if (!hasDatabaseConnection()) {
+            return new ResponseEntity<>(new HealthStatus(DATABASE_ERROR_MESSAGE), HttpStatus.SERVICE_UNAVAILABLE);
+        }
+
+        return new ResponseEntity<>(new HealthStatus(OK_STATUS_MESSAGE), HttpStatus.OK);
+    }
+
+    private boolean hasRedisConnection() {
+        try {
+            RedisConnectionUtils.getConnection(this.redisConnectionFactory);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean hasDatabaseConnection() {
+        try {
+            return this.dataSource.getConnection().isValid(DATABASE_CHECK_TIMEOUT);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public static class HealthStatus {
 
-        @SuppressWarnings("SameReturnValue")
+        String message;
+
+        HealthStatus(String message) {
+            this.message = message;
+        }
+
         public String getStatus() {
-            return "ok";
+            return message;
         }
 
     }
