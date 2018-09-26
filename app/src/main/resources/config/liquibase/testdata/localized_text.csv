@@ -1,4 +1,4 @@
 id
-1
-2
-3
+nextval('localized_text_id_seq')
+nextval('localized_text_id_seq')
+nextval('localized_text_id_seq')

@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserSettingsServiceTest extends SpringTest {
 
@@ -58,7 +58,7 @@ public class UserSettingsServiceTest extends SpringTest {
         userSettingsService.deleteUserAvatar(1L);
 
         userSettings = userSettingsRepository.findOne(1L);
-        assertThat(userSettings.userAvatar).isNull();
+        assertThat(userSettings.userAvatar.imageData).isNull();
     }
 
     @Test

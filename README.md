@@ -27,9 +27,16 @@ opintoni_artifactory_password=
 ```
 127.0.0.1       local.student.helsinki.fi
 127.0.0.1       local.teacher.helsinki.fi
+127.0.0.1       opintoni-redis
+127.0.0.1       opintoni-psql
 ```
 
-3. Docker must be installed and running when running tests and building jars from the command line.
+3. Docker and Docker Compose must be installed and running. Before running application or tests, start dockerized dependencies (psql and redis)
+
+```
+cd docker/local
+docker-compose up
+```
 
 ### Running tests
 

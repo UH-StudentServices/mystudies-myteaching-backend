@@ -1,9 +1,9 @@
 id;user_id;name;description;additional_info;location;created_by
-1;4;Leena Lehtori;Vastaanotto maanantaisin klo 10.00;Blogi www.leenansaitti.fi;Vastaanottopiste a;system
-2;3;Harry von Hertzen;Vastaanotto maanantaisin klo 11.00;Blogi www.harrynsaitti.fi;Vastaanottopiste b;system
-3;2;Barry von Hertzen;Vastaanotto maanantaisin klo 12.00;Blogi www.barrynsaitti.fi;Vastaanottopiste c;system
-4;1;Hertzen;Vastaanotto maanantaisin klo 13.00;Blogi www.herzensaitti.fi;Vastaanottopiste d;system
-5;5;Leena von Tohtori;Vastaanotto maanantaisin klo 13.00;Blogi www.tohtorileenansaitti.fi;Vastaanottopiste e;system
-6;6;Leena von Ahdes;Vastaanotto maanantaisin klo 13.00;Blogi www.ahteenleena.fi;Vastaanottopiste f;system
-7;4;Leena Lehtori;Tiistaisin klo 10.00;Olenpa mainio ihminen!;Vastaanottopiste A3;system
-8;4;null;Tiistaisin klo 10.00;Oho, bugin vuoksi ei olekaan nimeä;;system
+nextval('office_hours_id_seq');4;Leena Lehtori;Vastaanotto maanantaisin klo 10.00;Blogi www.leenansaitti.fi;Vastaanottopiste a;system
+nextval('office_hours_id_seq');3;Harry von Hertzen;Vastaanotto maanantaisin klo 11.00;Blogi www.harrynsaitti.fi;Vastaanottopiste b;system
+nextval('office_hours_id_seq');2;Barry von Hertzen;Vastaanotto maanantaisin klo 12.00;Blogi www.barrynsaitti.fi;Vastaanottopiste c;system
+nextval('office_hours_id_seq');1;Hertzen;Vastaanotto maanantaisin klo 13.00;Blogi www.herzensaitti.fi;Vastaanottopiste d;system
+nextval('office_hours_id_seq');5;Leena von Tohtori;Vastaanotto maanantaisin klo 13.00;Blogi www.tohtorileenansaitti.fi;Vastaanottopiste e;system
+nextval('office_hours_id_seq');6;Leena von Ahdes;Vastaanotto maanantaisin klo 13.00;Blogi www.ahteenleena.fi;Vastaanottopiste f;system
+nextval('office_hours_id_seq');4;Leena Lehtori;Tiistaisin klo 10.00;Olenpa mainio ihminen!;Vastaanottopiste A3;system
+nextval('office_hours_id_seq');4;null;Tiistaisin klo 10.00;Oho, bugin vuoksi ei olekaan nimeä;;system

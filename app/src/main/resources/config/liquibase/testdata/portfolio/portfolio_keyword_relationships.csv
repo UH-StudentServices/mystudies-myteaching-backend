@@ -1,2 +1,2 @@
 id;portfolio_id;portfolio_keyword_id;order_index;created_by
-1;2;1;0;system
+nextval('portfolio_keyword_relationship_id_seq');2;1;0;system

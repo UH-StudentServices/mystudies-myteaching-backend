@@ -1,4 +1,4 @@
 id;content;user_id;created_by;created_date
-1;Do this;3;system;now()
-2;Do this also;3;system;now()
-3;Really old item;3;system;DATEADD('MONTH',-5, NOW())
+nextval('todo_item_id_seq');Do this;3;system;now()
+nextval('todo_item_id_seq');Do this also;3;system;now()
+nextval('todo_item_id_seq');Really old item;3;system;CURRENT_DATE - INTERVAL '5 month';

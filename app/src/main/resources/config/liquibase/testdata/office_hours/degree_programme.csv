@@ -1,4 +1,4 @@
 id;degree_code;created_by
-1;KH80_001;system
-2;KH50_002;system
-3;KH50_004;system
+nextval('degree_programme_id_seq');KH80_001;system
+nextval('degree_programme_id_seq');KH50_002;system
+nextval('degree_programme_id_seq');KH50_004;system

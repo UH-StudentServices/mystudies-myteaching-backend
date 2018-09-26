@@ -4,27 +4,27 @@ spring:
     profiles:
         active: local-dev
     datasource:
-        dataSourceClassName: org.h2.jdbcx.JdbcDataSource
-        url: jdbc:h2:mem:jhipster;DB_CLOSE_DELAY=-1
-        databaseName:
-        serverName:
-        username:
-        password:
+        dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
+        url: jdbc:postgresql://my-studies-psql:5432/opintoni
+        databaseName: opintoni
+        serverName: my-studies-psql
+        username: opintoni
+        password: opintoni
 
     jpa:
-        database-platform: org.hibernate.dialect.H2Dialect
-        database: H2
+        database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+        database: PostgreSQL
         openInView: false
         show_sql: false
         generate-ddl: false
         hibernate:
-            ddl-auto: none
-            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+          ddl-auto: none
+          naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
-            hibernate.cache.use_second_level_cache: true
-            hibernate.cache.use_query_cache: false
-            hibernate.generate_statistics: true
-            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+          hibernate.cache.use_second_level_cache: true
+          hibernate.cache.use_query_cache: false
+          hibernate.generate_statistics: true
+          cache_region_factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     mail:
         host: localhost
         port: 2525
