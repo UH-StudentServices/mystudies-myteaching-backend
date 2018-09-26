@@ -70,6 +70,7 @@ newsfeeds:
 
 googleAnalyticsAccount:
     main: UA-55852460-3
+    portfolio: UA-55852460-16 # hei tässä on QA:n avain, muuta devin avaimeksi
     student: UA-55852460-9
     teacher: UA-55852460-9
 
