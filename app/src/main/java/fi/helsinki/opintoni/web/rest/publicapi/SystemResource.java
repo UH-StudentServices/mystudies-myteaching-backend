@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.web.rest.publicapi;
 
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.RestConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,7 @@ public class SystemResource {
     private final RedisConnectionFactory redisConnectionFactory;
     private final DataSource dataSource;
 
+    @Autowired
     public SystemResource(RedisConnectionFactory redisConnectionFactory, DataSource dataSource) {
         this.redisConnectionFactory = redisConnectionFactory;
         this.dataSource = dataSource;
