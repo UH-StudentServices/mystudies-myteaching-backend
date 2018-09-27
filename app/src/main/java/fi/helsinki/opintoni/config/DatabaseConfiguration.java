@@ -93,7 +93,6 @@ public class DatabaseConfiguration implements EnvironmentAware {
         liquibase.setChangeLog("classpath:config/liquibase/master.xml");
         liquibase.setContexts("development, production");
         if (env.acceptsProfiles(Constants.SPRING_PROFILE_TEST)) {
-            //liquibase.setDropFirst(true);
             liquibase.setContexts("test");
         }
         return liquibase;

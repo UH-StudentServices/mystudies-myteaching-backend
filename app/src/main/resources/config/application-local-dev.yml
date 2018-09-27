@@ -18,13 +18,13 @@ spring:
         show_sql: false
         generate-ddl: false
         hibernate:
-          ddl-auto: none
-          naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+            ddl-auto: none
+            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
-          hibernate.cache.use_second_level_cache: true
-          hibernate.cache.use_query_cache: false
-          hibernate.generate_statistics: true
-          cache_region_factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: true
+            cache_region_factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     mail:
         host: localhost
         port: 2525

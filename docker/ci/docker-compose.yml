@@ -13,7 +13,7 @@ services:
     volumes:
       - ../docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
   my-studies-builder:
-      build: ./gradle
+      build: ./builder
       working_dir: /opt/mystudies/app
       volumes:
         - ~/.gradle:/root/.gradle
