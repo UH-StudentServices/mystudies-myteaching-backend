@@ -10,5 +10,3 @@ RUN apk update \
   && adduser -S -G jenkins jenkins
 
 ENV PATH="/opt/gradle/gradle-2.9/bin:${PATH}"
-
-RUN mkdir -p /opt/mystudies && chown -R jenkins:jenkins /opt/mystudies
