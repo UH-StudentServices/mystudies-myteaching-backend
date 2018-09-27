@@ -71,7 +71,7 @@ unisportApiKey: foobar123
 
 googleAnalyticsAccount:
     main: UA-55852460-3
-#    portfolio: UA-55852460-xxx
+    portfolio: UA-55852460-18
     student: UA-55852460-9
     teacher: UA-55852460-9
 
