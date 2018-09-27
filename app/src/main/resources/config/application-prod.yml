@@ -73,9 +73,12 @@ recommendations:
     uidPrefix: opintohistoria_
 
 googleAnalyticsAccount:
-    main: UA-55852460-5
+    main: UA-55852460-5 # OPA account
+    portfolio: UA-55852460-15
+    # UH account
     student: UA-6314483-6
     teacher: UA-6314483-7
+
 
 hostUrl: https://student.helsinki.fi
 loginUrlTeacher: /saml/login/alias/teacher
