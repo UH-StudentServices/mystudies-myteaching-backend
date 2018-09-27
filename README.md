@@ -40,9 +40,19 @@ docker-compose up
 
 ### Running tests
 
-First start Redis in a Docker container: `./app/src/test/script/start-redis.sh`.
+`./app/gradlew test
 
-Then run tests: `./app/gradlew test`
+### Running tests in CI
+
+Tests can be run in fully dockerized environment where no ports are exposed to host machine. This is intended to be used on CI machine, 
+where multiple tests can run in parallel. 
+
+```
+cd docker/ci
+docker-compose run --entrypoint "<gradle command>" my-studies-builder
+docker-compose stop
+docker-compose rm -f
+```
 
 ### Building runnable jars
 

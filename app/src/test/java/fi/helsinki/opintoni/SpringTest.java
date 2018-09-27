@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni;
 
+import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.integration.fileservice.FileServiceStorage;
@@ -61,6 +62,7 @@ import javax.servlet.http.Cookie;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.util.Lists.newArrayList;
@@ -72,6 +74,41 @@ import static org.assertj.core.util.Lists.newArrayList;
 @ActiveProfiles(Constants.SPRING_PROFILE_TEST)
 @Transactional
 public abstract class SpringTest {
+
+    private static final List<String> TABLE_NAMES = newArrayList(
+            "user_account",
+        "favorite",
+        "portfolio",
+        "user_settings",
+        "todo_item",
+        "useful_link",
+        "user_notification",
+        "portfolio_keyword_relationship",
+        "portfolio_keyword",
+        "contact_information",
+        "some_link",
+        "degree",
+        "calendar_feed",
+        "job_search",
+        "study_attainment_whitelist",
+        "study_attainment_whitelist_entry",
+        "work_experience",
+        "component_visibility",
+        "localized_text",
+        "free_text_content",
+        "sample",
+        "office_hours",
+        "degree_programme",
+        "component_order",
+        "component_heading",
+        "office_hours_degree_programme",
+        "cached_item_updates_check",
+        "notifications",
+        "notification_schedules",
+        "portfolio_background",
+        "portfolio_language_proficiency");
+    private static final Map<String, String> SEQUENCE_NAMES_BY_TABLE_NAMES = ImmutableMap.of("user_account", "user_id_seq");
+    private static final String DEFAULT_SEQUENCE_SUFFIX= "_id_seq";
 
     protected OodiServer oodiServer;
     protected CoursePageServer coursePageServer;
@@ -191,47 +228,20 @@ public abstract class SpringTest {
     }
 
     @Before
-    public void initSequences() {
-        entityManager.createNativeQuery(createSequenceInitQuery("user_id_seq", "user_account")).getSingleResult();
+    public void resetSequences() {
+        TABLE_NAMES.stream().forEach(tableName -> {
 
-        List<String> tables = newArrayList(
-            "favorite",
-            "portfolio",
-            "user_settings",
-            "todo_item",
-            "useful_link",
-            "user_notification",
-            "portfolio_keyword_relationship",
-            "portfolio_keyword",
-            "contact_information",
-            "some_link",
-            "degree",
-            "calendar_feed",
-            "job_search",
-            "study_attainment_whitelist",
-            "study_attainment_whitelist_entry",
-            "work_experience",
-            "component_visibility",
-            "localized_text",
-            "free_text_content",
-            "sample",
-            "office_hours",
-            "degree_programme",
-            "component_order",
-            "component_heading",
-            "office_hours_degree_programme",
-            "cached_item_updates_check",
-            "notifications",
-            "notification_schedules",
-            "portfolio_background",
-            "portfolio_language_proficiency");
+            String sequenceName = SEQUENCE_NAMES_BY_TABLE_NAMES.get(tableName);
 
-        tables.stream().forEach(q -> {
-            entityManager.createNativeQuery(createSequenceInitQuery(q + "_id_seq", q)).getSingleResult();
+            if (sequenceName == null) {
+                sequenceName = tableName + DEFAULT_SEQUENCE_SUFFIX;
+            }
+
+            entityManager.createNativeQuery(createSequenceResetQuery(sequenceName, tableName)).getSingleResult();
         });
     }
 
-    private String createSequenceInitQuery(String sequenceName, String tableName) {
+    private String createSequenceResetQuery(String sequenceName, String tableName) {
         return String.format("select setval('%s', (select coalesce(max(id)+1,1) from %s), false);", sequenceName, tableName);
     }
 

@@ -12,7 +12,7 @@ services:
       - POSTGRES_DB=opintoni
     volumes:
       - ../docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
-  gradle:
+  my-studies-builder:
       build: ./gradle
       working_dir: /opt/mystudies/app
       volumes:
