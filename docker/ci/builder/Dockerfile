@@ -11,4 +11,4 @@ RUN apk update \
 
 ENV PATH="/opt/gradle/gradle-2.9/bin:${PATH}"
 
-RUN mkdir -p /opt/mystudies && chown :jenkins /opt/mystudies
+RUN mkdir -p /opt/mystudies && chown -R jenkins:jenkins /opt/mystudies
