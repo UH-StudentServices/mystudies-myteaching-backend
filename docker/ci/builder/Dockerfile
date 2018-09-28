@@ -7,6 +7,11 @@ RUN apk update \
   && mkdir -p /opt/gradle \
   && unzip -d /opt/gradle gradle-2.9-bin.zip \
   && addgroup -S jenkins \
-  && adduser -S -G jenkins jenkins
+  && adduser -S -G jenkins -u 996 jenkins \
+  && mkdir -p /opt/mystydies/app \
+  && chown -R jenkins:jenkins /opt/mystydies/app
+
 
 ENV PATH="/opt/gradle/gradle-2.9/bin:${PATH}"
+
+USER jenkins
