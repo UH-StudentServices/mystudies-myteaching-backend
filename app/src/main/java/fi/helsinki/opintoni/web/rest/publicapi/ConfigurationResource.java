@@ -47,6 +47,7 @@ public class ConfigurationResource extends AbstractResource {
     private String getConfiguration(AppConfiguration appConfiguration) throws JSONException {
         JSONObject configuration = new JSONObject();
         configuration.put("googleAnalyticsAccount", appConfiguration.get("googleAnalyticsAccount.main"));
+        configuration.put("googleAnalyticsAccountPortfolio", appConfiguration.get("googleAnalyticsAccount.portfolio"));
         configuration.put("googleAnalyticsAccountStudent", appConfiguration.get("googleAnalyticsAccount.student"));
         configuration.put("googleAnalyticsAccountTeacher", appConfiguration.get("googleAnalyticsAccount.teacher"));
         configuration.put("loginUrlTeacher", appConfiguration.get("loginUrlTeacher"));
