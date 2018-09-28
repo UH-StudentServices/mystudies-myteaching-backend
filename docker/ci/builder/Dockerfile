@@ -20,3 +20,7 @@ RUN apk update \
 ENV PATH="/opt/gradle/gradle-2.9/bin:${PATH}"
 
 USER $USER_NAME
+
+WORKDIR /opt/mystudies/app
+
+ENTRYPOINT ["gradle", "--version"]
