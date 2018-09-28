@@ -30,7 +30,9 @@ import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.server.*;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
-import fi.helsinki.opintoni.web.requestchain.*;
+import fi.helsinki.opintoni.web.requestchain.OodiCourseNamesRequestChain;
+import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
+import fi.helsinki.opintoni.web.requestchain.TeacherRequestChain;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
@@ -62,7 +64,6 @@ import javax.servlet.http.Cookie;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.util.Lists.newArrayList;
