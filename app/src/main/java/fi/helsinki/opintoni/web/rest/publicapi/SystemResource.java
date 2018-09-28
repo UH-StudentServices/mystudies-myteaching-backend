@@ -19,6 +19,8 @@ package fi.helsinki.opintoni.web.rest.publicapi;
 
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.RestConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisConnectionUtils;
@@ -37,6 +39,7 @@ import javax.sql.DataSource;
 @RequestMapping(RestConstants.PUBLIC_API_V1)
 public class SystemResource {
 
+    private static final Logger logger = LoggerFactory.getLogger(SystemResource.class);
     private static final String OK_STATUS_MESSAGE = "ok";
     private static final String REDIS_ERROR_MESSAGE = "Redis connection failed";
     private static final String DATABASE_ERROR_MESSAGE = "Database connection failed";
@@ -71,6 +74,7 @@ public class SystemResource {
             RedisConnectionUtils.getConnection(this.redisConnectionFactory);
             return true;
         } catch (Exception e) {
+            logger.error(REDIS_ERROR_MESSAGE, e);
             return false;
         }
     }
@@ -79,6 +83,7 @@ public class SystemResource {
         try {
             return this.dataSource.getConnection().isValid(DATABASE_CHECK_TIMEOUT);
         } catch (Exception e) {
+            logger.error(DATABASE_ERROR_MESSAGE, e);
             return false;
         }
     }
