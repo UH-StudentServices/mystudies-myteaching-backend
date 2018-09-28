@@ -13,11 +13,17 @@ services:
     volumes:
       - ../docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
   my-studies-builder:
-      build: ./builder
+      build:
+        context: ./builder
+        args:
+          - USER_NAME=jenkins
+          - USER_ID=996
+          - GROUP_NAME=jenkins
+          - GROUP_ID=994
       working_dir: /opt/mystudies/app
       volumes:
-        - ~/.gradle:/root/.gradle
-        - ~/.m2:/root/.m2
+        - ~/.gradle:/home/jenkins/.gradle
+        - ~/.m2:/home/jenkins/.m2
         - ../../:/opt/mystudies
       depends_on:
         - my-studies-redis
