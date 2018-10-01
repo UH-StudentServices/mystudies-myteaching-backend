@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 /*
     This API is used by other services. Do not delete!
@@ -58,11 +61,17 @@ public class SystemResource {
         value = "/health-check",
         produces = WebConstants.APPLICATION_JSON_UTF8)
     public ResponseEntity<HealthStatus> getHealthStatus() {
+
         if (!hasRedisConnection()) {
             return new ResponseEntity<>(new HealthStatus(REDIS_ERROR_MESSAGE), HttpStatus.SERVICE_UNAVAILABLE);
         }
 
-        if (!hasDatabaseConnection()) {
+        try {
+            if (!hasDatabaseConnection()) {
+                return new ResponseEntity<>(new HealthStatus(DATABASE_ERROR_MESSAGE), HttpStatus.SERVICE_UNAVAILABLE);
+            }
+        } catch (SQLException e) {
+            logger.error(DATABASE_ERROR_MESSAGE, e);
             return new ResponseEntity<>(new HealthStatus(DATABASE_ERROR_MESSAGE), HttpStatus.SERVICE_UNAVAILABLE);
         }
 
@@ -70,21 +79,32 @@ public class SystemResource {
     }
 
     private boolean hasRedisConnection() {
+        boolean hasConnection = false;
+        RedisConnection redisConnection = null;
         try {
-            RedisConnectionUtils.getConnection(this.redisConnectionFactory);
-            return true;
+            redisConnection = RedisConnectionUtils.getConnection(this.redisConnectionFactory);
+            hasConnection = redisConnection != null;
         } catch (Exception e) {
             logger.error(REDIS_ERROR_MESSAGE, e);
-            return false;
+        } finally {
+            if (redisConnection != null) {
+                redisConnection.close();
+            }
+            return hasConnection;
         }
     }
 
-    private boolean hasDatabaseConnection() {
+    private boolean hasDatabaseConnection() throws SQLException {
+        Connection databaseConnection = null;
+        boolean hasConnection = false;
         try {
-            return this.dataSource.getConnection().isValid(DATABASE_CHECK_TIMEOUT);
-        } catch (Exception e) {
-            logger.error(DATABASE_ERROR_MESSAGE, e);
-            return false;
+            databaseConnection = this.dataSource.getConnection();
+            hasConnection = databaseConnection.isValid(DATABASE_CHECK_TIMEOUT);
+        } finally {
+            if (databaseConnection != null) {
+                databaseConnection.close();
+            }
+            return hasConnection;
         }
     }
 
