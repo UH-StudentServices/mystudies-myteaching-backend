@@ -24,9 +24,13 @@ services:
         - GROUP_NAME=jenkins
         - GROUP_ID=994
     volumes:
-      - ~/.m2:/home/jenkins/.m2
-      - ~/.gradle-docker/my-backend-develop-build:/home/jenkins/.gradle
+      - m2:/home/jenkins/.m2
+      - gradle:/home/jenkins/.gradle
       - ../../:/opt/mystudies
     depends_on:
       - my-studies-redis
       - my-studies-psql
+
+volumes:
+  m2:
+  gradle:
