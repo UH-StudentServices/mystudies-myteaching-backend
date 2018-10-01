@@ -14,8 +14,9 @@ RUN apk update \
   && addgroup -S -g $GROUP_ID $GROUP_NAME \
   && adduser -S -G $GROUP_NAME -u $USER_ID $USER_NAME \
   && mkdir -p /opt/mystudies/app \
-  && chown -R $USER_NAME:$GROUP_NAME /opt/mystudies/app
-
+  && chown -R $USER_NAME:$GROUP_NAME /opt/mystudies/app \
+  && mkdir -p /home/jenkins/.gradle \
+  && chown -R $USER_NAME:$GROUP_NAME /home/jenkins/.gradle
 
 ENV PATH="/opt/gradle/gradle-2.9/bin:${PATH}"
 
