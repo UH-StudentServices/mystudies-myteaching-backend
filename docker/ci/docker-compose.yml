@@ -33,7 +33,7 @@ services:
       - my-studies-builder-cache
   my-studies-builder-cache:
     build:
-      context: ./builder
+      context: ./cache
       args:
         - USER_NAME=jenkins
         - USER_ID=996
