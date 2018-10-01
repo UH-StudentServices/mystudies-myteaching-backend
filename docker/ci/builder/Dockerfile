@@ -1,4 +1,4 @@
-FROM java:openjdk-8
+FROM java:openjdk-8-alpine
 
 ARG USER_NAME
 ARG USER_ID

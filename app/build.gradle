@@ -35,6 +35,16 @@ plugins {
     id 'checkstyle'
 }
 
+if(! hasProperty("opintoni_artifactory_base_url")){
+  ext.opintoni_artifactory_base_url=""
+}
+if(! hasProperty("opintoni_artifactory_username")){
+  ext.opintoni_artifactory_username=""
+}
+if(! hasProperty("opintoni_artifactory_password")){
+  ext.opintoni_artifactory_password=""
+}
+
 sourceCompatibility=1.8
 targetCompatibility=1.8
 
