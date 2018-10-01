@@ -25,6 +25,7 @@ services:
         - GROUP_ID=994
     volumes:
       - ~/.m2:/home/jenkins/.m2
+      - ~/.gradle-docker/my-backend-develop-build:/home/jenkins/.gradle
       - ../../:/opt/mystudies
     depends_on:
       - my-studies-redis
