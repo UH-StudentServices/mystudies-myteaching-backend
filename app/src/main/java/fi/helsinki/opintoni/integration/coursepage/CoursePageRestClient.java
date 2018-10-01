@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.integration.coursepage;
 
+import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +26,10 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
 
 public class CoursePageRestClient implements CoursePageClient {
     private final String baseUrl;
@@ -37,6 +37,12 @@ public class CoursePageRestClient implements CoursePageClient {
     private final RestTemplate restTemplate;
 
     private static final Logger log = LoggerFactory.getLogger(CoursePageRestClient.class);
+
+    // Based on https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
+    // practical max length of request uri is 2000 characters. Course implementation id is 9 numeric characters long,
+    // with comma separator 190 ids is going to take 1900 characters. Remaining 100 characters are left as space
+    // for course page url
+    private static final int COURSE_IMPLEMENTATION_PATCH_SIZE = 190;
 
     public CoursePageRestClient(String baseUrl, String apiPath, RestTemplate restTemplate) {
         this.baseUrl = baseUrl;
@@ -99,12 +105,15 @@ public class CoursePageRestClient implements CoursePageClient {
 
     @Override
     public List<CoursePageCourseImplementation> getCoursePages(List<String> courseImplementationIds, Locale locale) {
-        return getCoursePageData(
-            "/course_implementation/{courseImplementationIds}",
-            new ParameterizedTypeReference<List<CoursePageCourseImplementation>>() {
-            },
-            locale,
-            String.join(",", courseImplementationIds));
+        return Lists.partition(courseImplementationIds, COURSE_IMPLEMENTATION_PATCH_SIZE).parallelStream()
+            .map(idListPartition ->
+                getCoursePageData("/course_implementation/{courseImplementationIds}",
+                    new ParameterizedTypeReference<List<CoursePageCourseImplementation>>() {
+                    },
+                    locale,
+                    String.join(",", idListPartition)))
+            .flatMap(Collection::stream)
+            .collect(toList());
     }
 
     @Override
