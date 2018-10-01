@@ -24,23 +24,8 @@ services:
         - GROUP_NAME=jenkins
         - GROUP_ID=994
     volumes:
-      - gradle:/home/jenkins/.gradle
       - ~/.m2:/home/jenkins/.m2
       - ../../:/opt/mystudies
     depends_on:
       - my-studies-redis
       - my-studies-psql
-      - my-studies-builder-cache
-  my-studies-builder-cache:
-    build:
-      context: ./cache
-      args:
-        - USER_NAME=jenkins
-        - USER_ID=996
-        - GROUP_NAME=jenkins
-        - GROUP_ID=994
-    volumes:
-      - gradle:/home/jenkins/.gradle
-
-volumes:
-  gradle:
