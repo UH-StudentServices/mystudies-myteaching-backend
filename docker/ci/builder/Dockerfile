@@ -13,8 +13,8 @@ RUN apk update \
   && unzip -d /opt/gradle gradle-2.9-bin.zip \
   && addgroup -S -g $GROUP_ID $GROUP_NAME \
   && adduser -S -G $GROUP_NAME -u $USER_ID $USER_NAME \
-  && mkdir -p /opt/mystydies/app \
-  && chown -R $USER_NAME:$GROUP_NAME /opt/mystydies/app
+  && mkdir -p /opt/mystudies/app \
+  && chown -R $USER_NAME:$GROUP_NAME /opt/mystudies/app
 
 
 ENV PATH="/opt/gradle/gradle-2.9/bin:${PATH}"
