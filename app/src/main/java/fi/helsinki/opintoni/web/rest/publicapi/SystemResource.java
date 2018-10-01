@@ -65,13 +65,8 @@ public class SystemResource {
         if (!hasRedisConnection()) {
             return new ResponseEntity<>(new HealthStatus(REDIS_ERROR_MESSAGE), HttpStatus.SERVICE_UNAVAILABLE);
         }
-
-        try {
-            if (!hasDatabaseConnection()) {
-                return new ResponseEntity<>(new HealthStatus(DATABASE_ERROR_MESSAGE), HttpStatus.SERVICE_UNAVAILABLE);
-            }
-        } catch (SQLException e) {
-            logger.error(DATABASE_ERROR_MESSAGE, e);
+        
+        if (!hasDatabaseConnection()) {
             return new ResponseEntity<>(new HealthStatus(DATABASE_ERROR_MESSAGE), HttpStatus.SERVICE_UNAVAILABLE);
         }
 
@@ -94,18 +89,17 @@ public class SystemResource {
         }
     }
 
-    private boolean hasDatabaseConnection() throws SQLException {
-        Connection databaseConnection = null;
+    private boolean hasDatabaseConnection() {
+
         boolean hasConnection = false;
-        try {
-            databaseConnection = this.dataSource.getConnection();
+
+        try (Connection databaseConnection = this.dataSource.getConnection()) {
             hasConnection = databaseConnection.isValid(DATABASE_CHECK_TIMEOUT);
-        } finally {
-            if (databaseConnection != null) {
-                databaseConnection.close();
-            }
-            return hasConnection;
+        } catch (SQLException e) {
+            logger.error(DATABASE_ERROR_MESSAGE, e);
         }
+        return hasConnection;
+
     }
 
     public static class HealthStatus {
