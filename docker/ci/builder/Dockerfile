@@ -5,8 +5,6 @@ ARG USER_ID
 ARG GROUP_NAME
 ARG GROUP_ID
 
-VOLUME /home/$USER_NAME/.gradle
-
 RUN apk update \
   && apk add bash ca-certificates wget \
   && update-ca-certificates \
@@ -16,8 +14,11 @@ RUN apk update \
   && addgroup -S -g $GROUP_ID $GROUP_NAME \
   && adduser -S -G $GROUP_NAME -u $USER_ID $USER_NAME \
   && mkdir -p /opt/mystudies/app \
+  && mkdir -p /home/$USER_NAME/.gradle \
+  && mkdir -p /home/$USER_NAME/.m2 \
   && chown -R $USER_NAME:$GROUP_NAME /opt/mystudies/app \
-  && chmod +w /home/$USER_NAME/.gradle
+  && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.gradle \
+  && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.m2
 
 ENV PATH="/opt/gradle/gradle-2.9/bin:${PATH}"
 
