@@ -15,17 +15,18 @@ services:
     volumes:
       - ../docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
   my-studies-builder:
-      container_name: my-studies-builder
-      build:
-        context: ./builder
-        args:
-          - USER_NAME=jenkins
-          - USER_ID=996
-          - GROUP_NAME=jenkins
-          - GROUP_ID=994
-      volumes:
-        - ~/.m2:/home/jenkins/.m2
-        - ../../:/opt/mystudies
-      depends_on:
-        - my-studies-redis
-        - my-studies-psql
+    privileged: true
+    container_name: my-studies-builder
+    build:
+      context: ./builder
+      args:
+        - USER_NAME=jenkins
+        - USER_ID=996
+        - GROUP_NAME=jenkins
+        - GROUP_ID=994
+    volumes:
+      - ~/.m2:/home/jenkins/.m2
+      - ../../:/opt/mystudies
+    depends_on:
+      - my-studies-redis
+      - my-studies-psql
