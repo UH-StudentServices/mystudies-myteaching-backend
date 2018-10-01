@@ -16,7 +16,6 @@ RUN apk update \
   && mkdir -p /opt/mystudies/app \
   && chown -R $USER_NAME:$GROUP_NAME /opt/mystudies/app
 
-
 ENV PATH="/opt/gradle/gradle-2.9/bin:${PATH}"
 
 VOLUME /home/$USER_NAME/.gradle
