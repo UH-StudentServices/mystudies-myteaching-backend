@@ -5,7 +5,7 @@ spring:
         active: local-dev
     datasource:
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
-        url: jdbc:postgresql://my-studies-psql:5432/opintoni
+        url: jdbc:postgresql://my-studies-psql:5433/opintoni
         databaseName: opintoni
         serverName: my-studies-psql
         username: opintoni
@@ -28,6 +28,11 @@ spring:
     mail:
         host: localhost
         port: 2525
+
+redis:
+    host: localhost
+    port: 6380
+    defaultCacheExpirationSeconds: 31536000 #One year
 
 feedback:
     recipient:

@@ -2,25 +2,18 @@ version: '3.5'
 
 services:
   my-studies-redis:
+    container_name: my-studies-redis-local-test
     image: redis:3.2-alpine
     command: redis-server
+    ports:
+      - 6379:6379
   my-studies-psql:
+    container_name: my-studies-psql-local-test
     image: postgres:9.4-alpine
     environment:
       - POSTGRES_USER=opintoni
       - POSTGRES_PASSWORD=opintoni
     volumes:
       - ../docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
-  my-studies-builder:
-    build:
-      context: ./builder
-      args:
-        - USER_NAME=jenkins
-        - USER_ID=996
-        - GROUP_NAME=jenkins
-        - GROUP_ID=994
-    volumes:
-      - ../../:/opt/mystudies
-    depends_on:
-      - my-studies-redis
-      - my-studies-psql
+    ports:
+      - 5432:5432

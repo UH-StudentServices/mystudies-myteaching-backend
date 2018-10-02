@@ -2,13 +2,13 @@ version: '3.5'
 
 services:
   my-studies-redis:
-    container_name: my-studies-redis
+    container_name: my-studies-redis-local-dev
     image: redis:3.2-alpine
     command: redis-server
     ports:
-      - 6379:6379
+      - 6380:6379
   my-studies-psql:
-    container_name: my-studies-psql
+    container_name: my-studies-psql-local-dev
     image: postgres:9.4-alpine
     environment:
       - POSTGRES_USER=opintoni
@@ -16,4 +16,4 @@ services:
     volumes:
       - ../docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
     ports:
-      - 5432:5432
+      - 5433:5432
