@@ -21,6 +21,8 @@ services:
         - GROUP_ID=994
     volumes:
       - ../../:/opt/mystudies
+      - ~/.ssh/config:/home/jenkins/.ssh/config
+      - ~/.ssh/github:/home/jenkins/.ssh/github
     depends_on:
       - my-studies-redis
       - my-studies-psql
