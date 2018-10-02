@@ -29,7 +29,7 @@ public class DateTimeUtilTest  {
 
     @Test
     public void thatLastSemesterStringIsObtainedCorrectlyBeforeEndOfYear() {
-        LocalDate d = LocalDate.of(2014, 10, 10);
+        LocalDate d = LocalDate.of(2015, 10, 10);
         assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo(EXPECTED_DATE_STRING);
     }
 
