@@ -17,8 +17,6 @@
 
 package fi.helsinki.opintoni.domain;
 
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -58,7 +56,6 @@ public class LinkFavorite extends Favorite {
         super.orderIndex = builder.orderIndex;
         super.type = builder.type;
         super.user = builder.user;
-        super.portfolio = builder.portfolio;
 
         this.url = builder.url;
         this.providerName = builder.providerName;
@@ -79,7 +76,6 @@ public class LinkFavorite extends Favorite {
         private String thumbnailUrl;
         private Integer thumbnailWidth;
         private Integer thumbnailHeight;
-        private Portfolio portfolio;
 
         public LinkFavorite build() {
             return new LinkFavorite(this);
@@ -132,11 +128,6 @@ public class LinkFavorite extends Favorite {
 
         public Builder thumbnailHeight(Integer thumbnailHeight) {
             this.thumbnailHeight = thumbnailHeight;
-            return this;
-        }
-
-        public Builder portfolio(Portfolio portfolio) {
-            this.portfolio = portfolio;
             return this;
         }
     }

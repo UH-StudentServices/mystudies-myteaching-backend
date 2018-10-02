@@ -44,7 +44,6 @@ public class PortfolioConverter {
     private final AvatarImageService avatarImageService;
     private final LanguageProficiencyService languageProficiencyService;
     private final FreeTextContentService freeTextContentService;
-    private final PortfolioFavoriteService favoriteService;
     private final WorkExperienceService workExperienceService;
     private final SampleService sampleService;
     private final JobSearchService jobSearchService;
@@ -62,7 +61,6 @@ public class PortfolioConverter {
                               AvatarImageService avatarImageService,
                               LanguageProficiencyService languageProficiencyService,
                               FreeTextContentService freeTextContentService,
-                              PortfolioFavoriteService favoriteService,
                               WorkExperienceService workExperienceService,
                               SampleService sampleService,
                               JobSearchService jobSearchService,
@@ -78,7 +76,6 @@ public class PortfolioConverter {
         this.avatarImageService = avatarImageService;
         this.languageProficiencyService = languageProficiencyService;
         this.freeTextContentService = freeTextContentService;
-        this.favoriteService = favoriteService;
         this.workExperienceService = workExperienceService;
         this.sampleService = sampleService;
         this.jobSearchService = jobSearchService;
@@ -190,9 +187,6 @@ public class PortfolioConverter {
                 portfolioDto.freeTextContent = componentVisibilities != null ?
                     freeTextContentService.findByPortfolioIdAndComponentVisibilities(portfolioId, componentVisibilities) :
                     freeTextContentService.findByPortfolioId(portfolioId);
-                break;
-            case FAVORITES:
-                portfolioDto.favorites = favoriteService.findByPortfolioId(portfolioId);
                 break;
             case WORK_EXPERIENCE:
                 portfolioDto.workExperience = workExperienceService.findByPortfolioId(portfolioId);

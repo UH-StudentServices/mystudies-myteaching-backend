@@ -20,14 +20,10 @@ package fi.helsinki.opintoni.service.favorite;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.domain.*;
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.dto.FavoriteDto;
-import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.FavoriteRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
-import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.converter.FavoriteConverter;
-import fi.helsinki.opintoni.web.rest.privateapi.InsertLinkFavoriteRequest;
 import fi.helsinki.opintoni.web.rest.privateapi.InsertTwitterFavoriteRequest;
 import fi.helsinki.opintoni.web.rest.privateapi.SaveRssFavoriteRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -48,33 +43,22 @@ public class FavoriteService {
     private final FavoriteRepository favoriteRepository;
     private final FavoriteConverter favoriteConverter;
     private final UserRepository userRepository;
-    private final PortfolioRepository portfolioRepository;
     private final FavoriteProperties favoriteProperties;
 
     @Autowired
     public FavoriteService(FavoriteRepository favoriteRepository,
                            FavoriteConverter favoriteConverter,
                            UserRepository userRepository,
-                           FavoriteProperties favoriteProperties,
-                           PortfolioRepository portfolioRepository) {
+                           FavoriteProperties favoriteProperties) {
         this.favoriteRepository = favoriteRepository;
         this.favoriteConverter = favoriteConverter;
         this.userRepository = userRepository;
         this.favoriteProperties = favoriteProperties;
-        this.portfolioRepository = portfolioRepository;
-    }
-
-    public List<FavoriteDto> findByPortfolioId(final Long portfolioId) {
-        return favoriteRepository.findByPortfolioIdOrderByOrderIndexAsc(portfolioId)
-            .stream()
-            .map(favoriteConverter::toDto)
-            .collect(Collectors.toList());
     }
 
     public List<FavoriteDto> findByUserId(final Long userId) {
         return favoriteRepository.findByUserIdOrderByOrderIndexAsc(userId)
             .stream()
-            .filter(f -> !f.isPortfolio())
             .map(favoriteConverter::toDto)
             .collect(Collectors.toList());
     }
@@ -122,28 +106,6 @@ public class FavoriteService {
         return favoriteConverter.toDto(favorite);
     }
 
-    public FavoriteDto insertLinkFavoriteForPortfolio(final Long userId,
-                                                      final InsertLinkFavoriteRequest insertRequest,
-                                                      final Long portfolioId) {
-        LinkFavorite.Builder builder = new LinkFavorite.Builder();
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException("Portfolio not found"));
-        LinkFavorite favorite = builder
-            .user(userRepository.findOne(userId))
-            .orderIndex(portfolioOrderIndex().apply(userId, portfolioId) + 1)
-            .providerName(insertRequest.providerName)
-            .url(insertRequest.url)
-            .title(insertRequest.title)
-            .type(Favorite.Type.LINK)
-            .thumbnailUrl(insertRequest.thumbnailUrl)
-            .thumbnailHeight(insertRequest.thumbnailHeight)
-            .thumbnailWidth(insertRequest.thumbnailWidth)
-            .portfolio(portfolio)
-            .build();
-
-        favoriteRepository.save(favorite);
-        return favoriteConverter.toDto(favorite);
-    }
-
     public FavoriteDto insertUnicafeFavorite(Long userId, Integer restaurantId) {
         UnicafeFavorite favorite = new UnicafeFavorite();
         favorite.type = Favorite.Type.UNICAFE;
@@ -162,31 +124,16 @@ public class FavoriteService {
     }
 
     public FavoriteDto insertTwitterFavorite(Long userId, InsertTwitterFavoriteRequest request) {
-        return insertTwitterFavorite(userId, request, null);
-    }
-
-    private FavoriteDto insertTwitterFavorite(Long userId, InsertTwitterFavoriteRequest request, Portfolio portfolio) {
         TwitterFavorite favorite = new TwitterFavorite();
         favorite.type = Favorite.Type.TWITTER;
         favorite.user = userRepository.findOne(userId);
         favorite.orderIndex = orderIndex().apply(userId) + 1;
-        favorite.portfolio = portfolio;
 
         favorite.feedType = TwitterFavorite.FeedType.valueOf(request.feedType);
         favorite.value = request.value;
 
         favoriteRepository.save(favorite);
         return favoriteConverter.toDto(favorite);
-    }
-
-    public FavoriteDto insertTwitterFavoriteForPortfolio(Long userId, InsertTwitterFavoriteRequest request, Long portfolioId) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId)
-            .orElseThrow(() -> new NotFoundException("Portfolio not found"));
-        return insertTwitterFavorite(userId, request, portfolio);
-    }
-
-    public void orderPortfolioFavorites(final Long userId, final List<Long> orderedFavoriteIds) {
-        orderFavorites(userId, orderedFavoriteIds, true);
     }
 
     public void orderFavorites(final Long userId, final List<Long> orderedFavoriteIds) {
@@ -196,17 +143,12 @@ public class FavoriteService {
     private void orderFavorites(final Long userId, final List<Long> orderedFavoriteIds, final boolean portfolio) {
         favoriteRepository
             .findByUserIdOrderByOrderIndexAsc(userId).stream()
-            .filter(f -> f.isPortfolio() == portfolio)
             .filter(f -> orderedFavoriteIds.contains(f.id))
             .forEach(f -> f.orderIndex = orderedFavoriteIds.indexOf(f.id));
     }
 
     public void deleteFavorite(final Long favoriteId) {
         favoriteRepository.delete(favoriteId);
-    }
-
-    private BiFunction<Long, Long, Integer> portfolioOrderIndex() {
-        return favoriteRepository::getMaxOrderIndexInPortfolio;
     }
 
     private Function<Long, Integer> orderIndex() {
