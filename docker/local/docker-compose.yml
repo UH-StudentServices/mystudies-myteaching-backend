@@ -13,8 +13,7 @@ services:
     environment:
       - POSTGRES_USER=opintoni
       - POSTGRES_PASSWORD=opintoni
-      - POSTGRES_DB=opintoni
     volumes:
-      - ../docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - ../docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
     ports:
       - 5432:5432
