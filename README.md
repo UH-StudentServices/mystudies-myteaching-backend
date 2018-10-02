@@ -33,8 +33,17 @@ opintoni_artifactory_password=
 
 3. Docker and Docker Compose must be installed and running. Before running application or tests, start dockerized dependencies (psql and redis)
 
+For local development:
+
 ```
-cd docker/local
+cd docker/local-dev
+docker-compose up
+```
+
+For local test runs:
+
+```
+cd docker/local-test
 docker-compose up
 ```
 

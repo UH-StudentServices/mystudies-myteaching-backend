@@ -1,0 +1,17 @@
+version: '3.5'
+
+services:
+  my-studies-redis:
+    image: redis:3.2-alpine
+    command: redis-server
+    ports:
+      - 6380:6379
+  my-studies-psql:
+    image: postgres:9.4-alpine
+    environment:
+      - POSTGRES_USER=opintoni
+      - POSTGRES_PASSWORD=opintoni
+    volumes:
+      - ../docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    ports:
+      - 5433:5432
