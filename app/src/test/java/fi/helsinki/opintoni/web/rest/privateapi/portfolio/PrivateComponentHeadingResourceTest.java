@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
@@ -82,7 +83,7 @@ public class PrivateComponentHeadingResourceTest extends SpringTest {
             .andExpect(status().isOk());
 
         List<ComponentHeading> componentHeadings = componentHeadingRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID);
-        assertThat(componentHeadings.get(0).heading).isEqualTo(componentHeadingDto.heading);
+        assertThat(componentHeadings.stream().map(c -> c.heading).collect(Collectors.toList())).contains(componentHeadingDto.heading);
         assertThat(componentHeadings).hasSize(2);
     }
 

@@ -1,4 +1,4 @@
 id;url;description;order_index;user_id;created_by;type
-1;http://www.google.com;Google;0;3;system;USER_DEFINED
-2;http://www.helsinki.fi;Helsinki University;1;3;system;USER_DEFINED
-3;http://www.yle.fi;Yle;0;1;system;USER_DEFINED
+nextval('useful_link_id_seq');http://www.google.com;Google;0;3;system;USER_DEFINED
+nextval('useful_link_id_seq');http://www.helsinki.fi;Helsinki University;1;3;system;USER_DEFINED
+nextval('useful_link_id_seq');http://www.yle.fi;Yle;0;1;system;USER_DEFINED

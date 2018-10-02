@@ -78,8 +78,8 @@ public class PortfolioServiceTest extends SpringTest {
 
     @Test
     public void thatTeacherPortfolioAndComponentVisibilitiesAreCreated() {
-        deleteExistingTeacherPortfolio();
         componentVisibilityRepository.deleteAll();
+        deleteExistingTeacherPortfolio();
 
         assertThat(portfolioRepository.findByUserId(4L).count()).isZero();
 

@@ -34,7 +34,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class AppConfiguration {
 
     private final Environment environment;
-    
+
     @Autowired
     public AppConfiguration(Environment environment) {
         this.environment = environment;

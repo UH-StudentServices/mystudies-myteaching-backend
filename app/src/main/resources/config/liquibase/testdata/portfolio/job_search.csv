@@ -1,2 +1,2 @@
 id;portfolio_id;contact_email;created_by
-1;2;olli.opiskelija@helsinki.fi;system
+nextval('job_search_id_seq');2;olli.opiskelija@helsinki.fi;system

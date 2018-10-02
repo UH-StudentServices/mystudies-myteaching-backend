@@ -4,7 +4,7 @@ server:
     session.timeout: 1800 # Seconds
 
 redis:
-    host: localhost
+    host: my-studies-redis
     port: 6379
 
 async:
@@ -14,16 +14,16 @@ async:
 
 spring:
     datasource:
-        dataSourceClassName: org.h2.jdbcx.JdbcDataSource
-        url: jdbc:h2:mem:opintoni;DB_CLOSE_DELAY=-1
-        databaseName:
-        serverName:
-        username:
-        password:
+        dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
+        url: jdbc:postgresql://my-studies-psql:5432/opintoni
+        databaseName: opintoni
+        serverName: my-studies-psql
+        username: opintoni
+        password: opintoni
 
     jpa:
-        database-platform: org.hibernate.dialect.H2Dialect
-        database: H2
+        database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+        database: PostgreSQL
         openInView: false
         show_sql: false
         generate-ddl: false
@@ -31,9 +31,10 @@ spring:
             ddl-auto: none
             naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
         properties:
-            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
+            cache_region_factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
     mail:
         host: localhost
         port: 3025

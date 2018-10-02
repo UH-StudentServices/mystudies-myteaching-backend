@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni;
 
+import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.integration.fileservice.FileServiceStorage;
@@ -29,7 +30,9 @@ import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.server.*;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
-import fi.helsinki.opintoni.web.requestchain.*;
+import fi.helsinki.opintoni.web.requestchain.OodiCourseNamesRequestChain;
+import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
+import fi.helsinki.opintoni.web.requestchain.TeacherRequestChain;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
@@ -50,22 +53,63 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.servlet.Filter;
 import javax.servlet.http.Cookie;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 import static java.util.Collections.singletonList;
+import static org.assertj.core.util.Lists.newArrayList;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TestApplication.class)
 @WebAppConfiguration
 @IntegrationTest
 @ActiveProfiles(Constants.SPRING_PROFILE_TEST)
+@Transactional
 public abstract class SpringTest {
+
+    private static final List<String> TABLE_NAMES = newArrayList(
+            "user_account",
+        "favorite",
+        "portfolio",
+        "user_settings",
+        "todo_item",
+        "useful_link",
+        "user_notification",
+        "portfolio_keyword_relationship",
+        "portfolio_keyword",
+        "contact_information",
+        "some_link",
+        "degree",
+        "calendar_feed",
+        "job_search",
+        "study_attainment_whitelist",
+        "study_attainment_whitelist_entry",
+        "work_experience",
+        "component_visibility",
+        "localized_text",
+        "free_text_content",
+        "sample",
+        "office_hours",
+        "degree_programme",
+        "component_order",
+        "component_heading",
+        "office_hours_degree_programme",
+        "cached_item_updates_check",
+        "notifications",
+        "notification_schedules",
+        "portfolio_background",
+        "portfolio_language_proficiency");
+    private static final ImmutableMap<String, String> SEQUENCE_NAMES_BY_TABLE_NAMES = ImmutableMap.of("user_account", "user_id_seq");
+    private static final String DEFAULT_SEQUENCE_SUFFIX= "_id_seq";
 
     protected OodiServer oodiServer;
     protected CoursePageServer coursePageServer;
@@ -130,6 +174,9 @@ public abstract class SpringTest {
     @Autowired
     private FileServiceStorage fileServiceStorage;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Before
     public void initRestServer() {
         oodiServer = new OodiServer(appConfiguration, oodiRestTemplate);
@@ -179,6 +226,24 @@ public abstract class SpringTest {
         webPageServer.verify();
         unisportServer.verify();
         esbServer.verify();
+    }
+
+    @Before
+    public void resetSequences() {
+        TABLE_NAMES.stream().forEach(tableName -> {
+
+            String sequenceName = SEQUENCE_NAMES_BY_TABLE_NAMES.get(tableName);
+
+            if (sequenceName == null) {
+                sequenceName = tableName + DEFAULT_SEQUENCE_SUFFIX;
+            }
+
+            entityManager.createNativeQuery(createSequenceResetQuery(sequenceName, tableName)).getSingleResult();
+        });
+    }
+
+    private String createSequenceResetQuery(String sequenceName, String tableName) {
+        return String.format("select setval('%s', (select coalesce(max(id)+1,1) from %s), false);", sequenceName, tableName);
     }
 
     private void configureMockMvc() {

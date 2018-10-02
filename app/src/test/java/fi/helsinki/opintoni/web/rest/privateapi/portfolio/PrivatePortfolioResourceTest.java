@@ -162,8 +162,10 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
                         "https://dev.student.helsinki.fi/api/public/v1/images/backgrounds/Profile_3.jpg"
                 ))
                 .andExpect(jsonPath("$.componentVisibilities").isArray())
-                .andExpect(jsonPath("$.componentVisibilities[0].component").value("WORK_EXPERIENCE"))
-                .andExpect(jsonPath("$.componentVisibilities[0].visibility").value("PUBLIC"))
+                .andExpect(jsonPath("$.componentVisibilities").value(
+                    Matchers.hasItem(
+                        both(hasEntry("component", PortfolioComponent.WORK_EXPERIENCE.toString()))
+                            .and(hasEntry("visibility", PortfolioVisibility.PUBLIC.toString())))))
                 .andExpect(jsonPath("$.componentOrders").value(Matchers.<List<ComponentOrderDto>>allOf(
                         hasSize(3),
                         hasItem(

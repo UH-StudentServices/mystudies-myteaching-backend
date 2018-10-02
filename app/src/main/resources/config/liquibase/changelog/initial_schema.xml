@@ -21,9 +21,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <property name="now" value="now()" dbms="h2"/>
     <property name="now" value="current_timestamp" dbms="postgresql"/>
-    <property name="now" value="current_timestamp" dbms="oracle"/>
 
     <changeSet id="Add sequence for hibernate" author="Sebastian Monte" dbms="postgresql">
         <createSequence sequenceName="hibernate_sequence" startValue="1" incrementBy="1"/>

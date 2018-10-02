@@ -1,3 +1,3 @@
 id;portfolio_id
-1;2
-2;1
+nextval('study_attainment_whitelist_id_seq');2
+nextval('study_attainment_whitelist_id_seq');1
