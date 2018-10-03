@@ -19,8 +19,10 @@ services:
         - USER_ID=996
         - GROUP_NAME=jenkins
         - GROUP_ID=994
+    image: my-studies-builder:latest
     volumes:
       - ../../:/opt/mystudies
+      - ~/.ssh:/home/jenkins/.ssh:ro
     depends_on:
       - my-studies-redis
       - my-studies-psql

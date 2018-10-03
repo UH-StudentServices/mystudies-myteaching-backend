@@ -6,7 +6,7 @@ ARG GROUP_NAME
 ARG GROUP_ID
 
 RUN apk update \
-  && apk add bash ca-certificates wget \
+  && apk add bash ca-certificates wget git openssh \
   && update-ca-certificates \
   && wget https://services.gradle.org/distributions/gradle-2.9-bin.zip \
   && mkdir -p /opt/gradle \
