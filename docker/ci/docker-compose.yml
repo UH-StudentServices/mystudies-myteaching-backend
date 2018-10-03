@@ -23,7 +23,7 @@ services:
     volumes:
       - ../../:/opt/mystudies
       - ~/.ssh:/home/jenkins/.ssh:ro
-      - ~./gitconfig:/home/jenkins/.gitconfig:ro
+      - ~/.gitconfig:/home/jenkins/.gitconfig:ro
     depends_on:
       - my-studies-redis
       - my-studies-psql
