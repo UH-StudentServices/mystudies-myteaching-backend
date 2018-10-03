@@ -23,6 +23,8 @@ import fi.helsinki.opintoni.dto.v2.PublicOfficeHoursReceptionDto;
 import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.util.NameSorting;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,8 +46,8 @@ public class OfficeHoursServiceV2  {
         this.degreeProgrammeRepository = degreeProgrammeRepository;
     }
 
-    public List<PublicOfficeHoursDto> getAll() {
-        List<OfficeHours> allOfficeHours = officeHoursRepository.findAll();
+    public List<PublicOfficeHoursDto> getAllUnexpired() {
+        List<OfficeHours> allOfficeHours = officeHoursRepository.findAllWithExpirationDateEqualOrAfter(LocalDate.now());
 
         Map<String, List<OfficeHours>> groupedOfficeHours = allOfficeHours.stream()
             .filter(oh -> oh.name != null)

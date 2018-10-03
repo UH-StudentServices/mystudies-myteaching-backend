@@ -34,6 +34,7 @@ public class OfficeHoursConverter {
             officeHoursDto.additionalInfo = officeHours.additionalInfo;
             officeHoursDto.location = officeHours.location;
             officeHoursDto.name = officeHours.name;
+            officeHoursDto.expirationDate = officeHours.expirationDate;
 
             officeHoursDto.degreeProgrammes = officeHours.degreeProgrammes.stream()
                 .map(degreeProgramme -> new DegreeProgrammeDto(degreeProgramme.degreeCode))

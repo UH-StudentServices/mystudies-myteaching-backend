@@ -54,7 +54,7 @@ public class PublicOfficeHoursResourceTest extends SpringTest {
             .andExpect(jsonPath("$.[4].name").value(TEACHER_NAME_ARRAY[4]))
             .andExpect(jsonPath("$.[5].name").value(TEACHER_NAME_ARRAY[5]))
             .andExpect(jsonPath("$.[4].officeHours").value(
-                OFFICE_HOURS + OFFICE_HOURS_JOIN + OFFICE_HOURS_7
+                OFFICE_HOURS + OFFICE_HOURS_JOIN + OFFICE_HOURS_7 + OFFICE_HOURS_JOIN + OFFICE_HOURS_7
             ))
             .andExpect(jsonPath("$.[4].degreeProgrammes", hasSize(3)))
             .andExpect(jsonPath("$.[4].degreeProgrammes", containsInAnyOrder(DEGREE_CODE_1, DEGREE_CODE_2, DEGREE_CODE_3)));

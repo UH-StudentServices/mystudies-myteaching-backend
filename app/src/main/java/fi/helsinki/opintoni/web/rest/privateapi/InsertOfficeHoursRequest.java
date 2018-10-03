@@ -15,22 +15,31 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.repository;
+package fi.helsinki.opintoni.web.rest.privateapi;
 
-import fi.helsinki.opintoni.domain.OfficeHours;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import fi.helsinki.opintoni.dto.OfficeHoursDto;
 
-import java.time.LocalDate;
+import javax.validation.Valid;
 import java.util.List;
 
-public interface OfficeHoursRepository extends JpaRepository<OfficeHours, Long> {
+public class InsertOfficeHoursRequest {
 
-    List<OfficeHours> findByUserId(Long userId);
+    @Valid
+    public List<OfficeHoursDto> officeHours;
 
-    void deleteByUserId(Long userId);
+    public InsertOfficeHoursRequest() {
+    }
 
-    @Query("select o from OfficeHours o where o.expirationDate >= :date")
-    List<OfficeHours> findAllWithExpirationDateEqualOrAfter(@Param("date") LocalDate date);
+    public InsertOfficeHoursRequest(List<OfficeHoursDto> officeHours) {
+        this.officeHours = officeHours;
+    }
+
+    public List<OfficeHoursDto> getOfficeHours() {
+        return officeHours;
+    }
+
+    public void setOfficeHours(List<OfficeHoursDto> officeHours) {
+        this.officeHours = officeHours;
+    }
+
 }

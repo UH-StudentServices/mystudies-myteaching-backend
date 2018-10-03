@@ -25,6 +25,7 @@ import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,6 +40,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class OfficeHoursResourceTest extends SpringTest {
 
+    private static final LocalDate YEAR_FROM_NOW = LocalDate.now().plusYears(1);
+    private static final LocalDate INVALID_EXPIRATION_DATE = LocalDate.now().plusYears(2).plusDays(1);
+
     @Test
     public void thatOfficeHoursReturnCorrectResponse() throws Exception {
         mockMvc.perform(get("/api/private/v1/officehours")
@@ -50,7 +54,10 @@ public class OfficeHoursResourceTest extends SpringTest {
             .andExpect(jsonPath("$[0].description").value(OFFICE_HOURS))
             .andExpect(jsonPath("$[0].name").value(TEACHER_NAME))
             .andExpect(jsonPath("$[0].additionalInfo").value(ADDITIONAL_INFO))
-            .andExpect(jsonPath("$[0].location").value(LOCATION));
+            .andExpect(jsonPath("$[0].location").value(LOCATION))
+            .andExpect(jsonPath("$[0].expirationDate[0]").value("2019"))
+            .andExpect(jsonPath("$[0].expirationDate[1]").value("7"))
+            .andExpect(jsonPath("$[0].expirationDate[2]").value("31"));
     }
 
     @Test
@@ -59,8 +66,9 @@ public class OfficeHoursResourceTest extends SpringTest {
         DegreeProgrammeDto programme2 = new DegreeProgrammeDto();
         programme1.code = ""; //blank not allowed
         programme2.code = DEGREE_CODE_2;
+
         OfficeHoursDto officeHoursDto = new OfficeHoursDto(TEACHER_NAME, OFFICE_HOURS,
-            ADDITIONAL_INFO_2, LOCATION_2, Arrays.asList(programme1, programme2));
+            ADDITIONAL_INFO_2, LOCATION_2, Arrays.asList(programme1, programme2), YEAR_FROM_NOW);
 
         List<OfficeHoursDto> request = Arrays.asList(officeHoursDto);
 
@@ -72,7 +80,7 @@ public class OfficeHoursResourceTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().is4xxClientError());
     }
-    
+
     @Test
     public void thatOfficeHoursUpdateSucceedsWithCodeOfRealisticLength() throws Exception {
         DegreeProgrammeDto programme1 = new DegreeProgrammeDto();
@@ -80,9 +88,9 @@ public class OfficeHoursResourceTest extends SpringTest {
         programme1.code = "KH60_001 SH60_035";
         programme2.code = DEGREE_CODE_2;
         OfficeHoursDto officeHoursDto = new OfficeHoursDto(TEACHER_NAME, OFFICE_HOURS,
-            ADDITIONAL_INFO_2, LOCATION_2, ImmutableList.of(programme1, programme2));
+            ADDITIONAL_INFO_2, LOCATION_2, ImmutableList.of(programme1, programme2), YEAR_FROM_NOW);
 
-        List<OfficeHoursDto> request = ImmutableList.of(officeHoursDto);
+        InsertOfficeHoursRequest request = new InsertOfficeHoursRequest(ImmutableList.of(officeHoursDto));
 
         mockMvc.perform(post("/api/private/v1/officehours")
             .with(securityContext(teacherSecurityContext()))
@@ -92,7 +100,7 @@ public class OfficeHoursResourceTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
     }
-    
+
     @Test
     public void thatOfficeHoursAreUpdated() throws Exception {
         DegreeProgrammeDto programme1 = new DegreeProgrammeDto();
@@ -100,9 +108,9 @@ public class OfficeHoursResourceTest extends SpringTest {
         programme1.code = DEGREE_CODE_1;
         programme2.code = DEGREE_CODE_2;
         OfficeHoursDto officeHoursDto = new OfficeHoursDto(TEACHER_NAME, OFFICE_HOURS,
-            ADDITIONAL_INFO_2, LOCATION_2, Arrays.asList(programme1, programme2));
+            ADDITIONAL_INFO_2, LOCATION_2, Arrays.asList(programme1, programme2), YEAR_FROM_NOW);
 
-        List<OfficeHoursDto> request = Arrays.asList(officeHoursDto);
+        InsertOfficeHoursRequest request = new InsertOfficeHoursRequest(Arrays.asList(officeHoursDto));
 
         mockMvc.perform(post("/api/private/v1/officehours")
             .with(securityContext(teacherSecurityContext()))
@@ -139,7 +147,8 @@ public class OfficeHoursResourceTest extends SpringTest {
             OFFICE_HOURS,
             null,
             null,
-            createProgrammeDtoList(DEGREE_CODE_1, DEGREE_CODE_2)
+            createProgrammeDtoList(DEGREE_CODE_1, DEGREE_CODE_2),
+            YEAR_FROM_NOW
         );
 
         OfficeHoursDto officeHoursDto2 = new OfficeHoursDto(
@@ -147,10 +156,11 @@ public class OfficeHoursResourceTest extends SpringTest {
             OFFICE_HOURS_2,
             null,
             null,
-            createProgrammeDtoList(DEGREE_CODE_3)
+            createProgrammeDtoList(DEGREE_CODE_3),
+            YEAR_FROM_NOW
         );
 
-        List<OfficeHoursDto> request = Arrays.asList(officeHoursDto, officeHoursDto2);
+        InsertOfficeHoursRequest request = new InsertOfficeHoursRequest(Arrays.asList(officeHoursDto, officeHoursDto2));
 
         mockMvc.perform(post("/api/private/v1/officehours")
             .with(securityContext(teacherSecurityContext()))
@@ -171,6 +181,28 @@ public class OfficeHoursResourceTest extends SpringTest {
             .andExpect(jsonPath("$[1]degreeProgrammes").isArray())
             .andExpect(jsonPath("$[1]degreeProgrammes", hasSize(1)))
             .andExpect(jsonPath("$[1]degreeProgrammes[0].code").value(DEGREE_CODE_3));
+    }
+
+    @Test
+    public void thatExpirationDateCantBeMoreThanYearFromNow() throws Exception {
+        OfficeHoursDto officeHoursDto = new OfficeHoursDto(
+            TEACHER_NAME,
+            OFFICE_HOURS,
+            null,
+            null,
+            createProgrammeDtoList(DEGREE_CODE_1, DEGREE_CODE_2),
+            INVALID_EXPIRATION_DATE
+        );
+
+        InsertOfficeHoursRequest invalidRequest = new InsertOfficeHoursRequest(Arrays.asList(officeHoursDto));
+
+        mockMvc.perform(post("/api/private/v1/officehours")
+            .with(securityContext(teacherSecurityContext()))
+            .characterEncoding("UTF-8")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(toJsonBytes(invalidRequest))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isUnprocessableEntity());
     }
 
     private List<DegreeProgrammeDto> createProgrammeDtoList(String... codes) {

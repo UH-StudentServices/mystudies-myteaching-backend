@@ -15,22 +15,21 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.repository;
+package fi.helsinki.opintoni.validation;
 
-import fi.helsinki.opintoni.domain.OfficeHours;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
-import java.util.List;
 
-public interface OfficeHoursRepository extends JpaRepository<OfficeHours, Long> {
+public class MaxYearFromNowValidator implements ConstraintValidator<MaxYearFromNow, LocalDate> {
+    @Override
+    public void initialize(MaxYearFromNow constraintAnnotation) {
 
-    List<OfficeHours> findByUserId(Long userId);
+    }
 
-    void deleteByUserId(Long userId);
-
-    @Query("select o from OfficeHours o where o.expirationDate >= :date")
-    List<OfficeHours> findAllWithExpirationDateEqualOrAfter(@Param("date") LocalDate date);
+    @Override
+    public boolean isValid(LocalDate value, ConstraintValidatorContext context) {
+        LocalDate yearFromNow = LocalDate.now().plusYears(1);
+        return value.isBefore(yearFromNow) || value.isEqual(yearFromNow);
+    }
 }
