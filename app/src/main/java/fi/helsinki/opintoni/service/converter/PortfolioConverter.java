@@ -17,7 +17,10 @@
 
 package fi.helsinki.opintoni.service.converter;
 
-import fi.helsinki.opintoni.domain.portfolio.*;
+import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
+import fi.helsinki.opintoni.domain.portfolio.Portfolio;
+import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
+import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
@@ -52,6 +55,7 @@ public class PortfolioConverter {
     private final PortfolioKeywordRelationshipService keywordRelationshipService;
     private final PortfolioRepository portfolioRepository;
     private final PortfolioBackgroundService portfolioBackgroundService;
+    private final SkillsAndExpertiseService skillsAndExpertiseService;
 
     @Autowired
     public PortfolioConverter(UriBuilder uriBuilder,
@@ -68,7 +72,8 @@ public class PortfolioConverter {
                               DegreeService degreeService,
                               PortfolioKeywordRelationshipService keywordRelationshipService,
                               PortfolioRepository portfolioRepository,
-                              PortfolioBackgroundService portfolioBackgroundService) {
+                              PortfolioBackgroundService portfolioBackgroundService,
+                              SkillsAndExpertiseService skillsAndExpertiseService) {
         this.uriBuilder = uriBuilder;
         this.componentVisibilityService = componentVisibilityService;
         this.componentOrderService = componentOrderService;
@@ -84,6 +89,7 @@ public class PortfolioConverter {
         this.keywordRelationshipService = keywordRelationshipService;
         this.portfolioRepository = portfolioRepository;
         this.portfolioBackgroundService = portfolioBackgroundService;
+        this.skillsAndExpertiseService = skillsAndExpertiseService;
     }
 
     public PortfolioDto toDto(Portfolio portfolio, ComponentFetchStrategy componentFetchStrategy) {
@@ -204,6 +210,9 @@ public class PortfolioConverter {
             case STUDIES:
                 portfolioDto.keywords = keywordRelationshipService.findByPortfolioId(portfolioId);
                 portfolioDto.summary = new SummaryDto(portfolioRepository.findOne(portfolioId).summary);
+                break;
+            case SKILLS_AND_EXPERTISE:
+                portfolioDto.skillsAndExpertise = skillsAndExpertiseService.findByPortfolioId(portfolioId);
                 break;
             case CREDITS:
             case ATTAINMENTS:

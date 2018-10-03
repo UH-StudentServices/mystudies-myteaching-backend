@@ -15,18 +15,18 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.domain.portfolio;
+package fi.helsinki.opintoni.service.converter.portfolio;
 
-public enum PortfolioComponent {
-    STUDIES,
-    DEGREES,
-    ATTAINMENTS,
-    CONTACT_INFORMATION,
-    WORK_EXPERIENCE,
-    SAMPLES,
-    FAVORITES,
-    CREDITS,
-    FREE_TEXT_CONTENT,
-    LANGUAGE_PROFICIENCIES,
-    SKILLS_AND_EXPERTISE
+import fi.helsinki.opintoni.domain.portfolio.SkillsAndExpertise;
+import fi.helsinki.opintoni.dto.portfolio.SkillsAndExpertiseDto;
+import org.springframework.stereotype.Component;
+
+@Component
+public class SkillsAndExpertiseConverter {
+    public SkillsAndExpertiseDto toDto(SkillsAndExpertise skillsAndExpertise) {
+        SkillsAndExpertiseDto skillsAndExpertiseDto = new SkillsAndExpertiseDto();
+        skillsAndExpertiseDto.skillsAndExpertise = skillsAndExpertise.skillsAndExpertise;
+
+        return skillsAndExpertiseDto;
+    }
 }

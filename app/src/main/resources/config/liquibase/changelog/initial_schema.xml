@@ -1730,4 +1730,25 @@
         </delete>
         <dropColumn tableName="favorite" columnName="portfolio_id" />
     </changeSet>
+
+    <changeSet id="OO-931 Add skills and expertise to portfolio" author="Eero Siren">
+        <createTable tableName="skills_and_expertise">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false" foreignKeyName="fk_skills_and_expertise_portfolio" references="portfolio(id)" deleteCascade="true"/>
+            </column>
+            <column name="skills_and_expertise" type="text" />
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

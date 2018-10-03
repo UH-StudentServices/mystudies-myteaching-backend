@@ -42,4 +42,5 @@ public class PortfolioDto {
     public List<DegreeDto> degrees;
     public List<KeywordDto> keywords;
     public SummaryDto summary;
+    public SkillsAndExpertiseDto skillsAndExpertise;
 }

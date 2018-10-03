@@ -17,16 +17,28 @@
 
 package fi.helsinki.opintoni.domain.portfolio;
 
-public enum PortfolioComponent {
-    STUDIES,
-    DEGREES,
-    ATTAINMENTS,
-    CONTACT_INFORMATION,
-    WORK_EXPERIENCE,
-    SAMPLES,
-    FAVORITES,
-    CREDITS,
-    FREE_TEXT_CONTENT,
-    LANGUAGE_PROFICIENCIES,
-    SKILLS_AND_EXPERTISE
+import fi.helsinki.opintoni.domain.AbstractAuditingEntity;
+import fi.helsinki.opintoni.domain.Ownership;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "skills_and_expertise")
+public class SkillsAndExpertise extends AbstractAuditingEntity implements Ownership {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "portfolio_id")
+    public Portfolio portfolio;
+
+    public String skillsAndExpertise;
+
+    @Override
+    public Long getOwnerId() {
+        return portfolio.getOwnerId();
+    }
 }

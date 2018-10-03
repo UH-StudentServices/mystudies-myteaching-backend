@@ -15,18 +15,14 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.domain.portfolio;
+package fi.helsinki.opintoni.repository.portfolio;
 
-public enum PortfolioComponent {
-    STUDIES,
-    DEGREES,
-    ATTAINMENTS,
-    CONTACT_INFORMATION,
-    WORK_EXPERIENCE,
-    SAMPLES,
-    FAVORITES,
-    CREDITS,
-    FREE_TEXT_CONTENT,
-    LANGUAGE_PROFICIENCIES,
-    SKILLS_AND_EXPERTISE
+import fi.helsinki.opintoni.domain.portfolio.SkillsAndExpertise;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface SkillsAndExpertiseRepository extends JpaRepository<SkillsAndExpertise, Long> {
+
+    Optional<SkillsAndExpertise> findByPortfolioId(Long portfolioId);
 }
