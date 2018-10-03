@@ -29,19 +29,9 @@ public class FavoriteServiceFindByUserIdTest extends AbstractFavoriteServiceTest
     @Test
     public void usersFavoritesAreReturnedOrderedAndWithCorrectData() {
         List<FavoriteDto> favorites = favoriteService.findByUserId(1L);
-        assertThat(favorites.size() == 3).isTrue();
+        assertThat(favorites.size()).isEqualTo(6);
 
-        assertRssFavorite(favorites.get(0), 3L, "http://www.mtv3.fi/rss");
-        assertRssFavorite(favorites.get(1), 1L, "http://www.news.com/rss");
-    }
-
-    @Test
-    public void usersFavoritesAreReturnedOrderedAndWithCorrectDataForPortfolio() {
-        List<FavoriteDto> favorites = favoriteService.findByPortfolioId(1L);
-        assertThat(favorites.size() == 3).isTrue();
-
-        assertLinkFavorite(favorites.get(0), 4L, "http://www.helsinki.fi", "Helsingin yliopisto");
-        assertLinkFavorite(favorites.get(1), 5L, "http://www.iltalehti.fi", "Iltalehti");
-        assertTwitterFavorite(favorites.get(2), 2L, "USER_TIMELINE", "helsinkiuni");
+        assertRssFavorite(favorites.get(1), 3L, "http://www.mtv3.fi/rss");
+        assertRssFavorite(favorites.get(4), 1L, "http://www.news.com/rss");
     }
 }
