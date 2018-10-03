@@ -1,0 +1,3 @@
+id;portfolio_id;skills_and_expertise;created_by;
+nextval('skills_and_expertise_id_seq');1;Teksti 1;system
+nextval('skills_and_expertise_id_seq');2;Teksti 2;system

@@ -120,7 +120,8 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
                                         .and(hasEntry("languageName", "Hindi"))
                                         .and(hasEntry("proficiency", "Elementary"))
                         )
-                )));
+                )))
+                .andExpect(jsonPath("$.skillsAndExpertise", is("Teksti 2")));
     }
 
     @Test
