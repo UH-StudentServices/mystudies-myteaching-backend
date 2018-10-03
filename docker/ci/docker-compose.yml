@@ -22,7 +22,7 @@ services:
     image: my-studies-builder:latest
     volumes:
       - ../../:/opt/mystudies
-      - ~/.ssh:/home/jenkins/.ssh
+      - ~/.ssh:/home/jenkins/.ssh:ro
     depends_on:
       - my-studies-redis
       - my-studies-psql
