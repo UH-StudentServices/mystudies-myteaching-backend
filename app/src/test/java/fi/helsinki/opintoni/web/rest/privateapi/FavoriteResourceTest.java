@@ -145,7 +145,7 @@ public class FavoriteResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(2)))
+            .andExpect(jsonPath("$", hasSize(4)))
             .andExpect(jsonPath("$[0].id").value(9))
             .andExpect(jsonPath("$[1].id").value(10));
     }
@@ -156,7 +156,7 @@ public class FavoriteResourceTest extends SpringTest {
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(1)));
+            .andExpect(jsonPath("$", hasSize(3)));
     }
 
     @Test

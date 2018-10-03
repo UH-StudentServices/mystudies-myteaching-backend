@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
-import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.dto.portfolio.*;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
@@ -120,15 +119,6 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
                                 both(hasEntry("id", 4))
                                         .and(hasEntry("languageName", "Hindi"))
                                         .and(hasEntry("proficiency", "Elementary"))
-                        )
-                )))
-                .andExpect(jsonPath("$.favorites").value(Matchers.<List<FavoriteDto>>allOf(
-                        hasSize(2),
-                        hasItem(
-                                hasEntry("id", 6)
-                        ),
-                        hasItem(
-                                hasEntry("id", 8)
                         )
                 )));
     }

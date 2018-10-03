@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.dto.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
-import fi.helsinki.opintoni.dto.FavoriteDto;
 
 import java.util.List;
 
@@ -36,7 +35,6 @@ public class PortfolioDto {
     public List<ComponentOrderDto> componentOrders;
     public List<LanguageProficiencyDto> languageProficiencies;
     public List<FreeTextContentDto> freeTextContent;
-    public List<FavoriteDto> favorites;
     public List<WorkExperienceDto> workExperience;
     public List<SampleDto> samples;
     public JobSearchDto jobSearch;

@@ -64,8 +64,7 @@ public class RestrictedPortfolioResourceTest extends RestrictedPortfolioTest {
             .andExpect(jsonPath("$.freeTextContent").isEmpty())
             .andExpect(jsonPath("$.languageProficiencies").isEmpty())
             .andExpect(jsonPath("$.keywords").isEmpty())
-            .andExpect(jsonPath("$.summary").isEmpty())
-            .andExpect(jsonPath("$.favorites").isEmpty());
+            .andExpect(jsonPath("$.summary").isEmpty());
     }
 
     @Test

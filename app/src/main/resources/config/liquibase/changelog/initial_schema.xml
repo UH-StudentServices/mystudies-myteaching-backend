@@ -1723,4 +1723,11 @@
         <dropUniqueConstraint tableName="language_proficiency" constraintName="unique_lang_code_portfolio_id_pair" />
         <dropTable tableName="language_proficiency" />
     </changeSet>
+
+    <changeSet id="OO-1163" author="Juuso Lehtinen">
+        <delete tableName="favorite">
+            <where>portfolio_id is not null</where>
+        </delete>
+        <dropColumn tableName="favorite" columnName="portfolio_id" />
+    </changeSet>
 </databaseChangeLog>
