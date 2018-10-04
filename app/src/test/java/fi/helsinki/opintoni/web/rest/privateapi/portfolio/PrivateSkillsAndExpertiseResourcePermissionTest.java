@@ -25,7 +25,7 @@ import org.springframework.http.MediaType;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivateSkillsAndExpertiseResourcePermissionTest extends SpringTest {
@@ -36,9 +36,8 @@ public class PrivateSkillsAndExpertiseResourcePermissionTest extends SpringTest 
     public void thatUserCannotUpdateSkillsAndExpertiseThatSheDoesNotOwn() throws Exception {
         SkillsAndExpertiseDto request = new SkillsAndExpertiseDto();
 
-        mockMvc.perform(post(RESOURCE_URL)
+        mockMvc.perform(put(RESOURCE_URL)
             .with(securityContext(teacherSecurityContext()))
-            .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .content(WebTestUtils.toJsonBytes(request))
             .accept(MediaType.APPLICATION_JSON))

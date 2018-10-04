@@ -19,36 +19,30 @@ package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.portfolio.SkillsAndExpertiseDto;
-import fi.helsinki.opintoni.repository.portfolio.SkillsAndExpertiseRepository;
 import fi.helsinki.opintoni.web.WebTestUtils;
-
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivateSkillsAndExpertiseResourceTest extends SpringTest {
 
-    @Autowired
-    private SkillsAndExpertiseRepository skillsAndExpertiseRepository;
+    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/skillsandexpertise";
+    private static final String NEW_SKILLS_AND_EXPERTISE = "New skills and expertise content";
 
     @Test
     public void thatSkillsAndExpertiseIsUpdated() throws Exception {
-        final String newSkillsAndExpertise = "New skills and expertise content";
         SkillsAndExpertiseDto request = new SkillsAndExpertiseDto();
-        request.skillsAndExpertise = newSkillsAndExpertise;
+        request.skillsAndExpertise = NEW_SKILLS_AND_EXPERTISE;
 
-        mockMvc.perform(post("/api/private/v1/portfolio/2/skillsandexpertise")
+        mockMvc.perform(put(RESOURCE_URL)
             .with(securityContext(studentSecurityContext()))
             .contentType(MediaType.APPLICATION_JSON)
-            .content(WebTestUtils.toJsonBytes(request)))
+            .content(WebTestUtils.toJsonBytes(request))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
-
-        assertThat(skillsAndExpertiseRepository.findByPortfolioId(2L).get().skillsAndExpertise).isEqualTo(newSkillsAndExpertise);
     }
 }
