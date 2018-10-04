@@ -15,18 +15,10 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.domain.portfolio;
+package fi.helsinki.opintoni.web.rest.privateapi.portfolio.skillsandexpertise;
 
-public enum PortfolioComponent {
-    STUDIES,
-    DEGREES,
-    ATTAINMENTS,
-    CONTACT_INFORMATION,
-    WORK_EXPERIENCE,
-    SAMPLES,
-    FAVORITES,
-    CREDITS,
-    FREE_TEXT_CONTENT,
-    LANGUAGE_PROFICIENCIES,
-    SKILLS_AND_EXPERTISE
+public class UpdateSkillsAndExpertiseRequest {
+
+    public String skillsAndExpertise;
+
 }

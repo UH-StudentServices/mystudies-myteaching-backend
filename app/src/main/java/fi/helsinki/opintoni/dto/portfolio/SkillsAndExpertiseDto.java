@@ -15,18 +15,17 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.domain.portfolio;
+package fi.helsinki.opintoni.dto.portfolio;
 
-public enum PortfolioComponent {
-    STUDIES,
-    DEGREES,
-    ATTAINMENTS,
-    CONTACT_INFORMATION,
-    WORK_EXPERIENCE,
-    SAMPLES,
-    FAVORITES,
-    CREDITS,
-    FREE_TEXT_CONTENT,
-    LANGUAGE_PROFICIENCIES,
-    SKILLS_AND_EXPERTISE
+import com.fasterxml.jackson.annotation.JsonValue;
+
+public class SkillsAndExpertiseDto {
+
+    public String skillsAndExpertise;
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return skillsAndExpertise;
+    }
 }

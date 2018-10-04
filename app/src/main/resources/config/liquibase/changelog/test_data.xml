@@ -237,6 +237,14 @@
                   tableName="portfolio_language_proficiency">
             <column name="id" type="computed"/>
         </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/skills_and_expertise.csv"
+                  separator=";"
+                  tableName="skills_and_expertise">
+            <column name="created_date" type="timestamp"/>
+            <column name="id" type="computed"/>
+        </loadData>
     </changeSet>
+
 
 </databaseChangeLog>
