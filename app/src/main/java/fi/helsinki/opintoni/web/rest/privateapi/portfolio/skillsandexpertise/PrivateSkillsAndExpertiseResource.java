@@ -50,7 +50,7 @@ public class PrivateSkillsAndExpertiseResource extends AbstractResource {
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<SkillsAndExpertiseDto> update(@UserId Long userId,
         @PathVariable Long portfolioId,
-        @RequestBody SkillsAndExpertiseDto skillsAndExpertise) {
+        @RequestBody UpdateSkillsAndExpertiseRequest skillsAndExpertise) {
         permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
         return response(skillsAndExpertiseService.updateSkillsAndExpertise(portfolioId, skillsAndExpertise));
     }

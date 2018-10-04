@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.dto.portfolio.SkillsAndExpertiseDto;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.repository.portfolio.SkillsAndExpertiseRepository;
 import fi.helsinki.opintoni.service.converter.portfolio.SkillsAndExpertiseConverter;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.skillsandexpertise.UpdateSkillsAndExpertiseRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,15 +46,11 @@ public class SkillsAndExpertiseService {
         this.skillsAndExpertiseConverter = skillsAndExpertiseConverter;
     }
 
-    public SkillsAndExpertiseDto updateSkillsAndExpertise(Long portfolioId, SkillsAndExpertiseDto skillsAndExpertiseDto) {
+    public SkillsAndExpertiseDto updateSkillsAndExpertise(Long portfolioId, UpdateSkillsAndExpertiseRequest updateRequest) {
         SkillsAndExpertise skillsAndExpertise =
             skillsAndExpertiseRepository.findByPortfolioId(portfolioId).orElse(new SkillsAndExpertise());
 
-        if (skillsAndExpertise.portfolio == null) {
-            skillsAndExpertise.portfolio = portfolioRepository.findOne(portfolioId);
-        }
-
-        copyDtoProperties(skillsAndExpertise, skillsAndExpertiseDto);
+        skillsAndExpertise.skillsAndExpertise = updateRequest.skillsAndExpertise;
         return skillsAndExpertiseConverter.toDto(skillsAndExpertiseRepository.save(skillsAndExpertise));
     }
 
@@ -62,7 +59,4 @@ public class SkillsAndExpertiseService {
         return skillsAndExpertise.map(skillsAndExpertiseConverter::toDto).orElse(null);
     }
 
-    private void copyDtoProperties(SkillsAndExpertise skillsAndExpertise, SkillsAndExpertiseDto skillsAndExpertiseDto) {
-        skillsAndExpertise.skillsAndExpertise = skillsAndExpertiseDto.skillsAndExpertise;
-    }
 }

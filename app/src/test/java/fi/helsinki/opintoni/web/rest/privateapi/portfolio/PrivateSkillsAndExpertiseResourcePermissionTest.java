@@ -18,8 +18,8 @@
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.dto.portfolio.SkillsAndExpertiseDto;
 import fi.helsinki.opintoni.web.WebTestUtils;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.skillsandexpertise.UpdateSkillsAndExpertiseRequest;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
@@ -34,7 +34,7 @@ public class PrivateSkillsAndExpertiseResourcePermissionTest extends SpringTest 
 
     @Test
     public void thatUserCannotUpdateSkillsAndExpertiseThatSheDoesNotOwn() throws Exception {
-        SkillsAndExpertiseDto request = new SkillsAndExpertiseDto();
+        UpdateSkillsAndExpertiseRequest request = new UpdateSkillsAndExpertiseRequest();
 
         mockMvc.perform(put(RESOURCE_URL)
             .with(securityContext(teacherSecurityContext()))
