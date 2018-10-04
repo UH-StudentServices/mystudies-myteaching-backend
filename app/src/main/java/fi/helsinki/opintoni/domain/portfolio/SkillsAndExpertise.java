@@ -31,7 +31,7 @@ public class SkillsAndExpertise extends AbstractAuditingEntity implements Owners
     public Long id;
 
     @NotNull
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "portfolio_id")
     public Portfolio portfolio;
 
