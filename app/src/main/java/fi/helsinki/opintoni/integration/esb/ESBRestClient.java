@@ -45,12 +45,11 @@ public class ESBRestClient implements ESBClient {
     public List<ESBEmployeeInfo> getEmployeeInfo(String employeeNumber) {
         try {
             return restTemplate.exchange(
-                "{baseUrl}/person/v2/employee/{employeeNumber}",
+                baseUrl + "/person/v2/employee/{employeeNumber}",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<ESBEmployeeInfo>>() {
                 },
-                baseUrl,
                 employeeNumber).getBody();
         } catch (Exception e) {
             log.error("Error when fetching employee info from ESB", e);
@@ -63,12 +62,12 @@ public class ESBRestClient implements ESBClient {
         try {
             return
                 Optional.ofNullable(restTemplate.exchange(
-                    "{baseUrl}/optime/staff/{staffId}",
+                    baseUrl + "/optime/staff/{staffId}",
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<OptimeStaffInformation>() {
                     },
-                    baseUrl, staffId).getBody());
+                    staffId).getBody());
         } catch (Exception e) {
             log.error("Error when fetching Optime staff information info from ESB", e);
             return Optional.empty();

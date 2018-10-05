@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.domain.*;
 import fi.helsinki.opintoni.dto.FavoriteDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.FavoriteRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.FavoriteConverter;
@@ -70,7 +71,7 @@ public class FavoriteService {
         favorite.url = saveRssFavoriteRequest.url;
         favorite.type = Favorite.Type.RSS;
         favorite.orderIndex = maxOrderIndex + 1;
-        favorite.user = userRepository.findOne(userId);
+        favorite.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
 
         favoriteRepository.save(favorite);
 
@@ -81,7 +82,7 @@ public class FavoriteService {
         UnisportFavorite favorite = new UnisportFavorite();
         favorite.type = Favorite.Type.UNISPORT;
         favorite.orderIndex = orderIndex().apply(userId) + 1;
-        favorite.user = userRepository.findOne(userId);
+        favorite.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
 
         favoriteRepository.save(favorite);
 
@@ -100,7 +101,7 @@ public class FavoriteService {
         Favorite favorite = new Favorite();
         favorite.type = type;
         favorite.orderIndex = orderIndex().apply(userId) + 1;
-        favorite.user = userRepository.findOne(userId);
+        favorite.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
 
         favoriteRepository.save(favorite);
         return favoriteConverter.toDto(favorite);
@@ -109,7 +110,7 @@ public class FavoriteService {
     public FavoriteDto insertUnicafeFavorite(Long userId, Integer restaurantId) {
         UnicafeFavorite favorite = new UnicafeFavorite();
         favorite.type = Favorite.Type.UNICAFE;
-        favorite.user = userRepository.findOne(userId);
+        favorite.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
         favorite.orderIndex = orderIndex().apply(userId) + 1;
         favorite.restaurantId = restaurantId;
 
@@ -118,7 +119,8 @@ public class FavoriteService {
     }
 
     public FavoriteDto updateUnicafeFavorite(Integer restaurantId, Long unicafeFavoriteId) {
-        UnicafeFavorite unicafeFavorite = (UnicafeFavorite) favoriteRepository.findOne(unicafeFavoriteId);
+        UnicafeFavorite unicafeFavorite = (UnicafeFavorite) favoriteRepository.findById(unicafeFavoriteId)
+            .orElseThrow(() -> new NotFoundException(""));
         unicafeFavorite.restaurantId = restaurantId;
         return favoriteConverter.toDto(favoriteRepository.save(unicafeFavorite));
     }
@@ -126,7 +128,7 @@ public class FavoriteService {
     public FavoriteDto insertTwitterFavorite(Long userId, InsertTwitterFavoriteRequest request) {
         TwitterFavorite favorite = new TwitterFavorite();
         favorite.type = Favorite.Type.TWITTER;
-        favorite.user = userRepository.findOne(userId);
+        favorite.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
         favorite.orderIndex = orderIndex().apply(userId) + 1;
 
         favorite.feedType = TwitterFavorite.FeedType.valueOf(request.feedType);
@@ -148,7 +150,7 @@ public class FavoriteService {
     }
 
     public void deleteFavorite(final Long favoriteId) {
-        favoriteRepository.delete(favoriteId);
+        favoriteRepository.deleteById(favoriteId);
     }
 
     private Function<Long, Integer> orderIndex() {

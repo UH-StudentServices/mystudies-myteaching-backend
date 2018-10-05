@@ -43,7 +43,7 @@ public class UserSettingsServiceTest extends SpringTest {
 
         userSettingsService.updateUserAvatar(1L, imageBase64);
 
-        UserSettings userSettings = userSettingsRepository.findOne(1L);
+        UserSettings userSettings = userSettingsRepository.findById(1L).get();
         assertThat(userSettings.userAvatar.imageData.length > 0).isTrue();
     }
 
@@ -52,24 +52,24 @@ public class UserSettingsServiceTest extends SpringTest {
         String imageBase64 = SampleDataFiles.imageToBase64("usersettings/useravatar.jpg");
         userSettingsService.updateUserAvatar(1L, imageBase64);
 
-        UserSettings userSettings = userSettingsRepository.findOne(1L);
+        UserSettings userSettings = userSettingsRepository.findById(1L).get();
         assertThat(userSettings.userAvatar.imageData.length > 0).isTrue();
 
         userSettingsService.deleteUserAvatar(1L);
 
-        userSettings = userSettingsRepository.findOne(1L);
+        userSettings = userSettingsRepository.findById(1L).get();
         assertThat(userSettings.userAvatar.imageData).isNull();
     }
 
     @Test
     public void thatCookieConsentFlagIsFlipped() throws Exception {
-        assertThat(userSettingsRepository.findOne(1L).cookieConsent).isFalse();
+        assertThat(userSettingsRepository.findById(1L).get().cookieConsent).isFalse();
 
         UpdateUserSettingsRequest request = new UpdateUserSettingsRequest();
         request.cookieConsent = true;
 
         userSettingsService.update(1L, request);
 
-        assertThat(userSettingsRepository.findOne(1L).cookieConsent).isTrue();
+        assertThat(userSettingsRepository.findById(1L).get().cookieConsent).isTrue();
     }
 }

@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
 import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.FreeTextContentRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.converter.portfolio.FreeTextContentConverter;
@@ -76,19 +77,19 @@ public class FreeTextContentService {
         FreeTextContent freeTextContent = new FreeTextContent();
         copyDtoProperties(freeTextContent, freeTextContentDto);
 
-        freeTextContent.portfolio = portfolioRepository.findOne(portfolioId);
+        freeTextContent.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
         return freeTextContentConverter.toDto(freeTextContentRepository.save(freeTextContent));
     }
 
     public FreeTextContentDto updateFreeTextContent(Long freeTextContentId, FreeTextContentDto freeTextContentDto) {
-        FreeTextContent freeTextContent = freeTextContentRepository.findOne(freeTextContentId);
+        FreeTextContent freeTextContent = freeTextContentRepository.findById(freeTextContentId).orElseThrow(() -> new NotFoundException(""));
         copyDtoProperties(freeTextContent, freeTextContentDto);
 
         return freeTextContentDto;
     }
 
     public void deleteFreeTextContent(Long freeTextContentId, Long portfolioId, String instanceName) {
-        freeTextContentRepository.delete(freeTextContentId);
+        freeTextContentRepository.deleteById(freeTextContentId);
 
         componentVisibilityService.deleteByPortfolioIdAndComponentAndInstanceName(portfolioId,
             PortfolioComponent.FREE_TEXT_CONTENT, instanceName);

@@ -21,6 +21,7 @@ import fi.helsinki.opintoni.domain.UsefulLink;
 import fi.helsinki.opintoni.domain.UsefulLink.UsefulLinkType;
 import fi.helsinki.opintoni.dto.OrderUsefulLinksDto;
 import fi.helsinki.opintoni.dto.UsefulLinkDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.UsefulLinkRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.UsefulLinkConverter;
@@ -57,12 +58,12 @@ public class UsefulLinkTransactionalService {
         usefulLink.url = usefulLinkDto.url;
         usefulLink.description = usefulLinkDto.description;
         usefulLink.orderIndex = usefulLinkRepository.getMaxOrderIndex(userId) + 1;
-        usefulLink.user = userRepository.findOne(userId);
+        usefulLink.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
         return usefulLinkConverter.toDto(usefulLinkRepository.save(usefulLink), locale);
     }
 
     public void delete(final Long usefulLinkId) {
-        usefulLinkRepository.delete(usefulLinkId);
+        usefulLinkRepository.deleteById(usefulLinkId);
     }
 
     public List<UsefulLinkDto> findByUserId(Long userId, Locale locale) {
@@ -73,7 +74,7 @@ public class UsefulLinkTransactionalService {
     }
 
     public UsefulLinkDto update(Long usefulLinkId, UsefulLinkDto usefulLinkDto, Locale locale) {
-        UsefulLink usefulLink = usefulLinkRepository.findOne(usefulLinkId);
+        UsefulLink usefulLink = usefulLinkRepository.findById(usefulLinkId).orElseThrow(() -> new NotFoundException(""));
         usefulLink.url = usefulLinkDto.url;
         usefulLink.description = usefulLinkDto.description;
         return usefulLinkConverter.toDto(usefulLinkRepository.save(usefulLink), locale);
@@ -99,6 +100,6 @@ public class UsefulLinkTransactionalService {
     }
 
     public void save(List<UsefulLink> usefulLinks) {
-        usefulLinkRepository.save(usefulLinks);
+        usefulLinkRepository.saveAll(usefulLinks);
     }
 }

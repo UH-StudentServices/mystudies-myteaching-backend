@@ -162,14 +162,14 @@ public class NotificationResourceTest extends SpringTest {
 
         long id = extractNotificationIdFromResponse(postNewNotification(notification).andReturn().getResponse().getContentAsString());
 
-        assertNotNull(notificationRepository.findOne(id));
+        assertNotNull(notificationRepository.findById(id).get());
 
         mockMvc.perform(delete(NOTIFICATION_RESOURCE_PATH + String.format("/%s", id))
             .with(securityContext(teacherSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
-        assertNull(notificationRepository.findOne(id));
+        assertNull(notificationRepository.findById(id).orElse(null));
     }
 
     @Test

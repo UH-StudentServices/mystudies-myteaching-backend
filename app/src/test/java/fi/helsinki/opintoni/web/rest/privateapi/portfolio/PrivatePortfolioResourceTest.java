@@ -367,11 +367,11 @@ public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest 
     }
 
     private void deleteExistingStudentPortfolios() {
-        portfolioRepository.delete(2L);
-        portfolioRepository.delete(5L);
+        portfolioRepository.deleteById(2L);
+        portfolioRepository.deleteById(5L);
     }
 
     private void deleteExistingTeacherPortfolio() {
-        portfolioRepository.delete(4L);
+        portfolioRepository.deleteById(4L);
     }
 }

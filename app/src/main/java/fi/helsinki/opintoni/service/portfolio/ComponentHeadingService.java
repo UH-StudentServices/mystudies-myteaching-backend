@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.service.portfolio;
 import fi.helsinki.opintoni.domain.portfolio.ComponentHeading;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.dto.portfolio.ComponentHeadingDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.ComponentHeadingRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.converter.portfolio.ComponentHeadingConverter;
@@ -66,7 +67,7 @@ public class ComponentHeadingService {
 
         componentHeading.component = componentHeadingDto.component;
         componentHeading.heading = componentHeadingDto.heading;
-        componentHeading.portfolio = portfolioRepository.findOne(portfolioId);
+        componentHeading.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
 
         return componentHeadingConverter.toDto(componentHeadingRepository.save(componentHeading));
     }
@@ -74,7 +75,7 @@ public class ComponentHeadingService {
     public void delete(Long portfolioId, PortfolioComponent component) {
         componentHeadingRepository.findByPortfolioIdAndComponent(portfolioId, component)
             .map(componentHeading -> {
-                componentHeadingRepository.delete(componentHeading.id);
+                componentHeadingRepository.delete(componentHeading);
                 return true;
             });
     }

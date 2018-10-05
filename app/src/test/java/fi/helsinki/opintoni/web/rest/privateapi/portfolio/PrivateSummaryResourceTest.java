@@ -47,6 +47,6 @@ public class PrivateSummaryResourceTest extends SpringTest {
             .content(WebTestUtils.toJsonBytes(request)))
             .andExpect(status().isOk());
 
-        assertThat(portfolioRepository.findOne(2L).summary).isEqualTo("New summary");
+        assertThat(portfolioRepository.findById(2L).get().summary).isEqualTo("New summary");
     }
 }

@@ -21,6 +21,7 @@ import fi.helsinki.opintoni.domain.portfolio.ContactInformation;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.SomeLink;
 import fi.helsinki.opintoni.dto.portfolio.ContactInformationDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.ContactInformationRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.repository.portfolio.SomeLinkRepository;
@@ -60,7 +61,7 @@ public class ContactInformationService {
         Long portfolioId,
         UpdateContactInformation request) {
 
-        Portfolio portfolio = portfolioRepository.findOne(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
 
         ContactInformation contactInformation = insertOrUpdateContactInformation(portfolio, request);
         updateSomeLinks(portfolio, request);
@@ -72,7 +73,7 @@ public class ContactInformationService {
         Long portfolioId,
         UpdateContactInformation request) {
 
-        Portfolio portfolio = portfolioRepository.findOne(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
 
         ContactInformation contactInformation = insertOrUpdateContactInformation(portfolio, request);
 
@@ -100,7 +101,7 @@ public class ContactInformationService {
     }
 
     private void updateSomeLinks(Portfolio portfolio, UpdateContactInformation request) {
-        someLinkRepository.delete(someLinkRepository.findByPortfolioId(portfolio.id));
+        someLinkRepository.deleteAll(someLinkRepository.findByPortfolioId(portfolio.id));
         request.someLinks.forEach(link -> {
             SomeLink someLink = new SomeLink();
             someLink.portfolio = portfolio;

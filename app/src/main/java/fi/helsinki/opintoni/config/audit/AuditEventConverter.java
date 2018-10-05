@@ -23,6 +23,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import java.util.*;
+import java.util.stream.StreamSupport;
+
+import static java.util.stream.Collectors.toList;
 
 @Configuration
 public class AuditEventConverter {
@@ -38,18 +41,13 @@ public class AuditEventConverter {
             return Collections.emptyList();
         }
 
-        List<AuditEvent> auditEvents = new ArrayList<>();
-
-        for (PersistentAuditEvent persistentAuditEvent : persistentAuditEvents) {
-            AuditEvent auditEvent = new AuditEvent(
-                persistentAuditEvent.getAuditEventDate().toDate(),
+        return StreamSupport.stream(persistentAuditEvents.spliterator(), false)
+            .map(persistentAuditEvent -> new AuditEvent(
+                persistentAuditEvent.getAuditEventDate().toDate().toInstant(),
                 persistentAuditEvent.getPrincipal(),
                 persistentAuditEvent.getAuditEventType(),
-                convertDataToObjects(persistentAuditEvent.getData()));
-            auditEvents.add(auditEvent);
-        }
-
-        return auditEvents;
+                convertDataToObjects(persistentAuditEvent.getData())))
+            .collect(toList());
     }
 
     /**

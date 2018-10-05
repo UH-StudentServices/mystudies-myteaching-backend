@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@ConfigurationProperties(prefix = "userDefaults.facultyUsefulLinks")
+@ConfigurationProperties(prefix = "user-defaults.faculty-useful-links")
 public class FacultyUsefulLinksProperties {
     private List<Map<String, String>> teacherFacultyLinks = new ArrayList<>();
 

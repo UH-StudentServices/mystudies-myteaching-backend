@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.JobSearch;
 import fi.helsinki.opintoni.dto.portfolio.JobSearchDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.JobSearchRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.converter.JobSearchConverter;
@@ -59,7 +60,7 @@ public class JobSearchService {
             jobSearch = jobSearchOptional.get();
         } else {
             jobSearch = new JobSearch();
-            jobSearch.portfolio = portfolioRepository.findOne(portfolioId);
+            jobSearch.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
         }
         jobSearch.contactEmail = jobSearchDto.contactEmail;
         jobSearch.headline = jobSearchDto.headline;
@@ -70,7 +71,7 @@ public class JobSearchService {
 
     public void delete(Long portfolioId) {
         jobSearchRepository.findByPortfolioId(portfolioId).map(jobSearch -> {
-            jobSearchRepository.delete(jobSearch.id);
+            jobSearchRepository.deleteById(jobSearch.id);
             return true;
         });
     }

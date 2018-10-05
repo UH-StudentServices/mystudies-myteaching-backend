@@ -21,6 +21,7 @@ import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.domain.UserAvatar;
 import fi.helsinki.opintoni.domain.UserSettings;
 import fi.helsinki.opintoni.dto.UserSettingsDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.UserSettingsRepository;
 import fi.helsinki.opintoni.service.converter.UserSettingsConverter;
@@ -70,14 +71,14 @@ public class UserSettingsService {
     }
 
     public UserSettingsDto update(Long userSettingsId, UpdateUserSettingsRequest request) {
-        UserSettings userSettings = userSettingsRepository.findOne(userSettingsId);
+        UserSettings userSettings = userSettingsRepository.findById(userSettingsId).orElseThrow(() -> new NotFoundException(""));
         userSettings.showBanner = request.showBanner;
         userSettings.cookieConsent = request.cookieConsent;
         return userSettingsConverter.toDto(userSettingsRepository.save(userSettings));
     }
 
     public void updateUserAvatar(Long userSettingsId, String imageBase64) {
-        UserSettings userSettings = userSettingsRepository.findOne(userSettingsId);
+        UserSettings userSettings = userSettingsRepository.findById(userSettingsId).orElseThrow(() -> new NotFoundException(""));
 
         if (userSettings.userAvatar == null) {
             userSettings.userAvatar = new UserAvatar();
@@ -112,7 +113,7 @@ public class UserSettingsService {
     }
 
     public void deleteUserAvatar(Long id) {
-        UserSettings userSettings = userSettingsRepository.findOne(id);
+        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(() -> new NotFoundException(""));
 
         if (userSettings.userAvatar == null) {
             return;
@@ -130,7 +131,7 @@ public class UserSettingsService {
     }
 
     public UserSettingsDto updateBackground(Long id, UploadImageBase64Request request) {
-        UserSettings userSettings = userSettingsRepository.findOne(id);
+        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(() -> new NotFoundException(""));
         removeOldUploadedBackgroundFile(userSettings);
 
         byte[] bytes = imageService.createUserBackground(request.imageBase64);
@@ -144,7 +145,7 @@ public class UserSettingsService {
     }
 
     public UserSettingsDto selectBackground(Long id, SelectBackgroundRequest request) {
-        UserSettings userSettings = userSettingsRepository.findOne(id);
+        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(() -> new NotFoundException(""));
         removeOldUploadedBackgroundFile(userSettings);
 
         userSettings.backgroundFilename = request.filename;

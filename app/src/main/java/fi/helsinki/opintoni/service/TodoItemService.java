@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.domain.TodoItem;
 import fi.helsinki.opintoni.dto.TodoItemDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.TodoItemRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.TodoItemConverter;
@@ -47,13 +48,13 @@ public class TodoItemService {
 
     public TodoItemDto insert(final Long userId, final TodoItemDto todoItemDto) {
         TodoItem todoItem = new TodoItem();
-        todoItem.user = userRepository.findOne(userId);
+        todoItem.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
         todoItem.content = todoItemDto.content;
         return todoItemConverter.toDto(todoItemRepository.save(todoItem));
     }
 
     public void delete(final Long todoItemId) {
-        todoItemRepository.delete(todoItemId);
+        todoItemRepository.deleteById(todoItemId);
     }
 
     public List<TodoItemDto> findByUserId(Long userId) {
@@ -64,7 +65,7 @@ public class TodoItemService {
     }
 
     public TodoItemDto update(Long todoItemId, TodoItemDto todoItemDto) {
-        TodoItem todoItem = todoItemRepository.findOne(todoItemId);
+        TodoItem todoItem = todoItemRepository.findById(todoItemId).orElseThrow(() -> new NotFoundException(""));
         todoItem.content = todoItemDto.content;
         todoItem.status = TodoItem.Status.valueOf(todoItemDto.status);
         return todoItemConverter.toDto(todoItemRepository.save(todoItem));
