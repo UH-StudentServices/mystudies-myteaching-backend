@@ -41,7 +41,7 @@ public class PublicCalendarResource extends AbstractResource {
         this.calendarService = calendarService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value="/{feedId}/{language}")
+    @RequestMapping(method = RequestMethod.GET, value = "/{feedId}/{language}")
     @Timed
     public ResponseEntity<String> showCalendarFeed(@PathVariable("feedId") String feedId, @PathVariable("language") Language language) {
         return response(calendarService.showCalendarFeed(feedId, language.toLocale()));

@@ -26,25 +26,25 @@ public class KeywordTest {
 
     @Test
     public void thatKeywordsAreEqual() {
-        Keyword aKeyword = new Keyword();
-        aKeyword.title = "Title";
+        Keyword firstKeyword = new Keyword();
+        firstKeyword.title = "Title";
 
-        Keyword anotherKeyword = new Keyword();
-        anotherKeyword.title = "Title";
+        Keyword secondKeyword = new Keyword();
+        secondKeyword.title = "Title";
 
         new EqualsTester()
-            .addEqualityGroup(aKeyword, anotherKeyword)
+            .addEqualityGroup(firstKeyword, secondKeyword)
             .testEquals();
     }
 
     @Test
     public void thatKeywordsAreNotEqual() {
-        Keyword aKeyword = new Keyword();
-        aKeyword.title = "Title 1";
+        Keyword firstKeyword = new Keyword();
+        firstKeyword.title = "Title 1";
 
-        Keyword anotherKeyword = new Keyword();
-        anotherKeyword.title = "Title 2";
+        Keyword secondKeyword = new Keyword();
+        secondKeyword.title = "Title 2";
 
-        assertThat(aKeyword.equals(anotherKeyword)).isFalse();
+        assertThat(firstKeyword.equals(secondKeyword)).isFalse();
     }
 }

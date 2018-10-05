@@ -109,7 +109,7 @@ public abstract class SpringTest {
         "portfolio_background",
         "portfolio_language_proficiency");
     private static final ImmutableMap<String, String> SEQUENCE_NAMES_BY_TABLE_NAMES = ImmutableMap.of("user_account", "user_id_seq");
-    private static final String DEFAULT_SEQUENCE_SUFFIX= "_id_seq";
+    private static final String DEFAULT_SEQUENCE_SUFFIX = "_id_seq";
 
     protected OodiServer oodiServer;
     protected CoursePageServer coursePageServer;
