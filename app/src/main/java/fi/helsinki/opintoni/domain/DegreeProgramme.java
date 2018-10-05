@@ -17,11 +17,11 @@
 
 package fi.helsinki.opintoni.domain;
 
-import java.util.List;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "degree_programme")
@@ -36,6 +36,6 @@ public class DegreeProgramme extends AbstractAuditingEntity {
     @Column(name = "degree_code")
     public String degreeCode;
 
-    @ManyToMany(mappedBy="degreeProgrammes")
+    @ManyToMany(mappedBy = "degreeProgrammes")
     private List<OfficeHours> officeHours;
 }

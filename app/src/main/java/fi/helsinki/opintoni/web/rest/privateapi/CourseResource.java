@@ -49,7 +49,7 @@ public class CourseResource extends AbstractResource {
     @RequestMapping(value = "/names", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<List<LearningOpportunityDto>> getCourseNames(
-        @RequestParam(value="learningOpportunities") List<String> learningOpportunities,
+        @RequestParam(value = "learningOpportunities") List<String> learningOpportunities,
         Locale locale) {
 
         return response(courseService.getLearningOpportunities(learningOpportunities, locale));

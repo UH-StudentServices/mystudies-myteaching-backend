@@ -85,7 +85,7 @@ public class Portfolio extends AbstractAuditingEntity implements Ownership {
     @Size(max = 2500)
     public String summary;
 
-    @Column(name="portfolio_role")
+    @Column(name = "portfolio_role")
     @Enumerated(EnumType.STRING)
     @NotNull
     public PortfolioRole portfolioRole;
