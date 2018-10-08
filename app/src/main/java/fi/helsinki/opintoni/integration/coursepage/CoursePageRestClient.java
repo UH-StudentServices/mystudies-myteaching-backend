@@ -92,8 +92,10 @@ public class CoursePageRestClient implements CoursePageClient {
             List<CoursePageCourseImplementation> coursePageCourseImplementationList =
                     getCoursePages(singletonList(courseImplementationId), locale);
 
-            if (coursePageCourseImplementationList != null && !coursePageCourseImplementationList.isEmpty()) {
-                return coursePageCourseImplementationList.get(0);
+            if (coursePageCourseImplementationList != null) {
+                return coursePageCourseImplementationList.isEmpty()
+                    ? getEmptyCoursePageImplementation(courseImplementationId)
+                    : coursePageCourseImplementationList.get(0);
             }
         } catch (CoursePageIntegrationException e) {
             // Already logged in getCoursePageData()
@@ -129,4 +131,11 @@ public class CoursePageRestClient implements CoursePageClient {
             return new ArrayList<>();
         }
     }
+
+    private CoursePageCourseImplementation getEmptyCoursePageImplementation(String courseImplementationId) {
+        CoursePageCourseImplementation emptyCourseContent = new CoursePageCourseImplementation();
+        emptyCourseContent.courseImplementationId = Integer.parseInt(courseImplementationId);
+        return emptyCourseContent;
+    }
+
 }
