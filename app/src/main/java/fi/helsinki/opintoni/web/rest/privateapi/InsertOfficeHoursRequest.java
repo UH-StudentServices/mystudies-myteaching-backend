@@ -34,10 +34,12 @@ public class InsertOfficeHoursRequest {
         this.officeHours = officeHours;
     }
 
+    // JSR-303 validation requires getter and setter
     public List<OfficeHoursDto> getOfficeHours() {
         return officeHours;
     }
 
+    // JSR-303 validation requires getter and setter
     public void setOfficeHours(List<OfficeHoursDto> officeHours) {
         this.officeHours = officeHours;
     }
