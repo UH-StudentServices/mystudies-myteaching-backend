@@ -440,8 +440,8 @@
         </addColumn>
     </changeSet>
     <changeSet id="change show studies flag types to boolean" author="Marko Rautajoki">
-       <dropColumn tableName="user_settings" columnName="show_my_studies_tour"></dropColumn>
-       <dropColumn tableName="user_settings" columnName="show_my_teaching_tour"></dropColumn>
+        <dropColumn tableName="user_settings" columnName="show_my_studies_tour"></dropColumn>
+        <dropColumn tableName="user_settings" columnName="show_my_teaching_tour"></dropColumn>
         <addColumn tableName="user_settings">
             <column name="show_my_studies_tour" type="boolean" defaultValue="true">
                 <constraints nullable="false"/>
@@ -973,9 +973,9 @@
             </column>
         </addColumn>
         <addUniqueConstraint
-                constraintName="portfolio_unique_user_id_portfolio_role"
-                tableName="portfolio"
-                columnNames="user_id, portfolio_role"/>
+            constraintName="portfolio_unique_user_id_portfolio_role"
+            tableName="portfolio"
+            columnNames="user_id, portfolio_role"/>
     </changeSet>
 
     <changeSet id="Drop not null constraint from workexperience end date" author="Marko Rautajoki">
@@ -1348,11 +1348,11 @@
             </column>
             <column name="office_hours_id" type="bigint" >
                 <constraints foreignKeyName="fk_office_hours_degree_programme_office_hours"
-                    references="office_hours(id)" nullable="false" deleteCascade="true"/>
+                             references="office_hours(id)" nullable="false" deleteCascade="true"/>
             </column>
             <column name="degree_programme_id" type="bigint">
                 <constraints foreignKeyName="fk_office_hours_degree_programme_degree_programme"
-                    references="degree_programme(id)" nullable="false" deleteCascade="true"/>
+                             references="degree_programme(id)" nullable="false" deleteCascade="true"/>
             </column>
         </createTable>
 
@@ -1363,8 +1363,8 @@
 
         <sql>
             INSERT INTO office_hours_degree_programme (
-                office_hours_id,
-                degree_programme_id
+            office_hours_id,
+            degree_programme_id
             )
             SELECT DISTINCT office_hours.id, degree_programme.id
             FROM office_hours
@@ -1545,11 +1545,11 @@
     <changeSet id="add flamma defaults for all users" author="Sami Siren">
         <sql>
             insert into favorite (user_id, type, order_index, created_by)
-              select user_account.id, 'FLAMMA_NEWS', coalesce(max(order_index)+1,0), 'system' from user_account left join favorite on user_account.id = favorite.user_id GROUP BY user_account.id;
+            select user_account.id, 'FLAMMA_NEWS', coalesce(max(order_index)+1,0), 'system' from user_account left join favorite on user_account.id = favorite.user_id GROUP BY user_account.id;
         </sql>
         <sql>
             insert into favorite (user_id, type, order_index, created_by)
-              select user_account.id, 'FLAMMA_EVENTS', coalesce(max(order_index)+1,0), 'system' from user_account left join favorite on user_account.id = favorite.user_id GROUP BY user_account.id;
+            select user_account.id, 'FLAMMA_EVENTS', coalesce(max(order_index)+1,0), 'system' from user_account left join favorite on user_account.id = favorite.user_id GROUP BY user_account.id;
         </sql>
     </changeSet>
 
@@ -1570,9 +1570,9 @@
          more resilient if ids won't have that kind of secret secondary function.). -->
         <sql>
             WITH subquery AS (
-                SELECT id, row_number() OVER (PARTITION BY portfolio_id) AS rnum
-                FROM work_experience
-                ORDER BY id ASC
+            SELECT id, row_number() OVER (PARTITION BY portfolio_id) AS rnum
+            FROM work_experience
+            ORDER BY id ASC
             )
             UPDATE work_experience
             SET order_index=subquery.rnum
@@ -1589,16 +1589,16 @@
         </addColumn>
         <sql>
             update degree d set
-                date_of_degree =
-                    case when p.language = 'en' then to_char(d.date_of_degree_old, 'DD Mon YYYY')
-                    else to_char(d.date_of_degree_old, 'DD.MM.YYYY')
-                    end,
-                order_index =
-                    (select s.row - 1 from (
-                        select id, row_number() over(partition by portfolio_id order by date_of_degree_old desc) as row from degree
-                    ) as s where s.id = d.id)
-                from portfolio p
-                where d.portfolio_id = p.id;
+            date_of_degree =
+            case when p.language = 'en' then to_char(d.date_of_degree_old, 'DD Mon YYYY')
+            else to_char(d.date_of_degree_old, 'DD.MM.YYYY')
+            end,
+            order_index =
+            (select s.row - 1 from (
+            select id, row_number() over(partition by portfolio_id order by date_of_degree_old desc) as row from degree
+            ) as s where s.id = d.id)
+            from portfolio p
+            where d.portfolio_id = p.id;
         </sql>
         <dropColumn tableName="degree" columnName="date_of_degree_old" />
         <addNotNullConstraint tableName="degree" columnName="date_of_degree" />
@@ -1743,10 +1743,12 @@
     </changeSet>
     <changeSet id="OO-1161 Update portfolio sample fields" author="Eero Siren">
         <sql>
-            UPDATE
-            sample
-            SET
-            description = concat_ws('<br />', description, url)
+            <![CDATA[
+                UPDATE
+                sample
+                SET
+                description = concat_ws('<br />', description, url);
+            ]]>
         </sql>
         <dropColumn tableName="sample" columnName="url" />
         <addNotNullConstraint tableName="sample" columnName="description" />
