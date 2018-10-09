@@ -24,7 +24,7 @@ public class FavoriteServiceSaveUnisportFavoriteTest extends AbstractFavoriteSer
 
     @Test
     public void shouldPersistUnisportFavorite() {
-        UnisportFavoriteDto favorite = (UnisportFavoriteDto)favoriteService.insertUnisportFavorite(3L);
+        UnisportFavoriteDto favorite = (UnisportFavoriteDto) favoriteService.insertUnisportFavorite(3L);
         assertUnisportFavorite(favorite, 11L);
     }
 }

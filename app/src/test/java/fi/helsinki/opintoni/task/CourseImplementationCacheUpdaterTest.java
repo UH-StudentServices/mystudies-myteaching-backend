@@ -69,7 +69,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
     private CoursePageCourseImplementation getCourseImplementationFromCache(String implementationId, Locale locale) {
         Cache.ValueWrapper w = persistentCacheManager.getCache(COURSE_PAGE)
             .get(String.format("%s_%s", implementationId, locale.toString()));
-        return w == null ? null : (CoursePageCourseImplementation)w.get();
+        return w == null ? null : (CoursePageCourseImplementation) w.get();
     }
 
     @Before
