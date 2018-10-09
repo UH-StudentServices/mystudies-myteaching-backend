@@ -383,7 +383,7 @@ public class PrivateFeedbackResourceTest extends SpringTest {
 
     private void checkContent(MimeMessage message, String expectedContentPattern) throws MessagingException, IOException {
         assertThat(message.getContentType()).isEqualTo(FEEDBACK_CONTENT_TYPE);
-        assertThat((String)(message.getContent())).matches(expectedContentPattern);
+        assertThat((String) (message.getContent())).matches(expectedContentPattern);
     }
 
     private JsonNode getMetadata(String lang, String site) {

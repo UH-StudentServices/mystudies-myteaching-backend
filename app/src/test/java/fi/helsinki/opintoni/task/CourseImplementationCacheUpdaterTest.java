@@ -45,6 +45,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
     private static final String COURSE_IMPLEMENTATION_RESPONSE = "teacher_course.json";
     private static final String UPDATED_COURSE_IMPLEMENTATION_RESPONSE = "updated_teacher_course.json";
     private static final String UPDATED_COURSE_IMPLEMENTATIONS_RESPONSE = "updated_teacher_courses.json";
+    private static final String EMPTY_COURSE_IMPLEMENTATION_RESPONSE = "course_empty.json";
     private static final String UPDATED_COURSE_TITLE = "Updated title";
     private static final String SECOND_COURSE_REALISATION_ID = "99903630";
 
@@ -68,7 +69,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
     private CoursePageCourseImplementation getCourseImplementationFromCache(String implementationId, Locale locale) {
         Cache.ValueWrapper w = persistentCacheManager.getCache(COURSE_PAGE)
             .get(String.format("%s_%s", implementationId, locale.toString()));
-        return w == null ? null : (CoursePageCourseImplementation)w.get();
+        return w == null ? null : (CoursePageCourseImplementation) w.get();
     }
 
     @Before
@@ -190,5 +191,17 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
 
         CoursePageCourseImplementation dummy = coursePageRestClient.getCoursePage(nonExistingId, locale);
         assertThat(getCourseImplementationFromCache(nonExistingId, locale)).isNull();
+    }
+
+    @Test
+    public void thatEmptyCourseImplementationIsCached() {
+        Locale locale = Locale.ENGLISH;
+        coursePageServer.expectCourseImplementationRequest(TEACHER_COURSE_REALISATION_ID, EMPTY_COURSE_IMPLEMENTATION_RESPONSE, locale);
+
+        CoursePageCourseImplementation courseImplementation = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
+
+        CoursePageCourseImplementation courseImplementationFromCache = getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, locale);
+
+        assertThat(courseImplementation).isEqualToComparingFieldByFieldRecursively(courseImplementationFromCache);
     }
 }
