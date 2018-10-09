@@ -1731,9 +1731,7 @@
     </changeSet>
     <changeSet id="Expiration date for office hours" author="Tomi Mäkinen">
         <addColumn tableName="office_hours">
-            <column name="expiration_date" type="date" >
-                <constraints nullable="false"/>
-            </column>
+            <column name="expiration_date" type="date" />
         </addColumn>
         <sql>
             UPDATE office_hours
@@ -1741,5 +1739,6 @@
             expiration_date = '2019-07-31'
             WHERE expiration_date IS NULL
         </sql>
+        <addNotNullConstraint tableName="office_hours" columnName="expiration_date" />
     </changeSet>
 </databaseChangeLog>
