@@ -64,7 +64,7 @@ public class OfficeHoursDto {
     public LocalDate getExpirationDate() {
         return expirationDate;
     }
-    
+
     // JSR-303 validation requires getter and setter
     public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
