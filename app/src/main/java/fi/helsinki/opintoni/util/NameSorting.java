@@ -35,7 +35,7 @@ public class NameSorting {
 
     private  static String convertToSortableName(String name) {
         List<String> nameParts = Arrays.asList(name.trim().toLowerCase().split(" "));
-        Collections.rotate(nameParts,1);
+        Collections.rotate(nameParts, 1);
         return String.join("", nameParts);
     }
 }

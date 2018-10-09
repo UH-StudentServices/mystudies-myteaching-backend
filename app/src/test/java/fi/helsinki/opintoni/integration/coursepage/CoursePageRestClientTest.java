@@ -76,7 +76,7 @@ public class CoursePageRestClientTest extends SpringTest {
 
     @Test
     public void thatNullImageUriIsReturnedWhenCoursePageDoesNotExist() {
-        defaultTeacherRequestChain().courseImplementation(TEACHER_COURSE_REALISATION_ID,EMPTY_COURSE_RESPONSE, EN);
+        defaultTeacherRequestChain().courseImplementation(TEACHER_COURSE_REALISATION_ID, EMPTY_COURSE_RESPONSE, EN);
 
         assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN).imageUrl).isNull();
     }
