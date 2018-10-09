@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
+import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.OfficeHoursService;
@@ -24,14 +25,15 @@ import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-
-import com.codahale.metrics.annotation.Timed;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(
@@ -44,7 +46,7 @@ public class OfficeHoursResource extends AbstractResource {
 
     @Autowired
     public OfficeHoursResource(OfficeHoursService officeHoursService,
-        PermissionChecker permissionChecker) {
+                               PermissionChecker permissionChecker) {
         this.officeHoursService = officeHoursService;
         this.permissionChecker = permissionChecker;
     }
@@ -59,8 +61,8 @@ public class OfficeHoursResource extends AbstractResource {
     @Timed
     public ResponseEntity<List<OfficeHoursDto>> saveOwnOfficeHours(
         @UserId Long userId,
-        @Valid @RequestBody List<OfficeHoursDto> officeHoursDto) {
-        return response(officeHoursService.update(userId, officeHoursDto));
+        @Valid @RequestBody InsertOfficeHoursRequest request) {
+        return response(officeHoursService.update(userId, request.officeHours));
     }
 
     @RequestMapping(method = RequestMethod.DELETE)

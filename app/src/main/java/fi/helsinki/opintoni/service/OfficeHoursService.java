@@ -71,6 +71,7 @@ public class OfficeHoursService {
                 officeHours.additionalInfo = dto.additionalInfo;
                 officeHours.location = dto.location;
                 officeHours.degreeProgrammes = degreeProgrammesFromDtos(dto.degreeProgrammes);
+                officeHours.expirationDate = dto.expirationDate;
                 return officeHoursRepository.save(officeHours);
             })
             .map(officeHoursConverter::toDto)

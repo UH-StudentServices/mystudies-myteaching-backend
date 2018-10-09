@@ -1723,11 +1723,23 @@
         <dropUniqueConstraint tableName="language_proficiency" constraintName="unique_lang_code_portfolio_id_pair" />
         <dropTable tableName="language_proficiency" />
     </changeSet>
-
     <changeSet id="OO-1163" author="Juuso Lehtinen">
         <delete tableName="favorite">
             <where>portfolio_id is not null</where>
         </delete>
         <dropColumn tableName="favorite" columnName="portfolio_id" />
+    </changeSet>
+    <changeSet id="Expiration date for office hours" author="Tomi Mäkinen">
+        <addColumn tableName="office_hours">
+            <column name="expiration_date" type="date" >
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+        <sql>
+            UPDATE office_hours
+            SET
+            expiration_date = '2019-07-31'
+            WHERE expiration_date IS NULL
+        </sql>
     </changeSet>
 </databaseChangeLog>

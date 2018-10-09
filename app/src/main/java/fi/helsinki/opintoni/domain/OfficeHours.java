@@ -17,7 +17,11 @@
 
 package fi.helsinki.opintoni.domain;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +44,11 @@ public class OfficeHours extends AbstractAuditingEntity implements Ownership {
 
     @Column(name = "location")
     public String location;
+
+    @NotNull
+    @Type(type = "org.jadira.usertype.dateandtime.threeten.PersistentLocalDate")
+    @Column(name = "expiration_date", nullable = false)
+    public LocalDate expirationDate;
 
     @OneToOne(optional = false)
     @JoinColumn(name = "user_id")

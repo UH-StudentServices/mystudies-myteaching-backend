@@ -47,6 +47,6 @@ public class PublicOfficeHoursResourceV2 extends AbstractResource {
     @RequestMapping(method = RequestMethod.GET)
     @Timed
     public ResponseEntity<List<PublicOfficeHoursDto>> getAllOfficeHours() {
-        return response(officeHoursService.getAll());
+        return response(officeHoursService.getAllUnexpired());
     }
 }
