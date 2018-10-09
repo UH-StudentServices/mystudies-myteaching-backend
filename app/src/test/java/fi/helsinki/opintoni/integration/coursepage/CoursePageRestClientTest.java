@@ -35,7 +35,6 @@ public class CoursePageRestClientTest extends SpringTest {
     private static final Locale EN = Locale.ENGLISH;
     private static final Locale FI = new Locale("fi");
     private static final Locale SV = new Locale("sv");
-    private static final Integer TEACHER_COURSE_REALISATION_ID_INT = Integer.parseInt(TEACHER_COURSE_REALISATION_ID);
     private static final String EMPTY_COURSE_RESPONSE = "course_empty.json";
 
     @Test
@@ -99,13 +98,12 @@ public class CoursePageRestClientTest extends SpringTest {
 
     @Test
     public void thatCoursePageCourseImplementationWithCourseIdIsReturnedWhenCoursePageHasNoContent() {
-        CoursePageCourseImplementation emptyCourseImplementation = new CoursePageCourseImplementation();
-        emptyCourseImplementation.courseImplementationId = TEACHER_COURSE_REALISATION_ID_INT;
+        final int expectedCourseRealisationId = Integer.parseInt(TEACHER_COURSE_REALISATION_ID);
 
         defaultTeacherRequestChain().courseImplementation(TEACHER_COURSE_REALISATION_ID, EMPTY_COURSE_RESPONSE, EN);
 
         CoursePageCourseImplementation course = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN);
 
-        assertThat(course.courseImplementationId).isEqualTo(TEACHER_COURSE_REALISATION_ID_INT);
+        assertThat(course.courseImplementationId).isEqualTo(expectedCourseRealisationId);
     }
 }
