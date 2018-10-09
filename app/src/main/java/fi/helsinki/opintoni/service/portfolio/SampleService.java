@@ -60,7 +60,6 @@ public class SampleService {
 
         updateSamples.forEach(updateSample -> {
             Sample sample = new Sample();
-            sample.url = updateSample.url;
             sample.title = updateSample.title;
             sample.description = updateSample.description;
             sample.portfolio = portfolio;

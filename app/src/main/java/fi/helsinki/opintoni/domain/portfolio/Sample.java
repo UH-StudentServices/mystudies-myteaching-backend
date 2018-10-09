@@ -19,9 +19,9 @@ package fi.helsinki.opintoni.domain.portfolio;
 
 import fi.helsinki.opintoni.domain.AbstractAuditingEntity;
 import fi.helsinki.opintoni.domain.Ownership;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -33,15 +33,13 @@ public class Sample extends AbstractAuditingEntity implements Ownership {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Size(max = 255)
-    @Column(name = "url")
-    public String url;
-
-    @NotEmpty
+    @NotBlank
     @Size(max = 255)
     @Column(name = "title", nullable = false)
     public String title;
 
+    @NotBlank
+    @Column(name = "description", nullable = false)
     public String description;
 
     @NotNull
