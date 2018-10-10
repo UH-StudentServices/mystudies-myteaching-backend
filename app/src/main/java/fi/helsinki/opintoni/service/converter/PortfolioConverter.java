@@ -204,7 +204,7 @@ public class PortfolioConverter {
                 break;
             case STUDIES:
                 portfolioDto.keywords = keywordRelationshipService.findByPortfolioId(portfolioId);
-                portfolioDto.summary = new SummaryDto(portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException("")).summary);
+                portfolioDto.summary = new SummaryDto(portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new).summary);
                 break;
             case CREDITS:
             case ATTAINMENTS:

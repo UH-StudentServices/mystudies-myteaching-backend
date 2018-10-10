@@ -71,7 +71,7 @@ public class PortfolioStudyAttainmentWhitelistService extends DtoService {
     }
 
     public StudyAttainmentWhitelistDto update(Long portfolioId, StudyAttainmentWhitelistDto whitelistDto) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
         whitelistRepository.deleteByPortfolioId(portfolioId);
         StudyAttainmentWhitelist whitelist = new StudyAttainmentWhitelist();
         whitelist.portfolio = portfolio;

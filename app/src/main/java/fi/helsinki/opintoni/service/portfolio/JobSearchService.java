@@ -60,7 +60,7 @@ public class JobSearchService {
             jobSearch = jobSearchOptional.get();
         } else {
             jobSearch = new JobSearch();
-            jobSearch.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+            jobSearch.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
         }
         jobSearch.contactEmail = jobSearchDto.contactEmail;
         jobSearch.headline = jobSearchDto.headline;

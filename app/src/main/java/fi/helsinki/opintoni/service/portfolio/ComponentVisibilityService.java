@@ -65,7 +65,7 @@ public class ComponentVisibilityService extends DtoService {
         componentVisibility.teacherPortfolioSection = request.teacherPortfolioSection;
         componentVisibility.instanceName = request.instanceName;
         componentVisibility.visibility = request.visibility;
-        componentVisibility.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+        componentVisibility.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
         componentVisibilityRepository.save(componentVisibility);
     }

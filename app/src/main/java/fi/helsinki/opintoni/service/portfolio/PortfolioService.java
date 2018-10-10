@@ -79,7 +79,7 @@ public class PortfolioService {
 
         Portfolio portfolio = new Portfolio();
         portfolio.language = lang;
-        portfolio.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
+        portfolio.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         portfolio.path = portfolioPath;
         portfolio.ownerName = name;
         portfolio.visibility = PortfolioVisibility.PRIVATE;
@@ -137,7 +137,7 @@ public class PortfolioService {
     }
 
     public PortfolioDto update(Long portfolioId, PortfolioDto portfolioDto) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
         portfolio.visibility = portfolioDto.visibility;
         portfolio.ownerName = portfolioDto.ownerName;
         portfolio.intro = portfolioDto.intro;
@@ -146,7 +146,7 @@ public class PortfolioService {
     }
 
     public void updateSummary(Long portfolioId, UpdateSummaryRequest request) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
         portfolio.summary = request.summary;
         portfolioRepository.save(portfolio);
     }

@@ -71,7 +71,7 @@ public class FavoriteService {
         favorite.url = saveRssFavoriteRequest.url;
         favorite.type = Favorite.Type.RSS;
         favorite.orderIndex = maxOrderIndex + 1;
-        favorite.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
+        favorite.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
 
         favoriteRepository.save(favorite);
 
@@ -82,7 +82,7 @@ public class FavoriteService {
         UnisportFavorite favorite = new UnisportFavorite();
         favorite.type = Favorite.Type.UNISPORT;
         favorite.orderIndex = orderIndex().apply(userId) + 1;
-        favorite.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
+        favorite.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
 
         favoriteRepository.save(favorite);
 
@@ -101,7 +101,7 @@ public class FavoriteService {
         Favorite favorite = new Favorite();
         favorite.type = type;
         favorite.orderIndex = orderIndex().apply(userId) + 1;
-        favorite.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
+        favorite.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
 
         favoriteRepository.save(favorite);
         return favoriteConverter.toDto(favorite);
@@ -110,7 +110,7 @@ public class FavoriteService {
     public FavoriteDto insertUnicafeFavorite(Long userId, Integer restaurantId) {
         UnicafeFavorite favorite = new UnicafeFavorite();
         favorite.type = Favorite.Type.UNICAFE;
-        favorite.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
+        favorite.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         favorite.orderIndex = orderIndex().apply(userId) + 1;
         favorite.restaurantId = restaurantId;
 
@@ -120,7 +120,7 @@ public class FavoriteService {
 
     public FavoriteDto updateUnicafeFavorite(Integer restaurantId, Long unicafeFavoriteId) {
         UnicafeFavorite unicafeFavorite = (UnicafeFavorite) favoriteRepository.findById(unicafeFavoriteId)
-            .orElseThrow(() -> new NotFoundException(""));
+            .orElseThrow(NotFoundException::new);
         unicafeFavorite.restaurantId = restaurantId;
         return favoriteConverter.toDto(favoriteRepository.save(unicafeFavorite));
     }
@@ -128,7 +128,7 @@ public class FavoriteService {
     public FavoriteDto insertTwitterFavorite(Long userId, InsertTwitterFavoriteRequest request) {
         TwitterFavorite favorite = new TwitterFavorite();
         favorite.type = Favorite.Type.TWITTER;
-        favorite.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
+        favorite.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         favorite.orderIndex = orderIndex().apply(userId) + 1;
 
         favorite.feedType = TwitterFavorite.FeedType.valueOf(request.feedType);

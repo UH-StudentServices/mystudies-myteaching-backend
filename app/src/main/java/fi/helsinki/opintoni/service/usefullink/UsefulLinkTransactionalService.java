@@ -58,7 +58,7 @@ public class UsefulLinkTransactionalService {
         usefulLink.url = usefulLinkDto.url;
         usefulLink.description = usefulLinkDto.description;
         usefulLink.orderIndex = usefulLinkRepository.getMaxOrderIndex(userId) + 1;
-        usefulLink.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
+        usefulLink.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         return usefulLinkConverter.toDto(usefulLinkRepository.save(usefulLink), locale);
     }
 
@@ -74,7 +74,7 @@ public class UsefulLinkTransactionalService {
     }
 
     public UsefulLinkDto update(Long usefulLinkId, UsefulLinkDto usefulLinkDto, Locale locale) {
-        UsefulLink usefulLink = usefulLinkRepository.findById(usefulLinkId).orElseThrow(() -> new NotFoundException(""));
+        UsefulLink usefulLink = usefulLinkRepository.findById(usefulLinkId).orElseThrow(NotFoundException::new);
         usefulLink.url = usefulLinkDto.url;
         usefulLink.description = usefulLinkDto.description;
         return usefulLinkConverter.toDto(usefulLinkRepository.save(usefulLink), locale);

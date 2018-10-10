@@ -83,7 +83,7 @@ public class PortfolioKeywordRelationshipService {
             .map(keyword -> {
                 PortfolioKeywordRelationship portfolioKeywordRelationship = new PortfolioKeywordRelationship();
                 portfolioKeywordRelationship.portfolioKeyword = obtainPortfolioKeyword(keyword.title);
-                portfolioKeywordRelationship.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+                portfolioKeywordRelationship.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
                 portfolioKeywordRelationship.orderIndex = keyword.orderIndex;
                 return portfolioKeywordRelationship;
             })

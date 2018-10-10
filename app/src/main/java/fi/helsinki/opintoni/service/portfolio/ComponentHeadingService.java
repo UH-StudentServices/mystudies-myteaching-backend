@@ -67,7 +67,7 @@ public class ComponentHeadingService {
 
         componentHeading.component = componentHeadingDto.component;
         componentHeading.heading = componentHeadingDto.heading;
-        componentHeading.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+        componentHeading.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
         return componentHeadingConverter.toDto(componentHeadingRepository.save(componentHeading));
     }

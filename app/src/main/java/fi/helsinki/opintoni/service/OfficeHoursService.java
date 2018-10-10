@@ -62,7 +62,7 @@ public class OfficeHoursService {
 
     public List<OfficeHoursDto> update(final Long userId, final List<OfficeHoursDto> officeHoursDtoList) {
         officeHoursRepository.deleteByUserId(userId);
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
+        User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         return officeHoursDtoList.stream()
             .map(dto -> {
                 OfficeHours officeHours = new OfficeHours();

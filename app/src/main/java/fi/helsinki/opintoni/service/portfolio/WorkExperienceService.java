@@ -54,7 +54,7 @@ public class WorkExperienceService extends DtoService {
     }
 
     public List<WorkExperienceDto> updateWorkExperiences(Long portfolioId, List<UpdateWorkExperience> updateWorkExperiences) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
         workExperienceRepository.deleteByPortfolioId(portfolio.id);
         int orderIndex = 0;

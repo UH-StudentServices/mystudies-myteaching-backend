@@ -61,7 +61,7 @@ public class ContactInformationService {
         Long portfolioId,
         UpdateContactInformation request) {
 
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
         ContactInformation contactInformation = insertOrUpdateContactInformation(portfolio, request);
         updateSomeLinks(portfolio, request);
@@ -73,7 +73,7 @@ public class ContactInformationService {
         Long portfolioId,
         UpdateContactInformation request) {
 
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
         ContactInformation contactInformation = insertOrUpdateContactInformation(portfolio, request);
 

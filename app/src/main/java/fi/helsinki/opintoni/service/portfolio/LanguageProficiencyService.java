@@ -78,14 +78,14 @@ public class LanguageProficiencyService {
         portfolioLanguageProficiency.languageName = languageProficiencyDto.languageName;
         portfolioLanguageProficiency.proficiency = languageProficiencyDto.proficiency;
         portfolioLanguageProficiency.description = languageProficiencyDto.description;
-        portfolioLanguageProficiency.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+        portfolioLanguageProficiency.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
         languageProficiencyRepository.save(portfolioLanguageProficiency);
     }
 
     private void updateLanguageProficiency(Long userId, LanguageProficiencyDto languageProficiencyDto) {
         permissionChecker.verifyPermission(userId, languageProficiencyDto.id, PortfolioLanguageProficiency.class);
         PortfolioLanguageProficiency portfolioLanguageProficiency = languageProficiencyRepository
-            .findById(languageProficiencyDto.id).orElseThrow(() -> new NotFoundException(""));
+            .findById(languageProficiencyDto.id).orElseThrow(NotFoundException::new);
         portfolioLanguageProficiency.languageName = languageProficiencyDto.languageName;
         portfolioLanguageProficiency.proficiency = languageProficiencyDto.proficiency;
         portfolioLanguageProficiency.description = languageProficiencyDto.description;

@@ -112,7 +112,7 @@ public class PortfolioBackgroundService {
 
         if (!portfolioBackgroundOptional.isPresent()) {
             portfolioBackground = new PortfolioBackground();
-            portfolioBackground.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+            portfolioBackground.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
         } else {
             portfolioBackground = portfolioBackgroundOptional.get();
         }

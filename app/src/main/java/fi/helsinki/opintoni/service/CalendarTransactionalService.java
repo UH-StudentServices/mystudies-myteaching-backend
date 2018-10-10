@@ -54,7 +54,7 @@ public class CalendarTransactionalService extends DtoService {
 
     public CalendarFeedDto createCalendarFeed(Long userId) {
         CalendarFeed calendarFeed = new CalendarFeed();
-        calendarFeed.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
+        calendarFeed.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         calendarFeed.feedId = UUID.randomUUID().toString();
         return calendarFeedConverter.toDto(calendarFeedRepository.save(calendarFeed));
     }

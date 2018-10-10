@@ -77,12 +77,12 @@ public class FreeTextContentService {
         FreeTextContent freeTextContent = new FreeTextContent();
         copyDtoProperties(freeTextContent, freeTextContentDto);
 
-        freeTextContent.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+        freeTextContent.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
         return freeTextContentConverter.toDto(freeTextContentRepository.save(freeTextContent));
     }
 
     public FreeTextContentDto updateFreeTextContent(Long freeTextContentId, FreeTextContentDto freeTextContentDto) {
-        FreeTextContent freeTextContent = freeTextContentRepository.findById(freeTextContentId).orElseThrow(() -> new NotFoundException(""));
+        FreeTextContent freeTextContent = freeTextContentRepository.findById(freeTextContentId).orElseThrow(NotFoundException::new);
         copyDtoProperties(freeTextContent, freeTextContentDto);
 
         return freeTextContentDto;

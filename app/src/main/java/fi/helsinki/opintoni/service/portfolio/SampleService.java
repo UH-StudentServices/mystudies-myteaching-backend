@@ -55,7 +55,7 @@ public class SampleService {
     }
 
     public List<SampleDto> updateSamples(Long portfolioId, List<UpdateSample> updateSamples) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
         sampleRepository.deleteByPortfolioId(portfolio.id);
 

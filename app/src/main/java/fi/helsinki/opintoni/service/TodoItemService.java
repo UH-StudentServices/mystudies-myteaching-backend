@@ -48,7 +48,7 @@ public class TodoItemService {
 
     public TodoItemDto insert(final Long userId, final TodoItemDto todoItemDto) {
         TodoItem todoItem = new TodoItem();
-        todoItem.user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(""));
+        todoItem.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         todoItem.content = todoItemDto.content;
         return todoItemConverter.toDto(todoItemRepository.save(todoItem));
     }
@@ -65,7 +65,7 @@ public class TodoItemService {
     }
 
     public TodoItemDto update(Long todoItemId, TodoItemDto todoItemDto) {
-        TodoItem todoItem = todoItemRepository.findById(todoItemId).orElseThrow(() -> new NotFoundException(""));
+        TodoItem todoItem = todoItemRepository.findById(todoItemId).orElseThrow(NotFoundException::new);
         todoItem.content = todoItemDto.content;
         todoItem.status = TodoItem.Status.valueOf(todoItemDto.status);
         return todoItemConverter.toDto(todoItemRepository.save(todoItem));

@@ -25,12 +25,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.server.*;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.web.server.MimeMappings;
+import org.springframework.boot.web.server.WebServerFactory;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 
 import javax.inject.Inject;
 import javax.servlet.*;
@@ -103,12 +101,6 @@ public class WebConfigurer implements org.springframework.boot.web.servlet.Servl
         mappings.add("sfnt", "application/font-sfnt");
 
         factory.setMimeMappings(mappings);
-
-        ErrorPage error403Page = new ErrorPage(HttpStatus.FORBIDDEN, "/errors/403.html");
-        ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/errors/404.html");
-        ErrorPage error500Page = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/errors/500.html");
-
-        factory.addErrorPages(error403Page, error404Page, error500Page);
     }
 
     /**

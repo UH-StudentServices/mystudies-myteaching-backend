@@ -57,7 +57,7 @@ public class DegreeService extends DtoService {
     }
 
     public List<DegreeDto> updateDegrees(Long portfolioId, List<UpdateDegree> updateDegrees) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(() -> new NotFoundException(""));
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
         degreeRepository.deleteAll(degreeRepository.findByPortfolioIdOrderByOrderIndexAsc(portfolio.id));
 

@@ -71,14 +71,14 @@ public class UserSettingsService {
     }
 
     public UserSettingsDto update(Long userSettingsId, UpdateUserSettingsRequest request) {
-        UserSettings userSettings = userSettingsRepository.findById(userSettingsId).orElseThrow(() -> new NotFoundException(""));
+        UserSettings userSettings = userSettingsRepository.findById(userSettingsId).orElseThrow(NotFoundException::new);
         userSettings.showBanner = request.showBanner;
         userSettings.cookieConsent = request.cookieConsent;
         return userSettingsConverter.toDto(userSettingsRepository.save(userSettings));
     }
 
     public void updateUserAvatar(Long userSettingsId, String imageBase64) {
-        UserSettings userSettings = userSettingsRepository.findById(userSettingsId).orElseThrow(() -> new NotFoundException(""));
+        UserSettings userSettings = userSettingsRepository.findById(userSettingsId).orElseThrow(NotFoundException::new);
 
         if (userSettings.userAvatar == null) {
             userSettings.userAvatar = new UserAvatar();
@@ -113,7 +113,7 @@ public class UserSettingsService {
     }
 
     public void deleteUserAvatar(Long id) {
-        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(() -> new NotFoundException(""));
+        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(NotFoundException::new);
 
         if (userSettings.userAvatar == null) {
             return;
@@ -131,7 +131,7 @@ public class UserSettingsService {
     }
 
     public UserSettingsDto updateBackground(Long id, UploadImageBase64Request request) {
-        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(() -> new NotFoundException(""));
+        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(NotFoundException::new);
         removeOldUploadedBackgroundFile(userSettings);
 
         byte[] bytes = imageService.createUserBackground(request.imageBase64);
@@ -145,7 +145,7 @@ public class UserSettingsService {
     }
 
     public UserSettingsDto selectBackground(Long id, SelectBackgroundRequest request) {
-        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(() -> new NotFoundException(""));
+        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(NotFoundException::new);
         removeOldUploadedBackgroundFile(userSettings);
 
         userSettings.backgroundFilename = request.filename;
