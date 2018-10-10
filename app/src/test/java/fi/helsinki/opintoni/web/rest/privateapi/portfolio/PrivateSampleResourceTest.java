@@ -43,7 +43,6 @@ public class PrivateSampleResourceTest extends SpringTest {
     public void thatPortfolioSampleIsSaved() throws Exception {
 
         SampleDto sampleDto = new SampleDto();
-        sampleDto.url = "http://www.example.com/";
         sampleDto.title = "Cool demo";
         sampleDto.description =
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -56,7 +55,6 @@ public class PrivateSampleResourceTest extends SpringTest {
             .characterEncoding("UTF-8")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].url").value(sampleDto.url))
             .andExpect(jsonPath("$[0].title").value(sampleDto.title))
             .andExpect(jsonPath("$[0].description").value(sampleDto.description));
     }
