@@ -76,3 +76,4 @@ Built jar files can be found in `app/build/libs` directory
 `java -jar app/build/libs/app-{VERSION_NUMBER}-SNAPSHOT.jar --spring.profiles.active=local-dev`
 
 Replace VERSION_NUMBER with an actual version number present in the jar file name in `app/build/libs` directory.
+
