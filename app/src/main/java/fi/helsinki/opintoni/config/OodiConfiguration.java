@@ -22,9 +22,10 @@ import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
 import fi.helsinki.opintoni.integration.interceptor.OodiExceptionInterceptor;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiRestClient;
+import fi.helsinki.opintoni.integration.oodi.OodiSisuClient;
 import fi.helsinki.opintoni.integration.oodi.mock.OodiMockClient;
-import fi.helsinki.opintoni.util.NamedDelegatesProxy;
+import fi.helsinki.opintoni.integration.sisu.SisuClient;
+import fi.helsinki.opintoni.integration.sisu.SisuGraphQlClient;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -46,6 +47,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import javax.net.ssl.SSLContext;
 import java.io.File;
 import java.security.KeyStore;
@@ -144,22 +146,25 @@ public class OodiConfiguration {
     }
 
     @Bean
+    public SisuClient sisuClient() {
+        return new SisuGraphQlClient(new RestTemplate());
+    }
+
+    @Bean
     public OodiClient oodiMockClient() {
         return new OodiMockClient(objectMapper);
     }
 
     @Bean
-    public OodiClient oodiRestClient() {
-        return new OodiRestClient(appConfiguration.get("oodi.base.url"), oodiRestTemplate());
+    public OodiClient oodiClient() {
+        return new OodiSisuClient(sisuClient());
     }
 
-    @Bean
-    public OodiClient oodiClient() {
-        return NamedDelegatesProxy.builder(
-            OodiClient.class,
-            () -> appConfiguration.get("oodi.client.implementation"))
-            .with("rest", oodiRestClient())
-            .with("mock", oodiMockClient())
-            .build();
+    @PostConstruct
+    public void initSSLContext() {
+        if (useHttpClientCertificate && keystoreLocation != null && keystorePassword != null) {
+            SSLContext sslContext = sslContext(keystoreLocation, keystorePassword);
+            SSLContext.setDefault(sslContext);
+        }
     }
 }

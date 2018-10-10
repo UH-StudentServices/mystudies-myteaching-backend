@@ -41,6 +41,8 @@ public class CacheConstants {
     public static final String GUIDE_GENERAL_NEWS = "guideGeneralNews";
     public static final String GUIDE_PROGRAMME_NEWS = "guideProgrammeNews";
 
+    public static final String SISU_PRIVATE_PERSON = "sisuPrivatePerson";
+
     public static final String IS_OPEN_UNIVERSITY_STUDENT = "isOpenUniversityStudent";
     public static final String IS_OPEN_UNIVERSITY_TEACHER = "isOpenUniversityTeacher";
 
@@ -66,6 +68,7 @@ public class CacheConstants {
         .add(FEEDS)
         .add(GUIDE_GENERAL_NEWS)
         .add(GUIDE_PROGRAMME_NEWS)
+        .add(SISU_PRIVATE_PERSON)
         .build();
 
     public static final ImmutableList<String> PERSISTENT_CACHE_NAMES = ImmutableList.<String>builder()

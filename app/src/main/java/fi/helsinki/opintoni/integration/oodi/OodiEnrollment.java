@@ -23,11 +23,14 @@ import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.util.LocalDateTimeDeserializer;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.collect.Lists.newArrayList;
 
 public class OodiEnrollment {
 
-    public List<OodiLocalizedValue> name = Lists.newArrayList();
+    public List<OodiLocalizedValue> name = newArrayList();
 
     public Integer credits;
 
@@ -62,4 +65,6 @@ public class OodiEnrollment {
 
     @JsonProperty("position")
     public String position;
+
+    public List<OodiTeacher> teachers = newArrayList();
 }

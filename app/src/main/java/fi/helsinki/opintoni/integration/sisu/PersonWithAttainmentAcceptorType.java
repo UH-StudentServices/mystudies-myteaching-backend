@@ -15,30 +15,9 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.oodi.courseunitrealisation;
 
-public enum Position {
+package fi.helsinki.opintoni.integration.sisu;
 
-    ROOT("root"),
-    STUDY_GROUP("studygroup"),
-    STUDY_GROUP_SET("studygroupset");
-
-    private final String value;
-
-    Position(String value) {
-        this.value = value;
-    }
-
-    public static Position getByValue(String value) {
-        for (Position position : Position.values()) {
-            if (position.value.equals(value)) {
-                return position;
-            }
-        }
-        throw new IllegalArgumentException("Unknown Oodi course unit realisation position: " + value);
-    }
-
-    public String getValue() {
-        return value;
-    }
+public class PersonWithAttainmentAcceptorType {
+    public String personId;
 }

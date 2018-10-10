@@ -29,7 +29,8 @@ import static com.google.common.collect.Lists.newArrayList;
 @Component
 @PropertySource(value = {
     "file:/opt/opintoni/config/default.properties",
-    "file:/opt/opintoni/config/database.properties"},
+    "file:/opt/opintoni/config/database.properties",
+    "file:/tmp/sisu.properties"},
     ignoreResourceNotFound = true)
 public class AppConfiguration {
 

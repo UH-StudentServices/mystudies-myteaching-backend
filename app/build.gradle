@@ -83,15 +83,15 @@ configurations {
 }
 
 repositories {
-  maven { url 'http://repo.spring.io/milestone' }
-  maven { url 'http://repo.spring.io/snapshot' }
-  maven { url 'https://repository.jboss.org/nexus/content/repositories/releases' }
-  maven { url 'https://oss.sonatype.org/content/repositories/releases' }
-  maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-  maven { url 'http://repo.maven.apache.org/maven2' }
-  maven { url 'http://opi-1.student.helsinki.fi:8081/artifactory/ext-release-local' }
-
-  mavenLocal()
+    maven { url 'http://repo.spring.io/milestone' }
+    maven { url 'http://repo.spring.io/snapshot' }
+    maven { url 'https://repository.jboss.org/nexus/content/repositories/releases' }
+    maven { url 'https://oss.sonatype.org/content/repositories/releases' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'http://repo.maven.apache.org/maven2' }
+    maven { url 'http://opi-1.student.helsinki.fi:8081/artifactory/ext-release-local' }
+    maven { url 'https://dl.bintray.com/americanexpress/maven/' }
+    mavenLocal()
 }
 
 configurations.all {
@@ -187,6 +187,8 @@ dependencies {
     compile group: 'org.slf4j', name:'jcl-over-slf4j', version: '1.7.7'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     compile group: 'com.rometools', name: 'rome', version: '1.5.1'
+    compile 'io.aexp.nodes.graphql:nodes:0.1.2'
+
     errorprone group: 'com.google.errorprone', name:'error_prone_core', version: error_prone_core_version
 
     testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: awaility_version

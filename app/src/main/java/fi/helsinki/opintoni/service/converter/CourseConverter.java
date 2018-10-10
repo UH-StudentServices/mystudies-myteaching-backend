@@ -83,8 +83,7 @@ public class CourseConverter {
                 oodiEnrollment.parentId,
                 oodiEnrollment.rootId,
                 oodiEnrollment.credits,
-                oodiClient.getCourseUnitRealisationTeachers(oodiEnrollment.realisationId)
-                    .stream().map(t -> t.fullName).collect(Collectors.toList()),
+                oodiEnrollment.teachers.stream().map(t -> t.shortName).collect(Collectors.toList()),
                 eventTypeResolver.isExam(oodiEnrollment.typeCode),
                 oodiEnrollment.isCancelled,
                 null);

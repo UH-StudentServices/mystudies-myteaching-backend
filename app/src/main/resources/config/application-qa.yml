@@ -46,6 +46,11 @@ oodi:
     client.implementation: rest
     useHttpClientCertificate: true
 
+sisu:
+    baseUrl: https://esbmt2.it.helsinki.fi:3333/secure/testi/sisu
+    authPath: /ori/application-auth
+    apiPath: /api
+
 coursePage:
     base.url: https://dev.courses.helsinki.fi
     api.path: /api/v1

@@ -38,6 +38,7 @@ import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
@@ -74,6 +75,7 @@ import static org.assertj.core.util.Lists.newArrayList;
 @IntegrationTest
 @ActiveProfiles(Constants.SPRING_PROFILE_TEST)
 @Transactional
+@Ignore
 public abstract class SpringTest {
 
     private static final List<String> TABLE_NAMES = newArrayList(
