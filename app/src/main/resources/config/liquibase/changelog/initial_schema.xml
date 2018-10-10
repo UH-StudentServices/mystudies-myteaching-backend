@@ -1747,7 +1747,7 @@
                 UPDATE
                 sample
                 SET
-                description = concat_ws('<br /><br />', description, url);
+                description = concat_ws('<br /><br />', description, url, ' ');
             ]]>
         </sql>
         <dropColumn tableName="sample" columnName="url" />
