@@ -20,7 +20,7 @@ RUN apk update \
   && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.gradle \
   && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.m2
 
-ENV PATH="/opt/gradle/gradle-2.9/bin:${PATH}"
+ENV PATH="/opt/gradle/gradle-4.10/bin:${PATH}"
 
 USER $USER_NAME
 
