@@ -158,7 +158,6 @@ dependencies {
     compile(group: 'org.springframework', name: 'spring-context-support') {
         exclude(module: 'quartz')
     }
-    runtime group: 'org.springframework.boot', name: 'spring-boot-properties-migrator'
     compile group: 'javax.mail', name: 'mail', version: javax_mail_version
 
     compile group: 'com.google.guava', name: 'guava', version: guava_version
