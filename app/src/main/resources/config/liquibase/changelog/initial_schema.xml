@@ -1747,10 +1747,9 @@
                 UPDATE
                 sample
                 SET
-                description = concat_ws('<br />', description, url);
+                description = concat_ws('<br /><br />', description, url);
             ]]>
         </sql>
         <dropColumn tableName="sample" columnName="url" />
-        <addNotNullConstraint tableName="sample" columnName="description" />
     </changeSet>
 </databaseChangeLog>

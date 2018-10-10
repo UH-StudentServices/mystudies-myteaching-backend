@@ -38,8 +38,6 @@ public class Sample extends AbstractAuditingEntity implements Ownership {
     @Column(name = "title", nullable = false)
     public String title;
 
-    @NotBlank
-    @Column(name = "description", nullable = false)
     public String description;
 
     @NotNull
