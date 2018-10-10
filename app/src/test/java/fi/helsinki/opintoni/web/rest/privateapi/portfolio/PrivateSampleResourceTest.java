@@ -34,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PrivateSampleResourceTest extends SpringTest {
 
     private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/samples";
-    private static final long PORTFOLIO_ID = 2L;
 
     @Autowired
     private SampleService sampleService;
