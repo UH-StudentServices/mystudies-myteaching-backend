@@ -53,7 +53,7 @@ targetCompatibility=1.8
 
 checkstyle {
     configFile = rootProject.file('gradle-config/checkstyle/checkstyle.xml')
-    toolVersion = '8.8'
+    toolVersion = '8.12'
 }
 
 bootJar {
