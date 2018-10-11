@@ -26,4 +26,4 @@ USER $USER_NAME
 
 WORKDIR /opt/mystudies/app
 
-ENTRYPOINT ["gradle"]
+ENTRYPOINT ["bash"]
