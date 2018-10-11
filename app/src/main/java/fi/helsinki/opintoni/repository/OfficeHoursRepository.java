@@ -19,7 +19,10 @@ package fi.helsinki.opintoni.repository;
 
 import fi.helsinki.opintoni.domain.OfficeHours;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface OfficeHoursRepository extends JpaRepository<OfficeHours, Long> {
@@ -27,4 +30,7 @@ public interface OfficeHoursRepository extends JpaRepository<OfficeHours, Long> 
     List<OfficeHours> findByUserId(Long userId);
 
     void deleteByUserId(Long userId);
+
+    @Query("select o from OfficeHours o where o.expirationDate >= :date")
+    List<OfficeHours> findAllWithExpirationDateEqualOrAfter(@Param("date") LocalDate date);
 }

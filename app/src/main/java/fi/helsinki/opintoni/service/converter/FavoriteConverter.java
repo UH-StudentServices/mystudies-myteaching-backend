@@ -29,7 +29,7 @@ public class FavoriteConverter {
 
     private final AppConfiguration appConfiguration;
     private final UnisportClient unisportClient;
-        
+
     @Autowired
     public FavoriteConverter(AppConfiguration appConfiguration, UnisportClient unisportClient) {
         this.appConfiguration = appConfiguration;
@@ -38,20 +38,20 @@ public class FavoriteConverter {
 
     public FavoriteDto toDto(Favorite favorite) {
         switch(favorite.type) {
-            case TWITTER: 
-                return toTwitterDto((TwitterFavorite)favorite);
-            case RSS: 
-                return toRssDto((RssFavorite)favorite);
-            case LINK: 
-                return toLinkDto((LinkFavorite)favorite);
-            case UNICAFE: 
-                return toUnicafeDto((UnicafeFavorite)favorite);
+            case TWITTER:
+                return toTwitterDto((TwitterFavorite) favorite);
+            case RSS:
+                return toRssDto((RssFavorite) favorite);
+            case LINK:
+                return toLinkDto((LinkFavorite) favorite);
+            case UNICAFE:
+                return toUnicafeDto((UnicafeFavorite) favorite);
             case UNISPORT:
-                return toUnisportFavoriteDto((UnisportFavorite)favorite);
+                return toUnisportFavoriteDto((UnisportFavorite) favorite);
             case FLAMMA_NEWS:
             case FLAMMA_EVENTS:
                 return toFavoriteDto(favorite);
-            default: 
+            default:
                 throw new IllegalArgumentException("No converter for type " + favorite.type.name());
         }
     }
@@ -82,20 +82,20 @@ public class FavoriteConverter {
             favorite.thumbnailWidth,
             favorite.thumbnailHeight);
     }
-    
+
     private UnicafeFavoriteDto toUnicafeDto(UnicafeFavorite favorite) {
         return new UnicafeFavoriteDto(
-            favorite.id, 
-            favorite.type.name(), 
+            favorite.id,
+            favorite.type.name(),
             favorite.restaurantId);
     }
-    
+
     private FavoriteDto toFavoriteDto(Favorite favorite) {
         return new FavoriteDto(
             favorite.id,
             favorite.type.name());
     }
-    
+
     private UnisportFavoriteDto toUnisportFavoriteDto(Favorite favorite) {
         return new UnisportFavoriteDto(
             favorite.id,

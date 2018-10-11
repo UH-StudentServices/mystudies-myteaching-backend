@@ -15,16 +15,20 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.service;
+package fi.helsinki.opintoni.validation;
 
-import fi.helsinki.opintoni.dto.UnisportFavoriteDto;
-import org.junit.Test;
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.*;
 
-public class FavoriteServiceSaveUnisportFavoriteTest extends AbstractFavoriteServiceTest {
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Constraint(validatedBy = { MaxYearFromNowValidator.class })
+public @interface MaxYearFromNow {
+    String message() default "Value is out of range";
 
-    @Test
-    public void shouldPersistUnisportFavorite() {
-        UnisportFavoriteDto favorite = (UnisportFavoriteDto) favoriteService.insertUnisportFavorite(3L);
-        assertUnisportFavorite(favorite, 11L);
-    }
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 }

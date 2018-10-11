@@ -15,16 +15,33 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.service;
+package fi.helsinki.opintoni.web.rest.privateapi;
 
-import fi.helsinki.opintoni.dto.UnisportFavoriteDto;
-import org.junit.Test;
+import fi.helsinki.opintoni.dto.OfficeHoursDto;
 
-public class FavoriteServiceSaveUnisportFavoriteTest extends AbstractFavoriteServiceTest {
+import javax.validation.Valid;
+import java.util.List;
 
-    @Test
-    public void shouldPersistUnisportFavorite() {
-        UnisportFavoriteDto favorite = (UnisportFavoriteDto) favoriteService.insertUnisportFavorite(3L);
-        assertUnisportFavorite(favorite, 11L);
+public class InsertOfficeHoursRequest {
+
+    @Valid
+    public List<OfficeHoursDto> officeHours;
+
+    public InsertOfficeHoursRequest() {
     }
+
+    public InsertOfficeHoursRequest(List<OfficeHoursDto> officeHours) {
+        this.officeHours = officeHours;
+    }
+
+    // JSR-303 validation requires getter and setter
+    public List<OfficeHoursDto> getOfficeHours() {
+        return officeHours;
+    }
+
+    // JSR-303 validation requires getter and setter
+    public void setOfficeHours(List<OfficeHoursDto> officeHours) {
+        this.officeHours = officeHours;
+    }
+
 }

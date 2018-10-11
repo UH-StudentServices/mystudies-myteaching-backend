@@ -109,11 +109,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public FilterRegistrationBean eTagFilter() {
+    public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
-        Filter eTagFilter = new ShallowEtagHeaderFilter();
-        beanFactory.autowireBean(eTagFilter);
-        registration.setFilter(eTagFilter);
+        Filter shallowEtagFilter = new ShallowEtagHeaderFilter();
+        beanFactory.autowireBean(shallowEtagFilter);
+        registration.setFilter(shallowEtagFilter);
         registration.addUrlPatterns(RestConstants.PUBLIC_API_V1 + "/images/*");
 
         return registration;

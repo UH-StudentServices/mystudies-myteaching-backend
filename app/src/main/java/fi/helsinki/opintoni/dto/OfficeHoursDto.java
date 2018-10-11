@@ -17,9 +17,14 @@
 
 package fi.helsinki.opintoni.dto;
 
+import fi.helsinki.opintoni.validation.MaxYearFromNow;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.List;
 
+@Valid
 public class OfficeHoursDto {
 
     public Long id;
@@ -36,17 +41,32 @@ public class OfficeHoursDto {
 
     public List<DegreeProgrammeDto> degreeProgrammes;
 
+    @NotNull
+    @MaxYearFromNow
+    public LocalDate expirationDate;
+
     public OfficeHoursDto() {
 
     }
 
     public OfficeHoursDto(
         String name, String description, String additionalInfo, String location,
-        List<DegreeProgrammeDto> degreeProgrammes) {
+        List<DegreeProgrammeDto> degreeProgrammes, LocalDate expirationDate) {
         this.name = name;
         this.description = description;
         this.additionalInfo = additionalInfo;
         this.location = location;
         this.degreeProgrammes = degreeProgrammes;
+        this.expirationDate = expirationDate;
+    }
+
+    // JSR-303 validation requires getter and setter
+    public LocalDate getExpirationDate() {
+        return expirationDate;
+    }
+
+    // JSR-303 validation requires getter and setter
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 }

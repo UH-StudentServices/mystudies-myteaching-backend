@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 
 @Entity
-@Table(name="calendar_feed")
+@Table(name = "calendar_feed")
 public class CalendarFeed extends AbstractAuditingEntity implements Ownership {
 
     @Id
@@ -30,7 +30,7 @@ public class CalendarFeed extends AbstractAuditingEntity implements Ownership {
     public Long id;
 
     @NotBlank
-    @Column(name="feed_id")
+    @Column(name = "feed_id")
     public String feedId;
 
     @OneToOne(optional = false)

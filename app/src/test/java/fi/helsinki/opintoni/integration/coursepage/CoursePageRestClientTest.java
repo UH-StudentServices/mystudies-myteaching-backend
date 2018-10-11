@@ -35,6 +35,7 @@ public class CoursePageRestClientTest extends SpringTest {
     private static final Locale EN = Locale.ENGLISH;
     private static final Locale FI = new Locale("fi");
     private static final Locale SV = new Locale("sv");
+    private static final String EMPTY_COURSE_RESPONSE = "course_empty.json";
 
     @Test
     public void thatImageUriIsReturned() {
@@ -75,7 +76,7 @@ public class CoursePageRestClientTest extends SpringTest {
 
     @Test
     public void thatNullImageUriIsReturnedWhenCoursePageDoesNotExist() {
-        defaultTeacherRequestChain().courseImplementation(TEACHER_COURSE_REALISATION_ID, "course_empty.json", EN);
+        defaultTeacherRequestChain().courseImplementation(TEACHER_COURSE_REALISATION_ID, EMPTY_COURSE_RESPONSE, EN);
 
         assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN).imageUrl).isNull();
     }
@@ -93,5 +94,16 @@ public class CoursePageRestClientTest extends SpringTest {
             .courseImplementation(TEACHER_COURSE_REALISATION_ID, "course_with_moodle_url.json", EN);
 
         assertThat(coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN).moodleUrl).isEqualTo("http://moodle.helsinki.fi");
+    }
+
+    @Test
+    public void thatCoursePageCourseImplementationWithCourseIdIsReturnedWhenCoursePageHasNoContent() {
+        final int expectedCourseRealisationId = Integer.parseInt(TEACHER_COURSE_REALISATION_ID);
+
+        defaultTeacherRequestChain().courseImplementation(TEACHER_COURSE_REALISATION_ID, EMPTY_COURSE_RESPONSE, EN);
+
+        CoursePageCourseImplementation course = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, EN);
+
+        assertThat(course.courseImplementationId).isEqualTo(expectedCourseRealisationId);
     }
 }

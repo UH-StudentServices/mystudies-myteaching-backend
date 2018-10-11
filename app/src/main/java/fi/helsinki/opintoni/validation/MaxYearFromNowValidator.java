@@ -15,16 +15,21 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.service;
+package fi.helsinki.opintoni.validation;
 
-import fi.helsinki.opintoni.dto.UnisportFavoriteDto;
-import org.junit.Test;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import java.time.LocalDate;
 
-public class FavoriteServiceSaveUnisportFavoriteTest extends AbstractFavoriteServiceTest {
+public class MaxYearFromNowValidator implements ConstraintValidator<MaxYearFromNow, LocalDate> {
+    @Override
+    public void initialize(MaxYearFromNow constraintAnnotation) {
 
-    @Test
-    public void shouldPersistUnisportFavorite() {
-        UnisportFavoriteDto favorite = (UnisportFavoriteDto) favoriteService.insertUnisportFavorite(3L);
-        assertUnisportFavorite(favorite, 11L);
+    }
+
+    @Override
+    public boolean isValid(LocalDate value, ConstraintValidatorContext context) {
+        LocalDate yearFromNow = LocalDate.now().plusYears(1);
+        return value.isBefore(yearFromNow) || value.isEqual(yearFromNow);
     }
 }
