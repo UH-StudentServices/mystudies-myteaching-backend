@@ -1,8 +1,9 @@
 server:
-    session:
-        cookie:
-            name: OO_DEMO_SESSION_ID
-            secure: true
+    servlet:
+        session:
+            cookie:
+                name: OO_DEMO_SESSION_ID
+                secure: true
 
 spring:
     profiles:

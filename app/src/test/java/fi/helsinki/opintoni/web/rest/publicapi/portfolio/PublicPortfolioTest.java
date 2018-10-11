@@ -58,13 +58,13 @@ public abstract class PublicPortfolioTest extends SpringTest {
             ComponentVisibility componentVisibility = new ComponentVisibility();
             componentVisibility.component = component;
             componentVisibility.visibility = ComponentVisibility.Visibility.PRIVATE;
-            componentVisibility.portfolio = portfolioRepository.findOne(STUDENT_PORTFOLIO_ID);
+            componentVisibility.portfolio = portfolioRepository.findById(STUDENT_PORTFOLIO_ID).get();
             componentVisibilityRepository.save(componentVisibility);
         });
     }
 
     private void savePortfolioAsPublic(long portfolioId) {
-        Portfolio portfolio = portfolioRepository.findOne(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).get();
         portfolio.visibility = PortfolioVisibility.PUBLIC;
         portfolioRepository.save(portfolio);
     }

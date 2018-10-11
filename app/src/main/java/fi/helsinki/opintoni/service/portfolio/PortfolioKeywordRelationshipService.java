@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.service.portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioKeyword;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioKeywordRelationship;
 import fi.helsinki.opintoni.dto.portfolio.KeywordDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioKeywordRelationshipRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioKeywordRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
@@ -68,7 +69,7 @@ public class PortfolioKeywordRelationshipService {
 
         portfolioKeywordRelationshipRepository.deleteByPortfolioId(portfolioId);
 
-        return portfolioKeywordRelationshipRepository.save(portfolioKeywordRelationships)
+        return portfolioKeywordRelationshipRepository.saveAll(portfolioKeywordRelationships)
             .stream()
             .map(portfolioKeywordRelationshipConverter::toDto)
             .collect(Collectors.toList());
@@ -82,7 +83,7 @@ public class PortfolioKeywordRelationshipService {
             .map(keyword -> {
                 PortfolioKeywordRelationship portfolioKeywordRelationship = new PortfolioKeywordRelationship();
                 portfolioKeywordRelationship.portfolioKeyword = obtainPortfolioKeyword(keyword.title);
-                portfolioKeywordRelationship.portfolio = portfolioRepository.findOne(portfolioId);
+                portfolioKeywordRelationship.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
                 portfolioKeywordRelationship.orderIndex = keyword.orderIndex;
                 return portfolioKeywordRelationship;
             })

@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.service.portfolio;
 import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.DtoService;
@@ -64,13 +65,13 @@ public class ComponentVisibilityService extends DtoService {
         componentVisibility.teacherPortfolioSection = request.teacherPortfolioSection;
         componentVisibility.instanceName = request.instanceName;
         componentVisibility.visibility = request.visibility;
-        componentVisibility.portfolio = portfolioRepository.findOne(portfolioId);
+        componentVisibility.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
         componentVisibilityRepository.save(componentVisibility);
     }
 
     public void save(List<ComponentVisibility> visibilities) {
-        componentVisibilityRepository.save(visibilities);
+        componentVisibilityRepository.saveAll(visibilities);
     }
 
     public void deleteByPortfolioIdAndComponentAndInstanceName(Long portfolioId,

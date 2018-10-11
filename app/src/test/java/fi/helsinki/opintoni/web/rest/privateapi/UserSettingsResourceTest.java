@@ -181,7 +181,7 @@ public class UserSettingsResourceTest extends SpringTest {
 
     private void addUploadedBackgroundToDbAndFileSystem(String uploadedBackgroundFilename) {
         filesMemory.put(uploadedBackgroundFilename, new byte[0]);
-        UserSettings userSettings = userSettingsRepository.findOne(USER_SETTINGS_ID);
+        UserSettings userSettings = userSettingsRepository.findById(USER_SETTINGS_ID).get();
         userSettings.uploadedBackgroundFilename = uploadedBackgroundFilename;
         userSettingsRepository.save(userSettings);
     }

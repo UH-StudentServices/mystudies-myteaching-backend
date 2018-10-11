@@ -57,7 +57,7 @@ public class AuditEventConverterTest {
         assertThat(auditEvent.getPrincipal()).isEqualTo("principal");
         assertThat(auditEvent.getType()).isEqualTo("type");
         assertThat(auditEvent.getData()).isEmpty();
-        assertThat(auditEvent.getTimestamp()).isEqualTo(getJodaLocalDateTime().toDate());
+        assertThat(auditEvent.getTimestamp()).isEqualTo(getJodaLocalDateTime().toDate().toInstant());
     }
 
     private List<PersistentAuditEvent> getPersistentAuditEvents() {

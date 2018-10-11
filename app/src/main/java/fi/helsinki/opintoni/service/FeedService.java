@@ -28,8 +28,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,7 +63,7 @@ public class FeedService {
         return parseFeedUrlsFromWebPage(feedUrl)
             .stream()
             .map(parsedFeedUrl -> findFeed(parsedFeedUrl).orElse(null))
-            .filter(feedDto -> feedDto != null)
+            .filter(Objects::nonNull)
             .collect(Collectors.toList());
     }
 

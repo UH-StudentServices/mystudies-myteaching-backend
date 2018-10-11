@@ -35,12 +35,13 @@ public class DegreeProgrammeConverter {
 
     private String getDegreeProgrammeName(GuideDegreeProgramme guideDegreeProgramme, Locale locale) {
         String language = locale.getLanguage();
-        if (language.equals("en")) {
-            return guideDegreeProgramme.name.en;
-        } else if (language.equals("sv")) {
-            return guideDegreeProgramme.name.sv;
-        } else  {
-            return guideDegreeProgramme.name.fi;
+        switch (language) {
+            case "en":
+                return guideDegreeProgramme.name.en;
+            case "sv":
+                return guideDegreeProgramme.name.sv;
+            default:
+                return guideDegreeProgramme.name.fi;
         }
     }
 

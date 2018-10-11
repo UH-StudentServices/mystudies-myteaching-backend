@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.domain.CalendarFeed;
 import fi.helsinki.opintoni.dto.CalendarFeedDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.CalendarFeedRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.CalendarFeedConverter;
@@ -53,7 +54,7 @@ public class CalendarTransactionalService extends DtoService {
 
     public CalendarFeedDto createCalendarFeed(Long userId) {
         CalendarFeed calendarFeed = new CalendarFeed();
-        calendarFeed.user = userRepository.findOne(userId);
+        calendarFeed.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         calendarFeed.feedId = UUID.randomUUID().toString();
         return calendarFeedConverter.toDto(calendarFeedRepository.save(calendarFeed));
     }

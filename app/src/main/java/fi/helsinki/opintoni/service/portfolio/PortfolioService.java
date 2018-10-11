@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
 import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
@@ -78,7 +79,7 @@ public class PortfolioService {
 
         Portfolio portfolio = new Portfolio();
         portfolio.language = lang;
-        portfolio.user = userRepository.findOne(userId);
+        portfolio.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         portfolio.path = portfolioPath;
         portfolio.ownerName = name;
         portfolio.visibility = PortfolioVisibility.PRIVATE;
@@ -136,7 +137,7 @@ public class PortfolioService {
     }
 
     public PortfolioDto update(Long portfolioId, PortfolioDto portfolioDto) {
-        Portfolio portfolio = portfolioRepository.findOne(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
         portfolio.visibility = portfolioDto.visibility;
         portfolio.ownerName = portfolioDto.ownerName;
         portfolio.intro = portfolioDto.intro;
@@ -145,7 +146,7 @@ public class PortfolioService {
     }
 
     public void updateSummary(Long portfolioId, UpdateSummaryRequest request) {
-        Portfolio portfolio = portfolioRepository.findOne(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
         portfolio.summary = request.summary;
         portfolioRepository.save(portfolio);
     }
