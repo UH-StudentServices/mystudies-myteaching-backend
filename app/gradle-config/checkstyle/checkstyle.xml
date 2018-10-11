@@ -246,13 +246,13 @@
   </module>
   <module name="Header">
     <property name="severity" value="error"/>
-    <property name="headerFile" value="gradle-config/checkstyle/required-header.txt"/>
+    <property name="headerFile" value="${config_loc}/required-header.txt"/>
     <property name="fileExtensions" value=".java"/>
   </module>
   <module name="Header">
     <metadata name="net.sf.eclipsecs.core.comment" value="for .xml"/>
     <property name="severity" value="error"/>
-    <property name="headerFile" value="gradle-config/checkstyle/required-header-xml.txt"/>
+    <property name="headerFile" value="${config_loc}/required-header-xml.txt"/>
     <property name="fileExtensions" value=".xml"/>
   </module>
 </module>
