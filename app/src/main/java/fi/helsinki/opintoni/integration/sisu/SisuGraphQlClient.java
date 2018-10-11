@@ -18,11 +18,12 @@
 package fi.helsinki.opintoni.integration.sisu;
 
 import com.google.common.collect.ImmutableMap;
-import fi.helsinki.opintoni.cache.CacheConstants;
 import io.aexp.nodes.graphql.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StopWatch;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
@@ -30,6 +31,8 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.Map;
 public class SisuGraphQlClient implements SisuClient {
+
+    private static final Logger log = LoggerFactory.getLogger(SisuGraphQlClient.class);
 
     private final RestTemplate restTemplate;
 
@@ -54,10 +57,18 @@ public class SisuGraphQlClient implements SisuClient {
     }
 
     @Override
-    @Cacheable(value = CacheConstants.SISU_PRIVATE_PERSON, cacheManager = "transientCacheManager", sync = true)
+    //@Cacheable(value = CacheConstants.SISU_PRIVATE_PERSON, cacheManager = "transientCacheManager", sync = true)
     public PrivatePerson getPrivatePerson(String id, String eduPersonPrincipalName) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
 
         String token = getAuthenticationToken(eduPersonPrincipalName);
+
+        stopWatch.stop();
+
+        log.info("Response for authtoken took {} seconds", stopWatch.getTotalTimeSeconds());
+
+        stopWatch.start();
 
         GraphQLTemplate graphQLTemplate = new GraphQLTemplate();
         try {
@@ -75,6 +86,10 @@ public class SisuGraphQlClient implements SisuClient {
         } catch (Exception e) {
             throw new RuntimeException(e);
             //Something went wrong
+        } finally {
+            stopWatch.stop();
+
+            log.info("Response for query private_person took {} seconds", stopWatch.getTotalTimeSeconds());
         }
     }
 
