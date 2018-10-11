@@ -24,17 +24,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.MimeMappings;
-import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
-import org.springframework.boot.web.servlet.ErrorPage;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.MimeMappings;
+import org.springframework.boot.web.server.WebServerFactory;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 
 import javax.inject.Inject;
 import javax.servlet.*;
@@ -46,8 +40,7 @@ import java.util.EnumSet;
  */
 @Configuration
 @AutoConfigureAfter(TransientCacheConfiguration.class)
-public class WebConfigurer implements org.springframework.boot.web.servlet.ServletContextInitializer,
-    EmbeddedServletContainerCustomizer {
+public class WebConfigurer implements org.springframework.boot.web.servlet.ServletContextInitializer {
 
     private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
@@ -62,24 +55,13 @@ public class WebConfigurer implements org.springframework.boot.web.servlet.Servl
 
     @Bean
     @Profile("!" + Constants.SPRING_PROFILE_TEST)
-    public EmbeddedServletContainerFactory servletContainer() {
+    public WebServerFactory servletContainer() {
         return createTomcat();
     }
 
-    @Bean
-    public EmbeddedServletContainerCustomizer containerCustomizer() {
-
-        return (container -> {
-            ErrorPage error403Page = new ErrorPage(HttpStatus.FORBIDDEN, "/errors/403.html");
-            ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/errors/404.html");
-            ErrorPage error500Page = new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/errors/500.html");
-
-            container.addErrorPages(error403Page, error404Page, error500Page);
-        });
-    }
-
-    private EmbeddedServletContainerFactory createTomcat() {
-        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
+    private WebServerFactory createTomcat() {
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+        customize(tomcat);
 
         return tomcat;
     }
@@ -103,8 +85,7 @@ public class WebConfigurer implements org.springframework.boot.web.servlet.Servl
     /**
      * Set up Mime types.
      */
-    @Override
-    public void customize(ConfigurableEmbeddedServletContainer container) {
+    private void customize(TomcatServletWebServerFactory factory) {
         MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
         // IE issue, see https://github.com/jhipster/generator-jhipster/pull/711
         mappings.add("html", "text/html;charset=utf-8");
@@ -119,7 +100,7 @@ public class WebConfigurer implements org.springframework.boot.web.servlet.Servl
         mappings.add("eot", "application/vnd.ms-fontobject");
         mappings.add("sfnt", "application/font-sfnt");
 
-        container.setMimeMappings(mappings);
+        factory.setMimeMappings(mappings);
     }
 
     /**

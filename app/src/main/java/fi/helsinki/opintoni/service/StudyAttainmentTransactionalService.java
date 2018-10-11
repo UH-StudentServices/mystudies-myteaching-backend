@@ -40,7 +40,7 @@ public class StudyAttainmentTransactionalService {
     }
 
     public Portfolio findPortfolio(Long portfolioId) {
-        return portfolioRepository.findOne(portfolioId);
+        return portfolioRepository.findById(portfolioId).orElse(null);
     }
 
     public Optional<StudyAttainmentWhitelist> findByPortfolioId(Long portfolioId) {

@@ -48,11 +48,10 @@ public class GuideRestClient implements GuideClient {
     public List<GuideDegreeProgramme> getDegreeProgrammes() {
         try {
             ResponseEntity<List<GuideDegreeProgramme>> responseEntity =
-                restTemplate.exchange("{baseUrl}/degree-programme?_format=json",
+                restTemplate.exchange(baseUrl + "/degree-programme?_format=json",
                     HttpMethod.GET,
                     null,
-                    new ParameterizedTypeReference<List<GuideDegreeProgramme>>() {},
-                    baseUrl);
+                    new ParameterizedTypeReference<List<GuideDegreeProgramme>>() {});
             return Optional.ofNullable(responseEntity.getBody())
                 .orElse(newArrayList());
         } catch (RestClientException e) {

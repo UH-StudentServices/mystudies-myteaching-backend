@@ -21,6 +21,7 @@ import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.AvatarImageService;
 import fi.helsinki.opintoni.service.portfolio.*;
@@ -203,7 +204,7 @@ public class PortfolioConverter {
                 break;
             case STUDIES:
                 portfolioDto.keywords = keywordRelationshipService.findByPortfolioId(portfolioId);
-                portfolioDto.summary = new SummaryDto(portfolioRepository.findOne(portfolioId).summary);
+                portfolioDto.summary = new SummaryDto(portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new).summary);
                 break;
             case CREDITS:
             case ATTAINMENTS:

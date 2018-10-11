@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioBackground;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioBackgroundRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.ImageService;
@@ -111,7 +112,7 @@ public class PortfolioBackgroundService {
 
         if (!portfolioBackgroundOptional.isPresent()) {
             portfolioBackground = new PortfolioBackground();
-            portfolioBackground.portfolio = portfolioRepository.findOne(portfolioId);
+            portfolioBackground.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
         } else {
             portfolioBackground = portfolioBackgroundOptional.get();
         }

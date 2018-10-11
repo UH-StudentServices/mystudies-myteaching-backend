@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class SpringSecurityAuditorAware implements AuditorAware<String> {
 
@@ -33,8 +35,8 @@ public class SpringSecurityAuditorAware implements AuditorAware<String> {
     }
 
     @Override
-    public String getCurrentAuditor() {
+    public Optional<String> getCurrentAuditor() {
         String userName = securityUtils.getCurrentLogin();
-        return (userName != null ? userName : Constants.SYSTEM_ACCOUNT);
+        return Optional.of(userName != null ? userName : Constants.SYSTEM_ACCOUNT);
     }
 }

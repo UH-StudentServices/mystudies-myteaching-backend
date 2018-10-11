@@ -25,7 +25,6 @@ import liquibase.integration.spring.SpringLiquibase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
@@ -44,9 +43,9 @@ import java.util.Arrays;
 @EnableTransactionManagement
 public class DatabaseConfiguration implements EnvironmentAware {
 
-    private final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
+    private static final Logger log = LoggerFactory.getLogger(DatabaseConfiguration.class);
 
-    private RelaxedPropertyResolver propertyResolver;
+    private static final String PREFIX = "spring.datasource.";
 
     private Environment env;
 
@@ -56,29 +55,30 @@ public class DatabaseConfiguration implements EnvironmentAware {
     @Override
     public void setEnvironment(Environment env) {
         this.env = env;
-        this.propertyResolver = new RelaxedPropertyResolver(env, "spring.datasource.");
     }
 
     @Bean
     public DataSource dataSource() {
         log.debug("Configuring Datasource");
-        if (propertyResolver.getProperty("url") == null && propertyResolver.getProperty("databaseName") == null) {
+
+        if (env.getProperty(PREFIX + "url") == null && env.getProperty(PREFIX + "databaseName") == null) {
             log.error("Your database connection pool configuration is incorrect! The application" +
                     "cannot start. Please check your Spring profile, current profiles are: {}",
                 Arrays.toString(env.getActiveProfiles()));
 
             throw new ApplicationContextException("Database connection pool is not configured correctly");
         }
+
         HikariConfig config = new HikariConfig();
-        config.setDataSourceClassName(propertyResolver.getProperty("dataSourceClassName"));
-        if (propertyResolver.getProperty("url") == null || "".equals(propertyResolver.getProperty("url"))) {
-            config.addDataSourceProperty("databaseName", propertyResolver.getProperty("databaseName"));
-            config.addDataSourceProperty("serverName", propertyResolver.getProperty("serverName"));
+        config.setDataSourceClassName(env.getProperty(PREFIX + "dataSourceClassName"));
+        if (env.getProperty(PREFIX + "url") == null || "".equals(env.getProperty(PREFIX + "url"))) {
+            config.addDataSourceProperty("databaseName", env.getProperty(PREFIX + "databaseName"));
+            config.addDataSourceProperty("serverName", env.getProperty(PREFIX + "serverName"));
         } else {
-            config.addDataSourceProperty("url", propertyResolver.getProperty("url"));
+            config.addDataSourceProperty("url", env.getProperty(PREFIX + "url"));
         }
-        config.addDataSourceProperty("user", propertyResolver.getProperty("username"));
-        config.addDataSourceProperty("password", propertyResolver.getProperty("password"));
+        config.addDataSourceProperty("user", env.getProperty(PREFIX + "username"));
+        config.addDataSourceProperty("password", env.getProperty(PREFIX + "password"));
 
         if (metricRegistry != null) {
             config.setMetricRegistry(metricRegistry);

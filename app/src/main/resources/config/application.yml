@@ -1,25 +1,36 @@
 server:
     port: 8080
-    session:
-        timeout: 3600 # Seconds
-        cookie:
-            http-only: true
-            max-age: 86400
-            path: /
-            domain: helsinki.fi
+    servlet:
+        session:
+            cookie:
+                http-only: true
+                domain: helsinki.fi
+                path: /
+                max-age: 86400s
+            timeout: 3600s
+
+# Needed as integer for mece configuration
+session.timeout: 3600
 
 spring:
-    http:
+    servlet:
         multipart:
             max-file-size: 16MB
             max-request-size: 18MB
 
 # Disable the spring security default configuration from spring-boot-actuator
-management.security.enabled: true
-security.basic.enabled: false
-
-# Disable Jolokia - An http/json bridge for remote JMX access
-endpoints.jolokia.enabled: false
+management:
+    endpoints:
+        enabled-by-default: false
+        web:
+            base-path: /
+            path-mapping:
+                health: health
+    endpoint:
+        health:
+            enabled: true
+        info:
+            enabled: true
 
 redis:
     host: localhost

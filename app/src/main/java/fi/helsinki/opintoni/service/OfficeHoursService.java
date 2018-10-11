@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
 import fi.helsinki.opintoni.dto.PublicOfficeHoursDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
@@ -61,7 +62,7 @@ public class OfficeHoursService {
 
     public List<OfficeHoursDto> update(final Long userId, final List<OfficeHoursDto> officeHoursDtoList) {
         officeHoursRepository.deleteByUserId(userId);
-        User user = userRepository.findOne(userId);
+        User user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
         return officeHoursDtoList.stream()
             .map(dto -> {
                 OfficeHours officeHours = new OfficeHours();

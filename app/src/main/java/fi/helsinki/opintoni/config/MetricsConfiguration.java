@@ -25,18 +25,17 @@ import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
-import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import java.lang.management.ManagementFactory;
 
 @Configuration
 @EnableMetrics(proxyTargetClass = true)
-public class MetricsConfiguration extends MetricsConfigurerAdapter implements EnvironmentAware {
+public class MetricsConfiguration extends MetricsConfigurerAdapter {
 
     private static final String ENV_METRICS = "metrics.";
     private static final String PROP_JMX_ENABLED = "jmx.enabled";
@@ -53,12 +52,8 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
 
     private final HealthCheckRegistry healthCheckRegistry = new HealthCheckRegistry();
 
-    private RelaxedPropertyResolver propertyResolver;
-
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.propertyResolver = new RelaxedPropertyResolver(environment, ENV_METRICS);
-    }
+    @Inject
+    private Environment environment;
 
     @Override
     @Bean
@@ -81,7 +76,7 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter implements En
         metricRegistry.register(PROP_METRIC_REG_JVM_FILES, new FileDescriptorRatioGauge());
         metricRegistry.register(PROP_METRIC_REG_JVM_BUFFERS, new BufferPoolMetricSet(ManagementFactory
             .getPlatformMBeanServer()));
-        if (propertyResolver.getProperty(PROP_JMX_ENABLED, Boolean.class, false)) {
+        if (environment.getProperty(PROP_JMX_ENABLED, Boolean.class, false)) {
             log.info("Initializing Metrics JMX reporting");
             JmxReporter jmxReporter = JmxReporter.forRegistry(metricRegistry).build();
             jmxReporter.start();
