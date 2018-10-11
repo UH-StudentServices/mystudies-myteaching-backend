@@ -52,7 +52,7 @@ targetCompatibility=1.8
 
 
 checkstyle {
-    configFile = rootProject.file('gradle-config/checkstyle/checkstyle.xml')
+    configDir = rootProject.file('gradle-config/checkstyle')
     toolVersion = '8.12'
 }
 
