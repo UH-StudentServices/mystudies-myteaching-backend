@@ -49,7 +49,7 @@ docker-compose up
 
 ### Running tests
 
-`./app/gradlew test
+`./gradlew test`
 
 ### Running tests in CI
 
@@ -65,14 +65,16 @@ docker-compose rm -f
 
 ### Building runnable jars
 
-First start Redis in a Docker container: `./app/src/test/script/start-redis.sh`.
+First start docker containers for test environment
 
-Then run: `./app/gradlew build`
+Then run: `./gradlew build`
 
-Built jar files can be found in `app/build/libs` directory
+Built jar files can be found in `build/libs` directory
 
 ### Running jars locally
 
-`java -jar app/build/libs/app-{VERSION_NUMBER}-SNAPSHOT.jar --spring.profiles.active=local-dev`
+First start docker containers for local dev PostgreSQL and redis
 
-Replace VERSION_NUMBER with an actual version number present in the jar file name in `app/build/libs` directory.
+Then run: `java -jar build/libs/app-{VERSION_NUMBER}-SNAPSHOT.jar --spring.profiles.active=local-dev`
+
+Replace VERSION_NUMBER with an actual version number present in the jar file name in `build/libs` directory.
