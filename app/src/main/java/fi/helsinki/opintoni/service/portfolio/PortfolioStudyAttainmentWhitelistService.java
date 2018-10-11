@@ -21,6 +21,7 @@ import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.StudyAttainmentWhitelist;
 import fi.helsinki.opintoni.domain.portfolio.StudyAttainmentWhitelistEntry;
 import fi.helsinki.opintoni.dto.portfolio.StudyAttainmentWhitelistDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioStudyAttainmentWhitelistEntryRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioStudyAttainmentWhitelistRepository;
@@ -70,7 +71,7 @@ public class PortfolioStudyAttainmentWhitelistService extends DtoService {
     }
 
     public StudyAttainmentWhitelistDto update(Long portfolioId, StudyAttainmentWhitelistDto whitelistDto) {
-        Portfolio portfolio = portfolioRepository.findOne(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
         whitelistRepository.deleteByPortfolioId(portfolioId);
         StudyAttainmentWhitelist whitelist = new StudyAttainmentWhitelist();
         whitelist.portfolio = portfolio;

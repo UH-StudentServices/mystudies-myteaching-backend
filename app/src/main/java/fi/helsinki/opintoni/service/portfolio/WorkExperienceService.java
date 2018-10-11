@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.service.portfolio;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.WorkExperience;
 import fi.helsinki.opintoni.dto.portfolio.WorkExperienceDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.repository.portfolio.WorkExperienceRepository;
 import fi.helsinki.opintoni.service.DtoService;
@@ -53,7 +54,7 @@ public class WorkExperienceService extends DtoService {
     }
 
     public List<WorkExperienceDto> updateWorkExperiences(Long portfolioId, List<UpdateWorkExperience> updateWorkExperiences) {
-        Portfolio portfolio = portfolioRepository.findOne(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
         workExperienceRepository.deleteByPortfolioId(portfolio.id);
         int orderIndex = 0;

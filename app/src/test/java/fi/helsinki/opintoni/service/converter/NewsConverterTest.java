@@ -48,7 +48,7 @@ public class NewsConverterTest {
         feed.setDescription("test-description");
         feed.setLink("https://example.org");
 
-        List entries = new ArrayList();
+        List<SyndEntry> entries = new ArrayList<>();
         entries.add(createEntry("title", "<p>Jes <em>tärkeä</em></p>", "2004-06-08", "http://example.com/1"));
         entries.add(createEntry("title", "<p>Jes <em>&auml;&auml;kk&ouml;nen</em></p>", "2004-06-08", "http://example.com/1"));
 

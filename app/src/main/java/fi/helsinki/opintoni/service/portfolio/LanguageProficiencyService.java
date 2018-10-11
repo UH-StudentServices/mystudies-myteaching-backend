@@ -21,6 +21,7 @@ import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.domain.portfolio.PortfolioLanguageProficiency;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficienciesChangeDescriptorDto;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficiencyDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.LanguageProficiencyRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
@@ -77,13 +78,14 @@ public class LanguageProficiencyService {
         portfolioLanguageProficiency.languageName = languageProficiencyDto.languageName;
         portfolioLanguageProficiency.proficiency = languageProficiencyDto.proficiency;
         portfolioLanguageProficiency.description = languageProficiencyDto.description;
-        portfolioLanguageProficiency.portfolio = portfolioRepository.findOne(portfolioId);
+        portfolioLanguageProficiency.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
         languageProficiencyRepository.save(portfolioLanguageProficiency);
     }
 
     private void updateLanguageProficiency(Long userId, LanguageProficiencyDto languageProficiencyDto) {
         permissionChecker.verifyPermission(userId, languageProficiencyDto.id, PortfolioLanguageProficiency.class);
-        PortfolioLanguageProficiency portfolioLanguageProficiency = languageProficiencyRepository.findOne(languageProficiencyDto.id);
+        PortfolioLanguageProficiency portfolioLanguageProficiency = languageProficiencyRepository
+            .findById(languageProficiencyDto.id).orElseThrow(NotFoundException::new);
         portfolioLanguageProficiency.languageName = languageProficiencyDto.languageName;
         portfolioLanguageProficiency.proficiency = languageProficiencyDto.proficiency;
         portfolioLanguageProficiency.description = languageProficiencyDto.description;
@@ -92,6 +94,6 @@ public class LanguageProficiencyService {
 
     private void deleteLanguageProficiency(Long userId, Long portfolioLanguageProficiencyId) {
         permissionChecker.verifyPermission(userId, portfolioLanguageProficiencyId, PortfolioLanguageProficiency.class);
-        languageProficiencyRepository.delete(portfolioLanguageProficiencyId);
+        languageProficiencyRepository.deleteById(portfolioLanguageProficiencyId);
     }
 }

@@ -1,4 +1,4 @@
-server.session.cookie.name: OO_LOCAL_SESSION_ID
+server.servlet.session.cookie.name: OO_LOCAL_SESSION_ID
 
 spring:
     profiles:

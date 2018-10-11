@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@ConfigurationProperties(prefix = "userDefaults")
+@ConfigurationProperties(prefix = "user-defaults")
 public class FavoriteProperties {
     private List<Map<String, String>> defaultFavorites = new ArrayList<>();
 

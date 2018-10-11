@@ -19,9 +19,6 @@ package fi.helsinki.opintoni.dto.portfolio;
 
 public class SampleDto {
     public Long id;
-    public String url;
-
     public String title;
-
     public String description;
 }

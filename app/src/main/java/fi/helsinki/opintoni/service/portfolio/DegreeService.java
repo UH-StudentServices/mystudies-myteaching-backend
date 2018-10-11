@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.service.portfolio;
 import fi.helsinki.opintoni.domain.portfolio.Degree;
 import fi.helsinki.opintoni.domain.portfolio.Portfolio;
 import fi.helsinki.opintoni.dto.portfolio.DegreeDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.DegreeRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.DtoService;
@@ -56,9 +57,9 @@ public class DegreeService extends DtoService {
     }
 
     public List<DegreeDto> updateDegrees(Long portfolioId, List<UpdateDegree> updateDegrees) {
-        Portfolio portfolio = portfolioRepository.findOne(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
-        degreeRepository.delete(degreeRepository.findByPortfolioIdOrderByOrderIndexAsc(portfolio.id));
+        degreeRepository.deleteAll(degreeRepository.findByPortfolioIdOrderByOrderIndexAsc(portfolio.id));
 
         AtomicInteger orderCounter = new AtomicInteger(0);
         updateDegrees.forEach(updateDegree -> {

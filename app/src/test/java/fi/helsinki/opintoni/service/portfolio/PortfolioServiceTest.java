@@ -99,6 +99,6 @@ public class PortfolioServiceTest extends SpringTest {
     }
 
     private void deleteExistingTeacherPortfolio() {
-        portfolioRepository.delete(4L);
+        portfolioRepository.deleteById(4L);
     }
 }

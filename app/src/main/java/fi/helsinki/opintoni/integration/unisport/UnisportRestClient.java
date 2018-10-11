@@ -46,12 +46,11 @@ public class UnisportRestClient implements UnisportClient {
         UnisportUser unisportUser = null;
         try {
             unisportUser = restTemplate.exchange(
-                "{baseUrl}/api/v1/{locale}/ext/opintoni/authorization?eppn={userName}",
+                baseUrl + "/api/v1/{locale}/ext/opintoni/authorization?eppn={userName}",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<UnisportUser>() {
-                },
-                baseUrl, new Locale("en"), username).getBody();
+                }, new Locale("en"), username).getBody();
 
         } catch (HttpStatusCodeException e) {
             if (!e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
@@ -65,12 +64,11 @@ public class UnisportRestClient implements UnisportClient {
     public UnisportUserReservations getUserReservations(Long unisportUserId, Locale locale) {
         return
             restTemplate.exchange(
-                "{baseUrl}/api/v1/{locale}/ext/opintoni/reservations",
+                baseUrl + "/api/v1/{locale}/ext/opintoni/reservations",
                 HttpMethod.GET,
                 getAuthorizationHeader(unisportUserId),
                 new ParameterizedTypeReference<UnisportUserReservations>() {
-                },
-                baseUrl, locale.getLanguage()).getBody();
+                }, locale.getLanguage()).getBody();
     }
 
     private HttpEntity<String> getAuthorizationHeader(final Long unisportUserId) {

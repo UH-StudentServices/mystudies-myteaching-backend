@@ -29,11 +29,13 @@ import org.springframework.cache.interceptor.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.*;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import redis.clients.jedis.JedisShardInfo;
+
+import java.time.Duration;
 
 @Configuration
 @EnableCaching
@@ -83,13 +85,10 @@ public class PersistentCacheConfiguration extends CachingConfigurerSupport {
         int redisPort = environment.getProperty("redis.port", Integer.class, DEFAULT_REDIS_PORT);
         String redisPassword = environment.getProperty("redis.password");
 
-        JedisShardInfo jedisShardInfo = new JedisShardInfo(redistHost, redisPort);
+        RedisStandaloneConfiguration standaloneConfiguration = new RedisStandaloneConfiguration(redistHost, redisPort);
+        standaloneConfiguration.setPassword(RedisPassword.of(redisPassword));
 
-        if (redisPassword != null) {
-            jedisShardInfo.setPassword(redisPassword);
-        }
-
-        return new JedisConnectionFactory(jedisShardInfo);
+        return new JedisConnectionFactory(standaloneConfiguration);
     }
 
     @Bean
@@ -107,10 +106,15 @@ public class PersistentCacheConfiguration extends CachingConfigurerSupport {
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.afterPropertiesSet();
 
-        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate, CacheConstants.PERSISTENT_CACHE_NAMES);
-        cacheManager.setDefaultExpiration(defaultCacheExpiration);
+        RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration
+            .defaultCacheConfig()
+            .entryTtl(Duration.ofSeconds(defaultCacheExpiration));
 
-        return cacheManager;
+        return RedisCacheManager.RedisCacheManagerBuilder
+            .fromConnectionFactory(redisConnectionFactory)
+            .cacheDefaults(cacheConfiguration)
+            .initialCacheNames(CacheConstants.PERSISTENT_CACHE_NAMES)
+            .build();
     }
 
     @Bean

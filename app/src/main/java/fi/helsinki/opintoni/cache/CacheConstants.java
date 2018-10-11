@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.cache;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 public class CacheConstants {
 
@@ -71,7 +72,7 @@ public class CacheConstants {
         .add(SISU_PRIVATE_PERSON)
         .build();
 
-    public static final ImmutableList<String> PERSISTENT_CACHE_NAMES = ImmutableList.<String>builder()
+    public static final ImmutableSet<String> PERSISTENT_CACHE_NAMES = ImmutableSet.<String>builder()
         .add(COURSE_PAGE)
         .build();
 }

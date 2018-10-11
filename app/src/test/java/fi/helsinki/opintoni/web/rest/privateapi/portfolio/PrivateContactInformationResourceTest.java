@@ -64,7 +64,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
 
     @Test
     public void thatContactInformationIsCreated() throws Exception {
-        contactInformationRepository.delete(1L);
+        contactInformationRepository.deleteById(1L);
 
         UpdateContactInformation request = new UpdateContactInformation();
         request.email = "email@helsinki.fi";

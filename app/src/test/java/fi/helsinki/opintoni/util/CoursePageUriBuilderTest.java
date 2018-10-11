@@ -47,7 +47,7 @@ public class CoursePageUriBuilderTest extends SpringTest {
         CoursePageCourseImplementation coursePageCourseImplementation = new CoursePageCourseImplementation();
         coursePageCourseImplementation.url = COURSE_PAGE_URL;
         String materialUri = coursePageUriBuilder.getMaterialUri(coursePageCourseImplementation);
-        assertEquals(materialUri, COURSE_PAGE_URL + MATERIAL_URI_SUFFIX);
+        assertEquals(COURSE_PAGE_URL + MATERIAL_URI_SUFFIX, materialUri);
     }
 
     @Test

@@ -58,6 +58,6 @@ public class RedirectController {
         return Optional
             .ofNullable(appConfiguration.get(configurationParam))
             .filter(p -> p.length() > 0)
-            .orElseGet(() -> defaultRedirect);
+            .orElse(defaultRedirect);
     }
 }

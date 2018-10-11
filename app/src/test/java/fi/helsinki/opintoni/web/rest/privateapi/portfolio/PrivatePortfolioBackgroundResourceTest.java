@@ -131,7 +131,7 @@ public class PrivatePortfolioBackgroundResourceTest extends SpringTest {
 
         filesMemory.put(uploadedBackgroundFilename, new byte[0]);
         background.uploadedBackgroundFilename = uploadedBackgroundFilename;
-        background.portfolio = portfolioRepository.findOne(PORTFOLIO_ID);
+        background.portfolio = portfolioRepository.findById(PORTFOLIO_ID).get();
         portfolioBackgroundRepository.save(background);
     }
 }

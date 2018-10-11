@@ -30,9 +30,7 @@ import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.server.*;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
-import fi.helsinki.opintoni.web.requestchain.OodiCourseNamesRequestChain;
-import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
-import fi.helsinki.opintoni.web.requestchain.TeacherRequestChain;
+import fi.helsinki.opintoni.web.requestchain.*;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
@@ -41,8 +39,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.core.env.Environment;
@@ -51,7 +48,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,16 +66,17 @@ import static java.util.Collections.singletonList;
 import static org.assertj.core.util.Lists.newArrayList;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = TestApplication.class)
-@WebAppConfiguration
-@IntegrationTest
+@SpringBootTest(
+    classes = TestApplication.class,
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
 @ActiveProfiles(Constants.SPRING_PROFILE_TEST)
 @Transactional
 @Ignore
 public abstract class SpringTest {
 
     private static final List<String> TABLE_NAMES = newArrayList(
-            "user_account",
+        "user_account",
         "favorite",
         "portfolio",
         "user_settings",
@@ -249,7 +246,8 @@ public abstract class SpringTest {
     }
 
     private void configureMockMvc() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+        mockMvc = MockMvcBuilders
+            .webAppContextSetup(context)
             .addFilters(springSecurityFilterChain)
             .build();
     }
@@ -307,7 +305,7 @@ public abstract class SpringTest {
     protected String getRemoteMockApiUrl(String path) {
         return String.format("http://%s:%s%s/%s",
             environment.getProperty("server.address"),
-            environment.getProperty("server.port"),
+            environment.getProperty("local.server.port"),
             RestConstants.PUBLIC_API_V1,
             path);
     }

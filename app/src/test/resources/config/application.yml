@@ -1,7 +1,10 @@
 server:
     port: 10344
     address: localhost
-    session.timeout: 1800 # Seconds
+    servlet.session.timeout: 1800s # Seconds
+
+# Needed as integer for mece configuration
+session.timeout: 1800
 
 redis:
     host: my-studies-redis

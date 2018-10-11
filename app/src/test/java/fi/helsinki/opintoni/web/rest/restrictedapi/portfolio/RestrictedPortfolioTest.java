@@ -58,13 +58,13 @@ public abstract class RestrictedPortfolioTest extends SpringTest {
             ComponentVisibility componentVisibility = new ComponentVisibility();
             componentVisibility.component = component;
             componentVisibility.visibility = ComponentVisibility.Visibility.PRIVATE;
-            componentVisibility.portfolio = portfolioRepository.findOne(2L);
+            componentVisibility.portfolio = portfolioRepository.findById(2L).get();
             componentVisibilityRepository.save(componentVisibility);
         });
     }
 
     private void savePortfolioAsRestricted(long portfolioId) {
-        Portfolio portfolio = portfolioRepository.findOne(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).get();
         portfolio.visibility = PortfolioVisibility.RESTRICTED;
         portfolioRepository.save(portfolio);
     }

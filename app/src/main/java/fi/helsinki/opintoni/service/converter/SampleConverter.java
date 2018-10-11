@@ -29,7 +29,6 @@ public class SampleConverter {
 
         sampleDto.description = sample.description;
         sampleDto.title = sample.title;
-        sampleDto.url = sample.url;
         sampleDto.id = sample.id;
 
         return sampleDto;

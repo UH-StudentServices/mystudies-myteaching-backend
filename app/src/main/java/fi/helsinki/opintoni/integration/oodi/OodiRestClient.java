@@ -45,78 +45,77 @@ public class OodiRestClient implements OodiClient {
     @Override
     @Cacheable(value = CacheConstants.STUDENT_ENROLLMENTS, cacheManager = "transientCacheManager")
     public List<OodiEnrollment> getEnrollments(String studentNumber) {
-        return getOodiData("{baseUrl}/students/{studentNumber}/enrollments",
+        return getOodiData(baseUrl + "/students/{studentNumber}/enrollments",
             new ParameterizedTypeReference<OodiResponse<OodiEnrollment>>() {
-            }, baseUrl, studentNumber);
+            }, studentNumber);
     }
 
     @Override
     @Cacheable(value = CacheConstants.STUDENT_EVENTS, cacheManager = "transientCacheManager")
     public List<OodiEvent> getStudentEvents(String studentNumber) {
-        return getOodiData("{baseUrl}/students/{studentNumber}/events",
+        return getOodiData(baseUrl + "/students/{studentNumber}/events",
             new ParameterizedTypeReference<OodiResponse<OodiEvent>>() {
-            }, baseUrl, studentNumber);
+            }, studentNumber);
     }
 
     @Override
     public List<OodiStudyAttainment> getStudyAttainments(String studentNumber) {
-        return getOodiData("{baseUrl}/students/{studentNumber}/studyattainments",
+        return getOodiData(baseUrl + "/students/{studentNumber}/studyattainments",
             new ParameterizedTypeReference<OodiResponse<OodiStudyAttainment>>() {
-            }, baseUrl, studentNumber);
+            }, studentNumber);
     }
 
     @Override
     @Cacheable(value = CacheConstants.TEACHER_COURSES, cacheManager = "transientCacheManager")
     public List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
-        return getOodiData("{baseUrl}/teachers/{teacherNumber}/teaching/all?since_date={sinceDate}",
+        return getOodiData(baseUrl + "/teachers/{teacherNumber}/teaching/all?since_date={sinceDate}",
             new ParameterizedTypeReference<OodiResponse<OodiTeacherCourse>>() {
-            }, baseUrl, teacherNumber, sinceDateString);
+            }, teacherNumber, sinceDateString);
     }
 
     @Override
     public List<OodiStudyRight> getStudentStudyRights(String studentNumber) {
-        return getOodiData("{baseUrl}/students/{studentNumber}/studyrights",
+        return getOodiData(baseUrl + "/students/{studentNumber}/studyrights",
             new ParameterizedTypeReference<OodiResponse<OodiStudyRight>>() {
-            }, baseUrl, studentNumber);
+            }, studentNumber);
     }
 
     @Override
     @Cacheable(value = CacheConstants.COURSE_UNIT_REALISATION_TEACHERS, cacheManager = "transientCacheManager")
     public List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId) {
-        return getOodiData("{baseUrl}/courseunitrealisations/{realisationId}/teachers",
+        return getOodiData(baseUrl + "/courseunitrealisations/{realisationId}/teachers",
             new ParameterizedTypeReference<OodiResponse<OodiCourseUnitRealisationTeacher>>() {
-            }, baseUrl, realisationId);
+            }, realisationId);
     }
 
     @Override
     public OodiStudentInfo getStudentInfo(String studentNumber) {
-        return getSingleOodiData("{baseUrl}/students/{studentNumber}/info",
+        return getSingleOodiData(baseUrl + "/students/{studentNumber}/info",
             new ParameterizedTypeReference<OodiSingleResponse<OodiStudentInfo>>() {
-            }, OodiStudentInfo.class, baseUrl, studentNumber);
+            }, OodiStudentInfo.class, studentNumber);
     }
 
     @Override
     public OodiRoles getRoles(String oodiPersonId) {
-        return getSingleOodiData("{baseUrl}/persons/{oodiPersonId}/roles",
+        return getSingleOodiData(baseUrl + "/persons/{oodiPersonId}/roles",
             new ParameterizedTypeReference<OodiSingleResponse<OodiRoles>>() {
-            }, OodiRoles.class, baseUrl, oodiPersonId);
+            }, OodiRoles.class, oodiPersonId);
     }
 
     @Override
     @Cacheable(value = CacheConstants.TEACHER_EVENTS, cacheManager = "transientCacheManager")
     public List<OodiEvent> getTeacherEvents(String teacherNumber) {
-        return getOodiData("{baseUrl}/teachers/{teacherNumber}/events",
+        return getOodiData(baseUrl + "/teachers/{teacherNumber}/events",
             new ParameterizedTypeReference<OodiResponse<OodiEvent>>() {
-            },
-            baseUrl, teacherNumber);
+            }, teacherNumber);
     }
 
     @Override
     @Cacheable(value = CacheConstants.LEARNING_OPPORTUNITIES, cacheManager = "transientCacheManager")
     public OodiLearningOpportunity getLearningOpportunity(String learningOpportunityId) {
-        return getSingleOodiData("{baseUrl}/learningopportunities/{learningOpportunityId}",
+        return getSingleOodiData(baseUrl + "/learningopportunities/{learningOpportunityId}",
             new ParameterizedTypeReference<OodiSingleResponse<OodiLearningOpportunity>>() {
-            }, OodiLearningOpportunity.class, baseUrl, learningOpportunityId);
+            }, OodiLearningOpportunity.class, learningOpportunityId);
     }
 
     public <T> List<T> getOodiData(String url,

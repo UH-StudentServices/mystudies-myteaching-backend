@@ -84,7 +84,7 @@ public class NotificationService {
     }
 
     public void deleteNotification(long notificationId) {
-        notificationRepository.delete(notificationId);
+        notificationRepository.deleteById(notificationId);
     }
 
     public NotificationDto deleteNotificationSchedule(long notificationId, long notificationScheduleId) {
