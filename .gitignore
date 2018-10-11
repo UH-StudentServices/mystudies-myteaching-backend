@@ -17,4 +17,3 @@ log/
 .vagrant/
 
 ci-deploy.properties
-activemq-data
