@@ -83,7 +83,7 @@ public class WebConfigurer implements org.springframework.boot.web.servlet.Servl
     }
 
     /**
-     * Set up Mime types and error pages.
+     * Set up Mime types.
      */
     private void customize(TomcatServletWebServerFactory factory) {
         MimeMappings mappings = new MimeMappings(MimeMappings.DEFAULT);
