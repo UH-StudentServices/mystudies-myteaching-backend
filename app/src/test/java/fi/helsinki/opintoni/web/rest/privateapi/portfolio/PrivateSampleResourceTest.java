@@ -34,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PrivateSampleResourceTest extends SpringTest {
 
     private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/samples";
-    private static final long PORTFOLIO_ID = 2L;
 
     @Autowired
     private SampleService sampleService;
@@ -43,7 +42,6 @@ public class PrivateSampleResourceTest extends SpringTest {
     public void thatPortfolioSampleIsSaved() throws Exception {
 
         SampleDto sampleDto = new SampleDto();
-        sampleDto.url = "http://www.example.com/";
         sampleDto.title = "Cool demo";
         sampleDto.description =
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -56,7 +54,6 @@ public class PrivateSampleResourceTest extends SpringTest {
             .characterEncoding("UTF-8")
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].url").value(sampleDto.url))
             .andExpect(jsonPath("$[0].title").value(sampleDto.title))
             .andExpect(jsonPath("$[0].description").value(sampleDto.description));
     }

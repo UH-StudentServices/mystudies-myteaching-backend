@@ -18,9 +18,8 @@
 package fi.helsinki.opintoni.web.rest.privateapi.portfolio.sample;
 
 public class UpdateSample {
-    public String url;
 
     public String title;
-
     public String description;
+
 }

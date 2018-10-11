@@ -1741,4 +1741,15 @@
         </sql>
         <addNotNullConstraint tableName="office_hours" columnName="expiration_date" />
     </changeSet>
+    <changeSet id="OO-1161 Update portfolio sample fields" author="Eero Siren">
+        <sql>
+            <![CDATA[
+                UPDATE
+                sample
+                SET
+                description = concat_ws('<br><br>', description, url, '');
+            ]]>
+        </sql>
+        <dropColumn tableName="sample" columnName="url" />
+    </changeSet>
 </databaseChangeLog>
