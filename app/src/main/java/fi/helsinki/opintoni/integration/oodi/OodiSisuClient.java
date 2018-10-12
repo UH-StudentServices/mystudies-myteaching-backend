@@ -159,7 +159,7 @@ public class OodiSisuClient implements OodiClient {
 
         oodiEnrollment.typeCode = TYPE_LECTURE_COURSE;
         oodiEnrollment.startDate = LocalDate.parse(enrolment.courseUnitRealisation.activityPeriod.startDate, ISO_LOCAL_DATE).atStartOfDay();
-        oodiEnrollment.endDate = LocalDate.parse(enrolment.courseUnitRealisation.activityPeriod.startDate, ISO_LOCAL_DATE).atStartOfDay();
+        oodiEnrollment.endDate = LocalDate.parse(enrolment.courseUnitRealisation.activityPeriod.endDate, ISO_LOCAL_DATE).atStartOfDay();
 
         oodiEnrollment.realisationId =  enrolment.courseUnitRealisation.id.replace(COURSE_REALISATION_ID_PREFIX, "");
         oodiEnrollment.position = Position.ROOT.getValue();
