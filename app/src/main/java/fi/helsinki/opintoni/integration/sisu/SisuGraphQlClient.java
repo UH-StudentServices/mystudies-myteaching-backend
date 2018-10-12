@@ -49,11 +49,6 @@ public class SisuGraphQlClient implements SisuClient {
     @Value("${sisu.apiPath}")
     private String apiPath;
 
-    @PostConstruct
-    public void init() {
-        String foo = "bar";
-    }
-
     public SisuGraphQlClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
@@ -79,7 +74,6 @@ public class SisuGraphQlClient implements SisuClient {
                 .headers(ImmutableMap.of("Authorization", "Application " + token))
                 .request(PrivatePerson.class)
                 .arguments(new Arguments("private_person", new Argument("id", id)))
-                .scalars(LocalDate.class)
                 .build();
 
             GraphQLResponseEntity<PrivatePerson> responseEntity = graphQLTemplate.query(requestEntity, PrivatePerson.class);
