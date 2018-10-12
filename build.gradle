@@ -1,4 +1,3 @@
-
 /*
  * This file is part of MystudiesMyteaching application.
  *
@@ -278,7 +277,7 @@ tasks.create(name: 'installPrepushHook') << {
 
 task installGitHooks(type: Copy) {
     from '.'
-    into '../.git/hooks/'
+    into '.git/hooks/'
     include 'pre-push-for-git.sh'
     rename ('pre-push-for-git.sh','pre-push')
 }
@@ -286,7 +285,7 @@ task installGitHooks(type: Copy) {
 installPrepushHook.dependsOn installGitHooks
 
 gitProperties {
-    gitRepositoryRoot = rootProject.file('../')
+    gitRepositoryRoot = rootProject.file('.')
     keys = ['git.branch','git.commit.id','git.commit.time']
     dateFormat = "yyyy-MM-dd HH:mm:ssZ"
     dateFormatTimeZone = 'GMT'

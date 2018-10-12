@@ -3,7 +3,7 @@
 *.iml
 *.iws
 *.ipr
-app/classes/
+out/
 
 # Mac
 .DS_Store
@@ -11,8 +11,9 @@ app/classes/
 # Gradle
 build/
 log/
+.gradle/
 
 # Vagrant
 .vagrant/
 
-node_modules
+ci-deploy.properties
