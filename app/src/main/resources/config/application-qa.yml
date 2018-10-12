@@ -48,7 +48,7 @@ oodi:
     useHttpClientCertificate: true
 
 sisu:
-    baseUrl: https://esbmt2.it.helsinki.fi:3333/secure/testi/sisu
+    baseUrl: https://esbmt2.it.helsinki.fi:443/secure/testi/sisu
     authPath: /ori/application-auth
     apiPath: /api
 

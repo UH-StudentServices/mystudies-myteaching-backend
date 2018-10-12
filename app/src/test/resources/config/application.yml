@@ -200,11 +200,6 @@ oodi:
     client.implementation: rest
     useHttpClientCertificate: false
 
-sisu:
-    baseUrl: https://sisu.helsinki.fi
-    authPath: /auth-path
-    apiPath: /api-path
-
 coursePage:
     base.url: http://coursepage.helsinki.fi
     api.path: /api/v1

@@ -30,13 +30,14 @@ import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.server.*;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
-import fi.helsinki.opintoni.web.requestchain.*;
+import fi.helsinki.opintoni.web.requestchain.OodiCourseNamesRequestChain;
+import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
+import fi.helsinki.opintoni.web.requestchain.TeacherRequestChain;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -72,7 +73,6 @@ import static org.assertj.core.util.Lists.newArrayList;
 )
 @ActiveProfiles(Constants.SPRING_PROFILE_TEST)
 @Transactional
-@Ignore
 public abstract class SpringTest {
 
     private static final List<String> TABLE_NAMES = newArrayList(
