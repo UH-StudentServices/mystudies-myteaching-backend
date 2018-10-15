@@ -264,7 +264,7 @@ task storeDeployInformationToFile << {
   def props = new Properties()
   file("gradle.properties").withInputStream { stream -> props.load(stream) }
 
-  def deployProps = [VERSION: props["version"], ENVIRONMENT: environment]
+  def deployProps = [VERSION: props["version"], ENVIRONMENT: props["environment"]]
   def content = deployProps.collect { key, value -> "$key=$value" }.join('\n')
   file("ci-deploy.properties").write(content)
 }
@@ -272,7 +272,7 @@ task storeDeployInformationToFile << {
 createReleaseTag.dependsOn storeDeployInformationToFile
 
 tasks.create(name: 'installPrepushHook') << {
-    Runtime.getRuntime().exec("chmod -R +x ../.git/hooks/")
+    Runtime.getRuntime().exec("chmod -R +x .git/hooks/")
 }
 
 task installGitHooks(type: Copy) {
