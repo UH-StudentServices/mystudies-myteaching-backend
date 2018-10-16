@@ -339,6 +339,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/error").permitAll()
             .antMatchers("/saml/**").permitAll()
             .antMatchers("/redirect").permitAll()
+            .antMatchers("/info").permitAll()
             .antMatchers("/api/public/v1/**").permitAll()
             .antMatchers("/api/public/v2/**").permitAll()
             .antMatchers("/api/admin/**").access(Constants.ADMIN_ROLE_REQUIRED)

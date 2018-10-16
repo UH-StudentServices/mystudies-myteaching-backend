@@ -58,6 +58,7 @@ public interface NonfederatedSecurityConfiguration {
             .antMatchers("/error").permitAll()
             .antMatchers("/login").permitAll()
             .antMatchers("/redirect").permitAll()
+            .antMatchers("/info").permitAll()
             .antMatchers("/api/public/v1/**").permitAll()
             .antMatchers("/api/public/v2/**").permitAll()
             .antMatchers("/api/private/v1/admin/*").hasIpAddress("127.0.0.1")
