@@ -1,0 +1,29 @@
+version: '3.5'
+
+services:
+  my-studies-redis:
+    image: redis:3.2-alpine
+    command: redis-server
+  my-studies-psql:
+    image: postgres:9.4-alpine
+    environment:
+      - POSTGRES_USER=opintoni
+      - POSTGRES_PASSWORD=opintoni
+    volumes:
+      - ../docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+  my-studies-builder:
+    build:
+      context: ../ci/builder
+      args:
+        - USER_NAME=ci
+        - USER_ID=1001
+        - GROUP_NAME=ci
+        - GROUP_ID=1004
+    image: my-studies-builder:latest
+    volumes:
+      - ../../:/opt/mystudies
+      - ~/.ssh:/home/jenkins/.ssh:ro
+      - ~/.gitconfig:/home/jenkins/.gitconfig:ro
+    depends_on:
+      - my-studies-redis
+      - my-studies-psql
