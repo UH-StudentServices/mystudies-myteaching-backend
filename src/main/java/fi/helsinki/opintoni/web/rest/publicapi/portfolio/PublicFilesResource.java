@@ -25,11 +25,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.URLConnection;
 
 @RestController
 @RequestMapping(value = RestConstants.PUBLIC_FILES_API_V1)
@@ -47,8 +50,12 @@ public class PublicFilesResource extends AbstractResource {
                                                        @PathVariable("filename") String filename) {
         FileServiceInOutStream inOutStream = portfolioFilesService.getFile(path, filename);
         InputStreamResource isr = new InputStreamResource(inOutStream.getInputStream());
+        MediaType contentType = MediaType.valueOf(URLConnection.guessContentTypeFromName(filename));
         HttpHeaders headers = new HttpHeaders();
+
         headers.setContentLength(inOutStream.getSize());
+        headers.setContentType(contentType);
+
         return new ResponseEntity<>(isr, headers, HttpStatus.OK);
     }
 
