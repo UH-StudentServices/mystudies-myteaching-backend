@@ -24,6 +24,7 @@ import fi.helsinki.opintoni.dto.SearchPageTitleDto;
 import fi.helsinki.opintoni.dto.UsefulLinkDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.security.AppUser;
+import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
@@ -35,6 +36,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Locale;
 
@@ -95,11 +97,21 @@ public class UsefulLinkService {
             headers.add("User-Agent", "Mozilla");
             HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
 
-            ResponseEntity<String> responseEntity = linkUrlLoaderRestTemplate.exchange(searchPageTitleDto.searchUrl,
-                HttpMethod.GET, entity, String.class);
+            String searchUrl = searchPageTitleDto.searchUrl;
+
+            ResponseEntity<String> responseEntity = linkUrlLoaderRestTemplate.exchange(searchUrl, HttpMethod.GET, entity, String.class);
+            if (responseEntity.getStatusCode().equals(HttpStatus.MOVED_PERMANENTLY)) {
+                URI newLocation = responseEntity.getHeaders().getLocation();
+                if (newLocation != null && !newLocation.toString().equals(searchUrl)) {
+                    searchUrl = newLocation.toString();
+                    responseEntity = linkUrlLoaderRestTemplate.exchange(searchUrl, HttpMethod.GET, entity, String.class);
+                }
+            }
             if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
                 Document document = Jsoup.parse(responseEntity.getBody());
                 searchPageTitleDto.searchResult = document.title();
+                searchPageTitleDto.searchUrl = StringUtils.isNotBlank(searchUrl) && !searchPageTitleDto.searchUrl.equals(searchUrl) ?
+                    searchUrl : searchPageTitleDto.searchUrl;
             }
         } catch (Exception e) {
             log.error("Error when searching gor page title with url: {}: {}", searchPageTitleDto.searchUrl, e.getMessage());
