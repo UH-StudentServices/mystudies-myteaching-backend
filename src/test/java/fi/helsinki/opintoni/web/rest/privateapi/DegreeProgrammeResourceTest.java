@@ -53,7 +53,7 @@ public class DegreeProgrammeResourceTest extends SpringTest {
 
     @Test
     public void thatDegreeProgrammesAreGivenInFinnish() throws Exception {
-        testDegreeProgrammesWithLocale(FI, "adkhjaljlskajklsajd", NAME_FI);
+        testDegreeProgrammesWithLocale(FI, CODE, NAME_FI);
     }
 
     @Test
