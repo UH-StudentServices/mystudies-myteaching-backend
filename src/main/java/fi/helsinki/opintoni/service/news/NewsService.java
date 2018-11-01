@@ -59,7 +59,7 @@ public class NewsService {
 
         List<NewsDto> guideNewsDtos = securityUtils.getAppUser()
             .map(AppUser::getStudentNumber)
-            .map(sn -> guideNewsService.getGuideNewsForDegreeProgramme(sn.get(), locale))
+            .map(sn -> guideNewsService.getGuideNewsForStudent(sn.get(), locale))
             .orElse(new ArrayList<>());
 
         if (guideNewsDtos.isEmpty()) {

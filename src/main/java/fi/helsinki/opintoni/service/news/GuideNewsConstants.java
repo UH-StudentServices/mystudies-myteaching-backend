@@ -17,9 +17,19 @@
 
 package fi.helsinki.opintoni.service.news;
 
+/*
+    10-taso opintojen tavoite (tutkintotaso periaatteessa)
+    15-taso on asetus (minkä lain perusteella opinto-oikeuden tutkintorakenne on valittu)
+    20-koulutusohjelma
+    30-suunta
+    40-vanhan asetuksen pääaine
+
+    Etuliitteet KH ja MH ilmaisevat "uuden tutkintorakenteen" Kandin and Maisterin.
+ */
 public class GuideNewsConstants {
 
     public static final Integer OODI_STUDY_RIGHTS_DEGREE_PROGRAMME_ID = 20;
+    public static final Integer OODI_STUDY_RIGHTS_MAJOR_ID = 30;
     public static final String  OODI_STUDY_RIGHTS_BACHELOR_PROGRAMME_CODE_PREFIX = "KH";
     public static final String  OODI_STUDY_RIGHTS_MASTERS_PROGRAMME_CODE_PREFIX = "MH";
 }

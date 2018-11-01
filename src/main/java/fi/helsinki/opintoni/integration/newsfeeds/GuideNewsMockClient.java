@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.integration.newsfeeds;
 
 import com.google.common.collect.ImmutableMap;
 import com.rometools.rome.feed.atom.Feed;
+import java.util.List;
 import java.util.Locale;
 
 public class GuideNewsMockClient extends NewsFeedsMockClient implements GuideNewsClient {
@@ -36,7 +37,7 @@ public class GuideNewsMockClient extends NewsFeedsMockClient implements GuideNew
     }
 
     @Override
-    public Feed getGuideFeed(Locale locale, String degreeProgrammeCode) {
+    public Feed getGuideFeed(Locale locale, List<String> degreeProgrammeOrMajorCodes) {
         // no proper mocking for degree programme news yet, should be relatively straightforward
         // to add if needed
         return getGuideFeed(locale);
