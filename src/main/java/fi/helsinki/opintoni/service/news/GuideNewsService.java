@@ -71,25 +71,25 @@ public class GuideNewsService extends FetchingNewsService {
         }
     }
 
-    // Given a study right return a list of codes for all degree programmes and all degree programme - major combinations:
+    // Given a study right return a list of codes for all degree programmes and all <degree programme, major> combinations:
     // dp1, dp2, dp1+major1, dp1+major2, dp2+major1, dp2+major2, ...
     // We do not drop out elements whose end_date is in the past even when there exists a newer element with same id.
     // So the user may see news related to a previous study right.
     protected List<String> getStudyRightElementCodes(OodiStudyRight studyRight) {
         List<String> dpCodes = studyRight.elements.stream()
-                .filter(GuideNewsService::elementMatchesProgramme)
+                .filter(this::elementMatchesProgramme)
                 .map(e -> e.code)
                 .collect(Collectors.toList());
 
         return Stream.concat(
                 studyRight.elements.stream()
-                        .filter(GuideNewsService::elementMatchesMajor)
+                        .filter(this::elementMatchesMajor)
                         .map(e -> e.code)
                         .flatMap(m -> dpCodes.stream().map(dp -> dp + m)),
                 dpCodes.stream()).collect(Collectors.toList());
     }
 
-    private static boolean elementMatchesProgramme(Element element) {
+    private boolean elementMatchesProgramme(Element element) {
         return element.id.equals(GuideNewsConstants.OODI_STUDY_RIGHTS_DEGREE_PROGRAMME_ID) &&
                 (element.code.toUpperCase()
                         .startsWith(GuideNewsConstants.OODI_STUDY_RIGHTS_BACHELOR_PROGRAMME_CODE_PREFIX) ||
@@ -98,7 +98,7 @@ public class GuideNewsService extends FetchingNewsService {
                 );
     }
 
-    private static boolean elementMatchesMajor(Element element) {
+    private boolean elementMatchesMajor(Element element) {
         return element.id.equals(GuideNewsConstants.OODI_STUDY_RIGHTS_MAJOR_ID);
     }
 }

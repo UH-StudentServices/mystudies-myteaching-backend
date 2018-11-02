@@ -24,7 +24,7 @@ package fi.helsinki.opintoni.service.news;
     30-suunta
     40-vanhan asetuksen pääaine
 
-    Etuliitteet KH ja MH ilmaisevat "uuden tutkintorakenteen" Kandin and Maisterin.
+    Etuliitteet KH ja MH ilmaisevat "uuden tutkintorakenteen" Kandin ja Maisterin.
  */
 public class GuideNewsConstants {
 
