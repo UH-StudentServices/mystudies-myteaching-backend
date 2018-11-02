@@ -50,17 +50,17 @@ public class PublicFilesResource extends AbstractResource {
     @GetMapping("/{path}/{filename:.+}")
     public ResponseEntity<InputStreamResource> getFile(@PathVariable("path") String path,
                                                        @PathVariable("filename") String filename) {
-        FileServiceInOutStream inOutStream = portfolioFilesService.getFile(path, filename);
-        InputStreamResource isr = new InputStreamResource(inOutStream.getInputStream());
         MediaType contentType = MediaType.valueOf(URLConnection.guessContentTypeFromName(filename));
         HttpHeaders headers = new HttpHeaders();
 
+        FileServiceInOutStream inOutStream = portfolioFilesService.getFile(path, filename);
         headers.setContentLength(inOutStream.getSize());
         headers.setContentType(contentType);
         headers.setContentDisposition(
                 ContentDisposition.builder("attachment").filename(filename, Charset.forName("UTF-8")).build());
         // Spring security includes x-content-type-options: nosniff by default
 
+        InputStreamResource isr = new InputStreamResource(inOutStream.getInputStream());
         return new ResponseEntity<>(isr, headers, HttpStatus.OK);
     }
 
