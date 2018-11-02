@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 
 @RestController
 @RequestMapping(value = RestConstants.PUBLIC_FILES_API_V1)
@@ -55,6 +57,9 @@ public class PublicFilesResource extends AbstractResource {
 
         headers.setContentLength(inOutStream.getSize());
         headers.setContentType(contentType);
+        headers.setContentDisposition(
+                ContentDisposition.builder("attachment").filename(filename, Charset.forName("UTF-8")).build());
+        // Spring security includes x-content-type-options: nosniff by default
 
         return new ResponseEntity<>(isr, headers, HttpStatus.OK);
     }
