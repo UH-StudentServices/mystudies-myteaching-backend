@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.exception.http.RestClientServiceException;
 import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsClient;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiIntegrationException;
+import fi.helsinki.opintoni.integration.oodi.OodiStudyRight;
 import fi.helsinki.opintoni.integration.oodi.OodiStudyRight.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +31,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class GuideNewsService extends FetchingNewsService {
@@ -54,28 +58,47 @@ public class GuideNewsService extends FetchingNewsService {
     }
 
     @Cacheable(value = CacheConstants.GUIDE_PROGRAMME_NEWS, cacheManager = "transientCacheManager")
-    public List<NewsDto> getGuideNewsForDegreeProgramme(String studentNumber, Locale locale) {
+    public List<NewsDto> getGuideNewsForStudent(String studentNumber, Locale locale) {
         try {
-            Set<String> studyRightsProgrammeCodes = oodiClient.getStudentStudyRights(studentNumber).stream()
-                .flatMap(osr -> osr.elements.stream())
-                .filter(GuideNewsService::elementMatchesProgramme)
-                .map(e -> e.code).collect(Collectors.toSet());
+            List<String> codes = oodiClient.getStudentStudyRights(studentNumber).stream()
+                    .flatMap(sr -> getStudyRightElementCodes(sr).stream())
+                    .collect(Collectors.toList());
 
-            return studyRightsProgrammeCodes.stream()
-                .map(code -> getAtomNews(() -> guideNewsClient.getGuideFeed(locale, code)))
-                .flatMap(List::stream).distinct().collect(Collectors.toList());
+            return getAtomNews(() -> guideNewsClient.getGuideFeed(locale, codes));
         } catch (OodiIntegrationException | RestClientServiceException e) {
             logger.warn("Failed to fetch guide news for degree program(s)");
             return new ArrayList<>();
         }
     }
 
-    private static boolean elementMatchesProgramme(Element element) {
+    // Given a study right return a list of codes for all degree programmes and all <degree programme, major> combinations:
+    // dp1, dp2, dp1+major1, dp1+major2, dp2+major1, dp2+major2, ...
+    // We do not drop out elements whose end_date is in the past even when there exists a newer element with same id.
+    // So the user may see news related to a previous study right.
+    protected List<String> getStudyRightElementCodes(OodiStudyRight studyRight) {
+        List<String> dpCodes = studyRight.elements.stream()
+                .filter(this::elementMatchesProgramme)
+                .map(e -> e.code)
+                .collect(Collectors.toList());
+
+        return Stream.concat(
+                studyRight.elements.stream()
+                        .filter(this::elementMatchesMajor)
+                        .map(e -> e.code)
+                        .flatMap(m -> dpCodes.stream().map(dp -> dp + m)),
+                dpCodes.stream()).collect(Collectors.toList());
+    }
+
+    private boolean elementMatchesProgramme(Element element) {
         return element.id.equals(GuideNewsConstants.OODI_STUDY_RIGHTS_DEGREE_PROGRAMME_ID) &&
-            (element.code.toUpperCase()
-                    .startsWith(GuideNewsConstants.OODI_STUDY_RIGHTS_BACHELOR_PROGRAMME_CODE_PREFIX) ||
-                element.code.toUpperCase()
-                    .startsWith(GuideNewsConstants.OODI_STUDY_RIGHTS_MASTERS_PROGRAMME_CODE_PREFIX)
-            );
+                (element.code.toUpperCase()
+                        .startsWith(GuideNewsConstants.OODI_STUDY_RIGHTS_BACHELOR_PROGRAMME_CODE_PREFIX) ||
+                        element.code.toUpperCase()
+                                .startsWith(GuideNewsConstants.OODI_STUDY_RIGHTS_MASTERS_PROGRAMME_CODE_PREFIX)
+                );
+    }
+
+    private boolean elementMatchesMajor(Element element) {
+        return element.id.equals(GuideNewsConstants.OODI_STUDY_RIGHTS_MAJOR_ID);
     }
 }

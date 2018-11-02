@@ -144,10 +144,13 @@ public class NewsResourceTest extends SpringTest {
 
     @Test
     public void thatStudentNewsIncludingProgrammeNewsAreReturned() throws Exception {
+        // 2 news items in category "oppilas"
         flammaServer.expectStudentNews();
         oodiServer.expectStudentStudyRightsRequest(TestConstants.STUDENT_NUMBER, "studentstudyrights_with_KH_and_MH_codes.json");
-        guideNewsServer.expectGuideProgrammeNewsFi("MH80_xxx", "feed-MH80_xxx.xml");
-        guideNewsServer.expectGuideProgrammeNewsFi("KH57_001", "feed.xml");
+        // 3 news items
+        guideNewsServer.expectGuideProgrammeNewsFi(
+                "degree_programme_codes%5B%5D=KH57_001SH60_039&degree_programme_codes%5B%5D=KH57_001&degree_programme_codes%5B%5D=MH80_xxx",
+                "feed.xml");
 
         mockMvc.perform(get("/api/private/v1/news/student")
             .with(securityContext(studentSecurityContext()))
@@ -158,7 +161,7 @@ public class NewsResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(4)))
+            .andExpect(jsonPath("$", hasSize(4))) // gets limited to 4, reverse ordered by "updated"
 
             .andExpect(jsonPath("$[0].title").value("Flammatitle1"))
             .andExpect(jsonPath("$[0].url").value("https://flamma.helsinki.fi/fi/flammatitle1"))
@@ -168,9 +171,9 @@ public class NewsResourceTest extends SpringTest {
             .andExpect(jsonPath("$[1].url").value("https://guide.student.helsinki.fi/fi/guidetitle1"))
             .andExpect(jsonPath("$[1].content").value("Guidesummary1"))
 
-            .andExpect(jsonPath("$[2].title").value("Guidetitle1_mh80"))
-            .andExpect(jsonPath("$[2].url").value("https://guide.student.helsinki.fi/fi/guidetitle1mh80"))
-            .andExpect(jsonPath("$[2].content").value("Guidesummary_mh80"));
+            .andExpect(jsonPath("$[2].title").value("Guidetitle2"))
+
+            .andExpect(jsonPath("$[3].title").value("Flammatitle3"));
     }
 
     @Test

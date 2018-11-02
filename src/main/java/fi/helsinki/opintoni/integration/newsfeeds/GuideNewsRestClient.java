@@ -18,12 +18,15 @@
 package fi.helsinki.opintoni.integration.newsfeeds;
 
 import com.rometools.rome.feed.atom.Feed;
+import org.springframework.web.client.RestTemplate;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import org.springframework.web.client.RestTemplate;
+import java.util.stream.Collectors;
 
 public class GuideNewsRestClient extends AtomRestClient implements GuideNewsClient {
 
+    private final String CODE_PARAM_NAME = "degree_programme_codes[]";
     private Map<String, String> guideFeedsByLocale;
 
     public GuideNewsRestClient(RestTemplate restTemplate, Map<String, String> guideFeedsByLocale) {
@@ -37,9 +40,14 @@ public class GuideNewsRestClient extends AtomRestClient implements GuideNewsClie
     }
 
     @Override
-    public Feed getGuideFeed(Locale locale, String degreeProgrammeCode) {
-        String uri = guideFeedsByLocale.get(locale.getLanguage()) + "?degree_programme_code=" + degreeProgrammeCode;
+    public Feed getGuideFeed(Locale locale, List<String> degreeProgrammeOrMajorCodes) {
+        String uri = guideFeedsByLocale.get(locale.getLanguage()) + "?" + getQueryParams(degreeProgrammeOrMajorCodes);
         return getFeed(uri);
     }
 
+    private String getQueryParams(List<String> degreeProgrammeOrMajorCodes) {
+        return degreeProgrammeOrMajorCodes.stream()
+                .map(c -> CODE_PARAM_NAME + "=" + c)
+                .collect(Collectors.joining("&"));
+    }
 }

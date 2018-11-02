@@ -18,11 +18,12 @@
 package fi.helsinki.opintoni.integration.newsfeeds;
 
 import com.rometools.rome.feed.atom.Feed;
+import java.util.List;
 import java.util.Locale;
 
 public interface GuideNewsClient {
 
     Feed getGuideFeed(Locale locale);
 
-    Feed getGuideFeed(Locale locale, String degreeProgrammeCode);
+    Feed getGuideFeed(Locale locale, List<String> degreeProgrammeOrMajorCodes);
 }
