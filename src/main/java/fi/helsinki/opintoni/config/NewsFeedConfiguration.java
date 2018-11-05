@@ -34,7 +34,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.feed.AtomFeedHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
