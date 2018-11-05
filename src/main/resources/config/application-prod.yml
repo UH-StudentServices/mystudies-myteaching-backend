@@ -88,8 +88,8 @@ logoutUrl: /saml/logout?local=true
 teacherAppUrl: https://teacher.helsinki.fi
 studentAppUrl: https://student.helsinki.fi
 portfolioUrl:
-  student: https://student.helsinki.fi/portfolio
-  teacher: https://teacher.helsinki.fi/portfolio
+  student: https://student.helsinki.fi/profile
+  teacher: https://teacher.helsinki.fi/profile
 
 mece:
   domain: https://mece.it.helsinki.fi

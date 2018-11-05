@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivateWorkExperienceResourceTest extends SpringTest {
 
-    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/workexperience";
+    private static final String RESOURCE_URL = "/api/private/v1/profile/2/workexperience";
     private static final long PORTFOLIO_ID = 2L;
 
     @Autowired

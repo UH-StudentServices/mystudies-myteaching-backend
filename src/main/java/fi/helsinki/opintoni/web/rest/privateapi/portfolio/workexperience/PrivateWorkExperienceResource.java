@@ -34,7 +34,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.PRIVATE_API_V1 + "/portfolio/{portfolioId:" + RestConstants.MATCH_NUMBER + "}/workexperience",
+    value = RestConstants.PRIVATE_API_V1_PORTFOLIO + "/{portfolioId:" + RestConstants.MATCH_NUMBER + "}/workexperience",
     produces = WebConstants.APPLICATION_JSON_UTF8
 )
 public class PrivateWorkExperienceResource extends AbstractResource {

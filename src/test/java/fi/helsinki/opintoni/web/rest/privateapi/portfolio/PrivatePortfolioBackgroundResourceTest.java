@@ -44,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivatePortfolioBackgroundResourceTest extends SpringTest {
 
-    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/background";
+    private static final String RESOURCE_URL = "/api/private/v1/profile/2/background";
     private static final long PORTFOLIO_ID = 2L;
 
     @Autowired

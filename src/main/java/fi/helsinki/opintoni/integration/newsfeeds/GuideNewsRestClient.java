@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 public class GuideNewsRestClient extends AtomRestClient implements GuideNewsClient {
 
-    private final String CODE_PARAM_NAME = "degree_programme_codes[]";
+    private static final String CODE_PARAM_NAME = "degree_programme_codes[]";
     private Map<String, String> guideFeedsByLocale;
 
     public GuideNewsRestClient(RestTemplate restTemplate, Map<String, String> guideFeedsByLocale) {

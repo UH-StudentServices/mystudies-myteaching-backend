@@ -35,7 +35,7 @@ public class PublicPortfolioResourcePermissionTest extends SpringTest {
     @Autowired
     private PortfolioRepository portfolioRepository;
 
-    private static final String API_PATH = "/api/public/v1/portfolio/student/en/olli-opiskelija";
+    private static final String API_PATH = "/api/public/v1/profile/student/en/olli-opiskelija";
 
     @Test
     public void thatUserCannotLoadPrivatePortfolioFromPublicApi() throws Exception {

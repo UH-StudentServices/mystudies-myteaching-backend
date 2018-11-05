@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.PRIVATE_API_V1 + "/portfolio/{portfolioId:" + RestConstants.MATCH_NUMBER + "}/jobsearch",
+    value = RestConstants.PRIVATE_API_V1_PORTFOLIO + "/{portfolioId:" + RestConstants.MATCH_NUMBER + "}/jobsearch",
     produces = WebConstants.APPLICATION_JSON_UTF8)
 public class PrivateJobSearchResource extends AbstractResource {
 

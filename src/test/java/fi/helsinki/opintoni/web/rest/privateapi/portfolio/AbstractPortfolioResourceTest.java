@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 public abstract class AbstractPortfolioResourceTest extends SpringTest {
 
-    protected static final String PRIVATE_PORTFOLIO_API_PATH = RestConstants.PRIVATE_API_V1 + "/portfolio";
+    protected static final String PRIVATE_PORTFOLIO_API_PATH = RestConstants.PRIVATE_API_V1 + "/profile";
     protected static final String STUDENT_PORTFOLIO_API_PATH = PRIVATE_PORTFOLIO_API_PATH + "/student";
     protected static final String TEACHER_PORTFOLIO_API_PATH = PRIVATE_PORTFOLIO_API_PATH + "/teacher";
     protected static final String SESSION_LANG = EN.getCode();

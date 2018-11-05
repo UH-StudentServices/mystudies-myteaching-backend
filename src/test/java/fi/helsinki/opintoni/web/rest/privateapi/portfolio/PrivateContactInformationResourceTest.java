@@ -53,7 +53,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
         request.email = "newemail@helsinki.fi";
         request.phoneNumber = "123456789";
 
-        mockMvc.perform(post("/api/private/v1/portfolio/2/contactinformation")
+        mockMvc.perform(post("/api/private/v1/profile/2/contactinformation")
             .with(securityContext(studentSecurityContext()))
             .contentType(MediaType.APPLICATION_JSON)
             .content(WebTestUtils.toJsonBytes(request)))
@@ -70,7 +70,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
         request.email = "email@helsinki.fi";
         request.phoneNumber = "987654321";
 
-        mockMvc.perform(post("/api/private/v1/portfolio/2/contactinformation")
+        mockMvc.perform(post("/api/private/v1/profile/2/contactinformation")
             .with(securityContext(studentSecurityContext()))
             .contentType(MediaType.APPLICATION_JSON)
             .content(WebTestUtils.toJsonBytes(request)))
@@ -84,7 +84,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
 
         expectEmployeeContactInformationRequestToESB();
 
-        mockMvc.perform(get("/api/private/v1/portfolio/4/contactinformation/teacher")
+        mockMvc.perform(get("/api/private/v1/profile/4/contactinformation/teacher")
             .with(securityContext(teacherSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.email").value("olli.opettaja@helsinki.fi"))
@@ -111,7 +111,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
 
         request.someLinks.addAll(Lists.newArrayList(facebook, twitter));
 
-        mockMvc.perform(post("/api/private/v1/portfolio/2/contactinformation")
+        mockMvc.perform(post("/api/private/v1/profile/2/contactinformation")
             .with(securityContext(studentSecurityContext()))
             .contentType(MediaType.APPLICATION_JSON)
             .content(WebTestUtils.toJsonBytes(request)))
@@ -130,7 +130,7 @@ public class PrivateContactInformationResourceTest extends AbstractPortfolioReso
 
         UpdateContactInformation request = new UpdateContactInformation();
 
-        mockMvc.perform(post("/api/private/v1/portfolio/2/contactinformation")
+        mockMvc.perform(post("/api/private/v1/profile/2/contactinformation")
             .with(securityContext(studentSecurityContext()))
             .contentType(MediaType.APPLICATION_JSON)
             .content(WebTestUtils.toJsonBytes(request)))

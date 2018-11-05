@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivateSummaryResourcePermissionTest extends SpringTest {
 
-    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/summary";
+    private static final String RESOURCE_URL = "/api/private/v1/profile/2/summary";
 
     @Test
     public void thatUserCannotUpdateSummaryThatSheDoesNotOwn() throws Exception {

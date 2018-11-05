@@ -55,7 +55,7 @@ public class PortfolioServiceTest extends SpringTest {
     public void thatPortfolioIsFoundByPath() {
         PortfolioDto portfolioDto = portfolioService.findByPathAndLangAndRole("pekka", Language.FI,
             PortfolioRole.STUDENT, PortfolioConverter.ComponentFetchStrategy.PUBLIC);
-        assertThat(portfolioDto.url).isEqualTo("/portfolio/fi/pekka");
+        assertThat(portfolioDto.url).isEqualTo("/profile/fi/pekka");
     }
 
     @Test

@@ -45,7 +45,7 @@ import java.util.Locale;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.PRIVATE_API_V1 + "/portfolio",
+    value = RestConstants.PRIVATE_API_V1_PORTFOLIO,
     produces = WebConstants.APPLICATION_JSON_UTF8)
 public class PrivatePortfolioResource extends AbstractResource {
     private final PortfolioService portfolioService;

@@ -42,9 +42,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivatePortfolioResourceTest extends AbstractPortfolioResourceTest {
 
-    private static final String STUDENT_PORTFOLIO_PATH = "/portfolio/en/olli-opiskelija";
-    private static final String TEACHER_PORTFOLIO_PATH = "/portfolio/en/olli-opettaja";
-    private static final String HYBRID_USER_PORTFOLIO_PATH = "/portfolio/en/hybrid-user";
+    private static final String STUDENT_PORTFOLIO_PATH = "/profile/en/olli-opiskelija";
+    private static final String TEACHER_PORTFOLIO_PATH = "/profile/en/olli-opettaja";
+    private static final String HYBRID_USER_PORTFOLIO_PATH = "/profile/en/hybrid-user";
     private static final String STUDENT_EMAIL = "olli.opiskelija@helsinki.fi";
 
     @Autowired

@@ -82,7 +82,7 @@ public class PrivateFreeTextResourcePermissionTest extends SpringTest {
     }
 
     private String resourcePath(Long portfolioId) {
-        return String.join("/", RestConstants.PRIVATE_API_V1, "portfolio", portfolioId.toString(), RESOURCE_PATH_SEGMENT);
+        return String.join("/", RestConstants.PRIVATE_API_V1, "profile", portfolioId.toString(), RESOURCE_PATH_SEGMENT);
     }
 
     private String resourcePath(Long portfolioId, Long freeTextContentItemId) {

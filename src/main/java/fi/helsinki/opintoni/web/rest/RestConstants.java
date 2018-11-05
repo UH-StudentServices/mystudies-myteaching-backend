@@ -20,10 +20,16 @@ package fi.helsinki.opintoni.web.rest;
 public class RestConstants {
 
     public static final String PRIVATE_API_V1 = "/api/private/v1";
-    public static final String PRIVATE_FILES_API_V1 = PRIVATE_API_V1 + "/portfolio/files";
     public static final String RESTRICTED_API_V1 = "/api/restricted/v1";
     public static final String PUBLIC_API_V1 = "/api/public/v1";
-    public static final String PUBLIC_FILES_API_V1 = PUBLIC_API_V1 + "/portfolio/files";
+
+    public static final String PRIVATE_API_V1_PORTFOLIO = PRIVATE_API_V1 + "/profile";
+    public static final String RESTRICTED_API_V1_PORTFOLIO = RESTRICTED_API_V1 + "/profile";
+    public static final String PUBLIC_API_V1_PORTFOLIO = PUBLIC_API_V1 + "/profile";
+
+    public static final String PRIVATE_FILES_API_V1 = PRIVATE_API_V1_PORTFOLIO + "/files";
+    public static final String PUBLIC_FILES_API_V1 = PUBLIC_API_V1_PORTFOLIO + "/files";
+
     public static final String PUBLIC_API_V2 = "/api/public/v2";
     public static final String ADMIN_API_V1 = "/api/admin/v1";
 

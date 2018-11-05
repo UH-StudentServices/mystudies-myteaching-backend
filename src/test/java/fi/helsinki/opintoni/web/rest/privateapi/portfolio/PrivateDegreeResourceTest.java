@@ -41,7 +41,7 @@ public class PrivateDegreeResourceTest extends SpringTest {
         updateDegree.description = "Degree description";
         updateDegree.dateOfDegree = "6.6.2016";
 
-        mockMvc.perform(post("/api/private/v1/portfolio/2/degree")
+        mockMvc.perform(post("/api/private/v1/profile/2/degree")
             .with(securityContext(studentSecurityContext()))
             .content(WebTestUtils.toJsonBytes(newArrayList(updateDegree)))
             .contentType(MediaType.APPLICATION_JSON))
@@ -56,7 +56,7 @@ public class PrivateDegreeResourceTest extends SpringTest {
 
     @Test
     public void thatDegreesAreDeleted() throws Exception {
-        mockMvc.perform(post("/api/private/v1/portfolio/2/degree")
+        mockMvc.perform(post("/api/private/v1/profile/2/degree")
             .with(securityContext(studentSecurityContext()))
             .content(WebTestUtils.toJsonBytes(newArrayList()))
             .contentType(MediaType.APPLICATION_JSON))

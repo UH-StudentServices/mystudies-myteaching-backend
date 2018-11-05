@@ -98,8 +98,8 @@ logoutUrl: /saml/logout?local=true
 teacherAppUrl: https://qa.teacher.helsinki.fi
 studentAppUrl: https://qa.student.helsinki.fi
 portfolioUrl:
-  student: https://qa.student.helsinki.fi/portfolio
-  teacher: https://qa.teacher.helsinki.fi/portfolio
+  student: https://qa.student.helsinki.fi/profile
+  teacher: https://qa.teacher.helsinki.fi/profile
 
 mece:
   domain: https://ohtu-testi.it.helsinki.fi

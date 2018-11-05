@@ -55,7 +55,7 @@ public class UriBuilder {
 
     @SuppressWarnings("SameReturnValue")
     public String getPortfolioDefaultUserAvatarUrl() {
-        return "/portfolio/assets/icons/avatar.png";
+        return "/profile/assets/icons/avatar.png";
     }
 
     private String getAbsoluteUrl(String relativeUrl) {

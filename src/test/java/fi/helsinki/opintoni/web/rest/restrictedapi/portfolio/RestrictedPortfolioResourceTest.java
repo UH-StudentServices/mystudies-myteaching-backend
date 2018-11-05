@@ -37,8 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class RestrictedPortfolioResourceTest extends RestrictedPortfolioTest {
 
-    private static final String STUDENT_PORTFOLIO_PATH = "/portfolio/student/en/olli-opiskelija";
-    private static final String TEACHER_PORTFOLIO_PATH = "/portfolio/teacher/fi/opettaja";
+    private static final String STUDENT_PORTFOLIO_PATH = "/profile/student/en/olli-opiskelija";
+    private static final String TEACHER_PORTFOLIO_PATH = "/profile/teacher/fi/opettaja";
 
     private static final String PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME = "4c024239-8dab-4ea0-a686-fe373b040f48";
 

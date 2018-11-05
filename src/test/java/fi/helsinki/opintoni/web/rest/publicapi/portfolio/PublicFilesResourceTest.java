@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PublicFilesResourceTest extends SpringTest {
 
-    private static final String PRIVATE_FILES_RESOURCE_PATH = "/api/private/v1/portfolio/files";
+    private static final String PRIVATE_FILES_RESOURCE_PATH = "/api/private/v1/profile/files";
     private static final String TEST_FILE_NAME = "test.txt";
     private static final String TEST_FILE_CONTENT = "test";
 
