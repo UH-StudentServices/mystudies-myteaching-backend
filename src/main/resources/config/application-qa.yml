@@ -58,6 +58,20 @@ guide:
     base.url: https://dev.guide.student.helsinki.fi/api/v1
     client.implementation: rest
 
+newsfeeds:
+    studentFeedsByLocale:
+        fi: https://flamma.helsinki.fi/infotaulu/atom-bulletin.xml
+        sv: https://flamma.helsinki.fi/infotaulu/atom-bulletin-sv.xml
+        en: https://flamma.helsinki.fi/infotaulu/atom-bulletin-en.xml
+    teacherFeedsByLocale:
+        fi: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat.xml
+        sv: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat-sv.xml
+        en: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat-en.xml
+    guideFeedsByLocale:
+        fi: https://dev.guide.student.helsinki.fi/fi/news/feed.xml
+        sv: https://dev.guide.student.helsinki.fi/sv/news/feed.xml
+        en: https://dev.guide.student.helsinki.fi/en/news/feed.xml
+
 esb:
     base.url: https://esbmt2.it.helsinki.fi/devel
     client.implementation: rest

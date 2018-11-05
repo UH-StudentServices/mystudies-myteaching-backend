@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.config;
 
 import com.google.common.collect.ImmutableList;
+import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
 import fi.helsinki.opintoni.integration.newsfeeds.FlammaClient;
 import fi.helsinki.opintoni.integration.newsfeeds.FlammaMockClient;
 import fi.helsinki.opintoni.integration.newsfeeds.FlammaRestClient;
@@ -25,9 +26,6 @@ import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsClient;
 import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsMockClient;
 import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsRestClient;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +33,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.feed.AtomFeedHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.*;
 
 @Configuration
 @ConfigurationProperties(prefix = "newsfeeds")
@@ -55,7 +58,10 @@ public class NewsFeedConfiguration {
 
         converter.setSupportedMediaTypes(mediaTypes);
 
-        return new RestTemplate(Collections.singletonList(converter));
+        RestTemplate restTemplate = new RestTemplate(singletonList(converter));
+
+        restTemplate.setInterceptors(singletonList(new LoggingInterceptor()));
+        return restTemplate;
     }
 
     @Bean
