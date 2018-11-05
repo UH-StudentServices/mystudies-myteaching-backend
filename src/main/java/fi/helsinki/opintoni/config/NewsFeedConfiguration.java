@@ -38,6 +38,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.*;
+
 @Configuration
 @ConfigurationProperties(prefix = "newsfeeds")
 public class NewsFeedConfiguration {
@@ -57,9 +59,9 @@ public class NewsFeedConfiguration {
 
         converter.setSupportedMediaTypes(mediaTypes);
 
-        RestTemplate restTemplate = new RestTemplate(Collections.singletonList(converter));
+        RestTemplate restTemplate = new RestTemplate(singletonList(converter));
 
-        restTemplate.setInterceptors(Collections.singletonList(new LoggingInterceptor()));
+        restTemplate.setInterceptors(singletonList(new LoggingInterceptor()));
         return restTemplate;
     }
 
