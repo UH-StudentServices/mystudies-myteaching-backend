@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivateJobSearchResourceTest extends SpringTest {
 
-    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/jobsearch";
+    private static final String RESOURCE_URL = "/api/private/v1/profile/2/jobsearch";
     private static final String CONTACT_EMAIL = "olli.opiskelija@helsinki.fi";
     private static final String HEADLINE = "Haen kesätöitä";
     private static final String TEXT = "Lorem ipsum";

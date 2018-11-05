@@ -30,11 +30,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import static fi.helsinki.opintoni.web.rest.RestConstants.MATCH_NUMBER;
-import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_API_V1;
+import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_API_V1_PORTFOLIO;
 
 @RestController
 @RequestMapping(
-    value = PRIVATE_API_V1 + "/portfolio/{portfolioId:" + MATCH_NUMBER + "}/componentvisibility",
+    value = PRIVATE_API_V1_PORTFOLIO + "/{portfolioId:" + MATCH_NUMBER + "}/componentvisibility",
     produces = WebConstants.APPLICATION_JSON_UTF8
 )
 public class PrivateComponentVisibilityResource {

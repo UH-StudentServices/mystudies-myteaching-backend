@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivateWorkExperienceResourcePermissionTest extends SpringTest {
-    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/workexperience";
+    private static final String RESOURCE_URL = "/api/private/v1/profile/2/workexperience";
 
     @Test
     public void thatUserCannotInsertWorkExperienceIntoPortfolioSheDoesNotOwn() throws Exception {

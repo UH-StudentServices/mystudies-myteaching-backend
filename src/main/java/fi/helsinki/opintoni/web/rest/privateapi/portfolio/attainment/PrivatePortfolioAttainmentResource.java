@@ -43,7 +43,7 @@ import java.util.Locale;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.PRIVATE_API_V1 + "/portfolio/{portfolioId:" + RestConstants.MATCH_NUMBER + "}/attainment",
+    value = RestConstants.PRIVATE_API_V1_PORTFOLIO + "/{portfolioId:" + RestConstants.MATCH_NUMBER + "}/attainment",
     produces = WebConstants.APPLICATION_JSON_UTF8
 )
 public class PrivatePortfolioAttainmentResource extends AbstractResource {

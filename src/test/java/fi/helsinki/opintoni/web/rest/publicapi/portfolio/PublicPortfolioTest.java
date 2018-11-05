@@ -31,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Arrays;
 
 public abstract class PublicPortfolioTest extends SpringTest {
-    protected static final String PUBLIC_STUDENT_PORTFOLIO_API_PATH = RestConstants.PUBLIC_API_V1 + "/portfolio/2";
+    protected static final String PUBLIC_STUDENT_PORTFOLIO_API_PATH = RestConstants.PUBLIC_API_V1 + "/profile/2";
 
     protected static final long STUDENT_PORTFOLIO_ID = 2L;
     protected static final long TEACHER_PORTFOLIO_ID = 4L;

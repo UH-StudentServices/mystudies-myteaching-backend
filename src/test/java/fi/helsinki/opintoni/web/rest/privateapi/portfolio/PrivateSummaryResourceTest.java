@@ -41,7 +41,7 @@ public class PrivateSummaryResourceTest extends SpringTest {
         UpdateSummaryRequest request = new UpdateSummaryRequest();
         request.summary = "New summary";
 
-        mockMvc.perform(post("/api/private/v1/portfolio/2/summary")
+        mockMvc.perform(post("/api/private/v1/profile/2/summary")
             .with(securityContext(studentSecurityContext()))
             .contentType(MediaType.APPLICATION_JSON)
             .content(WebTestUtils.toJsonBytes(request)))

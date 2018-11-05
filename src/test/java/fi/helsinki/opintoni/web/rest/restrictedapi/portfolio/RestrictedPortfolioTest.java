@@ -32,7 +32,7 @@ import java.util.Arrays;
 
 public abstract class RestrictedPortfolioTest extends SpringTest {
 
-    protected static final String RESTRICTED_STUDENT_PORTFOLIO_API_PATH = RestConstants.RESTRICTED_API_V1 + "/portfolio/2";
+    protected static final String RESTRICTED_STUDENT_PORTFOLIO_API_PATH = RestConstants.RESTRICTED_API_V1 + "/profile/2";
     protected static final long STUDENT_PORTFOLIO_ID = 2L;
     protected static final long TEACHER_PORTFOLIO_ID = 4L;
 

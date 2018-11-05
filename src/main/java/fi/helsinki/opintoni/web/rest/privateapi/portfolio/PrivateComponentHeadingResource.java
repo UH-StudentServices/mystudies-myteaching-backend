@@ -30,12 +30,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_API_V1;
 import static fi.helsinki.opintoni.web.rest.RestConstants.MATCH_NUMBER;
+import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_API_V1_PORTFOLIO;
 
 @RestController
 @RequestMapping(
-    value = PRIVATE_API_V1 + "/portfolio/{portfolioId:" + MATCH_NUMBER + "}/component-headings",
+    value = PRIVATE_API_V1_PORTFOLIO + "/{portfolioId:" + MATCH_NUMBER + "}/component-headings",
     produces = WebConstants.APPLICATION_JSON_UTF8
 )
 public class PrivateComponentHeadingResource extends AbstractResource {

@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivateDegreeResourcePermissionTest extends SpringTest {
 
-    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/degree";
+    private static final String RESOURCE_URL = "/api/private/v1/profile/2/degree";
 
     @Test
     public void thatUserCannotUpdateDegreesFromPrivateApiThatSheDoesNotOwn() throws Exception {

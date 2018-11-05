@@ -255,8 +255,8 @@ googleAnalyticsAccount: UA-123
 hostUrl: https://dev.student.helsinki.fi
 appRelativeUrl: ${hostUrl}
 portfolioUrl:
-  student: /portfolio
-  teacher: /portfolio
+  student: /profile
+  teacher: /profile
 
 
 avatarSize: 240

@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivateJobSearchResourcePermissionTest extends SpringTest {
-    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/jobsearch";
+    private static final String RESOURCE_URL = "/api/private/v1/profile/2/jobsearch";
 
     @Test
     public void thatUserCannotSaveJobSearchToPortfolioSheDoesNotOwn() throws Exception {

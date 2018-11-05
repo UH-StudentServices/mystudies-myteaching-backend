@@ -95,16 +95,16 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry
             .addInterceptor(privatePortfolioInterceptor)
-            .addPathPatterns(RestConstants.PRIVATE_API_V1 + "/portfolio/**");
+            .addPathPatterns(RestConstants.PRIVATE_API_V1_PORTFOLIO + "/**");
 
         registry
             .addInterceptor(restrictedPortfolioInterceptor)
-            .addPathPatterns(RestConstants.RESTRICTED_API_V1 + "/portfolio/**");
+            .addPathPatterns(RestConstants.RESTRICTED_API_V1_PORTFOLIO + "/**");
 
         registry
             .addInterceptor(publicPortfolioInterceptor)
-            .addPathPatterns(RestConstants.PUBLIC_API_V1 + "/portfolio/**")
-            .excludePathPatterns(RestConstants.PUBLIC_API_V1 + "/portfolio/files/**");
+            .addPathPatterns(RestConstants.PUBLIC_API_V1_PORTFOLIO + "/**")
+            .excludePathPatterns(RestConstants.PUBLIC_API_V1_PORTFOLIO + "/files/**");
     }
 
     @Bean

@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivatePortfolioAttainmentResourcePermissionTest extends SpringTest {
 
-    private static final String RESOURCE_URL = "/api/private/v1/portfolio/1/attainment/whitelist";
+    private static final String RESOURCE_URL = "/api/private/v1/profile/1/attainment/whitelist";
 
     @Test
     public void thatUserCannotGetStudyAttainmentWhitelistSheDoesNotOwnThroughPrivateApi() throws Exception {

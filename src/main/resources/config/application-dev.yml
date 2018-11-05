@@ -83,8 +83,8 @@ logoutUrl: /logout
 teacherAppUrl: https://dev.teacher.helsinki.fi
 studentAppUrl: https://dev.student.helsinki.fi
 portfolioUrl:
-  student: https://dev.student.helsinki.fi/portfolio
-  teacher: https://dev.teacher.helsinki.fi/portfolio
+  student: https://dev.student.helsinki.fi/profile
+  teacher: https://dev.teacher.helsinki.fi/profile
 
 mece:
   domain: https://ohtu-testi.it.helsinki.fi

@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.RESTRICTED_API_V1 + "/portfolio",
+    value = RestConstants.RESTRICTED_API_V1_PORTFOLIO,
     produces = WebConstants.APPLICATION_JSON_UTF8)
 public class RestrictedPortfolioResource extends AbstractResource {
 

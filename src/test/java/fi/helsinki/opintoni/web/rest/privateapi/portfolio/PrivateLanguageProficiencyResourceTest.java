@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivateLanguageProficiencyResourceTest extends SpringTest {
-    private static final String API_PATH = "/portfolio/2/languageproficiencies";
+    private static final String API_PATH = "/profile/2/languageproficiencies";
 
     private static final long ENGLISH_LANGUAGE_PROFICIENCY_ID = 1L;
     private static final long HINDI_LANGUAGE_PROFICIENCY_ID = 4L;

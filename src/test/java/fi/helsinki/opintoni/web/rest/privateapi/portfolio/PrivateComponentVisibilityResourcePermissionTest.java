@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivateComponentVisibilityResourcePermissionTest extends SpringTest {
 
-    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/componentvisibility";
+    private static final String RESOURCE_URL = "/api/private/v1/profile/2/componentvisibility";
 
     @Test
     public void thatUserCannotUpdateComponentVisibilityThatSheDoesNotOwn() throws Exception {

@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.PRIVATE_API_V1 + "/portfolio/{portfolioId:" + RestConstants.MATCH_NUMBER + "}/background",
+    value = RestConstants.PRIVATE_API_V1_PORTFOLIO + "/{portfolioId:" + RestConstants.MATCH_NUMBER + "}/background",
     produces = WebConstants.APPLICATION_JSON_UTF8
 )
 public class PortfolioBackgroundResource extends AbstractResource {

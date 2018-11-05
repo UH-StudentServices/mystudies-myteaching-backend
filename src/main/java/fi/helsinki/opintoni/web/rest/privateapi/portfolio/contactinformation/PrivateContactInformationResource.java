@@ -35,11 +35,11 @@ import javax.validation.Valid;
 import java.util.Locale;
 
 import static fi.helsinki.opintoni.web.rest.RestConstants.MATCH_NUMBER;
-import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_API_V1;
+import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_API_V1_PORTFOLIO;
 
 @RestController
 @RequestMapping(
-    value = PRIVATE_API_V1 + "/portfolio/{portfolioId:" + MATCH_NUMBER + "}/contactinformation",
+    value = PRIVATE_API_V1_PORTFOLIO + "/{portfolioId:" + MATCH_NUMBER + "}/contactinformation",
     produces = WebConstants.APPLICATION_JSON_UTF8
 )
 public class PrivateContactInformationResource extends AbstractResource {

@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivateComponentHeadingResourceTest extends SpringTest {
 
-    private static final String STUDENT_API_PATH_SEGMENT = "/portfolio/2/component-headings";
+    private static final String STUDENT_API_PATH_SEGMENT = "/profile/2/component-headings";
 
     private static final long STUDENT_PORTFOLIO_ID = 2L;
 

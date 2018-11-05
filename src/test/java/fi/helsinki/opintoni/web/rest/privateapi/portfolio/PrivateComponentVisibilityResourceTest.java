@@ -44,8 +44,8 @@ public class PrivateComponentVisibilityResourceTest extends SpringTest {
     @Autowired
     private ComponentVisibilityRepository componentVisibilityRepository;
 
-    private static final String STUDENT_API_PATH = "/portfolio/2/componentvisibility";
-    private static final String TEACHER_API_PATH = "/portfolio/4/componentvisibility";
+    private static final String STUDENT_API_PATH = "/profile/2/componentvisibility";
+    private static final String TEACHER_API_PATH = "/profile/4/componentvisibility";
     private static final long STUDENT_PORTFOLIO_ID = 2L;
     private static final long TEACHER_PORTFOLIO_ID = 4L;
 

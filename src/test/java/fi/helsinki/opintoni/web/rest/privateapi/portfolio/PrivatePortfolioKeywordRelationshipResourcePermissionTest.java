@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class PrivatePortfolioKeywordRelationshipResourcePermissionTest extends SpringTest {
 
-    private static final String RESOURCE_URL = "/api/private/v1/portfolio/2/keyword";
+    private static final String RESOURCE_URL = "/api/private/v1/profile/2/keyword";
 
     @Test
     public void thatUserCannotUpdateKeywordsFromPrivateApiThatSheDoesNotOwn() throws Exception {

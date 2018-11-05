@@ -1723,12 +1723,14 @@
         <dropUniqueConstraint tableName="language_proficiency" constraintName="unique_lang_code_portfolio_id_pair" />
         <dropTable tableName="language_proficiency" />
     </changeSet>
+
     <changeSet id="OO-1163" author="Juuso Lehtinen">
         <delete tableName="favorite">
             <where>portfolio_id is not null</where>
         </delete>
         <dropColumn tableName="favorite" columnName="portfolio_id" />
     </changeSet>
+
     <changeSet id="Expiration date for office hours" author="Tomi Mäkinen">
         <addColumn tableName="office_hours">
             <column name="expiration_date" type="date" />
@@ -1741,6 +1743,7 @@
         </sql>
         <addNotNullConstraint tableName="office_hours" columnName="expiration_date" />
     </changeSet>
+
     <changeSet id="OO-1161 Update portfolio sample fields" author="Eero Siren">
         <sql>
             <![CDATA[
@@ -1752,4 +1755,11 @@
         </sql>
         <dropColumn tableName="sample" columnName="url" />
     </changeSet>
+
+    <changeSet id="OO-1195 rename portfolio to profile" author="th">
+        <sql>
+            update free_text_content set text = replace(text, 'api/public/v1/portfolio/files', 'api/public/v1/profile/files') where text like '%api/public/v1/portfolio/files%'
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
