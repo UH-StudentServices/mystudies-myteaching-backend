@@ -18,9 +18,7 @@
 package fi.helsinki.opintoni.web.rest.publicapi.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
-import fi.helsinki.opintoni.dto.portfolio.ComponentHeadingDto;
-import fi.helsinki.opintoni.dto.portfolio.ComponentOrderDto;
-import fi.helsinki.opintoni.dto.portfolio.FreeTextContentDto;
+import fi.helsinki.opintoni.dto.portfolio.*;
 import fi.helsinki.opintoni.service.portfolio.ComponentHeadingService;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.hamcrest.Matchers;
@@ -45,6 +43,10 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
     private static final long STUDENT_PORTFOLIO_ID = 2L;
 
     private static final String PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME = "4c024239-8dab-4ea0-a686-fe373b040f48";
+
+    private static final String SHARED_LINK_PATH = "/profile/shared";
+    private static final String ACTIVE_SHARED_LINK = "a3728b39-7099-4f8c-9413-da2817eeccf9";
+    private static final String EXPIRED_SHARED_LINK = "b2672af7-306f-43aa-ab3f-acbc6a41f47f";
 
     @Autowired
     private ComponentHeadingService componentHeadingService;
@@ -177,5 +179,17 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.backgroundUri").value(containsString("Profile_")));
+    }
+
+    @Test
+    public void thatPortfolioIsReturnedWithSharedLink() throws Exception {
+        mockMvc.perform(get(String.join("/", RestConstants.PUBLIC_API_V1, SHARED_LINK_PATH, ACTIVE_SHARED_LINK)))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void thatPortfolioIsNotFoundWithExpiredSharedLink() throws Exception {
+        mockMvc.perform(get(String.join("/", RestConstants.PUBLIC_API_V1, SHARED_LINK_PATH, EXPIRED_SHARED_LINK)))
+            .andExpect(status().isNotFound());
     }
 }

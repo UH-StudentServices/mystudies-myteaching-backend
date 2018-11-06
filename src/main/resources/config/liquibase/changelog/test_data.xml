@@ -237,6 +237,12 @@
                   tableName="portfolio_language_proficiency">
             <column name="id" type="computed"/>
         </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/portfolio/portfolio_shared_link.csv"
+                  separator=";"
+                  tableName="portfolio_shared_link">
+            <column name="id" type="computed"/>
+        </loadData>
     </changeSet>
 
 </databaseChangeLog>
