@@ -39,7 +39,7 @@ public class PortfolioSharedLinkConverter {
         dto.sharedLinkFragment = entity.sharedPathFragment;
         dto.url = uriBuilder.getPortfolioUrl(entity.portfolio, entity.sharedPathFragment);
         dto.expiryDate = entity.expiryDate;
-        dto.active = entity.expiryDate == null ? null : entity.isActive();
+        dto.active = entity.isActive();
 
         return dto;
     }
