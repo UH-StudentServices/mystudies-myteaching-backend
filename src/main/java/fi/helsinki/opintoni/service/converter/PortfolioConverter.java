@@ -88,10 +88,16 @@ public class PortfolioConverter {
     }
 
     public PortfolioDto toDto(Portfolio portfolio, ComponentFetchStrategy componentFetchStrategy) {
+        return toDto(portfolio, componentFetchStrategy, null);
+    }
+
+    public PortfolioDto toDto(Portfolio portfolio, ComponentFetchStrategy componentFetchStrategy, String sharedLinkFragment) {
         PortfolioDto portfolioDto = new PortfolioDto();
         portfolioDto.id = portfolio.id;
         portfolioDto.lang = portfolio.language.getCode();
-        portfolioDto.url = uriBuilder.getPortfolioUrl(portfolio);
+        portfolioDto.url = sharedLinkFragment == null ?
+            uriBuilder.getPortfolioUrl(portfolio) :
+            uriBuilder.getPortfolioUrl(portfolio, sharedLinkFragment);
         portfolioDto.intro = portfolio.intro;
         portfolioDto.ownerName = portfolio.ownerName;
         portfolioDto.backgroundUri = portfolioBackgroundService.getPortfolioBackgroundUri(portfolio);

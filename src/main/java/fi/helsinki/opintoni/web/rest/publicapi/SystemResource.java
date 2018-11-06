@@ -78,15 +78,15 @@ public class SystemResource {
         RedisConnection redisConnection = null;
         try {
             redisConnection = RedisConnectionUtils.getConnection(this.redisConnectionFactory);
-            hasConnection = redisConnection != null;
+            hasConnection = !redisConnection.isClosed();
         } catch (Exception e) {
             logger.error(REDIS_ERROR_MESSAGE, e);
         } finally {
             if (redisConnection != null) {
                 redisConnection.close();
             }
-            return hasConnection;
         }
+        return hasConnection;
     }
 
     private boolean hasDatabaseConnection() {
