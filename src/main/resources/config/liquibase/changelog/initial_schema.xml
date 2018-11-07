@@ -1769,7 +1769,7 @@
             </column>
             <column name="portfolio_id" type="bigint">
                 <constraints nullable="false"
-                             foreignKeyName="fk_relationship_portfolio"
+                             foreignKeyName="fk_shared_link_portfolio"
                              references="portfolio(id)"
                              deleteCascade="true" />
             </column>
