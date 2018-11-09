@@ -67,6 +67,10 @@ public class UriBuilder {
             portfolio.language.getCode(), portfolio.path);
     }
 
+    public String getPortfolioUrl(Portfolio portfolio, String sharedLinkFragment) {
+        return String.join("/", appConfiguration.get("portfolioUrl." + portfolio.portfolioRole.getRole()), sharedLinkFragment);
+    }
+
     public String getMeceDomain() {
         return appConfiguration.get("mece.domain");
     }

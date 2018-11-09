@@ -1762,4 +1762,29 @@
         </sql>
     </changeSet>
 
+    <changeSet id="OO-900 Public share link for portfolios" author="Joni Korhonen">
+        <createTable tableName="portfolio_shared_link">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="portfolio_id" type="bigint">
+                <constraints nullable="false"
+                             foreignKeyName="fk_shared_link_portfolio"
+                             references="portfolio(id)"
+                             deleteCascade="true" />
+            </column>
+            <column name="shared_path_fragment" type="varchar(36)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="expiry_date" type="timestamp" />
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
