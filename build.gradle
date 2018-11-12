@@ -17,12 +17,8 @@
 
 buildscript {
     repositories {
-        if (! hasProperty("dependencyProxy")){
-            mavenLocal()
-            jcenter()
-        } else {
-            maven { url "${dependencyProxy}" }
-        }
+        mavenLocal()
+        jcenter()
     }
 }
 
@@ -36,15 +32,6 @@ plugins {
     id 'idea'
     id 'jacoco'
     id 'checkstyle'
-}
-
-repositories {
-    if (! hasProperty("dependencyProxy")){
-        mavenLocal()
-        jcenter()
-    } else {
-        maven { url "${dependencyProxy}" }
-    }
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -93,6 +80,18 @@ apply from: 'liquibase.gradle'
 
 configurations {
     providedRuntime
+}
+
+repositories {
+  maven { url 'http://repo.spring.io/milestone' }
+  maven { url 'http://repo.spring.io/snapshot' }
+  maven { url 'https://repository.jboss.org/nexus/content/repositories/releases' }
+  maven { url 'https://oss.sonatype.org/content/repositories/releases' }
+  maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+  maven { url 'http://repo.maven.apache.org/maven2' }
+  maven { url 'http://opi-1.student.helsinki.fi:8081/artifactory/ext-release-local' }
+
+  mavenLocal()
 }
 
 configurations.all {
