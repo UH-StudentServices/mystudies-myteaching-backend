@@ -15,17 +15,6 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-buildscript {
-    repositories {
-        if (! hasProperty("dependencyProxy")){
-            mavenLocal()
-            jcenter()
-        } else {
-            maven { url "${dependencyProxy}" }
-        }
-    }
-}
-
 plugins {
     id 'com.gorylenko.gradle-git-properties' version '1.4.17'
     id 'net.ltgt.errorprone' version '0.0.14'
@@ -36,15 +25,6 @@ plugins {
     id 'idea'
     id 'jacoco'
     id 'checkstyle'
-}
-
-repositories {
-    if (! hasProperty("dependencyProxy")){
-        mavenLocal()
-        jcenter()
-    } else {
-        maven { url "${dependencyProxy}" }
-    }
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -61,7 +41,6 @@ if(! hasProperty("opintoni_artifactory_password")){
 
 sourceCompatibility=1.8
 targetCompatibility=1.8
-
 
 checkstyle {
     configDir = rootProject.file('gradle-config/checkstyle')
@@ -90,9 +69,21 @@ jacocoTestReport {
 
 apply from: 'liquibase.gradle'
 
-
 configurations {
     providedRuntime
+}
+
+if(hasProperty("artifactory")) {
+    repositories {
+        maven {
+            url "${artifactory}"
+        }
+    }
+} else {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
 }
 
 configurations.all {
