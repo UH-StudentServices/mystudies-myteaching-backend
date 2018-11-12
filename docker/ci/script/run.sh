@@ -21,6 +21,8 @@ docker-compose build \
 docker-compose -p $1 run \
 -v ~/.ssh/:/home/$USER_NAME/.ssh:ro \
 -v ~/.gitconfig:/home/$USER_NAME/.gitconfig:ro \
+-v $1-gradle:/home/$USER_NAME/.gradle \
+-v $1-m2:/home/$USER_NAME/.m2 \
 --rm --user $USER_NAME --entrypoint "$2" my-studies-builder
 exit_code=$?
 stop_and_remove_containers $1
