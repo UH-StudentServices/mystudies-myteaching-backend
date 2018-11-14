@@ -1787,4 +1787,31 @@
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
     </changeSet>
+
+    <changeSet id="OO-926 Separate visibility controls" author="Joni Korhonen">
+        <addColumn tableName="work_experience">
+            <column name="visibility" type="varchar(20)" />
+        </addColumn>
+        <addColumn tableName="degree">
+            <column name="visibility" type="varchar(20)" />
+        </addColumn>
+        <addColumn tableName="portfolio_language_proficiency">
+            <column name="visibility" type="varchar(20)" />
+        </addColumn>
+        <addColumn tableName="sample">
+            <column name="visibility" type="varchar(20)" />
+        </addColumn>
+
+        <sql>
+            UPDATE work_experience SET visibility = 'PUBLIC';
+            UPDATE degree SET visibility = 'PUBLIC';
+            UPDATE portfolio_language_proficiency SET visibility = 'PUBLIC';
+            UPDATE sample SET visibility = 'PUBLIC';
+        </sql>
+
+        <addNotNullConstraint tableName="work_experience" columnName="visibility" />
+        <addNotNullConstraint tableName="degree" columnName="visibility" />
+        <addNotNullConstraint tableName="portfolio_language_proficiency" columnName="visibility" />
+        <addNotNullConstraint tableName="sample" columnName="visibility" />
+    </changeSet>
 </databaseChangeLog>

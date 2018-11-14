@@ -72,7 +72,21 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
             .andExpect(jsonPath("$.freeTextContent").isEmpty())
             .andExpect(jsonPath("$.languageProficiencies").isEmpty())
             .andExpect(jsonPath("$.keywords").isEmpty())
-            .andExpect(jsonPath("$.summary").isEmpty());
+            .andExpect(jsonPath("$.summary").isEmpty())
+            .andExpect(jsonPath("$.samples").isEmpty());
+    }
+
+    @Test
+    public void thatStudentPortfolioContainsNoLinkedPrivateComponentItems() throws Exception {
+        setPrivateVisibilityForPortfolioComponentItems(STUDENT_PORTFOLIO_ID);
+        saveStudentPortfolioAsPublic();
+
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PORTFOLIO_PATH))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.degrees").isEmpty())
+            .andExpect(jsonPath("$.workExperience").isEmpty())
+            .andExpect(jsonPath("$.languageProficiencies").isEmpty())
+            .andExpect(jsonPath("$.samples").isEmpty());
     }
 
     @Test

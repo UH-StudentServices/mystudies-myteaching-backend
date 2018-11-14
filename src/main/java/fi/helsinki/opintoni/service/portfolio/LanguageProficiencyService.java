@@ -17,8 +17,7 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
-import fi.helsinki.opintoni.domain.portfolio.PortfolioLanguageProficiency;
+import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficienciesChangeDescriptorDto;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficiencyDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
@@ -26,12 +25,14 @@ import fi.helsinki.opintoni.repository.portfolio.LanguageProficiencyRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.converter.portfolio.LanguageProficiencyConverter;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -52,8 +53,14 @@ public class LanguageProficiencyService {
 
     public List<LanguageProficiencyDto> findByPortfolioId(Long id) {
         return languageProficiencyRepository.findByPortfolioId(id).stream()
-                .map(LanguageProficiencyConverter::toDto)
-                .collect(Collectors.toList());
+            .map(LanguageProficiencyConverter::toDto)
+            .collect(toList());
+    }
+
+    public List<LanguageProficiencyDto> findByPortfolioIdAndVisibility(Long portfolioId, ComponentVisibility.Visibility visibility) {
+        return languageProficiencyRepository.findByPortfolioIdAndVisibility(portfolioId, visibility).stream()
+            .map(LanguageProficiencyConverter::toDto)
+            .collect(toList());
     }
 
     public void updateLanguageProficiencies(LanguageProficienciesChangeDescriptorDto changeDescriptor,
@@ -79,6 +86,10 @@ public class LanguageProficiencyService {
         portfolioLanguageProficiency.proficiency = languageProficiencyDto.proficiency;
         portfolioLanguageProficiency.description = languageProficiencyDto.description;
         portfolioLanguageProficiency.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
+        portfolioLanguageProficiency.visibility = StringUtils.isNotBlank(languageProficiencyDto.visibility) ?
+            ComponentVisibility.Visibility.valueOf(languageProficiencyDto.visibility) :
+            ComponentVisibility.Visibility.PUBLIC;
+
         languageProficiencyRepository.save(portfolioLanguageProficiency);
     }
 
@@ -89,6 +100,10 @@ public class LanguageProficiencyService {
         portfolioLanguageProficiency.languageName = languageProficiencyDto.languageName;
         portfolioLanguageProficiency.proficiency = languageProficiencyDto.proficiency;
         portfolioLanguageProficiency.description = languageProficiencyDto.description;
+        portfolioLanguageProficiency.visibility = StringUtils.isNotBlank(languageProficiencyDto.visibility) ?
+            ComponentVisibility.Visibility.valueOf(languageProficiencyDto.visibility) :
+            ComponentVisibility.Visibility.PUBLIC;
+
         languageProficiencyRepository.save(portfolioLanguageProficiency);
     }
 

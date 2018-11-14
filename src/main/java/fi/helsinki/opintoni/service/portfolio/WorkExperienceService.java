@@ -17,8 +17,7 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
-import fi.helsinki.opintoni.domain.portfolio.WorkExperience;
+import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.portfolio.WorkExperienceDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
@@ -26,11 +25,14 @@ import fi.helsinki.opintoni.repository.portfolio.WorkExperienceRepository;
 import fi.helsinki.opintoni.service.DtoService;
 import fi.helsinki.opintoni.service.converter.WorkExperienceConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.workexperience.UpdateWorkExperience;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -53,6 +55,12 @@ public class WorkExperienceService extends DtoService {
         return getDtos(portfolioId, workExperienceRepository::findByPortfolioIdOrderByOrderIndexAsc, workExperienceConverter::toDto);
     }
 
+    public List<WorkExperienceDto> findByPortfolioIdAndVisibility(Long portfolioId, ComponentVisibility.Visibility visibility) {
+        return workExperienceRepository.findByPortfolioIdAndVisibilityOrderByOrderIndexAsc(portfolioId, visibility).stream()
+            .map(workExperienceConverter::toDto)
+            .collect(toList());
+    }
+
     public List<WorkExperienceDto> updateWorkExperiences(Long portfolioId, List<UpdateWorkExperience> updateWorkExperiences) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
@@ -69,6 +77,9 @@ public class WorkExperienceService extends DtoService {
             workExperience.text = updateWorkExperience.text;
             workExperience.portfolio = portfolio;
             workExperience.orderIndex = orderIndex++;
+            workExperience.visibility = StringUtils.isNotBlank(updateWorkExperience.visibility) ?
+                ComponentVisibility.Visibility.valueOf(updateWorkExperience.visibility) :
+                ComponentVisibility.Visibility.PUBLIC;
             workExperienceRepository.save(workExperience);
         }
 

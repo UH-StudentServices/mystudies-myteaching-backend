@@ -30,6 +30,7 @@ public class SampleConverter {
         sampleDto.description = sample.description;
         sampleDto.title = sample.title;
         sampleDto.id = sample.id;
+        sampleDto.visibility = sample.visibility.toString();
 
         return sampleDto;
     }

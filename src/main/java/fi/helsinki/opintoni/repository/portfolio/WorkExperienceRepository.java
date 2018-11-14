@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.repository.portfolio;
 
+import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.WorkExperience;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -29,5 +30,7 @@ public interface WorkExperienceRepository extends JpaRepository<WorkExperience, 
     List<WorkExperience> findByPortfolioId(Long portfolioId);
 
     List<WorkExperience> findByPortfolioIdOrderByOrderIndexAsc(Long portfolioId);
+
+    List<WorkExperience> findByPortfolioIdAndVisibilityOrderByOrderIndexAsc(Long portfolioId, ComponentVisibility.Visibility visibility);
 
 }

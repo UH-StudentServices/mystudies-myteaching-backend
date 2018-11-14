@@ -124,7 +124,7 @@ public class PortfolioConverter {
 
     private void fetchAllComponents(Portfolio portfolio, PortfolioDto portfolioDto) {
         Arrays.stream(PortfolioComponent.values()).forEach(componentType ->
-            fetchComponentData(portfolio.id, portfolioDto, componentType.toString(), null));
+            fetchComponentData(portfolio.id, portfolioDto, componentType.toString(), null, ComponentFetchStrategy.ALL));
     }
 
     private void fetchPublicComponents(Portfolio portfolio, PortfolioDto portfolioDto) {
@@ -146,7 +146,7 @@ public class PortfolioConverter {
         visibilitiesByComponentType
             .entrySet()
             .stream()
-            .forEach(e -> fetchComponentData(portfolio.id, portfolioDto, e.getKey(), e.getValue()));
+            .forEach(e -> fetchComponentData(portfolio.id, portfolioDto, e.getKey(), e.getValue(), ComponentFetchStrategy.PUBLIC));
     }
 
     private List<TeacherPortfolioSection> getPublicTeacherPortfolioSections(List<ComponentVisibilityDto> visibilities) {
@@ -185,10 +185,16 @@ public class PortfolioConverter {
     private void fetchComponentData(Long portfolioId,
                                     PortfolioDto portfolioDto,
                                     String componentType,
-                                    List<ComponentVisibilityDto> componentVisibilities) {
+                                    List<ComponentVisibilityDto> componentVisibilities,
+                                    ComponentFetchStrategy componentFetchStrategy) {
         switch (PortfolioComponent.valueOf(componentType)) {
             case LANGUAGE_PROFICIENCIES:
-                portfolioDto.languageProficiencies = languageProficiencyService.findByPortfolioId(portfolioId);
+                if (ComponentFetchStrategy.PUBLIC.equals(componentFetchStrategy)) {
+                    portfolioDto.languageProficiencies = languageProficiencyService
+                        .findByPortfolioIdAndVisibility(portfolioId, ComponentVisibility.Visibility.PUBLIC);
+                } else {
+                    portfolioDto.languageProficiencies = languageProficiencyService.findByPortfolioId(portfolioId);
+                }
                 break;
             case FREE_TEXT_CONTENT:
                 portfolioDto.freeTextContent = componentVisibilities != null ?
@@ -196,17 +202,30 @@ public class PortfolioConverter {
                     freeTextContentService.findByPortfolioId(portfolioId);
                 break;
             case WORK_EXPERIENCE:
-                portfolioDto.workExperience = workExperienceService.findByPortfolioId(portfolioId);
+                if (ComponentFetchStrategy.PUBLIC.equals(componentFetchStrategy)) {
+                    portfolioDto.workExperience = workExperienceService
+                        .findByPortfolioIdAndVisibility(portfolioId, ComponentVisibility.Visibility.PUBLIC);
+                } else {
+                    portfolioDto.workExperience = workExperienceService.findByPortfolioId(portfolioId);
+                }
                 portfolioDto.jobSearch = jobSearchService.findByPortfolioId(portfolioId);
                 break;
             case SAMPLES:
-                portfolioDto.samples = sampleService.findByPortfolioId(portfolioId);
+                if (ComponentFetchStrategy.PUBLIC.equals(componentFetchStrategy)) {
+                    portfolioDto.samples = sampleService.findByPortfolioIdAndVisibility(portfolioId, ComponentVisibility.Visibility.PUBLIC);
+                } else {
+                    portfolioDto.samples = sampleService.findByPortfolioId(portfolioId);
+                }
                 break;
             case CONTACT_INFORMATION:
                 portfolioDto.contactInformation = contactInformationService.findByPortfolioId(portfolioId);
                 break;
             case DEGREES:
-                portfolioDto.degrees = degreeService.findByPortfolioId(portfolioId);
+                if (ComponentFetchStrategy.PUBLIC.equals(componentFetchStrategy)) {
+                    portfolioDto.degrees = degreeService.findByPortfolioIdAndVisibility(portfolioId, ComponentVisibility.Visibility.PUBLIC);
+                } else {
+                    portfolioDto.degrees = degreeService.findByPortfolioId(portfolioId);
+                }
                 break;
             case STUDIES:
                 portfolioDto.keywords = keywordRelationshipService.findByPortfolioId(portfolioId);

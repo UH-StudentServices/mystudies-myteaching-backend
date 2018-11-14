@@ -30,4 +30,6 @@ public class WorkExperienceDto {
     public LocalDate endDate;
 
     public String text;
+
+    public String visibility;
 }

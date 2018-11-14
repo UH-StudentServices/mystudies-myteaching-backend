@@ -25,4 +25,6 @@ public class DegreeDto {
     public String description;
 
     public String dateOfDegree;
+
+    public String visibility;
 }

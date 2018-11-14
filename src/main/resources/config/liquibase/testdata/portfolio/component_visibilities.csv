@@ -16,3 +16,4 @@ nextval('component_visibility_id_seq');4;CONTACT_INFORMATION;null;null;PUBLIC;sy
 nextval('component_visibility_id_seq');4;FREE_TEXT_CONTENT;null;4c024239-8dab-4ea0-a686-fe373b040f50;PUBLIC;system
 nextval('component_visibility_id_seq');2;FREE_TEXT_CONTENT;null;4c024239-8dab-4ea0-a686-fe373b040f48;PUBLIC;system
 nextval('component_visibility_id_seq');2;FREE_TEXT_CONTENT;null;4c024239-8dab-4ea0-a686-fe373b040f51;PRIVATE;system
+nextval('component_visibility_id_seq');2;SAMPLES;null;null;PUBLIC;system

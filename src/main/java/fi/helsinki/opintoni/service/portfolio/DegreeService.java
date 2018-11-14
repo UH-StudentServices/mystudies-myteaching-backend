@@ -17,8 +17,7 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
-import fi.helsinki.opintoni.domain.portfolio.Degree;
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
+import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.portfolio.DegreeDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.DegreeRepository;
@@ -26,12 +25,15 @@ import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.DtoService;
 import fi.helsinki.opintoni.service.converter.DegreeConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.degree.UpdateDegree;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -56,6 +58,12 @@ public class DegreeService extends DtoService {
             degreeConverter::toDto);
     }
 
+    public List<DegreeDto> findByPortfolioIdAndVisibility(Long portfolioId, ComponentVisibility.Visibility visibility) {
+        return degreeRepository.findByPortfolioIdAndVisibilityOrderByOrderIndexAsc(portfolioId, visibility).stream()
+            .map(degreeConverter::toDto)
+            .collect(toList());
+    }
+
     public List<DegreeDto> updateDegrees(Long portfolioId, List<UpdateDegree> updateDegrees) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
@@ -70,6 +78,10 @@ public class DegreeService extends DtoService {
             degree.dateOfDegree = updateDegree.dateOfDegree;
             degree.portfolio = portfolio;
             degree.orderIndex = orderCounter.getAndIncrement();
+            degree.visibility = StringUtils.isNotBlank(updateDegree.visibility) ?
+                ComponentVisibility.Visibility.valueOf(updateDegree.visibility) :
+                ComponentVisibility.Visibility.PUBLIC;
+
             degreeRepository.save(degree);
         });
 

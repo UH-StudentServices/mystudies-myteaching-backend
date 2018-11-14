@@ -34,6 +34,7 @@ public class WorkExperienceConverter {
         workExperienceDto.endDate = workExperience.endDate;
         workExperienceDto.text = workExperience.text;
         workExperienceDto.id = workExperience.id;
+        workExperienceDto.visibility = workExperience.visibility.toString();
 
         return workExperienceDto;
     }

@@ -28,4 +28,6 @@ public class UpdateWorkExperience {
     public LocalDate endDate;
 
     public String text;
+
+    public String visibility;
 }

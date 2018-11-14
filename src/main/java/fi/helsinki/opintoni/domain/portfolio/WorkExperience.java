@@ -67,6 +67,11 @@ public class WorkExperience extends AbstractAuditingEntity implements Ownership 
     @Column(name = "order_index")
     public int orderIndex;
 
+    @NotNull
+    @Column(name = "visibility")
+    @Enumerated(EnumType.STRING)
+    public ComponentVisibility.Visibility visibility;
+
     @Override
     public Long getOwnerId() {
         return portfolio.getOwnerId();

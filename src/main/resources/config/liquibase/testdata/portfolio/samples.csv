@@ -1,0 +1,2 @@
+id;portfolio_id;title;description;visibility;created_by
+nextval('sample_id_seq');2;Näyte;Sisältöä;PUBLIC;system

@@ -22,4 +22,5 @@ public class LanguageProficiencyDto {
     public String languageName;
     public String proficiency;
     public String description;
+    public String visibility;
 }

@@ -27,6 +27,7 @@ public class LanguageProficiencyConverter {
         languageProficiencyDto.languageName = portfolioLanguageProficiency.languageName;
         languageProficiencyDto.proficiency = portfolioLanguageProficiency.proficiency;
         languageProficiencyDto.description = portfolioLanguageProficiency.description;
+        languageProficiencyDto.visibility = portfolioLanguageProficiency.visibility.toString();
         return languageProficiencyDto;
     }
 }

@@ -46,6 +46,11 @@ public class PortfolioLanguageProficiency extends AbstractAuditingEntity impleme
     @JoinColumn(name = "portfolio_id")
     public Portfolio portfolio;
 
+    @NotNull
+    @Column(name = "visibility")
+    @Enumerated(EnumType.STRING)
+    public ComponentVisibility.Visibility visibility;
+
     @Override
     public Long getOwnerId() {
         return portfolio.getOwnerId();

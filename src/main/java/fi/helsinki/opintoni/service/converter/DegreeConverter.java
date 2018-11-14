@@ -30,6 +30,7 @@ public class DegreeConverter {
         degreeDto.institution = degree.institution;
         degreeDto.description = degree.description;
         degreeDto.dateOfDegree = degree.dateOfDegree;
+        degreeDto.visibility = degree.visibility.toString();
         return degreeDto;
     }
 }
