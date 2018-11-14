@@ -27,10 +27,7 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(
@@ -54,5 +51,10 @@ public class PublicPortfolioResource extends AbstractResource {
             Language.fromCode(portfolioLang),
             PortfolioRole.fromValue(portfolioRole),
             PortfolioConverter.ComponentFetchStrategy.PUBLIC));
+    }
+
+    @GetMapping(value = "/shared/{sharedLinkFragment:.*}")
+    public ResponseEntity<PortfolioDto> getBySharedLink(@PathVariable("sharedLinkFragment") String sharedLinkFragment) {
+        return response(portfolioService.findBySharedLink(sharedLinkFragment, PortfolioConverter.ComponentFetchStrategy.PUBLIC));
     }
 }

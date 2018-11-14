@@ -17,15 +17,13 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
-import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
-import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
-import fi.helsinki.opintoni.domain.portfolio.TeacherPortfolioSection;
+import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
+import fi.helsinki.opintoni.repository.portfolio.PortfolioSharedLinkRepository;
 import fi.helsinki.opintoni.service.converter.PortfolioConverter;
 import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.summary.UpdateSummaryRequest;
@@ -33,11 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.StringJoiner;
+import java.util.*;
 
 import static fi.helsinki.opintoni.exception.http.NotFoundException.notFoundException;
 import static java.util.stream.Collectors.groupingBy;
@@ -54,6 +48,8 @@ public class PortfolioService {
     private final PortfolioConverter portfolioConverter;
     private final PortfolioStudyAttainmentWhitelistService whitelistService;
     private final ComponentVisibilityService componentVisibilityService;
+    private final PortfolioSharedLinkRepository portfolioSharedLinkRepository;
+    private final PortfolioSharedLinkService portfolioSharedLinkService;
 
     @Autowired
     public PortfolioService(PortfolioRepository portfolioRepository,
@@ -61,13 +57,17 @@ public class PortfolioService {
                             PortfolioPathGenerator portfolioPathGenerator,
                             PortfolioConverter portfolioConverter,
                             PortfolioStudyAttainmentWhitelistService whitelistService,
-                            ComponentVisibilityService componentVisibilityService) {
+                            ComponentVisibilityService componentVisibilityService,
+                            PortfolioSharedLinkRepository portfolioSharedLinkRepository,
+                            PortfolioSharedLinkService portfolioSharedLinkService) {
         this.portfolioRepository = portfolioRepository;
         this.userRepository = userRepository;
         this.portfolioPathGenerator = portfolioPathGenerator;
         this.portfolioConverter = portfolioConverter;
         this.whitelistService = whitelistService;
         this.componentVisibilityService = componentVisibilityService;
+        this.portfolioSharedLinkRepository = portfolioSharedLinkRepository;
+        this.portfolioSharedLinkService = portfolioSharedLinkService;
     }
 
     public PortfolioDto insert(Long userId, String name, PortfolioRole portfolioRole, Language lang) {
@@ -107,6 +107,24 @@ public class PortfolioService {
                                                  PortfolioConverter.ComponentFetchStrategy componentFetchStrategy) {
         return convertPortfolioToDto(portfolioRepository
             .findByPathAndPortfolioRoleAndLanguage(path, portfolioRole, lang), componentFetchStrategy);
+    }
+
+    public PortfolioDto findBySharedLink(String sharedLinkFragment, PortfolioConverter.ComponentFetchStrategy componentFetchStrategy) {
+        PortfolioSharedLink sharedLink = portfolioSharedLinkRepository
+            .findBySharedPathFragment(sharedLinkFragment)
+            .orElseThrow(NotFoundException::new);
+
+        if (!sharedLink.isActive()) {
+            throw new NotFoundException("Portfolio not found");
+        }
+
+        Portfolio portfolio = portfolioRepository.findById(sharedLink.portfolio.id).orElseThrow(NotFoundException::new);
+        PortfolioDto portfolioDto = portfolioConverter.toDto(portfolio, componentFetchStrategy, sharedLinkFragment);
+
+        // Fake public visibility when using shared link
+        portfolioDto.visibility = PortfolioVisibility.PUBLIC;
+
+        return portfolioDto;
     }
 
     public PortfolioDto findById(Long portfolioId) {

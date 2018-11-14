@@ -27,7 +27,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class PortfolioRequestResolver {
@@ -38,6 +39,7 @@ public class PortfolioRequestResolver {
     private static final String PORTFOLIO_ID = "portfolioId";
     private static final String PORTFOLIO_ROLE = "portfolioRole";
     private static final String LANG = "lang";
+    private static final String SHARED_LINK_FRAGMENT = "sharedLinkFragment";
 
     @Autowired
     public PortfolioRequestResolver(PortfolioService portfolioService) {
@@ -51,6 +53,8 @@ public class PortfolioRequestResolver {
             return getPortfolioDtoByPath(templateVariables);
         } else if (templateVariables.containsKey(PORTFOLIO_ID)) {
             return getPortfolioDtoById(templateVariables);
+        } else if (templateVariables.containsKey(SHARED_LINK_FRAGMENT)) {
+            return getPortfolioDtoByShareLink(templateVariables);
         }
 
         return Optional.empty();
@@ -74,6 +78,14 @@ public class PortfolioRequestResolver {
                 PortfolioConverter.ComponentFetchStrategy.NONE
             )
         );
+    }
+
+    private Optional<PortfolioDto> getPortfolioDtoByShareLink(Map<String, String> templateVariables) {
+        PortfolioDto portfolio = portfolioService.findBySharedLink(
+            templateVariables.get(SHARED_LINK_FRAGMENT),
+            PortfolioConverter.ComponentFetchStrategy.NONE);
+
+        return Optional.ofNullable(portfolio);
     }
 
 }
