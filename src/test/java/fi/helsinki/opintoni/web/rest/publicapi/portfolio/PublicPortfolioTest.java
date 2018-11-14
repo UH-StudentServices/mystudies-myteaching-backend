@@ -75,23 +75,23 @@ public abstract class PublicPortfolioTest extends SpringTest {
         });
     }
 
-    public void setPrivateVisibilityForPortfolioComponentItems(long portfolioId) {
-        List<PortfolioLanguageProficiency> proficiencies = languageProficiencyRepository.findByPortfolioId(portfolioId).stream()
+    public void setPrivateVisibilityForEveryStudentPortfolioComponentItem() {
+        List<PortfolioLanguageProficiency> proficiencies = languageProficiencyRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID).stream()
             .peek(proficiency -> proficiency.visibility = ComponentVisibility.Visibility.PRIVATE)
             .collect(toList());
         languageProficiencyRepository.saveAll(proficiencies);
 
-        List<Sample> samples = sampleRepository.findByPortfolioId(portfolioId).stream()
+        List<Sample> samples = sampleRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID).stream()
             .peek(sample -> sample.visibility = ComponentVisibility.Visibility.PRIVATE)
             .collect(toList());
         sampleRepository.saveAll(samples);
 
-        List<Degree> degrees = degreeRepository.findByPortfolioIdOrderByOrderIndexAsc(portfolioId).stream()
+        List<Degree> degrees = degreeRepository.findByPortfolioIdOrderByOrderIndexAsc(STUDENT_PORTFOLIO_ID).stream()
             .peek(degree -> degree.visibility = ComponentVisibility.Visibility.PRIVATE)
             .collect(toList());
         degreeRepository.saveAll(degrees);
 
-        List<WorkExperience> workExperiences = workExperienceRepository.findByPortfolioIdOrderByOrderIndexAsc(portfolioId).stream()
+        List<WorkExperience> workExperiences = workExperienceRepository.findByPortfolioIdOrderByOrderIndexAsc(STUDENT_PORTFOLIO_ID).stream()
             .peek(workExperience -> workExperience.visibility = ComponentVisibility.Visibility.PRIVATE)
             .collect(toList());
         workExperienceRepository.saveAll(workExperiences);

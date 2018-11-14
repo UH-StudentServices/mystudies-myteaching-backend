@@ -78,7 +78,7 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
 
     @Test
     public void thatStudentPortfolioContainsNoLinkedPrivateComponentItems() throws Exception {
-        setPrivateVisibilityForPortfolioComponentItems(STUDENT_PORTFOLIO_ID);
+        setPrivateVisibilityForEveryStudentPortfolioComponentItem();
         saveStudentPortfolioAsPublic();
 
         mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PORTFOLIO_PATH))
