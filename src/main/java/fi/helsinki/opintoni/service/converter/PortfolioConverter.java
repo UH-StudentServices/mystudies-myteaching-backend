@@ -18,9 +18,7 @@
 package fi.helsinki.opintoni.service.converter;
 
 import fi.helsinki.opintoni.domain.portfolio.*;
-import fi.helsinki.opintoni.dto.portfolio.ComponentVisibilityDto;
-import fi.helsinki.opintoni.dto.portfolio.PortfolioDto;
-import fi.helsinki.opintoni.dto.portfolio.SummaryDto;
+import fi.helsinki.opintoni.dto.portfolio.*;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.AvatarImageService;
@@ -30,10 +28,10 @@ import fi.helsinki.opintoni.web.arguments.PortfolioRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static fi.helsinki.opintoni.domain.portfolio.ComponentVisibility.Visibility.PUBLIC;
 
 @Component
 public class PortfolioConverter {
@@ -186,15 +184,13 @@ public class PortfolioConverter {
                                     PortfolioDto portfolioDto,
                                     String componentType,
                                     List<ComponentVisibilityDto> componentVisibilities,
-                                    ComponentFetchStrategy componentFetchStrategy) {
+                                    ComponentFetchStrategy componentDataFetchStrategy) {
+        final boolean fetchPublic = ComponentFetchStrategy.PUBLIC.equals(componentDataFetchStrategy);
         switch (PortfolioComponent.valueOf(componentType)) {
             case LANGUAGE_PROFICIENCIES:
-                if (ComponentFetchStrategy.PUBLIC.equals(componentFetchStrategy)) {
-                    portfolioDto.languageProficiencies = languageProficiencyService
-                        .findByPortfolioIdAndVisibility(portfolioId, ComponentVisibility.Visibility.PUBLIC);
-                } else {
-                    portfolioDto.languageProficiencies = languageProficiencyService.findByPortfolioId(portfolioId);
-                }
+                portfolioDto.languageProficiencies = fetchPublic ?
+                    languageProficiencyService.findByPortfolioIdAndVisibility(portfolioId, PUBLIC) :
+                    languageProficiencyService.findByPortfolioId(portfolioId);
                 break;
             case FREE_TEXT_CONTENT:
                 portfolioDto.freeTextContent = componentVisibilities != null ?
@@ -202,30 +198,23 @@ public class PortfolioConverter {
                     freeTextContentService.findByPortfolioId(portfolioId);
                 break;
             case WORK_EXPERIENCE:
-                if (ComponentFetchStrategy.PUBLIC.equals(componentFetchStrategy)) {
-                    portfolioDto.workExperience = workExperienceService
-                        .findByPortfolioIdAndVisibility(portfolioId, ComponentVisibility.Visibility.PUBLIC);
-                } else {
-                    portfolioDto.workExperience = workExperienceService.findByPortfolioId(portfolioId);
-                }
+                portfolioDto.workExperience = fetchPublic ?
+                    workExperienceService.findByPortfolioIdAndVisibility(portfolioId, PUBLIC) :
+                    workExperienceService.findByPortfolioId(portfolioId);
                 portfolioDto.jobSearch = jobSearchService.findByPortfolioId(portfolioId);
                 break;
             case SAMPLES:
-                if (ComponentFetchStrategy.PUBLIC.equals(componentFetchStrategy)) {
-                    portfolioDto.samples = sampleService.findByPortfolioIdAndVisibility(portfolioId, ComponentVisibility.Visibility.PUBLIC);
-                } else {
-                    portfolioDto.samples = sampleService.findByPortfolioId(portfolioId);
-                }
+                portfolioDto.samples = fetchPublic ?
+                    sampleService.findByPortfolioIdAndVisibility(portfolioId, PUBLIC) :
+                    sampleService.findByPortfolioId(portfolioId);
                 break;
             case CONTACT_INFORMATION:
                 portfolioDto.contactInformation = contactInformationService.findByPortfolioId(portfolioId);
                 break;
             case DEGREES:
-                if (ComponentFetchStrategy.PUBLIC.equals(componentFetchStrategy)) {
-                    portfolioDto.degrees = degreeService.findByPortfolioIdAndVisibility(portfolioId, ComponentVisibility.Visibility.PUBLIC);
-                } else {
-                    portfolioDto.degrees = degreeService.findByPortfolioId(portfolioId);
-                }
+                portfolioDto.degrees = fetchPublic ?
+                    degreeService.findByPortfolioIdAndVisibility(portfolioId, PUBLIC) :
+                    degreeService.findByPortfolioId(portfolioId);
                 break;
             case STUDIES:
                 portfolioDto.keywords = keywordRelationshipService.findByPortfolioId(portfolioId);

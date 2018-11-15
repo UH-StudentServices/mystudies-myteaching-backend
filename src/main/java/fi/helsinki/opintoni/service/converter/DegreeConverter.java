@@ -17,8 +17,10 @@
 
 package fi.helsinki.opintoni.service.converter;
 
-import fi.helsinki.opintoni.domain.portfolio.Degree;
+import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.portfolio.DegreeDto;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.degree.UpdateDegree;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,5 +34,20 @@ public class DegreeConverter {
         degreeDto.dateOfDegree = degree.dateOfDegree;
         degreeDto.visibility = degree.visibility.toString();
         return degreeDto;
+    }
+
+    public Degree toEntity(UpdateDegree updateDegree, Portfolio portfolio, int orderIndex) {
+        Degree degree = new Degree();
+        degree.title = updateDegree.title;
+        degree.institution = updateDegree.institution;
+        degree.description = updateDegree.description;
+        degree.dateOfDegree = updateDegree.dateOfDegree;
+        degree.portfolio = portfolio;
+        degree.orderIndex = orderIndex;
+        degree.visibility = StringUtils.isNotBlank(updateDegree.visibility) ?
+            ComponentVisibility.Visibility.valueOf(updateDegree.visibility) :
+            ComponentVisibility.Visibility.PUBLIC;
+
+        return degree;
     }
 }

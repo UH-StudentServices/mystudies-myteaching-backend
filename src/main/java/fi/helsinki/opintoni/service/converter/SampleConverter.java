@@ -17,8 +17,10 @@
 
 package fi.helsinki.opintoni.service.converter;
 
-import fi.helsinki.opintoni.domain.portfolio.Sample;
+import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.portfolio.SampleDto;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.sample.UpdateSample;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -33,5 +35,16 @@ public class SampleConverter {
         sampleDto.visibility = sample.visibility.toString();
 
         return sampleDto;
+    }
+
+    public Sample toEntity(UpdateSample updateSample, Portfolio portfolio) {
+        Sample sample = new Sample();
+        sample.title = updateSample.title;
+        sample.description = updateSample.description;
+        sample.portfolio = portfolio;
+        sample.visibility = StringUtils.isNotBlank(updateSample.visibility) ?
+            ComponentVisibility.Visibility.valueOf(updateSample.visibility) :
+            ComponentVisibility.Visibility.PUBLIC;
+        return sample;
     }
 }

@@ -19,11 +19,9 @@ package fi.helsinki.opintoni.web.rest.publicapi.portfolio;
 
 import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
 import fi.helsinki.opintoni.dto.portfolio.*;
-import fi.helsinki.opintoni.service.portfolio.ComponentHeadingService;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -40,7 +38,6 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
 
     private static final String STUDENT_PORTFOLIO_PATH = "/profile/student/en/olli-opiskelija";
     private static final String TEACHER_PORTFOLIO_PATH = "/profile/teacher/fi/opettaja";
-    private static final long STUDENT_PORTFOLIO_ID = 2L;
 
     private static final String PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME = "4c024239-8dab-4ea0-a686-fe373b040f48";
 
@@ -48,14 +45,11 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
     private static final String ACTIVE_SHARED_LINK = "a3728b39-7099-4f8c-9413-da2817eeccf9";
     private static final String EXPIRED_SHARED_LINK = "b2672af7-306f-43aa-ab3f-acbc6a41f47f";
 
-    @Autowired
-    private ComponentHeadingService componentHeadingService;
-
     @Test
     public void thatPortfolioIsReturned() throws Exception {
         mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PORTFOLIO_PATH))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.id").value(2));
+            .andExpect(jsonPath("$.id").value(STUDENT_PORTFOLIO_ID));
     }
 
     @Test
@@ -74,6 +68,20 @@ public class PublicPortfolioResourceTest extends PublicPortfolioTest {
             .andExpect(jsonPath("$.keywords").isEmpty())
             .andExpect(jsonPath("$.summary").isEmpty())
             .andExpect(jsonPath("$.samples").isEmpty());
+    }
+
+    @Test
+    public void thatStudentPortfolioContainsLinkedPublicComponentItems() throws Exception {
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PORTFOLIO_PATH))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.degrees").isArray())
+            .andExpect(jsonPath("$.degrees", hasSize(1)))
+            .andExpect(jsonPath("$.workExperience").isArray())
+            .andExpect(jsonPath("$.workExperience", hasSize(3)))
+            .andExpect(jsonPath("$.languageProficiencies").isArray())
+            .andExpect(jsonPath("$.languageProficiencies", hasSize(3)))
+            .andExpect(jsonPath("$.samples").isArray())
+            .andExpect(jsonPath("$.samples", hasSize(1)));
     }
 
     @Test

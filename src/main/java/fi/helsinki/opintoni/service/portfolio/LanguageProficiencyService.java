@@ -81,16 +81,11 @@ public class LanguageProficiencyService {
 
     private void addLanguageProficiency(Long portfolioId, Long userId, LanguageProficiencyDto languageProficiencyDto) {
         permissionChecker.verifyPermission(userId, portfolioId, Portfolio.class);
-        PortfolioLanguageProficiency portfolioLanguageProficiency = new PortfolioLanguageProficiency();
-        portfolioLanguageProficiency.languageName = languageProficiencyDto.languageName;
-        portfolioLanguageProficiency.proficiency = languageProficiencyDto.proficiency;
-        portfolioLanguageProficiency.description = languageProficiencyDto.description;
-        portfolioLanguageProficiency.portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
-        portfolioLanguageProficiency.visibility = StringUtils.isNotBlank(languageProficiencyDto.visibility) ?
-            ComponentVisibility.Visibility.valueOf(languageProficiencyDto.visibility) :
-            ComponentVisibility.Visibility.PUBLIC;
 
-        languageProficiencyRepository.save(portfolioLanguageProficiency);
+        languageProficiencyRepository.save(LanguageProficiencyConverter.toEntity(
+            languageProficiencyDto,
+            portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new)
+        ));
     }
 
     private void updateLanguageProficiency(Long userId, LanguageProficiencyDto languageProficiencyDto) {

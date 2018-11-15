@@ -25,7 +25,6 @@ import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.service.DtoService;
 import fi.helsinki.opintoni.service.converter.DegreeConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.degree.UpdateDegree;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,20 +69,10 @@ public class DegreeService extends DtoService {
         degreeRepository.deleteAll(degreeRepository.findByPortfolioIdOrderByOrderIndexAsc(portfolio.id));
 
         AtomicInteger orderCounter = new AtomicInteger(0);
-        updateDegrees.forEach(updateDegree -> {
-            Degree degree = new Degree();
-            degree.title = updateDegree.title;
-            degree.institution = updateDegree.institution;
-            degree.description = updateDegree.description;
-            degree.dateOfDegree = updateDegree.dateOfDegree;
-            degree.portfolio = portfolio;
-            degree.orderIndex = orderCounter.getAndIncrement();
-            degree.visibility = StringUtils.isNotBlank(updateDegree.visibility) ?
-                ComponentVisibility.Visibility.valueOf(updateDegree.visibility) :
-                ComponentVisibility.Visibility.PUBLIC;
-
-            degreeRepository.save(degree);
-        });
+        List<Degree> degrees = updateDegrees.stream()
+            .map(updateDegree -> degreeConverter.toEntity(updateDegree, portfolio, orderCounter.getAndIncrement()))
+            .collect(toList());
+        degreeRepository.saveAll(degrees);
 
         return getDtos(portfolioId,
             degreeRepository::findByPortfolioIdOrderByOrderIndexAsc,

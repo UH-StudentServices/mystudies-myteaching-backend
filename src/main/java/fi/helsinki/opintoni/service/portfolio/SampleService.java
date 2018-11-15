@@ -24,7 +24,6 @@ import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
 import fi.helsinki.opintoni.repository.portfolio.SampleRepository;
 import fi.helsinki.opintoni.service.converter.SampleConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.portfolio.sample.UpdateSample;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,17 +65,10 @@ public class SampleService {
 
         sampleRepository.deleteByPortfolioId(portfolio.id);
 
-        updateSamples.forEach(updateSample -> {
-            Sample sample = new Sample();
-            sample.title = updateSample.title;
-            sample.description = updateSample.description;
-            sample.portfolio = portfolio;
-            sample.visibility = StringUtils.isNotBlank(updateSample.visibility) ?
-                ComponentVisibility.Visibility.valueOf(updateSample.visibility) :
-                ComponentVisibility.Visibility.PUBLIC;
-
-            sampleRepository.save(sample);
-        });
+        List<Sample> samples = updateSamples.stream()
+            .map(updateSample -> sampleConverter.toEntity(updateSample, portfolio))
+            .collect(toList());
+        sampleRepository.saveAll(samples);
 
         return findByPortfolioId(portfolioId);
     }

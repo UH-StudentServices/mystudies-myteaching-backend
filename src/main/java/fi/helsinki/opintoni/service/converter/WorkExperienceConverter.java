@@ -17,8 +17,10 @@
 
 package fi.helsinki.opintoni.service.converter;
 
-import fi.helsinki.opintoni.domain.portfolio.WorkExperience;
+import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.portfolio.WorkExperienceDto;
+import fi.helsinki.opintoni.web.rest.privateapi.portfolio.workexperience.UpdateWorkExperience;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -37,5 +39,23 @@ public class WorkExperienceConverter {
         workExperienceDto.visibility = workExperience.visibility.toString();
 
         return workExperienceDto;
+    }
+
+    public WorkExperience toEntity(UpdateWorkExperience updateWorkExperience, Portfolio portfolio, int orderIndex) {
+        WorkExperience workExperience = new WorkExperience();
+
+        workExperience.employer = updateWorkExperience.employer;
+        workExperience.employerUrl = updateWorkExperience.employerUrl;
+        workExperience.jobTitle = updateWorkExperience.jobTitle;
+        workExperience.startDate = updateWorkExperience.startDate;
+        workExperience.endDate = updateWorkExperience.endDate;
+        workExperience.text = updateWorkExperience.text;
+        workExperience.portfolio = portfolio;
+        workExperience.orderIndex = orderIndex;
+        workExperience.visibility = StringUtils.isNotBlank(updateWorkExperience.visibility) ?
+            ComponentVisibility.Visibility.valueOf(updateWorkExperience.visibility) :
+            ComponentVisibility.Visibility.PUBLIC;
+
+        return workExperience;
     }
 }
