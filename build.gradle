@@ -15,13 +15,6 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-buildscript {
-    repositories {
-        mavenLocal()
-        jcenter()
-    }
-}
-
 plugins {
     id 'com.gorylenko.gradle-git-properties' version '1.4.17'
     id 'net.ltgt.errorprone' version '0.0.14'
@@ -36,19 +29,8 @@ plugins {
 
 apply plugin: 'io.spring.dependency-management'
 
-if(! hasProperty("opintoni_artifactory_base_url")){
-  ext.opintoni_artifactory_base_url=""
-}
-if(! hasProperty("opintoni_artifactory_username")){
-  ext.opintoni_artifactory_username=""
-}
-if(! hasProperty("opintoni_artifactory_password")){
-  ext.opintoni_artifactory_password=""
-}
-
 sourceCompatibility=1.8
 targetCompatibility=1.8
-
 
 checkstyle {
     configDir = rootProject.file('gradle-config/checkstyle')
@@ -77,21 +59,21 @@ jacocoTestReport {
 
 apply from: 'liquibase.gradle'
 
-
 configurations {
     providedRuntime
 }
 
-repositories {
-  maven { url 'http://repo.spring.io/milestone' }
-  maven { url 'http://repo.spring.io/snapshot' }
-  maven { url 'https://repository.jboss.org/nexus/content/repositories/releases' }
-  maven { url 'https://oss.sonatype.org/content/repositories/releases' }
-  maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-  maven { url 'http://repo.maven.apache.org/maven2' }
-  maven { url 'http://opi-1.student.helsinki.fi:8081/artifactory/ext-release-local' }
-
-  mavenLocal()
+if(hasProperty("opintoni_artifactory_base_url")) {
+    repositories {
+        maven {
+            url "${opintoni_artifactory_base_url}/remote-repos/"
+        }
+    }
+} else {
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
 }
 
 configurations.all {
@@ -198,27 +180,30 @@ task wrapper(type: Wrapper) {
 }
 
 // Check for required properties
-['base_url', 'username', 'password'].collect { "opintoni_artifactory_$it" }.each {
-    if (!project.hasProperty(it)) {
-        def msg = """
-      |Missing project property: $it
-      |
-      |Configure Artifactory connection in file: \$USER_HOME/.gradle/gradle.properties
-      |
-      |opintoni_artifactory_base_url=<base url>
-      |opintoni_artifactory_username=<username>
-      |opintoni_artifactory_password=<password>
-      |
-      |Or provide with command line args like:
-      |
-      |-Popintoni_artifactory_base_url=<base url> -Popintoni_artifactory_username=<username> -Popintoni_artifactory_password=<password>
-    """.stripMargin()
-        throw new GradleException(msg)
-    }
+tasks.withType(PublishToMavenRepository) { task ->
+   task.doFirst {
+     ['base_url', 'username', 'password'].collect { "opintoni_artifactory_$it" }.each {
+       if (!project.hasProperty(it)) {
+           def msg = """
+         |Missing project property: $it
+         |
+         |Configure Artifactory connection in file: \$USER_HOME/.gradle/gradle.properties
+         |
+         |opintoni_artifactory_base_url=<base url>
+         |opintoni_artifactory_username=<username>
+         |opintoni_artifactory_password=<password>
+         |
+         |Or provide with command line args like:
+         |
+         |-Popintoni_artifactory_base_url=<base url> -Popintoni_artifactory_username=<username> -Popintoni_artifactory_password=<password>
+       """.stripMargin()
+           throw new GradleException(msg)
+       }
+     }
+   }
 }
 
 publishing {
-
   //
   // What is published, i.e. build artifacts and their names.
   //
@@ -237,14 +222,19 @@ publishing {
   repositories {
     maven {
       credentials {
-        username opintoni_artifactory_username
-        password opintoni_artifactory_password
-      }
-
-      if (version.endsWith('SNAPSHOT')) {
-        url "${opintoni_artifactory_base_url}/libs-snapshot-local"
-      } else {
-        url "${opintoni_artifactory_base_url}/libs-release-local"
+        if (project.hasProperty("opintoni_artifactory_username")) {
+          username opintoni_artifactory_username
+        }
+        if (project.hasProperty("opintoni_artifactory_password")) {
+          password opintoni_artifactory_password
+        }
+        if(project.hasProperty("opintoni_artifactory_base_url")) {
+          if (version.endsWith('SNAPSHOT')) {
+            url "${opintoni_artifactory_base_url}/libs-snapshot-local"
+          } else {
+            url "${opintoni_artifactory_base_url}/libs-release-local"
+          }
+        }
       }
     }
   }

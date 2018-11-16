@@ -13,16 +13,7 @@ The following directories must exist on host machine
 
 ### Prerequisites
 
-1. Add the following empty properties to ~/.gradle/gradle.properties
-(they need to be defined but are only required in server environments):
-
-```
-opintoni_artifactory_base_url=
-opintoni_artifactory_username=
-opintoni_artifactory_password=
-```
-
-2. Add following localhost alias configurations (in /etc/hosts on Linux/macOS)
+1. Add following localhost alias configurations (in /etc/hosts on Linux/macOS)
 
 ```
 127.0.0.1       local.student.helsinki.fi
@@ -31,7 +22,7 @@ opintoni_artifactory_password=
 127.0.0.1       my-studies-psql
 ```
 
-3. Docker and Docker Compose must be installed and running. Before running application or tests, start dockerized dependencies (psql and redis)
+2. Docker and Docker Compose must be installed and running. Before running application or tests, start dockerized dependencies (psql and redis)
 
 For local development:
 
@@ -46,6 +37,13 @@ For local test runs:
 cd docker/local-test
 docker-compose up
 ```
+### Running with gradle
+
+`./gradlew bootRun`
+
+### Running with debugging enabled
+
+`./gradlew bootRun ----debug-jvm`
 
 ### Running tests
 
@@ -53,8 +51,8 @@ docker-compose up
 
 ### Running tests in CI
 
-Tests can be run in fully dockerized environment where no ports are exposed to host machine. This is intended to be used on CI machine, 
-where multiple tests can run in parallel. 
+Tests can be run in fully dockerized environment where no ports are exposed to host machine. This is intended to be used on CI machine,
+where multiple tests can run in parallel.
 
 ```
 cd docker/ci
@@ -78,3 +76,15 @@ First start docker containers for local dev PostgreSQL and redis
 Then run: `java -jar build/libs/app-{VERSION_NUMBER}-SNAPSHOT.jar --spring.profiles.active=local-dev`
 
 Replace VERSION_NUMBER with an actual version number present in the jar file name in `build/libs` directory.
+
+### Prerequicites for publishing
+
+Add the following properties to ~/.gradle/gradle.properties
+
+```
+opintoni_artifactory_base_url=
+opintoni_artifactory_username=
+opintoni_artifactory_password=
+```
+
+Alternatively the props can also be specified through cli `./gradlew -Popintoni_artifactory_base_url= ...``
