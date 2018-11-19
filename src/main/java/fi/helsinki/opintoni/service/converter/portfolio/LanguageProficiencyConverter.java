@@ -17,16 +17,31 @@
 
 package fi.helsinki.opintoni.service.converter.portfolio;
 
-import fi.helsinki.opintoni.domain.portfolio.PortfolioLanguageProficiency;
+import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.portfolio.LanguageProficiencyDto;
+import org.apache.commons.lang.StringUtils;
 
 public class LanguageProficiencyConverter {
+
     public static LanguageProficiencyDto toDto(PortfolioLanguageProficiency portfolioLanguageProficiency) {
         LanguageProficiencyDto languageProficiencyDto = new LanguageProficiencyDto();
         languageProficiencyDto.id = portfolioLanguageProficiency.id;
         languageProficiencyDto.languageName = portfolioLanguageProficiency.languageName;
         languageProficiencyDto.proficiency = portfolioLanguageProficiency.proficiency;
         languageProficiencyDto.description = portfolioLanguageProficiency.description;
+        languageProficiencyDto.visibility = portfolioLanguageProficiency.visibility.toString();
         return languageProficiencyDto;
+    }
+
+    public static PortfolioLanguageProficiency toEntity(LanguageProficiencyDto languageProficiencyDto, Portfolio portfolio) {
+        PortfolioLanguageProficiency portfolioLanguageProficiency = new PortfolioLanguageProficiency();
+        portfolioLanguageProficiency.languageName = languageProficiencyDto.languageName;
+        portfolioLanguageProficiency.proficiency = languageProficiencyDto.proficiency;
+        portfolioLanguageProficiency.description = languageProficiencyDto.description;
+        portfolioLanguageProficiency.portfolio = portfolio;
+        portfolioLanguageProficiency.visibility = StringUtils.isNotBlank(languageProficiencyDto.visibility) ?
+            ComponentVisibility.Visibility.valueOf(languageProficiencyDto.visibility) :
+            ComponentVisibility.Visibility.PUBLIC;
+        return portfolioLanguageProficiency;
     }
 }

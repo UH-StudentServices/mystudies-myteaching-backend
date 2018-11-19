@@ -21,5 +21,6 @@ public class UpdateSample {
 
     public String title;
     public String description;
+    public String visibility;
 
 }

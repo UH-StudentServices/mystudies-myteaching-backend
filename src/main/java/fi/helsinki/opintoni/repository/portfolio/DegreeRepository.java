@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.repository.portfolio;
 
+import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.Degree;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -25,4 +26,6 @@ import java.util.List;
 public interface DegreeRepository extends JpaRepository<Degree, Long> {
 
     List<Degree> findByPortfolioIdOrderByOrderIndexAsc(Long portfolioId);
+
+    List<Degree> findByPortfolioIdAndVisibilityOrderByOrderIndexAsc(Long portfolioId, ComponentVisibility.Visibility visibility);
 }

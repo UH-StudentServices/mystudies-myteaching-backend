@@ -57,6 +57,11 @@ public class Degree extends AbstractAuditingEntity implements Ownership {
     @JoinColumn(name = "portfolio_id")
     public Portfolio portfolio;
 
+    @NotNull
+    @Column(name = "visibility")
+    @Enumerated(EnumType.STRING)
+    public ComponentVisibility.Visibility visibility;
+
     @Override
     public Long getOwnerId() {
         return portfolio.getOwnerId();

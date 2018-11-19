@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.repository.portfolio;
 
+import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
 import fi.helsinki.opintoni.domain.portfolio.Sample;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -27,4 +28,6 @@ public interface SampleRepository extends JpaRepository<Sample, Long> {
     void deleteByPortfolioId(Long portfolioId);
 
     List<Sample> findByPortfolioId(Long portfolioId);
+
+    List<Sample> findByPortfolioIdAndVisibility(Long portfolioId, ComponentVisibility.Visibility visibility);
 }

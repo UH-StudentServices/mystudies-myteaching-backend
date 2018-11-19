@@ -17,8 +17,7 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
-import fi.helsinki.opintoni.domain.portfolio.WorkExperience;
+import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.portfolio.WorkExperienceDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
@@ -31,6 +30,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -53,24 +55,22 @@ public class WorkExperienceService extends DtoService {
         return getDtos(portfolioId, workExperienceRepository::findByPortfolioIdOrderByOrderIndexAsc, workExperienceConverter::toDto);
     }
 
+    public List<WorkExperienceDto> findByPortfolioIdAndVisibility(Long portfolioId, ComponentVisibility.Visibility visibility) {
+        return workExperienceRepository.findByPortfolioIdAndVisibilityOrderByOrderIndexAsc(portfolioId, visibility).stream()
+            .map(workExperienceConverter::toDto)
+            .collect(toList());
+    }
+
     public List<WorkExperienceDto> updateWorkExperiences(Long portfolioId, List<UpdateWorkExperience> updateWorkExperiences) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
         workExperienceRepository.deleteByPortfolioId(portfolio.id);
-        int orderIndex = 0;
 
-        for (UpdateWorkExperience updateWorkExperience: updateWorkExperiences) {
-            WorkExperience workExperience = new WorkExperience();
-            workExperience.employer = updateWorkExperience.employer;
-            workExperience.employerUrl = updateWorkExperience.employerUrl;
-            workExperience.jobTitle = updateWorkExperience.jobTitle;
-            workExperience.startDate = updateWorkExperience.startDate;
-            workExperience.endDate = updateWorkExperience.endDate;
-            workExperience.text = updateWorkExperience.text;
-            workExperience.portfolio = portfolio;
-            workExperience.orderIndex = orderIndex++;
-            workExperienceRepository.save(workExperience);
-        }
+        AtomicInteger orderCounter = new AtomicInteger(0);
+        List<WorkExperience> workExperiences = updateWorkExperiences.stream()
+            .map(workExperience -> workExperienceConverter.toEntity(workExperience, portfolio, orderCounter.getAndIncrement()))
+            .collect(toList());
+        workExperienceRepository.saveAll(workExperiences);
 
         return getDtos(portfolioId,
             workExperienceRepository::findByPortfolioIdOrderByOrderIndexAsc,

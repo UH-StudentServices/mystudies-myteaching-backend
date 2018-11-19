@@ -18,19 +18,19 @@
 package fi.helsinki.opintoni.web.rest.publicapi.portfolio;
 
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.domain.portfolio.ComponentVisibility;
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
-import fi.helsinki.opintoni.domain.portfolio.PortfolioComponent;
-import fi.helsinki.opintoni.domain.portfolio.PortfolioVisibility;
-import fi.helsinki.opintoni.repository.portfolio.ComponentVisibilityRepository;
-import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
+import fi.helsinki.opintoni.domain.portfolio.*;
+import fi.helsinki.opintoni.repository.portfolio.*;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Arrays;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 public abstract class PublicPortfolioTest extends SpringTest {
+
     protected static final String PUBLIC_STUDENT_PORTFOLIO_API_PATH = RestConstants.PUBLIC_API_V1 + "/profile/2";
 
     protected static final long STUDENT_PORTFOLIO_ID = 2L;
@@ -38,6 +38,18 @@ public abstract class PublicPortfolioTest extends SpringTest {
 
     @Autowired
     private PortfolioRepository portfolioRepository;
+
+    @Autowired
+    private LanguageProficiencyRepository languageProficiencyRepository;
+
+    @Autowired
+    private SampleRepository sampleRepository;
+
+    @Autowired
+    private WorkExperienceRepository workExperienceRepository;
+
+    @Autowired
+    private DegreeRepository degreeRepository;
 
     @Autowired
     private ComponentVisibilityRepository componentVisibilityRepository;
@@ -61,6 +73,28 @@ public abstract class PublicPortfolioTest extends SpringTest {
             componentVisibility.portfolio = portfolioRepository.findById(STUDENT_PORTFOLIO_ID).get();
             componentVisibilityRepository.save(componentVisibility);
         });
+    }
+
+    public void setPrivateVisibilityForEveryStudentPortfolioComponentItem() {
+        List<PortfolioLanguageProficiency> proficiencies = languageProficiencyRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID).stream()
+            .peek(proficiency -> proficiency.visibility = ComponentVisibility.Visibility.PRIVATE)
+            .collect(toList());
+        languageProficiencyRepository.saveAll(proficiencies);
+
+        List<Sample> samples = sampleRepository.findByPortfolioId(STUDENT_PORTFOLIO_ID).stream()
+            .peek(sample -> sample.visibility = ComponentVisibility.Visibility.PRIVATE)
+            .collect(toList());
+        sampleRepository.saveAll(samples);
+
+        List<Degree> degrees = degreeRepository.findByPortfolioIdOrderByOrderIndexAsc(STUDENT_PORTFOLIO_ID).stream()
+            .peek(degree -> degree.visibility = ComponentVisibility.Visibility.PRIVATE)
+            .collect(toList());
+        degreeRepository.saveAll(degrees);
+
+        List<WorkExperience> workExperiences = workExperienceRepository.findByPortfolioIdOrderByOrderIndexAsc(STUDENT_PORTFOLIO_ID).stream()
+            .peek(workExperience -> workExperience.visibility = ComponentVisibility.Visibility.PRIVATE)
+            .collect(toList());
+        workExperienceRepository.saveAll(workExperiences);
     }
 
     private void savePortfolioAsPublic(long portfolioId) {

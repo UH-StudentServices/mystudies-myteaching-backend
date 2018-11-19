@@ -17,8 +17,7 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
-import fi.helsinki.opintoni.domain.portfolio.Sample;
+import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.portfolio.SampleDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.PortfolioRepository;
@@ -30,7 +29,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -51,7 +51,13 @@ public class SampleService {
 
     public List<SampleDto> findByPortfolioId(Long portfolioId) {
         List<Sample> samples = sampleRepository.findByPortfolioId(portfolioId);
-        return samples.stream().map(sampleConverter::toDto).collect(Collectors.toList());
+        return samples.stream().map(sampleConverter::toDto).collect(toList());
+    }
+
+    public List<SampleDto> findByPortfolioIdAndVisibility(Long portfolioId, ComponentVisibility.Visibility visibility) {
+        return sampleRepository.findByPortfolioIdAndVisibility(portfolioId, visibility).stream()
+            .map(sampleConverter::toDto)
+            .collect(toList());
     }
 
     public List<SampleDto> updateSamples(Long portfolioId, List<UpdateSample> updateSamples) {
@@ -59,14 +65,10 @@ public class SampleService {
 
         sampleRepository.deleteByPortfolioId(portfolio.id);
 
-        updateSamples.forEach(updateSample -> {
-            Sample sample = new Sample();
-            sample.title = updateSample.title;
-            sample.description = updateSample.description;
-            sample.portfolio = portfolio;
-
-            sampleRepository.save(sample);
-        });
+        List<Sample> samples = updateSamples.stream()
+            .map(updateSample -> sampleConverter.toEntity(updateSample, portfolio))
+            .collect(toList());
+        sampleRepository.saveAll(samples);
 
         return findByPortfolioId(portfolioId);
     }

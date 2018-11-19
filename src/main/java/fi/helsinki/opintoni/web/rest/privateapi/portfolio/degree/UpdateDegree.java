@@ -24,4 +24,6 @@ public class UpdateDegree {
     public String description;
 
     public String dateOfDegree;
+
+    public String visibility;
 }

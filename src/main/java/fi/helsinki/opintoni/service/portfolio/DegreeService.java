@@ -17,8 +17,7 @@
 
 package fi.helsinki.opintoni.service.portfolio;
 
-import fi.helsinki.opintoni.domain.portfolio.Degree;
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
+import fi.helsinki.opintoni.domain.portfolio.*;
 import fi.helsinki.opintoni.dto.portfolio.DegreeDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.portfolio.DegreeRepository;
@@ -32,6 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
@@ -56,22 +57,22 @@ public class DegreeService extends DtoService {
             degreeConverter::toDto);
     }
 
+    public List<DegreeDto> findByPortfolioIdAndVisibility(Long portfolioId, ComponentVisibility.Visibility visibility) {
+        return degreeRepository.findByPortfolioIdAndVisibilityOrderByOrderIndexAsc(portfolioId, visibility).stream()
+            .map(degreeConverter::toDto)
+            .collect(toList());
+    }
+
     public List<DegreeDto> updateDegrees(Long portfolioId, List<UpdateDegree> updateDegrees) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(NotFoundException::new);
 
         degreeRepository.deleteAll(degreeRepository.findByPortfolioIdOrderByOrderIndexAsc(portfolio.id));
 
         AtomicInteger orderCounter = new AtomicInteger(0);
-        updateDegrees.forEach(updateDegree -> {
-            Degree degree = new Degree();
-            degree.title = updateDegree.title;
-            degree.institution = updateDegree.institution;
-            degree.description = updateDegree.description;
-            degree.dateOfDegree = updateDegree.dateOfDegree;
-            degree.portfolio = portfolio;
-            degree.orderIndex = orderCounter.getAndIncrement();
-            degreeRepository.save(degree);
-        });
+        List<Degree> degrees = updateDegrees.stream()
+            .map(updateDegree -> degreeConverter.toEntity(updateDegree, portfolio, orderCounter.getAndIncrement()))
+            .collect(toList());
+        degreeRepository.saveAll(degrees);
 
         return getDtos(portfolioId,
             degreeRepository::findByPortfolioIdOrderByOrderIndexAsc,
