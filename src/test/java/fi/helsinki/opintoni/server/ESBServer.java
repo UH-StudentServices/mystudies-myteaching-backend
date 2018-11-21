@@ -24,7 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import static fi.helsinki.opintoni.service.portfolio.EmployeeContactInformationService.EMPLOYEE_NUMBER_PREFIX;
+import static fi.helsinki.opintoni.service.profile.EmployeeContactInformationService.EMPLOYEE_NUMBER_PREFIX;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;

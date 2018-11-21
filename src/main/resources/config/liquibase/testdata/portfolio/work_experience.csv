@@ -1,4 +1,0 @@
-id;portfolio_id;employer;job_title;employer_url;text;start_date;end_date;created_by;order_index;visibility
-nextval('work_experience_id_seq');2;HY;Harjoittelija;http://www.helsinki.fi/;Lorem ipsum;2015-06-06;2015-07-06;system;0;PUBLIC
-nextval('work_experience_id_seq');2;Koulukoulu;Rehtori;http://www.aalto.fi/;Muspi merol;2017-06-06;2018-04-29;system;1;PUBLIC
-nextval('work_experience_id_seq');2;Yrittäjä;Tuholaistorjuja;http://www.punkkiparturi.fi;Heikunkeikun;2013-04-01;2014-10-10;system;2;PUBLIC

@@ -48,8 +48,8 @@ public class SessionResourceTest extends SpringTest {
             .andExpect(jsonPath("$.name").value("Olli Opiskelija"))
             .andExpect(jsonPath("$.roles", hasItem("STUDENT")))
             .andExpect(jsonPath("$.openUniversity").value(false))
-            .andExpect(jsonPath("$.portfolioPathsByRoleAndLang.student.en").value(contains("/en/olli-opiskelija")))
-            .andExpect(jsonPath("$.portfolioPathsByRoleAndLang.student.fi").value(contains("/fi/olli-opiskelija")))
+            .andExpect(jsonPath("$.profilePathsByRoleAndLang.student.en").value(contains("/en/olli-opiskelija")))
+            .andExpect(jsonPath("$.profilePathsByRoleAndLang.student.fi").value(contains("/fi/olli-opiskelija")))
             .andExpect(jsonPath("$.faculty.code").value("H70"))
             .andExpect(jsonPath("$.pilotDegreeProgramme").value(true));
     }

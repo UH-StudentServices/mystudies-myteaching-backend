@@ -21,6 +21,7 @@ import com.google.common.collect.Iterables;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.StudyAttainmentDto;
 import fi.helsinki.opintoni.localization.Language;
+import fi.helsinki.opintoni.service.profile.StudyAttainmentService;
 import fi.helsinki.opintoni.web.TestConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StudyAttainmentServiceTest extends SpringTest {
     private static final Locale USER_LOCALE = new Locale(Language.FI.getCode());
 
-    private static final Long MISSING_WHITELIST_PORTFOLIO_ID = 999L;
+    private static final Long MISSING_WHITELIST_PROFILE_ID = 999L;
 
     @Autowired
     private StudyAttainmentService studyAttainmentService;
@@ -81,11 +82,11 @@ public class StudyAttainmentServiceTest extends SpringTest {
     }
 
     @Test
-    public void thatOnlyWhitelistedAttainmentsAreReturnedForPortfolio() {
+    public void thatOnlyWhitelistedAttainmentsAreReturnedForProfile() {
         defaultStudentRequestChain().roles().attainments();
 
-        List<StudyAttainmentDto> studyAttainments = studyAttainmentService.getWhitelistedAttainmentsByPortfolioId(
-            TestConstants.PORTFOLIO_ID,
+        List<StudyAttainmentDto> studyAttainments = studyAttainmentService.getWhitelistedAttainmentsByProfileId(
+            TestConstants.PROFILE_ID,
             Locale.ENGLISH);
 
         assertThat(studyAttainments).hasSize(2);
@@ -95,8 +96,8 @@ public class StudyAttainmentServiceTest extends SpringTest {
 
     @Test
     public void shouldReturnEmptyListOnMissingWhitelist() {
-        List<StudyAttainmentDto> studyAttainments = studyAttainmentService.getWhitelistedAttainmentsByPortfolioId(
-            MISSING_WHITELIST_PORTFOLIO_ID,
+        List<StudyAttainmentDto> studyAttainments = studyAttainmentService.getWhitelistedAttainmentsByProfileId(
+            MISSING_WHITELIST_PROFILE_ID,
             Locale.ENGLISH);
 
         assertThat(studyAttainments.isEmpty()).isTrue();

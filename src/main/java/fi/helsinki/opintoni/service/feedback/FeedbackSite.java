@@ -20,8 +20,8 @@ package fi.helsinki.opintoni.service.feedback;
 public enum FeedbackSite {
     STUDENT("myStudies"),
     TEACHER("myTeaching"),
-    PORTFOLIO("portfolio"),
-    ACADEMIC_PORTFOLIO("academicPortfolio");
+    PROFILE("profile"),
+    ACADEMIC_PROFILE("academicProfile");
 
     private final String name;
 

@@ -20,9 +20,9 @@ package fi.helsinki.opintoni.config;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.config.http.converter.CsvHttpMessageConverter;
 import fi.helsinki.opintoni.security.SecurityUtils;
-import fi.helsinki.opintoni.security.authorization.portfolio.PrivatePortfolioInterceptor;
-import fi.helsinki.opintoni.security.authorization.portfolio.PublicPortfolioInterceptor;
-import fi.helsinki.opintoni.security.authorization.portfolio.RestrictedPortfolioInterceptor;
+import fi.helsinki.opintoni.security.authorization.profile.PrivateProfileInterceptor;
+import fi.helsinki.opintoni.security.authorization.profile.PublicProfileInterceptor;
+import fi.helsinki.opintoni.security.authorization.profile.RestrictedProfileInterceptor;
 import fi.helsinki.opintoni.service.UserService;
 import fi.helsinki.opintoni.web.arguments.StudentNumberArgumentResolver;
 import fi.helsinki.opintoni.web.arguments.TeacherNumberArgumentResolver;
@@ -53,13 +53,13 @@ public class WebConfig implements WebMvcConfigurer {
     private UserService userService;
 
     @Autowired
-    private PrivatePortfolioInterceptor privatePortfolioInterceptor;
+    private PrivateProfileInterceptor privateProfileInterceptor;
 
     @Autowired
-    private RestrictedPortfolioInterceptor restrictedPortfolioInterceptor;
+    private RestrictedProfileInterceptor restrictedProfileInterceptor;
 
     @Autowired
-    private PublicPortfolioInterceptor publicPortfolioInterceptor;
+    private PublicProfileInterceptor publicProfileInterceptor;
 
     @Autowired
     private SecurityUtils securityUtils;
@@ -94,17 +94,17 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry
-            .addInterceptor(privatePortfolioInterceptor)
-            .addPathPatterns(RestConstants.PRIVATE_API_V1_PORTFOLIO + "/**");
+            .addInterceptor(privateProfileInterceptor)
+            .addPathPatterns(RestConstants.PRIVATE_API_V1_PROFILE + "/**");
 
         registry
-            .addInterceptor(restrictedPortfolioInterceptor)
-            .addPathPatterns(RestConstants.RESTRICTED_API_V1_PORTFOLIO + "/**");
+            .addInterceptor(restrictedProfileInterceptor)
+            .addPathPatterns(RestConstants.RESTRICTED_API_V1_PROFILE + "/**");
 
         registry
-            .addInterceptor(publicPortfolioInterceptor)
-            .addPathPatterns(RestConstants.PUBLIC_API_V1_PORTFOLIO + "/**")
-            .excludePathPatterns(RestConstants.PUBLIC_API_V1_PORTFOLIO + "/files/**");
+            .addInterceptor(publicProfileInterceptor)
+            .addPathPatterns(RestConstants.PUBLIC_API_V1_PROFILE + "/**")
+            .excludePathPatterns(RestConstants.PUBLIC_API_V1_PROFILE + "/files/**");
     }
 
     @Bean

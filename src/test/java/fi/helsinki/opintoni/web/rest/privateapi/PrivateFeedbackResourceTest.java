@@ -61,11 +61,11 @@ public class PrivateFeedbackResourceTest extends SpringTest {
     @Value("${feedback.recipient.teacher}")
     private String feedbackTeacherRecipient;
 
-    @Value("${feedback.recipient.portfolio}")
-    private String feedbackPortfolioRecipient;
+    @Value("${feedback.recipient.profile}")
+    private String feedbackProfileRecipient;
 
-    @Value("${feedback.recipient.academicPortfolio}")
-    private String feedbackAcademicPortfolioRecipient;
+    @Value("${feedback.recipient.academicProfile}")
+    private String feedbackAcademicProfileRecipient;
 
     private static final String FEEDBACK_CONTENT_TYPE = "text/plain; charset=UTF-8";
     private static final String FEEDBACK_USER_AGENT = "test-user-agent";
@@ -83,13 +83,13 @@ public class PrivateFeedbackResourceTest extends SpringTest {
     private static final String FEEDBACK_SUBJECT_MY_TEACHING_SV = "Feedback från Min Undervisning websidan";
     private static final String FEEDBACK_SUBJECT_MY_TEACHING_EN = "Feedback from My Teaching web page";
 
-    private static final String FEEDBACK_SUBJECT_PORTFOLIO_FI = "Palaute portfoliosta";
-    private static final String FEEDBACK_SUBJECT_PORTFOLIO_SV = "Feedback från portfölj";
-    private static final String FEEDBACK_SUBJECT_PORTFOLIO_EN = "Feedback from portfolio";
+    private static final String FEEDBACK_SUBJECT_PROFILE_FI = "Palaute profiilista";
+    private static final String FEEDBACK_SUBJECT_PROFILE_SV = "Feedback från profil";
+    private static final String FEEDBACK_SUBJECT_PROFILE_EN = "Feedback from profile";
 
-    private static final String FEEDBACK_SUBJECT_ACADEMIC_PORTFOLIO_FI = "Palaute yliopistoportfoliosta";
-    private static final String FEEDBACK_SUBJECT_ACADEMIC_PORTFOLIO_SV = "Feedback från universitetsportfölj";
-    private static final String FEEDBACK_SUBJECT_ACADEMIC_PORTFOLIO_EN = "Feedback from academic portfolio";
+    private static final String FEEDBACK_SUBJECT_ACADEMIC_PROFILE_FI = "Palaute yliopistoprofiilista";
+    private static final String FEEDBACK_SUBJECT_ACADEMIC_PROFILE_SV = "Feedback från universitetsprofil";
+    private static final String FEEDBACK_SUBJECT_ACADEMIC_PROFILE_EN = "Feedback from academic profile";
 
     private static final String SITE_MY_STUDIES_FI = "Opintoni";
     private static final String SITE_MY_STUDIES_SV = "Mina Studier";
@@ -99,13 +99,13 @@ public class PrivateFeedbackResourceTest extends SpringTest {
     private static final String SITE_MY_TEACHING_SV = "Min Undervisning";
     private static final String SITE_MY_TEACHING_EN = "My Teaching";
 
-    private static final String SITE_PORTFOLIO_FI = "Portfolio";
-    private static final String SITE_PORTFOLIO_SV = "Portfölj";
-    private static final String SITE_PORTFOLIO_EN = "Portfolio";
+    private static final String SITE_PROFILE_FI = "Profiili";
+    private static final String SITE_PROFILE_SV = "Profil";
+    private static final String SITE_PROFILE_EN = "Profile";
 
-    private static final String SITE_ACADEMIC_PORTFOLIO_FI = "Yliopistoportfolio";
-    private static final String SITE_ACADEMIC_PORTFOLIO_SV = "Universitetsportfölj";
-    private static final String SITE_ACADEMIC_PORTFOLIO_EN = "Academic Portfolio";
+    private static final String SITE_ACADEMIC_PROFILE_FI = "Yliopistoprofiili";
+    private static final String SITE_ACADEMIC_PROFILE_SV = "Universitetsprofil";
+    private static final String SITE_ACADEMIC_PROFILE_EN = "Academic Profile";
 
     private static final String FEEDBACK_CONTENT_PATTERN_FI =
         "Content\r\n\r\n" +
@@ -133,16 +133,16 @@ public class PrivateFeedbackResourceTest extends SpringTest {
     private static final String FEEDBACK_CONTENT_PATTERN_MY_TEACHING_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, SITE_MY_TEACHING_SV);
     private static final String FEEDBACK_CONTENT_PATTERN_MY_TEACHING_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, SITE_MY_TEACHING_EN);
 
-    private static final String FEEDBACK_CONTENT_PATTERN_PORTFOLIO_FI = String.format(FEEDBACK_CONTENT_PATTERN_FI, SITE_PORTFOLIO_FI);
-    private static final String FEEDBACK_CONTENT_PATTERN_PORTFOLIO_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, SITE_PORTFOLIO_SV);
-    private static final String FEEDBACK_CONTENT_PATTERN_PORTFOLIO_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, SITE_PORTFOLIO_EN);
+    private static final String FEEDBACK_CONTENT_PATTERN_PROFILE_FI = String.format(FEEDBACK_CONTENT_PATTERN_FI, SITE_PROFILE_FI);
+    private static final String FEEDBACK_CONTENT_PATTERN_PROFILE_SV = String.format(FEEDBACK_CONTENT_PATTERN_SV, SITE_PROFILE_SV);
+    private static final String FEEDBACK_CONTENT_PATTERN_PROFILE_EN = String.format(FEEDBACK_CONTENT_PATTERN_EN, SITE_PROFILE_EN);
 
-    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_FI =
-        String.format(FEEDBACK_CONTENT_PATTERN_FI, SITE_ACADEMIC_PORTFOLIO_FI);
-    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_SV =
-        String.format(FEEDBACK_CONTENT_PATTERN_SV, SITE_ACADEMIC_PORTFOLIO_SV);
-    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_EN =
-        String.format(FEEDBACK_CONTENT_PATTERN_EN, SITE_ACADEMIC_PORTFOLIO_EN);
+    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PROFILE_FI =
+        String.format(FEEDBACK_CONTENT_PATTERN_FI, SITE_ACADEMIC_PROFILE_FI);
+    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PROFILE_SV =
+        String.format(FEEDBACK_CONTENT_PATTERN_SV, SITE_ACADEMIC_PROFILE_SV);
+    private static final String FEEDBACK_CONTENT_PATTERN_ACADEMIC_PROFILE_EN =
+        String.format(FEEDBACK_CONTENT_PATTERN_EN, SITE_ACADEMIC_PROFILE_EN);
 
     @Rule
     public final GreenMailRule greenMail = new GreenMailRule(ServerSetupTest.SMTP);
@@ -243,63 +243,63 @@ public class PrivateFeedbackResourceTest extends SpringTest {
     }
 
     @Test
-    public void thatFeedbackFromPortfolioIsSentInFinnish() throws Exception {
+    public void thatFeedbackFromProfileIsSentInFinnish() throws Exception {
         thatFeedbackIsSent(
-            FeedbackSite.PORTFOLIO.toString(),
+            FeedbackSite.PROFILE.toString(),
             FEEDBACK_LANG_FI,
-            feedbackPortfolioRecipient,
-            FEEDBACK_SUBJECT_PORTFOLIO_FI,
-            FEEDBACK_CONTENT_PATTERN_PORTFOLIO_FI);
+            feedbackProfileRecipient,
+            FEEDBACK_SUBJECT_PROFILE_FI,
+            FEEDBACK_CONTENT_PATTERN_PROFILE_FI);
     }
 
     @Test
-    public void thatFeedbackFromPortfolioIsSentInSwedish() throws Exception {
+    public void thatFeedbackFromProfileIsSentInSwedish() throws Exception {
         thatFeedbackIsSent(
-            FeedbackSite.PORTFOLIO.toString(),
+            FeedbackSite.PROFILE.toString(),
             FEEDBACK_LANG_SV,
-            feedbackPortfolioRecipient,
-            FEEDBACK_SUBJECT_PORTFOLIO_SV,
-            FEEDBACK_CONTENT_PATTERN_PORTFOLIO_SV);
+            feedbackProfileRecipient,
+            FEEDBACK_SUBJECT_PROFILE_SV,
+            FEEDBACK_CONTENT_PATTERN_PROFILE_SV);
     }
 
     @Test
-    public void thatFeedbackFromPortfolioIsSentInEnglish() throws Exception {
+    public void thatFeedbackFromProfileIsSentInEnglish() throws Exception {
         thatFeedbackIsSent(
-            FeedbackSite.PORTFOLIO.toString(),
+            FeedbackSite.PROFILE.toString(),
             FEEDBACK_LANG_EN,
-            feedbackPortfolioRecipient,
-            FEEDBACK_SUBJECT_PORTFOLIO_EN,
-            FEEDBACK_CONTENT_PATTERN_PORTFOLIO_EN);
+            feedbackProfileRecipient,
+            FEEDBACK_SUBJECT_PROFILE_EN,
+            FEEDBACK_CONTENT_PATTERN_PROFILE_EN);
     }
 
     @Test
-    public void thatFeedbackFromAcademicPortfolioIsSentInFinnish() throws Exception {
+    public void thatFeedbackFromAcademicProfileIsSentInFinnish() throws Exception {
         thatFeedbackIsSent(
-            FeedbackSite.ACADEMIC_PORTFOLIO.toString(),
+            FeedbackSite.ACADEMIC_PROFILE.toString(),
             FEEDBACK_LANG_FI,
-            feedbackAcademicPortfolioRecipient,
-            FEEDBACK_SUBJECT_ACADEMIC_PORTFOLIO_FI,
-            FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_FI);
+            feedbackAcademicProfileRecipient,
+            FEEDBACK_SUBJECT_ACADEMIC_PROFILE_FI,
+            FEEDBACK_CONTENT_PATTERN_ACADEMIC_PROFILE_FI);
     }
 
     @Test
-    public void thatFeedbackFromAcademicPortfolioIsSentInSwedish() throws Exception {
+    public void thatFeedbackFromAcademicProfileIsSentInSwedish() throws Exception {
         thatFeedbackIsSent(
-            FeedbackSite.ACADEMIC_PORTFOLIO.toString(),
+            FeedbackSite.ACADEMIC_PROFILE.toString(),
             FEEDBACK_LANG_SV,
-            feedbackAcademicPortfolioRecipient,
-            FEEDBACK_SUBJECT_ACADEMIC_PORTFOLIO_SV,
-            FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_SV);
+            feedbackAcademicProfileRecipient,
+            FEEDBACK_SUBJECT_ACADEMIC_PROFILE_SV,
+            FEEDBACK_CONTENT_PATTERN_ACADEMIC_PROFILE_SV);
     }
 
     @Test
-    public void thatFeedbackFromAcademicPortfolioIsSentInEnglish() throws Exception {
+    public void thatFeedbackFromAcademicProfileIsSentInEnglish() throws Exception {
         thatFeedbackIsSent(
-            FeedbackSite.ACADEMIC_PORTFOLIO.toString(),
+            FeedbackSite.ACADEMIC_PROFILE.toString(),
             FEEDBACK_LANG_EN,
-            feedbackAcademicPortfolioRecipient,
-            FEEDBACK_SUBJECT_ACADEMIC_PORTFOLIO_EN,
-            FEEDBACK_CONTENT_PATTERN_ACADEMIC_PORTFOLIO_EN);
+            feedbackAcademicProfileRecipient,
+            FEEDBACK_SUBJECT_ACADEMIC_PROFILE_EN,
+            FEEDBACK_CONTENT_PATTERN_ACADEMIC_PROFILE_EN);
     }
 
     @Test

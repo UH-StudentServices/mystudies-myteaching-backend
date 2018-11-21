@@ -47,8 +47,8 @@ feedback:
     recipient:
         student: neu-tuki@helsinki.fi
         teacher: opetusteknologia@helsinki.fi
-        portfolio: opetusteknologia@helsinki.fi
-        academicPortfolio: opetusteknologia@helsinki.fi
+        profile: opetusteknologia@helsinki.fi
+        academicProfile: opetusteknologia@helsinki.fi
 
     anonymous:
         fromAddress: doo-projekti@helsinki.fi
@@ -414,4 +414,4 @@ fileService:
     client:
         implementation: mock
         storage: fileSystem
-        path: /opt/opintoni/files/portfolio
+        path: /opt/opintoni/files/profile

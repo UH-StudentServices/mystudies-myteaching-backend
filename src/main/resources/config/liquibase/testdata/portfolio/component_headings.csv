@@ -1,3 +1,0 @@
-id;portfolio_id;component;heading;created_by
-nextval('component_heading_id_seq');2;STUDIES;Test heading;system
-nextval('component_heading_id_seq');2;DEGREES;Another heading;system

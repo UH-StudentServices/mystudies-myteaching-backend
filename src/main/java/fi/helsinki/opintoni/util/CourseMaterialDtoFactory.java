@@ -17,14 +17,14 @@
 
 package fi.helsinki.opintoni.util;
 
-import fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto;
+import fi.helsinki.opintoni.dto.profile.CourseMaterialDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto.CourseMaterialType.COURSE_PAGE;
-import static fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto.CourseMaterialType.MOODLE;
-import static fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto.CourseMaterialType.WIKI;
+import static fi.helsinki.opintoni.dto.profile.CourseMaterialDto.CourseMaterialType.COURSE_PAGE;
+import static fi.helsinki.opintoni.dto.profile.CourseMaterialDto.CourseMaterialType.MOODLE;
+import static fi.helsinki.opintoni.dto.profile.CourseMaterialDto.CourseMaterialType.WIKI;
 
 @Component
 public class CourseMaterialDtoFactory {

@@ -1,3 +1,0 @@
-id;portfolio_id;phone_number;email;created_by
-nextval('contact_information_id_seq');2;+358112223333;olli.opiskelija@helsinki.fi;system
-nextval('contact_information_id_seq');4;+358112223333;olli.opettaja@helsinki.fi;system

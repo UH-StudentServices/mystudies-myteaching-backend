@@ -73,8 +73,8 @@ public class FileServiceMockClient implements FileServiceClient {
         try {
             fileStorage.put(path, data);
         } catch (IOException e) {
-            logger.error("Failed to add portfolio file {}", path, e);
-            throw new RuntimeException("Failed to add portfolio file " + path);
+            logger.error("Failed to add profile file {}", path, e);
+            throw new RuntimeException("Failed to add profile file " + path);
         }
     }
 
@@ -83,8 +83,8 @@ public class FileServiceMockClient implements FileServiceClient {
         try {
             fileStorage.remove(path);
         } catch (IOException e) {
-            logger.error("Failed to remove portfolio file {}", path, e);
-            throw new RuntimeException("Failed to remove portfolio file " + path);
+            logger.error("Failed to remove profile file {}", path, e);
+            throw new RuntimeException("Failed to remove profile file " + path);
         }
     }
 

@@ -1,3 +1,0 @@
-id;title;created_by
-nextval('portfolio_keyword_id_seq');Keyword 1;system
-nextval('portfolio_keyword_id_seq');Keyword 2;system

@@ -24,7 +24,7 @@ import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
-import static fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto.CourseMaterialType;
+import static fi.helsinki.opintoni.dto.profile.CourseMaterialDto.CourseMaterialType;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

@@ -55,8 +55,8 @@ public class FeedbackService {
     private final MessageSource messageSource;
     private final String studentFeedbackToAddress;
     private final String teacherFeedbackToAddress;
-    private final String portfolioFeedbackToAddress;
-    private final String academicPortfolioFeedbackToAddress;
+    private final String profileFeedbackToAddress;
+    private final String academicProfileFeedbackToAddress;
     private final String anonymousFeedbackFromAddress;
     private final String anonymousFeedbackReplyToAddress;
 
@@ -65,16 +65,16 @@ public class FeedbackService {
                            MessageSource messageSource,
                            @Value("${feedback.recipient.student}") String studentFeedbackToAddress,
                            @Value("${feedback.recipient.teacher}") String teacherFeedbackToAddress,
-                           @Value("${feedback.recipient.portfolio}") String portfolioFeedbackToAddress,
-                           @Value("${feedback.recipient.academicPortfolio}") String academicPortfolioFeedbackToAddress,
+                           @Value("${feedback.recipient.profile}") String profileFeedbackToAddress,
+                           @Value("${feedback.recipient.academicProfile}") String academicProfileFeedbackToAddress,
                            @Value("${feedback.anonymous.fromAddress}") String anonymousFeedbackFromAddress,
                            @Value("${feedback.anonymous.replyToAddress}") String anonymousFeedbackReplyToAddress) {
         this.mailSender = mailSender;
         this.messageSource = messageSource;
         this.studentFeedbackToAddress = studentFeedbackToAddress;
         this.teacherFeedbackToAddress = teacherFeedbackToAddress;
-        this.portfolioFeedbackToAddress = portfolioFeedbackToAddress;
-        this.academicPortfolioFeedbackToAddress = academicPortfolioFeedbackToAddress;
+        this.profileFeedbackToAddress = profileFeedbackToAddress;
+        this.academicProfileFeedbackToAddress = academicProfileFeedbackToAddress;
         this.anonymousFeedbackFromAddress = anonymousFeedbackFromAddress;
         this.anonymousFeedbackReplyToAddress = anonymousFeedbackReplyToAddress;
     }
@@ -100,10 +100,10 @@ public class FeedbackService {
             message.setTo(studentFeedbackToAddress);
         } else if (FeedbackSite.TEACHER.equalsName(site)) {
             message.setTo(teacherFeedbackToAddress);
-        } else if (FeedbackSite.PORTFOLIO.equalsName(site)) {
-            message.setTo(portfolioFeedbackToAddress);
-        } else if (FeedbackSite.ACADEMIC_PORTFOLIO.equalsName(site)) {
-            message.setTo(academicPortfolioFeedbackToAddress);
+        } else if (FeedbackSite.PROFILE.equalsName(site)) {
+            message.setTo(profileFeedbackToAddress);
+        } else if (FeedbackSite.ACADEMIC_PROFILE.equalsName(site)) {
+            message.setTo(academicProfileFeedbackToAddress);
         } else {
             log.error("Unexpected message state: {}", site);
             throw new BadRequestException("Unexpected message metadata state");

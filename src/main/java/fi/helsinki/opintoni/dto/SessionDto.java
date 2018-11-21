@@ -30,7 +30,7 @@ public class SessionDto {
     public String email;
     public String avatarUrl;
     public FacultyDto faculty;
-    public Map<String, Map<String, List<String>>> portfolioPathsByRoleAndLang;
+    public Map<String, Map<String, List<String>>> profilePathsByRoleAndLang;
     public Set<String> roles;
     public boolean openUniversity;
     public boolean pilotDegreeProgramme;

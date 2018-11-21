@@ -1,3 +1,0 @@
-id;portfolio_id
-nextval('study_attainment_whitelist_id_seq');2
-nextval('study_attainment_whitelist_id_seq');1

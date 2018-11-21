@@ -55,9 +55,9 @@
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/portfolios.csv"
+                  file="config/liquibase/testdata/profile/profiles.csv"
                   separator=";"
-                  tableName="portfolio">
+                  tableName="profile">
             <column name="created_date" type="timestamp"/>
             <column name="id" type="computed"/>
         </loadData>
@@ -90,42 +90,42 @@
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/portfolio_keywords.csv"
+                  file="config/liquibase/testdata/profile/profile_keywords.csv"
                   separator=";"
-                  tableName="portfolio_keyword">
+                  tableName="profile_keyword">
             <column name="created_date" type="timestamp"/>
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/portfolio_keyword_relationships.csv"
+                  file="config/liquibase/testdata/profile/profile_keyword_relationships.csv"
                   separator=";"
-                  tableName="portfolio_keyword_relationship">
+                  tableName="profile_keyword_relationship">
             <column name="created_date" type="timestamp"/>
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/contact_information.csv"
+                  file="config/liquibase/testdata/profile/contact_information.csv"
                   separator=";"
                   tableName="contact_information">
             <column name="created_date" type="timestamp"/>
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/degrees.csv"
+                  file="config/liquibase/testdata/profile/degrees.csv"
                   separator=";"
                   tableName="degree">
             <column name="created_date" type="timestamp"/>
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/work_experience.csv"
+                  file="config/liquibase/testdata/profile/work_experience.csv"
                   separator=";"
                   tableName="work_experience">
             <column name="created_date" type="timestamp"/>
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/job_search.csv"
+                  file="config/liquibase/testdata/profile/job_search.csv"
                   separator=";"
                   tableName="job_search">
             <column name="created_date" type="timestamp"/>
@@ -133,28 +133,28 @@
         </loadData>
 
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/study_attainment_whitelists.csv"
+                  file="config/liquibase/testdata/profile/study_attainment_whitelists.csv"
                   separator=";"
                   tableName="study_attainment_whitelist">
             <column name="created_date" type="timestamp"/>
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/study_attainment_whitelist_entries.csv"
+                  file="config/liquibase/testdata/profile/study_attainment_whitelist_entries.csv"
                   separator=";"
                   tableName="study_attainment_whitelist_entry">
             <column name="created_date" type="timestamp"/>
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/component_visibilities.csv"
+                  file="config/liquibase/testdata/profile/component_visibilities.csv"
                   separator=";"
                   tableName="component_visibility">
             <column name="created_date" type="timestamp"/>
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/component_orders.csv"
+                  file="config/liquibase/testdata/profile/component_orders.csv"
                   separator=";"
                   tableName="component_order">
             <column name="created_date" type="timestamp"/>
@@ -175,7 +175,7 @@
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/free_text_contents.csv"
+                  file="config/liquibase/testdata/profile/free_text_contents.csv"
                   separator=";"
                   tableName="free_text_content">
             <column name="created_date" type="timestamp"/>
@@ -189,7 +189,7 @@
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/component_headings.csv"
+                  file="config/liquibase/testdata/profile/component_headings.csv"
                   separator=";"
                   tableName="component_heading">
             <column name="created_date" type="timestamp"/>
@@ -232,19 +232,19 @@
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/portfolio_language_proficiency.csv"
+                  file="config/liquibase/testdata/profile/profile_language_proficiency.csv"
                   separator=";"
-                  tableName="portfolio_language_proficiency">
+                  tableName="profile_language_proficiency">
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/portfolio_shared_link.csv"
+                  file="config/liquibase/testdata/profile/profile_shared_link.csv"
                   separator=";"
-                  tableName="portfolio_shared_link">
+                  tableName="profile_shared_link">
             <column name="id" type="computed"/>
         </loadData>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/testdata/portfolio/samples.csv"
+                  file="config/liquibase/testdata/profile/samples.csv"
                   separator=";"
                   tableName="sample">
             <column name="id" type="computed"/>

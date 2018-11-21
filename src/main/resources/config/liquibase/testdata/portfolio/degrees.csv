@@ -1,2 +1,0 @@
-id;portfolio_id;title;description;date_of_degree;created_by;visibility
-nextval('degree_id_seq');2;Luonnontieteiden kandidaatti;Globaalit rakenneoptimointimenetelmät;2015-06-06;system;PUBLIC
