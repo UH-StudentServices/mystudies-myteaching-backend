@@ -27,7 +27,7 @@ public class TestSecurityContext {
     private static final String TEACHER_USERNAME = "opettaja";
     private static final String PASSWORD = "password";
     private static final String HYBRID_USER_USERNAME = "hybriduser";
-    private static final String TEACHER_WITHOUT_PORTFOLIO_USERNAME = "testteacher";
+    private static final String TEACHER_WITHOUT_PROFILE_USERNAME = "testteacher";
 
     public static SecurityContext studentSecurityContext() {
         SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
@@ -45,8 +45,8 @@ public class TestSecurityContext {
         return securityContext;
     }
 
-    public static SecurityContext teacherWithoutPortfolioSecurityContext() {
-        return teacherSecurityContext(TEACHER_WITHOUT_PORTFOLIO_USERNAME, PASSWORD);
+    public static SecurityContext teacherWithoutProfileSecurityContext() {
+        return teacherSecurityContext(TEACHER_WITHOUT_PROFILE_USERNAME, PASSWORD);
     }
 
     public static SecurityContext hybridUserSecurityContext() {

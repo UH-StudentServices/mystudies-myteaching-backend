@@ -18,7 +18,7 @@
 package fi.helsinki.opintoni.util;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
-import fi.helsinki.opintoni.domain.portfolio.Portfolio;
+import fi.helsinki.opintoni.domain.profile.Profile;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,7 +54,7 @@ public class UriBuilder {
     }
 
     @SuppressWarnings("SameReturnValue")
-    public String getPortfolioDefaultUserAvatarUrl() {
+    public String getProfileDefaultUserAvatarUrl() {
         return "/profile/assets/icons/avatar.png";
     }
 
@@ -62,13 +62,13 @@ public class UriBuilder {
         return appConfiguration.get("hostUrl") + relativeUrl;
     }
 
-    public String getPortfolioUrl(Portfolio portfolio) {
-        return String.join("/", appConfiguration.get("portfolioUrl." + portfolio.portfolioRole.getRole()),
-            portfolio.language.getCode(), portfolio.path);
+    public String getProfileUrl(Profile profile) {
+        return String.join("/", appConfiguration.get("profileUrl." + profile.profileRole.getRole()),
+            profile.language.getCode(), profile.path);
     }
 
-    public String getPortfolioUrl(Portfolio portfolio, String sharedLinkFragment) {
-        return String.join("/", appConfiguration.get("portfolioUrl." + portfolio.portfolioRole.getRole()), sharedLinkFragment);
+    public String getProfileUrl(Profile profile, String sharedLinkFragment) {
+        return String.join("/", appConfiguration.get("profileUrl." + profile.profileRole.getRole()), sharedLinkFragment);
     }
 
     public String getMeceDomain() {

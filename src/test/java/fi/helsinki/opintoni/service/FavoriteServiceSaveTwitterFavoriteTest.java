@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FavoriteServiceSaveTwitterFavoriteTest extends AbstractFavoriteServiceTest {
 
     @Test
-    public void thatTwitterFavoriteIsSavedForPortfolio() {
+    public void thatTwitterFavoriteIsSavedForProfile() {
         InsertTwitterFavoriteRequest request = new InsertTwitterFavoriteRequest();
         request.feedType = "USER_TIMELINE";
         request.value = "helsinkiuni";

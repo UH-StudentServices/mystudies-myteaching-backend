@@ -87,7 +87,7 @@ recommendations:
 
 googleAnalyticsAccount:
     main: UA-55852460-2
-    portfolio: UA-55852460-16
+    profile: UA-55852460-16
     student: UA-55852460-9
     teacher: UA-55852460-9
 
@@ -97,7 +97,7 @@ loginUrlStudent: /saml/login/alias/student
 logoutUrl: /saml/logout?local=true
 teacherAppUrl: https://qa.teacher.helsinki.fi
 studentAppUrl: https://qa.student.helsinki.fi
-portfolioUrl:
+profileUrl:
   student: https://qa.student.helsinki.fi/profile
   teacher: https://qa.teacher.helsinki.fi/profile
 

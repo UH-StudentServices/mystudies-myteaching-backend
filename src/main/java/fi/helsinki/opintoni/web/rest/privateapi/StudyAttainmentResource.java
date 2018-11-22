@@ -20,7 +20,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.dto.StudyAttainmentDto;
 import fi.helsinki.opintoni.security.authorization.StudentRoleRequired;
-import fi.helsinki.opintoni.service.StudyAttainmentService;
+import fi.helsinki.opintoni.service.profile.StudyAttainmentService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.StudentNumber;
 import fi.helsinki.opintoni.web.rest.AbstractResource;

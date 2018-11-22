@@ -20,7 +20,7 @@ package fi.helsinki.opintoni.service;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.domain.UserSettings;
-import fi.helsinki.opintoni.dto.ProfileDto;
+import fi.helsinki.opintoni.dto.UserProfileDto;
 import fi.helsinki.opintoni.dto.UserSettingsDto;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.UserSettingsRepository;
@@ -85,12 +85,12 @@ public class UserService {
         return user;
     }
 
-    public Optional<ProfileDto> getProfileByOodiPersonId(String oodiPersonId) {
+    public Optional<UserProfileDto> getProfileByOodiPersonId(String oodiPersonId) {
         return findFirstByOodiPersonId(oodiPersonId).map(user -> {
             final UserSettingsDto userSettingsDto = userSettingsService.findByUserId(user.id);
             final String avatarImageUrl = getAvatarImageUrl(user, userSettingsDto);
             final String backgroundImageUrl = userSettingsDto.backgroundUri;
-            return new ProfileDto(backgroundImageUrl, avatarImageUrl);
+            return new UserProfileDto(backgroundImageUrl, avatarImageUrl);
         });
     }
 

@@ -1814,4 +1814,181 @@
         <addNotNullConstraint tableName="portfolio_language_proficiency" columnName="visibility" />
         <addNotNullConstraint tableName="sample" columnName="visibility" />
     </changeSet>
+
+    <changeSet id="OO-1201 rename portfolio to profile part 2" author="Joni Korhonen">
+        <!-- Drop old foreign key constraints first -->
+        <dropForeignKeyConstraint baseTableName="component_heading" constraintName="fk_component_heading_portfolio" />
+        <dropForeignKeyConstraint baseTableName="component_order" constraintName="fk_component_order_portfolio" />
+        <dropForeignKeyConstraint baseTableName="component_visibility" constraintName="fk_component_visibility_portfolio" />
+        <dropForeignKeyConstraint baseTableName="contact_information" constraintName="fk_contact_information_portfolio" />
+        <dropForeignKeyConstraint baseTableName="degree" constraintName="fk_degree_portfolio" />
+        <dropForeignKeyConstraint baseTableName="free_text_content" constraintName="fk_free_text_content_portfolio" />
+        <dropForeignKeyConstraint baseTableName="job_search" constraintName="fk_job_search_portfolio" />
+        <dropForeignKeyConstraint baseTableName="portfolio_background" constraintName="fk_background_portfolio" />
+        <dropForeignKeyConstraint baseTableName="portfolio_keyword_relationship" constraintName="fk_relationship_portfolio" />
+        <dropForeignKeyConstraint baseTableName="portfolio_keyword_relationship" constraintName="fk_relationship_portfolio_keyword" />
+        <dropForeignKeyConstraint baseTableName="portfolio_language_proficiency" constraintName="fk_portfolio_language_proficiency" />
+        <dropForeignKeyConstraint baseTableName="portfolio_shared_link" constraintName="fk_shared_link_portfolio" />
+        <dropForeignKeyConstraint baseTableName="sample" constraintName="fk_sample_portfolio" />
+        <dropForeignKeyConstraint baseTableName="some_link" constraintName="fk_some_link_portfolio" />
+        <dropForeignKeyConstraint baseTableName="study_attainment_whitelist" constraintName="fk_whitelist_portfolio" />
+        <dropForeignKeyConstraint baseTableName="work_experience" constraintName="fk_work_experience_portfolio" />
+
+        <!-- Rename tables, columns, and sequences and recreate foreign key constraints -->
+        <renameTable oldTableName="portfolio" newTableName="profile" />
+        <sql>alter sequence portfolio_id_seq rename to profile_id_seq</sql>
+        <renameColumn tableName="profile" oldColumnName="portfolio_role" newColumnName="profile_role" />
+
+        <dropUniqueConstraint tableName="component_heading" constraintName="unique_component_heading" />
+        <renameColumn tableName="component_heading" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <addUniqueConstraint tableName="component_heading"
+                             columnNames="profile_id, component"
+                             constraintName="unique_component_heading" />
+        <addForeignKeyConstraint baseTableName="component_heading"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_component_heading_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <dropUniqueConstraint tableName="component_order" constraintName="unique_component_order_value_per_portfolio_id" />
+        <renameColumn tableName="component_order" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <addUniqueConstraint tableName="component_order"
+                             columnNames="profile_id, order_value"
+                             constraintName="unique_component_order_value_per_profile_id" />
+        <addForeignKeyConstraint baseTableName="component_order"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_component_order_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <dropUniqueConstraint tableName="component_visibility" constraintName="unique_component_visibility_per_instance_per_section" />
+        <renameColumn tableName="component_visibility" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <renameColumn tableName="component_visibility" oldColumnName="teacher_portfolio_section" newColumnName="teacher_profile_section" />
+        <addUniqueConstraint tableName="component_visibility"
+                             columnNames="profile_id, component, teacher_profile_section, instance_name"
+                             constraintName="unique_component_visibility_per_instance_per_section" />
+        <addForeignKeyConstraint baseTableName="component_visibility"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_component_visibility_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <renameColumn tableName="contact_information" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <addForeignKeyConstraint baseTableName="contact_information"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_contact_information_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <renameColumn tableName="degree" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <addForeignKeyConstraint baseTableName="degree"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_degree_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <renameColumn tableName="free_text_content" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <renameColumn tableName="free_text_content" oldColumnName="teacher_portfolio_section" newColumnName="teacher_profile_section" />
+        <addForeignKeyConstraint baseTableName="free_text_content"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_free_text_content_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <renameColumn tableName="job_search" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <addForeignKeyConstraint baseTableName="job_search"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_job_search_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <renameTable oldTableName="portfolio_background" newTableName="profile_background" />
+        <sql>alter sequence portfolio_background_id_seq rename to profile_background_id_seq</sql>
+        <renameColumn tableName="profile_background" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <addForeignKeyConstraint baseTableName="profile_background"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_background_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <renameTable oldTableName="portfolio_keyword" newTableName="profile_keyword" />
+        <sql>alter sequence portfolio_keyword_id_seq rename to profile_keyword_id_seq</sql>
+
+        <renameTable oldTableName="portfolio_keyword_relationship" newTableName="profile_keyword_relationship" />
+        <sql>alter sequence portfolio_keyword_relationship_id_seq rename to profile_keyword_relationship_id_seq</sql>
+        <renameColumn tableName="profile_keyword_relationship" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <renameColumn tableName="profile_keyword_relationship" oldColumnName="portfolio_keyword_id" newColumnName="profile_keyword_id" />
+        <addForeignKeyConstraint baseTableName="profile_keyword_relationship"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_relationship_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+        <addForeignKeyConstraint baseTableName="profile_keyword_relationship"
+                                 baseColumnNames="profile_keyword_id"
+                                 constraintName="fk_relationship_profile_keyword"
+                                 referencedTableName="profile_keyword"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <renameTable oldTableName="portfolio_language_proficiency" newTableName="profile_language_proficiency" />
+        <sql>alter sequence portfolio_language_proficiency_id_seq rename to profile_language_proficiency_id_seq</sql>
+        <renameColumn tableName="profile_language_proficiency" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <addForeignKeyConstraint baseTableName="profile_language_proficiency"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_profile_language_proficiency"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <renameTable oldTableName="portfolio_shared_link" newTableName="profile_shared_link" />
+        <sql>alter sequence portfolio_shared_link_id_seq rename to profile_shared_link_id_seq</sql>
+        <renameColumn tableName="profile_shared_link" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <addForeignKeyConstraint baseTableName="profile_shared_link"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_shared_link_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <renameColumn tableName="sample" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <addForeignKeyConstraint baseTableName="sample"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_sample_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <renameColumn tableName="some_link" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <addForeignKeyConstraint baseTableName="some_link"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_some_link_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+
+        <renameColumn tableName="study_attainment_whitelist" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <addForeignKeyConstraint baseTableName="study_attainment_whitelist"
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_whitelist_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+        
+        <renameColumn tableName="work_experience" oldColumnName="portfolio_id" newColumnName="profile_id" />
+        <addForeignKeyConstraint baseTableName="work_experience" 
+                                 baseColumnNames="profile_id"
+                                 constraintName="fk_work_experience_profile"
+                                 referencedTableName="profile"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE" />
+    </changeSet>
 </databaseChangeLog>

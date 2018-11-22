@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.dto.SessionDto;
-import fi.helsinki.opintoni.service.SessionService;
+import fi.helsinki.opintoni.service.profile.SessionService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
 import fi.helsinki.opintoni.web.rest.AbstractResource;

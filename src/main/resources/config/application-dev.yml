@@ -38,8 +38,8 @@ feedback:
     recipient:
         student: studentfeedback@localhost
         teacher: teacherfeedback@localhost
-        portfolio: portfoliofeedback@localhost
-        academicPortfolio: academicportfoliofeedback@localhost
+        profile: profilefeedback@localhost
+        academicProfile: academicprofilefeedback@localhost
 
 metrics:
     jmx.enabled: true
@@ -72,7 +72,7 @@ unisportApiKey: foobar123
 
 googleAnalyticsAccount:
     main: UA-55852460-3
-    portfolio: UA-55852460-18
+    profile: UA-55852460-18
     student: UA-55852460-9
     teacher: UA-55852460-9
 
@@ -82,7 +82,7 @@ loginUrlStudent: https://dev.student.helsinki.fi/info/local-login
 logoutUrl: /logout
 teacherAppUrl: https://dev.teacher.helsinki.fi
 studentAppUrl: https://dev.student.helsinki.fi
-portfolioUrl:
+profileUrl:
   student: https://dev.student.helsinki.fi/profile
   teacher: https://dev.teacher.helsinki.fi/profile
 

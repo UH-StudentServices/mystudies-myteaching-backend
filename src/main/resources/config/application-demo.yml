@@ -64,7 +64,7 @@ unisport:
 
 googleAnalyticsAccount:
     main: UA-55852460-10
-    portfolio: UA-55852460-19
+    profile: UA-55852460-19
 
 hostUrl: https://demo.student.helsinki.fi
 loginUrlTeacher: https://demo.teacher.helsinki.fi/info/local-login
@@ -72,7 +72,7 @@ loginUrlStudent: https://demo.student.helsinki.fi/info/local-login
 logoutUrl: /logout
 teacherAppUrl: https://demo.teacher.helsinki.fi
 studentAppUrl: https://demo.student.helsinki.fi
-portfolioUrl:
+profileUrl:
   student: https://demo.student.helsinki.fi/profile
   teacher: https://demo.teacher.helsinki.fi/profile
 

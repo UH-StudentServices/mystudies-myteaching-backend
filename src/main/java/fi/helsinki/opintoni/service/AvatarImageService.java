@@ -50,8 +50,8 @@ public class AvatarImageService {
             defaultAvatarUrlSupplier.get();
     }
 
-    public String getPortfolioAvatarImageUrl(Long userId) {
-        return getAvatarImageUrl(uriBuilder::getPortfolioDefaultUserAvatarUrl, userId);
+    public String getProfileAvatarImageUrl(Long userId) {
+        return getAvatarImageUrl(uriBuilder::getProfileDefaultUserAvatarUrl, userId);
     }
 
 }

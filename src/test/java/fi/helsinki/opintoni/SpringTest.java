@@ -76,13 +76,13 @@ public abstract class SpringTest {
     private static final List<String> TABLE_NAMES = newArrayList(
         "user_account",
         "favorite",
-        "portfolio",
+        "profile",
         "user_settings",
         "todo_item",
         "useful_link",
         "user_notification",
-        "portfolio_keyword_relationship",
-        "portfolio_keyword",
+        "profile_keyword_relationship",
+        "profile_keyword",
         "contact_information",
         "some_link",
         "degree",
@@ -103,8 +103,9 @@ public abstract class SpringTest {
         "cached_item_updates_check",
         "notifications",
         "notification_schedules",
-        "portfolio_background",
-        "portfolio_language_proficiency");
+        "profile_background",
+        "profile_language_proficiency",
+        "profile_shared_link");
     private static final ImmutableMap<String, String> SEQUENCE_NAMES_BY_TABLE_NAMES = ImmutableMap.of("user_account", "user_id_seq");
     private static final String DEFAULT_SEQUENCE_SUFFIX = "_id_seq";
 

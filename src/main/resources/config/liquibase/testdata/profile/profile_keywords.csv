@@ -1,0 +1,3 @@
+id;title;created_by
+nextval('profile_keyword_id_seq');Keyword 1;system
+nextval('profile_keyword_id_seq');Keyword 2;system

@@ -142,7 +142,7 @@ public class FavoriteService {
         orderFavorites(userId, orderedFavoriteIds, false);
     }
 
-    private void orderFavorites(final Long userId, final List<Long> orderedFavoriteIds, final boolean portfolio) {
+    private void orderFavorites(final Long userId, final List<Long> orderedFavoriteIds, final boolean profile) {
         favoriteRepository
             .findByUserIdOrderByOrderIndexAsc(userId).stream()
             .filter(f -> orderedFavoriteIds.contains(f.id))

@@ -17,7 +17,7 @@
 
 package fi.helsinki.opintoni.dto;
 
-import fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto;
+import fi.helsinki.opintoni.dto.profile.CourseMaterialDto;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 

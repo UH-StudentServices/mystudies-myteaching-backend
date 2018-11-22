@@ -1,5 +1,0 @@
-id;portfolio_id;component;instance_name;order_value;created_by
-nextval('component_order_id_seq');2;STUDIES;null;1;system
-nextval('component_order_id_seq');2;DEGREES;null;2;system
-nextval('component_order_id_seq');2;ATTAINMENTS;null;3;system
-

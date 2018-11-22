@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.EventDto;
-import fi.helsinki.opintoni.dto.portfolio.CourseMaterialDto;
+import fi.helsinki.opintoni.dto.profile.CourseMaterialDto;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;

@@ -1,3 +1,0 @@
-id;portfolio_id;shared_path_fragment;expiry_date;created_by
-nextval('portfolio_shared_link_id_seq');2;a3728b39-7099-4f8c-9413-da2817eeccf9;null;system
-nextval('portfolio_shared_link_id_seq');3;b2672af7-306f-43aa-ab3f-acbc6a41f47f;1970-01-01 00:00:00;system

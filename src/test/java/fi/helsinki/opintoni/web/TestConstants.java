@@ -33,7 +33,7 @@ public class TestConstants {
     public static final String EXAM_TEACHER_COURSE_REALISATION_ID = "99903628";
     public static final String POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID = "1234567";
 
-    public static final Long PORTFOLIO_ID = 2L;
+    public static final Long PROFILE_ID = 2L;
 
     public static final Locale DEFAULT_USER_LOCALE = new Locale(Language.FI.getCode());
 }

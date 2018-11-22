@@ -1,0 +1,6 @@
+id;user_id;visibility;path;owner_name;intro;created_by;summary;profile_role;language
+nextval('profile_id_seq');2;PRIVATE;pekka;Pekka;Introtext;system;null;STUDENT;fi
+nextval('profile_id_seq');3;PRIVATE;olli-opiskelija;Olli Opiskelija;Introtext;system;Summary;STUDENT;en
+nextval('profile_id_seq');1;PRIVATE;test-test;Test Test;Introtext;system;null;STUDENT;en
+nextval('profile_id_seq');4;PRIVATE;opettaja;Olli Opettaja;Introtext;system;null;TEACHER;fi
+nextval('profile_id_seq');3;PRIVATE;olli-opiskelija;Olli Opiskelija;Introtext;system;Summary;STUDENT;fi
