@@ -23,4 +23,5 @@ public class PublicOfficeHoursDto {
     public String name;
     public String officeHours;
     public List<String> degreeProgrammes;
+    public List<TeachingLanguageDto> languages;
 }

@@ -1982,13 +1982,45 @@
                                  referencedTableName="profile"
                                  referencedColumnNames="id"
                                  onDelete="CASCADE" />
-        
+
         <renameColumn tableName="work_experience" oldColumnName="portfolio_id" newColumnName="profile_id" />
-        <addForeignKeyConstraint baseTableName="work_experience" 
+        <addForeignKeyConstraint baseTableName="work_experience"
                                  baseColumnNames="profile_id"
                                  constraintName="fk_work_experience_profile"
                                  referencedTableName="profile"
                                  referencedColumnNames="id"
                                  onDelete="CASCADE" />
+    </changeSet>
+
+    <changeSet id="OO-1202 teaching language for office hours" author="Joni Korhonen">
+        <createTable tableName="teaching_language">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="language_code" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="varchar(255)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <createTable tableName="office_hours_teaching_language">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="office_hours_id" type="bigint" >
+                <constraints foreignKeyName="fk_office_hours_teaching_language_office_hours"
+                             references="office_hours(id)" nullable="false" deleteCascade="true"/>
+            </column>
+            <column name="teaching_language_id" type="bigint">
+                <constraints foreignKeyName="fk_office_hours_teaching_language_degree_programme"
+                             references="teaching_language(id)" nullable="false" deleteCascade="true"/>
+            </column>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

@@ -41,6 +41,8 @@ public class OfficeHoursDto {
 
     public List<DegreeProgrammeDto> degreeProgrammes;
 
+    public List<TeachingLanguageDto> languages;
+
     @NotNull
     @MaxYearFromNow
     public LocalDate expirationDate;
@@ -49,14 +51,19 @@ public class OfficeHoursDto {
 
     }
 
-    public OfficeHoursDto(
-        String name, String description, String additionalInfo, String location,
-        List<DegreeProgrammeDto> degreeProgrammes, LocalDate expirationDate) {
+    public OfficeHoursDto(String name,
+                          String description,
+                          String additionalInfo,
+                          String location,
+                          List<DegreeProgrammeDto> degreeProgrammes,
+                          List<TeachingLanguageDto> languages,
+                          LocalDate expirationDate) {
         this.name = name;
         this.description = description;
         this.additionalInfo = additionalInfo;
         this.location = location;
         this.degreeProgrammes = degreeProgrammes;
+        this.languages = languages;
         this.expirationDate = expirationDate;
     }
 

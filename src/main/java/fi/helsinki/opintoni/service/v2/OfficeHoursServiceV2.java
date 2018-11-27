@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.service.v2;
 import fi.helsinki.opintoni.domain.OfficeHours;
 import fi.helsinki.opintoni.dto.v2.PublicOfficeHoursDto;
 import fi.helsinki.opintoni.dto.v2.PublicOfficeHoursReceptionDto;
+import fi.helsinki.opintoni.localization.TeachingLanguages;
 import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.util.NameSorting;
@@ -65,6 +66,9 @@ public class OfficeHoursServiceV2  {
                     publicOfficeHoursReceptionDto.location = oh.location;
                     publicOfficeHoursReceptionDto.degreeProgrammes = oh.degreeProgrammes.stream()
                         .map(dp -> dp.degreeCode)
+                        .collect(Collectors.toList());
+                    publicOfficeHoursReceptionDto.languages = oh.teachingLanguages.stream()
+                        .map(tl -> TeachingLanguages.fromCode(tl.languageCode).toTeachingLanguageDto())
                         .collect(Collectors.toList());
                     return publicOfficeHoursReceptionDto;
                 }).collect(Collectors.toList());

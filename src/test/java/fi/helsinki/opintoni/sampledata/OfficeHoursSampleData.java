@@ -26,7 +26,8 @@ public class OfficeHoursSampleData {
         "Barry von Hertzen",
         "Harry von Hertzen",
         "Leena Lehtori",
-        "Leena von Tohtori"
+        "Leena von Tohtori",
+        "Veikko Urhea"
     };
 
     public static final String OFFICE_HOURS = "Vastaanotto maanantaisin klo 10.00";
@@ -42,4 +43,7 @@ public class OfficeHoursSampleData {
     public static final String LOCATION = "Vastaanottopiste a";
     public static final String LOCATION_2 = "Vastaanottopiste A3";
 
+    public static final String TEACHING_LANGUAGE_1 = "ru";
+    public static final String TEACHING_LANGUAGE_2 = "fi_2nd";
+    public static final String TEACHING_LANGUAGE_3 = "de";
 }

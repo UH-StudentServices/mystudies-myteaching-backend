@@ -15,16 +15,14 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.dto.v2;
+package fi.helsinki.opintoni.repository;
 
-import fi.helsinki.opintoni.dto.TeachingLanguageDto;
+import fi.helsinki.opintoni.domain.TeachingLanguage;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
-public class PublicOfficeHoursReceptionDto {
-    public String description;
-    public String additionalInfo;
-    public String location;
-    public List<String> degreeProgrammes;
-    public List<TeachingLanguageDto> languages;
+public interface TeachingLanguageRepository extends JpaRepository<TeachingLanguage, Long> {
+
+    Optional<TeachingLanguage> findFirstByLanguageCode(String languageCode);
 }

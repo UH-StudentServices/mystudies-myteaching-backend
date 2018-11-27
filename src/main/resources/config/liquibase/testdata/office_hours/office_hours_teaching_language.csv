@@ -1,0 +1,3 @@
+id;office_hours_id;teaching_language_id
+nextval('office_hours_teaching_language_id_seq');10;1
+nextval('office_hours_teaching_language_id_seq');11;2
