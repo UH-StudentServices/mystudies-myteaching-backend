@@ -17,10 +17,18 @@
 
 package fi.helsinki.opintoni.domain;
 
-import org.hibernate.validator.constraints.NotBlank;
+import fi.helsinki.opintoni.localization.TeachingLanguages;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -31,10 +39,10 @@ public class TeachingLanguage extends AbstractAuditingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @NotBlank
-    @Size(max = 16)
-    @Column(name = "language_code")
-    public String languageCode;
+    @NotNull
+    @Column(name = "language_code", nullable = false)
+    @Enumerated(EnumType.STRING)
+    public TeachingLanguages.Code languageCode;
 
     @ManyToMany(mappedBy = "teachingLanguages")
     public List<OfficeHours> officeHours;

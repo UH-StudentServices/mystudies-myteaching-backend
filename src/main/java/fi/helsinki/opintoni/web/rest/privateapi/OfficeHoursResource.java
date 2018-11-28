@@ -66,7 +66,7 @@ public class OfficeHoursResource extends AbstractResource {
         return noContentResponse();
     }
 
-    @GetMapping(value = "/teachinglanguages")
+    @GetMapping(value = "/teaching-languages")
     public ResponseEntity<List<TeachingLanguageDto>> getTeachingLanguages() {
         return response(officeHoursService.getTeachingLanguages());
     }

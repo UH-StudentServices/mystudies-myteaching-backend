@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.exception;
 
 import fi.helsinki.opintoni.exception.http.BadRequestException;
 import fi.helsinki.opintoni.exception.http.CalendarFeedNotFoundException;
+import fi.helsinki.opintoni.exception.http.ConflictException;
 import fi.helsinki.opintoni.exception.http.ForbiddenException;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import org.apache.commons.lang3.StringUtils;
@@ -60,6 +61,11 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {BadRequestException.class, IllegalArgumentException.class, ConstraintViolationException.class})
     public ResponseEntity<CommonError> handleBadRequest() throws Exception {
         return new ResponseEntity<>(new CommonError("Bad request"), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {ConflictException.class})
+    public ResponseEntity<CommonError> handleConflict() throws Exception {
+        return new ResponseEntity<>(new CommonError("Conflict"), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(value = Exception.class)

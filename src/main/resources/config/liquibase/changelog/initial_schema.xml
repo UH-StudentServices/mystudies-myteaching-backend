@@ -2009,6 +2009,7 @@
             <column name="last_modified_by" type="varchar(255)"/>
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
+
         <createTable tableName="office_hours_teaching_language">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -2022,5 +2023,9 @@
                              references="teaching_language(id)" nullable="false" deleteCascade="true"/>
             </column>
         </createTable>
+
+        <addUniqueConstraint tableName="office_hours_teaching_language"
+                             columnNames="office_hours_id, teaching_language_id"
+                             constraintName="uc_office_hours_id__teaching_language_id" />
     </changeSet>
 </databaseChangeLog>

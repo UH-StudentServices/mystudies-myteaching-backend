@@ -15,15 +15,15 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.repository;
+package fi.helsinki.opintoni.exception.http;
 
-import fi.helsinki.opintoni.domain.TeachingLanguage;
-import fi.helsinki.opintoni.localization.TeachingLanguages;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.Optional;
+@ResponseStatus(value = HttpStatus.CONFLICT)
+public class ConflictException extends RuntimeException {
 
-public interface TeachingLanguageRepository extends JpaRepository<TeachingLanguage, Long> {
-
-    Optional<TeachingLanguage> findFirstByLanguageCode(TeachingLanguages.Code languageCode);
+    public ConflictException(String message) {
+        super(message);
+    }
 }

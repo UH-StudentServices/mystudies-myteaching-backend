@@ -17,12 +17,21 @@
 
 package fi.helsinki.opintoni.service;
 
-import fi.helsinki.opintoni.domain.*;
-import fi.helsinki.opintoni.dto.*;
-import fi.helsinki.opintoni.exception.http.BadRequestException;
+import fi.helsinki.opintoni.domain.DegreeProgramme;
+import fi.helsinki.opintoni.domain.OfficeHours;
+import fi.helsinki.opintoni.domain.TeachingLanguage;
+import fi.helsinki.opintoni.domain.User;
+import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
+import fi.helsinki.opintoni.dto.OfficeHoursDto;
+import fi.helsinki.opintoni.dto.PublicOfficeHoursDto;
+import fi.helsinki.opintoni.dto.TeachingLanguageDto;
+import fi.helsinki.opintoni.exception.http.ConflictException;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.localization.TeachingLanguages;
-import fi.helsinki.opintoni.repository.*;
+import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
+import fi.helsinki.opintoni.repository.OfficeHoursRepository;
+import fi.helsinki.opintoni.repository.TeachingLanguageRepository;
+import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.OfficeHoursConverter;
 import fi.helsinki.opintoni.util.NameSorting;
 import org.apache.commons.collections.CollectionUtils;
@@ -30,7 +39,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -114,7 +125,7 @@ public class OfficeHoursService {
                 officeHoursDto.languages = groupedOfficeHours.get(name).stream()
                     .flatMap(oh -> oh.teachingLanguages.stream().map(tl -> tl.languageCode))
                     .distinct()
-                    .map(code -> TeachingLanguages.fromCode(code).toTeachingLanguageDto())
+                    .map(code -> TeachingLanguages.fromCode(code.getCode()).toDto())
                     .collect(Collectors.toList());
 
                 officeHoursDto.officeHours = groupedOfficeHours.get(name).stream()
@@ -129,7 +140,7 @@ public class OfficeHoursService {
 
     public List<TeachingLanguageDto> getTeachingLanguages() {
         return Arrays.stream(TeachingLanguages.values())
-            .map(TeachingLanguages::toTeachingLanguageDto)
+            .map(TeachingLanguages::toDto)
             .collect(Collectors.toList());
     }
 
@@ -156,10 +167,11 @@ public class OfficeHoursService {
             .map(dto -> dto.code)
             .distinct()
             .map(code -> {
-                TeachingLanguage teachingLanguage = teachingLanguageRepository.findFirstByLanguageCode(code).orElse(null);
+                TeachingLanguages.Code languageCode = TeachingLanguages.Code.fromString(code);
+                TeachingLanguage teachingLanguage = teachingLanguageRepository.findFirstByLanguageCode(languageCode).orElse(null);
                 if (teachingLanguage == null) {
                     teachingLanguage = new TeachingLanguage();
-                    teachingLanguage.languageCode = code;
+                    teachingLanguage.languageCode = languageCode;
                     teachingLanguage = teachingLanguageRepository.save(teachingLanguage);
                 }
                 return teachingLanguage;
@@ -176,10 +188,10 @@ public class OfficeHoursService {
 
     private void validateDegreeProgrammesOrTeachingLanguagesIsSet(OfficeHoursDto officeHours) {
         if (CollectionUtils.isNotEmpty(officeHours.degreeProgrammes) && CollectionUtils.isNotEmpty(officeHours.languages)) {
-            throw new BadRequestException("degree programmes and teaching languages can't be both set");
+            throw new ConflictException("degree programmes and teaching languages can't be both set");
         }
         if (CollectionUtils.isEmpty(officeHours.degreeProgrammes) && CollectionUtils.isEmpty(officeHours.languages)) {
-            throw new BadRequestException("either degree programmes or teaching languages must be set");
+            throw new ConflictException("either degree programmes or teaching languages must be set");
         }
     }
 

@@ -43,7 +43,7 @@ public class OfficeHoursConverter {
                 .collect(Collectors.toList());
 
             officeHoursDto.languages = officeHours.teachingLanguages.stream()
-                .map(teachingLanguage -> TeachingLanguages.fromCode(teachingLanguage.languageCode).toTeachingLanguageDto())
+                .map(teachingLanguage -> TeachingLanguages.fromCode(teachingLanguage.languageCode.getCode()).toDto())
                 .collect(Collectors.toList());
         }
 

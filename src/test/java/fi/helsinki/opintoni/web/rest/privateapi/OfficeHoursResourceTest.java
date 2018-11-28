@@ -63,13 +63,13 @@ public class OfficeHoursResourceTest extends SpringTest {
     }
 
     @Test
-    public void thatOfficeHoursUpdateFailsWithCorrectStatus() throws Exception {
+    public void thatOfficeHoursUpdateWithBlankDegreeProgrammeCodeIsNotAccepted() throws Exception {
         OfficeHoursDto officeHoursDto = new OfficeHoursDto(
             TEACHER_NAME,
             OFFICE_HOURS,
             ADDITIONAL_INFO_2,
             LOCATION_2,
-            createProgrammeDtoList("", DEGREE_CODE_2), // Blank not allowed
+            createProgrammeDtoList("", DEGREE_CODE_2),
             createLanguageDtoList(),
             YEAR_FROM_NOW);
 
@@ -230,7 +230,7 @@ public class OfficeHoursResourceTest extends SpringTest {
         );
 
         performPostOfficeHours(officeHoursDto)
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isConflict());
     }
 
     @Test
@@ -246,12 +246,12 @@ public class OfficeHoursResourceTest extends SpringTest {
         );
 
         performPostOfficeHours(officeHoursDto)
-            .andExpect(status().isBadRequest());
+            .andExpect(status().isConflict());
     }
 
     @Test
     public void thatTeachingLanguagesAreReturned() throws Exception {
-        ResultActions result = mockMvc.perform(get(String.join("/", REQUEST_URI, "teachinglanguages"))
+        ResultActions result = mockMvc.perform(get(String.join("/", REQUEST_URI, "teaching-languages"))
             .with(securityContext(teacherSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
@@ -277,7 +277,7 @@ public class OfficeHoursResourceTest extends SpringTest {
 
     private List<TeachingLanguageDto> createLanguageDtoList(String... codes) {
         return Arrays.stream(codes)
-            .map(code -> TeachingLanguages.fromCode(code).toTeachingLanguageDto())
+            .map(code -> TeachingLanguages.fromCode(code).toDto())
             .collect(Collectors.toList());
     }
 

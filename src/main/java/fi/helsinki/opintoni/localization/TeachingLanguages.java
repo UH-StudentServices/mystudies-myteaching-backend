@@ -20,91 +20,114 @@ package fi.helsinki.opintoni.localization;
 import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.dto.TeachingLanguageDto;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public enum TeachingLanguages {
-    AR("ar", ImmutableMap.of(
+    AR(Code.AR, ImmutableMap.of(
         Language.FI.getCode(), "arabia",
         Language.SV.getCode(), "arabiska",
         Language.EN.getCode(), "Arabic")),
-    EN("en", ImmutableMap.of(
+    EN(Code.EN, ImmutableMap.of(
         Language.FI.getCode(), "englanti",
         Language.SV.getCode(), "engelska",
         Language.EN.getCode(), "English")),
-    ES("es", ImmutableMap.of(
+    ES(Code.ES, ImmutableMap.of(
         Language.FI.getCode(), "espanja",
         Language.SV.getCode(), "spanska",
         Language.EN.getCode(), "Spanish")),
-    IT("it", ImmutableMap.of(
+    IT(Code.IT, ImmutableMap.of(
         Language.FI.getCode(), "italia",
         Language.SV.getCode(), "italienska",
         Language.EN.getCode(), "Italian")),
-    JA("ja", ImmutableMap.of(
+    JA(Code.JA, ImmutableMap.of(
         Language.FI.getCode(), "japani",
         Language.SV.getCode(), "japanska",
         Language.EN.getCode(), "Japanese")),
-    ZG("zg", ImmutableMap.of(
+    ZG(Code.ZG, ImmutableMap.of(
         Language.FI.getCode(), "kiina",
         Language.SV.getCode(), "kinesiska",
         Language.EN.getCode(), "Chinese")),
-    KO("ko", ImmutableMap.of(
+    KO(Code.KO, ImmutableMap.of(
         Language.FI.getCode(), "korea",
         Language.SV.getCode(), "koreanska",
         Language.EN.getCode(), "Korean")),
-    PT("pt", ImmutableMap.of(
+    PT(Code.PT, ImmutableMap.of(
         Language.FI.getCode(), "portugali",
         Language.SV.getCode(), "portugisiska",
         Language.EN.getCode(), "Portuguese")),
-    FR("fr", ImmutableMap.of(
+    FR(Code.FR, ImmutableMap.of(
         Language.FI.getCode(), "ranska",
         Language.SV.getCode(), "franska",
         Language.EN.getCode(), "French")),
-    DE("de", ImmutableMap.of(
+    DE(Code.DE, ImmutableMap.of(
         Language.FI.getCode(), "saksa",
         Language.SV.getCode(), "tyska",
         Language.EN.getCode(), "German")),
-    DA("da", ImmutableMap.of(
+    DA(Code.DA, ImmutableMap.of(
         Language.FI.getCode(), "tanska",
         Language.SV.getCode(), "danska",
         Language.EN.getCode(), "Danish")),
-    RU("ru", ImmutableMap.of(
+    RU(Code.RU, ImmutableMap.of(
         Language.FI.getCode(), "venäjä",
         Language.SV.getCode(), "ryska",
         Language.EN.getCode(), "Russian")),
-    ET("et", ImmutableMap.of(
+    ET(Code.ET, ImmutableMap.of(
         Language.FI.getCode(), "viro",
         Language.SV.getCode(), "estniska",
         Language.EN.getCode(), "Estonian")),
-    FI_1ST_SC("fi_1st_sc", ImmutableMap.of(
+    FI_1ST_SC(Code.FI_1ST_SC, ImmutableMap.of(
         Language.FI.getCode(), "äidinkieli (suomi), puheviestintä- ja vuorovaikutustaidot",
         Language.SV.getCode(), "modersmål (finska), retorik",
         Language.EN.getCode(), "Finnish as a native language, speech communication")),
-    FI_1ST_AW("fi_1st_aw", ImmutableMap.of(
+    FI_1ST_AW(Code.FI_1ST_AW, ImmutableMap.of(
         Language.FI.getCode(), "äidinkieli (suomi), akateemiset tekstitaidot",
         Language.SV.getCode(), "modersmål (finska), akademiskt skrivande",
         Language.EN.getCode(), "Finnish as a native language, academic writing")),
-    FI_2ND("fi_2nd", ImmutableMap.of(
+    FI_2ND(Code.FI_2ND, ImmutableMap.of(
         Language.FI.getCode(), "suomi toisena kotimaisena kielenä (finska)",
         Language.SV.getCode(), "finska som andra inhemska språk",
         Language.EN.getCode(), "Finnish for native speakers of Swedish")),
-    SV_1ST("sv_1st", ImmutableMap.of(
+    SV_1ST(Code.SV_1ST, ImmutableMap.of(
         Language.FI.getCode(), "äidinkieli (ruotsi)",
         Language.SV.getCode(), "modersmål (svenska)",
         Language.EN.getCode(), "Swedish as a native language")),
-    SV_2ND("sv_2nd", ImmutableMap.of(
+    SV_2ND(Code.SV_2ND, ImmutableMap.of(
         Language.FI.getCode(), "ruotsi toisena kotimaisena kielenä",
         Language.SV.getCode(), "svenska som andra inhemska språk",
         Language.EN.getCode(), "Swedish for native speakers of Finnish")),
-    SLU("slu", ImmutableMap.of(
+    SLU(Code.SLU, ImmutableMap.of(
         Language.FI.getCode(), "pedagoginen yliopistonlehtori",
         Language.SV.getCode(), "pedagogisk universitetslektor",
         Language.EN.getCode(), "senior lecturer in university pedagogy"));
 
-    private final String code;
+    public enum Code {
+        AR("ar"), EN("en"), ES("es"), IT("it"), JA("ja"), ZG("zg"), KO("ko"), PT("pt"), FR("fr"), DE("de"), DA("da"),
+        RU("ru"), ET("et"), FI_1ST_SC("fi_1st_sc"), FI_1ST_AW("fi_1st_aw"), FI_2ND("fi_2nd"), SV_1ST("sv_1st"),
+        SV_2ND("sv_2nd"), SLU("slu");
+
+        private final String code;
+
+        Code(String code) {
+            this.code = code;
+        }
+
+        public static Code fromString(String code) {
+            return Optional.of(Code.valueOf(code.toUpperCase()))
+                .orElseThrow(() -> new IllegalArgumentException(""));
+        }
+
+        public String getCode() {
+            return this.code;
+        }
+    }
+
+    private final Code code;
     private final ImmutableMap<String, String> localizedNames;
 
-    TeachingLanguages(String code, ImmutableMap<String, String> localizedNames) {
+    TeachingLanguages(Code code, ImmutableMap<String, String> localizedNames) {
         this.code = code;
         this.localizedNames = localizedNames;
     }
@@ -118,12 +141,12 @@ public enum TeachingLanguages {
             .orElseThrow(() -> new IllegalArgumentException(String.format("no corresponding teaching language for code %s", code)));
     }
 
-    public TeachingLanguageDto toTeachingLanguageDto() {
-        return new TeachingLanguageDto(code, localizedNames);
+    public TeachingLanguageDto toDto() {
+        return new TeachingLanguageDto(code.getCode(), localizedNames);
     }
 
     public String getCode() {
-        return code;
+        return code.getCode();
     }
 
     public String getNameFor(String langCode) {
