@@ -41,6 +41,10 @@ public class Sample extends AbstractAuditingEntity implements Ownership {
     public String description;
 
     @NotNull
+    @Column(name = "order_index", nullable = false)
+    public Integer orderIndex;
+
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "profile_id")
     public Profile profile;

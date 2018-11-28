@@ -1,2 +1,2 @@
-id;profile_id;title;description;visibility;created_by
-nextval('sample_id_seq');2;Näyte;Sisältöä;PUBLIC;system
+id;profile_id;title;description;visibility;order_index;created_by
+nextval('sample_id_seq');2;Näyte;Sisältöä;PUBLIC;1;system

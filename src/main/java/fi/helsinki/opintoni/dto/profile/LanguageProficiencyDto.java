@@ -23,4 +23,5 @@ public class LanguageProficiencyDto {
     public String proficiency;
     public String description;
     public String visibility;
+    public Integer orderIndex;
 }

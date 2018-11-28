@@ -25,7 +25,7 @@ import java.util.List;
 
 public interface LanguageProficiencyRepository extends JpaRepository<ProfileLanguageProficiency, Long> {
 
-    List<ProfileLanguageProficiency> findByProfileId(Long profileId);
+    List<ProfileLanguageProficiency> findByProfileIdOrderByOrderIndexAsc(Long profileId);
 
-    List<ProfileLanguageProficiency> findByProfileIdAndVisibility(Long profileId, ComponentVisibility.Visibility visibility);
+    List<ProfileLanguageProficiency> findByProfileIdAndVisibilityOrderByOrderIndexAsc(Long profileId, ComponentVisibility.Visibility visibility);
 }

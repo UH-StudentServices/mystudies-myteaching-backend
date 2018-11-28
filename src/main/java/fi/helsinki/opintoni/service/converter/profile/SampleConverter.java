@@ -37,10 +37,11 @@ public class SampleConverter {
         return sampleDto;
     }
 
-    public Sample toEntity(UpdateSample updateSample, Profile profile) {
+    public Sample toEntity(UpdateSample updateSample, Profile profile, Integer orderIndex) {
         Sample sample = new Sample();
         sample.title = updateSample.title;
         sample.description = updateSample.description;
+        sample.orderIndex = orderIndex;
         sample.profile = profile;
         sample.visibility = StringUtils.isNotBlank(updateSample.visibility) ?
             ComponentVisibility.Visibility.valueOf(updateSample.visibility) :

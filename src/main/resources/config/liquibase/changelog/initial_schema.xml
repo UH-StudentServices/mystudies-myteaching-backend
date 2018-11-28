@@ -2040,4 +2040,38 @@
             <where>profile_id is not null and component = 'FAVORITES'</where>
         </delete>
     </changeSet>
+
+    <changeSet id="OO-1170 internal ordering of sections" author="Joni Korhonen">
+        <addColumn tableName="sample">
+            <column name="order_index" type="smallint" />
+        </addColumn>
+        <addColumn tableName="profile_language_proficiency">
+            <column name="order_index" type="smallint" />
+        </addColumn>
+
+        <sql>
+            WITH sample_subquery AS (
+                SELECT id, row_number() OVER (PARTITION BY profile_id) AS rnum
+                    FROM sample
+                    ORDER BY id ASC
+            )
+            UPDATE sample
+                SET order_index = sample_subquery.rnum
+                FROM sample_subquery
+                WHERE sample.id = sample_subquery.id;
+
+            WITH language_subquery AS (
+                SELECT id, row_number() OVER (PARTITION BY profile_id) AS rnum
+                    FROM profile_language_proficiency
+                    ORDER BY language_name ASC
+            )
+            UPDATE profile_language_proficiency
+                SET order_index = language_subquery.rnum
+                FROM language_subquery
+                WHERE profile_language_proficiency.id = language_subquery.id;
+        </sql>
+
+        <addNotNullConstraint tableName="sample" columnName="order_index" />
+        <addNotNullConstraint tableName="profile_language_proficiency" columnName="order_index" />
+    </changeSet>
 </databaseChangeLog>

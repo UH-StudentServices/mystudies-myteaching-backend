@@ -52,13 +52,13 @@ public class LanguageProficiencyService {
     }
 
     public List<LanguageProficiencyDto> findByProfileId(Long id) {
-        return languageProficiencyRepository.findByProfileId(id).stream()
+        return languageProficiencyRepository.findByProfileIdOrderByOrderIndexAsc(id).stream()
             .map(LanguageProficiencyConverter::toDto)
             .collect(toList());
     }
 
     public List<LanguageProficiencyDto> findByProfileIdAndVisibility(Long profileId, ComponentVisibility.Visibility visibility) {
-        return languageProficiencyRepository.findByProfileIdAndVisibility(profileId, visibility).stream()
+        return languageProficiencyRepository.findByProfileIdAndVisibilityOrderByOrderIndexAsc(profileId, visibility).stream()
             .map(LanguageProficiencyConverter::toDto)
             .collect(toList());
     }
@@ -98,6 +98,7 @@ public class LanguageProficiencyService {
         profileLanguageProficiency.visibility = StringUtils.isNotBlank(languageProficiencyDto.visibility) ?
             ComponentVisibility.Visibility.valueOf(languageProficiencyDto.visibility) :
             ComponentVisibility.Visibility.PUBLIC;
+        profileLanguageProficiency.orderIndex = languageProficiencyDto.orderIndex;
 
         languageProficiencyRepository.save(profileLanguageProficiency);
     }

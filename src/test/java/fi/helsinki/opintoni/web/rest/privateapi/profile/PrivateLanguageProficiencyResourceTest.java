@@ -41,6 +41,7 @@ public class PrivateLanguageProficiencyResourceTest extends SpringTest {
     private static final String API_PATH = "/profile/2/languageproficiencies";
 
     private static final long ENGLISH_LANGUAGE_PROFICIENCY_ID = 1L;
+    private static final long FINNISH_LANGUAGE_PROFICIENCY_ID = 2L;
     private static final long HINDI_LANGUAGE_PROFICIENCY_ID = 4L;
     private static final long ANOTHER_USERS_LANGUAGE_PROFICIENCY_ID = 3L;
 
@@ -50,7 +51,7 @@ public class PrivateLanguageProficiencyResourceTest extends SpringTest {
     private static final String GREEK = "Greek";
     private static final String SWEDISH = "Swedish";
 
-    private static final String ELEMENTARY_PROFICIENCY = "Elementary ";
+    private static final String ELEMENTARY_PROFICIENCY = "Elementary";
     private static final String FULL_PROFESSIONAL_PROFICIENCY = "Full professional";
     private static final String LIMITED_WORKING_PROFICIENCY = "Limited working";
     private static final String NATIVE_PROFICIENCY = "Native";
@@ -62,10 +63,12 @@ public class PrivateLanguageProficiencyResourceTest extends SpringTest {
         LanguageProficiencyDto greek = newLanguageProficiency(GREEK,
                 ELEMENTARY_PROFICIENCY,
                 "",
+                1,
                 null);
         LanguageProficiencyDto chinese = newLanguageProficiency(CHINESE,
                 LIMITED_WORKING_PROFICIENCY,
                 "",
+                2,
                 null);
 
         updateBatch.newLanguageProficiencies = ImmutableList.of(greek, chinese);
@@ -73,24 +76,30 @@ public class PrivateLanguageProficiencyResourceTest extends SpringTest {
         LanguageProficiencyDto english = newLanguageProficiency(ENGLISH,
                 NATIVE_PROFICIENCY,
                 "",
+                3,
                 ENGLISH_LANGUAGE_PROFICIENCY_ID);
+        LanguageProficiencyDto finnish = newLanguageProficiency(FINNISH,
+                NATIVE_PROFICIENCY,
+                "",
+                4,
+                FINNISH_LANGUAGE_PROFICIENCY_ID);
 
-        updateBatch.updatedLanguageProficiencies = ImmutableList.of(english);
+        updateBatch.updatedLanguageProficiencies = ImmutableList.of(english, finnish);
         updateBatch.deletedIds = ImmutableList.of(HINDI_LANGUAGE_PROFICIENCY_ID);
 
         persistUpdateBatchWithStatus(updateBatch, jsonPath("$").value(Matchers.<List<LanguageProficiencyDto>>allOf(
                 hasSize(4),
-                hasItem(
-                        both(hasEntry("id", 1)).and(hasEntry("languageName", ENGLISH)).and(hasEntry("proficiency", NATIVE_PROFICIENCY))
+                hasItem(both(hasEntry("id", 1)).and(hasEntry("languageName", ENGLISH))
+                    .and(hasEntry("proficiency", NATIVE_PROFICIENCY)).and(hasEntry("orderIndex", 3))
                 ),
-                hasItem(
-                        both(hasEntry("id", 2)).and(hasEntry("languageName", FINNISH)).and(hasEntry("proficiency", NATIVE_PROFICIENCY))
+                hasItem(both(hasEntry("id", 2)).and(hasEntry("languageName", FINNISH))
+                    .and(hasEntry("proficiency", NATIVE_PROFICIENCY)).and(hasEntry("orderIndex", 4))
                 ),
-                hasItem(
-                        both(hasEntry("id", 5)).and(hasEntry("languageName", GREEK)).and(hasEntry("proficiency", ELEMENTARY_PROFICIENCY))
+                hasItem(both(hasEntry("id", 5)).and(hasEntry("languageName", GREEK))
+                    .and(hasEntry("proficiency", ELEMENTARY_PROFICIENCY)).and(hasEntry("orderIndex", 1))
                 ),
-                hasItem(
-                        both(hasEntry("id", 6)).and(hasEntry("languageName", CHINESE)).and(hasEntry("proficiency", LIMITED_WORKING_PROFICIENCY))
+                hasItem(both(hasEntry("id", 6)).and(hasEntry("languageName", CHINESE))
+                    .and(hasEntry("proficiency", LIMITED_WORKING_PROFICIENCY)).and(hasEntry("orderIndex", 2))
                 )
         )));
     }
@@ -101,6 +110,7 @@ public class PrivateLanguageProficiencyResourceTest extends SpringTest {
         LanguageProficiencyDto swedish = newLanguageProficiency(SWEDISH,
                 FULL_PROFESSIONAL_PROFICIENCY,
                 "",
+                1,
                 ANOTHER_USERS_LANGUAGE_PROFICIENCY_ID);
 
         updateBatch.updatedLanguageProficiencies = ImmutableList.of(swedish);
@@ -128,11 +138,13 @@ public class PrivateLanguageProficiencyResourceTest extends SpringTest {
     private LanguageProficiencyDto newLanguageProficiency(String languageName,
                                                           String proficiency,
                                                           String description,
+                                                          Integer orderIndex,
                                                           Long id) {
         LanguageProficiencyDto dto = new LanguageProficiencyDto();
         dto.languageName = languageName;
         dto.proficiency = proficiency;
         dto.description = description;
+        dto.orderIndex = orderIndex;
         dto.id = id;
 
         return dto;
