@@ -105,7 +105,9 @@ public abstract class SpringTest {
         "notification_schedules",
         "profile_background",
         "profile_language_proficiency",
-        "profile_shared_link");
+        "profile_shared_link",
+        "teaching_language",
+        "office_hours_teaching_language");
     private static final ImmutableMap<String, String> SEQUENCE_NAMES_BY_TABLE_NAMES = ImmutableMap.of("user_account", "user_id_seq");
     private static final String DEFAULT_SEQUENCE_SUFFIX = "_id_seq";
 

@@ -15,16 +15,15 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.dto.v2;
+package fi.helsinki.opintoni.exception.http;
 
-import fi.helsinki.opintoni.dto.TeachingLanguageDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.List;
+@ResponseStatus(value = HttpStatus.CONFLICT)
+public class ConflictException extends RuntimeException {
 
-public class PublicOfficeHoursReceptionDto {
-    public String description;
-    public String additionalInfo;
-    public String location;
-    public List<String> degreeProgrammes;
-    public List<TeachingLanguageDto> languages;
+    public ConflictException(String message) {
+        super(message);
+    }
 }

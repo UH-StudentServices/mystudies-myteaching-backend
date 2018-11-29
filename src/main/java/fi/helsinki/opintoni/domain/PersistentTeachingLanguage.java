@@ -15,16 +15,28 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.dto.v2;
+package fi.helsinki.opintoni.domain;
 
-import fi.helsinki.opintoni.dto.TeachingLanguageDto;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.List;
 
-public class PublicOfficeHoursReceptionDto {
-    public String description;
-    public String additionalInfo;
-    public String location;
-    public List<String> degreeProgrammes;
-    public List<TeachingLanguageDto> languages;
+@Entity
+@Table(name = "teaching_language")
+public class PersistentTeachingLanguage extends AbstractAuditingEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
+
+    @Column(name = "language_code", nullable = false, length = 16)
+    public TeachingLanguage language;
+
+    @ManyToMany(mappedBy = "teachingLanguages")
+    public List<OfficeHours> officeHours;
 }

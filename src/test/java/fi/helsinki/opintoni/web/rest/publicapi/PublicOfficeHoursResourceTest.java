@@ -25,11 +25,13 @@ import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.ADDITIONAL_I
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_1;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_2;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_3;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS;
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS_7;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.LOCATION;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.LOCATION_2;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS_7;
 import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHER_NAME_ARRAY;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHING_LANGUAGE_2;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHING_LANGUAGE_3;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static fi.helsinki.opintoni.service.OfficeHoursService.OFFICE_HOURS_JOIN;
@@ -46,13 +48,14 @@ public class PublicOfficeHoursResourceTest extends SpringTest {
             .with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .accept(org.springframework.http.MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$", hasSize(6)))
+            .andExpect(jsonPath("$", hasSize(7)))
             .andExpect(jsonPath("$.[0].name").value(TEACHER_NAME_ARRAY[0]))
             .andExpect(jsonPath("$.[1].name").value(TEACHER_NAME_ARRAY[1]))
             .andExpect(jsonPath("$.[2].name").value(TEACHER_NAME_ARRAY[2]))
             .andExpect(jsonPath("$.[3].name").value(TEACHER_NAME_ARRAY[3]))
             .andExpect(jsonPath("$.[4].name").value(TEACHER_NAME_ARRAY[4]))
             .andExpect(jsonPath("$.[5].name").value(TEACHER_NAME_ARRAY[5]))
+            .andExpect(jsonPath("$.[6].name").value(TEACHER_NAME_ARRAY[6]))
             .andExpect(jsonPath("$.[4].officeHours").value(
                 OFFICE_HOURS + OFFICE_HOURS_JOIN + OFFICE_HOURS_7 + OFFICE_HOURS_JOIN + OFFICE_HOURS_7
             ))
@@ -66,13 +69,14 @@ public class PublicOfficeHoursResourceTest extends SpringTest {
             .with(securityContext(teacherSecurityContext()))
             .characterEncoding("UTF-8")
             .accept(org.springframework.http.MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$", hasSize(6)))
+            .andExpect(jsonPath("$", hasSize(7)))
             .andExpect(jsonPath("$.[0].name").value(TEACHER_NAME_ARRAY[0]))
             .andExpect(jsonPath("$.[1].name").value(TEACHER_NAME_ARRAY[1]))
             .andExpect(jsonPath("$.[2].name").value(TEACHER_NAME_ARRAY[2]))
             .andExpect(jsonPath("$.[3].name").value(TEACHER_NAME_ARRAY[3]))
             .andExpect(jsonPath("$.[4].name").value(TEACHER_NAME_ARRAY[4]))
             .andExpect(jsonPath("$.[5].name").value(TEACHER_NAME_ARRAY[5]))
+            .andExpect(jsonPath("$.[6].name").value(TEACHER_NAME_ARRAY[6]))
             .andExpect(jsonPath("$.[4].officeHours", hasSize(2)))
             .andExpect(jsonPath("$.[4].officeHours.[0].description").value(OFFICE_HOURS))
             .andExpect(jsonPath("$.[4].officeHours.[0].additionalInfo").value(ADDITIONAL_INFO))
@@ -81,7 +85,11 @@ public class PublicOfficeHoursResourceTest extends SpringTest {
             .andExpect(jsonPath("$.[4].officeHours.[1].additionalInfo").value(ADDITIONAL_INFO_2))
             .andExpect(jsonPath("$.[4].officeHours.[1].location").value(LOCATION_2))
             .andExpect(jsonPath("$.[4].officeHours.[0].degreeProgrammes", containsInAnyOrder(DEGREE_CODE_1, DEGREE_CODE_2)))
-            .andExpect(jsonPath("$.[4].officeHours.[1].degreeProgrammes", containsInAnyOrder(DEGREE_CODE_2, DEGREE_CODE_3)));
+            .andExpect(jsonPath("$.[4].officeHours.[1].degreeProgrammes", containsInAnyOrder(DEGREE_CODE_2, DEGREE_CODE_3)))
+            .andExpect(jsonPath("$.[6].officeHours.[0].languages").isArray())
+            .andExpect(jsonPath("$.[6].officeHours.[0].languages[0].code").value(TEACHING_LANGUAGE_2))
+            .andExpect(jsonPath("$.[6].officeHours.[1].languages").isArray())
+            .andExpect(jsonPath("$.[6].officeHours.[1].languages[0].code").value(TEACHING_LANGUAGE_3));
     }
 
 }

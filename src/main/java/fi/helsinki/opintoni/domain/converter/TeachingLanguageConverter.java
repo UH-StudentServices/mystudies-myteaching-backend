@@ -15,16 +15,23 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.dto.v2;
+package fi.helsinki.opintoni.domain.converter;
 
-import fi.helsinki.opintoni.dto.TeachingLanguageDto;
+import fi.helsinki.opintoni.domain.TeachingLanguage;
 
-import java.util.List;
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 
-public class PublicOfficeHoursReceptionDto {
-    public String description;
-    public String additionalInfo;
-    public String location;
-    public List<String> degreeProgrammes;
-    public List<TeachingLanguageDto> languages;
+@Converter(autoApply = true)
+public class TeachingLanguageConverter implements AttributeConverter<TeachingLanguage, String> {
+
+    @Override
+    public String convertToDatabaseColumn(TeachingLanguage attribute) {
+        return attribute.getCode();
+    }
+
+    @Override
+    public TeachingLanguage convertToEntityAttribute(String dbData) {
+        return TeachingLanguage.fromCode(dbData);
+    }
 }

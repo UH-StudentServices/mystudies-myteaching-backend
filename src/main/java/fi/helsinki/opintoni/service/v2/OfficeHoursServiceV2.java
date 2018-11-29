@@ -20,30 +20,26 @@ package fi.helsinki.opintoni.service.v2;
 import fi.helsinki.opintoni.domain.OfficeHours;
 import fi.helsinki.opintoni.dto.v2.PublicOfficeHoursDto;
 import fi.helsinki.opintoni.dto.v2.PublicOfficeHoursReceptionDto;
-import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.util.NameSorting;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service
-public class OfficeHoursServiceV2  {
+public class OfficeHoursServiceV2 {
 
     private final OfficeHoursRepository officeHoursRepository;
-    private final DegreeProgrammeRepository degreeProgrammeRepository;
 
     @Autowired
-    public OfficeHoursServiceV2(OfficeHoursRepository officeHoursRepository,
-        DegreeProgrammeRepository degreeProgrammeRepository) {
+    public OfficeHoursServiceV2(OfficeHoursRepository officeHoursRepository) {
         this.officeHoursRepository = officeHoursRepository;
-        this.degreeProgrammeRepository = degreeProgrammeRepository;
     }
 
     public List<PublicOfficeHoursDto> getAllUnexpired() {
@@ -65,6 +61,9 @@ public class OfficeHoursServiceV2  {
                     publicOfficeHoursReceptionDto.location = oh.location;
                     publicOfficeHoursReceptionDto.degreeProgrammes = oh.degreeProgrammes.stream()
                         .map(dp -> dp.degreeCode)
+                        .collect(Collectors.toList());
+                    publicOfficeHoursReceptionDto.languages = oh.teachingLanguages.stream()
+                        .map(tl -> tl.language.toDto())
                         .collect(Collectors.toList());
                     return publicOfficeHoursReceptionDto;
                 }).collect(Collectors.toList());

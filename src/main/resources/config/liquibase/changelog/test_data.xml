@@ -249,6 +249,19 @@
                   tableName="sample">
             <column name="id" type="computed"/>
         </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/office_hours/teaching_language.csv"
+                  separator=";"
+                  tableName="teaching_language">
+            <column name="created_date" type="timestamp"/>
+            <column name="id" type="computed"/>
+        </loadData>
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/testdata/office_hours/office_hours_teaching_language.csv"
+                  separator=";"
+                  tableName="office_hours_teaching_language">
+            <column name="id" type="computed"/>
+        </loadData>
     </changeSet>
 
 </databaseChangeLog>

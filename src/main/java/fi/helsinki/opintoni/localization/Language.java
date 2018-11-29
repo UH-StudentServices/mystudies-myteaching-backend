@@ -49,7 +49,7 @@ public enum Language {
 
     @JsonCreator
     public static Language fromCode(String code) {
-        return Optional.ofNullable(Language.valueOf(code.toUpperCase())).orElseThrow(
+        return Optional.of(Language.valueOf(code.toUpperCase())).orElseThrow(
             () -> new IllegalArgumentException(String.format("no corresponding language for code '%s'", code)));
     }
 

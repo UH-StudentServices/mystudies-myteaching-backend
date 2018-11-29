@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
-import fi.helsinki.opintoni.security.authorization.PermissionChecker;
+import fi.helsinki.opintoni.dto.TeachingLanguageDto;
 import fi.helsinki.opintoni.service.OfficeHoursService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
@@ -27,6 +27,7 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,13 +43,10 @@ import java.util.List;
 public class OfficeHoursResource extends AbstractResource {
 
     private final OfficeHoursService officeHoursService;
-    private final PermissionChecker permissionChecker;
 
     @Autowired
-    public OfficeHoursResource(OfficeHoursService officeHoursService,
-                               PermissionChecker permissionChecker) {
+    public OfficeHoursResource(OfficeHoursService officeHoursService) {
         this.officeHoursService = officeHoursService;
-        this.permissionChecker = permissionChecker;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -72,4 +70,8 @@ public class OfficeHoursResource extends AbstractResource {
         return noContentResponse();
     }
 
+    @GetMapping(value = "/teaching-languages")
+    public ResponseEntity<List<TeachingLanguageDto>> getTeachingLanguages() {
+        return response(officeHoursService.getTeachingLanguages());
+    }
 }

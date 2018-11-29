@@ -15,16 +15,19 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.dto.v2;
+package fi.helsinki.opintoni.dto;
 
-import fi.helsinki.opintoni.dto.TeachingLanguageDto;
+import java.util.Map;
 
-import java.util.List;
+public class TeachingLanguageDto {
+    public String code;
+    public Map<String, String> name;
 
-public class PublicOfficeHoursReceptionDto {
-    public String description;
-    public String additionalInfo;
-    public String location;
-    public List<String> degreeProgrammes;
-    public List<TeachingLanguageDto> languages;
+    public TeachingLanguageDto() {
+    }
+
+    public TeachingLanguageDto(String code, Map<String, String> name) {
+        this.code = code;
+        this.name = name;
+    }
 }

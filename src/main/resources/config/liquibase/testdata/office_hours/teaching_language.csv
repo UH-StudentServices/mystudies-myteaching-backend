@@ -1,0 +1,3 @@
+id;language_code;created_by
+nextval('teaching_language_id_seq');fi_2nd;system
+nextval('teaching_language_id_seq');de;system

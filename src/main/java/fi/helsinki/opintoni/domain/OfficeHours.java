@@ -62,6 +62,14 @@ public class OfficeHours extends AbstractAuditingEntity implements Ownership {
     )
     public List<DegreeProgramme> degreeProgrammes = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+        name = "office_hours_teaching_language",
+        joinColumns = @JoinColumn(name = "office_hours_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "teaching_language_id", referencedColumnName = "id")
+    )
+    public List<PersistentTeachingLanguage> teachingLanguages = new ArrayList<>();
+
     @Override
     public Long getOwnerId() {
         return user.id;
