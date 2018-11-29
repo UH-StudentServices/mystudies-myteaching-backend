@@ -76,15 +76,3 @@ First start docker containers for local dev PostgreSQL and redis
 Then run: `java -jar build/libs/app-{VERSION_NUMBER}-SNAPSHOT.jar --spring.profiles.active=local-dev`
 
 Replace VERSION_NUMBER with an actual version number present in the jar file name in `build/libs` directory.
-
-### Prerequicites for publishing
-
-Add the following properties to ~/.gradle/gradle.properties
-
-```
-opintoni_artifactory_base_url=
-opintoni_artifactory_username=
-opintoni_artifactory_password=
-```
-
-Alternatively the props can also be specified through cli `./gradlew -Popintoni_artifactory_base_url= ...``

@@ -2028,4 +2028,16 @@
                              columnNames="office_hours_id, teaching_language_id"
                              constraintName="uc_office_hours_id__teaching_language_id" />
     </changeSet>
+
+    <changeSet id="OO-1232 remove rest of favorites from profiles" author="Tomi Mäkinen">
+        <delete tableName="component_visibility">
+           <where>profile_id is not null and component = 'FAVORITES'</where>
+        </delete>
+        <delete tableName="component_order">
+            <where>profile_id is not null and component = 'FAVORITES'</where>
+        </delete>
+        <delete tableName="component_heading">
+            <where>profile_id is not null and component = 'FAVORITES'</where>
+        </delete>
+    </changeSet>
 </databaseChangeLog>
