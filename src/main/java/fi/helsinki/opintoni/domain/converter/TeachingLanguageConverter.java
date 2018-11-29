@@ -15,15 +15,23 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.repository;
+package fi.helsinki.opintoni.domain.converter;
 
-import fi.helsinki.opintoni.domain.PersistentTeachingLanguage;
 import fi.helsinki.opintoni.domain.TeachingLanguage;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 
-public interface TeachingLanguageRepository extends JpaRepository<PersistentTeachingLanguage, Long> {
+@Converter(autoApply = true)
+public class TeachingLanguageConverter implements AttributeConverter<TeachingLanguage, String> {
 
-    Optional<PersistentTeachingLanguage> findFirstByLanguage(TeachingLanguage language);
+    @Override
+    public String convertToDatabaseColumn(TeachingLanguage attribute) {
+        return attribute.getCode();
+    }
+
+    @Override
+    public TeachingLanguage convertToEntityAttribute(String dbData) {
+        return TeachingLanguage.fromCode(dbData);
+    }
 }

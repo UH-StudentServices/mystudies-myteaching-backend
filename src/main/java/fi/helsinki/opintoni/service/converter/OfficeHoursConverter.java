@@ -18,12 +18,11 @@
 package fi.helsinki.opintoni.service.converter;
 
 import fi.helsinki.opintoni.domain.OfficeHours;
-import fi.helsinki.opintoni.dto.*;
+import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
+import fi.helsinki.opintoni.dto.OfficeHoursDto;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
-
-import fi.helsinki.opintoni.localization.TeachingLanguages;
-import org.springframework.stereotype.Component;
 
 @Component
 public class OfficeHoursConverter {
@@ -43,7 +42,7 @@ public class OfficeHoursConverter {
                 .collect(Collectors.toList());
 
             officeHoursDto.languages = officeHours.teachingLanguages.stream()
-                .map(teachingLanguage -> TeachingLanguages.fromCode(teachingLanguage.languageCode.getCode()).toDto())
+                .map(teachingLanguage -> teachingLanguage.language.toDto())
                 .collect(Collectors.toList());
         }
 

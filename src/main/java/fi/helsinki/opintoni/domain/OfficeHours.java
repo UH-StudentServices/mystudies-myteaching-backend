@@ -68,7 +68,7 @@ public class OfficeHours extends AbstractAuditingEntity implements Ownership {
         joinColumns = @JoinColumn(name = "office_hours_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "teaching_language_id", referencedColumnName = "id")
     )
-    public List<TeachingLanguage> teachingLanguages = new ArrayList<>();
+    public List<PersistentTeachingLanguage> teachingLanguages = new ArrayList<>();
 
     @Override
     public Long getOwnerId() {

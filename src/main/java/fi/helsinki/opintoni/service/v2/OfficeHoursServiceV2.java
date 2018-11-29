@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.service.v2;
 import fi.helsinki.opintoni.domain.OfficeHours;
 import fi.helsinki.opintoni.dto.v2.PublicOfficeHoursDto;
 import fi.helsinki.opintoni.dto.v2.PublicOfficeHoursReceptionDto;
-import fi.helsinki.opintoni.localization.TeachingLanguages;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.util.NameSorting;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +63,7 @@ public class OfficeHoursServiceV2 {
                         .map(dp -> dp.degreeCode)
                         .collect(Collectors.toList());
                     publicOfficeHoursReceptionDto.languages = oh.teachingLanguages.stream()
-                        .map(tl -> TeachingLanguages.fromCode(tl.languageCode.getCode()).toDto())
+                        .map(tl -> tl.language.toDto())
                         .collect(Collectors.toList());
                     return publicOfficeHoursReceptionDto;
                 }).collect(Collectors.toList());

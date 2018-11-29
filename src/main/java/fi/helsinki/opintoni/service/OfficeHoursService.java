@@ -19,7 +19,7 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.domain.DegreeProgramme;
 import fi.helsinki.opintoni.domain.OfficeHours;
-import fi.helsinki.opintoni.domain.TeachingLanguage;
+import fi.helsinki.opintoni.domain.PersistentTeachingLanguage;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
@@ -27,7 +27,7 @@ import fi.helsinki.opintoni.dto.PublicOfficeHoursDto;
 import fi.helsinki.opintoni.dto.TeachingLanguageDto;
 import fi.helsinki.opintoni.exception.http.ConflictException;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
-import fi.helsinki.opintoni.localization.TeachingLanguages;
+import fi.helsinki.opintoni.domain.TeachingLanguage;
 import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.repository.TeachingLanguageRepository;
@@ -123,9 +123,9 @@ public class OfficeHoursService {
                     .collect(Collectors.toList());
 
                 officeHoursDto.languages = groupedOfficeHours.get(name).stream()
-                    .flatMap(oh -> oh.teachingLanguages.stream().map(tl -> tl.languageCode))
+                    .flatMap(oh -> oh.teachingLanguages.stream().map(tl -> tl.language))
                     .distinct()
-                    .map(code -> TeachingLanguages.fromCode(code.getCode()).toDto())
+                    .map(TeachingLanguage::toDto)
                     .collect(Collectors.toList());
 
                 officeHoursDto.officeHours = groupedOfficeHours.get(name).stream()
@@ -139,8 +139,8 @@ public class OfficeHoursService {
     }
 
     public List<TeachingLanguageDto> getTeachingLanguages() {
-        return Arrays.stream(TeachingLanguages.values())
-            .map(TeachingLanguages::toDto)
+        return Arrays.stream(TeachingLanguage.values())
+            .map(TeachingLanguage::toDto)
             .collect(Collectors.toList());
     }
 
@@ -161,17 +161,17 @@ public class OfficeHoursService {
             .collect(Collectors.toList());
     }
 
-    private List<TeachingLanguage> teachingLanguagesFromDtos(List<TeachingLanguageDto> teachingLanguageDtos) {
+    private List<PersistentTeachingLanguage> teachingLanguagesFromDtos(List<TeachingLanguageDto> teachingLanguageDtos) {
         return teachingLanguageDtos.stream()
-            .filter(dto -> TeachingLanguages.getCodes().contains(dto.code))
+            .filter(dto -> TeachingLanguage.getCodes().contains(dto.code))
             .map(dto -> dto.code)
             .distinct()
             .map(code -> {
-                TeachingLanguages.Code languageCode = TeachingLanguages.Code.fromString(code);
-                TeachingLanguage teachingLanguage = teachingLanguageRepository.findFirstByLanguageCode(languageCode).orElse(null);
+                TeachingLanguage language = TeachingLanguage.fromCode(code);
+                PersistentTeachingLanguage teachingLanguage = teachingLanguageRepository.findFirstByLanguage(language).orElse(null);
                 if (teachingLanguage == null) {
-                    teachingLanguage = new TeachingLanguage();
-                    teachingLanguage.languageCode = languageCode;
+                    teachingLanguage = new PersistentTeachingLanguage();
+                    teachingLanguage.language = language;
                     teachingLanguage = teachingLanguageRepository.save(teachingLanguage);
                 }
                 return teachingLanguage;
@@ -196,6 +196,6 @@ public class OfficeHoursService {
     }
 
     private void validateTeachingLanguages(OfficeHoursDto officeHours) {
-        officeHours.languages.forEach(lang -> TeachingLanguages.fromCode(lang.code));
+        officeHours.languages.forEach(lang -> TeachingLanguage.fromCode(lang.code));
     }
 }

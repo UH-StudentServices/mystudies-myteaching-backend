@@ -19,25 +19,44 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import com.google.common.collect.ImmutableList;
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.dto.*;
+import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
+import fi.helsinki.opintoni.dto.OfficeHoursDto;
+import fi.helsinki.opintoni.dto.TeachingLanguageDto;
 import fi.helsinki.opintoni.localization.Language;
-import fi.helsinki.opintoni.localization.TeachingLanguages;
+import fi.helsinki.opintoni.domain.TeachingLanguage;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.*;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.ADDITIONAL_INFO;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.ADDITIONAL_INFO_2;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_1;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.DEGREE_CODE_2;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.LOCATION;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.LOCATION_2;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.OFFICE_HOURS_2;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHER_NAME;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHER_NAME_2;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHING_LANGUAGE_1;
+import static fi.helsinki.opintoni.sampledata.OfficeHoursSampleData.TEACHING_LANGUAGE_2;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static fi.helsinki.opintoni.web.WebTestUtils.toJsonBytes;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class OfficeHoursResourceTest extends SpringTest {
 
@@ -162,7 +181,7 @@ public class OfficeHoursResourceTest extends SpringTest {
             .andExpect(jsonPath("$[1]languages").isArray())
             .andExpect(jsonPath("$[1]languages", hasSize(1)))
             .andExpect(jsonPath("$[1]languages[0].code").value(TEACHING_LANGUAGE_2))
-            .andExpect(jsonPath("$[1]languages[0].name.fi").value(TeachingLanguages.fromCode(TEACHING_LANGUAGE_2).getNameFor("fi")));
+            .andExpect(jsonPath("$[1]languages[0].name.fi").value(TeachingLanguage.fromCode(TEACHING_LANGUAGE_2).getNameFor("fi")));
     }
 
     @Test
@@ -198,7 +217,7 @@ public class OfficeHoursResourceTest extends SpringTest {
             .andExpect(jsonPath("$[0].languages").isArray())
             .andExpect(jsonPath("$[0].languages", hasSize(1)))
             .andExpect(jsonPath("$[0].languages[0].code").value(TEACHING_LANGUAGE_1))
-            .andExpect(jsonPath("$[0].languages[0].name.fi").value(TeachingLanguages.fromCode(TEACHING_LANGUAGE_1).getNameFor("fi")));
+            .andExpect(jsonPath("$[0].languages[0].name.fi").value(TeachingLanguage.fromCode(TEACHING_LANGUAGE_1).getNameFor("fi")));
     }
 
     @Test
@@ -255,10 +274,10 @@ public class OfficeHoursResourceTest extends SpringTest {
             .with(securityContext(teacherSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$", hasSize(TeachingLanguages.values().length)));
+            .andExpect(jsonPath("$", hasSize(TeachingLanguage.values().length)));
 
         int idx = 0;
-        for (TeachingLanguages lang : TeachingLanguages.values()) {
+        for (TeachingLanguage lang : TeachingLanguage.values()) {
             result.andExpect(jsonPath(String.format("$.[%d].code", idx)).value(lang.getCode()));
             for (String langCode : Language.getCodes()) {
                 result.andExpect(jsonPath(String.format("$.[%d].name.%s", idx, langCode)).value(lang.getNameFor(langCode)));
@@ -277,7 +296,7 @@ public class OfficeHoursResourceTest extends SpringTest {
 
     private List<TeachingLanguageDto> createLanguageDtoList(String... codes) {
         return Arrays.stream(codes)
-            .map(code -> TeachingLanguages.fromCode(code).toDto())
+            .map(code -> TeachingLanguage.fromCode(code).toDto())
             .collect(Collectors.toList());
     }
 

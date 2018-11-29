@@ -15,15 +15,28 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.repository;
+package fi.helsinki.opintoni.domain;
 
-import fi.helsinki.opintoni.domain.PersistentTeachingLanguage;
-import fi.helsinki.opintoni.domain.TeachingLanguage;
-import org.springframework.data.jpa.repository.JpaRepository;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import java.util.List;
 
-import java.util.Optional;
+@Entity
+@Table(name = "teaching_language")
+public class PersistentTeachingLanguage extends AbstractAuditingEntity {
 
-public interface TeachingLanguageRepository extends JpaRepository<PersistentTeachingLanguage, Long> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
 
-    Optional<PersistentTeachingLanguage> findFirstByLanguage(TeachingLanguage language);
+    @Column(name = "language_code", nullable = false, length = 16)
+    public TeachingLanguage language;
+
+    @ManyToMany(mappedBy = "teachingLanguages")
+    public List<OfficeHours> officeHours;
 }
