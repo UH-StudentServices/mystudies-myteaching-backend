@@ -30,6 +30,7 @@ public class LanguageProficiencyConverter {
         languageProficiencyDto.proficiency = profileLanguageProficiency.proficiency;
         languageProficiencyDto.description = profileLanguageProficiency.description;
         languageProficiencyDto.visibility = profileLanguageProficiency.visibility.toString();
+        languageProficiencyDto.orderIndex = profileLanguageProficiency.orderIndex;
         return languageProficiencyDto;
     }
 
@@ -42,6 +43,7 @@ public class LanguageProficiencyConverter {
         profileLanguageProficiency.visibility = StringUtils.isNotBlank(languageProficiencyDto.visibility) ?
             ComponentVisibility.Visibility.valueOf(languageProficiencyDto.visibility) :
             ComponentVisibility.Visibility.PUBLIC;
+        profileLanguageProficiency.orderIndex = languageProficiencyDto.orderIndex;
         return profileLanguageProficiency;
     }
 }

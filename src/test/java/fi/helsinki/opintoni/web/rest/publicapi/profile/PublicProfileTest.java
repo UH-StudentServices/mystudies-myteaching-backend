@@ -76,12 +76,13 @@ public abstract class PublicProfileTest extends SpringTest {
     }
 
     public void setPrivateVisibilityForEveryStudentProfileComponentItem() {
-        List<ProfileLanguageProficiency> proficiencies = languageProficiencyRepository.findByProfileId(STUDENT_PROFILE_ID).stream()
+        List<ProfileLanguageProficiency> proficiencies = languageProficiencyRepository.findByProfileIdOrderByOrderIndexAsc(STUDENT_PROFILE_ID)
+            .stream()
             .peek(proficiency -> proficiency.visibility = ComponentVisibility.Visibility.PRIVATE)
             .collect(toList());
         languageProficiencyRepository.saveAll(proficiencies);
 
-        List<Sample> samples = sampleRepository.findByProfileId(STUDENT_PROFILE_ID).stream()
+        List<Sample> samples = sampleRepository.findByProfileIdOrderByOrderIndexAsc(STUDENT_PROFILE_ID).stream()
             .peek(sample -> sample.visibility = ComponentVisibility.Visibility.PRIVATE)
             .collect(toList());
         sampleRepository.saveAll(samples);

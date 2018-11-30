@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.util.stream.Collectors.toList;
 
@@ -50,12 +51,12 @@ public class SampleService {
     }
 
     public List<SampleDto> findByProfileId(Long profileId) {
-        List<Sample> samples = sampleRepository.findByProfileId(profileId);
+        List<Sample> samples = sampleRepository.findByProfileIdOrderByOrderIndexAsc(profileId);
         return samples.stream().map(sampleConverter::toDto).collect(toList());
     }
 
     public List<SampleDto> findByProfileIdAndVisibility(Long profileId, ComponentVisibility.Visibility visibility) {
-        return sampleRepository.findByProfileIdAndVisibility(profileId, visibility).stream()
+        return sampleRepository.findByProfileIdAndVisibilityOrderByOrderIndexAsc(profileId, visibility).stream()
             .map(sampleConverter::toDto)
             .collect(toList());
     }
@@ -65,8 +66,9 @@ public class SampleService {
 
         sampleRepository.deleteByProfileId(profile.id);
 
+        AtomicInteger orderCounter = new AtomicInteger(0);
         List<Sample> samples = updateSamples.stream()
-            .map(updateSample -> sampleConverter.toEntity(updateSample, profile))
+            .map(updateSample -> sampleConverter.toEntity(updateSample, profile, orderCounter.getAndIncrement()))
             .collect(toList());
         sampleRepository.saveAll(samples);
 

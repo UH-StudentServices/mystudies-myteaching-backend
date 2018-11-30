@@ -27,7 +27,7 @@ public interface SampleRepository extends JpaRepository<Sample, Long> {
 
     void deleteByProfileId(Long profileId);
 
-    List<Sample> findByProfileId(Long profileId);
+    List<Sample> findByProfileIdOrderByOrderIndexAsc(Long profileId);
 
-    List<Sample> findByProfileIdAndVisibility(Long profileId, ComponentVisibility.Visibility visibility);
+    List<Sample> findByProfileIdAndVisibilityOrderByOrderIndexAsc(Long profileId, ComponentVisibility.Visibility visibility);
 }
