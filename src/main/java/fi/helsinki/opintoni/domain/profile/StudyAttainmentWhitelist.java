@@ -32,7 +32,7 @@ public class StudyAttainmentWhitelist {
     public Long id;
 
     @Column(name = "show_grades")
-    public boolean showGrades;
+    public boolean showGrades = true;
 
     @OneToOne
     @JoinColumn(name = "profile_id")

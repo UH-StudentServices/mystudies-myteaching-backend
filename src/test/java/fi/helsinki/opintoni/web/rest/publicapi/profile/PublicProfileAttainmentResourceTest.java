@@ -52,7 +52,7 @@ public class PublicProfileAttainmentResourceTest extends PublicProfileTest {
     }
 
     @Test
-    public void thatGradesAreNotReturnedWhenConfigured() throws Exception {
+    public void thatGradesAreNotReturnedWhenNotConfigured() throws Exception {
 
         StudyAttainmentWhitelist whitelist = whitelistRepository.findByProfileId(STUDENT_PROFILE_ID).get();
         whitelist.showGrades = false;

@@ -2073,7 +2073,7 @@
         <addNotNullConstraint tableName="sample" columnName="order_index" />
         <addNotNullConstraint tableName="profile_language_proficiency" columnName="order_index" />
     </changeSet>
-    <changeSet id="OO-1193 add column to study_attainment_whitelist" author="sasiren">
+    <changeSet id="OO-1193 add column 'show_grades' to study_attainment_whitelist" author="Sami Siren">
         <addColumn tableName="study_attainment_whitelist">
             <column name="show_grades" type="boolean" defaultValue="true">
                 <constraints nullable="false"/>
