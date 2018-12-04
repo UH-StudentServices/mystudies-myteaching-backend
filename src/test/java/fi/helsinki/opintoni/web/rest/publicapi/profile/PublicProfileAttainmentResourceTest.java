@@ -55,7 +55,7 @@ public class PublicProfileAttainmentResourceTest extends PublicProfileTest {
     public void thatGradesAreNotReturnedWhenConfigured() throws Exception {
 
         StudyAttainmentWhitelist whitelist = whitelistRepository.findByProfileId(STUDENT_PROFILE_ID).get();
-        whitelist.showGrades=false;
+        whitelist.showGrades = false;
         whitelistRepository.save(whitelist);
 
         defaultStudentRequestChain().roles().attainments();
