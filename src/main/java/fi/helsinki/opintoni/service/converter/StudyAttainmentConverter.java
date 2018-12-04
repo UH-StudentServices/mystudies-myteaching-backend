@@ -37,7 +37,7 @@ public class StudyAttainmentConverter {
         this.localizedValueConverter = localizedValueConverter;
     }
 
-    public StudyAttainmentDto toDto(OodiStudyAttainment oodiStudyAttainment, Locale locale) {
+    public StudyAttainmentDto toDto(OodiStudyAttainment oodiStudyAttainment, Locale locale, boolean includeGrades) {
         return new StudyAttainmentDto(
             oodiStudyAttainment.studyAttainmentId,
             localizedValueConverter.toLocalizedString(oodiStudyAttainment.learningOpportunityName, locale),
@@ -45,7 +45,7 @@ public class StudyAttainmentConverter {
                 .map(this::convertOodiTeacherToDto)
                 .collect(Collectors.toList()),
             oodiStudyAttainment.attainmentDate,
-            localizedValueConverter.toLocalizedString(oodiStudyAttainment.grade, locale),
+            includeGrades ? localizedValueConverter.toLocalizedString(oodiStudyAttainment.grade, locale) : null,
             oodiStudyAttainment.credits
         );
     }

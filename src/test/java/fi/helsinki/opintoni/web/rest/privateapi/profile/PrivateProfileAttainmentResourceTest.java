@@ -63,6 +63,7 @@ public class PrivateProfileAttainmentResourceTest extends SpringTest {
     @Test
     public void thatWhitelistedAttainmentIdsAreUpdated() throws Exception {
         StudyAttainmentWhitelistDto dto = new StudyAttainmentWhitelistDto();
+        dto.showGrades = true;
         dto.oodiStudyAttainmentIds = Lists.newArrayList(3L, 4L);
 
         mockMvc.perform(post(RESOURCE_URL + "/whitelist")
@@ -70,6 +71,7 @@ public class PrivateProfileAttainmentResourceTest extends SpringTest {
             .content(WebTestUtils.toJsonBytes(dto))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$.showGrades").value(true))
             .andExpect(jsonPath("$.oodiStudyAttainmentIds").isArray())
             .andExpect(jsonPath("$.oodiStudyAttainmentIds").value(hasSize(2)))
             .andExpect(jsonPath("$.oodiStudyAttainmentIds[0]").value(3))

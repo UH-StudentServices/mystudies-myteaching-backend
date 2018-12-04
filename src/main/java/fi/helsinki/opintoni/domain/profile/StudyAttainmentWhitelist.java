@@ -31,12 +31,14 @@ public class StudyAttainmentWhitelist {
     @Column(name = "id")
     public Long id;
 
+    @Column(name = "show_grades")
+    public boolean showGrades = true;
+
     @OneToOne
     @JoinColumn(name = "profile_id")
     public Profile profile;
 
     @OneToMany(mappedBy = "whitelist", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     public List<StudyAttainmentWhitelistEntry> whitelistEntries = Lists.newArrayList();
-
 
 }

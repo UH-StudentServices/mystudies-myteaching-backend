@@ -59,17 +59,19 @@ public class StudyAttainmentService {
                 List<Long> whitelistedAttainmentIds = getWhitelistedAttainmentIds(whitelist);
                 List<OodiStudyAttainment> studyAttainments =
                     oodiClient.getStudyAttainments(getStudentNumber(profile));
-                return getWhitelistedAttainments(studyAttainments, whitelistedAttainmentIds, locale);
+                return getWhitelistedAttainments(studyAttainments, whitelistedAttainmentIds, locale,
+                    whitelist.showGrades);
             }).orElse(Lists.newArrayList());
     }
 
     private List<StudyAttainmentDto> getWhitelistedAttainments(List<OodiStudyAttainment> studyAttainments,
                                                                List<Long> whitelistedAttainmentIds,
-                                                               Locale locale) {
+                                                               Locale locale,
+                                                               boolean includeGrades) {
         Comparator<StudyAttainmentDto> studyAttainmentDtoComparator = this::compareStudyAttainments;
         return studyAttainments.stream()
             .filter(a -> whitelistedAttainmentIds.contains(a.studyAttainmentId))
-            .map(a -> studyAttainmentConverter.toDto(a, locale))
+            .map(a -> studyAttainmentConverter.toDto(a, locale, includeGrades))
             .sorted(studyAttainmentDtoComparator.reversed())
             .collect(Collectors.toList());
     }
@@ -89,7 +91,7 @@ public class StudyAttainmentService {
         Comparator<StudyAttainmentDto> studyAttainmentDtoComparator = this::compareStudyAttainments;
 
         return oodiClient.getStudyAttainments(studentNumber).stream()
-            .map(a -> studyAttainmentConverter.toDto(a, locale))
+            .map(a -> studyAttainmentConverter.toDto(a, locale, true))
             .sorted(studyAttainmentDtoComparator.reversed())
             .limit(limit)
             .collect(Collectors.toList());
