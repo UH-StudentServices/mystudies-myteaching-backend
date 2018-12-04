@@ -59,4 +59,5 @@ public class PublicProfileResourcePermissionTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
     }
+
 }

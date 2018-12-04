@@ -28,6 +28,7 @@ public class StudyAttainmentWhitelistConverter {
 
     public StudyAttainmentWhitelistDto toDto(StudyAttainmentWhitelist whitelist) {
         StudyAttainmentWhitelistDto whitelistDto = new StudyAttainmentWhitelistDto();
+        whitelistDto.showGrades = whitelist.showGrades;
         if (whitelist != null) {
             whitelistDto.oodiStudyAttainmentIds = whitelist.whitelistEntries.stream()
                 .map(e -> e.studyAttainmentId)

@@ -23,6 +23,8 @@ import java.util.List;
 
 public class StudyAttainmentWhitelistDto {
 
+    public boolean showGrades;
+
     public List<Long> oodiStudyAttainmentIds = Lists.newArrayList();
 
 }

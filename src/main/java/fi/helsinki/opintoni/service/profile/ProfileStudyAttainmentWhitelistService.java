@@ -67,6 +67,7 @@ public class ProfileStudyAttainmentWhitelistService extends DtoService {
         StudyAttainmentWhitelist whitelist = new StudyAttainmentWhitelist();
         whitelist.profile = profile;
         whitelist.whitelistEntries = new ArrayList<>();
+        whitelist.showGrades = true;
         whitelistRepository.save(whitelist);
     }
 
@@ -74,6 +75,7 @@ public class ProfileStudyAttainmentWhitelistService extends DtoService {
         Profile profile = profileRepository.findById(profileId).orElseThrow(NotFoundException::new);
         whitelistRepository.deleteByProfileId(profileId);
         StudyAttainmentWhitelist whitelist = new StudyAttainmentWhitelist();
+        whitelist.showGrades = whitelistDto.showGrades;
         whitelist.profile = profile;
         whitelistRepository.save(whitelist);
         whitelist.whitelistEntries = whitelistDto.oodiStudyAttainmentIds

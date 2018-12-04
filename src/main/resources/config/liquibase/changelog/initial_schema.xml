@@ -2040,7 +2040,6 @@
             <where>profile_id is not null and component = 'FAVORITES'</where>
         </delete>
     </changeSet>
-
     <changeSet id="OO-1170 internal ordering of sections" author="Joni Korhonen">
         <addColumn tableName="sample">
             <column name="order_index" type="smallint" />
@@ -2073,5 +2072,12 @@
 
         <addNotNullConstraint tableName="sample" columnName="order_index" />
         <addNotNullConstraint tableName="profile_language_proficiency" columnName="order_index" />
+    </changeSet>
+    <changeSet id="OO-1193 add column to study_attainment_whitelist" author="sasiren">
+        <addColumn tableName="study_attainment_whitelist">
+            <column name="show_grades" type="boolean" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>

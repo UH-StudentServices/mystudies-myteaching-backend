@@ -17,14 +17,20 @@
 
 package fi.helsinki.opintoni.web.rest.publicapi.profile;
 
+import fi.helsinki.opintoni.domain.profile.StudyAttainmentWhitelist;
+import fi.helsinki.opintoni.repository.profile.ProfileStudyAttainmentWhitelistRepository;
+import fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class PublicProfileAttainmentResourceTest extends PublicProfileTest {
+
+    @Autowired
+    private ProfileStudyAttainmentWhitelistRepository whitelistRepository;
 
     @Test
     public void thatAttainmentsAreReturned() throws Exception {
@@ -34,5 +40,28 @@ public class PublicProfileAttainmentResourceTest extends PublicProfileTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    public void thatGradesAreReturnedWhenConfigured() throws Exception {
+        defaultStudentRequestChain().roles().attainments();
+
+        mockMvc.perform(get(PUBLIC_STUDENT_PROFILE_API_PATH + "/attainment"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].grade").value(StudyAttainmentSampleData.GRADE));
+    }
+
+    @Test
+    public void thatGradesAreNotReturnedWhenConfigured() throws Exception {
+
+        StudyAttainmentWhitelist whitelist = whitelistRepository.findByProfileId(STUDENT_PROFILE_ID).get();
+        whitelist.showGrades=false;
+        whitelistRepository.save(whitelist);
+
+        defaultStudentRequestChain().roles().attainments();
+
+        mockMvc.perform(get(PUBLIC_STUDENT_PROFILE_API_PATH + "/attainment"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].grade").isEmpty());
     }
 }
