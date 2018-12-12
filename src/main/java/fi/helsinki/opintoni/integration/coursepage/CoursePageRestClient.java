@@ -38,7 +38,7 @@ public class CoursePageRestClient implements CoursePageClient {
 
     private static final Logger log = LoggerFactory.getLogger(CoursePageRestClient.class);
 
-    // It seems Kurssisivut only returns max. 10 course implementation per call.
+    // Course Pages server only returns max. 10 course implementation per call.
     private static final int COURSE_IMPLEMENTATION_PATCH_SIZE = 10;
 
     public CoursePageRestClient(String baseUrl, String apiPath, RestTemplate restTemplate) {
