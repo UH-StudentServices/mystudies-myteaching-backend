@@ -19,6 +19,8 @@ package fi.helsinki.opintoni.task;
 
 import fi.helsinki.opintoni.domain.CachedItemUpdatesCheck;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
+import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
+import fi.helsinki.opintoni.integration.coursepage.CoursePageIntegrationException;
 import fi.helsinki.opintoni.repository.CachedItemUpdatesCheckRepository;
 import fi.helsinki.opintoni.service.TimeService;
 import org.slf4j.Logger;
@@ -42,9 +44,7 @@ import static java.util.Arrays.asList;
 public class CourseImplementationCacheUpdater {
     private static final int FIRST_UPDATE_CHECK_RADIUS = 1;
 
-    @Value("${language.available}")
     private String[] availableLanguages;
-
     private final CoursePageClient coursePageClient;
     private final CachedItemUpdatesCheckRepository cachedItemUpdatesCheckRepository;
     private final CacheManager persistentCacheManager;
@@ -56,11 +56,13 @@ public class CourseImplementationCacheUpdater {
     public CourseImplementationCacheUpdater(CoursePageClient coursePageClient,
                                             CachedItemUpdatesCheckRepository cachedItemUpdatesCheckRepository,
                                             CacheManager persistentCacheManager,
-                                            CourseImplementationCacheOperations courseImplementationCache) {
+                                            CourseImplementationCacheOperations courseImplementationCache,
+                                            @Value("${language.available}") String[] availableLanguages) {
         this.coursePageClient = coursePageClient;
         this.cachedItemUpdatesCheckRepository = cachedItemUpdatesCheckRepository;
         this.persistentCacheManager = persistentCacheManager;
         this.courseImplementationCache = courseImplementationCache;
+        this.availableLanguages = availableLanguages;
     }
 
     public void getCourseImplementationChangesAndUpdateCache() {
@@ -111,7 +113,13 @@ public class CourseImplementationCacheUpdater {
     }
 
     private void updateCourseCacheForLocale(List<String> courseIds, Locale locale) {
-        coursePageClient.getCoursePages(courseIds, locale).stream()
+        List<CoursePageCourseImplementation> courses = coursePageClient.getCoursePages(courseIds, locale);
+        List<String> receivedCourseIds = courses.stream().map(c -> c.courseImplementationId.toString()).collect(Collectors.toList());
+        if (!receivedCourseIds.containsAll(courseIds)) {
+            throw new CoursePageIntegrationException(String.format("Asked for course ids %s but got %s",
+                    String.join(",", courseIds), String.join(",", receivedCourseIds)));
+        }
+        courses.stream()
             .forEach(courseImplementation
                 -> courseImplementationCache.insertOrUpdateCoursePageCourseImplementationInCache(courseImplementation, locale));
     }

@@ -21,4 +21,8 @@ public class CoursePageIntegrationException extends RuntimeException {
     public CoursePageIntegrationException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    public CoursePageIntegrationException(String message) {
+        super(message);
+    }
 }

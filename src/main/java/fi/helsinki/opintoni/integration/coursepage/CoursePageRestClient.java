@@ -38,11 +38,8 @@ public class CoursePageRestClient implements CoursePageClient {
 
     private static final Logger log = LoggerFactory.getLogger(CoursePageRestClient.class);
 
-    // Based on https://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-url-in-different-browsers
-    // practical max length of request uri is 2000 characters. Course implementation id is 9 numeric characters long,
-    // with comma separator 190 ids is going to take 1900 characters. Remaining 100 characters are left as space
-    // for course page url
-    private static final int COURSE_IMPLEMENTATION_PATCH_SIZE = 190;
+    // Course Pages server only returns max. 10 course implementation per call.
+    private static final int COURSE_IMPLEMENTATION_BATCH_SIZE = 10;
 
     public CoursePageRestClient(String baseUrl, String apiPath, RestTemplate restTemplate) {
         this.baseUrl = baseUrl;
@@ -107,7 +104,7 @@ public class CoursePageRestClient implements CoursePageClient {
 
     @Override
     public List<CoursePageCourseImplementation> getCoursePages(List<String> courseImplementationIds, Locale locale) {
-        return Lists.partition(courseImplementationIds, COURSE_IMPLEMENTATION_PATCH_SIZE).parallelStream()
+        return Lists.partition(courseImplementationIds, COURSE_IMPLEMENTATION_BATCH_SIZE).parallelStream()
             .map(idListPartition ->
                 getCoursePageData("/course_implementation/{courseImplementationIds}",
                     new ParameterizedTypeReference<List<CoursePageCourseImplementation>>() {
