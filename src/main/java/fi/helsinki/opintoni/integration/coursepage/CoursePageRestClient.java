@@ -39,7 +39,7 @@ public class CoursePageRestClient implements CoursePageClient {
     private static final Logger log = LoggerFactory.getLogger(CoursePageRestClient.class);
 
     // Course Pages server only returns max. 10 course implementation per call.
-    private static final int COURSE_IMPLEMENTATION_PATCH_SIZE = 10;
+    private static final int COURSE_IMPLEMENTATION_BATCH_SIZE = 10;
 
     public CoursePageRestClient(String baseUrl, String apiPath, RestTemplate restTemplate) {
         this.baseUrl = baseUrl;
@@ -104,7 +104,7 @@ public class CoursePageRestClient implements CoursePageClient {
 
     @Override
     public List<CoursePageCourseImplementation> getCoursePages(List<String> courseImplementationIds, Locale locale) {
-        return Lists.partition(courseImplementationIds, COURSE_IMPLEMENTATION_PATCH_SIZE).parallelStream()
+        return Lists.partition(courseImplementationIds, COURSE_IMPLEMENTATION_BATCH_SIZE).parallelStream()
             .map(idListPartition ->
                 getCoursePageData("/course_implementation/{courseImplementationIds}",
                     new ParameterizedTypeReference<List<CoursePageCourseImplementation>>() {
