@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.validation.MaxYearFromNow;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Valid
@@ -39,9 +40,9 @@ public class OfficeHoursDto {
 
     public String location;
 
-    public List<DegreeProgrammeDto> degreeProgrammes;
+    public List<DegreeProgrammeDto> degreeProgrammes = new ArrayList<>();
 
-    public List<TeachingLanguageDto> languages;
+    public List<TeachingLanguageDto> languages = new ArrayList<>();
 
     @NotNull
     @MaxYearFromNow

@@ -34,7 +34,7 @@ public class GlobalExceptionHandlersTest extends SpringTest {
         mockMvc.perform(get("/nullpointer").with(securityContext(studentSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isInternalServerError())
-            .andExpect(jsonPath("$.error").value("Something went wrong"));
+            .andExpect(jsonPath("$.error").value("Internal Server Error"));
     }
 
     @Test
