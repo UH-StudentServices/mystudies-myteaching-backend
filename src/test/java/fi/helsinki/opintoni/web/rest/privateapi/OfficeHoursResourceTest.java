@@ -249,11 +249,14 @@ public class OfficeHoursResourceTest extends SpringTest {
         );
 
         performPostOfficeHours(officeHoursDto)
-            .andExpect(status().isConflict());
+            .andExpect(status().isUnprocessableEntity());
     }
 
+    //This is accepted, because there may exist old data that has not had degree programmes and Teaching languages set.
+    //This data must be able to be fixed by the user via UI. UI validates, that it is not possible to update existing office hours
+    //or create new ones without having either degree programmes or teaching languages set.
     @Test
-    public void thatOfficeHoursWithoutDegreeProgrammesOrTeachingLanguagesIsNotAccepted() throws Exception {
+    public void thatOfficeHoursWithoutDegreeProgrammesAndTeachingLanguagesIsAccepted() throws Exception {
         OfficeHoursDto officeHoursDto = new OfficeHoursDto(
             TEACHER_NAME,
             OFFICE_HOURS,
@@ -265,7 +268,7 @@ public class OfficeHoursResourceTest extends SpringTest {
         );
 
         performPostOfficeHours(officeHoursDto)
-            .andExpect(status().isConflict());
+            .andExpect(status().isOk());
     }
 
     @Test

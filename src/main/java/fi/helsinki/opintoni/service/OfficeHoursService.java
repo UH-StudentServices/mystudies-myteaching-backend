@@ -25,9 +25,9 @@ import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
 import fi.helsinki.opintoni.dto.PublicOfficeHoursDto;
 import fi.helsinki.opintoni.dto.TeachingLanguageDto;
-import fi.helsinki.opintoni.exception.http.ConflictException;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.domain.TeachingLanguage;
+import fi.helsinki.opintoni.exception.http.UnprocessableEntityException;
 import fi.helsinki.opintoni.repository.DegreeProgrammeRepository;
 import fi.helsinki.opintoni.repository.OfficeHoursRepository;
 import fi.helsinki.opintoni.repository.TeachingLanguageRepository;
@@ -181,17 +181,14 @@ public class OfficeHoursService {
 
     private void validateOfficeHours(List<OfficeHoursDto> officeHoursList) {
         officeHoursList.forEach(officeHours -> {
-            validateDegreeProgrammesOrTeachingLanguagesIsSet(officeHours);
+            validateDegreeProgrammesAndTeachingLanguagesNotBothSet(officeHours);
             validateTeachingLanguages(officeHours);
         });
     }
 
-    private void validateDegreeProgrammesOrTeachingLanguagesIsSet(OfficeHoursDto officeHours) {
+    private void validateDegreeProgrammesAndTeachingLanguagesNotBothSet(OfficeHoursDto officeHours) {
         if (CollectionUtils.isNotEmpty(officeHours.degreeProgrammes) && CollectionUtils.isNotEmpty(officeHours.languages)) {
-            throw new ConflictException("degree programmes and teaching languages can't be both set");
-        }
-        if (CollectionUtils.isEmpty(officeHours.degreeProgrammes) && CollectionUtils.isEmpty(officeHours.languages)) {
-            throw new ConflictException("either degree programmes or teaching languages must be set");
+            throw new UnprocessableEntityException("degree programmes and teaching languages can't be both set");
         }
     }
 

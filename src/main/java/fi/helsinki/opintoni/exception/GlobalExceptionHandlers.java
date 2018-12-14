@@ -17,11 +17,7 @@
 
 package fi.helsinki.opintoni.exception;
 
-import fi.helsinki.opintoni.exception.http.BadRequestException;
-import fi.helsinki.opintoni.exception.http.CalendarFeedNotFoundException;
-import fi.helsinki.opintoni.exception.http.ConflictException;
-import fi.helsinki.opintoni.exception.http.ForbiddenException;
-import fi.helsinki.opintoni.exception.http.NotFoundException;
+import fi.helsinki.opintoni.exception.http.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -39,9 +35,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
@@ -50,22 +46,22 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity handleNotFound() throws Exception {
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        return getResponseEntity(HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = {ForbiddenException.class, AccessDeniedException.class})
     public ResponseEntity<CommonError> handleForbidden() throws Exception {
-        return new ResponseEntity<>(new CommonError("Forbidden"), HttpStatus.FORBIDDEN);
+        return getResponseEntity(HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(value = {BadRequestException.class, IllegalArgumentException.class, ConstraintViolationException.class})
-    public ResponseEntity<CommonError> handleBadRequest() throws Exception {
-        return new ResponseEntity<>(new CommonError("Bad request"), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<CommonError> handleBadRequest(Exception e) throws Exception {
+        return logExceptionAndGetResponseEntity(e, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {ConflictException.class})
-    public ResponseEntity<CommonError> handleConflict() throws Exception {
-        return new ResponseEntity<>(new CommonError("Conflict"), HttpStatus.CONFLICT);
+    @ExceptionHandler(value = {UnprocessableEntityException.class})
+    public ResponseEntity<CommonError> handleUnprocessableEntity(Exception e) throws Exception {
+        return logExceptionAndGetResponseEntity(e, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(value = Exception.class)
@@ -81,9 +77,16 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
             throw e;
         }
 
-        log.error("Caught exception", e);
+        return logExceptionAndGetResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-        return new ResponseEntity<>(new CommonError("Something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
+    private ResponseEntity<CommonError> logExceptionAndGetResponseEntity(Exception exception, HttpStatus httpStatus) {
+        log.error("Caught exception", exception);
+        return getResponseEntity(httpStatus);
+    }
+
+    private ResponseEntity<CommonError> getResponseEntity(HttpStatus httpStatus) {
+        return new ResponseEntity<>(new CommonError(httpStatus.getReasonPhrase()), httpStatus);
     }
 
     @ExceptionHandler(value = CalendarFeedNotFoundException.class)
