@@ -29,6 +29,7 @@ import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -105,7 +106,13 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
     }
 
     private List<SAMLEduPersonAffiliation> getEduPersonAffiliations(SAMLCredential credential) {
-        return Arrays.stream(credential.getAttributeAsStringArray(SAML_ATTRIBUTE_EDU_PERSON_AFFILIATION))
+        String[] samlEduPersonAffiliation = credential.getAttributeAsStringArray(SAML_ATTRIBUTE_EDU_PERSON_AFFILIATION);
+
+        if (samlEduPersonAffiliation == null) {
+            return Collections.EMPTY_LIST;
+        }
+
+        return Arrays.stream(samlEduPersonAffiliation)
             .map(SAMLEduPersonAffiliation::fromValue)
             .collect(Collectors.toList());
     }
