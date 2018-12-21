@@ -90,9 +90,9 @@ public class EventConverter {
             .setCourseMaterialDto(courseMaterialDtoFactory.fromCoursePage(coursePage))
             .setMoodleUri(coursePage.moodleUrl)
             .setHasMaterial(coursePage.hasMaterial)
-            .setLocations(ImmutableList.of(locationResolver.getLocation(event)))
-            .setOptimeExtras(event.optimeExtras == null ? null : 
-                new OptimeExtrasDto(event.optimeExtras.otherNotes, event.optimeExtras.roomNotes, event.optimeExtras.staffNotes))
+            .setLocations(locationResolver.getLocations(event))
+            .setOptimeExtras(event.optimeExtras == null ? null :
+                new OptimeExtrasDto(event.optimeExtras.otherNotes, event.optimeExtras.staffNotes))
             .createEventDto();
     }
 

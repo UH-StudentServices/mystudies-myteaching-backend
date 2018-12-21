@@ -25,19 +25,16 @@ public class OptimeExtrasDto {
 
     public String otherNotes;
 
-    public String roomNotes;
-
     public String staffNotes;
 
-    public OptimeExtrasDto(String otherNotes, String roomNotes, String staffNotes) {
+    public OptimeExtrasDto(String otherNotes, String staffNotes) {
         this.otherNotes = otherNotes;
-        this.roomNotes = roomNotes;
         this.staffNotes = staffNotes;
     }
 
     @Override
     public String toString() {
-        return Lists.newArrayList(roomNotes, staffNotes, otherNotes)
+        return Lists.newArrayList(staffNotes, otherNotes)
             .stream()
             .filter(s -> s != null && !s.isEmpty())
             .collect(Collectors.joining(", "));
