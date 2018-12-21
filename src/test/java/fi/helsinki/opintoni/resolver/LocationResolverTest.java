@@ -21,8 +21,11 @@ import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.LocationDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
 import fi.helsinki.opintoni.integration.oodi.OodiEvent;
+import fi.helsinki.opintoni.integration.oodi.OptimeExtras;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,6 +33,9 @@ public class LocationResolverTest extends SpringTest {
     private static String room = "Huone";
     private static String street = "Osoite";
     private static String zip = "1345";
+    private static String roomNotes = "roomNotes";
+    private static String otherNotes = "otherNotes";
+    private static String staffNotes = "staffNotes";
 
     @Autowired
     private LocationResolver locationResolver;
@@ -105,6 +111,31 @@ public class LocationResolverTest extends SpringTest {
         assertThat(locationDto.roomName).isEqualTo("");
         assertThat(locationDto.streetAddress).isNull();
         assertThat(locationDto.zipCode).isNull();
+    }
+
+    @Test
+    public void thatOodiEventWithOptimeDataCreatesTwoLocations() {
+        OodiEvent oodiEventWithOptimeData = oodiEventWithLocation(room, street, zip);
+        oodiEventWithOptimeData.optimeExtras = optimeExtras(otherNotes, roomNotes, staffNotes);
+
+        List<LocationDto> locations = locationResolver.getLocations(oodiEventWithOptimeData);
+        assertThat(locations).hasSize(2);
+        assertThat(locations.get(0).locationString).isEqualTo(room + ", " + street);
+        assertThat(locations.get(0).roomName).isEqualTo(room);
+        assertThat(locations.get(0).streetAddress).isEqualTo(street);
+        assertThat(locations.get(0).zipCode).isEqualTo(zip);
+        assertThat(locations.get(1).locationString).isEqualTo(roomNotes);
+        assertThat(locations.get(1).roomName).isEqualTo(roomNotes);
+        assertThat(locations.get(1).streetAddress).isNull();
+        assertThat(locations.get(1).zipCode).isNull();
+    }
+
+    private OptimeExtras optimeExtras(String otherNotes, String roomNotes, String staffNotes) {
+        OptimeExtras optimeExtras = new OptimeExtras();
+        optimeExtras.roomNotes = roomNotes;
+        optimeExtras.otherNotes = otherNotes;
+        optimeExtras.staffNotes = staffNotes;
+        return optimeExtras;
     }
 
     private OodiEvent oodiEventWithLocation(String roomName, String street, String zip) {

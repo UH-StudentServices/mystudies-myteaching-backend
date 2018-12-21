@@ -17,12 +17,14 @@
 
 package fi.helsinki.opintoni.resolver;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.LocationDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
 import fi.helsinki.opintoni.integration.oodi.OodiEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -55,4 +57,11 @@ public class LocationResolver {
         return new LocationDto(where);
     }
 
+    public List<LocationDto> getLocations(OodiEvent oodiEvent) {
+        LocationDto locationDto = getLocation(oodiEvent);
+        if (oodiEvent.optimeExtras != null && oodiEvent.optimeExtras.roomNotes != null) {
+            return ImmutableList.of(locationDto, new LocationDto(oodiEvent.optimeExtras.roomNotes));
+        }
+        return ImmutableList.of(locationDto);
+    }
 }
