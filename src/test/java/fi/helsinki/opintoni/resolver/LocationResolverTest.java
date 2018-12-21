@@ -30,34 +30,34 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LocationResolverTest extends SpringTest {
-    private static String room = "Huone";
-    private static String street = "Osoite";
-    private static String zip = "1345";
-    private static String roomNotes = "roomNotes";
-    private static String otherNotes = "otherNotes";
-    private static String staffNotes = "staffNotes";
+    private static final String ROOM = "Huone";
+    private static final String STREET = "Osoite";
+    private static final String ZIP = "1345";
+    private static final String ROOM_NOTES = "ROOM_NOTES";
+    private static final String OTHER_NOTES = "OTHER_NOTES";
+    private static final String STAFF_NOTES = "STAFF_NOTES";
 
     @Autowired
     private LocationResolver locationResolver;
 
     @Test
     public void thatLocationIsReturnedWhenStreetIsNull() {
-        OodiEvent oodiEvent = oodiEventWithLocation(room, null, null);
+        OodiEvent oodiEvent = oodiEventWithLocation(ROOM, null, null);
 
         LocationDto locationDto = locationResolver.getLocation(oodiEvent);
         assertThat(locationDto).isNotNull();
-        assertThat(locationDto.locationString).isEqualTo(room);
+        assertThat(locationDto.locationString).isEqualTo(ROOM);
         assertThat(locationDto.streetAddress).isNull();
     }
 
     @Test
     public void thatLocationIsReturnedWhenRoomIsNull() {
-        OodiEvent oodiEvent = oodiEventWithLocation(null, street, null);
+        OodiEvent oodiEvent = oodiEventWithLocation(null, STREET, null);
 
         LocationDto locationDto = locationResolver.getLocation(oodiEvent);
         assertThat(locationDto).isNotNull();
-        assertThat(locationDto.locationString).isEqualTo(street);
-        assertThat(locationDto.streetAddress).isEqualTo(street);
+        assertThat(locationDto.locationString).isEqualTo(STREET);
+        assertThat(locationDto.streetAddress).isEqualTo(STREET);
     }
 
     @Test
@@ -73,13 +73,13 @@ public class LocationResolverTest extends SpringTest {
 
     @Test
     public void thatLocationIsReturnedFromOodi() {
-        OodiEvent oodiEvent = oodiEventWithLocation(room, street, zip);
+        OodiEvent oodiEvent = oodiEventWithLocation(ROOM, STREET, ZIP);
 
         LocationDto locationDto = locationResolver.getLocation(oodiEvent);
-        assertThat(locationDto.locationString).isEqualTo(room + ", " + street);
-        assertThat(locationDto.roomName).isEqualTo(room);
-        assertThat(locationDto.streetAddress).isEqualTo(street);
-        assertThat(locationDto.zipCode).isEqualTo(zip);
+        assertThat(locationDto.locationString).isEqualTo(ROOM + ", " + STREET);
+        assertThat(locationDto.roomName).isEqualTo(ROOM);
+        assertThat(locationDto.streetAddress).isEqualTo(STREET);
+        assertThat(locationDto.zipCode).isEqualTo(ZIP);
     }
 
     private void coursePageEventStringTest(String where) {
@@ -115,17 +115,17 @@ public class LocationResolverTest extends SpringTest {
 
     @Test
     public void thatOodiEventWithOptimeDataCreatesTwoLocations() {
-        OodiEvent oodiEventWithOptimeData = oodiEventWithLocation(room, street, zip);
-        oodiEventWithOptimeData.optimeExtras = optimeExtras(otherNotes, roomNotes, staffNotes);
+        OodiEvent oodiEventWithOptimeData = oodiEventWithLocation(ROOM, STREET, ZIP);
+        oodiEventWithOptimeData.optimeExtras = optimeExtras(OTHER_NOTES, ROOM_NOTES, STAFF_NOTES);
 
         List<LocationDto> locations = locationResolver.getLocations(oodiEventWithOptimeData);
         assertThat(locations).hasSize(2);
-        assertThat(locations.get(0).locationString).isEqualTo(room + ", " + street);
-        assertThat(locations.get(0).roomName).isEqualTo(room);
-        assertThat(locations.get(0).streetAddress).isEqualTo(street);
-        assertThat(locations.get(0).zipCode).isEqualTo(zip);
-        assertThat(locations.get(1).locationString).isEqualTo(roomNotes);
-        assertThat(locations.get(1).roomName).isEqualTo(roomNotes);
+        assertThat(locations.get(0).locationString).isEqualTo(ROOM + ", " + STREET);
+        assertThat(locations.get(0).roomName).isEqualTo(ROOM);
+        assertThat(locations.get(0).streetAddress).isEqualTo(STREET);
+        assertThat(locations.get(0).zipCode).isEqualTo(ZIP);
+        assertThat(locations.get(1).locationString).isEqualTo(ROOM_NOTES);
+        assertThat(locations.get(1).roomName).isEqualTo(ROOM_NOTES);
         assertThat(locations.get(1).streetAddress).isNull();
         assertThat(locations.get(1).zipCode).isNull();
     }
