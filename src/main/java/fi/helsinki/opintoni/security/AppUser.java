@@ -204,7 +204,9 @@ public final class AppUser extends User {
             }
 
             if (eduPersonAffiliations == null || eduPersonAffiliations.isEmpty()) {
-                throw new BadCredentialsException("User does not have any eduPersonAffiliations");
+                throw new BadCredentialsException(
+                    String.format("User (employeeNumber = %1$s, studentNumber = %2$s) does not have any eduPersonAffiliations",
+                        employeeNumber.orElse(""), studentNumber.orElse("")));
             }
 
             authorities = getAuthorities();

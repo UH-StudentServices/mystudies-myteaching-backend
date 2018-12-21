@@ -21,6 +21,7 @@ import com.google.common.collect.Iterables;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.service.UserService;
 import org.junit.Test;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.saml.SAMLCredential;
 
@@ -66,6 +67,13 @@ public class SAMLUserDetailsServiceTest {
 
         GrantedAuthority grantedAuthority = Iterables.getOnlyElement(appUser.getAuthorities());
         assertThat(grantedAuthority.getAuthority()).isEqualTo(AppUser.Role.STUDENT.name());
+    }
+
+    @Test(expected = BadCredentialsException.class)
+    public void thatStudentWithNoSAMLAffiliationsThrowsException() {
+        SAMLCredential credential = samlStudentCredentialWithNoAffiliations();
+
+        AppUser appUser = (AppUser) userDetailsService.loadUserBySAML(credential);
     }
 
     @Test
@@ -122,6 +130,15 @@ public class SAMLUserDetailsServiceTest {
         AppUser appUser = (AppUser) userDetailsService.loadUserBySAML(credential);
 
         assertThat(appUser.hasRole(AppUser.Role.ADMIN)).isTrue();
+    }
+
+    private SAMLCredential samlStudentCredentialWithNoAffiliations() {
+        SAMLCredential credential = samlCommonCredential();
+
+        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.25178.1.2.14")).thenReturn(SAML_STUDENT_NUMBER);
+        when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(null);
+        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.5")).thenReturn(SAMLEduPersonAffiliation.STUDENT.getValue());
+        return credential;
     }
 
     private SAMLCredential samlStudentCredential() {
