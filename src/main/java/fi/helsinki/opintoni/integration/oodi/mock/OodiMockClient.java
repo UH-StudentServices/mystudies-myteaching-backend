@@ -153,27 +153,9 @@ public class OodiMockClient implements OodiClient {
     }
 
     @Override
-    public OodiStudentInfo getStudentInfo(String studentNumber) {
-        return getSingleOodiResponse(studentInfo,
-            new TypeReference<OodiSingleResponse<OodiStudentInfo>>() {
-            });
-    }
-
-    @Override
     public OodiRoles getRoles(String oodiPersonId) {
         return getSingleOodiResponse(roles,
             new TypeReference<OodiSingleResponse<OodiRoles>>() {
-            });
-    }
-
-    @Override
-    public OodiLearningOpportunity getLearningOpportunity(String learningOpportunityId) {
-        Resource learningOpportunityResponse = Optional
-            .ofNullable(learningOpportunityById.get(learningOpportunityId))
-            .orElse(learningOpportunityA);
-
-        return getSingleOodiResponse(learningOpportunityResponse,
-            new TypeReference<OodiSingleResponse<OodiLearningOpportunity>>() {
             });
     }
 

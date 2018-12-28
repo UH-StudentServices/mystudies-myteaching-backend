@@ -111,14 +111,6 @@ public class CourseService {
         return courseDtos;
     }
 
-    public List<LearningOpportunityDto> getLearningOpportunities(List<String> learningOpportunityIds, Locale locale) {
-        return learningOpportunityIds
-            .stream()
-            .map(oodiClient::getLearningOpportunity)
-            .map(l -> learningOpportunityConverter.toDto(l, locale))
-            .collect(toList());
-    }
-
     private boolean isChildCourseWithoutRoot(OodiTeacherCourse oodiTeacherCourse, Map<String, OodiTeacherCourse> coursesByRealisationIds) {
         return !oodiTeacherCourse.realisationId.equals(oodiTeacherCourse.rootId) &&
             !coursesByRealisationIds.containsKey(oodiTeacherCourse.rootId);

@@ -37,9 +37,5 @@ public interface OodiClient {
 
     List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId);
 
-    OodiStudentInfo getStudentInfo(String studentNumber);
-
     OodiRoles getRoles(String oodiPersonId);
-
-    OodiLearningOpportunity getLearningOpportunity(String learningOpportunityId);
 }
