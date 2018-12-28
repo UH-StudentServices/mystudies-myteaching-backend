@@ -29,16 +29,11 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static fi.helsinki.opintoni.security.DevUserDetailsService.STUDENT_NUMBER_TEST_NEW_STUDENT;
 import static fi.helsinki.opintoni.security.DevUserDetailsService.STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT;
 
 public class OodiMockClient implements OodiClient {
-
-    private static final String COURSE_UNIT_REALISATION_ID = "101472950";
-    private static final String CANCELLED_COURSE_UNIT_REALISATION_ID = "123456789";
-    private static final String POSITION_STUDYGROUPSET_COURSE_UNIT_REALISATION_ID = "109155866";
 
     private static final String LEARNING_OPPORTUNITY_A_ID = "405437";
     private static final String LEARNING_OPPORTUNITY_B_ID = "405438";

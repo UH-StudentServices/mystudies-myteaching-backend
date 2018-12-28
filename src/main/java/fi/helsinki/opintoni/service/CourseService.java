@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.dto.CourseDto;
-import fi.helsinki.opintoni.dto.LearningOpportunityDto;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiTeacherCourse;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
@@ -29,12 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
