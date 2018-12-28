@@ -89,13 +89,6 @@ public class OodiRestClient implements OodiClient {
     }
 
     @Override
-    public OodiStudentInfo getStudentInfo(String studentNumber) {
-        return getSingleOodiData(baseUrl + "/students/{studentNumber}/info",
-            new ParameterizedTypeReference<OodiSingleResponse<OodiStudentInfo>>() {
-            }, OodiStudentInfo.class, studentNumber);
-    }
-
-    @Override
     public OodiRoles getRoles(String oodiPersonId) {
         return getSingleOodiData(baseUrl + "/persons/{oodiPersonId}/roles",
             new ParameterizedTypeReference<OodiSingleResponse<OodiRoles>>() {
@@ -108,14 +101,6 @@ public class OodiRestClient implements OodiClient {
         return getOodiData(baseUrl + "/teachers/{teacherNumber}/events",
             new ParameterizedTypeReference<OodiResponse<OodiEvent>>() {
             }, teacherNumber);
-    }
-
-    @Override
-    @Cacheable(value = CacheConstants.LEARNING_OPPORTUNITIES, cacheManager = "transientCacheManager")
-    public OodiLearningOpportunity getLearningOpportunity(String learningOpportunityId) {
-        return getSingleOodiData(baseUrl + "/learningopportunities/{learningOpportunityId}",
-            new ParameterizedTypeReference<OodiSingleResponse<OodiLearningOpportunity>>() {
-            }, OodiLearningOpportunity.class, learningOpportunityId);
     }
 
     public <T> List<T> getOodiData(String url,
