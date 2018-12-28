@@ -72,6 +72,13 @@ newsfeeds:
         sv: https://dev.guide.student.helsinki.fi/sv/news/feed.xml
         en: https://dev.guide.student.helsinki.fi/en/news/feed.xml
 
+saml:
+  idp.metadataUrl: https://login-test.it.helsinki.fi/metadata/sign-hy-test-metadata.xml
+  teacher:
+    alias: teacher
+  student:
+    alias: student
+
 esb:
     base.url: https://esbmt2.it.helsinki.fi/devel
     client.implementation: rest
