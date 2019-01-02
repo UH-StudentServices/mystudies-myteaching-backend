@@ -19,9 +19,15 @@ package fi.helsinki.opintoni.service.favorite;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import fi.helsinki.opintoni.domain.*;
+import fi.helsinki.opintoni.domain.Favorite;
+import fi.helsinki.opintoni.domain.RssFavorite;
+import fi.helsinki.opintoni.domain.TwitterFavorite;
+import fi.helsinki.opintoni.domain.UnicafeFavorite;
+import fi.helsinki.opintoni.domain.UnisportFavorite;
+import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
+import fi.helsinki.opintoni.exception.http.UnprocessableEntityException;
 import fi.helsinki.opintoni.repository.FavoriteRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.converter.FavoriteConverter;
@@ -95,7 +101,7 @@ public class FavoriteService {
     public FavoriteDto insertFlammaFavorite(Long userId, String typeString) {
         Favorite.Type type = Favorite.Type.valueOf(typeString);
         if (!FLAMMA_TYPES.contains(type)) {
-            throw new IllegalArgumentException(
+            throw new UnprocessableEntityException(
                 String.format("Illegal Flamma type: %s", typeString));
         }
         Favorite favorite = new Favorite();
@@ -173,7 +179,7 @@ public class FavoriteService {
                 favorites.add(createFlammaFavorite(Favorite.Type.valueOf(favorite.get("type"))));
                 break;
             default:
-                throw new IllegalArgumentException("unexpected favorite type: " + favorite.get("type"));
+                throw new UnprocessableEntityException("unexpected favorite type: " + favorite.get("type"));
         }
     }
 
