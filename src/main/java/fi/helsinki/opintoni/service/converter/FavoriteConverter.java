@@ -18,8 +18,19 @@
 package fi.helsinki.opintoni.service.converter;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
-import fi.helsinki.opintoni.domain.*;
-import fi.helsinki.opintoni.dto.*;
+import fi.helsinki.opintoni.domain.Favorite;
+import fi.helsinki.opintoni.domain.LinkFavorite;
+import fi.helsinki.opintoni.domain.RssFavorite;
+import fi.helsinki.opintoni.domain.TwitterFavorite;
+import fi.helsinki.opintoni.domain.UnicafeFavorite;
+import fi.helsinki.opintoni.domain.UnisportFavorite;
+import fi.helsinki.opintoni.dto.FavoriteDto;
+import fi.helsinki.opintoni.dto.LinkFavoriteDto;
+import fi.helsinki.opintoni.dto.RssFavoriteDto;
+import fi.helsinki.opintoni.dto.TwitterFavoriteDto;
+import fi.helsinki.opintoni.dto.UnicafeFavoriteDto;
+import fi.helsinki.opintoni.dto.UnisportFavoriteDto;
+import fi.helsinki.opintoni.exception.http.UnprocessableEntityException;
 import fi.helsinki.opintoni.integration.unisport.UnisportClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,7 +48,7 @@ public class FavoriteConverter {
     }
 
     public FavoriteDto toDto(Favorite favorite) {
-        switch(favorite.type) {
+        switch (favorite.type) {
             case TWITTER:
                 return toTwitterDto((TwitterFavorite) favorite);
             case RSS:
@@ -52,7 +63,7 @@ public class FavoriteConverter {
             case FLAMMA_EVENTS:
                 return toFavoriteDto(favorite);
             default:
-                throw new IllegalArgumentException("No converter for type " + favorite.type.name());
+                throw new UnprocessableEntityException("No converter for type " + favorite.type.name());
         }
     }
 
