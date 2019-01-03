@@ -25,6 +25,7 @@ plugins {
     id 'idea'
     id 'jacoco'
     id 'checkstyle'
+    id 'org.sonarqube' version '2.6.2'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -39,6 +40,13 @@ checkstyle {
 
 bootJar {
    mainClassName = 'fi.helsinki.opintoni.Application'
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "mystudies-myteaching-backend"
+        property "sonar.projectName", "mystudies-myteaching-backend"
+    }
 }
 
 springBoot {
