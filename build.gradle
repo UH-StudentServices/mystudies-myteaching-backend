@@ -248,13 +248,7 @@ publishing {
   }
 }
 
-tasks.withType(PublishToMavenRepository) {
-    if (project.hasProperty("sonar")) {
-        it.dependsOn sonarqube
-    } else {
-        it.dependsOn test
-    }
-}
+tasks.withType(PublishToMavenRepository) { it.dependsOn test }
 publish.dependsOn bootJar
 
 task checkstyle {
