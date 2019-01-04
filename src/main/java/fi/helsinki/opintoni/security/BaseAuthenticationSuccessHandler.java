@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.integration.oodi.OodiIntegrationException;
 import fi.helsinki.opintoni.service.UserService;
 import fi.helsinki.opintoni.util.AuditLogger;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -93,9 +94,16 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         Optional<User> user = getUserFromDb(appUser);
         if (user.isPresent()) {
             updateExistingUser(appUser, user.get());
+            updateLoginTime(appUser);
         } else {
             createNewUser(appUser);
         }
+    }
+
+    private void updateLoginTime(AppUser appUser) {
+        User user = getUserFromDb(appUser).get();
+        user.lastLoginDate = DateTime.now();
+        userService.save(user);
     }
 
     private void logUserLogin(AppUser appUser, HttpServletRequest request) {
