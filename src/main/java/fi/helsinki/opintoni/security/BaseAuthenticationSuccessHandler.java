@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.integration.oodi.OodiIntegrationException;
 import fi.helsinki.opintoni.service.UserService;
 import fi.helsinki.opintoni.util.AuditLogger;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -120,10 +121,12 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
     }
 
     private void updateExistingUser(AppUser appUser, User user) {
+
         if (user.oodiPersonId == null) {
             user.oodiPersonId = appUser.getOodiPersonId();
-            userService.save(user);
         }
+        user.lastLoginDate = DateTime.now();
+        userService.save(user);
     }
 
     private void addLanguageCookieForUserPreferredLanguageIfSupported(AppUser appUser, HttpServletResponse response) {

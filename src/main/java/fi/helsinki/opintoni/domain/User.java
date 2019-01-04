@@ -18,6 +18,8 @@
 package fi.helsinki.opintoni.domain;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,6 +27,10 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "user_account")
 public class User extends AbstractAuditingEntity {
+
+    public enum AccountStatus {
+        ACTIVE, INACTIVE;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +47,20 @@ public class User extends AbstractAuditingEntity {
     @Column(name = "oodi_person_id")
     public String oodiPersonId;
 
+    @NotNull
+    @Column(name = "last_login_date")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    public DateTime lastLoginDate;
+
+    @Column(name = "account_active_until_date")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    public DateTime accountActiveUntilDate;
+
+    @NotNull
+    @Column(name = "account_status")
+    @Enumerated(EnumType.STRING)
+    public AccountStatus accountStatus;
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
@@ -48,5 +68,4 @@ public class User extends AbstractAuditingEntity {
             .append("eduPersonPrincipalName", eduPersonPrincipalName)
             .toString();
     }
-
 }

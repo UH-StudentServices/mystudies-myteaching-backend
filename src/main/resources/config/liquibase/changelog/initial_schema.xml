@@ -2080,4 +2080,17 @@
             </column>
         </addColumn>
     </changeSet>
+    <changeSet id="OO-1247 Add login date and account status for user" author="Tomi Mäkinen">
+        <addColumn tableName="user_account">
+            <column name="last_login_date" type="timestamp"  defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_active_until_date" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+            <column name="account_status" type="varchar(20)" defaultValue="ACTIVE">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>
