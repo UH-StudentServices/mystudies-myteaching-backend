@@ -54,7 +54,7 @@ public class User extends AbstractAuditingEntity {
 
     @Column(name = "account_active_until_date")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-    public DateTime accountActiveUntil;
+    public DateTime accountActiveUntilDate;
 
     @NotNull
     @Column(name = "account_status")

@@ -117,7 +117,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
         handler.onAuthenticationSuccess(mock(HttpServletRequest.class), mockResponse(), authentication);
 
-        verify(userService, times(2)).save(argThat(new UserMatcher()));
+        verify(userService, times(1)).save(argThat(new UserMatcher()));
     }
 
     @Test

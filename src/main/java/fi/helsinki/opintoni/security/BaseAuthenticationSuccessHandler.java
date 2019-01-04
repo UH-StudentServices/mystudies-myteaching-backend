@@ -94,16 +94,9 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         Optional<User> user = getUserFromDb(appUser);
         if (user.isPresent()) {
             updateExistingUser(appUser, user.get());
-            updateLoginTime(appUser);
         } else {
             createNewUser(appUser);
         }
-    }
-
-    private void updateLoginTime(AppUser appUser) {
-        User user = getUserFromDb(appUser).get();
-        user.lastLoginDate = DateTime.now();
-        userService.save(user);
     }
 
     private void logUserLogin(AppUser appUser, HttpServletRequest request) {
@@ -128,10 +121,12 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
     }
 
     private void updateExistingUser(AppUser appUser, User user) {
+
         if (user.oodiPersonId == null) {
             user.oodiPersonId = appUser.getOodiPersonId();
-            userService.save(user);
         }
+        user.lastLoginDate = DateTime.now();
+        userService.save(user);
     }
 
     private void addLanguageCookieForUserPreferredLanguageIfSupported(AppUser appUser, HttpServletResponse response) {
