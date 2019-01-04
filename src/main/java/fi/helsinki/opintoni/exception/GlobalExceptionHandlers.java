@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
@@ -86,7 +87,10 @@ public class GlobalExceptionHandlers extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<CommonError> getResponseEntity(HttpStatus httpStatus) {
-        return new ResponseEntity<>(new CommonError(httpStatus.getReasonPhrase()), httpStatus);
+        return ResponseEntity
+            .status(httpStatus)
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .body(new CommonError(httpStatus.getReasonPhrase()));
     }
 
     @ExceptionHandler(value = CalendarFeedNotFoundException.class)
