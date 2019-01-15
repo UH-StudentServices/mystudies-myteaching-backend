@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.dto;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,8 @@ public class EventDtoTest {
 
     private static final String EVENT_TITLE = "Title of event";
     private static final String COURSE_TITLE = "Title of course";
+    private static final String LOCATION = "Location";
+    private static final String LOCATION_DETAIL = "Location details";
 
     @Test
     public void compareTo() {
@@ -95,8 +98,20 @@ public class EventDtoTest {
             .setTitle(EVENT_TITLE)
             .setCourseTitle(COURSE_TITLE)
             .setHasMaterial(false).createEventDto();
-    
+
         assertEquals(String.format("%s, %s", EVENT_TITLE, COURSE_TITLE), eventDto.getFullEventTitle());
     }
 
+    @Test
+    public void getLocationsWithoutSeparatorIfEmptyLocationIsGiven() {
+        EventDto eventDto = new EventDtoBuilder()
+            .setLocations(ImmutableList.of(new LocationDto(LOCATION), new LocationDto("")))
+            .createEventDto();
+        assertEquals(LOCATION, eventDto.getLocationsAsString());
+
+        EventDto secondEventDto = new EventDtoBuilder()
+            .setLocations(ImmutableList.of(new LocationDto(""), new LocationDto(LOCATION)))
+            .createEventDto();
+        assertEquals(LOCATION, secondEventDto.getLocationsAsString());
+    }
 }

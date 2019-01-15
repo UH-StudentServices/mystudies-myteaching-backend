@@ -64,7 +64,7 @@ public class EventDto implements Comparable<EventDto> {
                     CourseMaterialDto courseMaterialDto,
                     String moodleUri,
                     boolean hasMaterial,
-                    List<LocationDto> locations, 
+                    List<LocationDto> locations,
                     OptimeExtrasDto optimeExtras) {
         this.type = type;
         this.source = source;
@@ -119,6 +119,7 @@ public class EventDto implements Comparable<EventDto> {
         return locations.stream()
             .map(LocationDto::getLocationString)
             .filter(Objects::nonNull)
+            .filter(location -> !location.trim().isEmpty())
             .collect(Collectors.joining(", "));
     }
 
