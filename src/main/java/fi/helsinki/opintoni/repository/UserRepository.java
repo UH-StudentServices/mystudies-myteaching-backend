@@ -18,8 +18,11 @@
 package fi.helsinki.opintoni.repository;
 
 import fi.helsinki.opintoni.domain.User;
+import org.joda.time.DateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -27,4 +30,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEduPersonPrincipalName(String eduPersonPrincipalName);
 
     Optional<User> findByOodiPersonId(String oodiPersonId);
+
+    @Query(
+        "select u from User u where u.lastLoginDate < ?1 " +
+        "and u.accountStatus = ?2 " +
+        "and (u.accountActiveUntilDate is null or u.accountActiveUntilDate < ?3)")
+    List<User> findInactiveUsers(DateTime yearAgo, User.AccountStatus status, DateTime now);
+
 }
