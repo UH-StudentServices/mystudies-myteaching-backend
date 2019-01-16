@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -55,7 +56,9 @@ public class UserCleanerService {
         this.iamClient = iamClient;
     }
 
+    @Scheduled(cron = "0 0 5 * * *")
     public void cleanInactiveUsers() {
+        log.info("Start cleaning of inactive users from DB");
         findInactiveUsers().forEach(this::processUser);
     }
 
