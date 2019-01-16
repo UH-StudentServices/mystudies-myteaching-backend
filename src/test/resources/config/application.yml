@@ -227,6 +227,11 @@ esb:
     base.url: https://esbmt2.it.helsinki.fi/devel
     client.implementation: rest
 
+iam:
+    base.url: https://esb-api.it.helsinki.fi:443/iam/
+    client.implementation: mock
+    useHttpClientCertificate: false
+
 newsfeeds:
     maxItems:
         student: 4
