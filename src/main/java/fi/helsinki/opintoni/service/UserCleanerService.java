@@ -4,6 +4,7 @@ import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.integration.iam.AccountStatus;
 import fi.helsinki.opintoni.integration.iam.IAMClient;
 import fi.helsinki.opintoni.repository.*;
+import fi.helsinki.opintoni.repository.profile.ProfileRepository;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,6 +28,7 @@ public class UserCleanerService {
     private final TodoItemRepository todoItemRepository;
     private final UsefulLinkRepository usefulLinkRepository;
     private final OfficeHoursRepository officeHoursRepository;
+    private final ProfileRepository profileRepository;
 
     private final IAMClient iamClient;
 
@@ -38,6 +41,7 @@ public class UserCleanerService {
         TodoItemRepository todoItemRepository,
         UsefulLinkRepository usefulLinkRepository,
         OfficeHoursRepository officeHoursRepository,
+        ProfileRepository profileRepository,
         IAMClient iamClient) {
         this.userRepository = userRepository;
         this.userSettingsRepository = userSettingsRepository;
@@ -46,6 +50,7 @@ public class UserCleanerService {
         this.todoItemRepository = todoItemRepository;
         this.usefulLinkRepository = usefulLinkRepository;
         this.officeHoursRepository = officeHoursRepository;
+        this.profileRepository = profileRepository;
         this.iamClient = iamClient;
     }
 
@@ -58,48 +63,58 @@ public class UserCleanerService {
     }
 
     private void processUser(User user) {
-        AccountStatus status = fetchAccountStatus(user);
+        Optional<AccountStatus> status = fetchAccountStatus(user);
 
-        if (status == null) {
+        if (!status.isPresent()) {
             return;
         }
 
-        DateTime accountActiveUntilDate = new DateTime(status.endDate);
-
-        if (accountActiveUntilDate.isBefore(DateTime.now())) {
-            try {
-                deleteUserData(user);
-            } catch (Exception e) {
-                log.error("Deleting user data failed for user {}", user.id, e);
-            }
+        if (hasActiveIamAccount(status.get())) {
+            deleteUserData(user);
         } else {
-            updateAccountActiveUntilDate(user, accountActiveUntilDate);
+            updateAccountActiveUntilDate(user, status.get());
         }
     }
 
-    private AccountStatus fetchAccountStatus(User user) {
+    private Optional<AccountStatus> fetchAccountStatus(User user) {
         try {
             String username = user.eduPersonPrincipalName.replace("@helsinki.fi", "");
-            return iamClient.getAccountStatus(username);
+            return Optional.of(iamClient.getAccountStatus(username));
         } catch (Exception e) {
             log.error("Fetching data from IAM failed for user {}", user.id, e);
-            return null;
+            return Optional.empty();
         }
     }
 
-    private void updateAccountActiveUntilDate(User user, DateTime accountActiveUntilDate) {
-        user.accountActiveUntilDate = accountActiveUntilDate;
+    private boolean hasActiveIamAccount(AccountStatus status) {
+        return new DateTime(status.endDate).isBefore(DateTime.now());
+    }
+
+    private void updateAccountActiveUntilDate(User user, AccountStatus status) {
+        user.accountActiveUntilDate = new DateTime(status.endDate);
         userRepository.save(user);
     }
 
     private void deleteUserData(User user) {
         log.info("Deleting user data for user {}", user.id);
 
-        calendarFeedRepository.deleteByUserId(user.id);
-        todoItemRepository.deleteByUserId(user.id);
-        usefulLinkRepository.deleteByUserId(user.id);
-        favoriteRepository.deleteByUserId(user.id);
-        officeHoursRepository.deleteByUserId(user.id);
-        userSettingsRepository.deleteByUserId(user.id);
+        try {
+            calendarFeedRepository.deleteByUserId(user.id);
+            todoItemRepository.deleteByUserId(user.id);
+            usefulLinkRepository.deleteByUserId(user.id);
+            favoriteRepository.deleteByUserId(user.id);
+            officeHoursRepository.deleteByUserId(user.id);
+            userSettingsRepository.deleteByUserId(user.id);
+
+            if (!hasProfile(user)) {
+                userRepository.delete(user);
+            }
+        } catch (Exception e) {
+            log.error("Deleting user data failed for user {}", user.id, e);
+        }
+    }
+
+    private boolean hasProfile(User user) {
+        return profileRepository.findByUserId(user.id).iterator().hasNext();
     }
 }

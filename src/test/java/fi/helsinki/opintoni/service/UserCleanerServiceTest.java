@@ -69,4 +69,12 @@ public class UserCleanerServiceTest extends SpringTest {
         userCleanerService.cleanInactiveUsers();
         assertThat(favoriteRepository.findByUserIdOrderByOrderIndexAsc(user.id).isEmpty()).isTrue();
     }
+
+    @Test
+    public void thatOnlyInactiveUsersWithoutPortfolioAreDeletedFromUserAccountTable() {
+        int sizeBefore = userRepository.findAll().size();
+
+        userCleanerService.cleanInactiveUsers();
+        assertThat(userRepository.findAll().size()).isNotEqualTo(sizeBefore);
+    }
 }

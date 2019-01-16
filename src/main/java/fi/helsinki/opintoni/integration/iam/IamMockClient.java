@@ -8,7 +8,7 @@ public class IamMockClient implements IAMClient {
 
     @Override
     public AccountStatus getAccountStatus(String username) {
-        if (INACTIVE_ACCOUNT.equals(username)) {
+        if (username.contains(INACTIVE_ACCOUNT)) {
             return getInactiveAccountStatus(username);
         }
 
