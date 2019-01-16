@@ -2,8 +2,10 @@ package fi.helsinki.opintoni.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import fi.helsinki.opintoni.config.http.SSLRequestFactory;
 import fi.helsinki.opintoni.integration.iam.IAMClient;
-import fi.helsinki.opintoni.integration.iam.IamMockClient;
+import fi.helsinki.opintoni.integration.iam.IAMMockClient;
+import fi.helsinki.opintoni.integration.iam.IAMRestClient;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,6 @@ import java.util.List;
 @Configuration
 public class IAMConfiguration {
 
-    @Autowired
-    private AppConfiguration appConfiguration;
-
     @Value("${httpClient.keystoreLocation:null}")
     private String keystoreLocation;
 
@@ -31,12 +30,19 @@ public class IAMConfiguration {
     @Value("${iam.useHttpClientCertificate:false}")
     private boolean useHttpClientCertificate;
 
+    private final AppConfiguration appConfiguration;
+    private final ObjectMapper objectMapper;
+
     @Autowired
-    private ObjectMapper objectMapper;
+    public IAMConfiguration(AppConfiguration appConfiguration, ObjectMapper objectMapper) {
+        this.appConfiguration = appConfiguration;
+        this.objectMapper = objectMapper;
+    }
 
     @Bean
     public RestTemplate iamRestTemplate() {
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate(SSLRequestFactory.clientHttpRequestFactory(
+            appConfiguration, useHttpClientCertificate, keystoreLocation, keystorePassword));
         restTemplate.setMessageConverters(getConverters());
         restTemplate.setInterceptors(Lists.newArrayList(new LoggingInterceptor()));
         return restTemplate;
@@ -50,16 +56,19 @@ public class IAMConfiguration {
 
     @Bean
     public IAMClient iamMockClient() {
-        return new IamMockClient();
+        return new IAMMockClient();
+    }
+
+    @Bean
+    public IAMClient iamRestClient() {
+        return new IAMRestClient(appConfiguration.get("iam.base.url"), iamRestTemplate());
     }
 
     @Bean
     public IAMClient iamClient() {
-        return NamedDelegatesProxy.builder(
-            IAMClient.class,
-            () -> appConfiguration.get("iam.client.implementation")
-        )
-        .with("mock", iamMockClient())
-        .build();
+        return NamedDelegatesProxy.builder(IAMClient.class, () -> appConfiguration.get("iam.client.implementation"))
+            .with("mock", iamMockClient())
+            .with("rest", iamRestClient())
+            .build();
     }
 }

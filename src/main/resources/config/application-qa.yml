@@ -83,6 +83,11 @@ esb:
     base.url: https://esbmt2.it.helsinki.fi/devel
     client.implementation: rest
 
+iam:
+    base.url: https://esb-api.it.helsinki.fi:443/iam/
+    client.implementation: rest
+    useHttpClientCertificate: true
+
 unisport:
     client.implementation: rest
     base.url: https://unisport.fi

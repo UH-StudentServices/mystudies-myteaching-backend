@@ -1,7 +1,9 @@
 package fi.helsinki.opintoni.integration.iam;
 
+import java.util.Optional;
+
 public interface IAMClient {
 
-    AccountStatus getAccountStatus(String username);
+    Optional<AccountStatus> getAccountStatus(String username);
 
 }

@@ -42,7 +42,8 @@ public class UserCleanerService {
         UsefulLinkRepository usefulLinkRepository,
         OfficeHoursRepository officeHoursRepository,
         ProfileRepository profileRepository,
-        IAMClient iamClient) {
+        IAMClient iamClient
+    ) {
         this.userRepository = userRepository;
         this.userSettingsRepository = userSettingsRepository;
         this.calendarFeedRepository = calendarFeedRepository;
@@ -77,13 +78,8 @@ public class UserCleanerService {
     }
 
     private Optional<AccountStatus> fetchAccountStatus(User user) {
-        try {
-            String username = user.eduPersonPrincipalName.replace("@helsinki.fi", "");
-            return Optional.of(iamClient.getAccountStatus(username));
-        } catch (Exception e) {
-            log.error("Fetching data from IAM failed for user {}", user.id, e);
-            return Optional.empty();
-        }
+        String username = user.eduPersonPrincipalName.replace("@helsinki.fi", "");
+        return iamClient.getAccountStatus(username);
     }
 
     private boolean hasActiveIamAccount(AccountStatus status) {
