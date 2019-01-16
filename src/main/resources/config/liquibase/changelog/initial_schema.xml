@@ -2093,4 +2093,7 @@
             </column>
         </addColumn>
     </changeSet>
+    <changeSet id="OO-1245 drop user_notifications table" author="Marko Rautajoki">
+        <dropTable tableName="user_notification" cascadeConstraints="true"></dropTable>
+    </changeSet>
 </databaseChangeLog>
