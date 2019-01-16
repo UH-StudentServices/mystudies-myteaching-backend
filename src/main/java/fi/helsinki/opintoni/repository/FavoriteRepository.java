@@ -29,4 +29,6 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
     @Query("select coalesce(max(f.orderIndex), 0) from #{#entityName} f where f.user.id = ?1")
     int getMaxOrderIndex(Long userId);
+
+    long deleteByUserId(Long userId);
 }

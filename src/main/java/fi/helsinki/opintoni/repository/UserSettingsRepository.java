@@ -24,4 +24,5 @@ public interface UserSettingsRepository extends JpaRepository<UserSettings, Long
 
     UserSettings findByUserId(Long userId);
 
+    long deleteByUserId(Long userId);
 }

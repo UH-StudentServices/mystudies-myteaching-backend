@@ -2,3 +2,4 @@ id;url;description;order_index;user_id;created_by;type
 nextval('useful_link_id_seq');http://www.google.com;Google;0;3;system;USER_DEFINED
 nextval('useful_link_id_seq');http://www.helsinki.fi;Helsinki University;1;3;system;USER_DEFINED
 nextval('useful_link_id_seq');http://www.yle.fi;Yle;0;1;system;USER_DEFINED
+nextval('useful_link_id_seq');http://www.yle.fi;Yle;0;8;system;USER_DEFINED
