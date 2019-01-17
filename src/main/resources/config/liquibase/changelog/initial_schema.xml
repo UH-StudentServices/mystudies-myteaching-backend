@@ -2096,4 +2096,9 @@
     <changeSet id="OO-1245 drop user_notifications table" author="Marko Rautajoki">
         <dropTable tableName="user_notification" cascadeConstraints="true"></dropTable>
     </changeSet>
+    <changeSet id="OO-1246 remove persistent_audit_event and persistent_audit_event_data tables" author="Marko Rautajoki">
+        <dropIndex tableName="persistent_audit_event" indexName="idx_persistent_audit_event"></dropIndex>
+        <dropTable tableName="persistent_audit_event" cascadeConstraints="true"></dropTable>
+        <dropTable tableName="persistent_audit_event_data" cascadeConstraints="true"></dropTable>
+    </changeSet>
 </databaseChangeLog>
