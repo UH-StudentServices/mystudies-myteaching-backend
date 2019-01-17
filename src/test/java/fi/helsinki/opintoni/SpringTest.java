@@ -80,7 +80,6 @@ public abstract class SpringTest {
         "user_settings",
         "todo_item",
         "useful_link",
-        "user_notification",
         "profile_keyword_relationship",
         "profile_keyword",
         "contact_information",
