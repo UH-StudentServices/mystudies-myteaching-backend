@@ -2,11 +2,18 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.User;
+import fi.helsinki.opintoni.integration.iam.IAMClient;
 import fi.helsinki.opintoni.repository.*;
+import fi.helsinki.opintoni.repository.profile.ProfileRepository;
+import fi.helsinki.opintoni.service.storage.FileStorage;
+import fi.helsinki.opintoni.service.storage.MemoryFileStorage;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 
 public class UserCleanerServiceTest extends SpringTest {
 
@@ -30,8 +37,20 @@ public class UserCleanerServiceTest extends SpringTest {
     @Autowired
     private FavoriteRepository favoriteRepository;
 
+    @Autowired
+    private UserSettingsRepository userSettingsRepository;
+
+    @Autowired
+    private OfficeHoursRepository officeHoursRepository;
+
+    @Autowired
+    private ProfileRepository profileRepository;
+
+    @Autowired
+    private IAMClient iamClient;
+
     private User getUserToBeDeleted() {
-        return userRepository.findByEduPersonPrincipalName(USER_TO_DELETE).get();
+        return userRepository.findByEduPersonPrincipalName(USER_TO_DELETE).orElse(null);
     }
 
     @Test
@@ -76,5 +95,25 @@ public class UserCleanerServiceTest extends SpringTest {
 
         userCleanerService.cleanInactiveUsers();
         assertThat(userRepository.findAll().size()).isNotEqualTo(sizeBefore);
+    }
+
+    @Test
+    public void thatUploadedImageIsDeletedFromFileService() {
+        FileStorage fileStorage = mock(MemoryFileStorage.class);
+
+        new UserCleanerService(
+            userRepository,
+            userSettingsRepository,
+            calendarFeedRepository,
+            favoriteRepository,
+            todoItemRepository,
+            usefulLinkRepository,
+            officeHoursRepository,
+            profileRepository,
+            fileStorage,
+            iamClient
+        ).cleanInactiveUsers();
+
+        Mockito.verify(fileStorage, times(1)).remove("uploaded_background.jpg");
     }
 }

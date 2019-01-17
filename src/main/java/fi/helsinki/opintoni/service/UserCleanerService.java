@@ -18,10 +18,12 @@
 package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.domain.User;
+import fi.helsinki.opintoni.domain.UserSettings;
 import fi.helsinki.opintoni.integration.iam.AccountStatus;
 import fi.helsinki.opintoni.integration.iam.IAMClient;
 import fi.helsinki.opintoni.repository.*;
 import fi.helsinki.opintoni.repository.profile.ProfileRepository;
+import fi.helsinki.opintoni.service.storage.FileStorage;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +50,7 @@ public class UserCleanerService {
     private final OfficeHoursRepository officeHoursRepository;
     private final ProfileRepository profileRepository;
 
+    private final FileStorage fileStorage;
     private final IAMClient iamClient;
 
     @Autowired
@@ -60,6 +63,7 @@ public class UserCleanerService {
         UsefulLinkRepository usefulLinkRepository,
         OfficeHoursRepository officeHoursRepository,
         ProfileRepository profileRepository,
+        FileStorage fileStorage,
         IAMClient iamClient
     ) {
         this.userRepository = userRepository;
@@ -70,6 +74,7 @@ public class UserCleanerService {
         this.usefulLinkRepository = usefulLinkRepository;
         this.officeHoursRepository = officeHoursRepository;
         this.profileRepository = profileRepository;
+        this.fileStorage = fileStorage;
         this.iamClient = iamClient;
     }
 
@@ -120,7 +125,7 @@ public class UserCleanerService {
             usefulLinkRepository.deleteByUserId(user.id);
             favoriteRepository.deleteByUserId(user.id);
             officeHoursRepository.deleteByUserId(user.id);
-            userSettingsRepository.deleteByUserId(user.id);
+            deleteUserSettings(user.id);
 
             if (!hasProfile(user)) {
                 userRepository.delete(user);
@@ -132,5 +137,20 @@ public class UserCleanerService {
 
     private boolean hasProfile(User user) {
         return profileRepository.findByUserId(user.id).iterator().hasNext();
+    }
+
+    private void deleteUserSettings(Long userId) {
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId);
+
+        if (userSettings != null) {
+            deleteCustomBackgroundImage(userSettings);
+            userSettingsRepository.deleteByUserId(userId);
+        }
+    }
+
+    private void deleteCustomBackgroundImage(UserSettings userSettings) {
+        if (userSettings.uploadedBackgroundFilename != null) {
+            fileStorage.remove(userSettings.uploadedBackgroundFilename);
+        }
     }
 }

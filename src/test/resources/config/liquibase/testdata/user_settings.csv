@@ -1,7 +1,8 @@
-id;user_id;background_filename;show_banner;avatar_image;created_by
-nextval('user_settings_id_seq');1;Profile_1.jpg;true;null;system
-nextval('user_settings_id_seq');2;Profile_2.jpg;true;AA213FD51B3801043FBC;system
-nextval('user_settings_id_seq');3;Profile_3.jpg;true;null;system
-nextval('user_settings_id_seq');4;Profile_3.jpg;true;null;system
-nextval('user_settings_id_seq');5;Profile_3.jpg;true;null;system
-nextval('user_settings_id_seq');6;Profile_3.jpg;true;null;system
+id;user_id;background_filename;uploaded_background_filename;show_banner;avatar_image;created_by
+nextval('user_settings_id_seq');1;Profile_1.jpg;null;true;null;system
+nextval('user_settings_id_seq');2;Profile_2.jpg;null;true;AA213FD51B3801043FBC;system
+nextval('user_settings_id_seq');3;Profile_3.jpg;null;true;null;system
+nextval('user_settings_id_seq');4;Profile_3.jpg;null;true;null;system
+nextval('user_settings_id_seq');5;Profile_3.jpg;null;true;null;system
+nextval('user_settings_id_seq');6;Profile_3.jpg;null;true;null;system
+nextval('user_settings_id_seq');8;Profile_3.jpg;uploaded_background.jpg;true;null;system
