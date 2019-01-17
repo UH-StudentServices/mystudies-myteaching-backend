@@ -90,11 +90,20 @@ public class UserCleanerServiceTest extends SpringTest {
     }
 
     @Test
+    public void thatOfficeHoursAreDeleted() {
+        User user = getUserToBeDeleted();
+
+        assertThat(officeHoursRepository.findByUserId(user.id).isEmpty()).isFalse();
+        userCleanerService.cleanInactiveUsers();
+        assertThat(officeHoursRepository.findByUserId(user.id).isEmpty()).isTrue();
+    }
+
+    @Test
     public void thatOnlyInactiveUsersWithoutPortfolioAreDeletedFromUserAccountTable() {
         int sizeBefore = userRepository.findAll().size();
 
         userCleanerService.cleanInactiveUsers();
-        assertThat(userRepository.findAll().size()).isNotEqualTo(sizeBefore);
+        assertThat(userRepository.findAll().size()).isEqualTo(sizeBefore - 1);
     }
 
     @Test
