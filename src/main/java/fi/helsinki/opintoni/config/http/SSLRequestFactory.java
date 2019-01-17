@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.config.http;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
+import fi.helsinki.opintoni.exception.SSLContextException;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -35,6 +36,8 @@ import java.io.File;
 import java.security.KeyStore;
 
 public class SSLRequestFactory {
+
+    private SSLRequestFactory() {}
 
     public static ClientHttpRequestFactory clientHttpRequestFactory(AppConfiguration appConfiguration,
                                                                     boolean useHttpClientCertificate,
@@ -81,7 +84,7 @@ public class SSLRequestFactory {
             return SSLContextBuilder.create()
                 .loadKeyMaterial(keyStore(keystoreLocation, keystorePasswordCharArray), keystorePasswordCharArray).build();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to load client keystore");
+            throw new SSLContextException("Failed to load client keystore");
         }
     }
 
