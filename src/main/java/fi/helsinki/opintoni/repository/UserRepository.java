@@ -32,9 +32,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByOodiPersonId(String oodiPersonId);
 
     @Query(
-        "select u from User u where u.lastLoginDate < ?1 " +
-        "and u.accountStatus = ?2 " +
-        "and (u.accountActiveUntilDate is null or u.accountActiveUntilDate < ?3)")
-    List<User> findInactiveUsers(DateTime yearAgo, User.AccountStatus status, DateTime now);
+        value = "select * from user_account u where u.last_login_date < now() - interval '1 year' " +
+        "and u.account_status = 'ACTIVE' " +
+        "and (u.account_active_until_date is null or u.account_active_until_date < now())", nativeQuery = true)
+    List<User> findInactiveUsers();
 
 }

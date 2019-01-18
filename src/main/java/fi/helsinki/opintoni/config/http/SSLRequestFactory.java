@@ -77,23 +77,28 @@ public class SSLRequestFactory {
         }
     }
 
-    private static SSLContext sslContext(String keystoreLocation, String keystorePassword) {
+    private static SSLContext sslContext(String keystoreLocation, String keystorePassword) throws SSLContextException {
         char[] keystorePasswordCharArray = keystorePassword.toCharArray();
 
         try {
-            return SSLContextBuilder.create()
-                .loadKeyMaterial(keyStore(keystoreLocation, keystorePasswordCharArray), keystorePasswordCharArray).build();
+            return SSLContextBuilder
+                .create()
+                .loadKeyMaterial(keyStore(keystoreLocation, keystorePasswordCharArray), keystorePasswordCharArray)
+                .build();
         } catch (Exception e) {
-            throw new SSLContextException("Failed to load client keystore");
+            throw new SSLContextException("Failed to load client keystore", e);
         }
     }
 
-    private static KeyStore keyStore(String keystoreLocation, char[] keystorePassword) throws Exception {
-        KeyStore keyStore = KeyStore.getInstance("PKCS12");
-        FileSystemResource keystoreFile = new FileSystemResource(
-            new File(keystoreLocation));
+    private static KeyStore keyStore(String keystoreLocation, char[] keystorePassword) throws SSLContextException {
+        try {
+            KeyStore keyStore = KeyStore.getInstance("PKCS12");
+            FileSystemResource keystoreFile = new FileSystemResource(new File(keystoreLocation));
 
-        keyStore.load(keystoreFile.getInputStream(), keystorePassword);
-        return keyStore;
+            keyStore.load(keystoreFile.getInputStream(), keystorePassword);
+            return keyStore;
+        } catch (Exception e) {
+            throw new SSLContextException("Failed to load client keystore", e);
+        }
     }
 }

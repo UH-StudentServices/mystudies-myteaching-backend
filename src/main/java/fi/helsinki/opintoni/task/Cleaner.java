@@ -15,7 +15,7 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.service;
+package fi.helsinki.opintoni.task;
 
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.domain.UserSettings;
@@ -28,18 +28,18 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
-@Service
+@Component
 @Transactional
-public class UserCleanerService {
+public class Cleaner {
 
-    private static final Logger log = LoggerFactory.getLogger(UserCleanerService.class);
+    private static final Logger log = LoggerFactory.getLogger(Cleaner.class);
+
+    private static final String USER_NAME_SUFFIX = "@helsinki.fi";
 
     private final UserRepository userRepository;
     private final UserSettingsRepository userSettingsRepository;
@@ -54,7 +54,7 @@ public class UserCleanerService {
     private final IAMClient iamClient;
 
     @Autowired
-    public UserCleanerService(
+    public Cleaner(
         UserRepository userRepository,
         UserSettingsRepository userSettingsRepository,
         CalendarFeedRepository calendarFeedRepository,
@@ -78,36 +78,35 @@ public class UserCleanerService {
         this.iamClient = iamClient;
     }
 
-    @Scheduled(cron = "0 0 5 * * *")
     public void cleanInactiveUsers() {
         log.info("Start cleaning of inactive users from DB");
         findInactiveUsers().forEach(this::processUser);
     }
 
     public List<User> findInactiveUsers() {
-        return userRepository.findInactiveUsers(DateTime.now().minusYears(1), User.AccountStatus.ACTIVE, DateTime.now());
+        return userRepository.findInactiveUsers();
     }
 
     private void processUser(User user) {
-        Optional<AccountStatus> status = fetchAccountStatus(user);
+        try {
+            AccountStatus status = fetchAccountStatus(user);
 
-        if (!status.isPresent()) {
-            return;
-        }
-
-        if (hasActiveIamAccount(status.get())) {
-            deleteUserData(user);
-        } else {
-            updateAccountActiveUntilDate(user, status.get());
+            if (hasInactiveIamAccount(status)) {
+                deleteUserData(user);
+            } else {
+                updateAccountActiveUntilDate(user, status);
+            }
+        } catch (Exception e) {
+            log.error("Processing user {} failed", user.id, e);
         }
     }
 
-    private Optional<AccountStatus> fetchAccountStatus(User user) {
-        String username = user.eduPersonPrincipalName.replace("@helsinki.fi", "");
-        return iamClient.getAccountStatus(username);
+    private AccountStatus fetchAccountStatus(User user) {
+        String username = user.eduPersonPrincipalName.replace(USER_NAME_SUFFIX, "");
+        return iamClient.getAccountStatus(username).orElseThrow(IllegalStateException::new);
     }
 
-    private boolean hasActiveIamAccount(AccountStatus status) {
+    private boolean hasInactiveIamAccount(AccountStatus status) {
         return new DateTime(status.endDate).isBefore(DateTime.now());
     }
 
@@ -117,21 +116,15 @@ public class UserCleanerService {
     }
 
     private void deleteUserData(User user) {
-        log.info("Deleting user data for user {}", user.id);
+        calendarFeedRepository.deleteByUserId(user.id);
+        todoItemRepository.deleteByUserId(user.id);
+        usefulLinkRepository.deleteByUserId(user.id);
+        favoriteRepository.deleteByUserId(user.id);
+        officeHoursRepository.deleteByUserId(user.id);
+        deleteUserSettings(user.id);
 
-        try {
-            calendarFeedRepository.deleteByUserId(user.id);
-            todoItemRepository.deleteByUserId(user.id);
-            usefulLinkRepository.deleteByUserId(user.id);
-            favoriteRepository.deleteByUserId(user.id);
-            officeHoursRepository.deleteByUserId(user.id);
-            deleteUserSettings(user.id);
-
-            if (!hasProfile(user)) {
-                userRepository.delete(user);
-            }
-        } catch (Exception e) {
-            log.error("Deleting user data failed for user {}", user.id, e);
+        if (!hasProfile(user)) {
+            userRepository.delete(user);
         }
     }
 

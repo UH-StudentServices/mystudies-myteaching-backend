@@ -65,11 +65,9 @@ esb:
 
 unisport:
     client.implementation: mock
-    base.url: https://unisport.fi
     userAuthorizationUrl: http://yol-test.it.helsinki.fi/ext/opintoni/authorization
 
 iam:
-    base.url: https://esb-api.it.helsinki.fi:443/iam/
     client.implementation: mock
     useHttpClientCertificate: false
 

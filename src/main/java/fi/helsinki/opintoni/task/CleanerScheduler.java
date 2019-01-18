@@ -15,12 +15,27 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.exception;
+package fi.helsinki.opintoni.task;
 
-public class SSLContextException extends RuntimeException {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
-    public SSLContextException(String message, Throwable cause) {
-        super(message, cause);
+@Component
+@ConditionalOnProperty("cleaner.cron")
+public class CleanerScheduler {
+
+    private final Cleaner cleaner;
+
+    @Autowired
+    public CleanerScheduler(Cleaner cleaner) {
+        this.cleaner = cleaner;
+    }
+
+    @Scheduled(cron = "${cleaner.cron}")
+    public void cleanUsers() {
+        cleaner.cleanInactiveUsers();
     }
 
 }

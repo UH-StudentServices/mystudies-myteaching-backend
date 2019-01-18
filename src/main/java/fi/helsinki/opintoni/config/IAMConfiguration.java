@@ -33,6 +33,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -61,14 +62,14 @@ public class IAMConfiguration {
         RestTemplate restTemplate = new RestTemplate(SSLRequestFactory.clientHttpRequestFactory(
             appConfiguration, useHttpClientCertificate, keystoreLocation, keystorePassword));
         restTemplate.setMessageConverters(getConverters());
-        restTemplate.setInterceptors(Lists.newArrayList(new LoggingInterceptor()));
+        restTemplate.setInterceptors(Collections.singletonList(new LoggingInterceptor()));
         return restTemplate;
     }
 
     private List<HttpMessageConverter<?>> getConverters() {
         final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
-        return Lists.newArrayList(converter);
+        return Collections.singletonList(converter);
     }
 
     @Bean
