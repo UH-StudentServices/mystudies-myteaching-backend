@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.config.http.SSLRequestFactory;
 import fi.helsinki.opintoni.integration.iam.IAMClient;
 import fi.helsinki.opintoni.integration.iam.IAMMockClient;
