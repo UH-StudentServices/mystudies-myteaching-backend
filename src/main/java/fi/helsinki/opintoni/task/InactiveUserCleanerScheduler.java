@@ -15,14 +15,27 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.repository;
+package fi.helsinki.opintoni.task;
 
-import fi.helsinki.opintoni.domain.UserSettings;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
-public interface UserSettingsRepository extends JpaRepository<UserSettings, Long> {
+@Component
+@ConditionalOnProperty("inactiveUserCleaner.cron")
+public class InactiveUserCleanerScheduler {
 
-    UserSettings findByUserId(Long userId);
+    private final InactiveUserCleaner inactiveUserCleaner;
 
-    long deleteByUserId(Long userId);
+    @Autowired
+    public InactiveUserCleanerScheduler(InactiveUserCleaner inactiveUserCleaner) {
+        this.inactiveUserCleaner = inactiveUserCleaner;
+    }
+
+    @Scheduled(cron = "${inactiveUserCleaner.cron}")
+    public void cleanUsers() {
+        inactiveUserCleaner.cleanInactiveUsers();
+    }
+
 }

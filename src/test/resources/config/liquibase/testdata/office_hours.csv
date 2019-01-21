@@ -10,3 +10,4 @@ nextval('office_hours_id_seq');4;null;Tiistaisin klo 10.00;Oho, bugin vuoksi ei 
 nextval('office_hours_id_seq');4;Leena Lehtori;Tiistaisin klo 10.00;Vanha vastaanottoaika;Vanha vastaanottopaikka;system;2018-10-02
 nextval('office_hours_id_seq');7;Veikko Urhea;Tiistaisin klo 10.00;Vanha vastaanottoaika;Vanha vastaanottopaikka;system;2099-07-31
 nextval('office_hours_id_seq');7;Veikko Urhea;Tiistaisin klo 10.00;Vanha vastaanottoaika;Vanha vastaanottopaikka;system;2099-07-31
+nextval('office_hours_id_seq');8;Veikko Urhea;Tiistaisin klo 10.00;Vanha vastaanottoaika;Vanha vastaanottopaikka;system;2099-07-31

@@ -224,6 +224,7 @@ publicWww:
     path: fi/feeds/filtered-news/rss/11405/all
 
 unisport:
+    base.url: https://unisport.fi
     tokenValidForSeconds: 10
     jwt.service.implementation: expiring
 
@@ -234,6 +235,9 @@ search:
 recommendations:
   maxRecommendations: 20
   uidPrefix: opintohistoriatesti_
+
+iam:
+    base.url: https://esb-api.it.helsinki.fi:443/iam/
 
 httpClient:
   readTimeout: 15000
@@ -415,3 +419,6 @@ fileService:
         implementation: mock
         storage: fileSystem
         path: /opt/opintoni/files/profile
+
+inactiveUserCleaner:
+    cron: "0 0 5 * * *"

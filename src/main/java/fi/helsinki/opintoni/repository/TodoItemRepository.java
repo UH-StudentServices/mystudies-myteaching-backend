@@ -25,4 +25,6 @@ import java.util.List;
 public interface TodoItemRepository extends JpaRepository<TodoItem, Long> {
 
     List<TodoItem> findByUserId(Long userId);
+
+    long deleteByUserId(Long userId);
 }

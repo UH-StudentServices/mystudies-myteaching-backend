@@ -15,14 +15,12 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.repository;
+package fi.helsinki.opintoni.exception;
 
-import fi.helsinki.opintoni.domain.UserSettings;
-import org.springframework.data.jpa.repository.JpaRepository;
+public class SSLContextException extends RuntimeException {
 
-public interface UserSettingsRepository extends JpaRepository<UserSettings, Long> {
+    public SSLContextException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-    UserSettings findByUserId(Long userId);
-
-    long deleteByUserId(Long userId);
 }
