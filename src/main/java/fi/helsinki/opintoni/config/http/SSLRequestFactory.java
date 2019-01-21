@@ -77,7 +77,7 @@ public class SSLRequestFactory {
         }
     }
 
-    private static SSLContext sslContext(String keystoreLocation, String keystorePassword) throws SSLContextException {
+    private static SSLContext sslContext(String keystoreLocation, String keystorePassword) {
         char[] keystorePasswordCharArray = keystorePassword.toCharArray();
 
         try {
@@ -90,7 +90,7 @@ public class SSLRequestFactory {
         }
     }
 
-    private static KeyStore keyStore(String keystoreLocation, char[] keystorePassword) throws SSLContextException {
+    private static KeyStore keyStore(String keystoreLocation, char[] keystorePassword) {
         try {
             KeyStore keyStore = KeyStore.getInstance("PKCS12");
             FileSystemResource keystoreFile = new FileSystemResource(new File(keystoreLocation));
