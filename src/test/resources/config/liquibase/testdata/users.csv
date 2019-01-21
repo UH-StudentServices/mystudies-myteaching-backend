@@ -7,4 +7,3 @@ nextval('user_id_seq');hybriduser@helsinki.fi;system;500;now()
 nextval('user_id_seq');testteacher@helsinki.fi;system;600;now()
 nextval('user_id_seq');languageteacher@helsinki.fi;system;700;now()
 nextval('user_id_seq');inactiveuser@helsinki.fi;system;800;2018-01-01 11:00:00.000
-nextval('user_id_seq');inactiveuser2@helsinki.fi;system;801;2018-01-01 11:00:00.000

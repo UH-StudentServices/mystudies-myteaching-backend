@@ -24,11 +24,16 @@ import java.util.Optional;
 public class IAMMockClient implements IAMClient {
 
     private static final String INACTIVE_ACCOUNT = "inactiveuser";
+    private static final String NOT_FOUND_ACCOUNT = "notfound";
 
     @Override
     public Optional<AccountStatus> getAccountStatus(String username) {
         if (username.contains(INACTIVE_ACCOUNT)) {
             return getInactiveAccountStatus(username);
+        }
+
+        if (username.contains(NOT_FOUND_ACCOUNT)) {
+            return Optional.empty();
         }
 
         return getActiveAccountStatus(username);

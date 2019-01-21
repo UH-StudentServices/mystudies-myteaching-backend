@@ -23,19 +23,19 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty("cleaner.cron")
-public class CleanerScheduler {
+@ConditionalOnProperty("inactiveUserCleaner.cron")
+public class InactiveUserCleanerScheduler {
 
-    private final Cleaner cleaner;
+    private final InactiveUserCleaner inactiveUserCleaner;
 
     @Autowired
-    public CleanerScheduler(Cleaner cleaner) {
-        this.cleaner = cleaner;
+    public InactiveUserCleanerScheduler(InactiveUserCleaner inactiveUserCleaner) {
+        this.inactiveUserCleaner = inactiveUserCleaner;
     }
 
-    @Scheduled(cron = "${cleaner.cron}")
+    @Scheduled(cron = "${inactiveUserCleaner.cron}")
     public void cleanUsers() {
-        cleaner.cleanInactiveUsers();
+        inactiveUserCleaner.cleanInactiveUsers();
     }
 
 }

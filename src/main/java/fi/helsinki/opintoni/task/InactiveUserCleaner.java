@@ -35,9 +35,9 @@ import java.util.List;
 
 @Component
 @Transactional
-public class Cleaner {
+public class InactiveUserCleaner {
 
-    private static final Logger log = LoggerFactory.getLogger(Cleaner.class);
+    private static final Logger log = LoggerFactory.getLogger(InactiveUserCleaner.class);
 
     private static final String USER_NAME_SUFFIX = "@helsinki.fi";
 
@@ -54,7 +54,7 @@ public class Cleaner {
     private final IAMClient iamClient;
 
     @Autowired
-    public Cleaner(
+    public InactiveUserCleaner(
         UserRepository userRepository,
         UserSettingsRepository userSettingsRepository,
         CalendarFeedRepository calendarFeedRepository,
@@ -101,7 +101,7 @@ public class Cleaner {
         }
     }
 
-    private AccountStatus fetchAccountStatus(User user) {
+    public AccountStatus fetchAccountStatus(User user) {
         String username = user.eduPersonPrincipalName.replace(USER_NAME_SUFFIX, "");
         return iamClient.getAccountStatus(username).orElseThrow(IllegalStateException::new);
     }

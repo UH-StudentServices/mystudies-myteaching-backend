@@ -420,5 +420,5 @@ fileService:
         storage: fileSystem
         path: /opt/opintoni/files/profile
 
-cleaner:
+inactiveUserCleaner:
     cron: "0 0 5 * * *"

@@ -4,4 +4,3 @@ nextval('profile_id_seq');3;PRIVATE;olli-opiskelija;Olli Opiskelija;Introtext;sy
 nextval('profile_id_seq');1;PRIVATE;test-test;Test Test;Introtext;system;null;STUDENT;en
 nextval('profile_id_seq');4;PRIVATE;opettaja;Olli Opettaja;Introtext;system;null;TEACHER;fi
 nextval('profile_id_seq');3;PRIVATE;olli-opiskelija;Olli Opiskelija;Introtext;system;Summary;STUDENT;fi
-nextval('profile_id_seq');9;PRIVATE;osmo-opiskelija;Osmo Opiskelija;Introtext;system;Summary;STUDENT;fi
