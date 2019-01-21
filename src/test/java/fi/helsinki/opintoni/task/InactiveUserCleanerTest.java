@@ -132,6 +132,7 @@ public class InactiveUserCleanerTest extends SpringTest {
         inactiveUserCleaner.cleanInactiveUsers();
 
         assertThat(userRepository.getOne(userId)).isNotNull();
+        assertThat(userRepository.findById(INACTIVE_USER_ID).isPresent()).isFalse();
     }
 
     @Test
