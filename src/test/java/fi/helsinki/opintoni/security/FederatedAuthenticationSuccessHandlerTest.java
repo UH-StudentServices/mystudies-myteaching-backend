@@ -211,8 +211,6 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
         handler.onAuthenticationSuccess(request, response, authentication);
 
-        AppUser appUser = (AppUser) authentication.getPrincipal();
-
         verify(auditLogger, times(1))
             .log("User logged in from ipAddress 1.2.3.4 with eduPersonPrincipalName eduPrincipalName");
     }
