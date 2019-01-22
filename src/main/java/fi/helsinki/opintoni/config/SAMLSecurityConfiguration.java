@@ -311,6 +311,8 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
             samlEntryPoint()));
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/logout/**"),
             samlLogoutFilter()));
+        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SingleLogout/**"),
+            samlLogoutFilter()));
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SSO/**"),
             samlWebSSOProcessingFilter()));
         return new FilterChainProxy(chains);
