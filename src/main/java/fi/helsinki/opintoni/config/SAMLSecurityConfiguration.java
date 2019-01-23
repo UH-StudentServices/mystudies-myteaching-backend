@@ -50,6 +50,7 @@ import org.springframework.security.saml.metadata.ExtendedMetadata;
 import org.springframework.security.saml.metadata.ExtendedMetadataDelegate;
 import org.springframework.security.saml.parser.ParserPoolHolder;
 import org.springframework.security.saml.processor.HTTPPostBinding;
+import org.springframework.security.saml.processor.HTTPRedirectDeflateBinding;
 import org.springframework.security.saml.processor.SAMLBinding;
 import org.springframework.security.saml.processor.SAMLProcessorImpl;
 import org.springframework.security.saml.trust.httpclient.TLSProtocolConfigurer;
@@ -307,10 +308,17 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new HTTPPostBinding(parserPool(), velocityEngine());
     }
 
+    
+    @Bean
+    HTTPRedirectDeflateBinding httpRedirectBinding() {
+        return new HTTPRedirectDeflateBinding(parserPool());
+    }
+
     @Bean
     public SAMLProcessorImpl processor() {
         Collection<SAMLBinding> bindings = new ArrayList<>();
         bindings.add(httpPostBinding());
+        bindings.add(httpRedirectBinding());
         return new SAMLProcessorImpl(bindings);
     }
 
