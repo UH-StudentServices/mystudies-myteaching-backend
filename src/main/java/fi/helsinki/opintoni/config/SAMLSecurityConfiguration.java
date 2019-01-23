@@ -281,12 +281,11 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public SecurityContextLogoutHandler logoutHandler() {
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
-        logoutHandler.setInvalidateHttpSession(true);
-        logoutHandler.setClearAuthentication(true);
+        logoutHandler.setInvalidateHttpSession(false);
+        //logoutHandler.setClearAuthentication(true);
         return logoutHandler;
     }
 
-    @Bean
     public SAMLLogoutFilter samlLogoutFilter() {
         return new SAMLLogoutFilter(logoutSuccessHandler,
             new LogoutHandler[]{logoutHandler()},
@@ -308,7 +307,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new HTTPPostBinding(parserPool(), velocityEngine());
     }
 
-    
+
     @Bean
     HTTPRedirectDeflateBinding httpRedirectBinding() {
         return new HTTPRedirectDeflateBinding(parserPool());
