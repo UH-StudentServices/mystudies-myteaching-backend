@@ -306,8 +306,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public HTTPPostBinding httpPostBinding() {
         return new HTTPPostBinding(parserPool(), velocityEngine());
     }
-
-
+    
     @Bean
     HTTPRedirectDeflateBinding httpRedirectBinding() {
         return new HTTPRedirectDeflateBinding(parserPool());
