@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.domain.*;
 import fi.helsinki.opintoni.repository.FavoriteRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.favorite.FavoriteService;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -65,6 +66,8 @@ public class FavoriteServiceCreateDefaultTest extends SpringTest {
         User user = new User();
         user.oodiPersonId = "oodiPersonId";
         user.eduPersonPrincipalName = "eduPersonPrincipalName";
+        user.accountStatus = User.AccountStatus.ACTIVE;
+        user.lastLoginDate = DateTime.now();
         return userRepository.save(user);
     }
 }

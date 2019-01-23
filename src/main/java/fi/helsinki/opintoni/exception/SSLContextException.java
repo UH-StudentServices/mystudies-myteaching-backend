@@ -15,19 +15,12 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.repository;
+package fi.helsinki.opintoni.exception;
 
-import fi.helsinki.opintoni.domain.PersistentAuditEvent;
-import org.joda.time.LocalDateTime;
-import org.springframework.data.jpa.repository.JpaRepository;
+public class SSLContextException extends RuntimeException {
 
-import java.util.List;
+    public SSLContextException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
-public interface PersistenceAuditEventRepository extends JpaRepository<PersistentAuditEvent, String> {
-
-    List<PersistentAuditEvent> findByPrincipal(String principal);
-
-    List<PersistentAuditEvent> findByPrincipalAndAuditEventDateAfter(String principal, LocalDateTime after);
-
-    List<PersistentAuditEvent> findAllByAuditEventDateBetween(LocalDateTime fromDate, LocalDateTime toDate);
 }

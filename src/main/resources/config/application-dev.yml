@@ -65,8 +65,11 @@ esb:
 
 unisport:
     client.implementation: mock
-    base.url: https://unisport.fi
     userAuthorizationUrl: http://yol-test.it.helsinki.fi/ext/opintoni/authorization
+
+iam:
+    client.implementation: mock
+    useHttpClientCertificate: false
 
 unisportApiKey: foobar123
 

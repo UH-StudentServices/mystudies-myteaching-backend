@@ -54,7 +54,7 @@ public class UnicafeFavoriteResourceTest extends SpringTest {
         UnicafeFavoriteRequest unicafeFavoriteRequest = new UnicafeFavoriteRequest();
         unicafeFavoriteRequest.restaurantId = 4;
 
-        mockMvc.perform(put("/api/private/v1/favorites/unicafe/11").with(securityContext(studentSecurityContext()))
+        mockMvc.perform(put("/api/private/v1/favorites/unicafe/15").with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
             .content(WebTestUtils.toJsonBytes(unicafeFavoriteRequest)))

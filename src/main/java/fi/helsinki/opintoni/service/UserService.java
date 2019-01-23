@@ -28,6 +28,7 @@ import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import fi.helsinki.opintoni.service.usefullink.UsefulLinkService;
 import fi.helsinki.opintoni.util.UriBuilder;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,6 +80,8 @@ public class UserService {
         User user = new User();
         user.eduPersonPrincipalName = appUser.getEduPersonPrincipalName();
         user.oodiPersonId = appUser.getOodiPersonId();
+        user.accountStatus = User.AccountStatus.ACTIVE;
+        user.lastLoginDate = DateTime.now();
         user = userRepository.save(user);
 
         createUserDefaults(user, appUser);

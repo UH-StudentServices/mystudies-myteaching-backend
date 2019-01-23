@@ -64,9 +64,12 @@ esb:
     base.url: https://esbmt1.it.helsinki.fi
     client.implementation: rest
 
+iam:
+    client.implementation: rest
+    useHttpClientCertificate: true
+
 unisport:
     client.implementation: rest
-    base.url: https://unisport.fi
     userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
 
 recommendations:

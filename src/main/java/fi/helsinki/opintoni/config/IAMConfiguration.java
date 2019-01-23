@@ -18,31 +18,25 @@
 package fi.helsinki.opintoni.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.config.http.SSLRequestFactory;
+import fi.helsinki.opintoni.integration.iam.IAMClient;
+import fi.helsinki.opintoni.integration.iam.IAMMockClient;
+import fi.helsinki.opintoni.integration.iam.IAMRestClient;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
-import fi.helsinki.opintoni.integration.interceptor.OodiExceptionInterceptor;
-import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiRestClient;
-import fi.helsinki.opintoni.integration.oodi.mock.OodiMockClient;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
-public class OodiConfiguration {
-
-    private final AppConfiguration appConfiguration;
-    private final Environment env;
-    private final ObjectMapper objectMapper;
+public class IAMConfiguration {
 
     @Value("${httpClient.keystoreLocation:null}")
     private String keystoreLocation;
@@ -50,52 +44,48 @@ public class OodiConfiguration {
     @Value("${httpClient.keystorePassword:null}")
     private String keystorePassword;
 
-    @Value("${oodi.useHttpClientCertificate:false}")
+    @Value("${iam.useHttpClientCertificate:false}")
     private boolean useHttpClientCertificate;
 
+    private final AppConfiguration appConfiguration;
+    private final ObjectMapper objectMapper;
+
     @Autowired
-    public OodiConfiguration(AppConfiguration appConfiguration, Environment env, ObjectMapper objectMapper) {
+    public IAMConfiguration(AppConfiguration appConfiguration, ObjectMapper objectMapper) {
         this.appConfiguration = appConfiguration;
-        this.env = env;
         this.objectMapper = objectMapper;
     }
 
     @Bean
-    public RestTemplate oodiRestTemplate() {
+    public RestTemplate iamRestTemplate() {
         RestTemplate restTemplate = new RestTemplate(SSLRequestFactory.clientHttpRequestFactory(
             appConfiguration, useHttpClientCertificate, keystoreLocation, keystorePassword));
-
-        restTemplate.setInterceptors(Lists.newArrayList(
-            new LoggingInterceptor(),
-            new OodiExceptionInterceptor(objectMapper, env)
-        ));
         restTemplate.setMessageConverters(getConverters());
+        restTemplate.setInterceptors(Collections.singletonList(new LoggingInterceptor()));
         return restTemplate;
     }
 
     private List<HttpMessageConverter<?>> getConverters() {
         final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
-        return Lists.newArrayList(converter);
+        return Collections.singletonList(converter);
     }
 
     @Bean
-    public OodiClient oodiMockClient() {
-        return new OodiMockClient(objectMapper);
+    public IAMClient iamMockClient() {
+        return new IAMMockClient();
     }
 
     @Bean
-    public OodiClient oodiRestClient() {
-        return new OodiRestClient(appConfiguration.get("oodi.base.url"), oodiRestTemplate());
+    public IAMClient iamRestClient() {
+        return new IAMRestClient(appConfiguration.get("iam.base.url"), iamRestTemplate());
     }
 
     @Bean
-    public OodiClient oodiClient() {
-        return NamedDelegatesProxy.builder(
-            OodiClient.class,
-            () -> appConfiguration.get("oodi.client.implementation"))
-            .with("rest", oodiRestClient())
-            .with("mock", oodiMockClient())
+    public IAMClient iamClient() {
+        return NamedDelegatesProxy.builder(IAMClient.class, () -> appConfiguration.get("iam.client.implementation"))
+            .with("mock", iamMockClient())
+            .with("rest", iamRestClient())
             .build();
     }
 }

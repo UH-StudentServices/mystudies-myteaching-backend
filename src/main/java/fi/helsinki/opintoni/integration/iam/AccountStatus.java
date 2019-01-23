@@ -15,14 +15,16 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.repository;
+package fi.helsinki.opintoni.integration.iam;
 
-import fi.helsinki.opintoni.domain.UserSettings;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public interface UserSettingsRepository extends JpaRepository<UserSettings, Long> {
+public class AccountStatus {
 
-    UserSettings findByUserId(Long userId);
+    @JsonProperty("username")
+    public String username;
 
-    long deleteByUserId(Long userId);
+    @JsonProperty("endDate")
+    public Long endDate;
+
 }

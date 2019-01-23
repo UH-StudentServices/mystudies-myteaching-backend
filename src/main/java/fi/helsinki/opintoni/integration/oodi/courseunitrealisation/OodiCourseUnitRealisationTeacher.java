@@ -20,26 +20,6 @@ package fi.helsinki.opintoni.integration.oodi.courseunitrealisation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class OodiCourseUnitRealisationTeacher {
-
     @JsonProperty("full_name")
     public String fullName;
-
-    @JsonProperty("last_name")
-    public String lastName;
-
-    @JsonProperty("calling_name")
-    public String callingName;
-
-    @JsonProperty("first_names")
-    public String firstNames;
-
-    @JsonProperty("email")
-    public String email;
-
-    @JsonProperty("teacher_id")
-    public String teacherId;
-
-    @JsonProperty("teacher_role_code")
-    public Integer teacherRoleCode;
-
 }
