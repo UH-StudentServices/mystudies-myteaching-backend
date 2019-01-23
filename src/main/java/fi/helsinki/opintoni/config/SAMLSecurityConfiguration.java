@@ -242,7 +242,6 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
         extendedMetadata.setAlias(alias);
         extendedMetadata.setSigningKey(getKeystoreAlias(alias));
         extendedMetadata.setEncryptionKey(getKeystoreAlias(alias));
-
         return extendedMetadata;
     }
 
@@ -287,9 +286,11 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     public SAMLLogoutFilter samlLogoutFilter() {
-        return new SAMLLogoutFilter(logoutSuccessHandler,
+        final SAMLLogoutFilter filter =  new SAMLLogoutFilter(logoutSuccessHandler,
             new LogoutHandler[]{logoutHandler()},
             new LogoutHandler[]{logoutHandler()});
+        filter.setContextProvider(contextProvider());
+        return filter;
     }
 
     /**
@@ -306,7 +307,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public HTTPPostBinding httpPostBinding() {
         return new HTTPPostBinding(parserPool(), velocityEngine());
     }
-    
+
     @Bean
     HTTPRedirectDeflateBinding httpRedirectBinding() {
         return new HTTPRedirectDeflateBinding(parserPool());
