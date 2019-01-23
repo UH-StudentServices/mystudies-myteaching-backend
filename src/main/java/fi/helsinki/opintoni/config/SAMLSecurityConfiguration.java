@@ -292,6 +292,16 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
             new LogoutHandler[]{logoutHandler()});
     }
 
+    /**
+     * Process incoming logout message.
+     * @return
+     */
+    @Bean
+    public SAMLLogoutProcessingFilter samlLogoutProcessingFilter() {
+        return new SAMLLogoutProcessingFilter(logoutSuccessHandler,
+            logoutHandler());
+    }
+
     @Bean
     public HTTPPostBinding httpPostBinding() {
         return new HTTPPostBinding(parserPool(), velocityEngine());
@@ -312,7 +322,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/logout/**"),
             samlLogoutFilter()));
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SingleLogout/**"),
-            samlLogoutFilter()));
+            samlLogoutProcessingFilter()));
         chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SSO/**"),
             samlWebSSOProcessingFilter()));
         return new FilterChainProxy(chains);
