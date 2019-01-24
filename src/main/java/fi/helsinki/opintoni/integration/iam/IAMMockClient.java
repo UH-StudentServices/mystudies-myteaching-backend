@@ -27,7 +27,7 @@ public class IAMMockClient implements IAMClient {
     private static final String INACTIVE_ACCOUNT = "inactiveuser";
     private static final String NOT_FOUND_ACCOUNT = "notfound";
 
-    @Value("${inactiveUserCleaner.testUserToInactivate}")
+    @Value("${inactiveUserCleaner.testUserToInactivate:#{null}}")
     private String testUserToInactivate;
 
     @Override
