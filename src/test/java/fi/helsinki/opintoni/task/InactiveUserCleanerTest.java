@@ -158,7 +158,7 @@ public class InactiveUserCleanerTest extends SpringTest {
 
     @Test
     public void thatActiveUntilFieldIsUpdatedIfAccountIsActive() {
-        long userId = createUser(null);
+        long userId = createUser(null, "activeuser@helsinki.fi");
 
         inactiveUserCleaner.cleanInactiveUsers();
 
