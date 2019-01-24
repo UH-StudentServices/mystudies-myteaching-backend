@@ -100,6 +100,9 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private SAMLLogoutSuccessHandler logoutSuccessHandler;
 
+    @Autowired
+    private SingleLogoutProfile singleLogoutProfile;
+
     @Bean
     public VelocityEngine velocityEngine() {
         return VelocityFactory.getEngine();
@@ -290,6 +293,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
             new LogoutHandler[]{logoutHandler()},
             new LogoutHandler[]{logoutHandler()});
         filter.setContextProvider(contextProvider());
+        filter.setProfile(singleLogoutProfile);
         return filter;
     }
 
