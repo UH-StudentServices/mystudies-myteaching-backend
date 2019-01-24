@@ -183,7 +183,7 @@ public class InactiveUserCleanerTest extends SpringTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void thatWorksWhenUserAccountIsNotFoundFromIAM() {
+    public void thatThrowsExceptionWhenUserAccountIsNotFoundFromIAM() {
         long userId = createUser(DateTime.now().minusYears(1), "notfound@helsinki.fi");
         User user = userRepository.getOne(userId);
 
