@@ -133,6 +133,7 @@ public class InactiveUserCleanerTest extends SpringTest {
 
         assertThat(userRepository.getOne(userId)).isNotNull();
         assertThat(userRepository.findById(INACTIVE_USER_ID).isPresent()).isFalse();
+        assertThat(userRepository.getOne(userId).accountStatus).isEqualTo(User.AccountStatus.INACTIVE);
     }
 
     @Test
@@ -190,7 +191,7 @@ public class InactiveUserCleanerTest extends SpringTest {
     }
 
     private long createUser(DateTime accountActiveUntilDate) {
-        return createUser(accountActiveUntilDate, "inactive@helsinki.fi");
+        return createUser(accountActiveUntilDate, "inactiveuser2@helsinki.fi");
     }
 
     private long createUser(DateTime accountActiveUntilDate, String eppn) {
