@@ -88,6 +88,15 @@ public class UserService {
         return user;
     }
 
+    public void restoreInactiveUser(AppUser appUser, User user) {
+        user.accountStatus = User.AccountStatus.ACTIVE;
+        user.lastLoginDate = DateTime.now();
+
+        userRepository.save(user);
+
+        createUserDefaults(user, appUser);
+    }
+
     public Optional<UserProfileDto> getProfileByOodiPersonId(String oodiPersonId) {
         return findFirstByOodiPersonId(oodiPersonId).map(user -> {
             final UserSettingsDto userSettingsDto = userSettingsService.findByUserId(user.id);
