@@ -218,7 +218,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
     }
 
     @Test
-    public void thatInactiveAccountCanBeRestored() throws IOException, ServletException {
+    public void thatInactiveAccountGetsRestoredOnLogin() throws IOException, ServletException {
         setupMocks(FI.getCode());
         User user = new User();
 
