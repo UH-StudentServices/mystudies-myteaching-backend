@@ -217,6 +217,24 @@ public class FederatedAuthenticationSuccessHandlerTest {
             .log("User logged in from ipAddress 1.2.3.4 with eduPersonPrincipalName eduPrincipalName");
     }
 
+    @Test
+    public void thatInactiveAccountCanBeRestored() throws IOException, ServletException {
+        setupMocks(FI.getCode());
+        User user = new User();
+
+        user.accountStatus = User.AccountStatus.INACTIVE;
+
+        Optional<User> oldUser = Optional.of(user);
+        HttpServletResponse response = mockResponse();
+
+        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(oldUser);
+
+        handler.onAuthenticationSuccess(mock(HttpServletRequest.class), response, authentication);
+
+        verify(userService, never()).createNewUser(any(AppUser.class));
+        verify(userService, times(1)).restoreInactiveUser(any(AppUser.class), any(User.class));
+    }
+
     private HttpServletResponse mockResponse() throws IOException {
         HttpServletResponse response = mock(HttpServletResponse.class);
         return response;
