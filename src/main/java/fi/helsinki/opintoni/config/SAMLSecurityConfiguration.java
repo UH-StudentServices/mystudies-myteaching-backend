@@ -45,6 +45,7 @@ import org.springframework.security.saml.context.SAMLContextProvider;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
 import org.springframework.security.saml.log.SAMLDefaultLogger;
+import org.springframework.security.saml.log.SAMLLogger;
 import org.springframework.security.saml.metadata.CachingMetadataManager;
 import org.springframework.security.saml.metadata.ExtendedMetadata;
 import org.springframework.security.saml.metadata.ExtendedMetadataDelegate;
@@ -103,6 +104,9 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private SingleLogoutProfile singleLogoutProfile;
 
+    @Autowired
+    private SAMLLogger samlLogger;
+
     @Bean
     public VelocityEngine velocityEngine() {
         return VelocityFactory.getEngine();
@@ -137,7 +141,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public SAMLDefaultLogger samlLogger() {
+    public SAMLLogger samlLogger() {
         return new SAMLDefaultLogger();
     }
 
@@ -294,6 +298,7 @@ public class SAMLSecurityConfiguration extends WebSecurityConfigurerAdapter {
             new LogoutHandler[]{logoutHandler()});
         filter.setContextProvider(contextProvider());
         filter.setProfile(singleLogoutProfile);
+        filter.setSamlLogger(samlLogger);
         return filter;
     }
 
