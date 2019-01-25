@@ -90,7 +90,7 @@ profileUrl:
   teacher: https://dev.teacher.helsinki.fi/profile
 
 mece:
-  domain: https://ohtu-testi.it.helsinki.fi
+  domain: https://mece.ohtu-test.it.helsinki.fi
 
 environment: dev
 
