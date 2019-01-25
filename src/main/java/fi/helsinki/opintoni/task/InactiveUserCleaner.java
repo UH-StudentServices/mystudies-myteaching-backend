@@ -125,6 +125,9 @@ public class InactiveUserCleaner {
 
         if (!hasProfile(user)) {
             userRepository.delete(user);
+        } else {
+            user.accountStatus = User.AccountStatus.INACTIVE;
+            userRepository.save(user);
         }
     }
 

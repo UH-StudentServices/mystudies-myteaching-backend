@@ -108,3 +108,7 @@ embedlyApiKey: dd741e653b0e4841bc59a60650031057
 fileService:
     client.implementation: mock
     client.storage: memory
+
+inactiveUserCleaner:
+    cron: "0 * * * * *"
+    testUserToInactivate: "mag_simp"

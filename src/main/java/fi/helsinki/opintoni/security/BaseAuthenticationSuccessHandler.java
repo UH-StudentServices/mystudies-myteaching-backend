@@ -121,10 +121,14 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
     }
 
     private void updateExistingUser(AppUser appUser, User user) {
+        if (user.accountStatus == User.AccountStatus.INACTIVE) {
+            userService.restoreInactiveUser(appUser, user);
+        }
 
         if (user.oodiPersonId == null) {
             user.oodiPersonId = appUser.getOodiPersonId();
         }
+
         user.lastLoginDate = DateTime.now();
         userService.save(user);
     }

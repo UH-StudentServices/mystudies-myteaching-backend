@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.integration.iam;
 
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Optional;
 
@@ -26,9 +27,12 @@ public class IAMMockClient implements IAMClient {
     private static final String INACTIVE_ACCOUNT = "inactiveuser";
     private static final String NOT_FOUND_ACCOUNT = "notfound";
 
+    @Value("${inactiveUserCleaner.testUserToInactivate:#{null}}")
+    private String testUserToInactivate;
+
     @Override
     public Optional<AccountStatus> getAccountStatus(String username) {
-        if (username.contains(INACTIVE_ACCOUNT)) {
+        if (username.contains(INACTIVE_ACCOUNT) || username.equals(testUserToInactivate)) {
             return getInactiveAccountStatus(username);
         }
 
