@@ -84,8 +84,7 @@ esb:
     client.implementation: rest
 
 iam:
-    client.implementation: rest
-    useHttpClientCertificate: true
+    client.implementation: mock
 
 unisport:
     client.implementation: rest
@@ -117,3 +116,7 @@ mece:
 embedlyApiKey: 69bd6bec8cb649df9b7ae0bdc972b206
 
 environment: qa
+
+inactiveUserCleaner:
+    cron: "0 0 * * * *"
+    testUserToInactivate: "doo_2"
