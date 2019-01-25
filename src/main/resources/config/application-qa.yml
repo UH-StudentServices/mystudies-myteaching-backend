@@ -112,7 +112,7 @@ profileUrl:
   teacher: https://qa.teacher.helsinki.fi/profile
 
 mece:
-  domain: https://ohtu-testi.it.helsinki.fi
+  domain: https://mece.ohtu-test.it.helsinki.fi
 
 embedlyApiKey: 69bd6bec8cb649df9b7ae0bdc972b206
 
