@@ -110,5 +110,5 @@ fileService:
     client.storage: memory
 
 inactiveUserCleaner:
-    cron: "0 * * * * *"
+    cron: "0 0 * * * *"
     testUserToInactivate: "mag_simp"
