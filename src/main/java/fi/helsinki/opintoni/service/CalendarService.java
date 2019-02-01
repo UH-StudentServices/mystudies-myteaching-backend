@@ -117,7 +117,7 @@ public class CalendarService {
         if (!eventDto.getOptimeExtrasAsString().isEmpty()) {
             eventProperties.add(new Description(eventDto.getOptimeExtrasAsString()));
         }
-        eventProperties.add(new Location((eventDto.getLocationsAsString())));
+        eventProperties.add(new Location(eventDto.getLocationsAsString()));
         eventProperties.add(generateUid());
 
         return new VEvent(eventProperties);
@@ -130,7 +130,7 @@ public class CalendarService {
     private DateTime calDateTimeFromLocalDateTime(LocalDateTime localDateTime) {
         DateTime dateTime = new DateTime(Date.from(localDateTime.atZone(HELSINKI_ZONE_ID).toInstant()));
 
-        dateTime.setTimeZone(new net.fortuna.ical4j.model.TimeZone((timeZoneUtils.getHelsinkiTimeZone())));
+        dateTime.setTimeZone(new net.fortuna.ical4j.model.TimeZone(timeZoneUtils.getHelsinkiTimeZone()));
 
         return dateTime;
     }

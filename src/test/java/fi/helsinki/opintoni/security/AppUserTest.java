@@ -121,7 +121,7 @@ public class AppUserTest {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
             .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.AFFILIATE))
-            .eduPersonPrimaryAffiliation((SAMLEduPersonAffiliation.STUDENT))
+            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .studentNumber(STUDENT_NUMBER)
             .employeeNumber(EMPLOYEE_NUMBER)
             .build();
