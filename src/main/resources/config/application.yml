@@ -13,6 +13,8 @@ server:
 session.timeout: 3600
 
 spring:
+    main:
+        allow-bean-definition-overriding: true
     servlet:
         multipart:
             max-file-size: 16MB

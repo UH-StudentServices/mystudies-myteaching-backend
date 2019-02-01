@@ -18,7 +18,8 @@
 package fi.helsinki.opintoni.web.rest.privateapi.profile.keyword;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotBlank;
 
 public class Keyword {
 
@@ -32,7 +33,7 @@ public class Keyword {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Keyword)) {
             return false;
         }
 
