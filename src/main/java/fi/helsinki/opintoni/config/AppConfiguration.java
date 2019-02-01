@@ -28,8 +28,8 @@ import static com.google.common.collect.Lists.newArrayList;
 
 @Component
 @PropertySource(value = {
-    "file:/opt/opintoni/config/default.properties",
-    "file:/opt/opintoni/config/database.properties"},
+    "file:${config.dir:/opt/opintoni/config}/default.properties",
+    "file:${config.dir:/opt/opintoni/config}/database.properties"},
     ignoreResourceNotFound = true)
 public class AppConfiguration {
 
