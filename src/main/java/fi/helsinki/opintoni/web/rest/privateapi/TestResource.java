@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.ImmutableMap;
+import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
@@ -33,7 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
-@Profile({"local-dev", "dev", "qa"})
+@Profile({Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT, Constants.SPRING_PROFILE_DEVELOPMENT, Constants.SPRING_PROFILE_QA})
 @RequestMapping(
     value = RestConstants.PRIVATE_API_V1 + "/test",
     produces = WebConstants.APPLICATION_JSON_UTF8)
