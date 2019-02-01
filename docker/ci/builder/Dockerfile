@@ -16,6 +16,7 @@ RUN apt-get update \
   && mkdir -p /opt/mystudies \
   && mkdir -p /home/$USER_NAME/.gradle \
   && mkdir -p /home/$USER_NAME/.m2 \
+  && mkdir -p /home/$USER_NAME/ .sonar \
   && chown -R $USER_NAME:$GROUP_NAME /opt/mystudies \
   && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.gradle \
   && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.m2
