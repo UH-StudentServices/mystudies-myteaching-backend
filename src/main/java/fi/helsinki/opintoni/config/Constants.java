@@ -22,6 +22,7 @@ public final class Constants {
     private Constants() {}
 
     public static final String SPRING_PROFILE_LOCAL_DEVELOPMENT = "local-dev";
+    public static final String SPRING_PROFILE_LOCAL_SHIBBO = "local-shibbo";
     public static final String SPRING_PROFILE_DEVELOPMENT = "dev";
     public static final String SPRING_PROFILE_QA = "qa";
     public static final String SPRING_PROFILE_DEMO = "demo";
