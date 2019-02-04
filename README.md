@@ -3,7 +3,7 @@
 ## Requirements
 
 The following programs must be installed
-- JDK 8
+- JDK 11
 
 The following directories must exist on host machine
 - ~/.m2
