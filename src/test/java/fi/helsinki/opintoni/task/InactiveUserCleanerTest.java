@@ -133,6 +133,7 @@ public class InactiveUserCleanerTest extends SpringTest {
 
         assertThat(userRepository.getOne(userId)).isNotNull();
         assertThat(userRepository.findById(INACTIVE_USER_ID).isPresent()).isFalse();
+        assertThat(userRepository.getOne(userId).accountStatus).isEqualTo(User.AccountStatus.INACTIVE);
     }
 
     @Test
@@ -157,7 +158,7 @@ public class InactiveUserCleanerTest extends SpringTest {
 
     @Test
     public void thatActiveUntilFieldIsUpdatedIfAccountIsActive() {
-        long userId = createUser(null);
+        long userId = createUser(null, "activeuser@helsinki.fi");
 
         inactiveUserCleaner.cleanInactiveUsers();
 
@@ -182,7 +183,7 @@ public class InactiveUserCleanerTest extends SpringTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void thatWorksWhenUserAccountIsNotFoundFromIAM() {
+    public void thatThrowsExceptionWhenUserAccountIsNotFoundFromIAM() {
         long userId = createUser(DateTime.now().minusYears(1), "notfound@helsinki.fi");
         User user = userRepository.getOne(userId);
 
@@ -190,7 +191,7 @@ public class InactiveUserCleanerTest extends SpringTest {
     }
 
     private long createUser(DateTime accountActiveUntilDate) {
-        return createUser(accountActiveUntilDate, "inactive@helsinki.fi");
+        return createUser(accountActiveUntilDate, "inactiveuser2@helsinki.fi");
     }
 
     private long createUser(DateTime accountActiveUntilDate, String eppn) {

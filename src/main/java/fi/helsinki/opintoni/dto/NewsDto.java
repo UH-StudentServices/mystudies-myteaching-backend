@@ -33,7 +33,7 @@ public class NewsDto {
             return true;
         }
 
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof NewsDto)) {
             return false;
         }
 

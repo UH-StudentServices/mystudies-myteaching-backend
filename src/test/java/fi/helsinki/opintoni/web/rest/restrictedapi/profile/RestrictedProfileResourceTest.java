@@ -87,7 +87,7 @@ public class RestrictedProfileResourceTest extends RestrictedProfileTest {
         mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + STUDENT_PROFILE_PATH)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
-            .andExpect((jsonPath("$.componentOrders").value(Matchers.<List<ComponentOrderDto>>allOf(
+            .andExpect(jsonPath("$.componentOrders").value(Matchers.<List<ComponentOrderDto>>allOf(
                 hasSize(3),
                 hasItem(
                     both(hasEntry("component", ProfileComponent.STUDIES.toString()))
@@ -101,7 +101,7 @@ public class RestrictedProfileResourceTest extends RestrictedProfileTest {
                     both(hasEntry("component", ProfileComponent.ATTAINMENTS.toString()))
                         .and(hasEntry("orderValue", 3))
                 )
-            ))));
+            )));
     }
 
     @Test
@@ -109,11 +109,11 @@ public class RestrictedProfileResourceTest extends RestrictedProfileTest {
         mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + STUDENT_PROFILE_PATH)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
-            .andExpect((jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
+            .andExpect(jsonPath("$.freeTextContent").value(Matchers.<List<FreeTextContentDto>>allOf(
                 hasSize(1),
                 hasItem(
                     hasEntry("instanceName", PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME)
                 )
-            ))));
+            )));
     }
 }

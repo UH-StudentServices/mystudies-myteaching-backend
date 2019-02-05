@@ -17,9 +17,9 @@
 
 plugins {
     id 'com.gorylenko.gradle-git-properties' version '1.4.17'
-    id 'net.ltgt.errorprone' version '0.0.14'
+    id 'net.ltgt.errorprone' version '0.6.1'
     id 'net.researchgate.release' version '2.6.0'
-    id 'org.springframework.boot' version '2.0.4.RELEASE'
+    id 'org.springframework.boot' version '2.1.2.RELEASE'
     id 'java'
     id 'maven-publish'
     id 'idea'
@@ -30,8 +30,8 @@ plugins {
 
 apply plugin: 'io.spring.dependency-management'
 
-sourceCompatibility=1.8
-targetCompatibility=1.8
+sourceCompatibility=11
+targetCompatibility=11
 
 checkstyle {
     configDir = rootProject.file('gradle-config/checkstyle')
@@ -54,7 +54,7 @@ springBoot {
 }
 
 jacoco {
-    toolVersion = "0.8.0"
+    toolVersion = "0.8.3"
 }
 
 jacocoTestReport {
@@ -183,10 +183,6 @@ dependencies {
     testCompile group: 'com.icegreen', name: 'greenmail', version: greenmail_version
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.10.2'
-}
-
 // Check for required properties
 tasks.withType(PublishToMavenRepository) { task ->
    task.doFirst {
@@ -258,19 +254,23 @@ task checkstyle {
 
 test.dependsOn "checkstyle"
 
-task storeDeployInformationToFile << {
-  def props = new Properties()
-  file("gradle.properties").withInputStream { stream -> props.load(stream) }
+task storeDeployInformationToFile {
+    doLast {
+        def props = new Properties()
+        file("gradle.properties").withInputStream { stream -> props.load(stream) }
 
-  def deployProps = [VERSION: props["version"], ENVIRONMENT: environment]
-  def content = deployProps.collect { key, value -> "$key=$value" }.join('\n')
-  file("ci-deploy.properties").write(content)
+        def deployProps = [VERSION: props["version"], ENVIRONMENT: environment]
+        def content = deployProps.collect { key, value -> "$key=$value" }.join('\n')
+        file("ci-deploy.properties").write(content)
+    }
 }
 
 createReleaseTag.dependsOn storeDeployInformationToFile
 
-tasks.create(name: 'installPrepushHook') << {
-    Runtime.getRuntime().exec("chmod -R +x .git/hooks/")
+tasks.create(name: 'installPrepushHook') {
+    doLast {
+        Runtime.getRuntime().exec("chmod -R +x .git/hooks/")
+    }
 }
 
 task installGitHooks(type: Copy) {

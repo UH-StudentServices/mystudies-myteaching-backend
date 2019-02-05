@@ -74,7 +74,7 @@ public class ProfileBackgroundService {
         if (backgroundOptional.isPresent()) {
             ProfileBackground background = backgroundOptional.get();
 
-            return (HAS_DEFAULT_BACKGROUND.test(background))
+            return HAS_DEFAULT_BACKGROUND.test(background)
                 ? uriBuilder.getSystemBackgroundImageUri(background.backgroundFilename)
                 : uriBuilder.getCustomBackgroundImageUri(background.uploadedBackgroundFilename);
         }

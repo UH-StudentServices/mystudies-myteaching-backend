@@ -93,7 +93,7 @@ profileUrl:
   teacher: http://local.teacher.helsinki.fi:3002/profile
 
 mece:
-  domain: https://ohtu-testi.it.helsinki.fi
+  domain: https://mece.ohtu-test.it.helsinki.fi
 
 environment: local
 
@@ -108,3 +108,7 @@ embedlyApiKey: dd741e653b0e4841bc59a60650031057
 fileService:
     client.implementation: mock
     client.storage: memory
+
+inactiveUserCleaner:
+    cron: "0 0 * * * *"
+    testUserToInactivate: "mag_simp"
