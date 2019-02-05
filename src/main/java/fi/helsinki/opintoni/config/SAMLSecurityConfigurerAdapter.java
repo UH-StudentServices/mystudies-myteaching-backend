@@ -56,8 +56,7 @@ public class SAMLSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter 
 
     @Autowired
     private SAMLAuthenticationProvider samlAuthenticationProvider;
-
-
+    
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
