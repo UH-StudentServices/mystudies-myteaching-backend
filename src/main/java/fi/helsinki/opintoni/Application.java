@@ -86,7 +86,9 @@ public class Application {
      * Set a default profile if it has not been set.
      */
     private static void addDefaultProfile(SpringApplication app, SimpleCommandLinePropertySource source) {
-        if (!source.containsProperty("spring.profiles.active")) {
+        if (!source.containsProperty("spring.profiles.active") &&
+            !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
+            log.info("Automatically adding profile : {}", Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT);
             app.setAdditionalProfiles(Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT);
         }
     }

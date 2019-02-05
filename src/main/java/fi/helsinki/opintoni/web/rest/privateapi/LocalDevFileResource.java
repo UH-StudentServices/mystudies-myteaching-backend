@@ -32,7 +32,10 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/files")
-@Profile(Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT)
+@Profile({
+    Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT,
+    Constants.SPRING_PROFILE_LOCAL_SHIBBO
+})
 public class LocalDevFileResource {
 
     private final FilesMemory filesMemory;

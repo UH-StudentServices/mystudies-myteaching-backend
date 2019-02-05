@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.security;
 
+import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.service.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +25,7 @@ import org.opensaml.saml2.core.Attribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Profile({
+    Constants.SPRING_PROFILE_QA,
+    Constants.SPRING_PROFILE_PRODUCTION,
+    Constants.SPRING_PROFILE_LOCAL_SHIBBO
+})
 public class SAMLUserDetailsService implements org.springframework.security.saml.userdetails.SAMLUserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(SAMLUserDetailsService.class);

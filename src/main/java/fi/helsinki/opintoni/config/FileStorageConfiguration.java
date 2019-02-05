@@ -33,7 +33,11 @@ public class FileStorageConfiguration {
     private FileService fileService;
 
     @Bean
-    @Profile({Constants.SPRING_PROFILE_TEST, Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT})
+    @Profile({
+        Constants.SPRING_PROFILE_TEST,
+        Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT,
+        Constants.SPRING_PROFILE_LOCAL_SHIBBO
+    })
     public MemoryFileStorage memoryFileStorage() {
         return new MemoryFileStorage(filesMemory());
     }

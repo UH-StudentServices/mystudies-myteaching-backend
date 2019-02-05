@@ -34,7 +34,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
-@Profile({Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT, Constants.SPRING_PROFILE_DEVELOPMENT, Constants.SPRING_PROFILE_QA})
+@Profile({
+    Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT,
+    Constants.SPRING_PROFILE_DEVELOPMENT,
+    Constants.SPRING_PROFILE_QA,
+    Constants.SPRING_PROFILE_LOCAL_SHIBBO
+})
 @RequestMapping(
     value = RestConstants.PRIVATE_API_V1 + "/test",
     produces = WebConstants.APPLICATION_JSON_UTF8)
