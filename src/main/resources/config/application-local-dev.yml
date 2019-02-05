@@ -73,9 +73,6 @@ unisport:
 
 unisportApiKey: foobar123
 
-saml:
-  idp.metadataUrl: https://login-test.it.helsinki.fi/metadata/sign-hy-test-metadata.xml
-
 newsfeeds:
     client.implementation: mock
 
