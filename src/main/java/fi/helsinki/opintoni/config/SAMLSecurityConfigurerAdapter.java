@@ -80,7 +80,7 @@ import java.util.*;
     Constants.SPRING_PROFILE_PRODUCTION,
     Constants.SPRING_PROFILE_LOCAL_SHIBBO
 })
-public class SAMLSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+public class SAMLSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     private static final int ONE_WEEK_IN_SECONDS = 604800;
 
