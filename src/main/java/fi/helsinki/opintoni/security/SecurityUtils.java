@@ -35,7 +35,7 @@ public class SecurityUtils {
 
     private final AppConfiguration appConfiguration;
 
-    @Value("${whitelistedIps}")
+    @Value("#{'${whitelistedIps}'.split(',')}")
     private List<String> whitelistedIps;
 
     @Autowired
@@ -70,7 +70,7 @@ public class SecurityUtils {
 
     public String getWhitelistedIpAccess() {
         return whitelistedIps.stream()
-            .map(ip -> "hasIpAddress('" + ip + "')")
+            .map(ip -> "hasIpAddress('" + ip.trim() + "')")
             .collect(Collectors.joining(" or "));
     }
 }
