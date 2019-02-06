@@ -264,16 +264,18 @@ public class SAMLSecurityConfiguration {
     @Bean
     public SecurityContextLogoutHandler logoutHandler() {
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
-        logoutHandler.setInvalidateHttpSession(false);
+        logoutHandler.setInvalidateHttpSession(true);
         logoutHandler.setClearAuthentication(true);
         return logoutHandler;
     }
 
     @Bean
-    public SAMLLogoutFilter samlLogoutFilter(@Autowired SAMLContextProvider contextProvider, @Autowired SAMLLogger samlLogger) {
+    public SAMLLogoutFilter samlLogoutFilter(@Autowired SAMLContextProvider contextProvider,
+                                             @Autowired SAMLLogger samlLogger,
+                                             @Autowired SecurityContextLogoutHandler logoutHandler) {
         final SAMLLogoutFilter filter = new SAMLLogoutFilter(logoutSuccessHandler,
-            new LogoutHandler[]{logoutHandler()},
-            new LogoutHandler[]{logoutHandler()});
+            new LogoutHandler[]{logoutHandler},
+            new LogoutHandler[]{logoutHandler});
         filter.setContextProvider(contextProvider);
         filter.setProfile(singleLogoutProfile);
         filter.setSamlLogger(samlLogger);
