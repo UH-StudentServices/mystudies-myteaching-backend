@@ -2,7 +2,10 @@
 
 The local-shibbo enabled backend can be started by executing:
 
-`CONFIG_DIR=src/test/local-shibbo SPRING_PROFILES_ACTIVE=local-shibbo ./gradlew bootRun`
+`./gradlew bootRun -PmainClass=`
+
+or by running the class `./gradlew bootRun -PmainClass=fi.helsinki.opintoni.ApplicationWithLocalShibboProfile`
+from ide.
 
 The frontend also needs to be started with special options so that it uses https, See the README of the oo frontend
 project to figure out how to do that.

@@ -33,13 +33,23 @@ apply plugin: 'io.spring.dependency-management'
 sourceCompatibility=11
 targetCompatibility=11
 
-checkstyle {
-    configDir = rootProject.file('gradle-config/checkstyle')
-    toolVersion = '8.12'
+def mainClass = 'fi.helsinki.opintoni.Application'
+
+bootJar {
+    mainClassName = mainClass
+}
+
+bootRun {
+    main = project.properties['mainClass'] ?: mainClass
 }
 
 bootJar {
-   mainClassName = 'fi.helsinki.opintoni.Application'
+    launchScript()
+}
+
+checkstyle {
+    configDir = rootProject.file('gradle-config/checkstyle')
+    toolVersion = '8.12'
 }
 
 sonarqube {
@@ -47,10 +57,6 @@ sonarqube {
         property "sonar.projectKey", "mystudies-myteaching-backend"
         property "sonar.projectName", "mystudies-myteaching-backend"
     }
-}
-
-springBoot {
-    mainClassName = 'fi.helsinki.opintoni.Application'
 }
 
 jacoco {
@@ -291,6 +297,3 @@ gitProperties {
 
 clean.dependsOn installGitHooks
 
-bootJar {
-    launchScript()
-}

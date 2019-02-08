@@ -122,13 +122,8 @@ public class SAMLSecurityConfiguration {
         Constants.SPRING_PROFILE_QA,
         Constants.SPRING_PROFILE_PRODUCTION
     })
-    public SAMLContextProviderLB contextProvider() throws URISyntaxException {
-        SAMLContextProviderLB contextProvider = new SAMLContextProviderLB();
-        URI uri = new URI(hostUrl);
-        contextProvider.setScheme(uri.getScheme());
-        contextProvider.setServerPort(uri.getPort());
-        contextProvider.setServerName(uri.getHost());
-        contextProvider.setContextPath("");
+    public SAMLContextProvider contextProvider() throws URISyntaxException {
+        SAMLContextProviderLB contextProvider = getContextProvider();
         return contextProvider;
     }
 
@@ -137,13 +132,18 @@ public class SAMLSecurityConfiguration {
         Constants.SPRING_PROFILE_LOCAL_SHIBBO
     })
     public SAMLContextProvider localShibbocontextProvider() throws URISyntaxException {
+        SAMLContextProviderLB contextProvider = getContextProvider();
+        contextProvider.setIncludeServerPortInRequestURL(true);
+        return contextProvider;
+    }
+
+    private SAMLContextProviderLB getContextProvider() throws URISyntaxException {
         SAMLContextProviderLB contextProvider = new SAMLContextProviderLB();
         URI uri = new URI(hostUrl);
         contextProvider.setScheme(uri.getScheme());
         contextProvider.setServerPort(uri.getPort());
         contextProvider.setServerName(uri.getHost());
         contextProvider.setContextPath("");
-        contextProvider.setIncludeServerPortInRequestURL(true);
         return contextProvider;
     }
 
@@ -222,10 +222,15 @@ public class SAMLSecurityConfiguration {
     })
     public CachingMetadataManager metadata(@Autowired ParserPool parserPool,
                                            @Autowired ExtendedMetadataDelegate idpMetadata) throws Exception {
+        return  getMetadataProviders(parserPool, idpMetadata, true);
+    }
+
+    private CachingMetadataManager getMetadataProviders(ParserPool parserPool, ExtendedMetadataDelegate idpMetadata,
+                                                        boolean requireSignedMetadata) throws Exception {
         List<MetadataProvider> providers = new ArrayList<>();
         providers.add(idpMetadata);
-        providers.add(spMetadata(samlTeacherAlias, true, parserPool));
-        providers.add(spMetadata(samlStudentAlias, true, parserPool));
+        providers.add(spMetadata(samlTeacherAlias, requireSignedMetadata, parserPool));
+        providers.add(spMetadata(samlStudentAlias, requireSignedMetadata, parserPool));
         return new CachingMetadataManager(providers);
     }
 
@@ -236,11 +241,7 @@ public class SAMLSecurityConfiguration {
     })
     public CachingMetadataManager metadataLocalShibbo(@Autowired ParserPool parserPool,
                                                       @Autowired ExtendedMetadataDelegate idpMetadata) throws Exception {
-        List<MetadataProvider> providers = new ArrayList<>();
-        providers.add(idpMetadata);
-        providers.add(spMetadata(samlTeacherAlias, false, parserPool));
-        providers.add(spMetadata(samlStudentAlias, false, parserPool));
-        return new CachingMetadataManager(providers);
+        return  getMetadataProviders(parserPool, idpMetadata, false);
     }
 
     @Bean
