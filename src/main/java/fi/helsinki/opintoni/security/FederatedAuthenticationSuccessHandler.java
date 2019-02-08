@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.security;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -27,12 +28,19 @@ import java.io.IOException;
 public class FederatedAuthenticationSuccessHandler extends BaseAuthenticationSuccessHandler {
     private static final String ERROR_PATH = "/error/maintenance";
 
-    @Value("${hostUrl:/}")
-    private String redirectUrl;
+    @Value("${teacherAppUrl}")
+    String teacherAppUrl;
+
+    @Value("${studentAppUrl}")
+    String studentAppUrl;
 
     @Override
-    protected void handleAuthSuccess(HttpServletResponse response) throws IOException {
-        response.sendRedirect(redirectUrl);
+    protected void handleAuthSuccess(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getRequestURI().endsWith("teacher")) {
+            response.sendRedirect(teacherAppUrl);
+        } else {
+            response.sendRedirect(studentAppUrl);
+        }
     }
 
     @Override

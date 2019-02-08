@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.config;
 
 import fi.helsinki.opintoni.security.CustomAuthenticationFailureHandler;
 import fi.helsinki.opintoni.security.FederatedAuthenticationSuccessHandler;
+import fi.helsinki.opintoni.security.SAMLContextProviderReverseProxy;
 import fi.helsinki.opintoni.security.SAMLLogoutSuccessHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.velocity.app.VelocityEngine;
@@ -35,11 +36,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.saml.*;
 import org.springframework.security.saml.context.SAMLContextProvider;
-import org.springframework.security.saml.context.SAMLContextProviderLB;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
 import org.springframework.security.saml.log.SAMLDefaultLogger;
@@ -65,7 +66,6 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 
@@ -78,9 +78,6 @@ import java.util.*;
 public class SAMLSecurityConfiguration {
 
     private static final int ONE_WEEK_IN_SECONDS = 604800;
-
-    @Value("${hostUrl}")
-    private String hostUrl;
 
     @Value("${saml.teacher.alias}")
     private String samlTeacherAlias;
@@ -98,9 +95,6 @@ public class SAMLSecurityConfiguration {
     private String samlIdpMetadataUrl;
 
     @Autowired
-    private SAMLLogoutSuccessHandler logoutSuccessHandler;
-
-    @Autowired
     private AppConfiguration appConfiguration;
 
     @Autowired
@@ -108,6 +102,12 @@ public class SAMLSecurityConfiguration {
 
     @Autowired
     private CustomAuthenticationFailureHandler authenticationFailureHandler;
+
+    @Autowired
+    private Environment environment;
+
+    @Autowired
+    private SAMLLogoutSuccessHandler logoutSuccessHandler;
 
     @Autowired
     private SingleLogoutProfile singleLogoutProfile;
@@ -118,33 +118,8 @@ public class SAMLSecurityConfiguration {
     }
 
     @Bean("contextProvider")
-    @Profile({
-        Constants.SPRING_PROFILE_QA,
-        Constants.SPRING_PROFILE_PRODUCTION
-    })
     public SAMLContextProvider contextProvider() throws URISyntaxException {
-        SAMLContextProviderLB contextProvider = getContextProvider();
-        return contextProvider;
-    }
-
-    @Bean("contextProvider")
-    @Profile({
-        Constants.SPRING_PROFILE_LOCAL_SHIBBO
-    })
-    public SAMLContextProvider localShibbocontextProvider() throws URISyntaxException {
-        SAMLContextProviderLB contextProvider = getContextProvider();
-        contextProvider.setIncludeServerPortInRequestURL(true);
-        return contextProvider;
-    }
-
-    private SAMLContextProviderLB getContextProvider() throws URISyntaxException {
-        SAMLContextProviderLB contextProvider = new SAMLContextProviderLB();
-        URI uri = new URI(hostUrl);
-        contextProvider.setScheme(uri.getScheme());
-        contextProvider.setServerPort(uri.getPort());
-        contextProvider.setServerName(uri.getHost());
-        contextProvider.setContextPath("");
-        return contextProvider;
+        return new SAMLContextProviderReverseProxy();
     }
 
     @Bean

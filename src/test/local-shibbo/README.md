@@ -4,13 +4,15 @@ The local-shibbo enabled backend can be started by executing:
 
 `./gradlew bootRun -PmainClass=`
 
-or by running the class `./gradlew bootRun -PmainClass=fi.helsinki.opintoni.ApplicationWithLocalShibboProfile`
-from ide.
+or by running the class `fi.helsinki.opintoni.ApplicationWithLocalShibboProfile`
+from IDE.
 
 The frontend also needs to be started with special options so that it uses https, See the README of the oo frontend
 project to figure out how to do that.
 
-## Generate required keys and keystore:
+## Keys and keystore
+
+In this test configuration both student and teacher use the same key + certificate so only one set is required.
 
 When keys need to be renewed or changed the following procedure can be followed:
 
