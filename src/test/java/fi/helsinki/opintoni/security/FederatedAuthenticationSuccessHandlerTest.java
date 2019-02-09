@@ -59,6 +59,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
     private static final String EDU_PRINCIPAL_NAME = "eduPrincipalName";
     private static final String OODI_PERSON_ID = "oodiPersonId";
     private static final String REMOTE_ADDRESS = "1.2.3.4";
+    private static final String REQUEST_URL = "http://local.student.helsinki.fi:3000";
 
     private final Authentication authentication = mock(Authentication.class);
 
@@ -104,7 +105,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(user);
 
-        handler.onAuthenticationSuccess(mock(HttpServletRequest.class), response, authentication);
+        handler.onAuthenticationSuccess(mockRequest(), response, authentication);
 
         verify(userService, never()).createNewUser(any(AppUser.class));
     }
@@ -115,7 +116,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
         Optional<User> user = Optional.of(new User());
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(user);
 
-        handler.onAuthenticationSuccess(mock(HttpServletRequest.class), mockResponse(), authentication);
+        handler.onAuthenticationSuccess(mockRequest(), mockResponse(), authentication);
 
         verify(userService, times(1)).save(argThat(new UserMatcher()));
     }
@@ -125,7 +126,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
         setupMocks(FI.getCode());
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
 
-        handler.onAuthenticationSuccess(mock(HttpServletRequest.class), mockResponse(), authentication);
+        handler.onAuthenticationSuccess(mockRequest(), mockResponse(), authentication);
 
         verify(userService, times(1)).createNewUser(any(AppUser.class));
     }
@@ -135,7 +136,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
         HttpServletResponse response = mockResponse();
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
 
-        handler.onAuthenticationSuccess(mock(HttpServletRequest.class), response, authentication);
+        handler.onAuthenticationSuccess(mockRequest(), response, authentication);
 
         verify(response, times(1)).addCookie(argThat(new LangCookieMatcher(expectedCookieLanguage)));
     }
@@ -167,7 +168,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
     @Test
     public void thatLanguageCookieIsNotAddedForUserOnLaterLogins() throws Exception {
-        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletRequest request = mockRequest();
         Cookie[] cookies = {new Cookie(OPINTONI_HAS_LOGGED_IN, "true")};
         when(request.getCookies()).thenReturn(cookies);
 
@@ -176,17 +177,17 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
     @Test
     public void languageCookieIsNotAddedIfUserPreferredLanguageIsNotSupported() throws Exception {
-        assertLanguageCookieNotAddedScenario(mock(HttpServletRequest.class), UNSUPPORTED_LANGUAGE);
+        assertLanguageCookieNotAddedScenario(mockRequest(), UNSUPPORTED_LANGUAGE);
     }
 
     @Test
     public void languageCookieIsNotAddedIfUserPreferredLanguageIsNotValidLanguageCode() throws Exception {
-        assertLanguageCookieNotAddedScenario(mock(HttpServletRequest.class), INVALID_LANGUAGE_CODE);
+        assertLanguageCookieNotAddedScenario(mockRequest(), INVALID_LANGUAGE_CODE);
     }
 
     @Test
     public void languageCookieIsNotAddedIfIfUserDoesNotHavePreferredLanguage() throws Exception {
-        assertLanguageCookieNotAddedScenario(mock(HttpServletRequest.class), null);
+        assertLanguageCookieNotAddedScenario(mockRequest(), null);
     }
 
     @Test
@@ -195,7 +196,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
         HttpServletResponse response = mockResponse();
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
 
-        handler.onAuthenticationSuccess(mock(HttpServletRequest.class), response, authentication);
+        handler.onAuthenticationSuccess(mockRequest(), response, authentication);
 
         verify(response, times(1)).addCookie(argThat(new HasLoggedInCookieMatcher()));
     }
@@ -204,7 +205,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
     public void thatLoginIsAuditLogged() throws IOException, ServletException {
         setupMocks(FI.getCode());
         HttpServletResponse response = mockResponse();
-        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletRequest request = mockRequest();
 
         when(request.getRemoteAddr()).thenReturn(REMOTE_ADDRESS);
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
@@ -227,10 +228,16 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
         when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(oldUser);
 
-        handler.onAuthenticationSuccess(mock(HttpServletRequest.class), response, authentication);
+        handler.onAuthenticationSuccess(mockRequest(), response, authentication);
 
         verify(userService, never()).createNewUser(any(AppUser.class));
         verify(userService, times(1)).restoreInactiveUser(any(AppUser.class), any(User.class));
+    }
+
+    private HttpServletRequest mockRequest() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getRequestURI()).thenReturn(REQUEST_URL);
+        return request;
     }
 
     private HttpServletResponse mockResponse() throws IOException {

@@ -34,7 +34,7 @@ public class RedirectControllerTest extends SpringTest {
         mockMvc.perform(get("/redirect").with(securityContext(studentSecurityContext()))
             .param("state", "opintoni"))
             .andExpect(status().is3xxRedirection())
-            .andExpect(header().string("Location", "/app/#/opintoni"));
+            .andExpect(header().string("Location", "https://local.student.helsinki.fi:3000"));
     }
 
     @Test
@@ -42,7 +42,7 @@ public class RedirectControllerTest extends SpringTest {
         mockMvc.perform(get("/redirect").with(securityContext(teacherSecurityContext()))
             .param("state", "opetukseni"))
             .andExpect(status().is3xxRedirection())
-            .andExpect(header().string("Location", "/app/#/opetukseni"));
+            .andExpect(header().string("Location", "https://local.teacher.helsinki.fi:3000"));
     }
 
     @Test
