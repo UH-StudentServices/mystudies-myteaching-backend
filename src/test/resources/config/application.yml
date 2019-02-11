@@ -143,8 +143,8 @@ guide:
     client.implementation: rest
 
 optime:
-    base.url: https://mock.optime.helsinki.fi/path
-    client.implementation: rest
+    client.implementation: mock
+    useOptimeFeedForWebCalendar: false
 
 unisport:
     userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization

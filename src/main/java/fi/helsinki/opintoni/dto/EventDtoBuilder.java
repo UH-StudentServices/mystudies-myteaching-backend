@@ -37,6 +37,7 @@ public class EventDtoBuilder {
     private boolean hasMaterial;
     private List<LocationDto> locations;
     private OptimeExtrasDto optimeExtras;
+    private String uid;
 
     public EventDtoBuilder() {
     }
@@ -111,6 +112,11 @@ public class EventDtoBuilder {
         return this;
     }
 
+    public EventDtoBuilder setUid(String uid) {
+        this.uid = uid;
+        return this;
+    }
+
     public EventDto createEventDto() {
         return new EventDto(
             type, 
@@ -126,6 +132,7 @@ public class EventDtoBuilder {
             moodleUri,
             hasMaterial,
             locations,
-            optimeExtras);
+            optimeExtras,
+            uid);
     }
 }
