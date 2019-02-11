@@ -15,30 +15,27 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.sampledata;
+package fi.helsinki.opintoni.integration.optime;
 
-import com.google.common.io.Files;
+import fi.helsinki.opintoni.service.converter.EventConverter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Base64;
+import java.io.InputStream;
 
-public class SampleDataFiles {
+public class OptimeMockClient implements OptimeClient {
+    @Autowired
+    EventConverter eventConverter;
 
-    private static final String PREFIX = "src/test/resources/sampledata/";
+    @Value("classpath:sampledata/optime/icalendar.ics")
+    private Resource icalendar;
 
-    public static String toText(String path) {
+    @Override
+    public InputStream getICalendarContent(String feedUrl) {
         try {
-            return Files.toString(new File(PREFIX + path), Charset.forName("UTF-8"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static String imageToBase64(String path) {
-        try {
-            return Base64.getEncoder().encodeToString(Files.toByteArray(new File(PREFIX + path)));
+            return icalendar.getInputStream();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

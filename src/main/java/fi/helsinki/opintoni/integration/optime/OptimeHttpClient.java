@@ -15,32 +15,33 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.sampledata;
+package fi.helsinki.opintoni.integration.optime;
 
-import com.google.common.io.Files;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Base64;
+public class OptimeHttpClient implements OptimeClient {
 
-public class SampleDataFiles {
+    // TODO consider caching.
+    @Override
+    public InputStream getICalendarContent(String feedUrl) {
 
-    private static final String PREFIX = "src/test/resources/sampledata/";
+        HttpClient httpClient = HttpClient.newBuilder()
+            .build();
 
-    public static String toText(String path) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(feedUrl))
+            .build();
+        HttpResponse<InputStream> response = null;
         try {
-            return Files.toString(new File(PREFIX + path), Charset.forName("UTF-8"));
-        } catch (IOException e) {
+            response = httpClient.send(request, HttpResponse.BodyHandlers.ofInputStream());
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
 
-    public static String imageToBase64(String path) {
-        try {
-            return Base64.getEncoder().encodeToString(Files.toByteArray(new File(PREFIX + path)));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return response.body();
     }
 }

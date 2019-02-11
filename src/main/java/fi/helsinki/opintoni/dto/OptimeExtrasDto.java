@@ -32,6 +32,12 @@ public class OptimeExtrasDto {
         this.staffNotes = staffNotes;
     }
 
+    public OptimeExtrasDto(String commaSpaceDelimited) {
+        String[] parts = commaSpaceDelimited.split(", ", -1);
+        staffNotes = parts.length > 0 ? parts[0] : null;
+        otherNotes = parts.length > 1 ? parts[1] : null;
+    }
+
     @Override
     public String toString() {
         return Lists.newArrayList(staffNotes, otherNotes)

@@ -24,20 +24,18 @@ import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.exception.http.CalendarFeedNotFoundException;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiRoles;
+import fi.helsinki.opintoni.service.converter.EventConverter;
 import fi.helsinki.opintoni.util.TimeZoneUtils;
 import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.DateTime;
-import net.fortuna.ical4j.model.PropertyList;
-import net.fortuna.ical4j.model.component.VEvent;
 import net.fortuna.ical4j.model.component.VTimeZone;
-import net.fortuna.ical4j.model.property.*;
+import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.*;
-
-import static fi.helsinki.opintoni.service.TimeService.HELSINKI_ZONE_ID;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class CalendarService {
@@ -47,19 +45,22 @@ public class CalendarService {
     private final CalendarTransactionalService calendarTransactionalService;
     private final TimeService timeService;
     private final TimeZoneUtils timeZoneUtils;
+    private final EventConverter eventConverter;
 
     @Autowired
     public CalendarService(EventService eventService,
                            OodiClient oodiClient,
                            CalendarTransactionalService calendarTransactionalService,
                            TimeService timeService,
-                           TimeZoneUtils timeZoneUtils) {
+                           TimeZoneUtils timeZoneUtils,
+                           EventConverter eventConverter) {
 
         this.eventService = eventService;
         this.oodiClient = oodiClient;
         this.calendarTransactionalService = calendarTransactionalService;
         this.timeService = timeService;
         this.timeZoneUtils = timeZoneUtils;
+        this.eventConverter = eventConverter;
     }
 
     public CalendarFeedDto getCalendarFeed(Long userId) {
@@ -97,50 +98,6 @@ public class CalendarService {
 
         studentEvents.addAll(teacherEvents);
 
-        studentEvents.forEach(e -> {
-            VEvent event = eventDtoToVEvent(e);
-            calendar.getComponents().add(event);
-        });
-
-        return calendar.toString();
-    }
-
-    private Uid generateUid() {
-        return new Uid(UUID.randomUUID().toString());
-    }
-
-    private VEvent eventDtoToVEvent(EventDto eventDto) {
-        PropertyList eventProperties = new PropertyList();
-        eventProperties.add(new DtStart(convertStartDateToCalDate(eventDto)));
-        eventProperties.add(new DtEnd(convertEndDateToCalDate(eventDto)));
-        eventProperties.add(new Summary(eventDto.getFullEventTitle()));
-        if (!eventDto.getOptimeExtrasAsString().isEmpty()) {
-            eventProperties.add(new Description(eventDto.getOptimeExtrasAsString()));
-        }
-        eventProperties.add(new Location(eventDto.getLocationsAsString()));
-        eventProperties.add(generateUid());
-
-        return new VEvent(eventProperties);
-    }
-
-    private DateTime convertStartDateToCalDate(EventDto eventDto) {
-        return calDateTimeFromLocalDateTime(eventDto.startDate);
-    }
-
-    private DateTime calDateTimeFromLocalDateTime(LocalDateTime localDateTime) {
-        DateTime dateTime = new DateTime(Date.from(localDateTime.atZone(HELSINKI_ZONE_ID).toInstant()));
-
-        dateTime.setTimeZone(new net.fortuna.ical4j.model.TimeZone(timeZoneUtils.getHelsinkiTimeZone()));
-
-        return dateTime;
-    }
-
-    private DateTime convertEndDateToCalDate(EventDto eventDto) {
-        if (eventDto.endDate == null) {
-            LocalDateTime endOfDay = timeService.endOfDay(eventDto.startDate);
-            return calDateTimeFromLocalDateTime(endOfDay);
-        }
-
-        return calDateTimeFromLocalDateTime(eventDto.endDate);
+        return eventConverter.toICalendar(studentEvents);
     }
 }
