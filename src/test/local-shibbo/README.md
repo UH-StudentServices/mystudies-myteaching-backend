@@ -23,4 +23,7 @@ keytool -importkeystore -deststorepass salasana -destkeystore keystore.jks -srck
 keytool -importcert -alias idp.domain -file login-test.it.helsinki.fi.pem  -keystore keystore.jks
 ```
 
-The new local.student.helsinki.fi-shib-cert.pem must be updated in SP Registry
+The new local.student.helsinki.fi-shib-cert.pem must be updated in SP Registry (https://sp-registry.it.helsinki.fi)
+for the following services: 
+ - https://local.student.helsinki.fi
+ - https://local.teacher.helsinki.fi:3000
