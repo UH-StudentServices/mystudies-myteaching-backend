@@ -18,7 +18,7 @@
   -->
 
 <configuration debug="true" scan="true">
-    <springProfile name="!local-dev">
+    <springProfile name="qa,prod,dev,demo">
         <include resource="logback-default.xml"/>
         <include resource="logback-auditlog.xml"/>
         <logger name="fi.helsinki.opintoni.util.AuditLogger" level="INFO" additivity="false">
@@ -26,7 +26,7 @@
         </logger>
     </springProfile>
 
-    <springProfile name="local-dev">
+    <springProfile name="local-dev, local-shibbo">
         <include resource="logback-local.xml"/>
     </springProfile>
 </configuration>

@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.security;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,6 +34,9 @@ import java.util.stream.Collectors;
 public class SecurityUtils {
 
     private final AppConfiguration appConfiguration;
+
+    @Value("#{'${whitelistedIps}'.split(',')}")
+    private List<String> whitelistedIps;
 
     @Autowired
     public SecurityUtils(AppConfiguration appConfiguration) {
@@ -65,9 +69,8 @@ public class SecurityUtils {
     }
 
     public String getWhitelistedIpAccess() {
-        List<String> whitelistedIps = appConfiguration.getStringValues("whitelistedIps");
         return whitelistedIps.stream()
-            .map(ip -> "hasIpAddress('" + ip + "')")
+            .map(ip -> "hasIpAddress('" + ip.trim() + "')")
             .collect(Collectors.joining(" or "));
     }
 }

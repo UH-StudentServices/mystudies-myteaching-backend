@@ -67,7 +67,6 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         AppUser appUser = (AppUser) authentication.getPrincipal();
-
         logUserLogin(appUser, request);
 
         try {
@@ -80,13 +79,13 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
             if (!env.acceptsProfiles(Constants.SPRING_PROFILE_DEMO)) {
                 addHasLoggedInCookie(response);
             }
-            handleAuthSuccess(response);
+            handleAuthSuccess(request, response);
         } catch (OodiIntegrationException e) {
             handleAuthFailure(response);
         }
     }
 
-    protected abstract void handleAuthSuccess(HttpServletResponse response) throws IOException;
+    protected abstract void handleAuthSuccess(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
     protected abstract void handleAuthFailure(HttpServletResponse response) throws IOException;
 

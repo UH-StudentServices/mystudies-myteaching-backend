@@ -1,0 +1,112 @@
+server.servlet.session.cookie.name: OO_LOCAL_SESSION_ID
+
+spring:
+    datasource:
+        dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
+        url: jdbc:postgresql://my-studies-psql:5433/opintoni
+        databaseName: opintoni
+        serverName: my-studies-psql
+        username: opintoni
+        password: opintoni
+
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+        database: PostgreSQL
+        openInView: false
+        show_sql: false
+        generate-ddl: false
+        hibernate:
+            ddl-auto: none
+            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        properties:
+            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: true
+            cache_region_factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+    mail:
+        host: localhost
+        port: 2525
+
+redis:
+    host: localhost
+    port: 6380
+    defaultCacheExpirationSeconds: 31536000 #One year
+
+feedback:
+    recipient:
+        student: studentfeedback@localhost
+        teacher: teacherfeedback@localhost
+        profile: profilefeedback@localhost
+        academicProfile: academicprofilefeedback@localhost
+
+metrics:
+    jmx.enabled: false
+
+oodi:
+    base.url: https://esbmt2.it.helsinki.fi:4443/doo-oodi/dev/testdb
+    client.implementation: mock
+    useHttpClientCertificate: false
+
+coursePage:
+    base.url: https://dev.courses.helsinki.fi
+    api.path: /api/v1
+    client.implementation: mock
+    defaultCourseImageUri: /assets/images/course/default_course_image.jpg
+
+guide:
+    base.url: https://dev.guide.student.helsinki.fi/api/v1
+    client.implementation: mock
+
+esb:
+    base.url: https://esbmt2.it.helsinki.fi/devel
+    client.implementation: mock
+
+iam:
+    client.implementation: mock
+    useHttpClientCertificate: false
+
+unisport:
+    client.implementation: mock
+    userAuthorizationUrl: http://yol-test.it.helsinki.fi/ext/opintoni/authorization
+
+unisportApiKey: foobar123
+
+saml:
+  idp.metadataUrl: https://login-test.it.helsinki.fi/metadata/sign-hy-test-metadata.xml
+
+newsfeeds:
+    client.implementation: mock
+
+googleAnalyticsAccount:
+    main: UA-55852460-3
+    profile: UA-55852460-18
+    student: UA-55852460-9
+    teacher: UA-55852460-9
+
+hostUrl: https://local.student.helsinki.fi:3000
+loginUrlTeacher: /saml/login/alias/teacher
+loginUrlStudent: /saml/login/alias/student
+logoutUrl: /saml/logout
+teacherAppUrl: https://local.teacher.helsinki.fi:3000
+studentAppUrl: https://local.student.helsinki.fi:3000
+
+profileUrl:
+  student: http://local.student.helsinki.fi:3002/profile
+  teacher: http://local.teacher.helsinki.fi:3002/profile
+
+mece:
+  domain: https://ohtu-testi.it.helsinki.fi
+
+environment: local
+
+adminAccounts: opettaja@helsinki.fi, opiskelija@helsinki.fi
+
+feed.client.implementation: mock
+
+meceSecretKey: W778UXMJ7PFQTKG2RM8NR2H7T3QE5ZTL
+
+embedlyApiKey: dd741e653b0e4841bc59a60650031057
+
+fileService:
+    client.implementation: mock
+    client.storage: memory

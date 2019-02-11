@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi.profile;
 
+import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.integration.fileservice.FileServiceInOutStream;
 import fi.helsinki.opintoni.service.profile.ProfileFilesService;
 import fi.helsinki.opintoni.web.arguments.UserId;
@@ -71,7 +72,7 @@ public class PrivateFilesResource extends AbstractResource {
     }
 
     private boolean isLocalDev() {
-        return Arrays.asList(environment.getActiveProfiles()).contains("local-dev");
+        return Arrays.asList(environment.getActiveProfiles()).contains(Constants.SPRING_PROFILE_LOCAL_DEVELOPMENT);
     }
 
     @DeleteMapping("/{filename:.+}")

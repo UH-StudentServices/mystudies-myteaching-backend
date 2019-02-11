@@ -39,7 +39,7 @@ public class SAMLContextProviderReverseProxy extends SAMLContextProviderImpl {
         super.populateGenericContext(new ReverseProxyRequestWrapper(request), response, context);
     }
 
-    private static class ReverseProxyRequestWrapper extends HttpServletRequestWrapper {
+    public static class ReverseProxyRequestWrapper extends HttpServletRequestWrapper {
 
         private ReverseProxyRequestWrapper(HttpServletRequest request) {
             super(request);
@@ -47,14 +47,11 @@ public class SAMLContextProviderReverseProxy extends SAMLContextProviderImpl {
 
         @Override
         public StringBuffer getRequestURL() {
-            StringBuffer sb = new StringBuffer();
-            sb.append("https://").append(getServerName());
-            sb.append(getContextPath());
-            sb.append(getServletPath());
-            if (getPathInfo() != null) {
-                sb.append(getPathInfo());
+            StringBuffer original = super.getRequestURL();
+            if (original.indexOf("http:") == 0) {
+                return original.replace(0, 4, "https");
             }
-            return sb;
+            return original;
         }
 
         @Override

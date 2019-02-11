@@ -103,7 +103,7 @@ googleAnalyticsAccount:
 hostUrl: https://qa.student.helsinki.fi
 loginUrlTeacher: /saml/login/alias/teacher
 loginUrlStudent: /saml/login/alias/student
-logoutUrl: /saml/logout?local=true
+logoutUrl: /saml/logout
 teacherAppUrl: https://qa.teacher.helsinki.fi
 studentAppUrl: https://qa.student.helsinki.fi
 profileUrl:

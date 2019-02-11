@@ -337,3 +337,6 @@ pilotDegreeProgrammes:
 fileService:
     client.implementation: mock
     client.storage: memory
+
+teacherAppUrl: https://local.teacher.helsinki.fi:3000
+studentAppUrl: https://local.student.helsinki.fi:3000

@@ -15,23 +15,19 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.security;
+package fi.helsinki.opintoni;
 
-import org.springframework.stereotype.Component;
+import java.net.UnknownHostException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+public class ApplicationWithLocalShibboProfile {
 
-@Component
-public class LocalAuthenticationSuccessHandler extends BaseAuthenticationSuccessHandler {
-    @Override
-    protected void handleAuthSuccess(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setStatus(HttpServletResponse.SC_OK);
+    public static void main(String[] args) throws UnknownHostException {
+        String[] newArgs = new String[] {
+            "--spring.profiles.active=local-shibbo",
+            "--config.dir=src/main/local-shibbo"
+        };
+
+        Application.main(newArgs);
     }
 
-    @Override
-    protected void handleAuthFailure(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-    }
 }

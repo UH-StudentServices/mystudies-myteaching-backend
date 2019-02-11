@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+                     validUntil="2020-01-01T08:18:11Z"
+                     cacheDuration="PT604800S"
+                     entityID="https://local.teacher.helsinki.fi:3000">
+    <md:SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                                Location="https://local.teacher.helsinki.fi:3000/saml/SingleLogout/alias/teacher" />
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                                     Location="https://local.teacher.helsinki.fi:3000/saml/SSO/alias/teacher"
+                                     index="1" />
+    </md:SPSSODescriptor>
+</md:EntityDescriptor>
