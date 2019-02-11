@@ -24,7 +24,7 @@ public class ApplicationWithLocalShibboProfile {
     public static void main(String[] args) throws UnknownHostException {
         String[] newArgs = new String[] {
             "--spring.profiles.active=local-shibbo",
-            "--config.dir=src/test/local-shibbo"
+            "--config.dir=src/main/local-shibbo"
         };
 
         Application.main(newArgs);
