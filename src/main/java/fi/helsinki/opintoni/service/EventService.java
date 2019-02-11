@@ -17,12 +17,14 @@
 
 package fi.helsinki.opintoni.service;
 
+import fi.helsinki.opintoni.config.OptimeConfiguration;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.dto.EventDtoBuilder;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiEvent;
+import fi.helsinki.opintoni.integration.optime.OptimeClient;
 import fi.helsinki.opintoni.service.converter.EventConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.Collections.EMPTY_LIST;
+
 @Service
 public class EventService {
 
@@ -42,35 +46,58 @@ public class EventService {
     private final CoursePageClient coursePageClient;
     private final CourseService courseService;
     private final EventConverter eventConverter;
+    private final OptimeConfiguration optimeConfiguration;
+    private final OptimeClient optimeClient;
+    private final OptimeCalendarService optimeCalendarService;
 
     @Autowired
     public EventService(OodiClient oodiClient,
                         CoursePageClient coursePageClient,
                         CourseService courseService,
-                        EventConverter eventConverter) {
+                        EventConverter eventConverter,
+                        OptimeConfiguration optimeConfiguration,
+                        OptimeClient optimeClient,
+                        OptimeCalendarService optimeCalendarService) {
 
         this.oodiClient = oodiClient;
         this.coursePageClient = coursePageClient;
         this.courseService = courseService;
         this.eventConverter = eventConverter;
+        this.optimeConfiguration = optimeConfiguration;
+        this.optimeClient = optimeClient;
+        this.optimeCalendarService = optimeCalendarService;
     }
 
     public List<EventDto> getStudentEvents(String studentNumber, Locale locale) {
-        return getEvents(
+        return filterEnrichAndMergeEvents(
             oodiClient.getStudentEvents(studentNumber),
+            EMPTY_LIST,
             courseService.getStudentCourseIds(studentNumber),
             locale);
     }
 
     public List<EventDto> getTeacherEvents(String teacherNumber, Locale locale) {
-        return getEvents(
-            oodiClient.getTeacherEvents(teacherNumber),
+
+        List<EventDto> optimeEvents = EMPTY_LIST;
+        List<OodiEvent> oodiEvents = EMPTY_LIST;
+
+        if (optimeConfiguration.useOptimeFeedForWebCalendar) {
+            String optimeFeedurl = optimeCalendarService.getOptimeCalendar(teacherNumber).url;
+            optimeEvents = eventConverter.toDtos(optimeClient.getICalendarContent(optimeFeedurl));
+        } else {
+            oodiEvents = oodiClient.getTeacherEvents(teacherNumber);
+        }
+
+        return filterEnrichAndMergeEvents(
+            oodiEvents,
+            optimeEvents,
             courseService.getTeacherCourseIds(teacherNumber),
             locale);
     }
 
-    private List<EventDto> getEvents(
+    private List<EventDto> filterEnrichAndMergeEvents(
         List<OodiEvent> oodiEvents,
+        List<EventDto> optimeEvents,
         List<String> courseIds,
         Locale locale) {
 
@@ -81,13 +108,20 @@ public class EventService {
             .filter(oodiEvent -> oodiEvent.startDate != null)
             .map(oodiEvent -> eventConverter.toDto(oodiEvent, getCoursePage(coursePages, getRealisationId(oodiEvent)), locale));
 
+        // TODO should we modify Optime event data using Coursepage data, as we do with Oodi events?
+        Stream<EventDto> optimeEventDtos = optimeEvents.stream();
+
         Stream<EventDto> coursePageEventDtos = coursePages.values().stream()
             .flatMap(c -> c.events.stream()
                 .filter(e -> e.begin != null)
                 .map(e -> eventConverter.toDto(e, c)));
 
+        return mergeStreams(Stream.concat(oodiEventDtos, optimeEventDtos), coursePageEventDtos);
+    }
+
+    private List<EventDto> mergeStreams(Stream<EventDto> s1, Stream<EventDto> s2) {
         return Stream
-            .concat(oodiEventDtos, coursePageEventDtos)
+            .concat(s1, s2)
             .collect(Collectors.toMap(EventDto::getRealisationIdAndTimes, Function.identity(), (a, b) -> new EventDtoBuilder()
                 .setType(a.type)
                 .setSource((a.source == EventDto.Source.OODI || b.source == EventDto.Source.OODI)
