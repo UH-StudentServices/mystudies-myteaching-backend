@@ -27,6 +27,7 @@ import java.io.IOException;
 @Component
 public class FederatedAuthenticationSuccessHandler extends BaseAuthenticationSuccessHandler {
     private static final String ERROR_PATH = "/error/maintenance";
+    private static final String TEACHER_PATH_END = "teacher";
 
     @Value("${teacherAppUrl}")
     String teacherAppUrl;
@@ -36,7 +37,7 @@ public class FederatedAuthenticationSuccessHandler extends BaseAuthenticationSuc
 
     @Override
     protected void handleAuthSuccess(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (request.getRequestURI().endsWith("teacher")) {
+        if (request.getRequestURI().endsWith(TEACHER_PATH_END)) {
             response.sendRedirect(teacherAppUrl);
         } else {
             response.sendRedirect(studentAppUrl);
