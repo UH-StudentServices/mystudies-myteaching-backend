@@ -35,7 +35,7 @@ public class SecurityUtils {
 
     private final AppConfiguration appConfiguration;
 
-    @Value("#{'${whitelistedIps}'.split(',')}")
+    @Value("#{'${whitelistedIps:127.0.0.1}'.split(',')}")
     private List<String> whitelistedIps;
 
     @Autowired
