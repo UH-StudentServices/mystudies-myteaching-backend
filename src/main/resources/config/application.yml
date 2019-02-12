@@ -424,3 +424,6 @@ fileService:
 
 inactiveUserCleaner:
     cron: "0 0 5 * * *"
+
+obar:
+    jwtTimeout: 60 # seconds

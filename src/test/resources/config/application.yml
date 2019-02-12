@@ -340,3 +340,23 @@ fileService:
 
 teacherAppUrl: https://local.teacher.helsinki.fi:3000
 studentAppUrl: https://local.student.helsinki.fi:3000
+
+obar:
+    baseUrl: https://localhost
+    jwtTimeout: 60 # seconds
+    privateKey: |
+        -----BEGIN RSA PRIVATE KEY-----
+        MIICXQIBAAKBgQDjOuYIREZqcc1wGBtu1emTbt7ryggKV2tbhRqn3nr+OPYfuBbN
+        2ifc6JFng5bfJjNGDEjN8mSHrZxgD7aGBOd4q0U2yRGNJQkQ2tWUqF1ABsYEpyWp
+        1eubSvViHwd3rmEqcAyok4ImdqRtKTVgPVGXsd8qTmix8+RCGQhCFVK1vwIDAQAB
+        AoGAQkr8sYy5vnRVK07dMgjWjFzcTI40qk+20oySqkcOOv0DUV2zyXrMBncTdM+/
+        RHswmk8bLnp5Odw8swnihlcH8G/K2KQO080mMcl7eH7BTNWg4+ueCrJOWojGvUmG
+        gawU6yswv4V7OJiuMrtmxfvXtosKRjiuQw//h53Q3N3naAECQQDzM9efxEDrdGlf
+        LP3MeC3+uRFHilT0JoVbY5v6HBhiWuLJ8XEGg1XP3B8H/n4pSY4sAVQKZ+lIhCY6
+        B87a3DZBAkEA7y/ko4ZkDtDdr8COXgNV2Spi0VWfpGFMd8zRtXich+tnkSq2SgNW
+        6z5ntVTbMCA2eTdd1MKASMv6DxbNAWvr/wJBAK5Yre1k/b1NuPR4BoH8bcy7031b
+        18cnjlaTtA+68GgiC48FvScUJAJdJQnQEZV7m6ZEVYEYOQ65XcYgLtSLJYECQQDe
+        4lQ+hWcL31oVAmwn8xe2bCb1RsKinQByymvInQHQLm6t+Y0wXvhJ8jcV5GLz77CT
+        OCK5th1wuJLmKKsUXgrlAkAEbzqZICKYFzA3b4p+xKsgyQ7TYPXJq60gvINsbWql
+        hVgbKTsLYrW38ov5Qh1vEO84nxnNdyUQrHizVUFP1Lg2
+        -----END RSA PRIVATE KEY-----
