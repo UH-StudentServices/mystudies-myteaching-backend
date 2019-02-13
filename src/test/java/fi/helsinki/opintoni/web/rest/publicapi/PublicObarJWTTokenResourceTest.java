@@ -20,6 +20,8 @@ package fi.helsinki.opintoni.web.rest.publicapi;
 import fi.helsinki.opintoni.SpringTest;
 import org.junit.Test;
 
+import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
+import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -31,6 +33,13 @@ public class PublicObarJWTTokenResourceTest extends SpringTest {
     @Test
     public void thatPublicTokenIsReturnedForAnonymousUser() throws Exception {
         mockMvc.perform(get(JWT_TOKEN_URL))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.jwtToken").isNotEmpty());
+    }
+
+    @Test
+    public void thatPublicTokenIsReturnedForLoggedInUser() throws Exception {
+        mockMvc.perform(get(JWT_TOKEN_URL).with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.jwtToken").isNotEmpty());
     }
