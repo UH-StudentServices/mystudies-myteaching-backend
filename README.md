@@ -37,6 +37,12 @@ For local test runs:
 cd docker/local-test
 docker-compose up
 ```
+
+### Obar integration
+
+Configuration key obar.baseUrl ([local config](https://github.com/UH-StudentServices/mystudies-myteaching-backend/blob/develop/src/main/resources/config/application-local-dev.yml)) controls use of obar.
+See [frontend readme](https://github.com/UH-StudentServices/mystudies-myteaching-frontend/blob/develop/README.md) for details.  
+
 ### Running with gradle
 
 `./gradlew bootRun`

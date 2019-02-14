@@ -40,7 +40,7 @@ public class ConfigurationResource extends AbstractResource {
     }
 
     @RequestMapping(value = "/configuration", method = RequestMethod.GET)
-    public String getConfiguration() throws JSONException {
+    public String getConfiguration() {
         return configuration;
     }
 
@@ -57,6 +57,7 @@ public class ConfigurationResource extends AbstractResource {
         configuration.put("studentAppUrl", appConfiguration.get("studentAppUrl"));
         configuration.put("teacherAppUrl", appConfiguration.get("teacherAppUrl"));
         configuration.put("environment", appConfiguration.get("environment"));
+        configuration.put("obarBaseUrl", appConfiguration.get("obar.baseUrl"));
 
         return configuration.toString();
     }
