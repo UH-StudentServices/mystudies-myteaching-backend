@@ -22,6 +22,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -33,6 +34,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
 @Configuration
+@ConditionalOnProperty(prefix = "obar", name = "baseUrl")
 public class ObarConfiguration {
 
     private static final Logger logger = LoggerFactory.getLogger(ObarConfiguration.class);

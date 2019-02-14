@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ import static fi.helsinki.opintoni.integration.obar.Constants.LANG_COOKIE_NAME;
 
 @RestController
 @RequestMapping(value = RestConstants.PUBLIC_API_V1, produces = WebConstants.APPLICATION_JSON_UTF8)
+@ConditionalOnProperty(prefix = "obar", name = "baseUrl")
 public class PublicObarJWTResource extends AbstractResource {
 
     private final ObarJWTService obarJWTService;
