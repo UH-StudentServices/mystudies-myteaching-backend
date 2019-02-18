@@ -98,7 +98,7 @@ public class SSLRequestFactory {
             keyStore.load(keystoreFile.getInputStream(), keystorePassword);
             return keyStore;
         } catch (Exception e) {
-            throw new SSLContextException("Failed to load client keystore", e);
+            throw new SSLContextException(String.format("Failed to load client keystore from '%s'", keystoreLocation), e);
         }
     }
 }
