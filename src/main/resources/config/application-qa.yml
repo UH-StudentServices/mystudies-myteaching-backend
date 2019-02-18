@@ -120,3 +120,6 @@ environment: qa
 inactiveUserCleaner:
     cron: "0 0 * * * *"
     testUserToInactivate: "doo_2"
+
+obar:
+    baseUrl: https://obar-qa.it.helsinki.fi
