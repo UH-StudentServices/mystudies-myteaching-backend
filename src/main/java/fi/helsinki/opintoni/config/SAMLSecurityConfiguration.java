@@ -30,6 +30,8 @@ import org.opensaml.saml2.metadata.provider.ResourceBackedMetadataProvider;
 import org.opensaml.util.resource.FilesystemResource;
 import org.opensaml.xml.parse.ParserPool;
 import org.opensaml.xml.parse.StaticBasicParserPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,6 +80,7 @@ import java.util.*;
 public class SAMLSecurityConfiguration {
 
     private static final int ONE_WEEK_IN_SECONDS = 604800;
+    private static final Logger log = LoggerFactory.getLogger(SAMLSecurityConfiguration.class);
 
     @Value("${saml.teacher.alias}")
     private String samlTeacherAlias;
@@ -174,6 +177,7 @@ public class SAMLSecurityConfiguration {
 
     @Bean
     public KeyManager keyManager() {
+        log.info(String.format("SAMLSecurityConfiguration.samlKeystoreLocation=%s", samlKeystoreLocation == null ? "NULL" : samlKeystoreLocation));
         FileSystemResource fileSystemResource = new FileSystemResource(
             new File(samlKeystoreLocation));
         Map<String, String> passwords = new HashMap<>();

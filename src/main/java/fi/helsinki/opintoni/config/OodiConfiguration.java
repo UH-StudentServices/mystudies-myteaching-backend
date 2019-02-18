@@ -26,6 +26,8 @@ import fi.helsinki.opintoni.integration.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.oodi.OodiRestClient;
 import fi.helsinki.opintoni.integration.oodi.mock.OodiMockClient;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -43,6 +45,7 @@ public class OodiConfiguration {
     private final AppConfiguration appConfiguration;
     private final Environment env;
     private final ObjectMapper objectMapper;
+    private static final Logger log = LoggerFactory.getLogger(OodiConfiguration.class);
 
     @Value("${httpClient.keystoreLocation:null}")
     private String keystoreLocation;
@@ -62,6 +65,7 @@ public class OodiConfiguration {
 
     @Bean
     public RestTemplate oodiRestTemplate() {
+        log.info(String.format("OodiConfiguration.keystoreLocation=%s", keystoreLocation == null ? "NULL" : keystoreLocation));
         RestTemplate restTemplate = new RestTemplate(SSLRequestFactory.clientHttpRequestFactory(
             appConfiguration, useHttpClientCertificate, keystoreLocation, keystorePassword));
 
