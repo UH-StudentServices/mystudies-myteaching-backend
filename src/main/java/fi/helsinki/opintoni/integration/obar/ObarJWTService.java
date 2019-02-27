@@ -67,7 +67,7 @@ public class ObarJWTService {
                 firstName = String.join(" ", nameParts.subList(0, nameParts.size() - 1));
             }
             claims.put("user", Map.of(
-                "username", appUser.getEduPersonPrincipalName().split("@")[0],
+                "userName", appUser.getEduPersonPrincipalName().split("@")[0],
                 "firstName", firstName,
                 "lastName", lastName,
                 "oodiId", appUser.getOodiPersonId()
