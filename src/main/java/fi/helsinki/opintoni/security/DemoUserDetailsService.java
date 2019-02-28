@@ -39,9 +39,8 @@ public class DemoUserDetailsService implements UserDetailsService {
 
     private final ImmutableMap<String, Supplier<UserDetails>> userConf = ImmutableMap.of(
         "e_jukola", this::newTeacher,
-        "t_jukola", this::newOpenUniTeacher,
         "v_jukola", this::newStudent,
-        "j_jukola", this::newHybrid,
+        "j_jukola", this::newStudent2,
         "k_rajama", this::newOpenUniStudent
     );
 
@@ -81,15 +80,13 @@ public class DemoUserDetailsService implements UserDetailsService {
             .build();
     }
 
-    private UserDetails newHybrid() {
+    private UserDetails newStudent2() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("doo_10@helsinki.fi")
             .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
-            .teacherFacultyCode("H50")
+            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("doo_10@example.com")
             .commonName("Juhani Jukola")
-            .employeeNumber("007507")
             .studentNumber("010095623")
             .oodiPersonId("109155650")
             .build();
@@ -104,18 +101,6 @@ public class DemoUserDetailsService implements UserDetailsService {
             .commonName("Kaisa Rajamäki")
             .studentNumber("010094899")
             .oodiPersonId("109155680")
-            .build();
-    }
-
-    private UserDetails newOpenUniTeacher() {
-        return new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName("doo_5@helsinki.fi")
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.AFFILIATE)
-            .email("doo_5@example.com")
-            .commonName("Timo Jukola")
-            .employeeNumber("007504")
-            .oodiPersonId("109155647")
             .build();
     }
 }
