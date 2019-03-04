@@ -63,8 +63,8 @@ public class DemoUserDetailsService implements UserDetailsService {
             .teacherFacultyCode("H30")
             .email("doo_8@example.com")
             .commonName("Eero Jukola")
-            .employeeNumber("007505")
-            .oodiPersonId("109155648")
+            .employeeNumber("000908")
+            .oodiPersonId("1000008")
             .build();
     }
 
@@ -75,8 +75,8 @@ public class DemoUserDetailsService implements UserDetailsService {
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("doo_9@example.com")
             .commonName("Venla Jukola")
-            .studentNumber("010096350")
-            .oodiPersonId("109155672")
+            .studentNumber("010000090")
+            .oodiPersonId("1000009")
             .build();
     }
 
@@ -87,8 +87,8 @@ public class DemoUserDetailsService implements UserDetailsService {
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("doo_10@example.com")
             .commonName("Juhani Jukola")
-            .studentNumber("010095623")
-            .oodiPersonId("109155650")
+            .studentNumber("010000100")
+            .oodiPersonId("1000010")
             .build();
     }
 
@@ -99,8 +99,8 @@ public class DemoUserDetailsService implements UserDetailsService {
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.AFFILIATE)
             .email("doo_11@example.com")
             .commonName("Kaisa Rajamäki")
-            .studentNumber("010094899")
-            .oodiPersonId("109155680")
+            .studentNumber("010000113")
+            .oodiPersonId("1000011")
             .build();
     }
 }
