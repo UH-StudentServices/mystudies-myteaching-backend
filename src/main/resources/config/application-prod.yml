@@ -87,7 +87,7 @@ googleAnalyticsAccount:
 hostUrl: https://student.helsinki.fi
 loginUrlTeacher: /saml/login/alias/teacher
 loginUrlStudent: /saml/login/alias/student
-logoutUrl: /saml/logout?local=true
+logoutUrl: /saml/logout
 teacherAppUrl: https://teacher.helsinki.fi
 studentAppUrl: https://student.helsinki.fi
 profileUrl:
