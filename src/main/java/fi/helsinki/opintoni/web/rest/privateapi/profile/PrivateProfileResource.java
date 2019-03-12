@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.authorization.StudentRoleRequired;
 import fi.helsinki.opintoni.security.authorization.TeacherRoleRequired;
+import fi.helsinki.opintoni.service.UserSettingsService;
 import fi.helsinki.opintoni.service.converter.profile.ProfileConverter;
 import fi.helsinki.opintoni.service.profile.EmployeeProfileService;
 import fi.helsinki.opintoni.service.profile.ProfileService;
@@ -32,6 +33,7 @@ import fi.helsinki.opintoni.web.arguments.UserId;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +43,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.awt.image.BufferedImage;
 import java.util.Locale;
 
 @RestController
@@ -50,11 +53,15 @@ import java.util.Locale;
 public class PrivateProfileResource extends AbstractResource {
     private final ProfileService profileService;
     private final EmployeeProfileService employeeProfileService;
+    private final UserSettingsService userSettingsService;
 
     @Autowired
-    public PrivateProfileResource(ProfileService profileService, EmployeeProfileService employeeProfileService) {
+    public PrivateProfileResource(ProfileService profileService,
+                                  EmployeeProfileService employeeProfileService,
+                                  UserSettingsService userSettingsService) {
         this.profileService = profileService;
         this.employeeProfileService = employeeProfileService;
+        this.userSettingsService = userSettingsService;
     }
 
     @RequestMapping(value = "/{profileRole}", method = RequestMethod.GET)
@@ -122,7 +129,8 @@ public class PrivateProfileResource extends AbstractResource {
         ProfileDto profileDto = profileService.findByPathAndLangAndRole(path,
             Language.fromCode(profileLang),
             ProfileRole.fromValue(profileRole),
-            ProfileConverter.ComponentFetchStrategy.ALL);
+            ProfileConverter.ComponentFetchStrategy.ALL,
+            new ProfileService.ProfileUrlContext(String.join("/", RestConstants.PRIVATE_API_V1_PROFILE, profileRole, profileLang, path), null));
         return response(profileDto);
     }
 
@@ -131,5 +139,14 @@ public class PrivateProfileResource extends AbstractResource {
         @PathVariable("profileId") Long profileId,
         @Valid @RequestBody ProfileDto profileDto) {
         return response(profileService.update(profileId, profileDto));
+    }
+
+    @RequestMapping(value = "/{profileRole}/{lang}/{path:.*}/profileimage",
+        method = RequestMethod.GET,
+        produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<BufferedImage> getMyProfileImage(@PathVariable("path") String path) {
+        return ResponseEntity.ok()
+            .headers(headersWithContentType(MediaType.IMAGE_JPEG))
+            .body(profileService.getProfileImageByPath(path));
     }
 }

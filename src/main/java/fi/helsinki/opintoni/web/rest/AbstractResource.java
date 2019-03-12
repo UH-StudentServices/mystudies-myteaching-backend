@@ -17,7 +17,9 @@
 
 package fi.helsinki.opintoni.web.rest;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import java.util.function.Supplier;
@@ -34,5 +36,11 @@ public abstract class AbstractResource {
 
     protected final ResponseEntity noContentResponse() {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    protected HttpHeaders headersWithContentType(MediaType contentType) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(contentType);
+        return headers;
     }
 }

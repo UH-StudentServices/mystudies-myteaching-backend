@@ -26,8 +26,15 @@ import fi.helsinki.opintoni.web.arguments.ProfileRole;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.awt.image.BufferedImage;
 
 @RestController
 @RequestMapping(
@@ -50,11 +57,36 @@ public class PublicProfileResource extends AbstractResource {
         return response(profileService.findByPathAndLangAndRole(path,
             Language.fromCode(profileLang),
             ProfileRole.fromValue(profileRole),
-            ProfileConverter.ComponentFetchStrategy.PUBLIC));
+            ProfileConverter.ComponentFetchStrategy.PUBLIC,
+            new ProfileService.ProfileUrlContext(String.join("/", RestConstants.PUBLIC_API_V1_PROFILE, profileRole, profileLang, path), null)));
     }
 
     @GetMapping(value = "/shared/{sharedLinkFragment:.*}")
     public ResponseEntity<ProfileDto> getBySharedLink(@PathVariable("sharedLinkFragment") String sharedLinkFragment) {
-        return response(profileService.findBySharedLink(sharedLinkFragment, ProfileConverter.ComponentFetchStrategy.PUBLIC));
+        return response(profileService.findBySharedLink(sharedLinkFragment, ProfileConverter.ComponentFetchStrategy.PUBLIC,
+            new ProfileService.ProfileUrlContext(String.join("/", RestConstants.PUBLIC_API_V1_PROFILE, "shared", sharedLinkFragment),
+                sharedLinkFragment)));
+    }
+
+    @RequestMapping(
+        value = "/{profileRole}/{lang}/{path:.*}/profileimage",
+        method = RequestMethod.GET,
+        produces = MediaType.IMAGE_JPEG_VALUE
+    )
+    public ResponseEntity<BufferedImage> getProfileImageByPath(@PathVariable("path") String path) {
+        return ResponseEntity.ok()
+            .headers(headersWithContentType(MediaType.IMAGE_JPEG))
+            .body(profileService.getProfileImageByPath(path));
+    }
+
+    @RequestMapping(
+        value = "/shared/{sharedLinkFragment:.*}/profileimage",
+        method = RequestMethod.GET,
+        produces = MediaType.IMAGE_JPEG_VALUE
+    )
+    public ResponseEntity<BufferedImage> getProfileImageBySharedLinkFragment(@PathVariable("sharedLinkFragment") String sharedLinkFragment) {
+        return ResponseEntity.ok()
+            .headers(headersWithContentType(MediaType.IMAGE_JPEG))
+            .body(profileService.getProfileImageBySharedLinkFragment(sharedLinkFragment));
     }
 }

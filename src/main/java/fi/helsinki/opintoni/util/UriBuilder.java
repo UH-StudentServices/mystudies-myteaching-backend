@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.util;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.domain.profile.Profile;
+import fi.helsinki.opintoni.service.profile.ProfileService;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,6 +46,10 @@ public class UriBuilder {
         return getAbsoluteUrl(RestConstants.PUBLIC_API_V1 + "/images/avatar/" + oodiPersonId);
     }
 
+    public String getProfileAvatarUrl(ProfileService.ProfileUrlContext profileUrlContext) {
+        return getAbsoluteUrl(String.join("/", profileUrlContext.fullPath, "profileimage"));
+    }
+
     public String getCalendarFeedUrl(String feedId) {
         return RestConstants.PUBLIC_API_V1 + "/calendar/" + feedId;
     }
@@ -63,16 +68,20 @@ public class UriBuilder {
     }
 
     public String getProfileUrl(Profile profile) {
-        return String.join("/", appConfiguration.get("profileUrl." + profile.profileRole.getRole()),
+        return String.join("/", profileUrl(profile),
             profile.language.getCode(), profile.path);
     }
 
     public String getProfileUrl(Profile profile, String sharedLinkFragment) {
-        return String.join("/", appConfiguration.get("profileUrl." + profile.profileRole.getRole()), sharedLinkFragment);
+        return String.join("/", profileUrl(profile), sharedLinkFragment);
     }
 
     public String getMeceDomain() {
         return appConfiguration.get("mece.domain");
+    }
+
+    private String profileUrl(Profile profile) {
+        return appConfiguration.get("profileUrl." + profile.profileRole.getRole());
     }
 
 }

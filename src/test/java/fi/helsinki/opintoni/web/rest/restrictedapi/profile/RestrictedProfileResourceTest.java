@@ -18,11 +18,13 @@
 package fi.helsinki.opintoni.web.rest.restrictedapi.profile;
 
 import fi.helsinki.opintoni.domain.profile.ProfileComponent;
+import fi.helsinki.opintoni.domain.profile.ProfileVisibility;
 import fi.helsinki.opintoni.dto.profile.ComponentOrderDto;
 import fi.helsinki.opintoni.dto.profile.FreeTextContentDto;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
@@ -32,6 +34,7 @@ import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityC
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -47,6 +50,8 @@ public class RestrictedProfileResourceTest extends RestrictedProfileTest {
         mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + STUDENT_PROFILE_PATH)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$.avatarUrl").value(
+                ABSOLUTE_RESTRICTED_API_PATH + STUDENT_PROFILE_PATH + PROFILE_IMAGE))
             .andExpect(jsonPath("$.id").value(2));
     }
 
@@ -115,5 +120,28 @@ public class RestrictedProfileResourceTest extends RestrictedProfileTest {
                     hasEntry("instanceName", PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME)
                 )
             )));
+    }
+
+    @Test
+    public void thatProfileImageIsReturned() throws Exception {
+        mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + STUDENT_PROFILE_PATH + "/profileimage")
+            .with(securityContext(teacherSecurityContext())))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
+    }
+
+    @Test
+    public void thatProfileImageIsNotReturnedIfNotLoggedIn() throws Exception {
+        mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + STUDENT_PROFILE_PATH + "/profileimage"))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void thatProfileImageIsNotReturnedIfPrivate() throws Exception {
+        saveProfileWithVisibility(STUDENT_PROFILE_ID, ProfileVisibility.PRIVATE);
+        mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + STUDENT_PROFILE_PATH + "/profileimage")
+            .with(securityContext(teacherSecurityContext())))
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 }

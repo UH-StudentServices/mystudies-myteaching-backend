@@ -21,6 +21,8 @@ import fi.helsinki.opintoni.domain.profile.Profile;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.web.arguments.ProfileRole;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -37,4 +39,14 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
                                                           Language language);
 
     Stream<Profile> findByUserId(Long userId);
+
+    // Optional<byte[]> does not work here, as it will return an Optional<ArrayList<byte[]>>
+    @Query(value = "select u.avatar_image from profile p, user_settings u where p.path = :path and u.user_id = p.user_id limit 1",
+        nativeQuery = true)
+    byte[] getProfileImageByByPath(@Param("path") String path);
+
+    @Query(value = "select u.avatar_image from profile p, user_settings u, profile_shared_link s where " +
+        "s.shared_path_fragment = :sharedLinkFragment and s.profile_id = p.id and u.user_id = p.user_id",
+        nativeQuery = true)
+    byte[] getProfileImageBySharedLinkFragment(@Param("sharedLinkFragment") String sharedLinkFragment);
 }

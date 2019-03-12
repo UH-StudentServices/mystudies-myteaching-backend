@@ -18,19 +18,29 @@
 package fi.helsinki.opintoni.web.rest.publicapi.profile;
 
 import fi.helsinki.opintoni.domain.profile.ProfileComponent;
-import fi.helsinki.opintoni.dto.profile.*;
+import fi.helsinki.opintoni.dto.profile.ComponentHeadingDto;
+import fi.helsinki.opintoni.dto.profile.ComponentOrderDto;
+import fi.helsinki.opintoni.dto.profile.FreeTextContentDto;
+import fi.helsinki.opintoni.service.UserSettingsService;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 
 import java.util.List;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.both;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,13 +52,18 @@ public class PublicProfileResourceTest extends PublicProfileTest {
     private static final String PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME = "4c024239-8dab-4ea0-a686-fe373b040f48";
 
     private static final String SHARED_LINK_PATH = "/profile/shared";
-    private static final String ACTIVE_SHARED_LINK = "a3728b39-7099-4f8c-9413-da2817eeccf9";
-    private static final String EXPIRED_SHARED_LINK = "b2672af7-306f-43aa-ab3f-acbc6a41f47f";
+    private static final String ACTIVE_SHARED_LINK = "/a3728b39-7099-4f8c-9413-da2817eeccf9";
+    private static final String EXPIRED_SHARED_LINK = "/b2672af7-306f-43aa-ab3f-acbc6a41f47f";
+
+    @Autowired
+    private UserSettingsService userSettingsService;
 
     @Test
     public void thatProfileIsReturned() throws Exception {
         mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PROFILE_PATH))
             .andExpect(status().isOk())
+            .andExpect(jsonPath("$.avatarUrl").value(
+                ABSOLUTE_PUBLIC_API_PATH + STUDENT_PROFILE_PATH + PROFILE_IMAGE))
             .andExpect(jsonPath("$.id").value(STUDENT_PROFILE_ID));
     }
 
@@ -205,13 +220,44 @@ public class PublicProfileResourceTest extends PublicProfileTest {
 
     @Test
     public void thatProfileIsReturnedWithSharedLink() throws Exception {
-        mockMvc.perform(get(String.join("/", RestConstants.PUBLIC_API_V1, SHARED_LINK_PATH, ACTIVE_SHARED_LINK)))
-            .andExpect(status().isOk());
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + SHARED_LINK_PATH + ACTIVE_SHARED_LINK))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.avatarUrl").value(
+               ABSOLUTE_PUBLIC_API_PATH + SHARED_LINK_PATH + ACTIVE_SHARED_LINK + PROFILE_IMAGE
+            ));
     }
 
     @Test
     public void thatProfileIsNotFoundWithExpiredSharedLink() throws Exception {
-        mockMvc.perform(get(String.join("/", RestConstants.PUBLIC_API_V1, SHARED_LINK_PATH, EXPIRED_SHARED_LINK)))
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1, SHARED_LINK_PATH, EXPIRED_SHARED_LINK))
             .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void thatPublicProfileImageIsFound() throws Exception {
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + STUDENT_PROFILE_PATH + PROFILE_IMAGE))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
+    }
+
+    @Test
+    public void thatPrivateProfileImageIsNotFound() throws Exception {
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + TEACHER_PROFILE_PATH + PROFILE_IMAGE))
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+    }
+
+    @Test
+    public void thatSharedProfileImageIsFound() throws Exception {
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + SHARED_LINK_PATH + ACTIVE_SHARED_LINK + PROFILE_IMAGE))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
+    }
+
+    @Test
+    public void thatSharedProfileImageIsNotFoundWithExpiredLink() throws Exception {
+        mockMvc.perform(get(RestConstants.PUBLIC_API_V1 + SHARED_LINK_PATH + EXPIRED_SHARED_LINK + PROFILE_IMAGE))
+            .andExpect(status().isNotFound())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 }

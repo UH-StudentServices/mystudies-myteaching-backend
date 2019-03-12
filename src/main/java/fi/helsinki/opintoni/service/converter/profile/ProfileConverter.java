@@ -86,21 +86,21 @@ public class ProfileConverter {
     }
 
     public ProfileDto toDto(Profile profile, ComponentFetchStrategy componentFetchStrategy) {
-        return toDto(profile, componentFetchStrategy, null);
+        return toDto(profile, componentFetchStrategy, ProfileService.ProfileUrlContext.EMPTY);
     }
 
-    public ProfileDto toDto(Profile profile, ComponentFetchStrategy componentFetchStrategy, String sharedLinkFragment) {
+    public ProfileDto toDto(Profile profile, ComponentFetchStrategy componentFetchStrategy, ProfileService.ProfileUrlContext profileUrlContext) {
         ProfileDto profileDto = new ProfileDto();
         profileDto.id = profile.id;
         profileDto.lang = profile.language.getCode();
-        profileDto.url = sharedLinkFragment == null ?
+        profileDto.url =  profileUrlContext.sharedLinkFragment == null ?
             uriBuilder.getProfileUrl(profile) :
-            uriBuilder.getProfileUrl(profile, sharedLinkFragment);
+            uriBuilder.getProfileUrl(profile, profileUrlContext.sharedLinkFragment);
         profileDto.intro = profile.intro;
         profileDto.ownerName = profile.ownerName;
         profileDto.backgroundUri = profileBackgroundService.getProfileBackgroundUri(profile);
         profileDto.visibility = profile.visibility;
-        profileDto.avatarUrl = avatarImageService.getProfileAvatarImageUrl(profile.getOwnerId());
+        profileDto.avatarUrl = avatarImageService.getProfileAvatarImageUrl(profile.user.id, profileUrlContext);
         profileDto.componentVisibilities = componentVisibilityService.findByProfileId(profile.id);
         profileDto.componentOrders = componentOrderService.findByProfileId(profile.id);
         profileDto.headings = componentHeadingService.findByProfileId(profile.id);

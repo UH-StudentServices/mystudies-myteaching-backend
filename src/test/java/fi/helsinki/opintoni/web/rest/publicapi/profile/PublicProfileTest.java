@@ -17,10 +17,22 @@
 
 package fi.helsinki.opintoni.web.rest.publicapi.profile;
 
-import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.domain.profile.*;
-import fi.helsinki.opintoni.repository.profile.*;
+import fi.helsinki.opintoni.domain.profile.ComponentVisibility;
+import fi.helsinki.opintoni.domain.profile.Degree;
+import fi.helsinki.opintoni.domain.profile.Profile;
+import fi.helsinki.opintoni.domain.profile.ProfileComponent;
+import fi.helsinki.opintoni.domain.profile.ProfileLanguageProficiency;
+import fi.helsinki.opintoni.domain.profile.ProfileVisibility;
+import fi.helsinki.opintoni.domain.profile.Sample;
+import fi.helsinki.opintoni.domain.profile.WorkExperience;
+import fi.helsinki.opintoni.repository.profile.ComponentVisibilityRepository;
+import fi.helsinki.opintoni.repository.profile.DegreeRepository;
+import fi.helsinki.opintoni.repository.profile.LanguageProficiencyRepository;
+import fi.helsinki.opintoni.repository.profile.ProfileRepository;
+import fi.helsinki.opintoni.repository.profile.SampleRepository;
+import fi.helsinki.opintoni.repository.profile.WorkExperienceRepository;
 import fi.helsinki.opintoni.web.rest.RestConstants;
+import fi.helsinki.opintoni.web.rest.privateapi.profile.AbstractProfileResourceTest;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,7 +41,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-public abstract class PublicProfileTest extends SpringTest {
+public abstract class PublicProfileTest extends AbstractProfileResourceTest {
 
     protected static final String PUBLIC_STUDENT_PROFILE_API_PATH = RestConstants.PUBLIC_API_V1 + "/profile/2";
 

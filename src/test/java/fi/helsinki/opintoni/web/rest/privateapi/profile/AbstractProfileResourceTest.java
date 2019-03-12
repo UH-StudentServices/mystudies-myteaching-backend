@@ -19,7 +19,11 @@ package fi.helsinki.opintoni.web.rest.privateapi.profile;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.localization.Language;
+import fi.helsinki.opintoni.sampledata.SampleDataFiles;
+import fi.helsinki.opintoni.service.UserSettingsService;
 import fi.helsinki.opintoni.web.rest.RestConstants;
+import org.junit.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.test.web.servlet.ResultActions;
@@ -34,8 +38,21 @@ public abstract class AbstractProfileResourceTest extends SpringTest {
     protected static final String STUDENT_PROFILE_API_PATH = PRIVATE_PROFILE_API_PATH + "/student";
     protected static final String TEACHER_PROFILE_API_PATH = PRIVATE_PROFILE_API_PATH + "/teacher";
     protected static final String SESSION_LANG = EN.getCode();
+    protected static final String ABSOLUTE = "https://dev.student.helsinki.fi";
+    protected static final String ABSOLUTE_PUBLIC_API_PATH = ABSOLUTE + RestConstants.PUBLIC_API_V1;
+    protected static final String ABSOLUTE_RESTRICTED_API_PATH = ABSOLUTE + RestConstants.RESTRICTED_API_V1;
+    protected static final String PROFILE_IMAGE = "/profileimage";
 
     private static final String EMPLOYEE_NUMBER = "010540";
+
+    @Autowired
+    private UserSettingsService userSettingsService;
+
+    @Before
+    public final void addAvatars() {
+        userSettingsService.updateUserAvatar(3L, getAvatarImageData()); // olli-opiskelija
+        userSettingsService.updateUserAvatar(4L, getAvatarImageData()); // opettaja
+    }
 
     protected ResultActions createProfile(SecurityContext securityContext, String apiUrl) throws Exception {
         return mockMvc.perform(post(apiUrl)
@@ -64,5 +81,9 @@ public abstract class AbstractProfileResourceTest extends SpringTest {
 
     protected void expectEmployeeContactInformationRequestToESB() {
         esbServer.expectEmployeeContactInformationRequest(EMPLOYEE_NUMBER);
+    }
+
+    protected String getAvatarImageData() {
+        return SampleDataFiles.imageToBase64("usersettings/useravatar.jpg");
     }
 }

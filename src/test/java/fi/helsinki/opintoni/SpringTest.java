@@ -32,7 +32,6 @@ import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.requestchain.*;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import org.junit.After;
 import org.junit.Before;
@@ -64,6 +63,12 @@ import java.util.List;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.util.Lists.newArrayList;
 
+/*
+ * Base class for integration tests. Sets up mock 3rd party servers, clears caches etc.
+ * Note: automatically rolls back DB changes made by each test, because of the @Transactional annotation.
+ *
+ * After test verifies calls on mock 3rd party servers.
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(
     classes = TestApplication.class,
@@ -177,7 +182,14 @@ public abstract class SpringTest {
     private EntityManager entityManager;
 
     @Before
-    public void initRestServer() {
+    public final void baseInit() {
+        initRestServer();
+        setSequences();
+        clearCaches();
+        clearFileStorage();
+    }
+
+    private void initRestServer() {
         oodiServer = new OodiServer(appConfiguration, oodiRestTemplate);
         coursePageServer = new CoursePageServer(appConfiguration, coursePageRestTemplate);
         guideServer = new GuideServer(appConfiguration, guideRestTemplate);
@@ -191,13 +203,7 @@ public abstract class SpringTest {
         configureMockMvc();
     }
 
-    @Before
-    public void clearDatabase() throws LiquibaseException {
-        springLiquibase.afterPropertiesSet();
-    }
-
-    @Before
-    public void clearCaches() {
+    private void clearCaches() {
         clearCaches(transientCacheManager);
         clearCaches(persistentCacheManager);
     }
@@ -209,8 +215,7 @@ public abstract class SpringTest {
             .forEach(Cache::clear);
     }
 
-    @Before
-    public void clearFileStorage() {
+    private void clearFileStorage() {
         fileServiceStorage.clear();
     }
 
@@ -227,8 +232,9 @@ public abstract class SpringTest {
         esbServer.verify();
     }
 
-    @Before
-    public void resetSequences() {
+    // If test data CSV files contain explicit IDs, sequence values need to be manually incremented so that further inserts made programmatically by
+    // the tests do not result in conflicting IDs.
+    public void setSequences() {
         TABLE_NAMES.stream().forEach(tableName -> {
 
             String sequenceName = SEQUENCE_NAMES_BY_TABLE_NAMES.get(tableName);

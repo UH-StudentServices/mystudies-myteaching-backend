@@ -20,10 +20,10 @@ package fi.helsinki.opintoni.web.rest.publicapi;
 import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.service.BackgroundImageService;
 import fi.helsinki.opintoni.service.UserSettingsService;
+import fi.helsinki.opintoni.service.profile.ProfileService;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,21 +42,23 @@ public class PublicImageResource extends AbstractResource {
 
     private final UserSettingsService userSettingsService;
     private final BackgroundImageService backgroundImageService;
+    private final ProfileService profileService;
 
     @Autowired
     public PublicImageResource(UserSettingsService userSettingsService,
-                               BackgroundImageService backgroundImageService) {
+                               BackgroundImageService backgroundImageService, ProfileService profileService) {
         this.userSettingsService = userSettingsService;
         this.backgroundImageService = backgroundImageService;
+        this.profileService = profileService;
     }
 
+    // When Obar is in production use, this endpoint should be removed.
     @RequestMapping(
         value = "/avatar/{oodiPersonId}",
         method = RequestMethod.GET,
         produces = MediaType.IMAGE_JPEG_VALUE
     )
-    public ResponseEntity<BufferedImage> getUserAvatarByOodiPersonId(@PathVariable("oodiPersonId") String oodiPersonId)
-        throws IOException {
+    public ResponseEntity<BufferedImage> getUserAvatarByOodiPersonId(@PathVariable("oodiPersonId") String oodiPersonId) {
         return ResponseEntity.ok()
             .headers(headersWithContentType(MediaType.IMAGE_JPEG))
             .body(userSettingsService.getUserAvatarImageByOodiPersonId(oodiPersonId));
@@ -89,11 +91,5 @@ public class PublicImageResource extends AbstractResource {
     @Timed
     public ResponseEntity<List<String>> getBackgrounds() throws IOException {
         return response(backgroundImageService.getBackgroundImageFiles());
-    }
-
-    private HttpHeaders headersWithContentType(MediaType contentType) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(contentType);
-        return headers;
     }
 }

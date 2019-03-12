@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.domain.UserSettings;
 import fi.helsinki.opintoni.repository.UserSettingsRepository;
+import fi.helsinki.opintoni.service.profile.ProfileService;
 import fi.helsinki.opintoni.util.UriBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class AvatarImageService {
         this.uriBuilder = uriBuilder;
     }
 
+    // When Obar is in production use, this should be removed.
     public String getAvatarImageUrl(Long userId) {
         return getAvatarImageUrl(uriBuilder::getDefaultUserAvatarUrl, userId);
     }
@@ -50,8 +52,9 @@ public class AvatarImageService {
             defaultAvatarUrlSupplier.get();
     }
 
-    public String getProfileAvatarImageUrl(Long userId) {
-        return getAvatarImageUrl(uriBuilder::getProfileDefaultUserAvatarUrl, userId);
+    public String getProfileAvatarImageUrl(Long userId, ProfileService.ProfileUrlContext profileUrlContext) {
+        return userSettingsRepository.findByUserId(userId).hasAvatarImage() ?
+            uriBuilder.getProfileAvatarUrl(profileUrlContext) :
+            uriBuilder.getProfileDefaultUserAvatarUrl();
     }
-
 }

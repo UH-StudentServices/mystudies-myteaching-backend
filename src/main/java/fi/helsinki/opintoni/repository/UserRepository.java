@@ -35,5 +35,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
         "and u.account_status = 'ACTIVE' " +
         "and (u.account_active_until_date is null or u.account_active_until_date < now())", nativeQuery = true)
     List<User> findInactiveUsers();
-
 }

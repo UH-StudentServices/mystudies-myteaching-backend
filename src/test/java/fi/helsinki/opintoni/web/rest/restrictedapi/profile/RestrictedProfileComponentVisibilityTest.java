@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.rest.restrictedapi.profile;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
@@ -27,13 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class RestrictedProfileComponentVisibilityTest extends RestrictedProfileTest {
 
-    @Before
-    public void init() {
-        setPrivateVisibilitiesForEveryComponent();
-    }
-
     @Test
     public void thatPrivateAttainmentsAreNotReturned() throws Exception {
+        setPrivateVisibilitiesForEveryComponent();
         returnsForbidden(RESTRICTED_STUDENT_PROFILE_API_PATH + "/attainment");
     }
 
