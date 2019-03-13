@@ -61,7 +61,7 @@ public class RestrictedProfileResource extends AbstractResource {
     }
 
     @RequestMapping(
-        value = "/{profileRole}/{lang}/{path:.*}/profileimage",
+        value = "/{profileRole}/{lang}/{path:.*}/profile-image",
         method = RequestMethod.GET,
         produces = MediaType.IMAGE_JPEG_VALUE
     )

@@ -57,6 +57,7 @@ public class ProfileServiceTest extends SpringTest {
     private static final int TEACHER_PROFILE_SECTION_COUNT = TeacherProfileSection.values().length;
     private static final String PUBLIC_VISIBILITY = "PUBLIC";
     private static final String PRIVATE_VISIBILITY = "PRIVATE";
+    private static final String SHARED_LINK_FOR_EXISTING_PORTFOLIO = "a3728b39-7099-4f8c-9413-da2817eeccf9";
 
     @Test
     public void thatProfileIsFoundByPath() {
@@ -123,12 +124,12 @@ public class ProfileServiceTest extends SpringTest {
         String imageBase64 = SampleDataFiles.imageToBase64("usersettings/useravatar.jpg");
         userSettingsService.updateUserAvatar(3L, imageBase64);
 
-        assertThat(profileService.getProfileImageBySharedLinkFragment("a3728b39-7099-4f8c-9413-da2817eeccf9").getHeight() > 120).isTrue();
+        assertThat(profileService.getProfileImageBySharedLinkFragment(SHARED_LINK_FOR_EXISTING_PORTFOLIO).getHeight() > 120).isTrue();
     }
 
     @Test
     public void thatProfileImageIsNotFoundWithSharedLink() throws Exception {
-        assertThatThrownBy(() -> profileService.getProfileImageBySharedLinkFragment("a3728b39-7099-4f8c-9413-da2817eeccf9"))
+        assertThatThrownBy(() -> profileService.getProfileImageBySharedLinkFragment(SHARED_LINK_FOR_EXISTING_PORTFOLIO))
             .isInstanceOf(NotFoundException.class);
     }
 

@@ -65,7 +65,7 @@ public class PrivateProfileResourceTest extends AbstractProfileResourceTest {
     private static final String HYBRID_USER_PROFILE_PATH = "/profile/en/hybrid-user";
     private static final String STUDENT_EMAIL = "olli.opiskelija@helsinki.fi";
     private static final String OLLI_PROFILE = PRIVATE_PROFILE_API_PATH + "/student/en/olli-opiskelija";
-    private static final String OLLI_PROFILE_IMAGE = OLLI_PROFILE + "/profileimage";
+    private static final String OLLI_PROFILE_IMAGE = OLLI_PROFILE + "/profile-image";
 
     @Autowired
     private ProfileRepository profileRepository;
@@ -88,7 +88,7 @@ public class PrivateProfileResourceTest extends AbstractProfileResourceTest {
         mockMvc.perform(get(OLLI_PROFILE)
                 .with(securityContext(studentSecurityContext())))
                 .andExpect(jsonPath("$.avatarUrl").value(
-                ABSOLUTE + OLLI_PROFILE_IMAGE))
+                ABSOLUTE_BASE_URL + OLLI_PROFILE_IMAGE))
                 .andExpect(jsonPath("$.contactInformation").value(
                         both(hasEntry("email", STUDENT_EMAIL)).and(hasEntry("phoneNumber", "+358112223333"))
                 ))

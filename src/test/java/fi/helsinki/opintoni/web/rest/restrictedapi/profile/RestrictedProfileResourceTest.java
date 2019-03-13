@@ -42,7 +42,7 @@ public class RestrictedProfileResourceTest extends RestrictedProfileTest {
 
     private static final String STUDENT_PROFILE_PATH = "/profile/student/en/olli-opiskelija";
     private static final String TEACHER_PROFILE_PATH = "/profile/teacher/fi/opettaja";
-
+    private static final String STUDENT_PROFILE_IMAGE_PATH = RestConstants.RESTRICTED_API_V1 + STUDENT_PROFILE_PATH + "/profile-image";
     private static final String PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME = "4c024239-8dab-4ea0-a686-fe373b040f48";
 
     @Test
@@ -124,7 +124,7 @@ public class RestrictedProfileResourceTest extends RestrictedProfileTest {
 
     @Test
     public void thatProfileImageIsReturned() throws Exception {
-        mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + STUDENT_PROFILE_PATH + "/profileimage")
+        mockMvc.perform(get(STUDENT_PROFILE_IMAGE_PATH)
             .with(securityContext(teacherSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
@@ -132,14 +132,14 @@ public class RestrictedProfileResourceTest extends RestrictedProfileTest {
 
     @Test
     public void thatProfileImageIsNotReturnedIfNotLoggedIn() throws Exception {
-        mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + STUDENT_PROFILE_PATH + "/profileimage"))
+        mockMvc.perform(get(STUDENT_PROFILE_IMAGE_PATH))
             .andExpect(status().isUnauthorized());
     }
 
     @Test
     public void thatProfileImageIsNotReturnedIfPrivate() throws Exception {
         saveProfileWithVisibility(STUDENT_PROFILE_ID, ProfileVisibility.PRIVATE);
-        mockMvc.perform(get(RestConstants.RESTRICTED_API_V1 + STUDENT_PROFILE_PATH + "/profileimage")
+        mockMvc.perform(get(STUDENT_PROFILE_IMAGE_PATH)
             .with(securityContext(teacherSecurityContext())))
             .andExpect(status().isNotFound())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));

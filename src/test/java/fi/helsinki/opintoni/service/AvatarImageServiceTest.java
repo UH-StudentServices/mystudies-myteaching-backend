@@ -48,7 +48,7 @@ public class AvatarImageServiceTest extends SpringTest {
     @Test
     public void thatProfileAvatarImageUrlIsReturned() {
         assertThat(avatarImageService.getProfileAvatarImageUrl(2L, new ProfileService.ProfileUrlContext("/some/fullPath",
-            null))).isEqualTo("https://dev.student.helsinki.fi/some/fullPath/profileimage");
+            null))).isEqualTo("https://dev.student.helsinki.fi/some/fullPath/profile-image");
     }
 
 }

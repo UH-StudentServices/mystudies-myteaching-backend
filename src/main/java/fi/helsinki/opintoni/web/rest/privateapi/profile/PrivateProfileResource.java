@@ -141,7 +141,7 @@ public class PrivateProfileResource extends AbstractResource {
         return response(profileService.update(profileId, profileDto));
     }
 
-    @RequestMapping(value = "/{profileRole}/{lang}/{path:.*}/profileimage",
+    @RequestMapping(value = "/{profileRole}/{lang}/{path:.*}/profile-image",
         method = RequestMethod.GET,
         produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<BufferedImage> getMyProfileImage(@PathVariable("path") String path) {

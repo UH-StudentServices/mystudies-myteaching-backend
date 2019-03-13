@@ -38,10 +38,10 @@ public abstract class AbstractProfileResourceTest extends SpringTest {
     protected static final String STUDENT_PROFILE_API_PATH = PRIVATE_PROFILE_API_PATH + "/student";
     protected static final String TEACHER_PROFILE_API_PATH = PRIVATE_PROFILE_API_PATH + "/teacher";
     protected static final String SESSION_LANG = EN.getCode();
-    protected static final String ABSOLUTE = "https://dev.student.helsinki.fi";
-    protected static final String ABSOLUTE_PUBLIC_API_PATH = ABSOLUTE + RestConstants.PUBLIC_API_V1;
-    protected static final String ABSOLUTE_RESTRICTED_API_PATH = ABSOLUTE + RestConstants.RESTRICTED_API_V1;
-    protected static final String PROFILE_IMAGE = "/profileimage";
+    protected static final String ABSOLUTE_BASE_URL = "https://dev.student.helsinki.fi";
+    protected static final String ABSOLUTE_PUBLIC_API_PATH = ABSOLUTE_BASE_URL + RestConstants.PUBLIC_API_V1;
+    protected static final String ABSOLUTE_RESTRICTED_API_PATH = ABSOLUTE_BASE_URL + RestConstants.RESTRICTED_API_V1;
+    protected static final String PROFILE_IMAGE = "/profile-image";
 
     private static final String EMPLOYEE_NUMBER = "010540";
 

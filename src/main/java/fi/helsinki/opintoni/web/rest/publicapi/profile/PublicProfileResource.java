@@ -69,7 +69,7 @@ public class PublicProfileResource extends AbstractResource {
     }
 
     @RequestMapping(
-        value = "/{profileRole}/{lang}/{path:.*}/profileimage",
+        value = "/{profileRole}/{lang}/{path:.*}/profile-image",
         method = RequestMethod.GET,
         produces = MediaType.IMAGE_JPEG_VALUE
     )
@@ -80,7 +80,7 @@ public class PublicProfileResource extends AbstractResource {
     }
 
     @RequestMapping(
-        value = "/shared/{sharedLinkFragment:.*}/profileimage",
+        value = "/shared/{sharedLinkFragment:.*}/profile-image",
         method = RequestMethod.GET,
         produces = MediaType.IMAGE_JPEG_VALUE
     )

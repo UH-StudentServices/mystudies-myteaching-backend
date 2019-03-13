@@ -47,7 +47,7 @@ public class UriBuilder {
     }
 
     public String getProfileAvatarUrl(ProfileService.ProfileUrlContext profileUrlContext) {
-        return getAbsoluteUrl(String.join("/", profileUrlContext.fullPath, "profileimage"));
+        return getAbsoluteUrl(String.join("/", profileUrlContext.fullPath, "profile-image"));
     }
 
     public String getCalendarFeedUrl(String feedId) {
@@ -68,19 +68,19 @@ public class UriBuilder {
     }
 
     public String getProfileUrl(Profile profile) {
-        return String.join("/", profileUrl(profile),
+        return String.join("/", profileBaseUrl(profile),
             profile.language.getCode(), profile.path);
     }
 
     public String getProfileUrl(Profile profile, String sharedLinkFragment) {
-        return String.join("/", profileUrl(profile), sharedLinkFragment);
+        return String.join("/", profileBaseUrl(profile), sharedLinkFragment);
     }
 
     public String getMeceDomain() {
         return appConfiguration.get("mece.domain");
     }
 
-    private String profileUrl(Profile profile) {
+    private String profileBaseUrl(Profile profile) {
         return appConfiguration.get("profileUrl." + profile.profileRole.getRole());
     }
 
