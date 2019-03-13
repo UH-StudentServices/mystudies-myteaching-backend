@@ -19,9 +19,16 @@ package fi.helsinki.opintoni.web.rest.privateapi.profile;
 
 import fi.helsinki.opintoni.domain.profile.ProfileComponent;
 import fi.helsinki.opintoni.domain.profile.ProfileVisibility;
-import fi.helsinki.opintoni.dto.profile.*;
+import fi.helsinki.opintoni.dto.profile.ComponentOrderDto;
+import fi.helsinki.opintoni.dto.profile.DegreeDto;
+import fi.helsinki.opintoni.dto.profile.FreeTextContentDto;
+import fi.helsinki.opintoni.dto.profile.KeywordDto;
+import fi.helsinki.opintoni.dto.profile.LanguageProficiencyDto;
+import fi.helsinki.opintoni.dto.profile.ProfileDto;
+import fi.helsinki.opintoni.dto.profile.WorkExperienceDto;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.profile.ProfileRepository;
+import fi.helsinki.opintoni.service.UserSettingsService;
 import fi.helsinki.opintoni.service.profile.ProfileService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.WebTestUtils;
@@ -33,12 +40,23 @@ import org.springframework.http.MediaType;
 import java.util.List;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
-import static fi.helsinki.opintoni.security.TestSecurityContext.*;
+import static fi.helsinki.opintoni.security.TestSecurityContext.hybridUserSecurityContext;
+import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
+import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
+import static fi.helsinki.opintoni.security.TestSecurityContext.teacherWithoutProfileSecurityContext;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.both;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isOneOf;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PrivateProfileResourceTest extends AbstractProfileResourceTest {
 
@@ -46,12 +64,17 @@ public class PrivateProfileResourceTest extends AbstractProfileResourceTest {
     private static final String TEACHER_PROFILE_PATH = "/profile/en/olli-opettaja";
     private static final String HYBRID_USER_PROFILE_PATH = "/profile/en/hybrid-user";
     private static final String STUDENT_EMAIL = "olli.opiskelija@helsinki.fi";
+    private static final String OLLI_PROFILE = PRIVATE_PROFILE_API_PATH + "/student/en/olli-opiskelija";
+    private static final String OLLI_PROFILE_IMAGE = OLLI_PROFILE + "/profile-image";
 
     @Autowired
     private ProfileRepository profileRepository;
 
     @Autowired
     private ProfileService profileService;
+
+    @Autowired
+    private UserSettingsService userSettingsService;
 
     @Test
     public void thatAnyExistingOwnProfileIsReturnedWhenQueryingByRoleOnly() throws Exception {
@@ -62,8 +85,10 @@ public class PrivateProfileResourceTest extends AbstractProfileResourceTest {
 
     @Test
     public void thatStudentProfileContainsAllLinkedComponents() throws Exception {
-        mockMvc.perform(get(STUDENT_PROFILE_API_PATH + "/en/olli-opiskelija")
+        mockMvc.perform(get(OLLI_PROFILE)
                 .with(securityContext(studentSecurityContext())))
+                .andExpect(jsonPath("$.avatarUrl").value(
+                ABSOLUTE_BASE_URL + OLLI_PROFILE_IMAGE))
                 .andExpect(jsonPath("$.contactInformation").value(
                         both(hasEntry("email", STUDENT_EMAIL)).and(hasEntry("phoneNumber", "+358112223333"))
                 ))
@@ -364,6 +389,21 @@ public class PrivateProfileResourceTest extends AbstractProfileResourceTest {
 
         assertThat(profileService.findById(2L).visibility)
                 .isEqualTo(ProfileVisibility.PUBLIC);
+    }
+
+    @Test
+    public void thatOwnProfileImageIsReturned() throws Exception {
+        mockMvc.perform(get(OLLI_PROFILE_IMAGE)
+            .with(securityContext(studentSecurityContext())))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
+    }
+
+    @Test
+    public void thatSomeOtherProfileImageIsNotReturned() throws Exception {
+        mockMvc.perform(get(OLLI_PROFILE_IMAGE)
+            .with(securityContext(teacherSecurityContext())))
+            .andExpect(status().isNotFound());
     }
 
     private void deleteExistingStudentProfiles() {

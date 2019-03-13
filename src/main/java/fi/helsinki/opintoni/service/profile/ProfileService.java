@@ -17,13 +17,18 @@
 
 package fi.helsinki.opintoni.service.profile;
 
-import fi.helsinki.opintoni.domain.profile.*;
+import fi.helsinki.opintoni.domain.profile.ComponentVisibility;
+import fi.helsinki.opintoni.domain.profile.Profile;
+import fi.helsinki.opintoni.domain.profile.ProfileSharedLink;
+import fi.helsinki.opintoni.domain.profile.ProfileVisibility;
+import fi.helsinki.opintoni.domain.profile.TeacherProfileSection;
 import fi.helsinki.opintoni.dto.profile.ProfileDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.profile.ProfileRepository;
 import fi.helsinki.opintoni.repository.profile.ProfileSharedLinkRepository;
+import fi.helsinki.opintoni.service.ImageService;
 import fi.helsinki.opintoni.service.converter.profile.ProfileConverter;
 import fi.helsinki.opintoni.web.arguments.ProfileRole;
 import fi.helsinki.opintoni.web.rest.privateapi.profile.summary.UpdateSummaryRequest;
@@ -31,7 +36,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.StringJoiner;
 
 import static fi.helsinki.opintoni.exception.http.NotFoundException.notFoundException;
 import static java.util.stream.Collectors.groupingBy;
@@ -49,6 +59,7 @@ public class ProfileService {
     private final ProfileStudyAttainmentWhitelistService whitelistService;
     private final ComponentVisibilityService componentVisibilityService;
     private final ProfileSharedLinkRepository profileSharedLinkRepository;
+    private final ImageService imageService;
 
     @Autowired
     public ProfileService(ProfileRepository profileRepository,
@@ -57,7 +68,8 @@ public class ProfileService {
                           ProfileConverter profileConverter,
                           ProfileStudyAttainmentWhitelistService whitelistService,
                           ComponentVisibilityService componentVisibilityService,
-                          ProfileSharedLinkRepository profileSharedLinkRepository) {
+                          ProfileSharedLinkRepository profileSharedLinkRepository,
+                          ImageService imageService) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
         this.profilePathGenerator = profilePathGenerator;
@@ -65,6 +77,7 @@ public class ProfileService {
         this.whitelistService = whitelistService;
         this.componentVisibilityService = componentVisibilityService;
         this.profileSharedLinkRepository = profileSharedLinkRepository;
+        this.imageService = imageService;
     }
 
     public ProfileDto insert(Long userId, String name, ProfileRole profileRole, Language lang) {
@@ -95,18 +108,28 @@ public class ProfileService {
     public ProfileDto get(Long userId, ProfileRole profileRole) {
         return convertProfileToDto(
             profileRepository.findByUserIdAndProfileRole(userId, profileRole).findFirst(),
-            ProfileConverter.ComponentFetchStrategy.ALL);
+            ProfileConverter.ComponentFetchStrategy.ALL,
+            ProfileUrlContext.EMPTY);
     }
 
     public ProfileDto findByPathAndLangAndRole(String path,
                                                Language lang,
                                                ProfileRole profileRole,
                                                ProfileConverter.ComponentFetchStrategy componentFetchStrategy) {
-        return convertProfileToDto(profileRepository
-            .findByPathAndProfileRoleAndLanguage(path, profileRole, lang), componentFetchStrategy);
+        return findByPathAndLangAndRole(path, lang, profileRole, componentFetchStrategy, ProfileUrlContext.EMPTY);
     }
 
-    public ProfileDto findBySharedLink(String sharedLinkFragment, ProfileConverter.ComponentFetchStrategy componentFetchStrategy) {
+    public ProfileDto findByPathAndLangAndRole(String path,
+                                               Language lang,
+                                               ProfileRole profileRole,
+                                               ProfileConverter.ComponentFetchStrategy componentFetchStrategy,
+                                               ProfileUrlContext profileUrlContext) {
+        return convertProfileToDto(profileRepository
+            .findByPathAndProfileRoleAndLanguage(path, profileRole, lang), componentFetchStrategy, profileUrlContext);
+    }
+
+    public ProfileDto findBySharedLink(String sharedLinkFragment, ProfileConverter.ComponentFetchStrategy componentFetchStrategy,
+                                       ProfileUrlContext profileUrlContext) {
         ProfileSharedLink sharedLink = profileSharedLinkRepository
             .findBySharedPathFragment(sharedLinkFragment)
             .orElseThrow(NotFoundException::new);
@@ -116,7 +139,7 @@ public class ProfileService {
         }
 
         Profile profile = profileRepository.findById(sharedLink.profile.id).orElseThrow(NotFoundException::new);
-        ProfileDto profileDto = profileConverter.toDto(profile, componentFetchStrategy, sharedLinkFragment);
+        ProfileDto profileDto = profileConverter.toDto(profile, componentFetchStrategy, profileUrlContext);
 
         // Fake public visibility when using shared link
         profileDto.visibility = ProfileVisibility.PUBLIC;
@@ -126,13 +149,14 @@ public class ProfileService {
 
     public ProfileDto findById(Long profileId) {
         return convertProfileToDto(profileRepository
-            .findById(profileId), ProfileConverter.ComponentFetchStrategy.NONE);
+            .findById(profileId), ProfileConverter.ComponentFetchStrategy.NONE, ProfileUrlContext.EMPTY);
     }
 
     private ProfileDto convertProfileToDto(Optional<Profile> profileOptional,
-                                           ProfileConverter.ComponentFetchStrategy componentFetchStrategy) {
+                                           ProfileConverter.ComponentFetchStrategy componentFetchStrategy,
+                                           ProfileUrlContext profileUrlContext) {
         return profileOptional
-            .map((profile) -> profileConverter.toDto(profile, componentFetchStrategy))
+            .map((profile) -> profileConverter.toDto(profile, componentFetchStrategy, profileUrlContext))
             .orElseThrow(notFoundException("profile not found"));
     }
 
@@ -149,6 +173,18 @@ public class ProfileService {
                     )
                 )
             ));
+    }
+
+    public BufferedImage getProfileImageByPath(String path) {
+        Optional<byte[]> imageBytes = Optional.ofNullable(profileRepository.getProfileImageByByPath(path));
+        return imageBytes.map(imageService::bytesToBufferedImage)
+            .orElseThrow(notFoundException("Avatar not found for path " + path));
+    }
+
+    public BufferedImage getProfileImageBySharedLinkFragment(String sharedLinkFragment) {
+        Optional<byte[]> imageBytes = Optional.ofNullable(profileRepository.getProfileImageBySharedLinkFragment(sharedLinkFragment));
+        return imageBytes.map(imageService::bytesToBufferedImage)
+            .orElseThrow(notFoundException("Avatar not found for shared link fragment " + sharedLinkFragment));
     }
 
     public ProfileDto update(Long profileId, ProfileDto profileDto) {
@@ -187,5 +223,17 @@ public class ProfileService {
             .add(profile.language.getCode())
             .add(profile.path)
             .toString();
+    }
+
+    public static class ProfileUrlContext {
+        public final String fullPath;
+        public final String sharedLinkFragment;
+
+        public static final ProfileUrlContext EMPTY = new ProfileUrlContext("no-profile-uri-context", null);
+
+        public ProfileUrlContext(String fullPath, String sharedLinkFragment) {
+            this.fullPath = fullPath;
+            this.sharedLinkFragment = sharedLinkFragment;
+        }
     }
 }

@@ -83,7 +83,8 @@ public class ProfileRequestResolver {
     private Optional<ProfileDto> getProfileDtoByShareLink(Map<String, String> templateVariables) {
         ProfileDto profile = profileService.findBySharedLink(
             templateVariables.get(SHARED_LINK_FRAGMENT),
-            ProfileConverter.ComponentFetchStrategy.NONE);
+            ProfileConverter.ComponentFetchStrategy.NONE,
+            ProfileService.ProfileUrlContext.EMPTY);
 
         return Optional.ofNullable(profile);
     }

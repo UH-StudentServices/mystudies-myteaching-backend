@@ -17,6 +17,8 @@
 
 package fi.helsinki.opintoni.integration.obar;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import fi.helsinki.opintoni.security.AppUser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -67,7 +69,7 @@ public class ObarJWTService {
                 firstName = String.join(" ", nameParts.subList(0, nameParts.size() - 1));
             }
             claims.put("user", Map.of(
-                "userName", appUser.getEduPersonPrincipalName().split("@")[0],
+                "userName", Iterables.get(Splitter.on('@').split(appUser.getEduPersonPrincipalName()), 0),
                 "firstName", firstName,
                 "lastName", lastName,
                 "oodiId", appUser.getOodiPersonId()

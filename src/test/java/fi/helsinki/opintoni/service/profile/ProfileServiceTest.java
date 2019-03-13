@@ -22,15 +22,19 @@ import fi.helsinki.opintoni.domain.profile.Profile;
 import fi.helsinki.opintoni.domain.profile.ProfileVisibility;
 import fi.helsinki.opintoni.domain.profile.TeacherProfileSection;
 import fi.helsinki.opintoni.dto.profile.ProfileDto;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.profile.ComponentVisibilityRepository;
 import fi.helsinki.opintoni.repository.profile.ProfileRepository;
+import fi.helsinki.opintoni.sampledata.SampleDataFiles;
+import fi.helsinki.opintoni.service.UserSettingsService;
 import fi.helsinki.opintoni.service.converter.profile.ProfileConverter;
 import fi.helsinki.opintoni.web.arguments.ProfileRole;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.tuple;
 
 public class ProfileServiceTest extends SpringTest {
@@ -47,9 +51,13 @@ public class ProfileServiceTest extends SpringTest {
     @Autowired
     private ProfileRepository profileRepository;
 
+    @Autowired
+    private UserSettingsService userSettingsService;
+
     private static final int TEACHER_PROFILE_SECTION_COUNT = TeacherProfileSection.values().length;
     private static final String PUBLIC_VISIBILITY = "PUBLIC";
     private static final String PRIVATE_VISIBILITY = "PRIVATE";
+    private static final String SHARED_LINK_FOR_EXISTING_PORTFOLIO = "a3728b39-7099-4f8c-9413-da2817eeccf9";
 
     @Test
     public void thatProfileIsFoundByPath() {
@@ -96,6 +104,33 @@ public class ProfileServiceTest extends SpringTest {
                 tuple("RESEARCH", PRIVATE_VISIBILITY),
                 tuple("TEACHING", PRIVATE_VISIBILITY),
                 tuple("ADMINISTRATION", PRIVATE_VISIBILITY));
+    }
+
+    @Test
+    public void thatProfileImageIsFound() throws Exception {
+        String imageBase64 = SampleDataFiles.imageToBase64("usersettings/useravatar.jpg");
+        userSettingsService.updateUserAvatar(2L, imageBase64);
+
+        assertThat(profileService.getProfileImageByPath("pekka").getHeight() > 120).isTrue();
+    }
+
+    @Test
+    public void thatProfileImageIsNotFound() throws Exception {
+        assertThatThrownBy(() -> profileService.getProfileImageByPath("pekka")).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    public void thatProfileImageIsFoundWithSharedLink() throws Exception {
+        String imageBase64 = SampleDataFiles.imageToBase64("usersettings/useravatar.jpg");
+        userSettingsService.updateUserAvatar(3L, imageBase64);
+
+        assertThat(profileService.getProfileImageBySharedLinkFragment(SHARED_LINK_FOR_EXISTING_PORTFOLIO).getHeight() > 120).isTrue();
+    }
+
+    @Test
+    public void thatProfileImageIsNotFoundWithSharedLink() throws Exception {
+        assertThatThrownBy(() -> profileService.getProfileImageBySharedLinkFragment(SHARED_LINK_FOR_EXISTING_PORTFOLIO))
+            .isInstanceOf(NotFoundException.class);
     }
 
     private void deleteExistingTeacherProfile() {

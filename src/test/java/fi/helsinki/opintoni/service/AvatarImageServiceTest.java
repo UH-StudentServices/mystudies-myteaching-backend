@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.service.profile.ProfileService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,7 +36,8 @@ public class AvatarImageServiceTest extends SpringTest {
 
     @Test
     public void thatDefaultProfileAvatarImageUrlIsReturned() {
-        assertThat(avatarImageService.getProfileAvatarImageUrl(1L)).isEqualTo("/profile/assets/icons/avatar.png");
+        assertThat(avatarImageService.getProfileAvatarImageUrl(1L, new ProfileService.ProfileUrlContext("/some/fullPath",
+            null))).isEqualTo("/profile/assets/icons/avatar.png");
     }
 
     @Test
@@ -45,7 +47,8 @@ public class AvatarImageServiceTest extends SpringTest {
 
     @Test
     public void thatProfileAvatarImageUrlIsReturned() {
-        assertThat(avatarImageService.getProfileAvatarImageUrl(2L)).isEqualTo("https://dev.student.helsinki.fi/api/public/v1/images/avatar/200");
+        assertThat(avatarImageService.getProfileAvatarImageUrl(2L, new ProfileService.ProfileUrlContext("/some/fullPath",
+            null))).isEqualTo("https://dev.student.helsinki.fi/some/fullPath/profile-image");
     }
 
 }
