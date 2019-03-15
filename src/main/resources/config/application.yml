@@ -242,9 +242,9 @@ iam:
     base.url: https://esb-api.it.helsinki.fi:443/iam/
 
 httpClient:
-  readTimeout: 15000
+  readTimeout: 40000
   connectTimeout: 3000
-  maxTotal: 500
+  maxTotal: 700
   defaultMaxPerRoute: 500
 
 cache:
