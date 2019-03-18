@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import javax.servlet.http.Cookie;
 import java.util.Locale;
 
-import static fi.helsinki.opintoni.config.Constants.NG_TRANSLATE_LANG_KEY;
+import static fi.helsinki.opintoni.config.Constants.LANG_COOKIE_NAME;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_USER_LOCALE;
@@ -62,7 +62,7 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
             .accept(MediaType.APPLICATION_JSON);
 
         if (cookieLanguage != null) {
-            requestBuilder.cookie(new Cookie(NG_TRANSLATE_LANG_KEY, cookieLanguage));
+            requestBuilder.cookie(new Cookie(LANG_COOKIE_NAME, cookieLanguage));
         }
 
         if (acceptLanguageHeader != null) {

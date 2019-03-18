@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static fi.helsinki.opintoni.config.Constants.NG_TRANSLATE_LANG_KEY;
+import static fi.helsinki.opintoni.config.Constants.LANG_COOKIE_NAME;
 import static fi.helsinki.opintoni.config.Constants.OPINTONI_HAS_LOGGED_IN;
 import static fi.helsinki.opintoni.localization.Language.*;
 import static java.util.Collections.singletonList;
@@ -255,7 +255,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
         @Override
         public boolean matches(Cookie cookie) {
-            return NG_TRANSLATE_LANG_KEY.equals(cookie.getName()) && langCode.equals(cookie.getValue());
+            return LANG_COOKIE_NAME.equals(cookie.getName()) && langCode.equals(cookie.getValue());
         }
     }
 

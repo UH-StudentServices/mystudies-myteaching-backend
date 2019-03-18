@@ -30,7 +30,7 @@ public final class Constants {
     public static final String SPRING_PROFILE_TEST = "test";
     public static final String SYSTEM_ACCOUNT = "system";
 
-    public static final String NG_TRANSLATE_LANG_KEY = "OO_LANGUAGE";
+    public static final String LANG_COOKIE_NAME = fi.helsinki.opintoni.integration.obar.Constants.LANG_COOKIE_NAME;
     public static final String OPINTONI_HAS_LOGGED_IN = "OPINTONI_HAS_LOGGED_IN";
 
     public static final String ADMIN_ROLE_REQUIRED = "hasAuthority('ADMIN')";

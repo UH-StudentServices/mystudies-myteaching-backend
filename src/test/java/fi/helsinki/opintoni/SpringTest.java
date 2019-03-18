@@ -325,7 +325,7 @@ public abstract class SpringTest {
     }
 
     protected Cookie langCookie(Language language) {
-        return new Cookie(Constants.NG_TRANSLATE_LANG_KEY, language.getCode());
+        return new Cookie(Constants.LANG_COOKIE_NAME, language.getCode());
     }
 
 }
