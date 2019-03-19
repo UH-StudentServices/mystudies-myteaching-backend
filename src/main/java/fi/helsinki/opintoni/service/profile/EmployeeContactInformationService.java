@@ -73,6 +73,9 @@ public class EmployeeContactInformationService {
     }
 
     private String getPrefixedEmployeeNumber(String employeeNumber) {
+        if (employeeNumber.startsWith(EMPLOYEE_NUMBER_PREFIX)) {
+            return employeeNumber;
+        }
         return EMPLOYEE_NUMBER_PREFIX + employeeNumber;
     }
 
