@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
-import static fi.helsinki.opintoni.config.Constants.NG_TRANSLATE_LANG_KEY;
+import static fi.helsinki.opintoni.config.Constants.LANG_COOKIE_NAME;
 import static fi.helsinki.opintoni.config.Constants.OPINTONI_HAS_LOGGED_IN;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -136,7 +136,7 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
         String language = getLanguageCookieValue(appUser.getPreferredLanguage());
 
         if (language != null) {
-            Cookie cookie = new Cookie(NG_TRANSLATE_LANG_KEY, language);
+            Cookie cookie = new Cookie(LANG_COOKIE_NAME, language);
             addCookie(response, cookie);
         }
     }

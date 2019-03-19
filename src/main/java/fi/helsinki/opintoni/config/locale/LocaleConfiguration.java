@@ -42,7 +42,7 @@ public class LocaleConfiguration implements WebMvcConfigurer {
         List<String> availableLanguages = environment.getRequiredProperty("language.available", List.class);
 
         AngularCookieLocaleResolver cookieLocaleResolver = new AngularCookieLocaleResolver(
-            Constants.NG_TRANSLATE_LANG_KEY,
+            Constants.LANG_COOKIE_NAME,
             defaultLanguage,
             availableLanguages);
 
