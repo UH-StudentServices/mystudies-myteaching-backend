@@ -220,7 +220,7 @@ public abstract class SpringTest {
     }
 
     @After
-    public void verify() {
+    public void verifyMockServers() {
         oodiServer.verify();
         coursePageServer.verify();
         guideServer.verify();
