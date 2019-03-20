@@ -63,7 +63,7 @@ iam:
 
 unisport:
     client.implementation: rest
-    userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
+    userAuthorizationUrl: https://beta.unisport.fi/ext/opintoni/authorization
 
 googleAnalyticsAccount:
     main: UA-55852460-10

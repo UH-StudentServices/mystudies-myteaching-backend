@@ -88,7 +88,7 @@ iam:
 
 unisport:
     client.implementation: rest
-    userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
+    userAuthorizationUrl: https://beta.unisport.fi/ext/opintoni/authorization
 
 recommendations:
     maxRecommendations: 20

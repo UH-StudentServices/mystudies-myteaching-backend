@@ -226,7 +226,7 @@ publicWww:
     path: fi/feeds/filtered-news/rss/11405/all
 
 unisport:
-    base.url: https://unisport.fi
+    base.url: https://beta.unisport.fi
     tokenValidForSeconds: 10
     jwt.service.implementation: expiring
 
