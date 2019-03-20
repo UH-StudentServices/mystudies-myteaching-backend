@@ -46,7 +46,7 @@ public class UnisportRestClient implements UnisportClient {
         UnisportUser unisportUser = null;
         try {
             unisportUser = restTemplate.exchange(
-                baseUrl + "/api/v1/{locale}/ext/opintoni/authorization?eppn={userName}",
+                baseUrl + "/v1/{locale}/ext/opintoni/authorization?eppn={userName}",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<UnisportUser>() {
@@ -64,7 +64,7 @@ public class UnisportRestClient implements UnisportClient {
     public UnisportUserReservations getUserReservations(Long unisportUserId, Locale locale) {
         return
             restTemplate.exchange(
-                baseUrl + "/api/v1/{locale}/ext/opintoni/reservations",
+                baseUrl + "/v1/{locale}/ext/opintoni/reservations",
                 HttpMethod.GET,
                 getAuthorizationHeader(unisportUserId),
                 new ParameterizedTypeReference<UnisportUserReservations>() {

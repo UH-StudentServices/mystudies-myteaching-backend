@@ -39,7 +39,7 @@ public class UnisportServer extends AbstractRestServiceServer {
     }
 
     public void expectAuthorization() {
-        server.expect(requestTo(unisportBaseUrl + "/api/v1/en/ext/opintoni/authorization?eppn=opiskelija@helsinki.fi"))
+        server.expect(requestTo(unisportBaseUrl + "/v1/en/ext/opintoni/authorization?eppn=opiskelija@helsinki.fi"))
             .andExpect(method(HttpMethod.GET))
             .andRespond(
                 withSuccess(
@@ -50,7 +50,7 @@ public class UnisportServer extends AbstractRestServiceServer {
     }
 
     public void expectAuthorizationFailWith404() {
-        server.expect(requestTo(unisportBaseUrl + "/api/v1/en/ext/opintoni/authorization?eppn=opettaja@helsinki.fi"))
+        server.expect(requestTo(unisportBaseUrl + "/v1/en/ext/opintoni/authorization?eppn=opettaja@helsinki.fi"))
             .andExpect(method(HttpMethod.GET))
             .andRespond(
                 withStatus(HttpStatus.NOT_FOUND)
@@ -58,7 +58,7 @@ public class UnisportServer extends AbstractRestServiceServer {
     }
 
     public void expectUserReservations() {
-        server.expect(requestTo(unisportBaseUrl + "/api/v1/fi/ext/opintoni/reservations"))
+        server.expect(requestTo(unisportBaseUrl + "/v1/fi/ext/opintoni/reservations"))
             .andExpect(method(HttpMethod.GET))
             .andExpect(header("Authorization", MockUnisportJWTService.MOCK_JWT_TOKEN))
             .andRespond(

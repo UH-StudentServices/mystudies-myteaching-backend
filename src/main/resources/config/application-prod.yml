@@ -69,8 +69,9 @@ iam:
     useHttpClientCertificate: true
 
 unisport:
+    base.url: https://api.unisport.fi
     client.implementation: rest
-    userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
+    userAuthorizationUrl: https://api.unisport.fi/ext/opintoni/authorization
 
 recommendations:
     maxRecommendations: 20
