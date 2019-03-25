@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.integration.coursepage;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
@@ -50,9 +51,29 @@ public class CoursePageMockClient implements CoursePageClient {
         if (TEST_COURSE_IMPLEMENTATION_NOT_FOUND_ID.equals(courseImplementationId)) {
             return new CoursePageCourseImplementation();
         }
-        Resource courses = (courseImplementationId != null) ? course1 : course2;
-        return getResponse(courses, new TypeReference<List<CoursePageCourseImplementation>>() {
+
+        Resource courses = ("123456789".equals(courseImplementationId)) ? course1 : course2;
+        CoursePageCourseImplementation course = getResponse(courses, new TypeReference<List<CoursePageCourseImplementation>>() {
         }).get(0);
+
+        course.events.forEach(this::updateEventDates);
+
+        return course;
+    }
+
+    private void updateEventDates(CoursePageEvent coursePageEvent) {
+        int currentYear = DateTime.now().getYear();
+
+        coursePageEvent.begin = coursePageEvent.begin.plusYears(currentYear - 1);
+        coursePageEvent.end = coursePageEvent.end.plusYears(currentYear - 1);
+
+        if (coursePageEvent.begin.getYear() == currentYear) {
+            int month = DateTime.now().getMonthOfYear();
+            int day = DateTime.now().getDayOfMonth() + 1;
+
+            coursePageEvent.begin = coursePageEvent.begin.withMonth(month).withDayOfMonth(day);
+            coursePageEvent.end = coursePageEvent.end.withMonth(month).withDayOfMonth(day);
+        }
     }
 
     @Override
