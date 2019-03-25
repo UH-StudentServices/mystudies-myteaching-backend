@@ -19,11 +19,11 @@ package fi.helsinki.opintoni.integration.coursepage;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -62,17 +62,16 @@ public class CoursePageMockClient implements CoursePageClient {
     }
 
     private void updateEventDates(CoursePageEvent coursePageEvent) {
-        int currentYear = DateTime.now().getYear();
+        int currentYear = LocalDateTime.now().getYear();
 
         coursePageEvent.begin = coursePageEvent.begin.plusYears(currentYear - 1);
         coursePageEvent.end = coursePageEvent.end.plusYears(currentYear - 1);
 
         if (coursePageEvent.begin.getYear() == currentYear) {
-            int month = DateTime.now().getMonthOfYear();
-            int day = DateTime.now().getDayOfMonth() + 1;
+            int month = LocalDateTime.now().getMonthValue();
 
-            coursePageEvent.begin = coursePageEvent.begin.withMonth(month).withDayOfMonth(day);
-            coursePageEvent.end = coursePageEvent.end.withMonth(month).withDayOfMonth(day);
+            coursePageEvent.begin = coursePageEvent.begin.withMonth(month).plusDays(1);
+            coursePageEvent.end = coursePageEvent.end.withMonth(month).plusDays(1);
         }
     }
 

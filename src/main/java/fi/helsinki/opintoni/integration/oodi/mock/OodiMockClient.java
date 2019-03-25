@@ -21,11 +21,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.helsinki.opintoni.integration.oodi.*;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static fi.helsinki.opintoni.security.DevUserDetailsService.STUDENT_NUMBER_TEST_NEW_STUDENT;
@@ -84,10 +84,10 @@ public class OodiMockClient implements OodiClient {
     @Override
     public List<OodiEnrollment> getEnrollments(String studentNumber) {
         if (studentNumber.equals(STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT)) {
-            return getOodiResponse(openUniversityStudentCourses, new TypeReference<>() {
+            return getOodiResponse(openUniversityStudentCourses, new TypeReference<OodiResponse<OodiEnrollment>>() {
             });
         } else {
-            List<OodiEnrollment> oodiResponse = getOodiResponse(studentCourses, new TypeReference<>() {
+            List<OodiEnrollment> oodiResponse = getOodiResponse(studentCourses, new TypeReference<OodiResponse<OodiEnrollment>>() {
             });
 
             oodiResponse.forEach(this::updateEnrollmentDates);
@@ -97,7 +97,7 @@ public class OodiMockClient implements OodiClient {
     }
 
     private void updateEnrollmentDates(OodiEnrollment enrollment) {
-        int currentYear = DateTime.now().getYear();
+        int currentYear = LocalDateTime.now().getYear();
 
         enrollment.startDate = enrollment.startDate.plusYears(currentYear - 1);
         enrollment.endDate = enrollment.endDate.plusYears(currentYear - 1);
@@ -105,19 +105,19 @@ public class OodiMockClient implements OodiClient {
 
     @Override
     public List<OodiEvent> getStudentEvents(String studentNumber) {
-        return getOodiResponse(studentEvents, new TypeReference<>() {
+        return getOodiResponse(studentEvents, new TypeReference<OodiResponse<OodiEvent>>() {
         });
     }
 
     @Override
     public List<OodiStudyAttainment> getStudyAttainments(String studentNumber) {
         if (studentNumber.equals(STUDENT_NUMBER_TEST_NEW_STUDENT)) {
-            return getOodiResponse(newStudentAttainments, new TypeReference<>() {
+            return getOodiResponse(newStudentAttainments, new TypeReference<OodiResponse<OodiStudyAttainment>>() {
             });
         } else {
-            List<OodiStudyAttainment> oodiResponse = getOodiResponse(studentAttainments, new TypeReference<>() {
+            List<OodiStudyAttainment> oodiResponse = getOodiResponse(studentAttainments, new TypeReference<OodiResponse<OodiStudyAttainment>>() {
             });
-            int year = DateTime.now().getYear() - 1;
+            int year = LocalDateTime.now().getYear() - 1;
 
             oodiResponse.forEach(attainment -> attainment.attainmentDate = attainment.attainmentDate.plusYears(year));
 
@@ -127,32 +127,32 @@ public class OodiMockClient implements OodiClient {
 
     @Override
     public List<OodiEvent> getTeacherEvents(String teacherNumber) {
-        return getOodiResponse(teacherEvents, new TypeReference<>() {
+        return getOodiResponse(teacherEvents, new TypeReference<OodiResponse<OodiEvent>>() {
         });
     }
 
     @Override
     public List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
-        return getOodiResponse(teacherCourses, new TypeReference<>() {
+        return getOodiResponse(teacherCourses, new TypeReference<OodiResponse<OodiTeacherCourse>>() {
         });
     }
 
     @Override
     public List<OodiStudyRight> getStudentStudyRights(String studentNumber) {
-        return getOodiResponse(studentStudyRights, new TypeReference<>() {
+        return getOodiResponse(studentStudyRights, new TypeReference<OodiResponse<OodiStudyRight>>() {
         });
     }
 
     @Override
     public List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId) {
-        return getOodiResponse(getCourseUnitRealisationTeachers, new TypeReference<>() {
+        return getOodiResponse(getCourseUnitRealisationTeachers, new TypeReference<OodiResponse<OodiCourseUnitRealisationTeacher>>() {
         });
     }
 
     @Override
     public OodiRoles getRoles(String oodiPersonId) {
         return getSingleOodiResponse(roles,
-            new TypeReference<>() {
+            new TypeReference<OodiSingleResponse<OodiRoles>>() {
             });
     }
 
