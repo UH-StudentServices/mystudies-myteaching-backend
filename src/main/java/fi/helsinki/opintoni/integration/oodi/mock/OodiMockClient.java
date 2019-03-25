@@ -19,24 +19,19 @@ package fi.helsinki.opintoni.integration.oodi.mock;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.integration.oodi.*;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import static fi.helsinki.opintoni.security.DevUserDetailsService.STUDENT_NUMBER_TEST_NEW_STUDENT;
 import static fi.helsinki.opintoni.security.DevUserDetailsService.STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT;
 
 public class OodiMockClient implements OodiClient {
-
-    private static final String LEARNING_OPPORTUNITY_A_ID = "405437";
-    private static final String LEARNING_OPPORTUNITY_B_ID = "405438";
 
     @Value("classpath:sampledata/oodi/studentcourses.json")
     private Resource studentCourses;
@@ -82,15 +77,6 @@ public class OodiMockClient implements OodiClient {
 
     private final ObjectMapper objectMapper;
 
-    private Map<String, Resource> learningOpportunityById;
-
-    @PostConstruct
-    private void createLearningOpportunityMap() {
-        this.learningOpportunityById = ImmutableMap.of(
-            LEARNING_OPPORTUNITY_A_ID, learningOpportunityA,
-            LEARNING_OPPORTUNITY_B_ID, learningOpportunityB);
-    }
-
     public OodiMockClient(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
@@ -98,59 +84,75 @@ public class OodiMockClient implements OodiClient {
     @Override
     public List<OodiEnrollment> getEnrollments(String studentNumber) {
         if (studentNumber.equals(STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT)) {
-            return getOodiResponse(openUniversityStudentCourses, new TypeReference<OodiResponse<OodiEnrollment>>() {
+            return getOodiResponse(openUniversityStudentCourses, new TypeReference<>() {
             });
         } else {
-            return getOodiResponse(studentCourses, new TypeReference<OodiResponse<OodiEnrollment>>() {
+            List<OodiEnrollment> oodiResponse = getOodiResponse(studentCourses, new TypeReference<>() {
             });
+
+            oodiResponse.forEach(this::updateEnrollmentDates);
+
+            return oodiResponse;
         }
+    }
+
+    private void updateEnrollmentDates(OodiEnrollment enrollment) {
+        int currentYear = DateTime.now().getYear();
+
+        enrollment.startDate = enrollment.startDate.plusYears(currentYear - 1);
+        enrollment.endDate = enrollment.endDate.plusYears(currentYear - 1);
     }
 
     @Override
     public List<OodiEvent> getStudentEvents(String studentNumber) {
-        return getOodiResponse(studentEvents, new TypeReference<OodiResponse<OodiEvent>>() {
+        return getOodiResponse(studentEvents, new TypeReference<>() {
         });
     }
 
     @Override
     public List<OodiStudyAttainment> getStudyAttainments(String studentNumber) {
         if (studentNumber.equals(STUDENT_NUMBER_TEST_NEW_STUDENT)) {
-            return getOodiResponse(newStudentAttainments, new TypeReference<OodiResponse<OodiStudyAttainment>>() {
+            return getOodiResponse(newStudentAttainments, new TypeReference<>() {
             });
         } else {
-            return getOodiResponse(studentAttainments, new TypeReference<OodiResponse<OodiStudyAttainment>>() {
+            List<OodiStudyAttainment> oodiResponse = getOodiResponse(studentAttainments, new TypeReference<>() {
             });
+            int year = DateTime.now().getYear() - 1;
+
+            oodiResponse.forEach(attainment -> attainment.attainmentDate = attainment.attainmentDate.plusYears(year));
+
+            return oodiResponse;
         }
     }
 
     @Override
     public List<OodiEvent> getTeacherEvents(String teacherNumber) {
-        return getOodiResponse(teacherEvents, new TypeReference<OodiResponse<OodiEvent>>() {
+        return getOodiResponse(teacherEvents, new TypeReference<>() {
         });
     }
 
     @Override
     public List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
-        return getOodiResponse(teacherCourses, new TypeReference<OodiResponse<OodiTeacherCourse>>() {
+        return getOodiResponse(teacherCourses, new TypeReference<>() {
         });
     }
 
     @Override
     public List<OodiStudyRight> getStudentStudyRights(String studentNumber) {
-        return getOodiResponse(studentStudyRights, new TypeReference<OodiResponse<OodiStudyRight>>() {
+        return getOodiResponse(studentStudyRights, new TypeReference<>() {
         });
     }
 
     @Override
     public List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId) {
-        return getOodiResponse(getCourseUnitRealisationTeachers, new TypeReference<OodiResponse<OodiCourseUnitRealisationTeacher>>() {
+        return getOodiResponse(getCourseUnitRealisationTeachers, new TypeReference<>() {
         });
     }
 
     @Override
     public OodiRoles getRoles(String oodiPersonId) {
         return getSingleOodiResponse(roles,
-            new TypeReference<OodiSingleResponse<OodiRoles>>() {
+            new TypeReference<>() {
             });
     }
 
