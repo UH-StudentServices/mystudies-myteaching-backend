@@ -99,8 +99,8 @@ public class OodiMockClient implements OodiClient {
     private void updateEnrollmentDates(OodiEnrollment enrollment) {
         int currentYear = LocalDateTime.now().getYear();
 
-        enrollment.startDate = enrollment.startDate.plusYears(currentYear - 1);
-        enrollment.endDate = enrollment.endDate.plusYears(currentYear - 1);
+        enrollment.startDate = enrollment.startDate.plusYears(currentYear);
+        enrollment.endDate = enrollment.endDate.plusYears(currentYear);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class OodiMockClient implements OodiClient {
         } else {
             List<OodiStudyAttainment> oodiResponse = getOodiResponse(studentAttainments, new TypeReference<OodiResponse<OodiStudyAttainment>>() {
             });
-            int year = LocalDateTime.now().getYear() - 1;
+            int year = LocalDateTime.now().getYear();
 
             oodiResponse.forEach(attainment -> attainment.attainmentDate = attainment.attainmentDate.plusYears(year));
 

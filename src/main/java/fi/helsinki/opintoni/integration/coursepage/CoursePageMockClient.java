@@ -64,14 +64,15 @@ public class CoursePageMockClient implements CoursePageClient {
     private void updateEventDates(CoursePageEvent coursePageEvent) {
         int currentYear = LocalDateTime.now().getYear();
 
-        coursePageEvent.begin = coursePageEvent.begin.plusYears(currentYear - 1);
-        coursePageEvent.end = coursePageEvent.end.plusYears(currentYear - 1);
+        coursePageEvent.begin = coursePageEvent.begin.plusYears(currentYear);
+        coursePageEvent.end = coursePageEvent.end.plusYears(currentYear);
 
         if (coursePageEvent.begin.getYear() == currentYear) {
             int month = LocalDateTime.now().getMonthValue();
+            int day = LocalDateTime.now().getDayOfMonth();
 
-            coursePageEvent.begin = coursePageEvent.begin.withMonth(month).plusDays(1);
-            coursePageEvent.end = coursePageEvent.end.withMonth(month).plusDays(1);
+            coursePageEvent.begin = coursePageEvent.begin.withMonth(month).withDayOfMonth(day).plusDays(1);
+            coursePageEvent.end = coursePageEvent.end.withMonth(month).withDayOfMonth(day).plusDays(1);
         }
     }
 

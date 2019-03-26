@@ -6,22 +6,22 @@
   "events" : [
     {
       "title":"Kertaluonteinen tapahtuma 1",
-      "begin":"0000-10-28T14:00:00Z",
-      "end":"0000-11-28T14:00:00Z",
+      "begin":"-0001-10-28T14:00:00Z",
+      "end":"-0001-11-28T14:00:00Z",
       "where":"Luokkatila 7",
       "exam": false
     },
     {
       "title":"Erikoistapahtuma",
-      "begin":"0001-05-01T10:00:00Z",
-      "end":"0001-05-01T11:00:00Z",
+      "begin":"0000-05-01T10:00:00Z",
+      "end":"0000-05-01T11:00:00Z",
       "where":"Luokkahuone 023",
       "exam": false
     },
     {
       "title":"Lisäkoulutus",
-      "begin":"0002-05-06T08:00:00Z",
-      "end":"0002-05-06T09:30:00Z",
+      "begin":"0001-05-06T08:00:00Z",
+      "end":"0001-05-06T09:30:00Z",
       "where":"Sivukonttori",
       "exam": false
     }
