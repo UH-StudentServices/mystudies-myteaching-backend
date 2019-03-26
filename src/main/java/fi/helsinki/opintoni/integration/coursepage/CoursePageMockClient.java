@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,9 +51,29 @@ public class CoursePageMockClient implements CoursePageClient {
         if (TEST_COURSE_IMPLEMENTATION_NOT_FOUND_ID.equals(courseImplementationId)) {
             return new CoursePageCourseImplementation();
         }
-        Resource courses = (courseImplementationId != null) ? course1 : course2;
-        return getResponse(courses, new TypeReference<List<CoursePageCourseImplementation>>() {
+
+        Resource courses = ("123456789".equals(courseImplementationId)) ? course1 : course2;
+        CoursePageCourseImplementation course = getResponse(courses, new TypeReference<List<CoursePageCourseImplementation>>() {
         }).get(0);
+
+        course.events.forEach(this::updateEventDates);
+
+        return course;
+    }
+
+    private void updateEventDates(CoursePageEvent coursePageEvent) {
+        int currentYear = LocalDateTime.now().getYear();
+
+        coursePageEvent.begin = coursePageEvent.begin.plusYears(currentYear);
+        coursePageEvent.end = coursePageEvent.end.plusYears(currentYear);
+
+        if (coursePageEvent.begin.getYear() == currentYear) {
+            int month = LocalDateTime.now().getMonthValue();
+            int day = LocalDateTime.now().getDayOfMonth();
+
+            coursePageEvent.begin = coursePageEvent.begin.withMonth(month).withDayOfMonth(day).plusDays(1);
+            coursePageEvent.end = coursePageEvent.end.withMonth(month).withDayOfMonth(day).plusDays(1);
+        }
     }
 
     @Override

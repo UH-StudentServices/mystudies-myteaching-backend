@@ -19,24 +19,19 @@ package fi.helsinki.opintoni.integration.oodi.mock;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.integration.oodi.*;
 import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import static fi.helsinki.opintoni.security.DevUserDetailsService.STUDENT_NUMBER_TEST_NEW_STUDENT;
 import static fi.helsinki.opintoni.security.DevUserDetailsService.STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT;
 
 public class OodiMockClient implements OodiClient {
-
-    private static final String LEARNING_OPPORTUNITY_A_ID = "405437";
-    private static final String LEARNING_OPPORTUNITY_B_ID = "405438";
 
     @Value("classpath:sampledata/oodi/studentcourses.json")
     private Resource studentCourses;
@@ -82,15 +77,6 @@ public class OodiMockClient implements OodiClient {
 
     private final ObjectMapper objectMapper;
 
-    private Map<String, Resource> learningOpportunityById;
-
-    @PostConstruct
-    private void createLearningOpportunityMap() {
-        this.learningOpportunityById = ImmutableMap.of(
-            LEARNING_OPPORTUNITY_A_ID, learningOpportunityA,
-            LEARNING_OPPORTUNITY_B_ID, learningOpportunityB);
-    }
-
     public OodiMockClient(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
@@ -101,9 +87,20 @@ public class OodiMockClient implements OodiClient {
             return getOodiResponse(openUniversityStudentCourses, new TypeReference<OodiResponse<OodiEnrollment>>() {
             });
         } else {
-            return getOodiResponse(studentCourses, new TypeReference<OodiResponse<OodiEnrollment>>() {
+            List<OodiEnrollment> oodiResponse = getOodiResponse(studentCourses, new TypeReference<OodiResponse<OodiEnrollment>>() {
             });
+
+            oodiResponse.forEach(this::updateEnrollmentDates);
+
+            return oodiResponse;
         }
+    }
+
+    private void updateEnrollmentDates(OodiEnrollment enrollment) {
+        int currentYear = LocalDateTime.now().getYear();
+
+        enrollment.startDate = enrollment.startDate.plusYears(currentYear);
+        enrollment.endDate = enrollment.endDate.plusYears(currentYear);
     }
 
     @Override
@@ -118,8 +115,13 @@ public class OodiMockClient implements OodiClient {
             return getOodiResponse(newStudentAttainments, new TypeReference<OodiResponse<OodiStudyAttainment>>() {
             });
         } else {
-            return getOodiResponse(studentAttainments, new TypeReference<OodiResponse<OodiStudyAttainment>>() {
+            List<OodiStudyAttainment> oodiResponse = getOodiResponse(studentAttainments, new TypeReference<OodiResponse<OodiStudyAttainment>>() {
             });
+            int year = LocalDateTime.now().getYear();
+
+            oodiResponse.forEach(attainment -> attainment.attainmentDate = attainment.attainmentDate.plusYears(year));
+
+            return oodiResponse;
         }
     }
 
