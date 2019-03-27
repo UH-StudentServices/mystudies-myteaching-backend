@@ -60,9 +60,9 @@ guide:
 
 newsfeeds:
     studentFeedsByLocale:
-        fi: https://flamma.helsinki.fi/infotaulu/atom-bulletin.xml
-        sv: https://flamma.helsinki.fi/infotaulu/atom-bulletin-sv.xml
-        en: https://flamma.helsinki.fi/infotaulu/atom-bulletin-en.xml
+        fi: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opiskelijalle.xml
+        sv: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opiskelijalle-sv.xml
+        en: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opiskelijalle-en.xml
     teacherFeedsByLocale:
         fi: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat.xml
         sv: https://flamma.helsinki.fi/infotaulu/atom-tiedotteet-opetusasiat-sv.xml
