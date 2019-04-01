@@ -101,3 +101,7 @@ mece:
 embedlyApiKey: 2cb3558d787c40a9a7c334bc276297a6
 
 environment: prod
+
+fileService:
+    client.implementation: rest
+    base.url: https://files.it.helsinki.fi

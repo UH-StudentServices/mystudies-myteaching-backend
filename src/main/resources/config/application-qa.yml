@@ -123,3 +123,7 @@ inactiveUserCleaner:
 
 obar:
     baseUrl: https://obar-qa.it.helsinki.fi
+
+fileService:
+  client.implementation: rest
+  base.url: https://qa.files.it.helsinki.fi
