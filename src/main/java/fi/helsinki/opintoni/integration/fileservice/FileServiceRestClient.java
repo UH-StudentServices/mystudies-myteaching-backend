@@ -20,7 +20,10 @@ package fi.helsinki.opintoni.integration.fileservice;
 import com.google.common.base.Charsets;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.exception.http.RestClientServiceException;
-import org.apache.http.*;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
@@ -30,17 +33,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class FileServiceRestClient implements FileServiceClient {
 
     private static final Logger logger = LoggerFactory.getLogger(FileServiceRestClient.class);
 
-    private final String baseUrl;
     private final String token;
     private final String filesUrl;
 
     public FileServiceRestClient(String baseUrl, String token) {
-        this.baseUrl = baseUrl;
         this.token = token;
         this.filesUrl = baseUrl + "/files";
     }
@@ -121,8 +124,8 @@ public class FileServiceRestClient implements FileServiceClient {
         return new BasicHeader("Authorization", String.format("Bearer %s", token));
     }
 
-    private String getFileUrl(String path) {
-        return String.format("%s?file=%s", filesUrl, path);
+    private String getFileUrl(String path) throws UnsupportedEncodingException {
+        return String.format("%s?file=%s", filesUrl, URLEncoder.encode(path, "UTF-8"));
     }
 
     private String getFileListingUrl(String prefix) {
