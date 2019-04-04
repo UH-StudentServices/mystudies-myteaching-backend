@@ -52,6 +52,7 @@ public class ConfigurationResource extends AbstractResource {
         configuration.put("googleAnalyticsAccountTeacher", appConfiguration.get("googleAnalyticsAccount.teacher"));
         configuration.put("loginUrlTeacher", appConfiguration.get("loginUrlTeacher"));
         configuration.put("loginUrlStudent", appConfiguration.get("loginUrlStudent"));
+        configuration.put("loginUrlStudentProfile", appConfiguration.get("loginUrlStudent") + "?profile");
         configuration.put("logoutUrl", appConfiguration.get("logoutUrl"));
         configuration.put("embedlyApiKey", appConfiguration.get("embedlyApiKey"));
         configuration.put("studentAppUrl", appConfiguration.get("studentAppUrl"));

@@ -17,8 +17,12 @@
 
 package fi.helsinki.opintoni.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import fi.helsinki.opintoni.util.UriBuilder;
+import fi.helsinki.opintoni.web.arguments.ProfileRole;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +32,10 @@ import java.io.IOException;
 public class FederatedAuthenticationSuccessHandler extends BaseAuthenticationSuccessHandler {
     private static final String ERROR_PATH = "/error/maintenance";
     private static final String TEACHER_PATH_END = "teacher";
+    public static final String ATTR_NAME_REMEMBER_TARGET = "rememberTarget";
+
+    @Autowired
+    private UriBuilder uriBuilder;
 
     @Value("${teacherAppUrl}")
     String teacherAppUrl;
@@ -37,7 +45,16 @@ public class FederatedAuthenticationSuccessHandler extends BaseAuthenticationSuc
 
     @Override
     protected void handleAuthSuccess(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (request.getRequestURI().endsWith(TEACHER_PATH_END)) {
+        String redirectTarget = (String) request.getSession().getAttribute(ATTR_NAME_REMEMBER_TARGET);
+        boolean isTeacher = request.getRequestURI().endsWith(TEACHER_PATH_END);
+
+        if (redirectTarget != null) {
+            request.getSession().removeAttribute(ATTR_NAME_REMEMBER_TARGET);
+            response.sendRedirect(uriBuilder.getProfileBaseUrl(isTeacher ? ProfileRole.TEACHER : ProfileRole.STUDENT));
+            return;
+        }
+
+        if (isTeacher) {
             response.sendRedirect(teacherAppUrl);
         } else {
             response.sendRedirect(studentAppUrl);

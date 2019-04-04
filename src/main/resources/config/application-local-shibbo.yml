@@ -91,7 +91,7 @@ teacherAppUrl: https://local.teacher.helsinki.fi:3000
 studentAppUrl: https://local.student.helsinki.fi:3000
 
 profileUrl:
-  student: http://local.student.helsinki.fi:3002/profile
+  student: https://local.student.helsinki.fi:3000/profile
   teacher: http://local.teacher.helsinki.fi:3002/profile
 
 mece:

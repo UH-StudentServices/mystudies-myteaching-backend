@@ -48,7 +48,6 @@ public class ObarConfiguration {
             getKey(),
             SignatureAlgorithm.RS256,
             appConfiguration.getInteger("obar.jwtTimeout"),
-            appConfiguration.get("loginUrlStudent"),
             appConfiguration.get("logoutUrl"));
     }
 

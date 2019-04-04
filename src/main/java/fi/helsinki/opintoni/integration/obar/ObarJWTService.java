@@ -39,22 +39,19 @@ public class ObarJWTService {
     private final Key obarSecretKey;
     private final SignatureAlgorithm signatureAlgorithm;
     private final Integer expirationTimeSeconds;
-    private final String loginEndpoint;
     private final String logoutEndpoint;
 
     public ObarJWTService(Key obarSecretKey,
                           SignatureAlgorithm signatureAlgorithm,
                           Integer expirationTimeSeconds,
-                          String loginEndpoint,
                           String logoutEndpoint) {
         this.obarSecretKey = obarSecretKey;
         this.signatureAlgorithm = signatureAlgorithm;
         this.expirationTimeSeconds = expirationTimeSeconds;
-        this.loginEndpoint = loginEndpoint;
         this.logoutEndpoint = logoutEndpoint;
     }
 
-    public String generateToken(final AppUser appUser, String language) {
+    public String generateToken(final AppUser appUser, String language, String loginEndpoint) {
         String currentLang = language != null ? language : DEFAULT_LANGUAGE.getCode();
 
         Map<String, Object> claims = new HashMap<>();
