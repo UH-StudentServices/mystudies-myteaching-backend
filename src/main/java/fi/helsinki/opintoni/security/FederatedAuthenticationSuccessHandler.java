@@ -45,13 +45,15 @@ public class FederatedAuthenticationSuccessHandler extends BaseAuthenticationSuc
 
     @Override
     protected void handleAuthSuccess(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String redirectTarget = (String) request.getSession().getAttribute(ATTR_NAME_REMEMBER_TARGET);
-        boolean isTeacher = request.getRequestURI().endsWith(TEACHER_PATH_END);
+        final boolean isTeacher = request.getRequestURI().endsWith(TEACHER_PATH_END);
 
-        if (redirectTarget != null) {
-            request.getSession().removeAttribute(ATTR_NAME_REMEMBER_TARGET);
-            response.sendRedirect(uriBuilder.getProfileBaseUrl(isTeacher ? ProfileRole.TEACHER : ProfileRole.STUDENT));
-            return;
+        if (request.getSession() != null) {
+            final String redirectTarget = (String) request.getSession().getAttribute(ATTR_NAME_REMEMBER_TARGET);
+            if (redirectTarget != null) {
+                request.getSession().removeAttribute(ATTR_NAME_REMEMBER_TARGET);
+                response.sendRedirect(uriBuilder.getProfileBaseUrl(isTeacher ? ProfileRole.TEACHER : ProfileRole.STUDENT));
+                return;
+            }
         }
 
         if (isTeacher) {
