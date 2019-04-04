@@ -89,11 +89,11 @@ logoutUrl: /logout
 teacherAppUrl: http://local.teacher.helsinki.fi:3000
 studentAppUrl: http://local.student.helsinki.fi:3000
 profileUrl:
-  student: http://local.student.helsinki.fi:3002/profile
-  teacher: http://local.teacher.helsinki.fi:3002/profile
+    student: http://local.student.helsinki.fi:3000/profile
+    teacher: http://local.teacher.helsinki.fi:3000/profile
 
 mece:
-  domain: https://mece.ohtu-test.it.helsinki.fi
+    domain: https://mece.ohtu-test.it.helsinki.fi
 
 environment: local
 
