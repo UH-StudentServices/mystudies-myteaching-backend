@@ -32,6 +32,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = RestConstants.PUBLIC_API_V1, produces = WebConstants.APPLICATION_JSON_UTF8)
 public class ConfigurationResource extends AbstractResource {
 
+    public static final String LOGIN_PROFILE_SUFFIX = "?profile";
+
     private final String configuration;
 
     @Autowired
@@ -51,8 +53,9 @@ public class ConfigurationResource extends AbstractResource {
         configuration.put("googleAnalyticsAccountStudent", appConfiguration.get("googleAnalyticsAccount.student"));
         configuration.put("googleAnalyticsAccountTeacher", appConfiguration.get("googleAnalyticsAccount.teacher"));
         configuration.put("loginUrlTeacher", appConfiguration.get("loginUrlTeacher"));
+        configuration.put("loginUrlTeacherProfile", appConfiguration.get("loginUrlTeacher") + LOGIN_PROFILE_SUFFIX);
         configuration.put("loginUrlStudent", appConfiguration.get("loginUrlStudent"));
-        configuration.put("loginUrlStudentProfile", appConfiguration.get("loginUrlStudent") + "?profile");
+        configuration.put("loginUrlStudentProfile", appConfiguration.get("loginUrlStudent") + LOGIN_PROFILE_SUFFIX);
         configuration.put("logoutUrl", appConfiguration.get("logoutUrl"));
         configuration.put("embedlyApiKey", appConfiguration.get("embedlyApiKey"));
         configuration.put("studentAppUrl", appConfiguration.get("studentAppUrl"));

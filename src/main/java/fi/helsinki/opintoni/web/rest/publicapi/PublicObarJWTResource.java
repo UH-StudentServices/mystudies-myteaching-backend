@@ -61,7 +61,7 @@ public class PublicObarJWTResource extends AbstractResource {
         AppUser user = securityUtils.getAppUser().orElse(null);
         String loginUrl = appConfiguration.get("loginUrlStudent");
         if (app != null && app.equals("profile")) {
-            loginUrl += "?p";
+            loginUrl += ConfigurationResource.LOGIN_PROFILE_SUFFIX;
         }
         return response(new ObarJWTTokenDto(obarJWTService.generateToken(user, obarLang, loginUrl)));
     }
