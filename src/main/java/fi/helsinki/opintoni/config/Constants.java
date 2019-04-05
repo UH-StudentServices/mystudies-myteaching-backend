@@ -36,4 +36,8 @@ public final class Constants {
     public static final String ADMIN_ROLE_REQUIRED = "hasAuthority('ADMIN')";
     public static final String TEACHER_ROLE_REQUIRED = "hasAuthority('TEACHER')";
     public static final String STUDENT_ROLE_REQUIRED = "hasAuthority('STUDENT')";
+    public static final String LOGIN_PROFILE_QUERY_STRING = "profile";
+    public static final String LOGIN_PROFILE_SUFFIX = "?" + LOGIN_PROFILE_QUERY_STRING;
+    public static final String ATTR_NAME_REMEMBER_TARGET = "rememberTarget";
+    public static final String TEACHER_PATH_END = "teacher";
 }

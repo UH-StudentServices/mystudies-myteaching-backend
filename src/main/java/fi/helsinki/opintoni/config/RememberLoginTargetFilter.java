@@ -27,8 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.filter.GenericFilterBean;
 
-import fi.helsinki.opintoni.security.FederatedAuthenticationSuccessHandler;
-
 public class RememberLoginTargetFilter extends GenericFilterBean {
 
     @Override
@@ -37,9 +35,8 @@ public class RememberLoginTargetFilter extends GenericFilterBean {
         final HttpServletRequest req = (HttpServletRequest) request;
         final String qs = req.getQueryString();
         if (qs != null) {
-            req.getSession().setAttribute(FederatedAuthenticationSuccessHandler.ATTR_NAME_REMEMBER_TARGET, qs);
+            req.getSession().setAttribute(Constants.ATTR_NAME_REMEMBER_TARGET, qs);
         }
         chain.doFilter(request, response);
     }
-
 }

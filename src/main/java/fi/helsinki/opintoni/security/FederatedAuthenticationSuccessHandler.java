@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.util.UriBuilder;
 import fi.helsinki.opintoni.web.arguments.ProfileRole;
 
@@ -31,8 +32,6 @@ import java.io.IOException;
 @Component
 public class FederatedAuthenticationSuccessHandler extends BaseAuthenticationSuccessHandler {
     private static final String ERROR_PATH = "/error/maintenance";
-    private static final String TEACHER_PATH_END = "teacher";
-    public static final String ATTR_NAME_REMEMBER_TARGET = "rememberTarget";
 
     @Autowired
     private UriBuilder uriBuilder;
@@ -45,14 +44,16 @@ public class FederatedAuthenticationSuccessHandler extends BaseAuthenticationSuc
 
     @Override
     protected void handleAuthSuccess(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final boolean isTeacher = request.getRequestURI().endsWith(TEACHER_PATH_END);
+        final boolean isTeacher = request.getRequestURI().endsWith(Constants.TEACHER_PATH_END);
 
         if (request.getSession() != null) {
-            final String redirectTarget = (String) request.getSession().getAttribute(ATTR_NAME_REMEMBER_TARGET);
+            final String redirectTarget = (String) request.getSession().getAttribute(Constants.ATTR_NAME_REMEMBER_TARGET);
             if (redirectTarget != null) {
-                request.getSession().removeAttribute(ATTR_NAME_REMEMBER_TARGET);
-                response.sendRedirect(uriBuilder.getProfileBaseUrl(isTeacher ? ProfileRole.TEACHER : ProfileRole.STUDENT));
-                return;
+                request.getSession().removeAttribute(Constants.ATTR_NAME_REMEMBER_TARGET);
+                if(redirectTarget.equals(Constants.LOGIN_PROFILE_QUERY_STRING)) {
+                    response.sendRedirect(uriBuilder.getProfileBaseUrl(isTeacher ? ProfileRole.TEACHER : ProfileRole.STUDENT));
+                    return;
+                }
             }
         }
 
