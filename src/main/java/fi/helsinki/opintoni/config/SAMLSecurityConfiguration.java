@@ -38,7 +38,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.saml.*;
@@ -61,7 +60,6 @@ import org.springframework.security.saml.util.VelocityFactory;
 import org.springframework.security.saml.websso.*;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -105,9 +103,6 @@ public class SAMLSecurityConfiguration {
 
     @Autowired
     private CustomAuthenticationFailureHandler authenticationFailureHandler;
-
-    @Autowired
-    private Environment environment;
 
     @Autowired
     private SAMLLogoutSuccessHandler logoutSuccessHandler;
@@ -287,23 +282,6 @@ public class SAMLSecurityConfiguration {
     }
 
     @Bean
-    public FilterChainProxy samlFilter(@Autowired SAMLLogoutFilter samlLogoutFilter,
-                                       @Autowired SAMLEntryPoint samlEntryPoint,
-                                       @Autowired SAMLLogoutProcessingFilter samlLogoutProcessingFilter,
-                                       @Autowired SAMLProcessingFilter samlWebSSOProcessingFilter) throws Exception {
-        List<SecurityFilterChain> chains = new ArrayList<>();
-        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/login/**"),
-            samlEntryPoint));
-        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/logout/**"),
-            samlLogoutFilter));
-        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SingleLogout/**"),
-            samlLogoutProcessingFilter));
-        chains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/SSO/**"),
-            samlWebSSOProcessingFilter));
-        return new FilterChainProxy(chains);
-    }
-
-    @Bean
     public TLSProtocolConfigurer tlsProtocolConfigurer() {
         return new TLSProtocolConfigurer();
     }
@@ -374,6 +352,12 @@ public class SAMLSecurityConfiguration {
         extendedMetadataDelegate.setMetadataTrustCheck(true);
         extendedMetadataDelegate.setMetadataRequireSignature(requireSignature);
         return extendedMetadataDelegate;
+    }
+
+    @Bean
+    public FilterChainProxy getFilterChainProxy() {
+        return new FilterChainProxy(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/login/**"),
+            new RememberLoginTargetFilter()));
     }
 
 }

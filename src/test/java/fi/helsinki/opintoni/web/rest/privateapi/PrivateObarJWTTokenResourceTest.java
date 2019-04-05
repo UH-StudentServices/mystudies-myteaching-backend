@@ -19,9 +19,9 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
 import org.junit.Test;
+import fi.helsinki.opintoni.security.TestSecurityContext;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
-import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,9 +32,15 @@ public class PrivateObarJWTTokenResourceTest extends SpringTest {
 
     @Test
     public void thatPrivateTokenIsReturnedForLoggedInUser() throws Exception {
-        mockMvc.perform(get(JWT_TOKEN_URL).with(securityContext(studentSecurityContext())))
+        mockMvc.perform(get(JWT_TOKEN_URL).with(securityContext(TestSecurityContext.studentSecurityContext())))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.jwtToken").isNotEmpty());
+    }
+
+    @Test
+    public void thatPrivateTokenIsNotReturnedForTeacher() throws Exception {
+        mockMvc.perform(get(JWT_TOKEN_URL).with(securityContext(TestSecurityContext.teacherSecurityContext())))
+            .andExpect(status().isForbidden());
     }
 
     @Test

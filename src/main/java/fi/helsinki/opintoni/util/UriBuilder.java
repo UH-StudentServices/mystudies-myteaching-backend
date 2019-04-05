@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.util;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.domain.profile.Profile;
 import fi.helsinki.opintoni.service.profile.ProfileService;
+import fi.helsinki.opintoni.web.arguments.ProfileRole;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -81,7 +82,11 @@ public class UriBuilder {
     }
 
     private String profileBaseUrl(Profile profile) {
-        return appConfiguration.get("profileUrl." + profile.profileRole.getRole());
+        return getProfileBaseUrl(profile.profileRole);
+    }
+
+    public String getProfileBaseUrl(ProfileRole role) {
+        return appConfiguration.get("profileUrl." + role.getRole());
     }
 
 }

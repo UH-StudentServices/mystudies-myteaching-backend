@@ -18,19 +18,23 @@
 package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.dto.ObarJWTTokenDto;
+import fi.helsinki.opintoni.exception.http.ForbiddenException;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.integration.obar.ObarJWTService;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.SecurityUtils;
 import fi.helsinki.opintoni.web.WebConstants;
-import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
+import fi.helsinki.opintoni.web.rest.publicapi.PublicObarJWTResource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static fi.helsinki.opintoni.integration.obar.Constants.LANG_COOKIE_NAME;
@@ -38,21 +42,21 @@ import static fi.helsinki.opintoni.integration.obar.Constants.LANG_COOKIE_NAME;
 @RestController
 @RequestMapping(value = RestConstants.PRIVATE_API_V1, produces = WebConstants.APPLICATION_JSON_UTF8)
 @ConditionalOnProperty(prefix = "obar", name = "baseUrl")
-public class PrivateObarJWTResource extends AbstractResource {
-
-    private final ObarJWTService obarJWTService;
-    private final SecurityUtils securityUtils;
+public class PrivateObarJWTResource extends PublicObarJWTResource {
 
     @Autowired
     public PrivateObarJWTResource(ObarJWTService obarJWTService, SecurityUtils securityUtils) {
-        this.obarJWTService = obarJWTService;
-        this.securityUtils = securityUtils;
+        super(obarJWTService, securityUtils);
     }
 
+    @Override
     @GetMapping("/obar-jwt-token")
-    public ResponseEntity<ObarJWTTokenDto> getObarJWTToken(@CookieValue(name = LANG_COOKIE_NAME, required = false) String obarLang) {
-        AppUser user = securityUtils.getAppUser().orElseThrow(NotFoundException::new);
-
-        return response(new ObarJWTTokenDto(obarJWTService.generateToken(user, obarLang)));
+    public ResponseEntity<ObarJWTTokenDto> getObarJWTToken(@CookieValue(name = LANG_COOKIE_NAME, required = false) String obarLang, 
+        @Nullable @RequestParam(name = PARAM_APP_NAME) String app) {
+        AppUser user = super.securityUtils.getAppUser().orElseThrow(NotFoundException::new);
+        if (user.isStudent()) {
+            return super.getObarJWTToken(obarLang, app);
+        }
+        throw new ForbiddenException("Required role is missing");
     }
 }

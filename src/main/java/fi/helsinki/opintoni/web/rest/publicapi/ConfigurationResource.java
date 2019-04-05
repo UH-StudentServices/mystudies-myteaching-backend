@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.web.rest.publicapi;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
+import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
@@ -51,7 +52,9 @@ public class ConfigurationResource extends AbstractResource {
         configuration.put("googleAnalyticsAccountStudent", appConfiguration.get("googleAnalyticsAccount.student"));
         configuration.put("googleAnalyticsAccountTeacher", appConfiguration.get("googleAnalyticsAccount.teacher"));
         configuration.put("loginUrlTeacher", appConfiguration.get("loginUrlTeacher"));
+        configuration.put("loginUrlTeacherProfile", appConfiguration.get("loginUrlTeacher") + Constants.LOGIN_PROFILE_SUFFIX);
         configuration.put("loginUrlStudent", appConfiguration.get("loginUrlStudent"));
+        configuration.put("loginUrlStudentProfile", appConfiguration.get("loginUrlStudent") + Constants.LOGIN_PROFILE_SUFFIX);
         configuration.put("logoutUrl", appConfiguration.get("logoutUrl"));
         configuration.put("embedlyApiKey", appConfiguration.get("embedlyApiKey"));
         configuration.put("studentAppUrl", appConfiguration.get("studentAppUrl"));

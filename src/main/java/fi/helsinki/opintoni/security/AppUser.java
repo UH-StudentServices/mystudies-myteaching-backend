@@ -110,6 +110,10 @@ public final class AppUser extends User {
         return hasRole(Role.TEACHER);
     }
 
+    public boolean isStudent() {
+        return hasRole(Role.STUDENT);
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
