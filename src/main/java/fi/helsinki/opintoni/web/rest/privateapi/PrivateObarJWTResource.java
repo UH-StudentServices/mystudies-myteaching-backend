@@ -18,8 +18,10 @@
 package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.dto.ObarJWTTokenDto;
+import fi.helsinki.opintoni.exception.http.ForbiddenException;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.integration.obar.ObarJWTService;
+import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.SecurityUtils;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.RestConstants;
@@ -51,7 +53,10 @@ public class PrivateObarJWTResource extends PublicObarJWTResource {
     @GetMapping("/obar-jwt-token")
     public ResponseEntity<ObarJWTTokenDto> getObarJWTToken(@CookieValue(name = LANG_COOKIE_NAME, required = false) String obarLang, 
         @Nullable @RequestParam(name = PARAM_APP_NAME) String app) {
-        super.securityUtils.getAppUser().orElseThrow(NotFoundException::new);
-        return super.getObarJWTToken(obarLang, app);
+        AppUser user = super.securityUtils.getAppUser().orElseThrow(NotFoundException::new);
+        if (user.isStudent()) {
+            return super.getObarJWTToken(obarLang, app);
+        }
+        throw new ForbiddenException("Required role is missing");
     }
 }

@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.web.rest.publicapi;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
+import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.dto.ObarJWTTokenDto;
 import fi.helsinki.opintoni.integration.obar.ObarJWTService;
 import fi.helsinki.opintoni.security.AppUser;
@@ -62,7 +63,7 @@ public class PublicObarJWTResource extends AbstractResource {
         AppUser user = securityUtils.getAppUser().orElse(null);
         String loginUrl = appConfiguration.get("loginUrlStudent");
         if (app != null && app.equals("profile")) {
-            loginUrl += ConfigurationResource.LOGIN_PROFILE_SUFFIX;
+            loginUrl += Constants.LOGIN_PROFILE_SUFFIX;
         }
         return response(new ObarJWTTokenDto(obarJWTService.generateToken(user, obarLang, loginUrl)));
     }

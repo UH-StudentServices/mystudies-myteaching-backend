@@ -50,7 +50,7 @@ public class FederatedAuthenticationSuccessHandler extends BaseAuthenticationSuc
             final String redirectTarget = (String) request.getSession().getAttribute(Constants.ATTR_NAME_REMEMBER_TARGET);
             if (redirectTarget != null) {
                 request.getSession().removeAttribute(Constants.ATTR_NAME_REMEMBER_TARGET);
-                if(redirectTarget.equals(Constants.LOGIN_PROFILE_QUERY_STRING)) {
+                if (redirectTarget.equals(Constants.LOGIN_PROFILE_QUERY_STRING)) {
                     response.sendRedirect(uriBuilder.getProfileBaseUrl(isTeacher ? ProfileRole.TEACHER : ProfileRole.STUDENT));
                     return;
                 }
