@@ -60,7 +60,7 @@ public class SecurityUtils {
 
     public Optional<AppUser> getAppUser() {
         return getAuthentication().map(Authentication::getPrincipal)
-                .map((principal) -> principal instanceof UserDetails ? principal : (AppUser) null)
+                .map((principal) -> principal instanceof UserDetails ? principal : null)
                 .map(AppUser.class::cast);
     }
 
