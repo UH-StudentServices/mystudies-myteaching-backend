@@ -25,9 +25,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.security.web.DefaultSecurityFilterChain;
-import org.springframework.security.web.FilterChainProxy;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.GenericFilterBean;
 
 import fi.helsinki.opintoni.security.FederatedAuthenticationSuccessHandler;
@@ -45,8 +42,4 @@ public class RememberLoginTargetFilter extends GenericFilterBean {
         chain.doFilter(request, response);
     }
 
-    public static final FilterChainProxy getFilterChainProxy() {
-        return new FilterChainProxy(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/login/**"),
-                new RememberLoginTargetFilter()));
-    }
 }

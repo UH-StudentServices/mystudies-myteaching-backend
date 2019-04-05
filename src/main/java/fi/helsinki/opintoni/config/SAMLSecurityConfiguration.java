@@ -58,9 +58,12 @@ import org.springframework.security.saml.trust.httpclient.TLSProtocolConfigurer;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.security.saml.util.VelocityFactory;
 import org.springframework.security.saml.websso.*;
+import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -349,6 +352,12 @@ public class SAMLSecurityConfiguration {
         extendedMetadataDelegate.setMetadataTrustCheck(true);
         extendedMetadataDelegate.setMetadataRequireSignature(requireSignature);
         return extendedMetadataDelegate;
+    }
+
+    @Bean
+    public FilterChainProxy getFilterChainProxy() {
+        return new FilterChainProxy(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/saml/login/**"),
+            new RememberLoginTargetFilter()));
     }
 
 }

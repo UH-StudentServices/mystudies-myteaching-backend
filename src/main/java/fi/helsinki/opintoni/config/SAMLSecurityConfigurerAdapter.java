@@ -32,6 +32,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.saml.SAMLAuthenticationProvider;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
@@ -53,6 +54,9 @@ public class SAMLSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter 
     @Autowired
     private SAMLAuthenticationProvider samlAuthenticationProvider;
     
+    @Autowired
+    private FilterChainProxy loginTargetFilter;
+    
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -66,7 +70,7 @@ public class SAMLSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter 
             .disable();
 
         http
-            .addFilterAfter(RememberLoginTargetFilter.getFilterChainProxy(), BasicAuthenticationFilter.class)
+            .addFilterAfter(loginTargetFilter, BasicAuthenticationFilter.class)
             .exceptionHandling()
             .authenticationEntryPoint(authenticationEntryPoint);
 
