@@ -1,4 +1,4 @@
-id;edu_person_principal_name;created_by;oodi_person_id;last_login_date
+id;edu_person_principal_name;created_by;person_id;last_login_date
 nextval('user_id_seq');test@helsinki.fi;system;100;now()
 nextval('user_id_seq');person@helsinki.fi;system;200;now()
 nextval('user_id_seq');opiskelija@helsinki.fi;system;987654321;now()

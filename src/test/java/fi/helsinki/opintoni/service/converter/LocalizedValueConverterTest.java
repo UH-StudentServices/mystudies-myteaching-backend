@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.service.converter;
 
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryLocale;
 import fi.helsinki.opintoni.integration.studyregistry.LocalizedText;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Locale;
 
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryLocale.*;
+import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryLocale.EN;
+import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryLocale.FI;
+import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryLocale.SV;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LocalizedValueConverterTest extends SpringTest {
