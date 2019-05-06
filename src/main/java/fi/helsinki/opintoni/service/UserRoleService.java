@@ -21,8 +21,6 @@ import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
-import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiEnrollment;
-import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiTeacherCourse;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;

@@ -21,8 +21,6 @@ import fi.helsinki.opintoni.dto.StudyAttainmentDto;
 import fi.helsinki.opintoni.dto.TeacherDto;
 import fi.helsinki.opintoni.integration.studyregistry.StudyAttainment;
 import fi.helsinki.opintoni.integration.studyregistry.Teacher;
-import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudyAttainment;
-import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiTeacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

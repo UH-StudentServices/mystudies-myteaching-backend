@@ -22,7 +22,6 @@ import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.LocationDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
-import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.resolver;
 
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRight;
-import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudyRight;
 import fi.helsinki.opintoni.service.pilotdegreeprogramme.PilotDegreeProgrammeProperties;
 import org.springframework.beans.factory.annotation.Autowired;
