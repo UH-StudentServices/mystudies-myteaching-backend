@@ -15,7 +15,7 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.studyregistry.oodi;
+package fi.helsinki.opintoni.service.profile;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.integration.esb.ESBClient;

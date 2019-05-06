@@ -15,7 +15,7 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration;
+package fi.helsinki.opintoni.integration.studyregistry;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
