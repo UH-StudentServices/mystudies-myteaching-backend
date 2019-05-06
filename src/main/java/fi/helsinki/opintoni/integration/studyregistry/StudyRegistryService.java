@@ -49,7 +49,7 @@ public class StudyRegistryService {
 
     @Cacheable(value = CacheConstants.TEACHER_EVENTS, cacheManager = "transientCacheManager")
     public List<Event> getTeacherEvents(String teacherNumber) {
-        return getStudyRegistry(TEACHER_EVENTS).getStudentEvents(teacherNumber);
+        return getStudyRegistry(TEACHER_EVENTS).getTeacherEvents(teacherNumber);
     }
 
     public List<StudyAttainment> getStudyAttainments(String studentNumber) {

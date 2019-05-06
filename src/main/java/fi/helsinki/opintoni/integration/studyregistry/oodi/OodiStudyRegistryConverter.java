@@ -80,6 +80,7 @@ public class OodiStudyRegistryConverter {
         teacherCourse.parentId = oodiTeacherCourse.parentId;
         teacherCourse.position = oodiTeacherCourse.position;
         teacherCourse.realisationId = oodiTeacherCourse.realisationId;
+        teacherCourse.startDate = oodiTeacherCourse.startDate;
         teacherCourse.endDate = oodiTeacherCourse.endDate;
 
         return teacherCourse;
