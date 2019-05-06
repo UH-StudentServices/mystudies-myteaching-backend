@@ -3,13 +3,9 @@ package fi.helsinki.opintoni.integration.studyregistry;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataset.COURSE_REALISATION_TEACHERS;

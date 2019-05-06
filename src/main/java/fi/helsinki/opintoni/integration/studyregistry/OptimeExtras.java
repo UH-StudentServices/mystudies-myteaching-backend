@@ -15,7 +15,7 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.studyregistry.oodi;
+package fi.helsinki.opintoni.integration.studyregistry;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

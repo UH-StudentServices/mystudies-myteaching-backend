@@ -15,9 +15,16 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.studyregistry.oodi;
+package fi.helsinki.opintoni.integration;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
+import fi.helsinki.opintoni.integration.studyregistry.Event;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
+import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiEnrollment;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiEvent;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiTeacherCourse;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +34,16 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class OodiRestClientCacheTest extends SpringTest {
-    //TODO: Change to use StudyRegistryService
+public class StudyRegistryServiceCacheTest extends SpringTest {
     @Autowired
-    private OodiClient oodiRestClient;
+    private StudyRegistryService studyRegistryService;
 
     @Test
     public void thatStudentEnrollmentsAreCached() {
         studentRequestChain("123").enrollments();
 
-        List<OodiEnrollment> enrollments = oodiRestClient.getEnrollments("123");
-        List<OodiEnrollment> cachedEnrollments = oodiRestClient.getEnrollments("123");
+        List<Enrollment> enrollments = studyRegistryService.getEnrollments("123");
+        List<Enrollment> cachedEnrollments = studyRegistryService.getEnrollments("123");
 
         assertThat(cachedEnrollments).isSameAs(enrollments);
     }
@@ -46,8 +52,8 @@ public class OodiRestClientCacheTest extends SpringTest {
     public void thatStudentEventsAreCached() {
         studentRequestChain("123").events();
 
-        List<OodiEvent> events = oodiRestClient.getStudentEvents("123");
-        List<OodiEvent> cachedEvents = oodiRestClient.getStudentEvents("123");
+        List<Event> events = studyRegistryService.getStudentEvents("123");
+        List<Event> cachedEvents = studyRegistryService.getStudentEvents("123");
 
         assertThat(cachedEvents).isSameAs(events);
     }
@@ -58,8 +64,8 @@ public class OodiRestClientCacheTest extends SpringTest {
 
         String sinceDateString = DateTimeUtil.getSemesterStartDateString(LocalDate.now());
 
-        List<OodiTeacherCourse> courses = oodiRestClient.getTeacherCourses("123", sinceDateString);
-        List<OodiTeacherCourse> cachedCourses = oodiRestClient.getTeacherCourses("123", sinceDateString);
+        List<TeacherCourse> courses = studyRegistryService.getTeacherCourses("123", sinceDateString);
+        List<TeacherCourse> cachedCourses = studyRegistryService.getTeacherCourses("123", sinceDateString);
 
         assertThat(cachedCourses).isSameAs(courses);
     }
@@ -68,8 +74,8 @@ public class OodiRestClientCacheTest extends SpringTest {
     public void thatTeacherEventsAreCached() {
         teacherRequestChain("123").events();
 
-        List<OodiEvent> events = oodiRestClient.getTeacherEvents("123");
-        List<OodiEvent> cachedEvents = oodiRestClient.getTeacherEvents("123");
+        List<Event> events = studyRegistryService.getTeacherEvents("123");
+        List<Event> cachedEvents = studyRegistryService.getTeacherEvents("123");
 
         assertThat(cachedEvents).isSameAs(events);
     }

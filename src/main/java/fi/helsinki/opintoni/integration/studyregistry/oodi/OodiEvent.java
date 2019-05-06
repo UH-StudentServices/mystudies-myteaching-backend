@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.integration.studyregistry.oodi;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.Lists;
+import fi.helsinki.opintoni.integration.studyregistry.OptimeExtras;
 import fi.helsinki.opintoni.util.LocalDateTimeDeserializer;
 
 import java.time.LocalDateTime;

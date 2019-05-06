@@ -1,7 +1,6 @@
 package fi.helsinki.opintoni.integration.studyregistry;
 
 import com.google.common.collect.Lists;
-import fi.helsinki.opintoni.integration.studyregistry.oodi.OptimeExtras;
 
 import java.time.LocalDateTime;
 import java.util.List;
