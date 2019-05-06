@@ -54,26 +54,26 @@ public class PublicImageResource extends AbstractResource {
 
     // When Obar is in production use, this endpoint should be removed.
     @RequestMapping(
-        value = "/avatar/{oodiPersonId}",
+        value = "/avatar/{personId}",
         method = RequestMethod.GET,
         produces = MediaType.IMAGE_JPEG_VALUE
     )
-    public ResponseEntity<BufferedImage> getUserAvatarByOodiPersonId(@PathVariable("oodiPersonId") String oodiPersonId) {
+    public ResponseEntity<BufferedImage> getUserAvatarByPersonId(@PathVariable("personId") String personId) {
         return ResponseEntity.ok()
             .headers(headersWithContentType(MediaType.IMAGE_JPEG))
-            .body(userSettingsService.getUserAvatarImageByOodiPersonId(oodiPersonId));
+            .body(userSettingsService.getUserAvatarImageByPersonId(personId));
     }
 
     @RequestMapping(
-        value = "/background/{oodiPersonId}",
+        value = "/background/{personId}",
         method = RequestMethod.GET,
         produces = MediaType.IMAGE_JPEG_VALUE
     )
-    public ResponseEntity<BufferedImage> getUserBackgroundByOodiPersonId(@PathVariable("oodiPersonId") String oodiPersonId)
+    public ResponseEntity<BufferedImage> getUserBackgroundByOodiPersonId(@PathVariable("personId") String personId)
         throws IOException {
         return ResponseEntity.ok()
             .headers(headersWithContentType(MediaType.IMAGE_JPEG))
-            .body(userSettingsService.getUserBackgroundImage(oodiPersonId));
+            .body(userSettingsService.getUserBackgroundImage(personId));
     }
 
     @RequestMapping(

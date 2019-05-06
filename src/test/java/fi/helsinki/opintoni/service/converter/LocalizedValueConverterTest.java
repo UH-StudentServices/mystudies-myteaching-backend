@@ -19,8 +19,8 @@ package fi.helsinki.opintoni.service.converter;
 
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.integration.oodi.OodiLocale;
-import fi.helsinki.opintoni.integration.oodi.OodiLocalizedValue;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiLocale;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.LocalizedText;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,10 +40,10 @@ public class LocalizedValueConverterTest extends SpringTest {
 
     @Test
     public void thatItCanLocalizeToFinnish() {
-        List<OodiLocalizedValue> oodiLocalizedValues = Lists.newArrayList(
-            new OodiLocalizedValue(OodiLocale.FI, FINNISH_VALUE),
-            new OodiLocalizedValue(OodiLocale.SV, SWEDISH_VALUE),
-            new OodiLocalizedValue(OodiLocale.EN, ENGLISH_VALUE));
+        List<LocalizedText> oodiLocalizedValues = Lists.newArrayList(
+            new LocalizedText(OodiLocale.FI, FINNISH_VALUE),
+            new LocalizedText(OodiLocale.SV, SWEDISH_VALUE),
+            new LocalizedText(OodiLocale.EN, ENGLISH_VALUE));
 
         assertThat(FINNISH_VALUE)
             .isEqualTo(localizedValueConverter.toLocalizedString(oodiLocalizedValues, new Locale("fi")));
@@ -51,10 +51,10 @@ public class LocalizedValueConverterTest extends SpringTest {
 
     @Test
     public void thatItCanLocalizeToSwedish() {
-        List<OodiLocalizedValue> oodiLocalizedValues = Lists.newArrayList(
-            new OodiLocalizedValue(OodiLocale.FI, FINNISH_VALUE),
-            new OodiLocalizedValue(OodiLocale.SV, SWEDISH_VALUE),
-            new OodiLocalizedValue(OodiLocale.EN, ENGLISH_VALUE));
+        List<LocalizedText> oodiLocalizedValues = Lists.newArrayList(
+            new LocalizedText(OodiLocale.FI, FINNISH_VALUE),
+            new LocalizedText(OodiLocale.SV, SWEDISH_VALUE),
+            new LocalizedText(OodiLocale.EN, ENGLISH_VALUE));
 
         assertThat(SWEDISH_VALUE)
             .isEqualTo(localizedValueConverter.toLocalizedString(oodiLocalizedValues, new Locale("sv")));
@@ -62,10 +62,10 @@ public class LocalizedValueConverterTest extends SpringTest {
 
     @Test
     public void thatItCanLocalizeToEnglish() {
-        List<OodiLocalizedValue> oodiLocalizedValues = Lists.newArrayList(
-            new OodiLocalizedValue(OodiLocale.FI, FINNISH_VALUE),
-            new OodiLocalizedValue(OodiLocale.SV, SWEDISH_VALUE),
-            new OodiLocalizedValue(OodiLocale.EN, ENGLISH_VALUE));
+        List<LocalizedText> oodiLocalizedValues = Lists.newArrayList(
+            new LocalizedText(OodiLocale.FI, FINNISH_VALUE),
+            new LocalizedText(OodiLocale.SV, SWEDISH_VALUE),
+            new LocalizedText(OodiLocale.EN, ENGLISH_VALUE));
 
         assertThat(ENGLISH_VALUE)
             .isEqualTo(localizedValueConverter.toLocalizedString(oodiLocalizedValues, Locale.ENGLISH));
@@ -73,9 +73,9 @@ public class LocalizedValueConverterTest extends SpringTest {
 
     @Test
     public void thatItWillChooseTheDefaultIfMatchingLocaleIsNotFound() {
-        List<OodiLocalizedValue> oodiLocalizedValues = Lists.newArrayList(
-            new OodiLocalizedValue(OodiLocale.FI, FINNISH_VALUE),
-            new OodiLocalizedValue(OodiLocale.SV, SWEDISH_VALUE));
+        List<LocalizedText> oodiLocalizedValues = Lists.newArrayList(
+            new LocalizedText(OodiLocale.FI, FINNISH_VALUE),
+            new LocalizedText(OodiLocale.SV, SWEDISH_VALUE));
 
         assertThat(FINNISH_VALUE)
             .isEqualTo(localizedValueConverter.toLocalizedString(oodiLocalizedValues, Locale.ENGLISH));
@@ -83,8 +83,8 @@ public class LocalizedValueConverterTest extends SpringTest {
 
     @Test
     public void thatItWillChooseTheFirstIfMatchingOrDefaultLocaleIsNotFound() {
-        List<OodiLocalizedValue> oodiLocalizedValues = Lists.newArrayList(
-            new OodiLocalizedValue(OodiLocale.SV, SWEDISH_VALUE));
+        List<LocalizedText> oodiLocalizedValues = Lists.newArrayList(
+            new LocalizedText(OodiLocale.SV, SWEDISH_VALUE));
 
         assertThat(SWEDISH_VALUE)
             .isEqualTo(localizedValueConverter.toLocalizedString(oodiLocalizedValues, Locale.ENGLISH));

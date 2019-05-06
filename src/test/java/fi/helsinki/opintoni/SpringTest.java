@@ -266,7 +266,7 @@ public abstract class SpringTest {
                 .eduPersonPrincipalName("opiskelija@helsinki.fi")
                 .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
                 .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
-                .oodiPersonId("1111")
+                .personId("1111")
                 .build(),
             ""));
     }
@@ -280,7 +280,7 @@ public abstract class SpringTest {
                 .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.FACULTY))
                 .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
                 .teacherFacultyCode("A10000")
-                .oodiPersonId("2222")
+                .personId("2222")
                 .build(),
             ""));
     }

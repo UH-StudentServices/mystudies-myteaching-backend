@@ -18,17 +18,20 @@
 package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.dto.CourseDto;
-import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiTeacherCourse;
-import fi.helsinki.opintoni.resolver.EventTypeResolver;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
+import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
 import fi.helsinki.opintoni.service.converter.CourseConverter;
-import fi.helsinki.opintoni.service.converter.LearningOpportunityConverter;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -37,27 +40,21 @@ import static java.util.stream.Collectors.toList;
 @Service
 public class CourseService {
 
-    private final OodiClient oodiClient;
+    private final StudyRegistryService studyRegistryService;
     private final CourseConverter courseConverter;
-    private final LearningOpportunityConverter learningOpportunityConverter;
-    private final EventTypeResolver eventTypeResolver;
 
     @Autowired
-    public CourseService(OodiClient oodiClient,
-                         CourseConverter courseConverter,
-                         LearningOpportunityConverter learningOpportunityConverter,
-                         EventTypeResolver eventTypeResolver) {
-        this.oodiClient = oodiClient;
+    public CourseService(StudyRegistryService studyRegistryService,
+                         CourseConverter courseConverter) {
+        this.studyRegistryService = studyRegistryService;
         this.courseConverter = courseConverter;
-        this.learningOpportunityConverter = learningOpportunityConverter;
-        this.eventTypeResolver = eventTypeResolver;
     }
 
     public List<CourseDto> getTeacherCourses(String teacherNumber, Locale locale) {
-        List<OodiTeacherCourse> oodiTeacherCourses = oodiClient
+        List<TeacherCourse> oodiTeacherCourses = studyRegistryService
             .getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()));
 
-        Map<String, OodiTeacherCourse> coursesByRealisationIds = oodiTeacherCourses.stream()
+        Map<String, TeacherCourse> coursesByRealisationIds = oodiTeacherCourses.stream()
               .collect(Collectors.toMap(c -> c.realisationId, Function.identity()));
 
         return oodiTeacherCourses
@@ -69,7 +66,7 @@ public class CourseService {
     }
 
     public List<CourseDto> getStudentCourses(String studentNumber, Locale locale) {
-        return oodiClient.getEnrollments(studentNumber).stream()
+        return studyRegistryService.getEnrollments(studentNumber).stream()
             .map(c -> courseConverter.toDto(c, locale))
             .filter(Optional::isPresent)
             .map(Optional::get)
@@ -77,14 +74,14 @@ public class CourseService {
     }
 
     public List<String> getTeacherCourseIds(String teacherNumber) {
-        return oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
+        return studyRegistryService.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
             .filter(e -> !e.isCancelled)
             .map(e -> String.valueOf(e.realisationId))
             .collect(toList());
     }
 
     public List<String> getStudentCourseIds(String studentNumber) {
-        return oodiClient.getEnrollments(studentNumber)
+        return studyRegistryService.getEnrollments(studentNumber)
             .stream()
             .filter(e -> !e.isCancelled)
             .map(e -> String.valueOf(e.realisationId))
@@ -105,9 +102,9 @@ public class CourseService {
         return courseDtos;
     }
 
-    private boolean isChildCourseWithoutRoot(OodiTeacherCourse oodiTeacherCourse, Map<String, OodiTeacherCourse> coursesByRealisationIds) {
-        return !oodiTeacherCourse.realisationId.equals(oodiTeacherCourse.rootId) &&
-            !coursesByRealisationIds.containsKey(oodiTeacherCourse.rootId);
+    private boolean isChildCourseWithoutRoot(TeacherCourse teacherCourse, Map<String, TeacherCourse> coursesByRealisationIds) {
+        return !teacherCourse.realisationId.equals(teacherCourse.rootId) &&
+            !coursesByRealisationIds.containsKey(teacherCourse.rootId);
     }
 
 }

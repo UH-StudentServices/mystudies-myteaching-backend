@@ -17,9 +17,9 @@
 
 package fi.helsinki.opintoni.service;
 
-import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiEnrollment;
-import fi.helsinki.opintoni.integration.oodi.OodiTeacherCourse;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiClient;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiEnrollment;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiTeacherCourse;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import org.junit.Test;
 
@@ -41,7 +41,7 @@ public class OodiUserRoleServiceTest {
     private static final List<String> USER_ENROLLMENTS_OPEN_UNIVERSITY = newArrayList("A123", "a456");
 
     private final OodiClient oodiClient = mock(OodiClient.class);
-    private final OodiUserRoleService oodiUserRoleService = new OodiUserRoleService(oodiClient);
+    private final UserRoleService oodiUserRoleService = new UserRoleService(oodiClient);
 
     private void setupOodiClientMockForStudent(List<String> enrollments) {
         when(oodiClient.getEnrollments(STUDENT_NUMBER))

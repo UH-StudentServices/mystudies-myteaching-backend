@@ -78,7 +78,7 @@ public class FacultyConverterTest extends SpringTest {
 
     private AppUser createTeacher() {
         return new AppUser.AppUserBuilder()
-            .oodiPersonId("123")
+            .personId("123")
             .employeeNumber(TestConstants.EMPLOYEE_NUMBER)
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.FACULTY))
@@ -89,7 +89,7 @@ public class FacultyConverterTest extends SpringTest {
 
     private AppUser createStudent() {
         return new AppUser.AppUserBuilder()
-            .oodiPersonId("123")
+            .personId("123")
             .studentNumber(TestConstants.STUDENT_NUMBER)
             .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))

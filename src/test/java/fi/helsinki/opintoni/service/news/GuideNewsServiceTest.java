@@ -18,8 +18,8 @@
 package fi.helsinki.opintoni.service.news;
 
 import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsClient;
-import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiStudyRight;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiClient;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudyRight;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

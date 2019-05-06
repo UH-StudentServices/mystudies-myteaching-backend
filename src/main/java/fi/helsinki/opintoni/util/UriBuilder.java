@@ -43,8 +43,8 @@ public class UriBuilder {
         return getAbsoluteUrl(appConfiguration.get("fileStorage.uri") + "/" + filename);
     }
 
-    public String getUserAvatarUrlByOodiPersonId(String oodiPersonId) {
-        return getAbsoluteUrl(RestConstants.PUBLIC_API_V1 + "/images/avatar/" + oodiPersonId);
+    public String getUserAvatarUrlByPersonId(String personId) {
+        return getAbsoluteUrl(RestConstants.PUBLIC_API_V1 + "/images/avatar/" + personId);
     }
 
     public String getProfileAvatarUrl(ProfileService.ProfileUrlContext profileUrlContext) {

@@ -21,10 +21,9 @@ import com.google.common.collect.ImmutableList;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.dto.EventDtoBuilder;
 import fi.helsinki.opintoni.dto.OptimeExtrasDto;
-import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
-import fi.helsinki.opintoni.integration.oodi.OodiEvent;
+import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.resolver.LocationResolver;
 import fi.helsinki.opintoni.util.CourseMaterialDtoFactory;
@@ -37,7 +36,6 @@ import java.util.Locale;
 @Component
 public class EventConverter {
 
-    private final CoursePageClient coursePageClient;
     private final EventTypeResolver eventTypeResolver;
     private final LocationResolver locationResolver;
     private final CoursePageUriBuilder coursePageUriBuilder;
@@ -45,13 +43,11 @@ public class EventConverter {
     private final EnrollmentNameConverter enrollmentNameConverter;
 
     @Autowired
-    public EventConverter(CoursePageClient coursePageClient,
-                          EventTypeResolver eventTypeResolver,
+    public EventConverter(EventTypeResolver eventTypeResolver,
                           LocationResolver locationResolver,
                           CoursePageUriBuilder coursePageUriBuilder,
                           CourseMaterialDtoFactory courseMaterialDtoFactory,
                           EnrollmentNameConverter enrollmentNameConverter) {
-        this.coursePageClient = coursePageClient;
         this.eventTypeResolver = eventTypeResolver;
         this.locationResolver = locationResolver;
         this.coursePageUriBuilder = coursePageUriBuilder;
@@ -76,7 +72,7 @@ public class EventConverter {
             .createEventDto();
     }
 
-    public EventDto toDto(OodiEvent event, CoursePageCourseImplementation coursePage, Locale locale) {
+    public EventDto toDto(Event event, CoursePageCourseImplementation coursePage, Locale locale) {
         return new EventDtoBuilder()
             .setType(eventTypeResolver.getEventTypeByOodiTypeCode(event.typeCode))
             .setSource(EventDto.Source.OODI)

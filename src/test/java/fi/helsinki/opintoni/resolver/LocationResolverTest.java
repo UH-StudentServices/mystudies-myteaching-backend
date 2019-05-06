@@ -20,8 +20,8 @@ package fi.helsinki.opintoni.resolver;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.LocationDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
-import fi.helsinki.opintoni.integration.oodi.OodiEvent;
-import fi.helsinki.opintoni.integration.oodi.OptimeExtras;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiEvent;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OptimeExtras;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

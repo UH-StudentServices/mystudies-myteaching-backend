@@ -18,7 +18,7 @@
 package fi.helsinki.opintoni.service.converter;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
-import fi.helsinki.opintoni.integration.oodi.OodiLocalizedValue;
+import fi.helsinki.opintoni.integration.studyregistry.LocalizedText;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,10 +37,10 @@ public class LocalizedValueConverter {
         defaultLanguage = appConfiguration.get("language.default");
     }
 
-    public String toLocalizedString(List<OodiLocalizedValue> oodiLocalizedValues, Locale locale) {
-        return getLocalization(oodiLocalizedValues, locale)
-            .orElseGet(() -> getDefaultLocalization(oodiLocalizedValues)
-            .orElseGet(() -> getFirstLocalization(oodiLocalizedValues)
+    public String toLocalizedString(List<LocalizedText> localizedTexts, Locale locale) {
+        return getLocalization(localizedTexts, locale)
+            .orElseGet(() -> getDefaultLocalization(localizedTexts)
+            .orElseGet(() -> getFirstLocalization(localizedTexts)
             .orElse(null)));
     }
 
@@ -58,23 +58,23 @@ public class LocalizedValueConverter {
         }
     }
 
-    private Optional<String> getLocalization(List<OodiLocalizedValue> oodiLocalizedValues, Locale locale) {
-        return getLocalizationByLanguage(oodiLocalizedValues, locale.getLanguage());
+    private Optional<String> getLocalization(List<LocalizedText> localizedTexts, Locale locale) {
+        return getLocalizationByLanguage(localizedTexts, locale.getLanguage());
     }
 
-    private Optional<String> getDefaultLocalization(List<OodiLocalizedValue> oodiLocalizedValues) {
-        return getLocalizationByLanguage(oodiLocalizedValues, defaultLanguage);
+    private Optional<String> getDefaultLocalization(List<LocalizedText> localizedTexts) {
+        return getLocalizationByLanguage(localizedTexts, defaultLanguage);
     }
 
-    private Optional<String> getFirstLocalization(List<OodiLocalizedValue> oodiLocalizedValues) {
-        return oodiLocalizedValues
+    private Optional<String> getFirstLocalization(List<LocalizedText> localizedTexts) {
+        return localizedTexts
             .stream()
             .findFirst()
             .map(oodiLocalizedValue -> oodiLocalizedValue.text);
     }
 
-    private Optional<String> getLocalizationByLanguage(List<OodiLocalizedValue> oodiLocalizedValues, String language) {
-        return oodiLocalizedValues
+    private Optional<String> getLocalizationByLanguage(List<LocalizedText> localizedTexts, String language) {
+        return localizedTexts
             .stream()
             .filter(oodiLocalizedValue -> language.equals(oodiLocalizedValue.langcode.toString()))
             .findFirst()

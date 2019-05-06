@@ -2101,4 +2101,7 @@
         <dropTable tableName="persistent_audit_event" cascadeConstraints="true"></dropTable>
         <dropTable tableName="persistent_audit_event_data" cascadeConstraints="true"></dropTable>
     </changeSet>
+    <changeSet id="OO-1339 rename oodi_person_id to person_id" author="Marko Rautajoki">
+        <renameColumn tableName="user_account" oldColumnName="oodi_person_id" newColumnName="person_id"></renameColumn>
+    </changeSet>
 </databaseChangeLog>

@@ -44,8 +44,8 @@ public class User extends AbstractAuditingEntity {
     public String eduPersonPrincipalName;
 
     @NotNull
-    @Column(name = "oodi_person_id")
-    public String oodiPersonId;
+    @Column(name = "person_id")
+    public String personId;
 
     @NotNull
     @Column(name = "last_login_date")

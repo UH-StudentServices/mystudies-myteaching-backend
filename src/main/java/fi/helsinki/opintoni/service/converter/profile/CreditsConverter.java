@@ -18,7 +18,7 @@
 package fi.helsinki.opintoni.service.converter.profile;
 
 import fi.helsinki.opintoni.dto.profile.CreditsDto;
-import fi.helsinki.opintoni.integration.oodi.OodiStudentInfo;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudentInfo;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -22,8 +22,8 @@ import fi.helsinki.opintoni.domain.CalendarFeed;
 import fi.helsinki.opintoni.dto.CalendarFeedDto;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.exception.http.CalendarFeedNotFoundException;
-import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiRoles;
+import fi.helsinki.opintoni.integration.studyregistry.Person;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.util.TimeZoneUtils;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.DateTime;
@@ -43,20 +43,20 @@ import static fi.helsinki.opintoni.service.TimeService.HELSINKI_ZONE_ID;
 public class CalendarService {
 
     private final EventService eventService;
-    private final OodiClient oodiClient;
+    private final StudyRegistryService studyRegistryService;
     private final CalendarTransactionalService calendarTransactionalService;
     private final TimeService timeService;
     private final TimeZoneUtils timeZoneUtils;
 
     @Autowired
     public CalendarService(EventService eventService,
-                           OodiClient oodiClient,
+                           StudyRegistryService studyRegistryService,
                            CalendarTransactionalService calendarTransactionalService,
                            TimeService timeService,
                            TimeZoneUtils timeZoneUtils) {
 
         this.eventService = eventService;
-        this.oodiClient = oodiClient;
+        this.studyRegistryService = studyRegistryService;
         this.calendarTransactionalService = calendarTransactionalService;
         this.timeService = timeService;
         this.timeZoneUtils = timeZoneUtils;
@@ -86,12 +86,12 @@ public class CalendarService {
 
         calendar.getComponents().add(timeZone);
 
-        OodiRoles oodiRoles = oodiClient.getRoles(calendarFeed.user.oodiPersonId);
+        Person person = studyRegistryService.getPerson(calendarFeed.user.personId);
 
-        List<EventDto> studentEvents = Optional.ofNullable(oodiRoles.studentNumber)
+        List<EventDto> studentEvents = Optional.ofNullable(person.studentNumber)
             .map(s -> eventService.getStudentEvents(s, locale))
             .orElse(Lists.newArrayList());
-        List<EventDto> teacherEvents = Optional.ofNullable(oodiRoles.teacherNumber)
+        List<EventDto> teacherEvents = Optional.ofNullable(person.teacherNumber)
             .map(s -> eventService.getTeacherEvents(s, locale))
             .orElse(Lists.newArrayList());
 

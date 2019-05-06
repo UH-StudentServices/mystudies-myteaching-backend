@@ -20,7 +20,7 @@ package fi.helsinki.opintoni.service.usefullink;
 import fi.helsinki.opintoni.domain.UsefulLink;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.security.AppUser;
-import fi.helsinki.opintoni.service.OodiUserRoleService;
+import fi.helsinki.opintoni.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,14 +31,14 @@ import java.util.Map;
 public class StudentDefaultUsefulLinksService extends DefaultUsefulLinksService {
 
     private final UsefulLinkTransactionalService usefulLinkTransactionalService;
-    private final OodiUserRoleService oodiUserRoleService;
+    private final UserRoleService oodiUserRoleService;
     private final List<Map<String, String>> defaultUsefulLinks;
     private final List<Map<String, String>> openUniversityDefaultUsefulLinks;
 
     @Autowired
     public StudentDefaultUsefulLinksService(UsefulLinkTransactionalService usefulLinkTransactionalService,
                                             UsefulLinksProperties usefulLinksProperties,
-                                            OodiUserRoleService oodiUserRoleService) {
+                                            UserRoleService oodiUserRoleService) {
         this.usefulLinkTransactionalService = usefulLinkTransactionalService;
         this.oodiUserRoleService = oodiUserRoleService;
         this.defaultUsefulLinks = usefulLinksProperties.getStudentDefaultUsefulLinks();

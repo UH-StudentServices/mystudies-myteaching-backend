@@ -21,8 +21,8 @@ import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.domain.profile.Profile;
 import fi.helsinki.opintoni.domain.profile.StudyAttainmentWhitelist;
 import fi.helsinki.opintoni.dto.StudyAttainmentDto;
-import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiStudyAttainment;
+import fi.helsinki.opintoni.integration.studyregistry.StudyAttainment;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.service.converter.StudyAttainmentConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,15 +35,15 @@ import java.util.stream.Collectors;
 @Service
 public class StudyAttainmentService {
 
-    private final OodiClient oodiClient;
+    private final StudyRegistryService studyRegistryService;
     private final StudyAttainmentConverter studyAttainmentConverter;
     private final StudyAttainmentTransactionalService studyAttainmentTransactionalService;
 
     @Autowired
-    public StudyAttainmentService(OodiClient oodiClient,
+    public StudyAttainmentService(StudyRegistryService studyRegistryService,
                                   StudyAttainmentConverter studyAttainmentConverter,
                                   StudyAttainmentTransactionalService studyAttainmentTransactionalService) {
-        this.oodiClient = oodiClient;
+        this.studyRegistryService = studyRegistryService;
         this.studyAttainmentConverter = studyAttainmentConverter;
         this.studyAttainmentTransactionalService = studyAttainmentTransactionalService;
     }
@@ -57,14 +57,14 @@ public class StudyAttainmentService {
         return studyAttainmentTransactionalService.findByProfileId(profileId)
             .map(whitelist -> {
                 List<Long> whitelistedAttainmentIds = getWhitelistedAttainmentIds(whitelist);
-                List<OodiStudyAttainment> studyAttainments =
-                    oodiClient.getStudyAttainments(getStudentNumber(profile));
+                List<StudyAttainment> studyAttainments =
+                    studyRegistryService.getStudyAttainments(getStudentNumber(profile));
                 return getWhitelistedAttainments(studyAttainments, whitelistedAttainmentIds, locale,
                     whitelist.showGrades);
             }).orElse(Lists.newArrayList());
     }
 
-    private List<StudyAttainmentDto> getWhitelistedAttainments(List<OodiStudyAttainment> studyAttainments,
+    private List<StudyAttainmentDto> getWhitelistedAttainments(List<StudyAttainment> studyAttainments,
                                                                List<Long> whitelistedAttainmentIds,
                                                                Locale locale,
                                                                boolean includeGrades) {
@@ -83,14 +83,14 @@ public class StudyAttainmentService {
     }
 
     private String getStudentNumber(Profile profile) {
-        String oodiPersonId = profile.user.oodiPersonId;
-        return oodiClient.getRoles(oodiPersonId).studentNumber;
+        String personId = profile.user.personId;
+        return studyRegistryService.getPerson(personId).studentNumber;
     }
 
     public List<StudyAttainmentDto> getStudyAttainments(String studentNumber, int limit, Locale locale) {
         Comparator<StudyAttainmentDto> studyAttainmentDtoComparator = this::compareStudyAttainments;
 
-        return oodiClient.getStudyAttainments(studentNumber).stream()
+        return studyRegistryService.getStudyAttainments(studentNumber).stream()
             .map(a -> studyAttainmentConverter.toDto(a, locale, true))
             .sorted(studyAttainmentDtoComparator.reversed())
             .limit(limit)

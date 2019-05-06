@@ -32,9 +32,6 @@ public class CoursePageNotification {
     public String user;
     public String type;
 
-    @JsonProperty("oodi_uid")
-    public String oodiPersonId;
-
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     public LocalDateTime timestamp;
 

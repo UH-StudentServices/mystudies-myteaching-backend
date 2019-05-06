@@ -17,8 +17,10 @@
 
 package fi.helsinki.opintoni.resolver;
 
-import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiStudyRight;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRight;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiClient;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudyRight;
 import fi.helsinki.opintoni.service.pilotdegreeprogramme.PilotDegreeProgrammeProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,23 +31,23 @@ import java.util.List;
 @Component
 public class PilotDegreeProgrammeResolver {
 
-    private final OodiClient oodiClient;
+    private final StudyRegistryService studyRegistryService;
 
     private final PilotDegreeProgrammeProperties pilotDegreeProgrammeProperties;
 
     @Autowired
-    public PilotDegreeProgrammeResolver(OodiClient oodiClient,
+    public PilotDegreeProgrammeResolver(StudyRegistryService studyRegistryService,
                                         PilotDegreeProgrammeProperties pilotDegreeProgrammeProperties) {
-        this.oodiClient = oodiClient;
+        this.studyRegistryService = studyRegistryService;
         this.pilotDegreeProgrammeProperties = pilotDegreeProgrammeProperties;
     }
 
     public boolean isInPilotDegreeProgramme(String studentNumber) {
-        List<OodiStudyRight> studyRights = oodiClient.getStudentStudyRights(studentNumber);
+        List<StudyRight> studyRights = studyRegistryService.getStudentStudyRights(studentNumber);
         return isInPilotDegreeProgramme(studyRights);
     }
 
-    public boolean isInPilotDegreeProgramme(List<OodiStudyRight> studyRights) {
+    public boolean isInPilotDegreeProgramme(List<StudyRight> studyRights) {
         List<String> pilotDegreeProgrammes = pilotDegreeProgrammeProperties.getPilotDegreeProgrammes();
         return studyRights.stream()
             .map(OodiStudyRight::getElementCodes)

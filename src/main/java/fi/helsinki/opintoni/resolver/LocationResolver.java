@@ -21,7 +21,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.LocationDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
-import fi.helsinki.opintoni.integration.oodi.OodiEvent;
+import fi.helsinki.opintoni.integration.studyregistry.Event;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiEvent;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,18 +32,18 @@ import java.util.stream.Collectors;
 @Component
 public class LocationResolver {
 
-    private String getLocationString(OodiEvent event) {
+    private String getLocationString(Event event) {
         return Lists.newArrayList(event.roomName, event.buildingStreet).stream()
             .filter(Objects::nonNull)
             .collect(Collectors.joining(", "));
     }
 
-    public LocationDto getLocation(OodiEvent oodiEvent) {
+    public LocationDto getLocation(Event event) {
         return new LocationDto(
-            getLocationString(oodiEvent),
-            oodiEvent.roomName,
-            oodiEvent.buildingStreet,
-            oodiEvent.buildingZipCode
+            getLocationString(event),
+            event.roomName,
+            event.buildingStreet,
+            event.buildingZipCode
         );
     }
 
@@ -57,10 +58,10 @@ public class LocationResolver {
         return new LocationDto(where);
     }
 
-    public List<LocationDto> getLocations(OodiEvent oodiEvent) {
-        LocationDto locationDto = getLocation(oodiEvent);
-        if (oodiEvent.optimeExtras != null && oodiEvent.optimeExtras.roomNotes != null) {
-            return ImmutableList.of(locationDto, new LocationDto(oodiEvent.optimeExtras.roomNotes));
+    public List<LocationDto> getLocations(Event event) {
+        LocationDto locationDto = getLocation(event);
+        if (event.optimeExtras != null && event.optimeExtras.roomNotes != null) {
+            return ImmutableList.of(locationDto, new LocationDto(event.optimeExtras.roomNotes));
         }
         return ImmutableList.of(locationDto);
     }

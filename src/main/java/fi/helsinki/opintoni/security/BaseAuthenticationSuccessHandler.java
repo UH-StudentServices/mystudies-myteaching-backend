@@ -20,7 +20,7 @@ package fi.helsinki.opintoni.security;
 import com.google.common.net.HttpHeaders;
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.domain.User;
-import fi.helsinki.opintoni.integration.oodi.OodiIntegrationException;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiIntegrationException;
 import fi.helsinki.opintoni.service.UserService;
 import fi.helsinki.opintoni.util.AuditLogger;
 import org.joda.time.DateTime;
@@ -124,8 +124,8 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
             userService.restoreInactiveUser(appUser, user);
         }
 
-        if (user.oodiPersonId == null) {
-            user.oodiPersonId = appUser.getOodiPersonId();
+        if (user.personId == null) {
+            user.personId = appUser.getPersonId();
         }
 
         user.lastLoginDate = DateTime.now();

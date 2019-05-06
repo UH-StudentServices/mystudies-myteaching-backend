@@ -64,7 +64,7 @@ public class FavoriteServiceCreateDefaultTest extends SpringTest {
 
     private User saveUser() {
         User user = new User();
-        user.oodiPersonId = "oodiPersonId";
+        user.personId = "personId";
         user.eduPersonPrincipalName = "eduPersonPrincipalName";
         user.accountStatus = User.AccountStatus.ACTIVE;
         user.lastLoginDate = DateTime.now();
