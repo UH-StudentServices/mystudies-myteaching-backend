@@ -19,10 +19,10 @@ package fi.helsinki.opintoni.dto;
 
 public class TeacherDto {
 
-    public String shortName;
+    public String name;
 
-    public TeacherDto(String shortName) {
-        this.shortName = shortName;
+    public TeacherDto(String name) {
+        this.name = name;
     }
 
 }

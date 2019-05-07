@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class EventDto implements Comparable<EventDto> {
 
     public enum Source {
-        OODI,
+        STUDY_REGISTRY,
         COURSE_PAGE
     }
 
@@ -130,7 +130,7 @@ public class EventDto implements Comparable<EventDto> {
     }
 
     public String getFullEventTitle() {
-        return Source.OODI.equals(source) ? title : String.format("%s, %s", title, courseTitle);
+        return Source.STUDY_REGISTRY.equals(source) ? title : String.format("%s, %s", title, courseTitle);
     }
 
 }

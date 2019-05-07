@@ -32,6 +32,6 @@ public class StudyAttainmentSampleData {
     public static final Integer CREDITS = 6;
     public static final String GRADE = "Hyl.";
     public static final String LEARNING_OPPORTINITY_NAME = "Formulointi III";
-    public static final String TEACHER_SHORT_NAME = "Opettaja Olli";
-    public static final List<TeacherDto> TEACHERS = Collections.singletonList(new TeacherDto(TEACHER_SHORT_NAME));
+    public static final String TEACHER_NAME = "Opettaja Olli";
+    public static final List<TeacherDto> TEACHERS = Collections.singletonList(new TeacherDto(TEACHER_NAME));
 }

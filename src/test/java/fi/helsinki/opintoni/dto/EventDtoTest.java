@@ -36,7 +36,7 @@ public class EventDtoTest {
     public void compareTo() {
         EventDto februaryCourse = new EventDtoBuilder()
             .setType(EventDto.Type.DEFAULT)
-            .setSource(EventDto.Source.OODI)
+            .setSource(EventDto.Source.STUDY_REGISTRY)
             .setStartDate(LocalDateTime.of(2018, 2, 1, 8, 0))
             .setEndDate(LocalDateTime.of(2018, 2, 1, 8, 0))
             .setRealisationId(100)
@@ -46,7 +46,7 @@ public class EventDtoTest {
 
         EventDto januaryCourse = new EventDtoBuilder()
             .setType(EventDto.Type.DEFAULT)
-            .setSource(EventDto.Source.OODI)
+            .setSource(EventDto.Source.STUDY_REGISTRY)
             .setStartDate(LocalDateTime.of(2018, 1, 1, 8, 0))
             .setEndDate(LocalDateTime.of(2018, 3, 1, 8, 0))
             .setRealisationId(100)
@@ -73,10 +73,10 @@ public class EventDtoTest {
     }
 
     @Test
-    public void getTitleWhenSourceIsOodi() {
-        EventDto eventDataFromOodi = new EventDtoBuilder()
+    public void getTitleWhenSourceIsStudyRegistry() {
+        EventDto eventData = new EventDtoBuilder()
             .setType(EventDto.Type.DEFAULT)
-            .setSource(EventDto.Source.OODI)
+            .setSource(EventDto.Source.STUDY_REGISTRY)
             .setStartDate(LocalDateTime.of(2018, 1, 1, 8, 0))
             .setEndDate(LocalDateTime.of(2018, 1, 1, 8, 0))
             .setRealisationId(100)
@@ -84,7 +84,7 @@ public class EventDtoTest {
             .setCourseTitle(COURSE_TITLE)
             .setHasMaterial(false).createEventDto();
 
-        assertEquals(EVENT_TITLE, eventDataFromOodi.getFullEventTitle());
+        assertEquals(EVENT_TITLE, eventData.getFullEventTitle());
     }
 
     @Test

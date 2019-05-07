@@ -50,7 +50,7 @@ public class StudyAttainmentResourceTest extends SpringTest {
             .andExpect(jsonPath("$[0].grade").value(GRADE))
             .andExpect(jsonPath("$[0].credits").value(CREDITS))
             .andExpect(jsonPath("$[0].teachers").isArray())
-            .andExpect(jsonPath("$[0].teachers[0].shortName").value(TEACHER_SHORT_NAME));
+            .andExpect(jsonPath("$[0].teachers[0].name").value(TEACHER_NAME));
     }
 
 }

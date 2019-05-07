@@ -78,7 +78,7 @@ public class ProfileStudyAttainmentWhitelistService extends DtoService {
         whitelist.showGrades = whitelistDto.showGrades;
         whitelist.profile = profile;
         whitelistRepository.save(whitelist);
-        whitelist.whitelistEntries = whitelistDto.oodiStudyAttainmentIds
+        whitelist.whitelistEntries = whitelistDto.studyAttainmentIds
             .stream().map(i -> createWhitelistEntry(whitelist, i))
             .collect(Collectors.toList());
         return whitelistConverter.toDto(whitelist);

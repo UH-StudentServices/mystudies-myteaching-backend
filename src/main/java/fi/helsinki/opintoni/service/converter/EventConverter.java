@@ -75,7 +75,7 @@ public class EventConverter {
     public EventDto toDto(Event event, CoursePageCourseImplementation coursePage, Locale locale) {
         return new EventDtoBuilder()
             .setType(eventTypeResolver.getEventTypeByOodiTypeCode(event.typeCode))
-            .setSource(EventDto.Source.OODI)
+            .setSource(EventDto.Source.STUDY_REGISTRY)
             .setStartDate(event.startDate)
             .setEndDate(event.endDate)
             .setRealisationId(event.realisationId)

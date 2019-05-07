@@ -54,17 +54,17 @@ public class PrivateProfileAttainmentResourceTest extends SpringTest {
         mockMvc.perform(get(RESOURCE_URL + "/whitelist")
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.oodiStudyAttainmentIds").isArray())
-            .andExpect(jsonPath("$.oodiStudyAttainmentIds").value(hasSize(2)))
-            .andExpect(jsonPath("$.oodiStudyAttainmentIds[0]").value(1))
-            .andExpect(jsonPath("$.oodiStudyAttainmentIds[1]").value(2));
+            .andExpect(jsonPath("$.studyAttainmentIds").isArray())
+            .andExpect(jsonPath("$.studyAttainmentIds").value(hasSize(2)))
+            .andExpect(jsonPath("$.studyAttainmentIds[0]").value(1))
+            .andExpect(jsonPath("$.studyAttainmentIds[1]").value(2));
     }
 
     @Test
     public void thatWhitelistedAttainmentIdsAreUpdated() throws Exception {
         StudyAttainmentWhitelistDto dto = new StudyAttainmentWhitelistDto();
         dto.showGrades = true;
-        dto.oodiStudyAttainmentIds = Lists.newArrayList(3L, 4L);
+        dto.studyAttainmentIds = Lists.newArrayList(3L, 4L);
 
         mockMvc.perform(post(RESOURCE_URL + "/whitelist")
             .with(securityContext(studentSecurityContext()))
@@ -72,9 +72,9 @@ public class PrivateProfileAttainmentResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.showGrades").value(true))
-            .andExpect(jsonPath("$.oodiStudyAttainmentIds").isArray())
-            .andExpect(jsonPath("$.oodiStudyAttainmentIds").value(hasSize(2)))
-            .andExpect(jsonPath("$.oodiStudyAttainmentIds[0]").value(3))
-            .andExpect(jsonPath("$.oodiStudyAttainmentIds[1]").value(4));
+            .andExpect(jsonPath("$.studyAttainmentIds").isArray())
+            .andExpect(jsonPath("$.studyAttainmentIds").value(hasSize(2)))
+            .andExpect(jsonPath("$.studyAttainmentIds[0]").value(3))
+            .andExpect(jsonPath("$.studyAttainmentIds[1]").value(4));
     }
 }

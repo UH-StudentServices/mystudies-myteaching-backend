@@ -56,7 +56,7 @@ public class StudentRequestChain {
         String coursePageImplementationId, Locale locale, String responseFile) {
         return courseImplementationRequestChain(coursePageImplementationId, locale).expectImplementation(responseFile);
     }
-        
+
     public CourseImplementationRequestChain<StudentRequestChain> courseImplementation(
         String coursePageImplementationId, String responseFile) {
         return courseImplementationWithLocaleRequestChain(coursePageImplementationId, DEFAULT_USER_LOCALE, responseFile);
@@ -91,12 +91,12 @@ public class StudentRequestChain {
     }
 
     public StudentRequestChain roles() {
-        oodiServer.expectRolesRequest(TestConstants.STUDENT_OODI_PERSON_ID);
+        oodiServer.expectRolesRequest(TestConstants.STUDENT_PERSON_ID);
         return this;
     }
 
     public StudentRequestChain roles(String responseFile) {
-        oodiServer.expectRolesRequest(TestConstants.STUDENT_OODI_PERSON_ID, responseFile);
+        oodiServer.expectRolesRequest(TestConstants.STUDENT_PERSON_ID, responseFile);
         return this;
     }
 

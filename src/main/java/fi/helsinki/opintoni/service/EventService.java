@@ -76,9 +76,8 @@ public class EventService {
 
         Map<String, CoursePageCourseImplementation> coursePages = getCoursePages(events, courseIds, locale);
 
-        Stream<EventDto> oodiEventDtos = events.stream()
-            .filter(oodiEvent -> !oodiEvent.isCancelled)
-            .filter(oodiEvent -> oodiEvent.startDate != null)
+        Stream<EventDto> eventDtos = events.stream()
+            .filter(event -> !event.isCancelled && event.startDate != null)
             .map(event -> eventConverter.toDto(event, getCoursePage(coursePages, getRealisationId(event)), locale));
 
         Stream<EventDto> coursePageEventDtos = coursePages.values().stream()
@@ -87,11 +86,11 @@ public class EventService {
                 .map(e -> eventConverter.toDto(e, c)));
 
         return Stream
-            .concat(oodiEventDtos, coursePageEventDtos)
+            .concat(eventDtos, coursePageEventDtos)
             .collect(Collectors.toMap(EventDto::getRealisationIdAndTimes, Function.identity(), (a, b) -> new EventDtoBuilder()
                 .setType(a.type)
-                .setSource((a.source == EventDto.Source.OODI || b.source == EventDto.Source.OODI)
-                    ? EventDto.Source.OODI : EventDto.Source.COURSE_PAGE)
+                .setSource((a.source == EventDto.Source.STUDY_REGISTRY || b.source == EventDto.Source.STUDY_REGISTRY)
+                    ? EventDto.Source.STUDY_REGISTRY : EventDto.Source.COURSE_PAGE)
                 .setStartDate(a.startDate)
                 .setEndDate(a.endDate)
                 .setRealisationId(a.realisationId)

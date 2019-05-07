@@ -48,14 +48,14 @@ public class ProfileStudyAttainmentWhitelistServiceTest extends SpringTest {
     @Transactional
     public void shouldUpdateProfileWhitelist() {
         StudyAttainmentWhitelistDto whitelistDto = new StudyAttainmentWhitelistDto();
-        whitelistDto.oodiStudyAttainmentIds = Arrays.asList(OODI_ATTAINMENT_ID_1, OODI_ATTAINMENT_ID_2);
+        whitelistDto.studyAttainmentIds = Arrays.asList(OODI_ATTAINMENT_ID_1, OODI_ATTAINMENT_ID_2);
         whitelistService.update(PROFILE_ID, whitelistDto);
 
         StudyAttainmentWhitelist whitelist = whitelistRepository.findByProfileId(PROFILE_ID).get();
         assertThat(whitelist.whitelistEntries.get(0).studyAttainmentId).isEqualTo(OODI_ATTAINMENT_ID_1);
         assertThat(whitelist.whitelistEntries.get(1).studyAttainmentId).isEqualTo(OODI_ATTAINMENT_ID_2);
 
-        whitelistDto.oodiStudyAttainmentIds = Collections.singletonList(OODI_ATTAINMENT_ID_3);
+        whitelistDto.studyAttainmentIds = Collections.singletonList(OODI_ATTAINMENT_ID_3);
         whitelistService.update(PROFILE_ID, whitelistDto);
 
         whitelist = whitelistRepository.findByProfileId(PROFILE_ID).get();

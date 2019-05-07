@@ -42,7 +42,7 @@ public class StudyAttainmentConverter {
             studyAttainment.studyAttainmentId,
             localizedValueConverter.toLocalizedString(studyAttainment.learningOpportunityName, locale),
             studyAttainment.teachers.stream()
-                .map(this::convertOodiTeacherToDto)
+                .map(this::converTeacherToDto)
                 .collect(Collectors.toList()),
             studyAttainment.attainmentDate,
             includeGrades ? localizedValueConverter.toLocalizedString(studyAttainment.grade, locale) : null,
@@ -50,7 +50,7 @@ public class StudyAttainmentConverter {
         );
     }
 
-    private TeacherDto convertOodiTeacherToDto(Teacher teacher) {
+    private TeacherDto converTeacherToDto(Teacher teacher) {
         return new TeacherDto(teacher.name);
     }
 
