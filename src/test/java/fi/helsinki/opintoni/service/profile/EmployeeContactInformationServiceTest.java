@@ -22,8 +22,6 @@ import fi.helsinki.opintoni.integration.esb.ESBClient;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.service.converter.LocalizedValueConverter;
 import fi.helsinki.opintoni.service.converter.profile.ContactInformationConverter;
-import fi.helsinki.opintoni.service.profile.ContactInformationService;
-import fi.helsinki.opintoni.service.profile.EmployeeContactInformationService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,7 +46,7 @@ public class EmployeeContactInformationServiceTest extends SpringTest {
             mock(ContactInformationConverter.class),
             mock(LocalizedValueConverter.class),
             mock(ContactInformationService.class)
-            );
+        );
     }
 
     @Test
