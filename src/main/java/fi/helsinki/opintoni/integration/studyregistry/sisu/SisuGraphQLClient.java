@@ -46,6 +46,7 @@ public class SisuGraphQLClient implements SisuClient {
                 .request(PrivatePersonRequest.class)
                 .arguments(new Arguments("private_person", new Argument("id", id)))
                 .build();
+
             GraphQLResponseEntity<PrivatePersonRequest> responseEntity = graphQLTemplate.query(requestEntity, PrivatePersonRequest.class);
 
             return responseEntity.getResponse();

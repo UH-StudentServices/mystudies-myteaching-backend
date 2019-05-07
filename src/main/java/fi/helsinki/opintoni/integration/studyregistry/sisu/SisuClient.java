@@ -20,6 +20,5 @@ package fi.helsinki.opintoni.integration.studyregistry.sisu;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
 
 public interface SisuClient {
-
     public PrivatePersonRequest getPrivatePerson(String id);
 }

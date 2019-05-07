@@ -191,6 +191,7 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-core', version: mockito_version
     testCompile group: 'org.hamcrest', name: 'hamcrest-library', version: hamcrest_version
     testCompile group: 'com.icegreen', name: 'greenmail', version: greenmail_version
+    testCompile group: 'org.mock-server', name: 'mockserver-netty', version: mockserver_version
 }
 
 // Check for required properties

@@ -361,6 +361,6 @@ obar:
         hVgbKTsLYrW38ov5Qh1vEO84nxnNdyUQrHizVUFP1Lg2
         -----END RSA PRIVATE KEY-----
 sisu:
-  baseUrl: https://localhost
-  client.implementation: mock
+  baseUrl: http://localhost:4444
+  client.implementation: graphQL
   apiPath: /graphql

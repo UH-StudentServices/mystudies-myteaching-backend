@@ -35,7 +35,9 @@ import fi.helsinki.opintoni.web.rest.RestConstants;
 import liquibase.integration.spring.SpringLiquibase;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.runner.RunWith;
+import org.mockserver.junit.MockServerRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
@@ -116,6 +118,7 @@ public abstract class SpringTest {
     private static final String DEFAULT_SEQUENCE_SUFFIX = "_id_seq";
 
     protected OodiServer oodiServer;
+    protected SisuServer sisuServer;
     protected CoursePageServer coursePageServer;
     protected GuideServer guideServer;
     protected WebPageServer webPageServer;
@@ -181,6 +184,9 @@ public abstract class SpringTest {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Rule
+    public MockServerRule mockServerRule = new MockServerRule( this, 4444);
+
     @Before
     public final void baseInit() {
         initRestServer();
@@ -191,6 +197,7 @@ public abstract class SpringTest {
 
     private void initRestServer() {
         oodiServer = new OodiServer(appConfiguration, oodiRestTemplate);
+        sisuServer = new SisuServer(appConfiguration, mockServerRule.getClient());
         coursePageServer = new CoursePageServer(appConfiguration, coursePageRestTemplate);
         guideServer = new GuideServer(appConfiguration, guideRestTemplate);
         flammaServer = new FlammaServer(appConfiguration, flammaRestClient.getRestTemplate());

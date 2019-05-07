@@ -36,12 +36,13 @@ import java.util.List;
 @Qualifier("sisuStudyRegistry")
 public class SisuStudyRegistry implements StudyRegistry {
 
-    private SisuClient sisuClient;
-    private SisuStudyRegistryConverter sisuStudyRegistryConverter;
+    private final SisuClient sisuClient;
+    private final SisuStudyRegistryConverter sisuStudyRegistryConverter;
 
     @Autowired
     public SisuStudyRegistry(SisuClient sisuClient, SisuStudyRegistryConverter sisuStudyRegistryConverter) {
         this.sisuClient = sisuClient;
+        this.sisuStudyRegistryConverter = sisuStudyRegistryConverter;
     }
 
     @Override
