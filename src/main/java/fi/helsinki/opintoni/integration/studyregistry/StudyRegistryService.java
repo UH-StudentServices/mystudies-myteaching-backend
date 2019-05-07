@@ -45,10 +45,10 @@ public class StudyRegistryService {
     private StudyRegistry sisuStudyRegistry;
 
     @Autowired
-    private StudyRegistryConfiguration studyRegistryConfiguration;
+    private StudyRegistryDataSetConfiguration studyRegistryDataSetConfiguration;
 
     private StudyRegistry getStudyRegistry(StudyRegistryDataset dataset) {
-        if (studyRegistryConfiguration.getSisuDataSets().contains(dataset.name())) {
+        if (studyRegistryDataSetConfiguration.getSisuDataSets().contains(dataset.name())) {
             return sisuStudyRegistry;
         }
         return oodiStudyRegistry;

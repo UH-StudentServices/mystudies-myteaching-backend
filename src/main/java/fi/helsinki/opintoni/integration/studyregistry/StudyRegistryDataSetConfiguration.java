@@ -25,7 +25,7 @@ import java.util.List;
 
 @Configuration
 @ConfigurationProperties(prefix = "studyregistry")
-public class StudyRegistryConfiguration {
+public class StudyRegistryDataSetConfiguration {
     private List<String> oodiDataSets = new ArrayList<>();
 
     private List<String> sisuDataSets = new ArrayList<>();

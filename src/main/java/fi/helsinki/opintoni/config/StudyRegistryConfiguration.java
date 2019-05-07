@@ -27,6 +27,7 @@ import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiRestClient;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.mock.OodiMockClient;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuClient;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuGraphQLClient;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.mock.SisuMockClient;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,6 +97,16 @@ public class StudyRegistryConfiguration {
     }
 
     @Bean
+    public SisuClient sisuMockClient() {
+        return new SisuMockClient();
+    }
+
+    @Bean
+    public SisuClient sisuGraphQLClient() {
+        return new SisuGraphQLClient(appConfiguration.get("sisu.baseUrl") + appConfiguration.get("sisu.apiPath"));
+    }
+
+    @Bean
     public OodiClient oodiClient() {
         return NamedDelegatesProxy.builder(
             OodiClient.class,
@@ -107,6 +118,11 @@ public class StudyRegistryConfiguration {
 
     @Bean
     public SisuClient sisuClient() {
-        return new SisuGraphQLClient();
+        return NamedDelegatesProxy.builder(
+            SisuClient.class,
+            () -> appConfiguration.get("sisu.client.implementation"))
+            .with("graphQL", sisuGraphQLClient())
+            .with("mock", sisuMockClient())
+            .build();
     }
 }

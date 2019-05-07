@@ -25,25 +25,24 @@ import io.aexp.nodes.graphql.GraphQLResponseEntity;
 import io.aexp.nodes.graphql.GraphQLTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.net.MalformedURLException;
 
 public class SisuGraphQLClient implements SisuClient {
 
-    @Value("${sisu.baseUrl}")
-    private String baseUrl;
-    @Value("${sisu.apiPath}")
-    private String apiPath;
-
     private static final Logger log = LoggerFactory.getLogger(SisuGraphQLClient.class);
+    private String endPointURL;
+
+    public SisuGraphQLClient(String endPointURL) {
+        this.endPointURL = endPointURL;
+    }
 
     public PrivatePersonRequest getPrivatePerson(String id) {
         GraphQLTemplate graphQLTemplate = new GraphQLTemplate();
 
         try {
             GraphQLRequestEntity requestEntity = GraphQLRequestEntity.Builder()
-                .url(baseUrl + apiPath)
+                .url(endPointURL)
                 .request(PrivatePersonRequest.class)
                 .arguments(new Arguments("private_person", new Argument("id", id)))
                 .build();

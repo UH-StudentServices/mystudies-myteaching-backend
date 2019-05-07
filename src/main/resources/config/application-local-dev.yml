@@ -133,4 +133,5 @@ obar:
         -----END RSA PRIVATE KEY-----
 sisu:
     baseUrl: https://esbmt2.it.helsinki.fi:3333/secure/testi/doo-sisu
+    client.implementation: mock
     apiPath: /graphql
