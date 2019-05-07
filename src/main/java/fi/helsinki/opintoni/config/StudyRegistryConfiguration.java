@@ -42,12 +42,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Configuration
-public class OodiConfiguration {
+public class StudyRegistryConfiguration {
 
     private final AppConfiguration appConfiguration;
     private final Environment env;
     private final ObjectMapper objectMapper;
-    private static final Logger log = LoggerFactory.getLogger(OodiConfiguration.class);
+    private static final Logger log = LoggerFactory.getLogger(StudyRegistryConfiguration.class);
 
     @Value("${httpClient.keystoreLocation:null}")
     private String keystoreLocation;
@@ -59,7 +59,7 @@ public class OodiConfiguration {
     private boolean useHttpClientCertificate;
 
     @Autowired
-    public OodiConfiguration(AppConfiguration appConfiguration, Environment env, ObjectMapper objectMapper) {
+    public StudyRegistryConfiguration(AppConfiguration appConfiguration, Environment env, ObjectMapper objectMapper) {
         this.appConfiguration = appConfiguration;
         this.env = env;
         this.objectMapper = objectMapper;
