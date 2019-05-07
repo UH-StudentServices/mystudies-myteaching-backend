@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.service;
 import com.google.common.collect.Iterables;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.StudyAttainmentDto;
-import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.service.profile.StudyAttainmentService;
 import fi.helsinki.opintoni.web.TestConstants;
 import org.junit.Test;
@@ -113,8 +112,8 @@ public class StudyAttainmentServiceTest extends SpringTest {
                 .map(t1 -> t1.name)
                 .collect(Collectors.toList()))
             .isEqualTo(
-            studyAttainmentDto.teachers.stream()
-                .map(t2 -> t2.name)
-                .collect(Collectors.toList()));
+                studyAttainmentDto.teachers.stream()
+                    .map(t2 -> t2.name)
+                    .collect(Collectors.toList()));
     }
 }
