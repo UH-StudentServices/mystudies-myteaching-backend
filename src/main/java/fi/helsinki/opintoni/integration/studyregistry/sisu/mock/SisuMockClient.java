@@ -24,6 +24,9 @@ public class SisuMockClient implements SisuClient {
 
     @Override
     public PrivatePersonRequest getPrivatePerson(String id) {
-        return null;
+        PrivatePersonRequest privatePersonRequest = new PrivatePersonRequest();
+        privatePersonRequest.studentNumber = "012023965";
+        privatePersonRequest.employeeNumber = "220272";
+        return privatePersonRequest;
     }
 }
