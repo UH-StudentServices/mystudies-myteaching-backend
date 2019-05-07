@@ -85,6 +85,7 @@ if(hasProperty("opintoni_artifactory_base_url")) {
     }
 } else {
     repositories {
+        maven { url 'https://dl.bintray.com/americanexpress/maven/' }
         mavenLocal()
         jcenter()
     }
@@ -177,6 +178,9 @@ dependencies {
     compile group: 'org.slf4j', name:'jcl-over-slf4j', version: '1.7.7'
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     compile group: 'com.rometools', name: 'rome', version: '1.5.1'
+
+    compile group: 'io.aexp.nodes.graphql', name: 'nodes', version: '0.4.0'
+
     errorprone group: 'com.google.errorprone', name:'error_prone_core', version: error_prone_core_version
 
     testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: awaility_version

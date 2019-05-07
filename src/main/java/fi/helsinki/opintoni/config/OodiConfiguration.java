@@ -25,6 +25,8 @@ import fi.helsinki.opintoni.integration.interceptor.OodiExceptionInterceptor;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiRestClient;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.mock.OodiMockClient;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuClient;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuGraphQLClient;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,5 +103,10 @@ public class OodiConfiguration {
             .with("rest", oodiRestClient())
             .with("mock", oodiMockClient())
             .build();
+    }
+
+    @Bean
+    public SisuClient sisuClient() {
+        return new SisuGraphQLClient();
     }
 }

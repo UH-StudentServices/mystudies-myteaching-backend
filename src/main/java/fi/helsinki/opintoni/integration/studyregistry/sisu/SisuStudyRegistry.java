@@ -25,6 +25,8 @@ import fi.helsinki.opintoni.integration.studyregistry.StudyRegistry;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRight;
 import fi.helsinki.opintoni.integration.studyregistry.Teacher;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +35,14 @@ import java.util.List;
 @Component
 @Qualifier("sisuStudyRegistry")
 public class SisuStudyRegistry implements StudyRegistry {
+
+    private SisuClient sisuClient;
+    private SisuStudyRegistryConverter sisuStudyRegistryConverter;
+
+    @Autowired
+    public SisuStudyRegistry(SisuClient sisuClient, SisuStudyRegistryConverter sisuStudyRegistryConverter) {
+        this.sisuClient = sisuClient;
+    }
 
     @Override
     public List<Enrollment> getEnrollments(String studentNumber) {
@@ -71,6 +81,7 @@ public class SisuStudyRegistry implements StudyRegistry {
 
     @Override
     public Person getPerson(String personId) {
-        return null;
+        PrivatePersonRequest privatePersonRequest = sisuClient.getPrivatePerson(personId);
+        return sisuStudyRegistryConverter.convertPerson(privatePersonRequest);
     }
 }
