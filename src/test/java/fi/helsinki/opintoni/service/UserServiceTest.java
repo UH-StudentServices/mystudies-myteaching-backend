@@ -93,7 +93,7 @@ public class UserServiceTest extends SpringTest {
 
     private AppUser createAppUser() {
         return new AppUser.AppUserBuilder()
-            .oodiPersonId("111")
+            .personId("111")
             .eduPersonPrincipalName("newUser")
             .studentNumber("123")
             .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))

@@ -198,7 +198,7 @@ public class InactiveUserCleanerTest extends SpringTest {
         User user = new User();
 
         user.eduPersonPrincipalName = eppn;
-        user.oodiPersonId = "805";
+        user.personId = "805";
         user.accountStatus = User.AccountStatus.ACTIVE;
         user.lastLoginDate = DateTime.now().minusYears(1).minusDays(60);
         user.accountActiveUntilDate = accountActiveUntilDate;

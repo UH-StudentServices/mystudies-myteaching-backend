@@ -20,8 +20,8 @@ package fi.helsinki.opintoni.resolver;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.LocationDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
-import fi.helsinki.opintoni.integration.oodi.OodiEvent;
-import fi.helsinki.opintoni.integration.oodi.OptimeExtras;
+import fi.helsinki.opintoni.integration.studyregistry.Event;
+import fi.helsinki.opintoni.integration.studyregistry.OptimeExtras;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,9 +42,9 @@ public class LocationResolverTest extends SpringTest {
 
     @Test
     public void thatLocationIsReturnedWhenStreetIsNull() {
-        OodiEvent oodiEvent = oodiEventWithLocation(ROOM, null, null);
+        Event event = eventWithLocation(ROOM, null, null);
 
-        LocationDto locationDto = locationResolver.getLocation(oodiEvent);
+        LocationDto locationDto = locationResolver.getLocation(event);
         assertThat(locationDto).isNotNull();
         assertThat(locationDto.locationString).isEqualTo(ROOM);
         assertThat(locationDto.streetAddress).isNull();
@@ -52,9 +52,9 @@ public class LocationResolverTest extends SpringTest {
 
     @Test
     public void thatLocationIsReturnedWhenRoomIsNull() {
-        OodiEvent oodiEvent = oodiEventWithLocation(null, STREET, null);
+        Event event = eventWithLocation(null, STREET, null);
 
-        LocationDto locationDto = locationResolver.getLocation(oodiEvent);
+        LocationDto locationDto = locationResolver.getLocation(event);
         assertThat(locationDto).isNotNull();
         assertThat(locationDto.locationString).isEqualTo(STREET);
         assertThat(locationDto.streetAddress).isEqualTo(STREET);
@@ -62,9 +62,9 @@ public class LocationResolverTest extends SpringTest {
 
     @Test
     public void thatEmptyLocationStringIsReturnedWhenEventFieldsAreNull() {
-        OodiEvent oodiEvent = oodiEventWithLocation(null, null, null);
+        Event event = eventWithLocation(null, null, null);
 
-        LocationDto locationDto = locationResolver.getLocation(oodiEvent);
+        LocationDto locationDto = locationResolver.getLocation(event);
         assertThat(locationDto.locationString).isEqualTo("");
         assertThat(locationDto.roomName).isNull();
         assertThat(locationDto.streetAddress).isNull();
@@ -73,9 +73,9 @@ public class LocationResolverTest extends SpringTest {
 
     @Test
     public void thatLocationIsReturnedFromOodi() {
-        OodiEvent oodiEvent = oodiEventWithLocation(ROOM, STREET, ZIP);
+        Event event = eventWithLocation(ROOM, STREET, ZIP);
 
-        LocationDto locationDto = locationResolver.getLocation(oodiEvent);
+        LocationDto locationDto = locationResolver.getLocation(event);
         assertThat(locationDto.locationString).isEqualTo(ROOM + ", " + STREET);
         assertThat(locationDto.roomName).isEqualTo(ROOM);
         assertThat(locationDto.streetAddress).isEqualTo(STREET);
@@ -114,11 +114,11 @@ public class LocationResolverTest extends SpringTest {
     }
 
     @Test
-    public void thatOodiEventWithOptimeDataCreatesTwoLocations() {
-        OodiEvent oodiEventWithOptimeData = oodiEventWithLocation(ROOM, STREET, ZIP);
-        oodiEventWithOptimeData.optimeExtras = optimeExtras(OTHER_NOTES, ROOM_NOTES, STAFF_NOTES);
+    public void thatEventWithOptimeDataCreatesTwoLocations() {
+        Event eventWithOptimeData = eventWithLocation(ROOM, STREET, ZIP);
+        eventWithOptimeData.optimeExtras = optimeExtras(OTHER_NOTES, ROOM_NOTES, STAFF_NOTES);
 
-        List<LocationDto> locations = locationResolver.getLocations(oodiEventWithOptimeData);
+        List<LocationDto> locations = locationResolver.getLocations(eventWithOptimeData);
         assertThat(locations).hasSize(2);
         assertThat(locations.get(0).locationString).isEqualTo(ROOM + ", " + STREET);
         assertThat(locations.get(0).roomName).isEqualTo(ROOM);
@@ -138,12 +138,12 @@ public class LocationResolverTest extends SpringTest {
         return optimeExtras;
     }
 
-    private OodiEvent oodiEventWithLocation(String roomName, String street, String zip) {
-        OodiEvent oodiEvent = new OodiEvent();
-        oodiEvent.roomName = roomName;
-        oodiEvent.buildingStreet = street;
-        oodiEvent.buildingZipCode = zip;
-        return oodiEvent;
+    private Event eventWithLocation(String roomName, String street, String zip) {
+        Event event = new Event();
+        event.roomName = roomName;
+        event.buildingStreet = street;
+        event.buildingZipCode = zip;
+        return event;
     }
 
     private CoursePageEvent coursePageEventWithWhere(String where) {

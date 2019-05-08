@@ -64,7 +64,7 @@ public class DemoUserDetailsService implements UserDetailsService {
             .email("doo_8@example.com")
             .commonName("Eero Jukola")
             .employeeNumber("000908")
-            .oodiPersonId("1000008")
+            .personId("1000008")
             .build();
     }
 
@@ -76,7 +76,7 @@ public class DemoUserDetailsService implements UserDetailsService {
             .email("doo_9@example.com")
             .commonName("Venla Jukola")
             .studentNumber("010000090")
-            .oodiPersonId("1000009")
+            .personId("1000009")
             .build();
     }
 
@@ -88,7 +88,7 @@ public class DemoUserDetailsService implements UserDetailsService {
             .email("doo_10@example.com")
             .commonName("Juhani Jukola")
             .studentNumber("010000100")
-            .oodiPersonId("1000010")
+            .personId("1000010")
             .build();
     }
 
@@ -100,7 +100,7 @@ public class DemoUserDetailsService implements UserDetailsService {
             .email("doo_11@example.com")
             .commonName("Kaisa Rajamäki")
             .studentNumber("010000113")
-            .oodiPersonId("1000011")
+            .personId("1000011")
             .build();
     }
 }

@@ -21,7 +21,7 @@ import fi.helsinki.opintoni.domain.UsefulLink;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.resolver.UserFacultyResolver;
 import fi.helsinki.opintoni.security.AppUser;
-import fi.helsinki.opintoni.service.OodiUserRoleService;
+import fi.helsinki.opintoni.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,14 +35,14 @@ public class TeacherDefaultUsefulLinksService extends DefaultUsefulLinksService 
     private final List<Map<String, String>> openUniversityDefaultUsefulLinks;
     private final List<Map<String, String>> facultyLinkOptions;
     private final UsefulLinkTransactionalService usefulLinkTransactionalService;
-    private final OodiUserRoleService oodiUserRoleService;
+    private final UserRoleService oodiUserRoleService;
     private final UserFacultyResolver userFacultyResolver;
 
     @Autowired
     public TeacherDefaultUsefulLinksService(UsefulLinksProperties usefulLinksProperties,
                                             FacultyUsefulLinksProperties facultyLinksProperties,
                                             UsefulLinkTransactionalService usefulLinkTransactionalService,
-                                            OodiUserRoleService oodiUserRoleService,
+                                            UserRoleService oodiUserRoleService,
                                             UserFacultyResolver userFacultyResolver) {
         this.usefulLinkTransactionalService = usefulLinkTransactionalService;
         this.oodiUserRoleService = oodiUserRoleService;

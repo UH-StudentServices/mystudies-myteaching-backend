@@ -72,14 +72,14 @@ public class UserService {
         return userRepository.findByEduPersonPrincipalName(eduPersonPrincipalName);
     }
 
-    public Optional<User> findFirstByOodiPersonId(String oodiPersonId) {
-        return userRepository.findByOodiPersonId(oodiPersonId);
+    public Optional<User> findFirstByPersonId(String personId) {
+        return userRepository.findByPersonId(personId);
     }
 
     public User createNewUser(AppUser appUser) {
         User user = new User();
         user.eduPersonPrincipalName = appUser.getEduPersonPrincipalName();
-        user.oodiPersonId = appUser.getOodiPersonId();
+        user.personId = appUser.getPersonId();
         user.accountStatus = User.AccountStatus.ACTIVE;
         user.lastLoginDate = DateTime.now();
         user = userRepository.save(user);
@@ -97,8 +97,8 @@ public class UserService {
         createUserDefaults(user, appUser);
     }
 
-    public Optional<UserProfileDto> getProfileByOodiPersonId(String oodiPersonId) {
-        return findFirstByOodiPersonId(oodiPersonId).map(user -> {
+    public Optional<UserProfileDto> getProfileByPersonId(String personId) {
+        return findFirstByPersonId(personId).map(user -> {
             final UserSettingsDto userSettingsDto = userSettingsService.findByUserId(user.id);
             final String avatarImageUrl = getAvatarImageUrl(user, userSettingsDto);
             final String backgroundImageUrl = userSettingsDto.backgroundUri;
@@ -126,7 +126,7 @@ public class UserService {
 
     private String getAvatarImageUrl(User user, UserSettingsDto userSettingsDto) {
         return userSettingsDto.hasAvatarImage ?
-            uriBuilder.getUserAvatarUrlByOodiPersonId(user.oodiPersonId) :
+            uriBuilder.getUserAvatarUrlByPersonId(user.personId) :
             uriBuilder.getDefaultUserAvatarUrl();
     }
 

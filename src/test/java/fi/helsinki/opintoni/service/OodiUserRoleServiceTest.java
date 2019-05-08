@@ -17,9 +17,9 @@
 
 package fi.helsinki.opintoni.service;
 
-import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiEnrollment;
-import fi.helsinki.opintoni.integration.oodi.OodiTeacherCourse;
+import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
+import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import org.junit.Test;
 
@@ -27,10 +27,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static com.google.common.collect.Lists.newArrayList;
 
 public class OodiUserRoleServiceTest {
 
@@ -40,16 +40,16 @@ public class OodiUserRoleServiceTest {
     private static final List<String> USER_ENROLLMENTS_SOME_OPEN_UNIVERSITY = newArrayList("123", "A456");
     private static final List<String> USER_ENROLLMENTS_OPEN_UNIVERSITY = newArrayList("A123", "a456");
 
-    private final OodiClient oodiClient = mock(OodiClient.class);
-    private final OodiUserRoleService oodiUserRoleService = new OodiUserRoleService(oodiClient);
+    private final StudyRegistryService studyRegistryService = mock(StudyRegistryService.class);
+    private final UserRoleService oodiUserRoleService = new UserRoleService(studyRegistryService);
 
     private void setupOodiClientMockForStudent(List<String> enrollments) {
-        when(oodiClient.getEnrollments(STUDENT_NUMBER))
+        when(studyRegistryService.getEnrollments(STUDENT_NUMBER))
             .thenReturn(enrollments(enrollments));
     }
 
     private void setupOodiClientMockForTeacher(List<String> enrollments) {
-        when(oodiClient.getTeacherCourses(TEACHER_NUMBER, DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
+        when(studyRegistryService.getTeacherCourses(TEACHER_NUMBER, DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
             .thenReturn(courses(enrollments));
     }
 
@@ -109,22 +109,22 @@ public class OodiUserRoleServiceTest {
         assertThat(oodiUserRoleService.isOpenUniversityTeacher(TEACHER_NUMBER)).isFalse();
     }
 
-    private List<OodiEnrollment> enrollments(List<String> learningOpportunityIds) {
+    private List<Enrollment> enrollments(List<String> learningOpportunityIds) {
         return learningOpportunityIds.stream()
             .map(learningOpportunityId -> {
-                OodiEnrollment oodiEnrollment = new OodiEnrollment();
-                oodiEnrollment.learningOpportunityId = learningOpportunityId;
-                return oodiEnrollment;
+                Enrollment enrollment = new Enrollment();
+                enrollment.learningOpportunityId = learningOpportunityId;
+                return enrollment;
             })
             .collect(Collectors.toList());
     }
 
-    private List<OodiTeacherCourse> courses(List<String> learningOpportunityIds) {
+    private List<TeacherCourse> courses(List<String> learningOpportunityIds) {
         return learningOpportunityIds.stream()
             .map(learningOpportunityId -> {
-                OodiTeacherCourse oodiTeacherCourse = new OodiTeacherCourse();
-                oodiTeacherCourse.basecode = learningOpportunityId;
-                return oodiTeacherCourse;
+                TeacherCourse teacherCourse = new TeacherCourse();
+                teacherCourse.learningOpportunityId = learningOpportunityId;
+                return teacherCourse;
             })
             .collect(Collectors.toList());
     }

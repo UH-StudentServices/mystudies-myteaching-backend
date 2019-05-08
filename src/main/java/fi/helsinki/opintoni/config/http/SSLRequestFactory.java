@@ -19,9 +19,6 @@ package fi.helsinki.opintoni.config.http;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.exception.SSLContextException;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -39,17 +36,13 @@ public class SSLRequestFactory {
 
     private SSLRequestFactory() {}
 
-    public static ClientHttpRequestFactory clientHttpRequestFactory(AppConfiguration appConfiguration,
-                                                                    boolean useHttpClientCertificate,
-                                                                    String keystoreLocation,
-                                                                    String keystorePassword) {
+    public static ClientHttpRequestFactory clientHttpRequestFactory(AppConfiguration appConfiguration) {
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 
         factory.setReadTimeout(appConfiguration.getInteger("httpClient.readTimeout"));
         factory.setConnectTimeout(appConfiguration.getInteger("httpClient.connectTimeout"));
 
-        PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = poolingHttpClientConnectionManager(
-            useHttpClientCertificate, keystoreLocation, keystorePassword);
+        PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager();
 
         poolingHttpClientConnectionManager.setMaxTotal(appConfiguration.getInteger("httpClient.maxTotal"));
         poolingHttpClientConnectionManager
@@ -64,20 +57,7 @@ public class SSLRequestFactory {
         return new BufferingClientHttpRequestFactory(factory);
     }
 
-    private static PoolingHttpClientConnectionManager poolingHttpClientConnectionManager(boolean useHttpClientCertificate,
-                                                                                         String keystoreLocation,
-                                                                                         String keystorePassword) {
-        if (useHttpClientCertificate && keystoreLocation != null && keystorePassword != null) {
-            SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext(keystoreLocation, keystorePassword));
-            Registry socketFactoryRegistry = RegistryBuilder.create().register("https", sslConnectionSocketFactory).build();
-
-            return new PoolingHttpClientConnectionManager(socketFactoryRegistry);
-        } else {
-            return new PoolingHttpClientConnectionManager();
-        }
-    }
-
-    private static SSLContext sslContext(String keystoreLocation, String keystorePassword) {
+    public static SSLContext sslContext(String keystoreLocation, String keystorePassword) {
         char[] keystorePasswordCharArray = keystorePassword.toCharArray();
 
         try {

@@ -48,7 +48,7 @@ public class AvatarImageService {
     private String getAvatarImageUrl(Supplier<String> defaultAvatarUrlSupplier, Long userId) {
         UserSettings userSettings = userSettingsRepository.findByUserId(userId);
         return userSettings.hasAvatarImage() ?
-            uriBuilder.getUserAvatarUrlByOodiPersonId(userSettings.user.oodiPersonId) :
+            uriBuilder.getUserAvatarUrlByPersonId(userSettings.user.personId) :
             defaultAvatarUrlSupplier.get();
     }
 

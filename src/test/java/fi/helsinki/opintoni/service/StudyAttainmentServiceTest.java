@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.service;
 import com.google.common.collect.Iterables;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.StudyAttainmentDto;
-import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.service.profile.StudyAttainmentService;
 import fi.helsinki.opintoni.web.TestConstants;
 import org.junit.Test;
@@ -42,8 +41,6 @@ import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_USER_LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StudyAttainmentServiceTest extends SpringTest {
-    private static final Locale USER_LOCALE = new Locale(Language.FI.getCode());
-
     private static final Long MISSING_WHITELIST_PROFILE_ID = 999L;
 
     @Autowired
@@ -112,11 +109,11 @@ public class StudyAttainmentServiceTest extends SpringTest {
         assertThat(studyAttainmentDto.learningOpportunityName).isEqualTo(LEARNING_OPPORTINITY_NAME);
         assertThat(
             TEACHERS.stream()
-                .map(t1 -> t1.shortName)
+                .map(t1 -> t1.name)
                 .collect(Collectors.toList()))
             .isEqualTo(
-            studyAttainmentDto.teachers.stream()
-                .map(t2 -> t2.shortName)
-                .collect(Collectors.toList()));
+                studyAttainmentDto.teachers.stream()
+                    .map(t2 -> t2.name)
+                    .collect(Collectors.toList()));
     }
 }

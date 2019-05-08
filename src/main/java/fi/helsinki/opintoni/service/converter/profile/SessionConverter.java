@@ -18,7 +18,7 @@
 package fi.helsinki.opintoni.service.converter.profile;
 
 import fi.helsinki.opintoni.dto.SessionDto;
-import fi.helsinki.opintoni.integration.oodi.OodiIntegrationException;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiIntegrationException;
 import fi.helsinki.opintoni.resolver.PilotDegreeProgrammeResolver;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.service.AvatarImageService;

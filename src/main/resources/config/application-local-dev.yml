@@ -114,7 +114,7 @@ inactiveUserCleaner:
     testUserToInactivate: "mag_simp"
 
 obar:
-    baseUrl: https://localhost
+    baseUrl: http://localhost:8090
     privateKey: |
         -----BEGIN RSA PRIVATE KEY-----
         MIICXQIBAAKBgQDjOuYIREZqcc1wGBtu1emTbt7ryggKV2tbhRqn3nr+OPYfuBbN
@@ -131,3 +131,18 @@ obar:
         OCK5th1wuJLmKKsUXgrlAkAEbzqZICKYFzA3b4p+xKsgyQ7TYPXJq60gvINsbWql
         hVgbKTsLYrW38ov5Qh1vEO84nxnNdyUQrHizVUFP1Lg2
         -----END RSA PRIVATE KEY-----
+
+studyregistry:
+    oodiDatasets:
+        - STUDENT_ENROLLMENTS
+        - STUDENT_EVENTS
+        - TEACHER_COURSES
+        - TEACHER_EVENTS
+        - STUDY_ATTAINMENTS
+        - STUDY_RIGHTS
+        - COURSE_REALISATION_TEACHERS
+    sisuDatasets:
+        - PERSON_INFO
+
+sisu:
+    client.implementation: mock

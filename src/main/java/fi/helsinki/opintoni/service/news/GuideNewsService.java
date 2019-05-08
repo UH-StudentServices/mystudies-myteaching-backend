@@ -21,10 +21,10 @@ import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.dto.NewsDto;
 import fi.helsinki.opintoni.exception.http.RestClientServiceException;
 import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsClient;
-import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiIntegrationException;
-import fi.helsinki.opintoni.integration.oodi.OodiStudyRight;
-import fi.helsinki.opintoni.integration.oodi.OodiStudyRight.Element;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiIntegrationException;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudyRight;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudyRight.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +42,13 @@ public class GuideNewsService extends FetchingNewsService {
 
     private static final Logger logger = LoggerFactory.getLogger(GuideNewsService.class);
 
-    private final OodiClient oodiClient;
+    private final StudyRegistryService studyRegistryService;
 
     private final GuideNewsClient guideNewsClient;
 
     @Autowired
-    public GuideNewsService(OodiClient oodiClient, GuideNewsClient guideNewsClient) {
-        this.oodiClient = oodiClient;
+    public GuideNewsService(StudyRegistryService studyRegistryService, GuideNewsClient guideNewsClient) {
+        this.studyRegistryService = studyRegistryService;
         this.guideNewsClient = guideNewsClient;
     }
 
@@ -60,7 +60,7 @@ public class GuideNewsService extends FetchingNewsService {
     @Cacheable(value = CacheConstants.GUIDE_PROGRAMME_NEWS, cacheManager = "transientCacheManager")
     public List<NewsDto> getGuideNewsForStudent(String studentNumber, Locale locale) {
         try {
-            List<String> codes = oodiClient.getStudentStudyRights(studentNumber).stream()
+            List<String> codes = studyRegistryService.getStudentStudyRights(studentNumber).stream()
                     .flatMap(sr -> getStudyRightElementCodes(sr).stream())
                     .collect(Collectors.toList());
 

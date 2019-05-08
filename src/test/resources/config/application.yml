@@ -360,3 +360,6 @@ obar:
         OCK5th1wuJLmKKsUXgrlAkAEbzqZICKYFzA3b4p+xKsgyQ7TYPXJq60gvINsbWql
         hVgbKTsLYrW38ov5Qh1vEO84nxnNdyUQrHizVUFP1Lg2
         -----END RSA PRIVATE KEY-----
+
+sisu:
+    client.implementation: graphQL

@@ -52,7 +52,7 @@ public class CoursePageMockClient implements CoursePageClient {
             return new CoursePageCourseImplementation();
         }
 
-        Resource courses = ("123456789".equals(courseImplementationId)) ? course1 : course2;
+        Resource courses = "123456789".equals(courseImplementationId) ? course1 : course2;
         CoursePageCourseImplementation course = getResponse(courses, new TypeReference<List<CoursePageCourseImplementation>>() {
         }).get(0);
 

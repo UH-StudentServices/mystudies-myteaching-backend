@@ -18,8 +18,8 @@
 package fi.helsinki.opintoni.service.news;
 
 import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsClient;
-import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiStudyRight;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudyRight;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GuideNewsServiceTest {
 
     @Mock
-    private OodiClient oodiClient;
+    private StudyRegistryService studyRegistryService;
 
     @Mock
     private GuideNewsClient guideNewsClient;
@@ -43,8 +43,7 @@ public class GuideNewsServiceTest {
 
     @Before
     public void init() {
-
-        guideNewsService = new GuideNewsService(oodiClient, guideNewsClient);
+        guideNewsService = new GuideNewsService(studyRegistryService, guideNewsClient);
     }
 
     @Test

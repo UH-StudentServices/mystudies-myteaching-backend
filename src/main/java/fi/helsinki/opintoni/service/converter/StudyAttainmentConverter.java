@@ -19,8 +19,8 @@ package fi.helsinki.opintoni.service.converter;
 
 import fi.helsinki.opintoni.dto.StudyAttainmentDto;
 import fi.helsinki.opintoni.dto.TeacherDto;
-import fi.helsinki.opintoni.integration.oodi.OodiStudyAttainment;
-import fi.helsinki.opintoni.integration.oodi.OodiTeacher;
+import fi.helsinki.opintoni.integration.studyregistry.StudyAttainment;
+import fi.helsinki.opintoni.integration.studyregistry.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,21 +37,21 @@ public class StudyAttainmentConverter {
         this.localizedValueConverter = localizedValueConverter;
     }
 
-    public StudyAttainmentDto toDto(OodiStudyAttainment oodiStudyAttainment, Locale locale, boolean includeGrades) {
+    public StudyAttainmentDto toDto(StudyAttainment studyAttainment, Locale locale, boolean includeGrades) {
         return new StudyAttainmentDto(
-            oodiStudyAttainment.studyAttainmentId,
-            localizedValueConverter.toLocalizedString(oodiStudyAttainment.learningOpportunityName, locale),
-            oodiStudyAttainment.teachers.stream()
-                .map(this::convertOodiTeacherToDto)
+            studyAttainment.studyAttainmentId,
+            localizedValueConverter.toLocalizedString(studyAttainment.learningOpportunityName, locale),
+            studyAttainment.teachers.stream()
+                .map(this::converTeacherToDto)
                 .collect(Collectors.toList()),
-            oodiStudyAttainment.attainmentDate,
-            includeGrades ? localizedValueConverter.toLocalizedString(oodiStudyAttainment.grade, locale) : null,
-            oodiStudyAttainment.credits
+            studyAttainment.attainmentDate,
+            includeGrades ? localizedValueConverter.toLocalizedString(studyAttainment.grade, locale) : null,
+            studyAttainment.credits
         );
     }
 
-    private TeacherDto convertOodiTeacherToDto(OodiTeacher oodiTeacher) {
-        return new TeacherDto(oodiTeacher.shortName);
+    private TeacherDto converTeacherToDto(Teacher teacher) {
+        return new TeacherDto(teacher.name);
     }
 
 }

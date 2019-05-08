@@ -191,7 +191,7 @@ public class NewsResourceTest extends SpringTest {
     }
 
     @Test
-    public void thatFlammaNewsAreReturnedIfOodiIsDown() throws Exception {
+    public void thatFlammaNewsAreReturnedIfStudyRegistryIsDown() throws Exception {
         flammaServer.expectStudentNews();
         oodiServer.expectStudentStudyRightsRequestToRespondError(TestConstants.STUDENT_NUMBER);
         guideNewsServer.expectGuideNewsFi();

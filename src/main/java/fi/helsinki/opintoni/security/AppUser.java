@@ -38,7 +38,7 @@ public final class AppUser extends User {
     private final String eduPersonPrincipalName;
     private final List<SAMLEduPersonAffiliation> eduPersonAffiliations;
     private final SAMLEduPersonAffiliation eduPersonPrimaryAffiliation;
-    private final String oodiPersonId;
+    private final String personId;
     private final String preferredLanguage;
     private final Optional<String> teacherFacultyCode;
     private final Optional<String> studentNumber;
@@ -55,7 +55,7 @@ public final class AppUser extends User {
         this.email = builder.email;
         this.commonName = builder.commonName;
         this.studentNumber = builder.studentNumber;
-        this.oodiPersonId = builder.oodiPersonId;
+        this.personId = builder.personId;
         this.employeeNumber = builder.employeeNumber;
         this.authorities = builder.authorities;
         this.teacherFacultyCode = builder.teacherFacultyCode;
@@ -78,8 +78,8 @@ public final class AppUser extends User {
         return employeeNumber;
     }
 
-    public String getOodiPersonId() {
-        return oodiPersonId;
+    public String getPersonId() {
+        return personId;
     }
 
     public String getEduPersonPrincipalName() {
@@ -124,7 +124,7 @@ public final class AppUser extends User {
             .append("commonName", commonName)
             .append("studentNumber", studentNumber)
             .append("employeeNumber", employeeNumber)
-            .append("oodiPersonId", oodiPersonId)
+            .append("personId", personId)
             .toString();
     }
 
@@ -135,7 +135,7 @@ public final class AppUser extends User {
         private SAMLEduPersonAffiliation eduPersonPrimaryAffiliation;
         private String email;
         private String commonName;
-        private String oodiPersonId;
+        private String personId;
         private String preferredLanguage;
         private Optional<String> teacherFacultyCode = Optional.empty();
         private Optional<String> studentNumber = Optional.empty();
@@ -168,8 +168,8 @@ public final class AppUser extends User {
             return this;
         }
 
-        public AppUserBuilder oodiPersonId(String oodiPersonId) {
-            this.oodiPersonId = oodiPersonId;
+        public AppUserBuilder personId(String personId) {
+            this.personId = personId;
             return this;
         }
 

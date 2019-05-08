@@ -57,7 +57,7 @@ public class SAMLUserDetailsServiceTest {
         assertThat(appUser.getUsername()).isEqualTo(SAML_PRINCIPAL_NAME);
         assertThat(appUser.getEmail()).isEqualTo(SAML_EMAIL);
         assertThat(appUser.getCommonName()).isEqualTo(SAML_COMMON_NAME);
-        assertThat(appUser.getOodiPersonId()).isEqualTo(OODI_PERSON_ID);
+        assertThat(appUser.getPersonId()).isEqualTo(OODI_PERSON_ID);
         assertThat(appUser.getStudentNumber().get()).isEqualTo(SAML_STUDENT_NUMBER_FINAL);
         assertThat(appUser.getPreferredLanguage()).isEqualTo(SAML_PREFERRED_LANGUAGE);
         assertThat(appUser.getEduPersonAffiliations().contains(SAMLEduPersonAffiliation.STUDENT)).isTrue();
@@ -85,7 +85,7 @@ public class SAMLUserDetailsServiceTest {
         assertThat(appUser.getUsername()).isEqualTo(SAML_PRINCIPAL_NAME);
         assertThat(appUser.getEmail()).isEqualTo(SAML_EMAIL);
         assertThat(appUser.getCommonName()).isEqualTo(SAML_COMMON_NAME);
-        assertThat(appUser.getOodiPersonId()).isEqualTo(OODI_PERSON_ID);
+        assertThat(appUser.getPersonId()).isEqualTo(OODI_PERSON_ID);
         assertThat(appUser.getEmployeeNumber().get()).isEqualTo(SAML_EMPLOYEE_NUMBER);
         assertThat(appUser.getPreferredLanguage()).isEqualTo(SAML_PREFERRED_LANGUAGE);
         assertThat(appUser.getEduPersonAffiliations().contains(SAMLEduPersonAffiliation.FACULTY)).isTrue();

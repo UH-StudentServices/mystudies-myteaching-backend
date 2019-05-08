@@ -44,9 +44,9 @@ public class PublicUserProfileResource extends AbstractResource {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/{oodiPersonId}", method = RequestMethod.GET)
-    public ResponseEntity<UserProfileDto> get(@PathVariable("oodiPersonId") String oodiPersonId) {
-        return response(userService.getProfileByOodiPersonId(oodiPersonId)
-            .orElseThrow(notFoundException("User profile not found with oodiPersonId " + oodiPersonId)));
+    @RequestMapping(value = "/{personId}", method = RequestMethod.GET)
+    public ResponseEntity<UserProfileDto> get(@PathVariable("personId") String personId) {
+        return response(userService.getProfileByPersonId(personId)
+            .orElseThrow(notFoundException("User profile not found with personId " + personId)));
     }
 }

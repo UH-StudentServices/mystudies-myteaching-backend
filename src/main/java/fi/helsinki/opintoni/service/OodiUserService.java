@@ -24,10 +24,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class OodiUserService {
 
-    private final OodiUserRoleService oodiUserRoleService;
+    private final UserRoleService oodiUserRoleService;
 
     @Autowired
-    public OodiUserService(OodiUserRoleService oodiUserRoleService) {
+    public OodiUserService(UserRoleService oodiUserRoleService) {
         this.oodiUserRoleService = oodiUserRoleService;
     }
 

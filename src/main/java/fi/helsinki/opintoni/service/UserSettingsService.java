@@ -99,9 +99,9 @@ public class UserSettingsService {
         return imageService.bytesToBufferedImage(userSettings.userAvatar.imageData);
     }
 
-    public BufferedImage getUserBackgroundImage(String oodiPersonId) throws IOException {
+    public BufferedImage getUserBackgroundImage(String personId) throws IOException {
         UserSettings userSettings =  userRepository
-            .findByOodiPersonId(oodiPersonId)
+            .findByPersonId(personId)
             .map(u -> userSettingsRepository.findByUserId(u.id))
             .orElseThrow(notFoundException("Background not found"));
 
@@ -123,8 +123,8 @@ public class UserSettingsService {
         userSettingsRepository.save(userSettings);
     }
 
-    public BufferedImage getUserAvatarImageByOodiPersonId(String oodiPersonId) {
-        Optional<User> user = userRepository.findByOodiPersonId(oodiPersonId);
+    public BufferedImage getUserAvatarImageByPersonId(String personId) {
+        Optional<User> user = userRepository.findByPersonId(personId);
         return user.map(u -> u.id)
             .map(this::getUserAvatarImage)
             .orElseThrow(notFoundException("Avatar not found for user"));

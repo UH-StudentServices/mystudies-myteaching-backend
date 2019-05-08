@@ -57,7 +57,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
     private static final String INVALID_LANGUAGE_CODE = "invalidLangCode";
 
     private static final String EDU_PRINCIPAL_NAME = "eduPrincipalName";
-    private static final String OODI_PERSON_ID = "oodiPersonId";
+    private static final String OODI_PERSON_ID = "personId";
     private static final String REMOTE_ADDRESS = "1.2.3.4";
     private static final String REQUEST_URL = "http://local.student.helsinki.fi:3000";
 
@@ -88,7 +88,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
         AppUser appUser = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(EDU_PRINCIPAL_NAME)
             .studentNumber("1234")
-            .oodiPersonId(OODI_PERSON_ID)
+            .personId(OODI_PERSON_ID)
             .preferredLanguage(appUserPreferredLanguage)
             .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .build();
@@ -271,7 +271,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
         @Override
         public boolean matches(User user) {
-            return user.oodiPersonId.equals(OODI_PERSON_ID);
+            return user.personId.equals(OODI_PERSON_ID);
         }
     }
 }

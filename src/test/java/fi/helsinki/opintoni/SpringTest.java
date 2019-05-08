@@ -27,15 +27,27 @@ import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
-import fi.helsinki.opintoni.server.*;
+import fi.helsinki.opintoni.server.CoursePageServer;
+import fi.helsinki.opintoni.server.ESBServer;
+import fi.helsinki.opintoni.server.FlammaServer;
+import fi.helsinki.opintoni.server.GuideNewsServer;
+import fi.helsinki.opintoni.server.GuideServer;
+import fi.helsinki.opintoni.server.OodiServer;
+import fi.helsinki.opintoni.server.PublicWwwServer;
+import fi.helsinki.opintoni.server.SisuServer;
+import fi.helsinki.opintoni.server.UnisportServer;
+import fi.helsinki.opintoni.server.WebPageServer;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
-import fi.helsinki.opintoni.web.requestchain.*;
+import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
+import fi.helsinki.opintoni.web.requestchain.TeacherRequestChain;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import liquibase.integration.spring.SpringLiquibase;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.runner.RunWith;
+import org.mockserver.junit.MockServerRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
@@ -116,6 +128,7 @@ public abstract class SpringTest {
     private static final String DEFAULT_SEQUENCE_SUFFIX = "_id_seq";
 
     protected OodiServer oodiServer;
+    protected SisuServer sisuServer;
     protected CoursePageServer coursePageServer;
     protected GuideServer guideServer;
     protected WebPageServer webPageServer;
@@ -181,6 +194,9 @@ public abstract class SpringTest {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Rule
+    public MockServerRule mockServerRule = new MockServerRule(this);
+
     @Before
     public final void baseInit() {
         initRestServer();
@@ -191,6 +207,7 @@ public abstract class SpringTest {
 
     private void initRestServer() {
         oodiServer = new OodiServer(appConfiguration, oodiRestTemplate);
+        sisuServer = new SisuServer(appConfiguration, mockServerRule.getClient());
         coursePageServer = new CoursePageServer(appConfiguration, coursePageRestTemplate);
         guideServer = new GuideServer(appConfiguration, guideRestTemplate);
         flammaServer = new FlammaServer(appConfiguration, flammaRestClient.getRestTemplate());
@@ -266,7 +283,7 @@ public abstract class SpringTest {
                 .eduPersonPrincipalName("opiskelija@helsinki.fi")
                 .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
                 .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
-                .oodiPersonId("1111")
+                .personId("1111")
                 .build(),
             ""));
     }
@@ -280,7 +297,7 @@ public abstract class SpringTest {
                 .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.FACULTY))
                 .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
                 .teacherFacultyCode("A10000")
-                .oodiPersonId("2222")
+                .personId("2222")
                 .build(),
             ""));
     }
@@ -302,10 +319,6 @@ public abstract class SpringTest {
 
     protected StudentRequestChain studentRequestChain(String studentNumber) {
         return new StudentRequestChain(studentNumber, oodiServer, coursePageServer);
-    }
-
-    protected OodiCourseNamesRequestChain defaultOodiCourseNamesRequestChain() {
-        return new OodiCourseNamesRequestChain(oodiServer);
     }
 
     protected String getRemoteMockApiUrl(String path) {

@@ -21,10 +21,10 @@ import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.CourseDto;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiEnrollment;
-import fi.helsinki.opintoni.integration.oodi.OodiTeacherCourse;
-import fi.helsinki.opintoni.integration.oodi.courseunitrealisation.Position;
+import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
+import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.Position;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.util.CourseMaterialDtoFactory;
 import fi.helsinki.opintoni.util.CoursePageUriBuilder;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 public class CourseConverter {
 
     private final CoursePageClient coursePageClient;
-    private final OodiClient oodiClient;
+    private final StudyRegistryService studyRegistryService;
     private final CoursePageUriBuilder coursePageUriBuilder;
     private final EventTypeResolver eventTypeResolver;
     private final LocalizedValueConverter localizedValueConverter;
@@ -48,14 +48,14 @@ public class CourseConverter {
 
     @Autowired
     public CourseConverter(CoursePageClient coursePageClient,
-                           OodiClient oodiClient,
+                           StudyRegistryService studyRegistryService,
                            CoursePageUriBuilder coursePageUriBuilder,
                            EventTypeResolver eventTypeResolver,
                            LocalizedValueConverter localizedValueConverter,
                            CourseMaterialDtoFactory courseMaterialDtoFactory,
                            EnrollmentNameConverter enrollmentNameConverter) {
         this.coursePageClient = coursePageClient;
-        this.oodiClient = oodiClient;
+        this.studyRegistryService = studyRegistryService;
         this.coursePageUriBuilder = coursePageUriBuilder;
         this.eventTypeResolver = eventTypeResolver;
         this.localizedValueConverter = localizedValueConverter;
@@ -63,65 +63,65 @@ public class CourseConverter {
         this.enrollmentNameConverter = enrollmentNameConverter;
     }
 
-    public Optional<CourseDto> toDto(OodiEnrollment oodiEnrollment, Locale locale) {
+    public Optional<CourseDto> toDto(Enrollment enrollment, Locale locale) {
         CourseDto dto = null;
 
-        if (!isPositionStudygroupset(oodiEnrollment.position)) {
-            CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiEnrollment.realisationId, locale);
+        if (!isPositionStudygroupset(enrollment.position)) {
+            CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(enrollment.realisationId, locale);
 
             dto = new CourseDto(
-                oodiEnrollment.learningOpportunityId,
-                oodiEnrollment.typeCode,
-                localizedValueConverter.toLocalizedString(oodiEnrollment.name, locale),
+                enrollment.learningOpportunityId,
+                enrollment.typeCode,
+                localizedValueConverter.toLocalizedString(enrollment.name, locale),
                 coursePageUriBuilder.getImageUri(coursePage),
                 coursePage.url,
                 courseMaterialDtoFactory.fromCoursePage(coursePage),
-                oodiEnrollment.webOodiUri,
-                oodiEnrollment.startDate,
-                oodiEnrollment.endDate,
-                oodiEnrollment.realisationId,
-                oodiEnrollment.parentId,
-                oodiEnrollment.rootId,
-                oodiEnrollment.credits,
-                oodiClient.getCourseUnitRealisationTeachers(oodiEnrollment.realisationId)
-                    .stream().map(t -> t.fullName).collect(Collectors.toList()),
-                eventTypeResolver.isExam(oodiEnrollment.typeCode),
-                oodiEnrollment.isCancelled,
+                enrollment.webOodiUri,
+                enrollment.startDate,
+                enrollment.endDate,
+                enrollment.realisationId,
+                enrollment.parentId,
+                enrollment.rootId,
+                enrollment.credits,
+                studyRegistryService.getCourseRealisationTeachers(enrollment.realisationId)
+                    .stream().map(t -> t.name).collect(Collectors.toList()),
+                eventTypeResolver.isExam(enrollment.typeCode),
+                enrollment.isCancelled,
                 null);
 
         }
         return Optional.ofNullable(dto);
     }
 
-    public Optional<CourseDto> toDto(OodiTeacherCourse oodiTeacherCourse, Locale locale, boolean isChildCourseWithoutRoot) {
+    public Optional<CourseDto> toDto(TeacherCourse teacherCourse, Locale locale, boolean isChildCourseWithoutRoot) {
         CourseDto dto = null;
 
-        if (!isPositionStudygroupset(oodiTeacherCourse.position)) {
-            CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(oodiTeacherCourse.realisationId, locale);
+        if (!isPositionStudygroupset(teacherCourse.position)) {
+            CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(teacherCourse.realisationId, locale);
 
             dto = new CourseDto(
-                oodiTeacherCourse.basecode,
-                oodiTeacherCourse.realisationTypeCode,
+                teacherCourse.learningOpportunityId,
+                teacherCourse.realisationTypeCode,
                 isChildCourseWithoutRoot ?
                     enrollmentNameConverter.getRealisationNameWithRootName(
-                        oodiTeacherCourse.realisationName,
-                        oodiTeacherCourse.realisationRootName,
+                        teacherCourse.realisationName,
+                        teacherCourse.realisationRootName,
                         locale) :
-                    localizedValueConverter.toLocalizedString(oodiTeacherCourse.realisationName, locale),
+                    localizedValueConverter.toLocalizedString(teacherCourse.realisationName, locale),
                 coursePageUriBuilder.getImageUri(coursePage),
                 coursePage.url,
                 courseMaterialDtoFactory.fromCoursePage(coursePage),
-                oodiTeacherCourse.webOodiUri,
-                oodiTeacherCourse.startDate,
-                oodiTeacherCourse.endDate,
-                oodiTeacherCourse.realisationId,
-                oodiTeacherCourse.parentId,
-                oodiTeacherCourse.rootId,
+                teacherCourse.webOodiUri,
+                teacherCourse.startDate,
+                teacherCourse.endDate,
+                teacherCourse.realisationId,
+                teacherCourse.parentId,
+                teacherCourse.rootId,
                 null,
                 Lists.newArrayList(),
-                eventTypeResolver.isExam(oodiTeacherCourse.realisationTypeCode),
-                oodiTeacherCourse.isCancelled,
-                oodiTeacherCourse.teacherRole);
+                eventTypeResolver.isExam(teacherCourse.realisationTypeCode),
+                teacherCourse.isCancelled,
+                teacherCourse.teacherRole);
         }
         return Optional.ofNullable(dto);
     }

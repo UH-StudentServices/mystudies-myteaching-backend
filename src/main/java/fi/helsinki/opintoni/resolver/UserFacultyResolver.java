@@ -18,10 +18,10 @@
 package fi.helsinki.opintoni.resolver;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
-import fi.helsinki.opintoni.integration.oodi.OodiClient;
-import fi.helsinki.opintoni.integration.oodi.OodiStudyRight;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRight;
 import fi.helsinki.opintoni.security.AppUser;
-import fi.helsinki.opintoni.service.OodiUserRoleService;
+import fi.helsinki.opintoni.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,15 +32,15 @@ import static fi.helsinki.opintoni.service.converter.FacultyConverter.OPEN_UNIVE
 @Component
 public class UserFacultyResolver {
 
-    private final OodiClient oodiClient;
-    private final OodiUserRoleService oodiUserRoleService;
+    private final StudyRegistryService studyRegistryService;
+    private final UserRoleService oodiUserRoleService;
     private final AppConfiguration appConfiguration;
 
     @Autowired
-    public UserFacultyResolver(OodiClient oodiClient,
-                               OodiUserRoleService oodiUserRoleService,
+    public UserFacultyResolver(StudyRegistryService studyRegistryService,
+                               UserRoleService oodiUserRoleService,
                                AppConfiguration appConfiguration) {
-        this.oodiClient = oodiClient;
+        this.studyRegistryService = studyRegistryService;
         this.oodiUserRoleService = oodiUserRoleService;
         this.appConfiguration = appConfiguration;
     }
@@ -54,7 +54,7 @@ public class UserFacultyResolver {
         if (oodiUserRoleService.isOpenUniversityStudent(studentNumber)) {
             return OPEN_UNIVERSITY_FACULTY_CODE;
         }
-        List<OodiStudyRight> studyRights = oodiClient.getStudentStudyRights(studentNumber);
+        List<StudyRight> studyRights = studyRegistryService.getStudentStudyRights(studentNumber);
         return studyRights.stream()
             .filter(studyRight -> studyRight.priority == 1)
             .findFirst()
