@@ -360,7 +360,6 @@ obar:
         OCK5th1wuJLmKKsUXgrlAkAEbzqZICKYFzA3b4p+xKsgyQ7TYPXJq60gvINsbWql
         hVgbKTsLYrW38ov5Qh1vEO84nxnNdyUQrHizVUFP1Lg2
         -----END RSA PRIVATE KEY-----
+
 sisu:
-  baseUrl: http://localhost:4444
-  client.implementation: graphQL
-  apiPath: /graphql
+    client.implementation: graphQL

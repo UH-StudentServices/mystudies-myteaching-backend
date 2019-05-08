@@ -19,27 +19,45 @@ package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.integration.studyregistry.Person;
+import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import static fi.helsinki.opintoni.integration.studyregistry.sisu.Constants.SISU_PRIVATE_PERSON_ID_PREFIX;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SisuStudyRegistryTest extends SpringTest {
 
-    @Autowired
+    private static final String PERSON_ID = "1234567";
+    private static final String PREFIXED_PERSON_ID = SISU_PRIVATE_PERSON_ID_PREFIX + PERSON_ID;
+
     private SisuStudyRegistry sisuStudyRegistry;
 
-    @Test
-    public void thatPrivatePersonIsReturned() throws Exception {
-        final String personId = "hy-1234567";
+    @Before
+    public void initSisuStudyRegistry() {
+        SisuGraphQLClient sisuGraphQLClient =
+            new SisuGraphQLClient(String.format("http://localhost:%s/graphql", mockServerRule.getPort()));
 
+        sisuStudyRegistry = new SisuStudyRegistry(sisuGraphQLClient, new SisuStudyRegistryConverter());
+    }
+
+    private void assertGetPerson(String personId, String requestPersonId) throws Exception {
         sisuServer.expectRolesRequest(
-            personId,
+            requestPersonId,
             "private_person_response.json");
 
         Person person = sisuStudyRegistry.getPerson(personId);
 
         assertThat(person.studentNumber).isEqualTo("123456");
         assertThat(person.teacherNumber).isEqualTo("654321");
+    }
+
+    @Test
+    public void thatPersonDataIsReturnedForPrefixedPersonId() throws Exception {
+        assertGetPerson(PREFIXED_PERSON_ID, PREFIXED_PERSON_ID);
+    }
+
+    @Test
+    public void thatPrefixIsAddedAndPersonDataIsReturnedForNonPrefixedPersonId() throws Exception {
+        assertGetPerson(PERSON_ID, PREFIXED_PERSON_ID);
     }
 }

@@ -58,7 +58,7 @@ public class SisuServer {
 
     private String requestBodyMatcher(Class requestClass, Arguments arguments) throws Exception {
         GraphQLRequestEntity requestEntity = GraphQLRequestEntity.Builder()
-            .url(sisuBaseUrl)
+            .url("http://localhost") // This is not actually used, but GraphQLRequestEntity build() method fails if left empty.
             .request(requestClass)
             .arguments(arguments)
             .build();

@@ -27,10 +27,20 @@ import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
-import fi.helsinki.opintoni.server.*;
+import fi.helsinki.opintoni.server.CoursePageServer;
+import fi.helsinki.opintoni.server.ESBServer;
+import fi.helsinki.opintoni.server.FlammaServer;
+import fi.helsinki.opintoni.server.GuideNewsServer;
+import fi.helsinki.opintoni.server.GuideServer;
+import fi.helsinki.opintoni.server.OodiServer;
+import fi.helsinki.opintoni.server.PublicWwwServer;
+import fi.helsinki.opintoni.server.SisuServer;
+import fi.helsinki.opintoni.server.UnisportServer;
+import fi.helsinki.opintoni.server.WebPageServer;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
-import fi.helsinki.opintoni.web.requestchain.*;
+import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
+import fi.helsinki.opintoni.web.requestchain.TeacherRequestChain;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import liquibase.integration.spring.SpringLiquibase;
 import org.junit.After;
@@ -185,7 +195,7 @@ public abstract class SpringTest {
     private EntityManager entityManager;
 
     @Rule
-    public MockServerRule mockServerRule = new MockServerRule( this, 4444);
+    public MockServerRule mockServerRule = new MockServerRule( this);
 
     @Before
     public final void baseInit() {
@@ -309,10 +319,6 @@ public abstract class SpringTest {
 
     protected StudentRequestChain studentRequestChain(String studentNumber) {
         return new StudentRequestChain(studentNumber, oodiServer, coursePageServer);
-    }
-
-    protected OodiCourseNamesRequestChain defaultOodiCourseNamesRequestChain() {
-        return new OodiCourseNamesRequestChain(oodiServer);
     }
 
     protected String getRemoteMockApiUrl(String path) {

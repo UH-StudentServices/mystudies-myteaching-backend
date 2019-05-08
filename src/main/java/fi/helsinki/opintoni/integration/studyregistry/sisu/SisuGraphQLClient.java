@@ -28,8 +28,9 @@ import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 
-public class SisuGraphQLClient implements SisuClient {
+import static fi.helsinki.opintoni.integration.studyregistry.sisu.Constants.SISU_PRIVATE_PERSON_ID_PREFIX;
 
+public class SisuGraphQLClient implements SisuClient {
     private static final Logger log = LoggerFactory.getLogger(SisuGraphQLClient.class);
     private String endPointURL;
 
@@ -37,8 +38,13 @@ public class SisuGraphQLClient implements SisuClient {
         this.endPointURL = endPointURL;
     }
 
+    @Override
     public PrivatePersonRequest getPrivatePerson(String id) {
         GraphQLTemplate graphQLTemplate = new GraphQLTemplate();
+
+        if (!id.startsWith(SISU_PRIVATE_PERSON_ID_PREFIX)) {
+            id = SISU_PRIVATE_PERSON_ID_PREFIX + id;
+        }
 
         try {
             GraphQLRequestEntity requestEntity = GraphQLRequestEntity.Builder()

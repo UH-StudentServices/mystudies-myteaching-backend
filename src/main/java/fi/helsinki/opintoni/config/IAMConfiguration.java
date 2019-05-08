@@ -59,7 +59,7 @@ public class IAMConfiguration {
     @Bean
     public RestTemplate iamRestTemplate() {
         RestTemplate restTemplate = new RestTemplate(SSLRequestFactory.clientHttpRequestFactory(
-            appConfiguration, useHttpClientCertificate, keystoreLocation, keystorePassword));
+            appConfiguration));
         restTemplate.setMessageConverters(getConverters());
         restTemplate.setInterceptors(Collections.singletonList(new LoggingInterceptor()));
         return restTemplate;

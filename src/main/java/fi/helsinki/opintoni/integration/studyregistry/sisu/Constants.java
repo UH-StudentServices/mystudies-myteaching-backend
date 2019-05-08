@@ -15,18 +15,8 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.studyregistry.sisu.mock;
+package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
-import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuClient;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
-
-public class SisuMockClient implements SisuClient {
-
-    @Override
-    public PrivatePersonRequest getPrivatePerson(String id) {
-        PrivatePersonRequest privatePersonRequest = new PrivatePersonRequest();
-        privatePersonRequest.studentNumber = "010189791";
-        privatePersonRequest.employeeNumber = "010540";
-        return privatePersonRequest;
-    }
+public class Constants {
+    public static final String SISU_PRIVATE_PERSON_ID_PREFIX = "hy-hlo-";
 }

@@ -40,6 +40,8 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
+import javax.net.ssl.SSLContext;
 import java.util.List;
 
 @Configuration
@@ -66,11 +68,18 @@ public class StudyRegistryConfiguration {
         this.objectMapper = objectMapper;
     }
 
+    @PostConstruct
+    public void initDefaultSSLContext() {
+        if (useHttpClientCertificate && keystoreLocation != null && keystorePassword != null) {
+            SSLContext.setDefault(SSLRequestFactory.sslContext(keystoreLocation, keystorePassword));
+        }
+    }
+
     @Bean
     public RestTemplate oodiRestTemplate() {
         log.info(String.format("OodiConfiguration.keystoreLocation=%s", keystoreLocation == null ? "NULL" : keystoreLocation));
         RestTemplate restTemplate = new RestTemplate(SSLRequestFactory.clientHttpRequestFactory(
-            appConfiguration, useHttpClientCertificate, keystoreLocation, keystorePassword));
+            appConfiguration));
 
         restTemplate.setInterceptors(Lists.newArrayList(
             new LoggingInterceptor(),

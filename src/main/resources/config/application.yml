@@ -439,5 +439,6 @@ studyregistry:
         - COURSE_REALISATION_TEACHERS
         - PERSON_INFO
 sisu:
-    baseUrl: http://localhost
+    baseUrl: https://esbmt2.it.helsinki.fi:443/secure/doo-sisu
+    client.implementation: graphQL
     apiPath: /graphql
