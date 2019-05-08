@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SisuStudyRegistryConverter {
 
-    public Person convertPerson(PrivatePersonRequest privatePersonRequest) {
+    public Person sisuPrivatePersonToPerson(PrivatePersonRequest privatePersonRequest) {
         Person person = new Person();
         person.studentNumber = privatePersonRequest.studentNumber;
         person.teacherNumber = privatePersonRequest.employeeNumber;

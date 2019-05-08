@@ -17,7 +17,7 @@
 
 package fi.helsinki.opintoni.integration.studyregistry;
 
-public enum StudyRegistryDataset {
+public enum StudyRegistryDataSet {
     STUDENT_ENROLLMENTS,
     STUDENT_EVENTS,
     TEACHER_COURSES,

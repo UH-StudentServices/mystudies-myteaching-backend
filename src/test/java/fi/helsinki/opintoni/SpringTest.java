@@ -195,7 +195,7 @@ public abstract class SpringTest {
     private EntityManager entityManager;
 
     @Rule
-    public MockServerRule mockServerRule = new MockServerRule( this);
+    public MockServerRule mockServerRule = new MockServerRule(this);
 
     @Before
     public final void baseInit() {

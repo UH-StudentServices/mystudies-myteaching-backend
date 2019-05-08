@@ -83,6 +83,6 @@ public class SisuStudyRegistry implements StudyRegistry {
     @Override
     public Person getPerson(String personId) {
         PrivatePersonRequest privatePersonRequest = sisuClient.getPrivatePerson(personId);
-        return sisuStudyRegistryConverter.convertPerson(privatePersonRequest);
+        return sisuStudyRegistryConverter.sisuPrivatePersonToPerson(privatePersonRequest);
     }
 }

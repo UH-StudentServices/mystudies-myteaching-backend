@@ -179,7 +179,7 @@ dependencies {
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     compile group: 'com.rometools', name: 'rome', version: '1.5.1'
 
-    compile group: 'io.aexp.nodes.graphql', name: 'nodes', version: '0.4.0'
+    compile group: 'io.aexp.nodes.graphql', name: 'nodes', version: nodes_version
 
     errorprone group: 'com.google.errorprone', name:'error_prone_core', version: error_prone_core_version
 

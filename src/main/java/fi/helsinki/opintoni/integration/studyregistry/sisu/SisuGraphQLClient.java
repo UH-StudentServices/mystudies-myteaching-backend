@@ -23,16 +23,13 @@ import io.aexp.nodes.graphql.Arguments;
 import io.aexp.nodes.graphql.GraphQLRequestEntity;
 import io.aexp.nodes.graphql.GraphQLResponseEntity;
 import io.aexp.nodes.graphql.GraphQLTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.MalformedURLException;
 
 import static fi.helsinki.opintoni.integration.studyregistry.sisu.Constants.SISU_PRIVATE_PERSON_ID_PREFIX;
 
 public class SisuGraphQLClient implements SisuClient {
-    private static final Logger log = LoggerFactory.getLogger(SisuGraphQLClient.class);
-    private String endPointURL;
+    private final String endPointURL;
 
     public SisuGraphQLClient(String endPointURL) {
         this.endPointURL = endPointURL;

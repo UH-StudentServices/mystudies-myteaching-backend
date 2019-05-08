@@ -25,14 +25,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataset.COURSE_REALISATION_TEACHERS;
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataset.PERSON_INFO;
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataset.STUDENT_ENROLLMENTS;
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataset.STUDENT_EVENTS;
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataset.STUDY_ATTAINMENTS;
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataset.STUDY_RIGHTS;
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataset.TEACHER_COURSES;
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataset.TEACHER_EVENTS;
+import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.COURSE_REALISATION_TEACHERS;
+import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.PERSON_INFO;
+import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.STUDENT_ENROLLMENTS;
+import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.STUDENT_EVENTS;
+import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.STUDY_ATTAINMENTS;
+import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.STUDY_RIGHTS;
+import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.TEACHER_COURSES;
+import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.TEACHER_EVENTS;
 
 @Service
 public class StudyRegistryService {
@@ -47,8 +47,8 @@ public class StudyRegistryService {
     @Autowired
     private StudyRegistryDataSetConfiguration studyRegistryDataSetConfiguration;
 
-    private StudyRegistry getStudyRegistry(StudyRegistryDataset dataset) {
-        if (studyRegistryDataSetConfiguration.getSisuDataSets().contains(dataset.name())) {
+    private StudyRegistry getStudyRegistry(StudyRegistryDataSet dataSet) {
+        if (studyRegistryDataSetConfiguration.getSisuDataSets().contains(dataSet.name())) {
             return sisuStudyRegistry;
         }
         return oodiStudyRegistry;
