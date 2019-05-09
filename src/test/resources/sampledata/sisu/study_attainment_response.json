@@ -5,7 +5,14 @@
         {
           "id": "hy-opinto-126377006",
           "attainmentDate": "2018-08-26",
-          "acceptorPersons": null,
+          "acceptorPersons": [
+            {
+              "person": {
+                "firstName": "Olli",
+                "lastName": "Opettaja"
+              }
+            }
+          ],
           "gradeId": 1,
           "gradeScale": {
             "grades": [
@@ -22,7 +29,7 @@
                 "name": {
                   "fi": "välttävä",
                   "en": "passable",
-                  "sv": "försvarlig"
+                  "sv": "   "
                 }
               },
               {
@@ -53,8 +60,8 @@
                 "localId": "5",
                 "name": {
                   "fi": "erinomainen",
-                  "en": "utmärkt",
-                  "sv": "excellent"
+                  "en": "excellent",
+                  "sv": "utmärkt"
                 }
               }
             ]

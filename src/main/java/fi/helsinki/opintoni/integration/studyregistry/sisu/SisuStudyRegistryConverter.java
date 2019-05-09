@@ -43,17 +43,17 @@ public class SisuStudyRegistryConverter {
 
     public static final String DATE_PATTERN = "yyyy-MM-dd";
 
-    public StudyAttainment convertAttainment(Attainment attainment) {
+    public StudyAttainment sisuAttainmentToStudyAttainment(Attainment attainment) {
         StudyAttainment studyAttainment = new StudyAttainment();
         studyAttainment.attainmentDate = LocalDate
             .parse(attainment.attainmentDate, DateTimeFormatter.ofPattern(DATE_PATTERN))
             .atStartOfDay();
         studyAttainment.credits = attainment.credits.intValue();
-        studyAttainment.grade = convertGrade(attainment.gradeScale, attainment.gradeId);
+        studyAttainment.grade = sisuGradeScaleToLocalizedTextList(attainment.gradeScale, attainment.gradeId);
         studyAttainment.studyAttainmentId = sisuIDToLong(attainment.id);
-        studyAttainment.learningOpportunityName = convertLocalizedString(attainment.courseUnit.name);
+        studyAttainment.learningOpportunityName = sisuLocalizedStringToLocalizedTextList(attainment.courseUnit.name);
         studyAttainment.teachers = attainment.acceptorPersons != null ? attainment.acceptorPersons.stream()
-            .map(this::convertAcceptorPerson)
+            .map(this::sisuAcceptorPersonToTeacher)
             .collect(Collectors.toList())
             : new ArrayList<>();
         return studyAttainment;
@@ -73,29 +73,12 @@ public class SisuStudyRegistryConverter {
         return id;
     }
 
-    private Teacher convertAcceptorPerson(AcceptorPerson acceptorPerson) {
-        Teacher teacher = new Teacher();
-        PublicPerson person = acceptorPerson.person;
-        String firstName = person.firstName != null ? person.firstName : "";
-        String lastName = person.lastName != null ? person.lastName : "";
-        teacher.name = String.format("%s %s", firstName, lastName);
-        return teacher;
-    }
-
-    public List<LocalizedText> convertGrade(GradeScale scale, Integer gradeId) {
+    public List<LocalizedText> sisuGradeScaleToLocalizedTextList(GradeScale scale, Integer gradeId) {
         Grade grade = scale.grades.stream()
             .filter((g) -> g.localId.equals(gradeId))
             .findFirst()
             .orElseThrow();
-        return convertLocalizedString(grade.name);
-    }
-
-    private List<LocalizedText> convertLocalizedString(LocalizedString localizedString) {
-        return List.of(
-            new LocalizedText(StudyRegistryLocale.FI, localizedString.fi),
-            new LocalizedText(StudyRegistryLocale.SV, localizedString.sv),
-            new LocalizedText(StudyRegistryLocale.EN, localizedString.en)
-        );
+        return sisuLocalizedStringToLocalizedTextList(grade.name);
     }
 
     public Person sisuPrivatePersonToPerson(PrivatePersonRequest privatePersonRequest) {
@@ -104,4 +87,22 @@ public class SisuStudyRegistryConverter {
         person.teacherNumber = privatePersonRequest.employeeNumber;
         return person;
     }
+
+    private Teacher sisuAcceptorPersonToTeacher(AcceptorPerson acceptorPerson) {
+        Teacher teacher = new Teacher();
+        PublicPerson person = acceptorPerson.person;
+        String firstName = person.firstName != null ? person.firstName : "";
+        String lastName = person.lastName != null ? person.lastName : "";
+        teacher.name = String.format("%s %s", firstName, lastName);
+        return teacher;
+    }
+
+    private List<LocalizedText> sisuLocalizedStringToLocalizedTextList(LocalizedString localizedString) {
+        return List.of(
+            new LocalizedText(StudyRegistryLocale.FI, localizedString.fi),
+            new LocalizedText(StudyRegistryLocale.SV, localizedString.sv),
+            new LocalizedText(StudyRegistryLocale.EN, localizedString.en)
+        );
+    }
+
 }

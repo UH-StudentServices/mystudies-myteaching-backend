@@ -27,6 +27,7 @@ import io.aexp.nodes.graphql.Arguments;
 import io.aexp.nodes.graphql.GraphQLRequestEntity;
 import io.aexp.nodes.graphql.internal.DefaultObjectMapperFactory;
 import org.mockserver.client.MockServerClient;
+import org.mockserver.model.Header;
 
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
@@ -69,6 +70,9 @@ public class SisuServer {
             .respond(
                 response()
                     .withStatusCode(200)
+                    .withHeaders(
+                        new Header("Content-Type", "application/json; charset=utf-8")
+                    )
                     .withBody(SampleDataFiles.toText(String.format("sisu/%s", responseFile))));
     }
 

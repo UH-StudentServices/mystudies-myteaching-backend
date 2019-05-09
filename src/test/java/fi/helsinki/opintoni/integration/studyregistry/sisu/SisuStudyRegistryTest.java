@@ -66,20 +66,26 @@ public class SisuStudyRegistryTest extends SpringTest {
     }
 
     @Test
-    public void thatStudyAttainmentsIsReturned() throws Exception {
-        final String personId = "hy-123123";
+    public void thatStudyAttainmentsAreReturned() throws Exception {
 
-        sisuServer.expectAttainmentRequest(personId, "study_attainment_response.json");
+        sisuServer.expectAttainmentRequest(PREFIXED_PERSON_ID, "study_attainment_response.json");
 
-        List<StudyAttainment> attainments = sisuStudyRegistry.getStudyAttainments(personId);
+        List<StudyAttainment> attainments = sisuStudyRegistry.getStudyAttainments(PERSON_ID);
 
         assertThat(attainments.size()).isEqualTo(1);
         final StudyAttainment studyAttainment = attainments.get(0);
+        assertThat(studyAttainment.studyAttainmentId).isEqualTo(126377006);
         assertThat(studyAttainment.attainmentDate)
             .isEqualTo(LocalDateTime.of(2018, 8, 26, 0, 0));
         assertThat(studyAttainment.credits).isEqualTo(5);
         assertThat(studyAttainment.grade.size()).isEqualTo(3);
+        assertThat(studyAttainment.grade.get(0).text).isEqualTo("välttävä");
+        assertThat(studyAttainment.grade.get(1).text).isEqualTo("försvarlig");
+        assertThat(studyAttainment.grade.get(2).text).isEqualTo("passable");
         assertThat(studyAttainment.learningOpportunityName.size()).isEqualTo(3);
-        assertThat(studyAttainment.teachers).isEmpty();
+        assertThat(studyAttainment.learningOpportunityName.get(0).text).isEqualTo("Integraalilaskenta");
+        assertThat(studyAttainment.learningOpportunityName.get(1).text).isEqualTo("Integral kalkyl");
+        assertThat(studyAttainment.learningOpportunityName.get(2).text).isEqualTo("Integral Calculus");
+        assertThat(studyAttainment.teachers.get(0).name).isEqualTo("Olli Opettaja");
     }
 }

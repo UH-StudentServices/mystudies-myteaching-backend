@@ -66,7 +66,7 @@ public class SisuStudyRegistry implements StudyRegistry {
     public List<StudyAttainment> getStudyAttainments(String studentNumber) {
         StudyAttainmentRequest studyAttainmentRequest = sisuClient.getStudyAttainments(studentNumber);
         return studyAttainmentRequest.attainments.stream()
-            .map(sisuStudyRegistryConverter::convertAttainment)
+            .map(sisuStudyRegistryConverter::sisuAttainmentToStudyAttainment)
             .collect(Collectors.toList());
     }
 
