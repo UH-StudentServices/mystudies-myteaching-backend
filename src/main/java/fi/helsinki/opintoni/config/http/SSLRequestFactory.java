@@ -18,31 +18,30 @@
 package fi.helsinki.opintoni.config.http;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
-import fi.helsinki.opintoni.exception.SSLContextException;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 import javax.net.ssl.SSLContext;
-import java.io.File;
-import java.security.KeyStore;
 
 public class SSLRequestFactory {
 
     private SSLRequestFactory() {}
 
-    public static ClientHttpRequestFactory clientHttpRequestFactory(AppConfiguration appConfiguration) {
+    public static ClientHttpRequestFactory clientHttpRequestFactory(AppConfiguration appConfiguration,
+                                                                    SSLContext sslContext) {
         HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 
         factory.setReadTimeout(appConfiguration.getInteger("httpClient.readTimeout"));
         factory.setConnectTimeout(appConfiguration.getInteger("httpClient.connectTimeout"));
 
-        PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager();
+        PoolingHttpClientConnectionManager poolingHttpClientConnectionManager = poolingHttpClientConnectionManager(sslContext);
 
         poolingHttpClientConnectionManager.setMaxTotal(appConfiguration.getInteger("httpClient.maxTotal"));
         poolingHttpClientConnectionManager
@@ -57,28 +56,14 @@ public class SSLRequestFactory {
         return new BufferingClientHttpRequestFactory(factory);
     }
 
-    public static SSLContext sslContext(String keystoreLocation, String keystorePassword) {
-        char[] keystorePasswordCharArray = keystorePassword.toCharArray();
+    private static PoolingHttpClientConnectionManager poolingHttpClientConnectionManager(SSLContext sslContext) {
+        if (sslContext != null) {
+            SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext);
+            Registry socketFactoryRegistry = RegistryBuilder.create().register("https", sslConnectionSocketFactory).build();
 
-        try {
-            return SSLContextBuilder
-                .create()
-                .loadKeyMaterial(keyStore(keystoreLocation, keystorePasswordCharArray), keystorePasswordCharArray)
-                .build();
-        } catch (Exception e) {
-            throw new SSLContextException("Failed to load client keystore", e);
-        }
-    }
-
-    private static KeyStore keyStore(String keystoreLocation, char[] keystorePassword) {
-        try {
-            KeyStore keyStore = KeyStore.getInstance("PKCS12");
-            FileSystemResource keystoreFile = new FileSystemResource(new File(keystoreLocation));
-
-            keyStore.load(keystoreFile.getInputStream(), keystorePassword);
-            return keyStore;
-        } catch (Exception e) {
-            throw new SSLContextException(String.format("Failed to load client keystore from '%s'", keystoreLocation), e);
+            return new PoolingHttpClientConnectionManager(socketFactoryRegistry);
+        } else {
+            return new PoolingHttpClientConnectionManager();
         }
     }
 }

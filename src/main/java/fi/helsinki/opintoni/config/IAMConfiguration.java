@@ -32,6 +32,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.SSLContext;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,6 +48,9 @@ public class IAMConfiguration {
     @Value("${iam.useHttpClientCertificate:false}")
     private boolean useHttpClientCertificate;
 
+    @Autowired
+    private SSLContext sslContext;
+
     private final AppConfiguration appConfiguration;
     private final ObjectMapper objectMapper;
 
@@ -59,7 +63,7 @@ public class IAMConfiguration {
     @Bean
     public RestTemplate iamRestTemplate() {
         RestTemplate restTemplate = new RestTemplate(SSLRequestFactory.clientHttpRequestFactory(
-            appConfiguration));
+            appConfiguration, sslContext));
         restTemplate.setMessageConverters(getConverters());
         restTemplate.setInterceptors(Collections.singletonList(new LoggingInterceptor()));
         return restTemplate;
