@@ -60,6 +60,7 @@ public class SisuGraphQLClient implements SisuClient {
         }
     }
 
+    @Override
     public StudyAttainmentRequest getStudyAttainments(String id) {
         GraphQLTemplate graphQLTemplate = new GraphQLTemplate();
 

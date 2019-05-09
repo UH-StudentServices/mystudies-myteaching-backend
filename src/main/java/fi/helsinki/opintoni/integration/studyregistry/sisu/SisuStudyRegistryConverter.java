@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
+import com.google.common.base.Splitter;
 import fi.helsinki.opintoni.integration.studyregistry.LocalizedText;
 import fi.helsinki.opintoni.integration.studyregistry.Person;
 import fi.helsinki.opintoni.integration.studyregistry.StudyAttainment;
@@ -62,8 +63,8 @@ public class SisuStudyRegistryConverter {
         Long id;
 
         if (sisuID.contains("-")) {
-            String[] parts = sisuID.split("-");
-            String idPart = parts[parts.length - 1];
+            List<String> parts = Splitter.on('-').splitToList(sisuID);
+            String idPart = parts.get(parts.size() - 1);
             id = Long.parseLong(idPart);
         } else {
             id = Long.parseLong(sisuID);
@@ -83,7 +84,7 @@ public class SisuStudyRegistryConverter {
 
     public List<LocalizedText> convertGrade(GradeScale scale, Integer gradeId) {
         Grade grade = scale.grades.stream()
-            .filter((g) -> g.localId == gradeId)
+            .filter((g) -> g.localId.equals(gradeId))
             .findFirst()
             .orElseThrow();
         return convertLocalizedString(grade.name);
