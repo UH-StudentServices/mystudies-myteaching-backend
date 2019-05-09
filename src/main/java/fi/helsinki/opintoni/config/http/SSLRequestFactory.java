@@ -18,22 +18,17 @@
 package fi.helsinki.opintoni.config.http;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
-import fi.helsinki.opintoni.exception.SSLContextException;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 import javax.net.ssl.SSLContext;
-import java.io.File;
-import java.security.KeyStore;
 
 public class SSLRequestFactory {
 
