@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.server;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyAttainmentRequest;
 import fi.helsinki.opintoni.sampledata.SampleDataFiles;
 import io.aexp.nodes.graphql.Argument;
 import io.aexp.nodes.graphql.Arguments;
@@ -50,6 +51,21 @@ public class SisuServer {
                     .withMethod("POST")
                     .withPath(graphQLApiPath)
                     .withBody(requestBodyMatcher(PrivatePersonRequest.class, arguments)))
+            .respond(
+                response()
+                    .withStatusCode(200)
+                    .withBody(SampleDataFiles.toText(String.format("sisu/%s", responseFile))));
+    }
+
+    public void expectAttainmentRequest(String personId, String responseFile) throws Exception {
+        Arguments arguments = new Arguments("private_person", new Argument("id", personId));
+
+        client
+            .when(
+                request()
+                    .withMethod("POST")
+                    .withPath(graphQLApiPath)
+                    .withBody(requestBodyMatcher(StudyAttainmentRequest.class, arguments)))
             .respond(
                 response()
                     .withStatusCode(200)

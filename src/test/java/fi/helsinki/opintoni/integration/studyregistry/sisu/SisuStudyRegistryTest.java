@@ -19,8 +19,12 @@ package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.integration.studyregistry.Person;
+import fi.helsinki.opintoni.integration.studyregistry.StudyAttainment;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static fi.helsinki.opintoni.integration.studyregistry.sisu.Constants.SISU_PRIVATE_PERSON_ID_PREFIX;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,5 +63,23 @@ public class SisuStudyRegistryTest extends SpringTest {
     @Test
     public void thatPrefixIsAddedAndPersonDataIsReturnedForNonPrefixedPersonId() throws Exception {
         assertGetPerson(PERSON_ID, PREFIXED_PERSON_ID);
+    }
+
+    @Test
+    public void thatStudyAttainmentsIsReturned() throws Exception {
+        final String personId = "hy-123123";
+
+        sisuServer.expectAttainmentRequest(personId, "study_attainment_response.json");
+
+        List<StudyAttainment> attainments = sisuStudyRegistry.getStudyAttainments(personId);
+
+        assertThat(attainments.size()).isEqualTo(1);
+        final StudyAttainment studyAttainment = attainments.get(0);
+        assertThat(studyAttainment.attainmentDate)
+            .isEqualTo(LocalDateTime.of(2018, 8, 26, 0, 0));
+        assertThat(studyAttainment.credits).isEqualTo(5);
+        assertThat(studyAttainment.grade.size()).isEqualTo(3);
+        assertThat(studyAttainment.learningOpportunityName.size()).isEqualTo(3);
+        assertThat(studyAttainment.teachers).isEmpty();
     }
 }

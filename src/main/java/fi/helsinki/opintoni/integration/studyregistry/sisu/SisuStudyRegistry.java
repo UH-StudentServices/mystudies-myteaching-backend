@@ -26,11 +26,13 @@ import fi.helsinki.opintoni.integration.studyregistry.StudyRight;
 import fi.helsinki.opintoni.integration.studyregistry.Teacher;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyAttainmentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Qualifier("sisuStudyRegistry")
@@ -62,7 +64,10 @@ public class SisuStudyRegistry implements StudyRegistry {
 
     @Override
     public List<StudyAttainment> getStudyAttainments(String studentNumber) {
-        return null;
+        StudyAttainmentRequest studyAttainmentRequest = sisuClient.getStudyAttainments(studentNumber);
+        return studyAttainmentRequest.attainments.stream()
+            .map(sisuStudyRegistryConverter::convertAttainment)
+            .collect(Collectors.toList());
     }
 
     @Override

@@ -1,0 +1,74 @@
+{
+  "data": {
+    "private_person": {
+      "attainments": [
+        {
+          "id": "hy-opinto-126377006",
+          "attainmentDate": "2018-08-26",
+          "acceptorPersons": null,
+          "gradeId": 1,
+          "gradeScale": {
+            "grades": [
+              {
+                "localId": "0",
+                "name": {
+                  "fi": "hylätty",
+                  "en": "fail",
+                  "sv": "underkänd"
+                }
+              },
+              {
+                "localId": "1",
+                "name": {
+                  "fi": "välttävä",
+                  "en": "passable",
+                  "sv": "försvarlig"
+                }
+              },
+              {
+                "localId": "2",
+                "name": {
+                  "fi": "tyydyttävä",
+                  "en": "satisfactory",
+                  "sv": "nöjaktig"
+                }
+              },
+              {
+                "localId": "3",
+                "name": {
+                  "fi": "hyvä",
+                  "en": "good",
+                  "sv": "god"
+                }
+              },
+              {
+                "localId": "4",
+                "name": {
+                  "fi": "kiitettävä",
+                  "en": "very good",
+                  "sv": "berömlig"
+                }
+              },
+              {
+                "localId": "5",
+                "name": {
+                  "fi": "erinomainen",
+                  "en": "utmärkt",
+                  "sv": "excellent"
+                }
+              }
+            ]
+          },
+          "credits": 5,
+          "courseUnit": {
+            "name": {
+              "fi": "Integraalilaskenta",
+              "en": "Integral Calculus",
+              "sv": "Integral kalkyl"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

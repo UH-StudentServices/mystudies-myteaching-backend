@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyAttainmentRequest;
 import io.aexp.nodes.graphql.Argument;
 import io.aexp.nodes.graphql.Arguments;
 import io.aexp.nodes.graphql.GraphQLRequestEntity;
@@ -57,5 +58,25 @@ public class SisuGraphQLClient implements SisuClient {
         } catch (MalformedURLException mue) {
             throw new RuntimeException(mue);
         }
+    }
+
+    public StudyAttainmentRequest getStudyAttainments(String id) {
+        GraphQLTemplate graphQLTemplate = new GraphQLTemplate();
+
+        try {
+            GraphQLRequestEntity requestEntity = GraphQLRequestEntity.Builder()
+                .url(endPointURL)
+                .request(StudyAttainmentRequest.class)
+                .arguments(new Arguments("private_person", new Argument("id", id)))
+                .build();
+
+            GraphQLResponseEntity<StudyAttainmentRequest> responseEntity = graphQLTemplate.query(requestEntity, StudyAttainmentRequest.class);
+
+            return responseEntity.getResponse();
+
+        } catch (MalformedURLException mue) {
+            throw new RuntimeException(mue);
+        }
+
     }
 }

@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.integration.studyregistry.sisu.mock;
 
 import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuClient;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyAttainmentRequest;
 
 public class SisuMockClient implements SisuClient {
 
@@ -29,4 +30,10 @@ public class SisuMockClient implements SisuClient {
         privatePersonRequest.employeeNumber = "010540";
         return privatePersonRequest;
     }
+
+    @Override
+    public StudyAttainmentRequest getStudyAttainments(String id) {
+        return null;
+    }
+
 }

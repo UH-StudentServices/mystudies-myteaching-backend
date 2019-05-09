@@ -30,7 +30,7 @@ public class SampleDataFiles {
 
     public static String toText(String path) {
         try {
-            return Files.toString(new File(PREFIX + path), Charset.forName("UTF-8"));
+            return Files.asCharSource(new File(PREFIX + path), Charset.forName("UTF-8")).read();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
