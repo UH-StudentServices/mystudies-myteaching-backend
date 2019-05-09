@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyAttainmentRequest;
 import io.aexp.nodes.graphql.Argument;
 import io.aexp.nodes.graphql.Arguments;
 import io.aexp.nodes.graphql.GraphQLRequestEntity;
@@ -37,25 +38,36 @@ public class SisuGraphQLClient implements SisuClient {
 
     @Override
     public PrivatePersonRequest getPrivatePerson(String id) {
-        GraphQLTemplate graphQLTemplate = new GraphQLTemplate();
+
+        return queryWithPrivatePersonId(id, PrivatePersonRequest.class);
+
+    }
+
+    @Override
+    public StudyAttainmentRequest getStudyAttainments(String id) {
+        return queryWithPrivatePersonId(id, StudyAttainmentRequest.class);
+    }
+
+    private <T> T queryWithPrivatePersonId(String id, Class<T> type) {
 
         if (!id.startsWith(SISU_PRIVATE_PERSON_ID_PREFIX)) {
             id = SISU_PRIVATE_PERSON_ID_PREFIX + id;
         }
 
+        GraphQLTemplate graphQLTemplate = new GraphQLTemplate();
         try {
             GraphQLRequestEntity requestEntity = GraphQLRequestEntity.Builder()
                 .url(endPointURL)
-                .request(PrivatePersonRequest.class)
+                .request(type)
                 .arguments(new Arguments("private_person", new Argument("id", id)))
                 .build();
 
-            GraphQLResponseEntity<PrivatePersonRequest> responseEntity = graphQLTemplate.query(requestEntity, PrivatePersonRequest.class);
+            GraphQLResponseEntity<T> responseEntity = graphQLTemplate.query(requestEntity, type);
 
             return responseEntity.getResponse();
-
         } catch (MalformedURLException mue) {
             throw new RuntimeException(mue);
         }
     }
+
 }

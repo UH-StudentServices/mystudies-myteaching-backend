@@ -15,13 +15,10 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.studyregistry.sisu;
+package fi.helsinki.opintoni.integration.studyregistry.sisu.model;
 
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyAttainmentRequest;
+import java.util.List;
 
-public interface SisuClient {
-    public PrivatePersonRequest getPrivatePerson(String id);
-
-    public StudyAttainmentRequest getStudyAttainments(String id);
+public class GradeScale {
+    public List<Grade> grades;
 }
