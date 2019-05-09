@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.config.http.SSLRequestFactory;
+import fi.helsinki.opintoni.exception.SSLContextException;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
 import fi.helsinki.opintoni.integration.interceptor.OodiExceptionInterceptor;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiClient;
@@ -29,19 +30,24 @@ import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuClient;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuGraphQLClient;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.mock.SisuMockClient;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.net.ssl.SSLContext;
+import java.io.File;
+import java.security.KeyStore;
 import java.util.List;
 
 @Configuration
@@ -70,16 +76,28 @@ public class StudyRegistryConfiguration {
 
     @PostConstruct
     public void initDefaultSSLContext() {
-        if (useHttpClientCertificate && keystoreLocation != null && keystorePassword != null) {
-            SSLContext.setDefault(SSLRequestFactory.sslContext(keystoreLocation, keystorePassword));
+        SSLContext sslContext = sslContext();
+
+        if (sslContext != null) {
+            SSLContext.setDefault(sslContext);
         }
+    }
+
+    @Bean
+    @Primary
+    public SSLContext sslContext() {
+        if (useHttpClientCertificate && keystoreLocation != null && keystorePassword != null) {
+            return createSslContextWithClientCertificate(keystoreLocation, keystorePassword);
+        }
+
+        return null;
     }
 
     @Bean
     public RestTemplate oodiRestTemplate() {
         log.info(String.format("OodiConfiguration.keystoreLocation=%s", keystoreLocation == null ? "NULL" : keystoreLocation));
         RestTemplate restTemplate = new RestTemplate(SSLRequestFactory.clientHttpRequestFactory(
-            appConfiguration));
+            appConfiguration, sslContext()));
 
         restTemplate.setInterceptors(Lists.newArrayList(
             new LoggingInterceptor(),
@@ -133,5 +151,30 @@ public class StudyRegistryConfiguration {
             .with("graphQL", sisuGraphQLClient())
             .with("mock", sisuMockClient())
             .build();
+    }
+
+    private SSLContext createSslContextWithClientCertificate(String keystoreLocation, String keystorePassword) {
+        char[] keystorePasswordCharArray = keystorePassword.toCharArray();
+
+        try {
+            return SSLContextBuilder
+                .create()
+                .loadKeyMaterial(keyStore(keystoreLocation, keystorePasswordCharArray), keystorePasswordCharArray)
+                .build();
+        } catch (Exception e) {
+            throw new SSLContextException("Failed to load client keystore", e);
+        }
+    }
+
+    private static KeyStore keyStore(String keystoreLocation, char[] keystorePassword) {
+        try {
+            KeyStore keyStore = KeyStore.getInstance("PKCS12");
+            FileSystemResource keystoreFile = new FileSystemResource(new File(keystoreLocation));
+
+            keyStore.load(keystoreFile.getInputStream(), keystorePassword);
+            return keyStore;
+        } catch (Exception e) {
+            throw new SSLContextException(String.format("Failed to load client keystore from '%s'", keystoreLocation), e);
+        }
     }
 }
