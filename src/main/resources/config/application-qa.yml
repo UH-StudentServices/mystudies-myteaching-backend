@@ -127,3 +127,15 @@ obar:
 fileService:
   client.implementation: rest
   base.url: https://qa.files.it.helsinki.fi
+
+studyregistry:
+    oodiDatasets:
+        - STUDENT_ENROLLMENTS
+        - STUDENT_EVENTS
+        - TEACHER_COURSES
+        - TEACHER_EVENTS
+        - STUDY_RIGHTS
+        - COURSE_REALISATION_TEACHERS
+    sisuDatasets:
+        - PERSON_INFO
+        - STUDY_ATTAINMENTS
