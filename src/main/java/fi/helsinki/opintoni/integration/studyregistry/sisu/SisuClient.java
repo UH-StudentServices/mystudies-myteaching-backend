@@ -21,7 +21,7 @@ import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRe
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyAttainmentRequest;
 
 public interface SisuClient {
-    public PrivatePersonRequest getPrivatePerson(String id);
+    PrivatePersonRequest getPrivatePerson(String id);
 
-    public StudyAttainmentRequest getStudyAttainments(String id);
+    StudyAttainmentRequest getStudyAttainments(String id);
 }

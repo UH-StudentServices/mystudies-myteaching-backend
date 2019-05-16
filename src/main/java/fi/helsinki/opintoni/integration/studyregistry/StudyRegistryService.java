@@ -69,8 +69,12 @@ public class StudyRegistryService {
         return getStudyRegistry(TEACHER_EVENTS).getTeacherEvents(teacherNumber);
     }
 
-    public List<StudyAttainment> getStudyAttainments(String studentNumber) {
-        return getStudyRegistry(STUDY_ATTAINMENTS).getStudyAttainments(studentNumber);
+    public List<StudyAttainment> getStudyAttainments(String personId) {
+        return getStudyRegistry(STUDY_ATTAINMENTS).getStudyAttainments(personId);
+    }
+
+    public List<StudyAttainment> getStudyAttainments(String personId, String studentNumber) {
+        return getStudyRegistry(STUDY_ATTAINMENTS).getStudyAttainments(personId, studentNumber);
     }
 
     @Cacheable(value = CacheConstants.TEACHER_COURSES, cacheManager = "transientCacheManager")

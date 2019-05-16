@@ -58,7 +58,7 @@ public class StudyAttainmentService {
             .map(whitelist -> {
                 List<Long> whitelistedAttainmentIds = getWhitelistedAttainmentIds(whitelist);
                 List<StudyAttainment> studyAttainments =
-                    studyRegistryService.getStudyAttainments(getStudentNumber(profile));
+                    studyRegistryService.getStudyAttainments(profile.user.personId);
                 return getWhitelistedAttainments(studyAttainments, whitelistedAttainmentIds, locale,
                     whitelist.showGrades);
             }).orElse(Lists.newArrayList());
@@ -82,15 +82,10 @@ public class StudyAttainmentService {
             .collect(Collectors.toList());
     }
 
-    private String getStudentNumber(Profile profile) {
-        String personId = profile.user.personId;
-        return studyRegistryService.getPerson(personId).studentNumber;
-    }
-
-    public List<StudyAttainmentDto> getStudyAttainments(String studentNumber, int limit, Locale locale) {
+    public List<StudyAttainmentDto> getStudyAttainments(String personId, String studentNumber, int limit, Locale locale) {
         Comparator<StudyAttainmentDto> studyAttainmentDtoComparator = this::compareStudyAttainments;
 
-        return studyRegistryService.getStudyAttainments(studentNumber).stream()
+        return studyRegistryService.getStudyAttainments(personId, studentNumber).stream()
             .map(a -> studyAttainmentConverter.toDto(a, locale, true))
             .sorted(studyAttainmentDtoComparator.reversed())
             .limit(limit)

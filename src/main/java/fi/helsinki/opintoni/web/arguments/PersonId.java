@@ -15,27 +15,14 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.studyregistry;
+package fi.helsinki.opintoni.web.arguments;
 
-import java.util.List;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public interface StudyRegistry {
-
-    List<Enrollment> getEnrollments(String studentNumber);
-
-    List<Event> getStudentEvents(String studentNumber);
-
-    List<Event> getTeacherEvents(String teacherNumber);
-
-    List<StudyAttainment> getStudyAttainments(String personId);
-
-    List<StudyAttainment> getStudyAttainments(String personId, String studentNumber);
-
-    List<TeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString);
-
-    List<StudyRight> getStudentStudyRights(String studentNumber);
-
-    List<Teacher> getCourseRealisationTeachers(String realisationId);
-
-    Person getPerson(String personId);
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PersonId {
 }

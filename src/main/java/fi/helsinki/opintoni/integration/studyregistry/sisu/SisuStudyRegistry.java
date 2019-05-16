@@ -63,11 +63,16 @@ public class SisuStudyRegistry implements StudyRegistry {
     }
 
     @Override
-    public List<StudyAttainment> getStudyAttainments(String studentNumber) {
-        StudyAttainmentRequest studyAttainmentRequest = sisuClient.getStudyAttainments(studentNumber);
+    public List<StudyAttainment> getStudyAttainments(String personId) {
+        StudyAttainmentRequest studyAttainmentRequest = sisuClient.getStudyAttainments(personId);
         return studyAttainmentRequest.attainments.stream()
             .map(sisuStudyRegistryConverter::sisuAttainmentToStudyAttainment)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StudyAttainment> getStudyAttainments(String personId, String studentNumber) {
+        return getStudyAttainments(personId);
     }
 
     @Override

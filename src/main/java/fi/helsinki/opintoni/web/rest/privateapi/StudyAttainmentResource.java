@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.dto.StudyAttainmentDto;
 import fi.helsinki.opintoni.security.authorization.StudentRoleRequired;
 import fi.helsinki.opintoni.service.profile.StudyAttainmentService;
 import fi.helsinki.opintoni.web.WebConstants;
+import fi.helsinki.opintoni.web.arguments.PersonId;
 import fi.helsinki.opintoni.web.arguments.StudentNumber;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
@@ -52,6 +53,7 @@ public class StudyAttainmentResource extends AbstractResource {
             produces = WebConstants.APPLICATION_JSON_UTF8)
     @Timed
     public ResponseEntity<List<StudyAttainmentDto>> getStudyAttainments(
+            @PersonId String personId,
             @StudentNumber String studentNumber,
             @RequestParam(value = "limit", defaultValue = "8") int limit,
             @RequestParam(value = "lang", required = false) String langParam,
@@ -65,6 +67,6 @@ public class StudyAttainmentResource extends AbstractResource {
             queryLocale = Locale.forLanguageTag(langParam);
         }
 
-        return response(studyAttainmentService.getStudyAttainments(studentNumber, limit, queryLocale));
+        return response(studyAttainmentService.getStudyAttainments(personId, studentNumber, limit, queryLocale));
     }
 }
