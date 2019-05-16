@@ -24,13 +24,16 @@ import io.aexp.nodes.graphql.Arguments;
 import io.aexp.nodes.graphql.GraphQLRequestEntity;
 import io.aexp.nodes.graphql.GraphQLResponseEntity;
 import io.aexp.nodes.graphql.GraphQLTemplate;
-
-import java.net.MalformedURLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StopWatch;
 
 import static fi.helsinki.opintoni.integration.studyregistry.sisu.Constants.SISU_PRIVATE_PERSON_ID_PREFIX;
 
 public class SisuGraphQLClient implements SisuClient {
     private final String endPointURL;
+
+    private static final Logger log = LoggerFactory.getLogger(SisuGraphQLClient.class);
 
     public SisuGraphQLClient(String endPointURL) {
         this.endPointURL = endPointURL;
@@ -54,20 +57,30 @@ public class SisuGraphQLClient implements SisuClient {
             id = SISU_PRIVATE_PERSON_ID_PREFIX + id;
         }
 
+        return queryWithArguments(new Arguments("private_person", new Argument("id", id)), type);
+    }
+
+    private <T> T queryWithArguments(Arguments arguments, Class<T> type) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
         GraphQLTemplate graphQLTemplate = new GraphQLTemplate();
+
         try {
             GraphQLRequestEntity requestEntity = GraphQLRequestEntity.Builder()
                 .url(endPointURL)
                 .request(type)
-                .arguments(new Arguments("private_person", new Argument("id", id)))
+                .arguments(arguments)
                 .build();
 
             GraphQLResponseEntity<T> responseEntity = graphQLTemplate.query(requestEntity, type);
 
             return responseEntity.getResponse();
-        } catch (MalformedURLException mue) {
-            throw new RuntimeException(mue);
+        } catch (Exception e) {
+            throw new RuntimeException("GraphQL query failed with exception: ", e);
+        } finally {
+            stopWatch.stop();
+            log.info("GrapQL query {} took {} seconds", arguments.toString(), stopWatch.getTotalTimeSeconds());
         }
     }
-
 }

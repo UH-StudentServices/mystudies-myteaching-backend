@@ -20,11 +20,12 @@ package fi.helsinki.opintoni.integration.studyregistry.sisu.model;
 import io.aexp.nodes.graphql.annotations.GraphQLArgument;
 import io.aexp.nodes.graphql.annotations.GraphQLProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @GraphQLProperty(name = "private_person", arguments = {
     @GraphQLArgument(name = "id", type = "String")
 })
 public class StudyAttainmentRequest {
-    public List<Attainment> attainments;
+    public List<Attainment> attainments = new ArrayList<>();
 }
