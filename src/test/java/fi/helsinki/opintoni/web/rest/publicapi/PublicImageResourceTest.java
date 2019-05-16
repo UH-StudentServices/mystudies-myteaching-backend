@@ -28,6 +28,7 @@ import org.springframework.http.MediaType;
 
 import java.io.IOException;
 
+import static fi.helsinki.opintoni.web.TestConstants.STUDENT_PERSON_ID;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -49,7 +50,7 @@ public class PublicImageResourceTest extends SpringTest {
 
     @Test
     public void thatUserAvatarIsReturned() throws Exception {
-        mockMvc.perform(get("/api/public/v1/images/avatar/987654321"))
+        mockMvc.perform(get(String.format("/api/public/v1/images/avatar/%s", STUDENT_PERSON_ID)))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
     }
@@ -76,7 +77,7 @@ public class PublicImageResourceTest extends SpringTest {
 
     @Test
     public void thatUserBackgroundIsReturned() throws Exception {
-        mockMvc.perform(get("/api/public/v1/images/background/987654321"))
+        mockMvc.perform(get(String.format("/api/public/v1/images/background/%s", STUDENT_PERSON_ID)))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.IMAGE_JPEG_VALUE));
     }

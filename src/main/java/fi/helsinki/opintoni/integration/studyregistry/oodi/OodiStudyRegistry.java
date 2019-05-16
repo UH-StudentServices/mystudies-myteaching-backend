@@ -74,7 +74,9 @@ public class OodiStudyRegistry implements StudyRegistry {
     }
 
     @Override
-    public List<StudyAttainment> getStudyAttainments(String studentNumber) {
+    public List<StudyAttainment> getStudyAttainments(String personId) {
+        String studentNumber = getPerson(personId).studentNumber;
+
         List<OodiStudyAttainment> oodiStudyAttainments = oodiClient.getStudyAttainments(studentNumber);
 
         return oodiStudyAttainments.stream()

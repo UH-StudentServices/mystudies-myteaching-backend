@@ -27,7 +27,7 @@ public interface StudyRegistry {
 
     List<Event> getTeacherEvents(String teacherNumber);
 
-    List<StudyAttainment> getStudyAttainments(String studentNumber);
+    List<StudyAttainment> getStudyAttainments(String personId);
 
     List<TeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString);
 

@@ -48,12 +48,12 @@ public class StudyAttainmentServiceTest extends SpringTest {
 
     @Test
     public void thatStudyAttainmentsByStudentNumberAreReturned() throws IOException {
-        defaultStudentRequestChain().attainments();
+        defaultStudentRequestChain().roles().attainments();
 
         int limitStudyAttainments = 1;
 
         List<StudyAttainmentDto> studyAttainments = studyAttainmentService.getStudyAttainments(
-            TestConstants.STUDENT_NUMBER, limitStudyAttainments, DEFAULT_USER_LOCALE);
+            TestConstants.STUDENT_PERSON_ID, limitStudyAttainments, DEFAULT_USER_LOCALE);
         assertThat(studyAttainments.size()).isEqualTo(limitStudyAttainments);
 
         StudyAttainmentDto studyAttainmentDto = Iterables.getOnlyElement(studyAttainments);
@@ -62,12 +62,12 @@ public class StudyAttainmentServiceTest extends SpringTest {
 
     @Test
     public void thatStudyAttainmentsAreOrderedByDate() throws IOException {
-        defaultStudentRequestChain().attainments();
+        defaultStudentRequestChain().roles().attainments();
 
         int limitStudyAttainments = 4;
 
         List<StudyAttainmentDto> studyAttainments = studyAttainmentService.getStudyAttainments(
-            TestConstants.STUDENT_NUMBER, limitStudyAttainments, DEFAULT_USER_LOCALE);
+            TestConstants.STUDENT_PERSON_ID, limitStudyAttainments, DEFAULT_USER_LOCALE);
         assertThat(studyAttainments.size()).isEqualTo(limitStudyAttainments);
 
         List<LocalDateTime> dates = studyAttainments.stream().map(s -> s.attainmentDate).collect(Collectors.toList());
