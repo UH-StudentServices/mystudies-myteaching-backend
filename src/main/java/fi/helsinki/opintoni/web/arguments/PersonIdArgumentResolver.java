@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.web.arguments;
 
-import fi.helsinki.opintoni.exception.http.ForbiddenException;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.SecurityUtils;
 import org.springframework.core.MethodParameter;
@@ -43,7 +42,7 @@ public class PersonIdArgumentResolver implements HandlerMethodArgumentResolver {
         }
 
         if (parameter.getParameterType() != String.class) {
-            throw new ForbiddenException("PersonId must be of type String");
+            return false;
         }
 
         return true;
