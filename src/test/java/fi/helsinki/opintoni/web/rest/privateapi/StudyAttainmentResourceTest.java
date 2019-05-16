@@ -32,7 +32,7 @@ public class StudyAttainmentResourceTest extends SpringTest {
 
     @Test
     public void getStudyAttainmentsReturnsCorrectResponse() throws Exception {
-        defaultStudentRequestChain().roles().attainments();
+        defaultStudentRequestChain().attainments();
 
         mockMvc.perform(get("/api/private/v1/studyattainments").with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")

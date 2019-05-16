@@ -71,6 +71,11 @@ public class SisuStudyRegistry implements StudyRegistry {
     }
 
     @Override
+    public List<StudyAttainment> getStudyAttainments(String personId, String studentNumber) {
+        return getStudyAttainments(personId);
+    }
+
+    @Override
     public List<TeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
         return null;
     }

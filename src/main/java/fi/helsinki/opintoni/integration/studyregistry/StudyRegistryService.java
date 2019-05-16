@@ -73,6 +73,10 @@ public class StudyRegistryService {
         return getStudyRegistry(STUDY_ATTAINMENTS).getStudyAttainments(personId);
     }
 
+    public List<StudyAttainment> getStudyAttainments(String personId, String studentNumber) {
+        return getStudyRegistry(STUDY_ATTAINMENTS).getStudyAttainments(personId, studentNumber);
+    }
+
     @Cacheable(value = CacheConstants.TEACHER_COURSES, cacheManager = "transientCacheManager")
     public List<TeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
         return getStudyRegistry(TEACHER_COURSES).getTeacherCourses(teacherNumber, sinceDateString);

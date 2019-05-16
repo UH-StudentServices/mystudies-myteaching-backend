@@ -82,10 +82,10 @@ public class StudyAttainmentService {
             .collect(Collectors.toList());
     }
 
-    public List<StudyAttainmentDto> getStudyAttainments(String personId, int limit, Locale locale) {
+    public List<StudyAttainmentDto> getStudyAttainments(String personId, String studentNumber, int limit, Locale locale) {
         Comparator<StudyAttainmentDto> studyAttainmentDtoComparator = this::compareStudyAttainments;
 
-        return studyRegistryService.getStudyAttainments(personId).stream()
+        return studyRegistryService.getStudyAttainments(personId, studentNumber).stream()
             .map(a -> studyAttainmentConverter.toDto(a, locale, true))
             .sorted(studyAttainmentDtoComparator.reversed())
             .limit(limit)
