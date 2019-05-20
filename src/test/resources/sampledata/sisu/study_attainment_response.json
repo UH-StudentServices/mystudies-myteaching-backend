@@ -3,77 +3,156 @@
     "private_person": {
       "attainments": [
         {
-          "id": "hy-opinto-126377006",
-          "attainmentDate": "2018-08-26",
-          "acceptorPersons": [
-            {
-              "person": {
-                "firstName": "Olli",
-                "lastName": "Opettaja"
-              }
-            }
-          ],
-          "gradeId": 1,
+          "gradeId": "2",
+          "attainmentDate": "2019-06-28",
           "gradeScale": {
             "grades": [
               {
-                "localId": "0",
                 "name": {
                   "fi": "hylätty",
-                  "en": "fail",
-                  "sv": "underkänd"
-                }
+                  "sv": "underkänd",
+                  "en": "fail"
+                },
+                "localId": "0"
               },
               {
-                "localId": "1",
                 "name": {
                   "fi": "välttävä",
-                  "en": "passable",
-                  "sv": "försvarlig"
-                }
+                  "sv": "försvarlig",
+                  "en": "passable"
+                },
+                "localId": "1"
               },
               {
-                "localId": "2",
                 "name": {
                   "fi": "tyydyttävä",
-                  "en": "satisfactory",
-                  "sv": "nöjaktig"
-                }
+                  "sv": "nöjaktig",
+                  "en": "satisfactory"
+                },
+                "localId": "2"
               },
               {
-                "localId": "3",
                 "name": {
                   "fi": "hyvä",
-                  "en": "good",
-                  "sv": "god"
-                }
+                  "sv": "god",
+                  "en": "good"
+                },
+                "localId": "3"
               },
               {
-                "localId": "4",
                 "name": {
                   "fi": "kiitettävä",
-                  "en": "very good",
-                  "sv": "berömlig"
-                }
+                  "sv": "berömlig",
+                  "en": "very good"
+                },
+                "localId": "4"
               },
               {
-                "localId": "5",
                 "name": {
                   "fi": "erinomainen",
-                  "en": "excellent",
-                  "sv": "utmärkt"
-                }
+                  "sv": "utmärkt",
+                  "en": "excellent"
+                },
+                "localId": "5"
               }
             ]
           },
           "credits": 5,
           "courseUnit": {
             "name": {
-              "fi": "Integraalilaskenta",
-              "en": "Integral Calculus",
-              "sv": "Integral kalkyl"
+              "fi": "Historiantutkimuksen johdantokurssi",
+              "sv": "Introduktion till historievetenskapen",
+              "en": "Introduction to Historical Research"
             }
-          }
+          },
+          "acceptorPersons": [
+            {
+              "person": {
+                "firstName": "Jonas",
+                "lastName": "Seppä",
+                "id": "hy-hlo-84491179"
+              },
+              "text": null
+            }
+          ],
+          "id": "otm-4503c1ab-abed-4c20-87cd-880ecb396c07",
+          "type": "AssessmentItemAttainment"
+        },
+        {
+          "gradeId": "4",
+          "attainmentDate": "2018-07-30",
+          "gradeScale": {
+            "grades": [
+              {
+                "name": {
+                  "fi": "hylätty",
+                  "sv": "underkänd",
+                  "en": "fail"
+                },
+                "localId": "0"
+              },
+              {
+                "name": {
+                  "fi": "välttävä",
+                  "sv": "försvarlig",
+                  "en": "passable"
+                },
+                "localId": "1"
+              },
+              {
+                "name": {
+                  "fi": "tyydyttävä",
+                  "sv": "nöjaktig",
+                  "en": "satisfactory"
+                },
+                "localId": "2"
+              },
+              {
+                "name": {
+                  "fi": "hyvä",
+                  "sv": "god",
+                  "en": "good"
+                },
+                "localId": "3"
+              },
+              {
+                "name": {
+                  "fi": "kiitettävä",
+                  "sv": "berömlig",
+                  "en": "very good"
+                },
+                "localId": "4"
+              },
+              {
+                "name": {
+                  "fi": "erinomainen",
+                  "sv": "utmärkt",
+                  "en": "excellent"
+                },
+                "localId": "5"
+              }
+            ]
+          },
+          "credits": 10,
+          "courseUnit": {
+            "name": {
+              "fi": "Ekologisen   tutkimuksen kenttäkurssi",
+              "sv": "Ekologisen   tutkimuksen kenttäkurssi",
+              "en": "Field Course in Ecological Research"
+            }
+          },
+          "acceptorPersons": [
+            {
+              "person": {
+                "firstName": "Frank",
+                "lastName": "Lukkari",
+                "id": "hy-hlo-1000001"
+              },
+              "text": null
+            }
+          ],
+          "id": "hy-opinto-126395199",
+          "type": "CourseUnitAttainment"
         }
       ]
     }
