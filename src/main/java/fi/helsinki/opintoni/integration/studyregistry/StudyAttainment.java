@@ -25,7 +25,7 @@ public class StudyAttainment {
     public List<Teacher> teachers = new ArrayList<>();
     public List<LocalizedText> grade = new ArrayList<>();
     public Integer credits;
-    public Long studyAttainmentId;
+    public String studyAttainmentId;
     public List<LocalizedText> learningOpportunityName = new ArrayList<>();
     public LocalDateTime attainmentDate;
 }

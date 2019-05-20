@@ -72,7 +72,7 @@ public class OodiStudyRegistryConverter {
 
     public StudyAttainment oodiStudyAttainmentToStudyAttainment(OodiStudyAttainment oodiStudyAttainment) {
         StudyAttainment studyAttainment = new StudyAttainment();
-        studyAttainment.studyAttainmentId = oodiStudyAttainment.studyAttainmentId;
+        studyAttainment.studyAttainmentId = oodiStudyAttainment.studyAttainmentId.toString();
         studyAttainment.attainmentDate = oodiStudyAttainment.attainmentDate;
         studyAttainment.credits = oodiStudyAttainment.credits;
         studyAttainment.grade = oodiLocalizedValuesToLocalizedTexts(oodiStudyAttainment.grade);

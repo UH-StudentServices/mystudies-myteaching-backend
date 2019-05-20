@@ -64,7 +64,7 @@ public class PrivateProfileAttainmentResourceTest extends SpringTest {
     public void thatWhitelistedAttainmentIdsAreUpdated() throws Exception {
         StudyAttainmentWhitelistDto dto = new StudyAttainmentWhitelistDto();
         dto.showGrades = true;
-        dto.studyAttainmentIds = Lists.newArrayList(3L, 4L);
+        dto.studyAttainmentIds = Lists.newArrayList("3", "4");
 
         mockMvc.perform(post(RESOURCE_URL + "/whitelist")
             .with(securityContext(studentSecurityContext()))

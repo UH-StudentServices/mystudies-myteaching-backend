@@ -3,66 +3,57 @@
     "private_person": {
       "attainments": [
         {
-          "id": "hy-opinto-126377006",
+          "gradeId": "2",
           "attainmentDate": "2018-08-26",
-          "acceptorPersons": [
-            {
-              "person": {
-                "firstName": "Olli",
-                "lastName": "Opettaja"
-              }
-            }
-          ],
-          "gradeId": 1,
           "gradeScale": {
             "grades": [
               {
-                "localId": "0",
                 "name": {
                   "fi": "hylätty",
-                  "en": "fail",
-                  "sv": "underkänd"
-                }
+                  "sv": "underkänd",
+                  "en": "fail"
+                },
+                "localId": "0"
               },
               {
-                "localId": "1",
                 "name": {
                   "fi": "välttävä",
-                  "en": "passable",
-                  "sv": "försvarlig"
-                }
+                  "sv": "försvarlig",
+                  "en": "passable"
+                },
+                "localId": "1"
               },
               {
-                "localId": "2",
                 "name": {
                   "fi": "tyydyttävä",
-                  "en": "satisfactory",
-                  "sv": "nöjaktig"
-                }
+                  "sv": "nöjaktig",
+                  "en": "satisfactory"
+                },
+                "localId": "2"
               },
               {
-                "localId": "3",
                 "name": {
                   "fi": "hyvä",
-                  "en": "good",
-                  "sv": "god"
-                }
+                  "sv": "god",
+                  "en": "good"
+                },
+                "localId": "3"
               },
               {
-                "localId": "4",
                 "name": {
                   "fi": "kiitettävä",
-                  "en": "very good",
-                  "sv": "berömlig"
-                }
+                  "sv": "berömlig",
+                  "en": "very good"
+                },
+                "localId": "4"
               },
               {
-                "localId": "5",
                 "name": {
                   "fi": "erinomainen",
-                  "en": "excellent",
-                  "sv": "utmärkt"
-                }
+                  "sv": "utmärkt",
+                  "en": "excellent"
+                },
+                "localId": "5"
               }
             ]
           },
@@ -70,10 +61,22 @@
           "courseUnit": {
             "name": {
               "fi": "Integraalilaskenta",
-              "en": "Integral Calculus",
-              "sv": "Integral kalkyl"
+              "sv": "Integral kalkyl",
+              "en": "Integral Calculus"
             }
-          }
+          },
+          "acceptorPersons": [
+            {
+              "person": {
+                "firstName": "Ossi",
+                "lastName": "Opettaja",
+                "id": "hy-hlo-654321"
+              },
+              "text": null
+            }
+          ],
+          "id": "otm-1234567",
+          "type": "AssessmentItemAttainment"
         }
       ]
     }

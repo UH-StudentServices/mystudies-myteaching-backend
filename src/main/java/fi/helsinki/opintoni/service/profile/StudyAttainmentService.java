@@ -56,7 +56,7 @@ public class StudyAttainmentService {
         Profile profile = studyAttainmentTransactionalService.findProfile(profileId);
         return studyAttainmentTransactionalService.findByProfileId(profileId)
             .map(whitelist -> {
-                List<Long> whitelistedAttainmentIds = getWhitelistedAttainmentIds(whitelist);
+                List<String> whitelistedAttainmentIds = getWhitelistedAttainmentIds(whitelist);
                 List<StudyAttainment> studyAttainments =
                     studyRegistryService.getStudyAttainments(profile.user.personId);
                 return getWhitelistedAttainments(studyAttainments, whitelistedAttainmentIds, locale,
@@ -65,7 +65,7 @@ public class StudyAttainmentService {
     }
 
     private List<StudyAttainmentDto> getWhitelistedAttainments(List<StudyAttainment> studyAttainments,
-                                                               List<Long> whitelistedAttainmentIds,
+                                                               List<String> whitelistedAttainmentIds,
                                                                Locale locale,
                                                                boolean includeGrades) {
         Comparator<StudyAttainmentDto> studyAttainmentDtoComparator = this::compareStudyAttainments;
@@ -76,7 +76,7 @@ public class StudyAttainmentService {
             .collect(Collectors.toList());
     }
 
-    private List<Long> getWhitelistedAttainmentIds(StudyAttainmentWhitelist whitelist) {
+    private List<String> getWhitelistedAttainmentIds(StudyAttainmentWhitelist whitelist) {
         return whitelist.whitelistEntries.stream()
             .map(entry -> entry.studyAttainmentId)
             .collect(Collectors.toList());

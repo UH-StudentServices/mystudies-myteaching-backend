@@ -85,7 +85,7 @@ public class ProfileStudyAttainmentWhitelistService extends DtoService {
     }
 
     private StudyAttainmentWhitelistEntry createWhitelistEntry(StudyAttainmentWhitelist whitelist,
-                                                               Long studyAttainmentId) {
+                                                               String studyAttainmentId) {
         StudyAttainmentWhitelistEntry entry = new StudyAttainmentWhitelistEntry();
         entry.whitelist = whitelist;
         entry.studyAttainmentId = studyAttainmentId;

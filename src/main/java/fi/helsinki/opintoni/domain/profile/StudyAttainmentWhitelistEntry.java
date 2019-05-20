@@ -31,7 +31,7 @@ public class StudyAttainmentWhitelistEntry {
     @JoinColumn(name = "study_attainment_whitelist_id")
     public StudyAttainmentWhitelist whitelist;
 
-    @Column(name = "oodi_study_attainment_id")
-    public Long studyAttainmentId;
+    @Column(name = "study_attainment_id")
+    public String studyAttainmentId;
 
 }

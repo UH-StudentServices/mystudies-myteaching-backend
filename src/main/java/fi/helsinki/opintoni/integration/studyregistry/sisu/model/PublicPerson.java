@@ -17,8 +17,10 @@
 
 package fi.helsinki.opintoni.integration.studyregistry.sisu.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PublicPerson {
-    public Integer id;
     public String firstName;
     public String lastName;
 }
