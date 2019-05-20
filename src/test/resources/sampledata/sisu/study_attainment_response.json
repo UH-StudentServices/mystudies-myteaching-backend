@@ -4,7 +4,7 @@
       "attainments": [
         {
           "gradeId": "2",
-          "attainmentDate": "2019-06-28",
+          "attainmentDate": "2018-08-26",
           "gradeScale": {
             "grades": [
               {
@@ -60,99 +60,23 @@
           "credits": 5,
           "courseUnit": {
             "name": {
-              "fi": "Historiantutkimuksen johdantokurssi",
-              "sv": "Introduktion till historievetenskapen",
-              "en": "Introduction to Historical Research"
+              "fi": "Integraalilaskenta",
+              "sv": "Integral kalkyl",
+              "en": "Integral Calculus"
             }
           },
           "acceptorPersons": [
             {
               "person": {
-                "firstName": "Jonas",
-                "lastName": "Seppä",
-                "id": "hy-hlo-84491179"
+                "firstName": "Ossi",
+                "lastName": "Opettaja",
+                "id": "hy-hlo-654321"
               },
               "text": null
             }
           ],
-          "id": "otm-4503c1ab-abed-4c20-87cd-880ecb396c07",
+          "id": "otm-1234567",
           "type": "AssessmentItemAttainment"
-        },
-        {
-          "gradeId": "4",
-          "attainmentDate": "2018-07-30",
-          "gradeScale": {
-            "grades": [
-              {
-                "name": {
-                  "fi": "hylätty",
-                  "sv": "underkänd",
-                  "en": "fail"
-                },
-                "localId": "0"
-              },
-              {
-                "name": {
-                  "fi": "välttävä",
-                  "sv": "försvarlig",
-                  "en": "passable"
-                },
-                "localId": "1"
-              },
-              {
-                "name": {
-                  "fi": "tyydyttävä",
-                  "sv": "nöjaktig",
-                  "en": "satisfactory"
-                },
-                "localId": "2"
-              },
-              {
-                "name": {
-                  "fi": "hyvä",
-                  "sv": "god",
-                  "en": "good"
-                },
-                "localId": "3"
-              },
-              {
-                "name": {
-                  "fi": "kiitettävä",
-                  "sv": "berömlig",
-                  "en": "very good"
-                },
-                "localId": "4"
-              },
-              {
-                "name": {
-                  "fi": "erinomainen",
-                  "sv": "utmärkt",
-                  "en": "excellent"
-                },
-                "localId": "5"
-              }
-            ]
-          },
-          "credits": 10,
-          "courseUnit": {
-            "name": {
-              "fi": "Ekologisen   tutkimuksen kenttäkurssi",
-              "sv": "Ekologisen   tutkimuksen kenttäkurssi",
-              "en": "Field Course in Ecological Research"
-            }
-          },
-          "acceptorPersons": [
-            {
-              "person": {
-                "firstName": "Frank",
-                "lastName": "Lukkari",
-                "id": "hy-hlo-1000001"
-              },
-              "text": null
-            }
-          ],
-          "id": "hy-opinto-126395199",
-          "type": "CourseUnitAttainment"
         }
       ]
     }

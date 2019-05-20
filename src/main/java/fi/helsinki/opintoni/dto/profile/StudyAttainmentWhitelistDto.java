@@ -25,6 +25,6 @@ public class StudyAttainmentWhitelistDto {
 
     public boolean showGrades;
 
-    public List<Long> studyAttainmentIds = Lists.newArrayList();
+    public List<String> studyAttainmentIds = Lists.newArrayList();
 
 }

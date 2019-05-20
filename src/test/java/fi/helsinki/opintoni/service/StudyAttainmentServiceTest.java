@@ -87,8 +87,8 @@ public class StudyAttainmentServiceTest extends SpringTest {
             Locale.ENGLISH);
 
         assertThat(studyAttainments).hasSize(2);
-        assertThat(studyAttainments.get(0).studyAttainmentId).isEqualTo(1L);
-        assertThat(studyAttainments.get(1).studyAttainmentId).isEqualTo(2L);
+        assertThat(studyAttainments.get(0).studyAttainmentId).isEqualTo("1");
+        assertThat(studyAttainments.get(1).studyAttainmentId).isEqualTo("2");
     }
 
     @Test

@@ -17,7 +17,6 @@
 
 package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
-import com.google.common.base.Splitter;
 import fi.helsinki.opintoni.integration.studyregistry.LocalizedText;
 import fi.helsinki.opintoni.integration.studyregistry.Person;
 import fi.helsinki.opintoni.integration.studyregistry.StudyAttainment;
@@ -50,27 +49,13 @@ public class SisuStudyRegistryConverter {
             .atStartOfDay();
         studyAttainment.credits = attainment.credits.intValue();
         studyAttainment.grade = sisuGradeScaleToLocalizedTextList(attainment.gradeScale, attainment.gradeId);
-        studyAttainment.studyAttainmentId = sisuIDToLong(attainment.id);
+        studyAttainment.studyAttainmentId = attainment.id;
         studyAttainment.learningOpportunityName = sisuLocalizedStringToLocalizedTextList(attainment.courseUnit.name);
         studyAttainment.teachers = attainment.acceptorPersons != null ? attainment.acceptorPersons.stream()
             .map(this::sisuAcceptorPersonToTeacher)
             .collect(Collectors.toList())
             : new ArrayList<>();
         return studyAttainment;
-    }
-
-    public Long sisuIDToLong(String sisuID) {
-        Long id;
-
-        if (sisuID.contains("-")) {
-            List<String> parts = Splitter.on('-').splitToList(sisuID);
-            String idPart = parts.get(parts.size() - 1);
-            id = Long.parseLong(idPart);
-        } else {
-            id = Long.parseLong(sisuID);
-        }
-
-        return id;
     }
 
     public List<LocalizedText> sisuGradeScaleToLocalizedTextList(GradeScale scale, Integer gradeId) {

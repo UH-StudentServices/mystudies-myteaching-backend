@@ -22,14 +22,14 @@ import java.util.List;
 
 public class StudyAttainmentDto {
 
-    public Long studyAttainmentId;
+    public String studyAttainmentId;
     public String learningOpportunityName;
     public String grade;
     public List<TeacherDto> teachers;
     public LocalDateTime attainmentDate;
     public Integer credits;
 
-    public StudyAttainmentDto(Long studyAttainmentId,
+    public StudyAttainmentDto(String studyAttainmentId,
                               String learningOpportunityName,
                               List<TeacherDto> teachers,
                               LocalDateTime attainmentDate,

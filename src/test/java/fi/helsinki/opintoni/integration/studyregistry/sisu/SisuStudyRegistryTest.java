@@ -74,18 +74,18 @@ public class SisuStudyRegistryTest extends SpringTest {
 
         assertThat(attainments.size()).isEqualTo(1);
         final StudyAttainment studyAttainment = attainments.get(0);
-        assertThat(studyAttainment.studyAttainmentId).isEqualTo(126377006);
+        assertThat(studyAttainment.studyAttainmentId).isEqualTo("otm-1234567");
         assertThat(studyAttainment.attainmentDate)
             .isEqualTo(LocalDateTime.of(2018, 8, 26, 0, 0));
         assertThat(studyAttainment.credits).isEqualTo(5);
         assertThat(studyAttainment.grade.size()).isEqualTo(3);
-        assertThat(studyAttainment.grade.get(0).text).isEqualTo("välttävä");
-        assertThat(studyAttainment.grade.get(1).text).isEqualTo("försvarlig");
-        assertThat(studyAttainment.grade.get(2).text).isEqualTo("passable");
+        assertThat(studyAttainment.grade.get(0).text).isEqualTo("tyydyttävä");
+        assertThat(studyAttainment.grade.get(1).text).isEqualTo("nöjaktig");
+        assertThat(studyAttainment.grade.get(2).text).isEqualTo("satisfactory");
         assertThat(studyAttainment.learningOpportunityName.size()).isEqualTo(3);
         assertThat(studyAttainment.learningOpportunityName.get(0).text).isEqualTo("Integraalilaskenta");
         assertThat(studyAttainment.learningOpportunityName.get(1).text).isEqualTo("Integral kalkyl");
         assertThat(studyAttainment.learningOpportunityName.get(2).text).isEqualTo("Integral Calculus");
-        assertThat(studyAttainment.teachers.get(0).name).isEqualTo("Olli Opettaja");
+        assertThat(studyAttainment.teachers.get(0).name).isEqualTo("Ossi Opettaja");
     }
 }

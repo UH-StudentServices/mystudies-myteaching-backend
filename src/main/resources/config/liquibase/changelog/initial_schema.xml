@@ -2104,4 +2104,8 @@
     <changeSet id="OO-1339 rename oodi_person_id to person_id" author="Marko Rautajoki">
         <renameColumn tableName="user_account" oldColumnName="oodi_person_id" newColumnName="person_id"></renameColumn>
     </changeSet>
+    <changeSet id="Rename oodi_study_attainment_id to study_attainment_id and change datatype to varchar" author="Marko Rautajoki">
+        <renameColumn tableName="study_attainment_whitelist_entry" oldColumnName="oodi_study_attainment_id" newColumnName="study_attainment_id"></renameColumn>
+        <modifyDataType tableName="study_attainment_whitelist_entry" columnName="study_attainment_id" newDataType="varchar(255)"></modifyDataType>
+    </changeSet>
 </databaseChangeLog>

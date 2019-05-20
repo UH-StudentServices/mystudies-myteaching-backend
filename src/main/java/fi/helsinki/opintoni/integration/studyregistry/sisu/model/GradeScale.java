@@ -17,8 +17,11 @@
 
 package fi.helsinki.opintoni.integration.studyregistry.sisu.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GradeScale {
     public List<Grade> grades;
 }
