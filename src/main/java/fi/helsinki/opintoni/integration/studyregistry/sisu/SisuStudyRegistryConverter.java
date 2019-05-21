@@ -63,7 +63,7 @@ public class SisuStudyRegistryConverter {
             .filter((g) -> g.localId.equals(gradeId))
             .findFirst()
             .orElseThrow();
-        return sisuLocalizedStringToLocalizedTextList(grade.name);
+        return sisuLocalizedStringToLocalizedTextList(grade.abbreviation);
     }
 
     public Person sisuPrivatePersonToPerson(PrivatePersonRequest privatePersonRequest) {

@@ -59,12 +59,12 @@ public class SisuMockClient implements SisuClient {
 
     private GradeScale getGradeScale() {
         GradeScale gradeScale = new GradeScale();
-        Grade grade0 = getGrade(0, "hylätty", "fail", "underkänd");
-        Grade grade1 = getGrade(1, "välttävä", "passable", "försvarlig");
-        Grade grade2 = getGrade(2, "tyydyttävä", "satisfactory", "nöjaktig");
-        Grade grade3 = getGrade(3, "hyvä", "good", "god");
-        Grade grade4 = getGrade(4, "kiitettävä", "very good", "berömlig");
-        Grade grade5 = getGrade(4, "erinomainen", "excellent", "utmärkt");
+        Grade grade0 = getGrade(0, "0", "0", "0");
+        Grade grade1 = getGrade(1, "1", "1", "1");
+        Grade grade2 = getGrade(2, "2", "2", "2");
+        Grade grade3 = getGrade(3, "3", "3", "3");
+        Grade grade4 = getGrade(4, "4", "4", "4");
+        Grade grade5 = getGrade(5, "5", "5", "5");
         gradeScale.grades = List.of(grade0, grade1, grade2, grade3, grade4, grade5);
         return gradeScale;
     }
@@ -72,7 +72,7 @@ public class SisuMockClient implements SisuClient {
     private Grade getGrade(int id, String fi, String en, String sv) {
         Grade grade = new Grade();
         grade.localId = id;
-        grade.name = getLocalizedString(fi, en, sv);
+        grade.abbreviation = getLocalizedString(fi, en, sv);
         return grade;
     }
 
