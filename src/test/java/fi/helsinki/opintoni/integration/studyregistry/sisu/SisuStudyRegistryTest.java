@@ -79,9 +79,9 @@ public class SisuStudyRegistryTest extends SpringTest {
             .isEqualTo(LocalDateTime.of(2018, 8, 26, 0, 0));
         assertThat(studyAttainment.credits).isEqualTo(5);
         assertThat(studyAttainment.grade.size()).isEqualTo(3);
-        assertThat(studyAttainment.grade.get(0).text).isEqualTo("tyydyttävä");
-        assertThat(studyAttainment.grade.get(1).text).isEqualTo("nöjaktig");
-        assertThat(studyAttainment.grade.get(2).text).isEqualTo("satisfactory");
+        assertThat(studyAttainment.grade.get(0).text).isEqualTo("2");
+        assertThat(studyAttainment.grade.get(1).text).isEqualTo("2");
+        assertThat(studyAttainment.grade.get(2).text).isEqualTo("2");
         assertThat(studyAttainment.learningOpportunityName.size()).isEqualTo(3);
         assertThat(studyAttainment.learningOpportunityName.get(0).text).isEqualTo("Integraalilaskenta");
         assertThat(studyAttainment.learningOpportunityName.get(1).text).isEqualTo("Integral kalkyl");

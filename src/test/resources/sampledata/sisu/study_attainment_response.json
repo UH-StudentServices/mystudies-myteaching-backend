@@ -8,50 +8,50 @@
           "gradeScale": {
             "grades": [
               {
-                "name": {
-                  "fi": "hylätty",
-                  "sv": "underkänd",
-                  "en": "fail"
+                "abbreviation": {
+                  "fi": "0",
+                  "sv": "0",
+                  "en": "0"
                 },
                 "localId": "0"
               },
               {
-                "name": {
-                  "fi": "välttävä",
-                  "sv": "försvarlig",
-                  "en": "passable"
+                "abbreviation": {
+                  "fi": "1",
+                  "sv": "1",
+                  "en": "1"
                 },
                 "localId": "1"
               },
               {
-                "name": {
-                  "fi": "tyydyttävä",
-                  "sv": "nöjaktig",
-                  "en": "satisfactory"
+                "abbreviation": {
+                  "fi": "2",
+                  "sv": "2",
+                  "en": "2"
                 },
                 "localId": "2"
               },
               {
-                "name": {
-                  "fi": "hyvä",
-                  "sv": "god",
-                  "en": "good"
+                "abbreviation": {
+                  "fi": "3",
+                  "sv": "3",
+                  "en": "3"
                 },
                 "localId": "3"
               },
               {
-                "name": {
-                  "fi": "kiitettävä",
-                  "sv": "berömlig",
-                  "en": "very good"
+                "abbreviation": {
+                  "fi": "4",
+                  "sv": "4",
+                  "en": "4"
                 },
                 "localId": "4"
               },
               {
-                "name": {
-                  "fi": "erinomainen",
-                  "sv": "utmärkt",
-                  "en": "excellent"
+                "abbreviation": {
+                  "fi": "5",
+                  "sv": "5",
+                  "en": "5"
                 },
                 "localId": "5"
               }
