@@ -73,6 +73,6 @@ public class UserFacultyResolver {
     }
 
     public boolean isUnknownFaculty(String facultyCode) {
-        return appConfiguration.get("facultyLinks." + facultyCode) == null;
+        return appConfiguration.get("faculty." + facultyCode) == null;
     }
 }
