@@ -103,6 +103,19 @@ public class PrivateFreeTextContentResourceTest extends SpringTest {
     }
 
     @Test
+    public void thatFreeTextContentWillReturnUnprocessableEntityStatusCode() throws Exception {
+        FreeTextContentDto freeTextContentDto = new FreeTextContentDto();
+        freeTextContentDto.title = "";
+        freeTextContentDto.text = NEW_TEXT;
+
+        mockMvc.perform(put(resourcePath(STUDENT_PROFILE_ID, FREE_TEXT_CONTENT_ITEM_ID))
+            .with(securityContext(studentSecurityContext()))
+            .content(WebTestUtils.toJsonBytes(freeTextContentDto))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     public void thatFreeTextContentItemIsDeletedAlongWithMatchingComponentVisibility() throws Exception {
         mockMvc.perform(delete(resourcePath(STUDENT_PROFILE_ID, FREE_TEXT_CONTENT_ITEM_ID))
             .param("instanceName", GENERATED_INSTANCE_NAME)

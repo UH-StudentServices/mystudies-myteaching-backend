@@ -27,7 +27,14 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 import static fi.helsinki.opintoni.web.rest.RestConstants.MATCH_NUMBER;
 import static fi.helsinki.opintoni.web.rest.RestConstants.PRIVATE_API_V1_PROFILE;
@@ -50,7 +57,7 @@ public class PrivateFreeTextContentResource extends AbstractResource {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<FreeTextContentDto> insertFreeTextContent(@PathVariable Long profileId,
-                                                                    @RequestBody FreeTextContentDto freeTextContentDto) {
+                                                                    @Valid @RequestBody FreeTextContentDto freeTextContentDto) {
         return response(freeTextContentService.insertFreeTextContent(profileId, freeTextContentDto));
     }
 
@@ -58,8 +65,8 @@ public class PrivateFreeTextContentResource extends AbstractResource {
         method = RequestMethod.PUT,
         value = "/{freeTextContentId}")
     public ResponseEntity<FreeTextContentDto> updateFreeTextContent(@UserId Long userId,
-                                                @PathVariable Long freeTextContentId,
-                                                @RequestBody FreeTextContentDto freeTextContentDto) {
+                                                                    @PathVariable Long freeTextContentId,
+                                                                    @Valid @RequestBody FreeTextContentDto freeTextContentDto) {
         permissionChecker.verifyPermission(userId, freeTextContentId, FreeTextContent.class);
         return response(freeTextContentService.updateFreeTextContent(freeTextContentId, freeTextContentDto));
     }
