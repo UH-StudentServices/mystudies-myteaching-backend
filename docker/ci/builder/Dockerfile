@@ -6,7 +6,7 @@ ARG GROUP_NAME
 ARG GROUP_ID
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends bash ca-certificates wget git openssh-client \
+  && apt-get install -y --no-install-recommends bash ca-certificates wget git unzip openssh-client \
   && rm -rf /var/lib/apt/lists/* \
   && update-ca-certificates \
   && wget https://services.gradle.org/distributions/gradle-5.1.1-bin.zip \

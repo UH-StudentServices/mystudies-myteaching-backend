@@ -17,8 +17,11 @@
 
 package fi.helsinki.opintoni.dto.profile;
 
+import javax.validation.constraints.NotEmpty;
+
 public class FreeTextContentDto {
     public Long id;
+    @NotEmpty
     public String title;
     public String text;
     public String profileSection;

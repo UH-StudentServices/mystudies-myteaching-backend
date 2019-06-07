@@ -66,8 +66,12 @@ public class PrivateFreeTextResourcePermissionTest extends SpringTest {
 
     @Test
     public void thatUserCannotUpdateFreeTextContentItemSheDoesNowOwn() throws Exception {
+        FreeTextContentDto dto = new FreeTextContentDto();
+        dto.title = "Permission Test";
+        dto.text = "Permission Test";
+
         mockMvc.perform(put(resourcePath(USERS_PROFILE_ID, ANOTHER_USERS_FREE_TEXT_CONTENT_ITEM_ID))
-            .content(WebTestUtils.toJsonBytes(new FreeTextContentDto()))
+            .content(WebTestUtils.toJsonBytes(dto))
             .contentType(MediaType.APPLICATION_JSON)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isForbidden());

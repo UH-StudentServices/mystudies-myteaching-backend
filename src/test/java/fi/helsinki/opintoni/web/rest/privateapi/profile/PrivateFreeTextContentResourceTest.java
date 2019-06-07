@@ -69,6 +69,19 @@ public class PrivateFreeTextContentResourceTest extends SpringTest {
     }
 
     @Test
+    public void that422IsReturnedWhenInsertingFreeTextContentItemWithEmptyValue() throws Exception {
+        FreeTextContentDto freeTextContentDto = new FreeTextContentDto();
+        freeTextContentDto.title = "";
+        freeTextContentDto.text = NEW_TEXT;
+
+        mockMvc.perform(post(resourcePath(STUDENT_PROFILE_ID))
+            .with(securityContext(studentSecurityContext()))
+            .content(WebTestUtils.toJsonBytes(freeTextContentDto))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     public void thatSectionBoundFreeTextContentItemIsInsertedWithExistingInstanceName() throws Exception {
         FreeTextContentDto freeTextContentDto = new FreeTextContentDto();
         freeTextContentDto.title = NEW_TITLE;
@@ -100,6 +113,19 @@ public class PrivateFreeTextContentResourceTest extends SpringTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.title").value(NEW_TITLE))
             .andExpect(jsonPath("$.text").value(NEW_TEXT));
+    }
+
+    @Test
+    public void that422IsReturnedWhenUpdatingFreeTextContentItemWithEmptyValue() throws Exception {
+        FreeTextContentDto freeTextContentDto = new FreeTextContentDto();
+        freeTextContentDto.title = "";
+        freeTextContentDto.text = NEW_TEXT;
+
+        mockMvc.perform(put(resourcePath(STUDENT_PROFILE_ID, FREE_TEXT_CONTENT_ITEM_ID))
+            .with(securityContext(studentSecurityContext()))
+            .content(WebTestUtils.toJsonBytes(freeTextContentDto))
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
