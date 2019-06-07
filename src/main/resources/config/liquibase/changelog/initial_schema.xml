@@ -2108,4 +2108,23 @@
         <renameColumn tableName="study_attainment_whitelist_entry" oldColumnName="oodi_study_attainment_id" newColumnName="study_attainment_id"></renameColumn>
         <modifyDataType tableName="study_attainment_whitelist_entry" columnName="study_attainment_id" newDataType="varchar(255)"></modifyDataType>
     </changeSet>
+
+    <changeSet id="OO-1358 remove deprecated useful links" author="Juuso Lehtinen">
+        <delete tableName="useful_link">
+            <where>
+                description in (
+                    'usefulLinks.academicAdministration',
+                    'usefulLinks.professionalDevelopment',
+                    'usefulLinks.teachingSupport',
+                    'usefulLinks.forTeacher',
+                    'usefulLinks.forPersonnel',
+                    'usefulLinks.teaching',
+                    'usefulLinks.teachingMatters',
+                    'usefulLinks.teachingSupportOpenUniversity',
+                    'usefulLinks.teachingPracticesInOpenUniversity',
+                    'usefulLinks.planningSupport'
+                )
+            </where>
+        </delete>
+    </changeSet>
 </databaseChangeLog>

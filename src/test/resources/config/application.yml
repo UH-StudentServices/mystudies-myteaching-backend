@@ -90,18 +90,6 @@ userDefaults :
               description: usefulLinks.oneDrive
               orderIndex: 1
         teacherDefaultUsefulLinks :
-            - url: https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY1001598
-              description: usefulLinks.academicAdministration
-              orderIndex: 0
-            - url: https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY1001593
-              description: usefulLinks.professionalDevelopment
-              orderIndex: 6
-            - url:
-                fi: https://flamma.helsinki.fi/fi/HY053909
-                sv: https://flamma.helsinki.fi/sv/HY053909
-                en: https://flamma.helsinki.fi/en/HY053909
-              description: usefulLinks.planningSupport
-              orderIndex: 7
             - url: http://tuhat.helsinki.fi/
               description: usefulLinks.tuhat
               orderIndex: 8
@@ -125,70 +113,12 @@ userDefaults :
               description: usefulLinks.openUniversityMyPages
               orderIndex: 1
         teacherOpenUniversityDefaultUsefulLinks:
-            - url: https://flamma.helsinki.fi/fi/HY311604
-              description: usefulLinks.teachingSupportOpenUniversity
-              orderIndex: 2
-            - url: https://flamma.helsinki.fi/fi/HY311747
-              description: usefulLinks.teachingPracticesInOpenUniversity
-              orderIndex: 3
             - url: http://www.helsinki.fi/optime
               description: usefulLinks.optimePortal
               orderIndex: 4
     defaultFacultyCode: default
     facultyUsefulLinks:
         teacherFacultyLinks:
-            - faculty: A57000
-              url: https://flamma.helsinki.fi/fi/HY301045
-              description: usefulLinks.teachingSupport
-              orderIndex: 1
-            - faculty: A90000
-              url: https://flamma.helsinki.fi/fi/HY306071
-              description: usefulLinks.forTeacher
-              orderIndex: 1
-            - faculty: A55000
-              url: https://flamma.helsinki.fi/fi/HY300953
-              description: usefulLinks.forPersonnel
-              orderIndex: 1
-            - faculty: A40000
-              url: https://flamma.helsinki.fi/fi/HY291485
-              description: usefulLinks.teachingSupport
-              orderIndex: 1
-            - faculty: A60000
-              url: https://flamma.helsinki.fi/fi/HY302860
-              description: usefulLinks.forPersonnel
-              orderIndex: 1
-            - faculty: A30000
-              url: https://flamma.helsinki.fi/fi/HY291609
-              description: usefulLinks.teaching
-              orderIndex: 1
-            - faculty: A80000
-              url: https://flamma.helsinki.fi/fi/HY301055
-              description: usefulLinks.forPersonnel
-              orderIndex: 1
-            - faculty: A50000
-              url: https://flamma.helsinki.fi/fi/HY287029
-              description: usefulLinks.forPersonnel
-              orderIndex: 1
-            - faculty: A20000
-              url: https://flamma.helsinki.fi/fi/HY307740
-              description: usefulLinks.teachingSupport
-              orderIndex: 1
-            - faculty: A74000
-              url: https://flamma.helsinki.fi/sv/HY286442
-              description: usefulLinks.teachingMatters
-              orderIndex: 1
-            - faculty: A10000
-              url: https://flamma.helsinki.fi/fi/HY292308
-              description: usefulLinks.teachingSupport
-              orderIndex: 1
-            - faculty: A70000
-              url: https://flamma.helsinki.fi/fi/HY286934
-              description: usefulLinks.teachingMatters
-              orderIndex: 1
-            - faculty: default
-              url: https://flamma.helsinki.fi/fi/default
-              description: usefulLinks.teachingMatters
-              orderIndex: 1
             - faculty: A93000
               url: https://www.avoin.helsinki.fi/omat/osallistumiset/
               description: usefulLinks.openUniversity
@@ -292,32 +222,36 @@ fileStorage:
   path: /opt/opintoni/files
   uri: /files
 
-facultyLinks:
-  A93000: https://flamma.helsinki.fi/portal/units/avoin
-  H57: https://flamma.helsinki.fi/portal/units/bio
-  H90: https://flamma.helsinki.fi/portal/units/vetmed
-  H55: https://flamma.helsinki.fi/portal/units/farmasia
-  H40: https://flamma.helsinki.fi/portal/units/hum
-  H60: https://flamma.helsinki.fi/portal/units/kaytt
-  H30: https://flamma.helsinki.fi/portal/units/ltdk
-  H80: https://flamma.helsinki.fi/portal/units/mmtdk
-  H50: https://flamma.helsinki.fi/portal/units/matlu
-  H20: https://flamma.helsinki.fi/portal/units/law
-  H74: https://flamma.helsinki.fi/portal/units/sockom
-  H10: https://flamma.helsinki.fi/portal/units/teologinen
-  H70: https://flamma.helsinki.fi/portal/units/valt
-  A57000: https://flamma.helsinki.fi/portal/units/bio
-  A90000: https://flamma.helsinki.fi/portal/units/vetmed
-  A55000: https://flamma.helsinki.fi/portal/units/farmasia
-  A40000: https://flamma.helsinki.fi/portal/units/hum
-  A60000: https://flamma.helsinki.fi/portal/units/kaytt
-  A30000: https://flamma.helsinki.fi/portal/units/ltdk
-  A80000: https://flamma.helsinki.fi/portal/units/mmtdk
-  A50000: https://flamma.helsinki.fi/portal/units/matlu
-  A20000: https://flamma.helsinki.fi/portal/units/law
-  A74000: https://flamma.helsinki.fi/portal/units/sockom
-  A10000: https://flamma.helsinki.fi/portal/units/teologinen
-  A70000: https://flamma.helsinki.fi/portal/units/valt
+facultyCodes:
+    - A93000
+    - H57
+
+faculty:
+  A93000:
+  H57:
+  H90:
+  H55:
+  H40:
+  H60:
+  H30:
+  H80:
+  H50:
+  H20:
+  H74:
+  H10:
+  H70:
+  A57000:
+  A90000:
+  A55000:
+  A40000:
+  A60000:
+  A30000:
+  A80000:
+  A50000:
+  A20000:
+  A74000:
+  A10000:
+  A70000:
 
 adminAccounts: opettaja@helsinki.fi
 

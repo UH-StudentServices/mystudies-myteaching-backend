@@ -51,8 +51,8 @@ public class UsefulLinkServiceTest extends SpringTest {
 
     private static final int USEFUL_LINKS_COUNT_FOR_DEFAULT_STUDENT = 2;
     private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_STUDENT = 2;
-    private static final int USEFUL_LINKS_COUNT_FOR_DEFAULT_TEACHER = 8;
-    private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_TEACHER = 3;
+    private static final int USEFUL_LINKS_COUNT_FOR_DEFAULT_TEACHER = 4;
+    private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_TEACHER = 1;
 
     @Autowired
     RestTemplate linkUrlLoaderRestTemplate;
@@ -155,27 +155,15 @@ public class UsefulLinkServiceTest extends SpringTest {
         assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_DEFAULT_TEACHER);
 
         checkLinkURLAndDescription(usefulLinks.get(0),
-            "https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY1001598",
-            "usefulLinks.academicAdministration");
-        checkLinkURLAndDescription(usefulLinks.get(1),
-            "https://flamma.helsinki.fi/fi/HY292308",
-            "usefulLinks.teachingSupport");
-        checkLinkURLAndDescription(usefulLinks.get(2),
-            "https://flamma.helsinki.fi/portal/home/sisalto?_nfpb=true&_pageLabel=pp_list&placeId=HY1001593",
-            "usefulLinks.professionalDevelopment");
-        checkLinkURLAndDescription(usefulLinks.get(3),
-            "https://flamma.helsinki.fi/en/HY053909",
-            "usefulLinks.planningSupport");
-        checkLinkURLAndDescription(usefulLinks.get(4),
             "http://tuhat.helsinki.fi/",
             "usefulLinks.tuhat");
-        checkLinkURLAndDescription(usefulLinks.get(5),
+        checkLinkURLAndDescription(usefulLinks.get(1),
             "https://www.researchgate.net/",
             "usefulLinks.researchGate");
-        checkLinkURLAndDescription(usefulLinks.get(6),
+        checkLinkURLAndDescription(usefulLinks.get(2),
             "http://www.helsinki.fi/optime",
             "usefulLinks.optimePortal");
-        checkLinkURLAndDescription(usefulLinks.get(7),
+        checkLinkURLAndDescription(usefulLinks.get(3),
             "https://helsinkifi-my.sharepoint.com/",
             "usefulLinks.oneDrive");
     }
@@ -243,12 +231,6 @@ public class UsefulLinkServiceTest extends SpringTest {
 
         assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_OPEN_UNI_TEACHER);
         checkLinkURLAndDescription(usefulLinks.get(0),
-            "https://flamma.helsinki.fi/fi/HY311604",
-            "usefulLinks.teachingSupportOpenUniversity");
-        checkLinkURLAndDescription(usefulLinks.get(1),
-            "https://flamma.helsinki.fi/fi/HY311747",
-            "usefulLinks.teachingPracticesInOpenUniversity");
-        checkLinkURLAndDescription(usefulLinks.get(2),
             "http://www.helsinki.fi/optime",
             "usefulLinks.optimePortal");
     }
