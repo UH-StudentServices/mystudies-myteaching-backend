@@ -102,6 +102,9 @@ embedlyApiKey: 2cb3558d787c40a9a7c334bc276297a6
 
 environment: prod
 
+obar:
+    baseUrl: https://obar.it.helsinki.fi
+
 fileService:
     client.implementation: rest
     base.url: https://files.it.helsinki.fi
