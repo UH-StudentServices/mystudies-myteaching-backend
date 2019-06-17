@@ -25,7 +25,6 @@ import java.net.http.HttpResponse;
 
 public class OptimeHttpClient implements OptimeClient {
 
-    // TODO consider caching.
     @Override
     public InputStream getICalendarContent(String feedUrl) {
 

@@ -145,8 +145,8 @@ public class EventConverter {
 
             return events
                 .stream()
-                .map(e -> toDto((VEvent) e))
-                .collect(Collectors.<EventDto>toList());
+                .map(this::toDto)
+                .collect(Collectors.toList());
 
         } catch (Exception e) {
             throw new RuntimeException(e);

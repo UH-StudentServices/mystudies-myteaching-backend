@@ -22,7 +22,7 @@ import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.dto.EventDtoBuilder;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-import fi.helsinki.opintoni.integration.optime.OptimeClient;
+import fi.helsinki.opintoni.integration.optime.OptimeService;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.service.converter.EventConverter;
@@ -38,8 +38,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Collections.EMPTY_LIST;
-
 @Service
 public class EventService {
 
@@ -48,7 +46,7 @@ public class EventService {
     private final CourseService courseService;
     private final EventConverter eventConverter;
     private final OptimeConfiguration optimeConfiguration;
-    private final OptimeClient optimeClient;
+    private final OptimeService optimeService;
     private final OptimeCalendarService optimeCalendarService;
 
     @Autowired
@@ -57,7 +55,7 @@ public class EventService {
                         CourseService courseService,
                         EventConverter eventConverter,
                         OptimeConfiguration optimeConfiguration,
-                        OptimeClient optimeClient,
+                        OptimeService optimeService,
                         OptimeCalendarService optimeCalendarService) {
 
         this.studyRegistryService = studyRegistryService;
@@ -65,7 +63,7 @@ public class EventService {
         this.courseService = courseService;
         this.eventConverter = eventConverter;
         this.optimeConfiguration = optimeConfiguration;
-        this.optimeClient = optimeClient;
+        this.optimeService = optimeService;
         this.optimeCalendarService = optimeCalendarService;
     }
 
@@ -84,7 +82,7 @@ public class EventService {
 
         if (optimeConfiguration.useOptimeFeedForWebCalendar) {
             String optimeFeedurl = optimeCalendarService.getOptimeCalendar(teacherNumber).url;
-            optimeEvents = eventConverter.toDtos(optimeClient.getICalendarContent(optimeFeedurl));
+            optimeEvents = optimeService.getOptimeEvents(optimeFeedurl);
         } else {
             studyRegistryEvents = studyRegistryService.getTeacherEvents(teacherNumber);
         }
@@ -108,7 +106,6 @@ public class EventService {
             .filter(event -> !event.isCancelled && event.startDate != null)
             .map(event -> eventConverter.toDto(event, getCoursePage(coursePages, getRealisationId(event)), locale));
 
-        // TODO should we modify Optime event data using Coursepage data, as we do with Oodi events?
         Stream<EventDto> optimeEventDtos = optimeEvents.stream();
 
         Stream<EventDto> coursePageEventDtos = coursePages.values().stream()

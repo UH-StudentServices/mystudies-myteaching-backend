@@ -18,11 +18,11 @@
 package fi.helsinki.opintoni.dto;
 
 import fi.helsinki.opintoni.dto.profile.CourseMaterialDto;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class EventDto implements Comparable<EventDto> {
@@ -122,15 +122,14 @@ public class EventDto implements Comparable<EventDto> {
     public String getLocationsAsString() {
         return locations.stream()
             .map(LocationDto::getLocationString)
-            .filter(Objects::nonNull)
-            .filter(location -> !location.trim().isEmpty())
+            .filter(StringUtils::isNotBlank)
             .collect(Collectors.joining(", "));
     }
 
     public String getOptimeExtrasAsString() {
         return optimeExtras == null ?
-                "" :
-                optimeExtras.toString();
+            "" :
+            optimeExtras.toString();
     }
 
     public String getFullEventTitle() {

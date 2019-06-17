@@ -47,7 +47,10 @@ public class LocationDto {
     }
 
     public static List<LocationDto> getLocationsFromString(String commaDelimited) {
-        String[] parts = commaDelimited.split(", ");
-        return Arrays.stream(parts).map(p -> new LocationDto(p)).collect(Collectors.toList());
+        String[] parts = commaDelimited.split(",");
+        return Arrays.stream(parts)
+            .map(String::trim)
+            .map(LocationDto::new)
+            .collect(Collectors.toList());
     }
 }

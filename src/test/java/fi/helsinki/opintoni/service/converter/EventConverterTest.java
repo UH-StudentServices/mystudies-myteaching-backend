@@ -38,7 +38,8 @@ public class EventConverterTest extends SpringTest {
 
     @Test
     public void thatICalendarContentToEventsAndBackWorks() throws Exception {
-        String iCalendarContent = SampleDataFiles.toText("ICalendar/icalendar.ics");
+        // ical format requires CRLF and git enforces LF as line separator
+        String iCalendarContent = SampleDataFiles.toText("ICalendar/icalendar.ics").replaceAll("\n", "\r\n");
 
         List<EventDto> eventDtos = eventConverter.toDtos(icalendar.getInputStream());
 

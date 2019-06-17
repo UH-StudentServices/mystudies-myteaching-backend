@@ -26,10 +26,6 @@ import fi.helsinki.opintoni.integration.studyregistry.Person;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.service.converter.EventConverter;
 import fi.helsinki.opintoni.util.TimeZoneUtils;
-import net.fortuna.ical4j.model.Calendar;
-import net.fortuna.ical4j.model.component.VTimeZone;
-import net.fortuna.ical4j.model.property.CalScale;
-import net.fortuna.ical4j.model.property.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,15 +71,6 @@ public class CalendarService {
     }
 
     private String getCalendarFeedFromEvents(CalendarFeed calendarFeed, Locale locale) {
-
-        VTimeZone timeZone = timeZoneUtils.getHelsinkiTimeZone();
-
-        Calendar calendar = new Calendar();
-        calendar.getProperties().add(Version.VERSION_2_0);
-        calendar.getProperties().add(CalScale.GREGORIAN);
-
-        calendar.getComponents().add(timeZone);
-
         Person person = studyRegistryService.getPerson(calendarFeed.user.personId);
 
         List<EventDto> studentEvents = Optional.ofNullable(person.studentNumber)

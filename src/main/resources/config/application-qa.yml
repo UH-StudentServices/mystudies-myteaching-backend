@@ -127,3 +127,7 @@ obar:
 fileService:
   client.implementation: rest
   base.url: https://qa.files.it.helsinki.fi
+
+optime:
+    client.implementation: http
+    useOptimeFeedForWebCalendar: true

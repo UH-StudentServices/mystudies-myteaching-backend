@@ -17,17 +17,18 @@
 
 package fi.helsinki.opintoni.integration.optime;
 
-import fi.helsinki.opintoni.service.converter.EventConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class OptimeMockClient implements OptimeClient {
-    @Autowired
-    EventConverter eventConverter;
 
     @Value("classpath:sampledata/optime/icalendar.ics")
     private Resource icalendar;
@@ -35,7 +36,16 @@ public class OptimeMockClient implements OptimeClient {
     @Override
     public InputStream getICalendarContent(String feedUrl) {
         try {
-            return icalendar.getInputStream();
+            // ical format requires CRLF and git enforces LF as line separator
+            BufferedReader reader = new BufferedReader(new InputStreamReader(icalendar.getInputStream(), UTF_8));
+            StringBuilder sb = new StringBuilder();
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\r\n");
+            }
+
+            return new ByteArrayInputStream(sb.toString().getBytes(UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
