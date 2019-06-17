@@ -100,6 +100,10 @@ public class ImageService {
     }
 
     private BufferedImage toJpg(BufferedImage bufferedImage) {
+        if (bufferedImage == null) {
+            throw new IllegalArgumentException("Invalid image file");
+        }
+
         BufferedImage jpgImage = new BufferedImage(bufferedImage.getWidth(),
             bufferedImage.getHeight(),
             BufferedImage.TYPE_INT_RGB);

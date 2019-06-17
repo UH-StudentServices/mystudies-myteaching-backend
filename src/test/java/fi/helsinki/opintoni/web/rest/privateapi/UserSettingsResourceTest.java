@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -79,7 +79,7 @@ public class UserSettingsResourceTest extends SpringTest {
         request.showBanner = false;
         request.cookieConsent = true;
 
-        mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID)
+        mockMvc.perform(post("/api/private/v1/usersettings/")
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
@@ -98,7 +98,7 @@ public class UserSettingsResourceTest extends SpringTest {
         UploadImageBase64Request request = new UploadImageBase64Request();
         request.imageBase64 = imageToBase64("usersettings/useravatar.jpg");
 
-        mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/uploaduseravatar")
+        mockMvc.perform(post("/api/private/v1/usersettings/avatar")
             .contentType(MediaType.APPLICATION_JSON)
             .content(toJsonBytes(request))
             .with(securityContext(studentSecurityContext())))
@@ -107,7 +107,7 @@ public class UserSettingsResourceTest extends SpringTest {
 
     @Test
     public void thatUserAvatarIsDeleted() throws Exception {
-        mockMvc.perform(delete("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/deleteuseravatar")
+        mockMvc.perform(delete("/api/private/v1/usersettings/avatar")
             .contentType(MediaType.APPLICATION_JSON)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk());
@@ -118,7 +118,7 @@ public class UserSettingsResourceTest extends SpringTest {
         UploadImageBase64Request request = new UploadImageBase64Request();
         request.imageBase64 = imageToBase64("usersettings/useravatar.jpg");
 
-        mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/uploadbackground")
+        mockMvc.perform(post("/api/private/v1/usersettings/background")
             .with(securityContext(studentSecurityContext()))
             .content(toJsonBytes(request))
             .contentType(MediaType.APPLICATION_JSON))
@@ -132,7 +132,7 @@ public class UserSettingsResourceTest extends SpringTest {
         SelectBackgroundRequest request = new SelectBackgroundRequest();
         request.filename = "Profile_1.jpg";
 
-        mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/selectbackground")
+        mockMvc.perform(post("/api/private/v1/usersettings/background/select")
             .with(securityContext(studentSecurityContext()))
             .content(toJsonBytes(request))
             .contentType(MediaType.APPLICATION_JSON))
@@ -152,7 +152,7 @@ public class UserSettingsResourceTest extends SpringTest {
 
         SelectBackgroundRequest request = new SelectBackgroundRequest();
         request.filename = "Profile_1.jpg";
-        mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/selectbackground")
+        mockMvc.perform(post("/api/private/v1/usersettings/background/select")
             .with(securityContext(studentSecurityContext()))
             .content(toJsonBytes(request))
             .contentType(MediaType.APPLICATION_JSON));
@@ -170,7 +170,7 @@ public class UserSettingsResourceTest extends SpringTest {
         UploadImageBase64Request request = new UploadImageBase64Request();
         request.imageBase64 = imageToBase64("usersettings/useravatar.jpg");
 
-        mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/uploadbackground")
+        mockMvc.perform(post("/api/private/v1/usersettings/background")
             .with(securityContext(studentSecurityContext()))
             .content(toJsonBytes(request))
             .contentType(MediaType.APPLICATION_JSON))

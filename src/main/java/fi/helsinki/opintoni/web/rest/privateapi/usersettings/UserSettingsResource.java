@@ -18,9 +18,7 @@
 package fi.helsinki.opintoni.web.rest.privateapi.usersettings;
 
 import com.codahale.metrics.annotation.Timed;
-import fi.helsinki.opintoni.domain.UserSettings;
 import fi.helsinki.opintoni.dto.UserSettingsDto;
-import fi.helsinki.opintoni.security.authorization.PermissionChecker;
 import fi.helsinki.opintoni.service.UserSettingsService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.UserId;
@@ -28,9 +26,12 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(
@@ -39,65 +40,49 @@ import java.io.IOException;
 public class UserSettingsResource extends AbstractResource {
 
     private final UserSettingsService userSettingsService;
-    private final PermissionChecker permissionChecker;
 
     @Autowired
-    public UserSettingsResource(UserSettingsService userSettingsService, PermissionChecker permissionChecker) {
+    public UserSettingsResource(UserSettingsService userSettingsService) {
         this.userSettingsService = userSettingsService;
-        this.permissionChecker = permissionChecker;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     @Timed
     public ResponseEntity<UserSettingsDto> get(@UserId Long userId) {
         return response(userSettingsService.findByUserId(userId));
     }
 
-    @RequestMapping(value = "/{id:" + RestConstants.MATCH_NUMBER + "}", method = RequestMethod.PUT)
+    @PostMapping
     @Timed
-    public ResponseEntity<UserSettingsDto> update(@UserId Long userId,
-                                                  @PathVariable Long id,
-                                                  @RequestBody UpdateUserSettingsRequest request) {
-        permissionChecker.verifyPermission(userId, id, UserSettings.class);
-        return response(userSettingsService.update(id, request));
+    public ResponseEntity<UserSettingsDto> update(@UserId Long userId, @RequestBody UpdateUserSettingsRequest request) {
+        return response(userSettingsService.update(userId, request));
     }
 
-    @RequestMapping(value = "/{id}/uploaduseravatar", method = RequestMethod.PUT)
+    @PostMapping(value = "/avatar")
     @Timed
-    public ResponseEntity<Boolean> uploadUserAvatar(@UserId Long userId,
-                                                    @PathVariable Long id,
-                                                    @RequestBody UploadImageBase64Request request) throws IOException {
-        permissionChecker.verifyPermission(userId, id, UserSettings.class);
-        userSettingsService.updateUserAvatar(id, request.imageBase64);
+    public ResponseEntity<Boolean> uploadUserAvatar(@UserId Long userId, @RequestBody UploadImageBase64Request request) {
+        userSettingsService.updateUserAvatar(userId, request.imageBase64);
         return response(true);
     }
 
-    @RequestMapping(value = "/{id}/uploadbackground", method = RequestMethod.PUT)
+    @PostMapping(value = "/background")
     @Timed
     public ResponseEntity<UserSettingsDto> uploadBackground(@UserId Long userId,
-                                                            @PathVariable Long id,
-                                                            @RequestBody UploadImageBase64Request request)
-        throws IOException {
-        permissionChecker.verifyPermission(userId, id, UserSettings.class);
-        return response(userSettingsService.updateBackground(id, request));
+                                                            @RequestBody UploadImageBase64Request request) {
+        return response(userSettingsService.updateBackground(userId, request));
     }
 
-    @RequestMapping(value = "/{id}/selectbackground", method = RequestMethod.PUT)
+    @PostMapping(value = "/background/select")
     @Timed
     public ResponseEntity<UserSettingsDto> selectBackground(@UserId Long userId,
-                                                            @PathVariable Long id,
-                                                            @RequestBody SelectBackgroundRequest request)
-        throws IOException {
-        permissionChecker.verifyPermission(userId, id, UserSettings.class);
-        return response(userSettingsService.selectBackground(id, request));
+                                                            @RequestBody SelectBackgroundRequest request) {
+        return response(userSettingsService.selectBackground(userId, request));
     }
 
-    @RequestMapping(value = "/{id}/deleteuseravatar", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/avatar")
     @Timed
-    public ResponseEntity<Boolean> deleteUserAvatar(@UserId Long userId,
-                                                    @PathVariable Long id) throws IOException {
-        permissionChecker.verifyPermission(userId, id, UserSettings.class);
-        userSettingsService.deleteUserAvatar(id);
+    public ResponseEntity<Boolean> deleteUserAvatar(@UserId Long userId) {
+        userSettingsService.deleteUserAvatar(userId);
         return response(true);
     }
 }
