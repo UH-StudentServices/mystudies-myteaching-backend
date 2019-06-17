@@ -53,7 +53,7 @@ public class UserSettingsResource extends AbstractResource {
         return response(userSettingsService.findByUserId(userId));
     }
 
-    @PutMapping
+    @PostMapping
     @Timed
     public ResponseEntity<UserSettingsDto> update(@UserId Long userId, @RequestBody UpdateUserSettingsRequest request) {
         return response(userSettingsService.update(userId, request));
