@@ -50,7 +50,7 @@ public class UserSettingsResourcePermissionsTest extends SpringTest {
     public void thatUserCanOnlyUpdateHerUserAvatar() throws Exception {
         UploadImageBase64Request uploadImageBase64Request = new UploadImageBase64Request();
 
-        mockMvc.perform(put("/api/private/v1/usersettings/1/uploaduseravatar")
+        mockMvc.perform(put("/api/private/v1/usersettings/1/avatar")
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
@@ -61,7 +61,7 @@ public class UserSettingsResourcePermissionsTest extends SpringTest {
 
     @Test
     public void thatUserCanOnlyDeleteHerUserAvatar() throws Exception {
-        mockMvc.perform(delete("/api/private/v1/usersettings/1/deleteuseravatar")
+        mockMvc.perform(delete("/api/private/v1/usersettings/1/avatar")
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
@@ -73,7 +73,7 @@ public class UserSettingsResourcePermissionsTest extends SpringTest {
     public void thatUserCanOnlyUploadHerBackground() throws Exception {
         UploadImageBase64Request request = new UploadImageBase64Request();
 
-        mockMvc.perform(put("/api/private/v1/usersettings/1/uploadbackground")
+        mockMvc.perform(put("/api/private/v1/usersettings/1/background")
             .with(securityContext(studentSecurityContext()))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)

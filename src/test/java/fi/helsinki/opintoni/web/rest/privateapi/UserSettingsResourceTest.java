@@ -98,7 +98,7 @@ public class UserSettingsResourceTest extends SpringTest {
         UploadImageBase64Request request = new UploadImageBase64Request();
         request.imageBase64 = imageToBase64("usersettings/useravatar.jpg");
 
-        mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/uploaduseravatar")
+        mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/avatar")
             .contentType(MediaType.APPLICATION_JSON)
             .content(toJsonBytes(request))
             .with(securityContext(studentSecurityContext())))
@@ -107,7 +107,7 @@ public class UserSettingsResourceTest extends SpringTest {
 
     @Test
     public void thatUserAvatarIsDeleted() throws Exception {
-        mockMvc.perform(delete("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/deleteuseravatar")
+        mockMvc.perform(delete("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/avatar")
             .contentType(MediaType.APPLICATION_JSON)
             .with(securityContext(studentSecurityContext())))
             .andExpect(status().isOk());
@@ -118,7 +118,7 @@ public class UserSettingsResourceTest extends SpringTest {
         UploadImageBase64Request request = new UploadImageBase64Request();
         request.imageBase64 = imageToBase64("usersettings/useravatar.jpg");
 
-        mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/uploadbackground")
+        mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/background")
             .with(securityContext(studentSecurityContext()))
             .content(toJsonBytes(request))
             .contentType(MediaType.APPLICATION_JSON))
@@ -170,7 +170,7 @@ public class UserSettingsResourceTest extends SpringTest {
         UploadImageBase64Request request = new UploadImageBase64Request();
         request.imageBase64 = imageToBase64("usersettings/useravatar.jpg");
 
-        mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/uploadbackground")
+        mockMvc.perform(put("/api/private/v1/usersettings/" + USER_SETTINGS_ID + "/background")
             .with(securityContext(studentSecurityContext()))
             .content(toJsonBytes(request))
             .contentType(MediaType.APPLICATION_JSON))
