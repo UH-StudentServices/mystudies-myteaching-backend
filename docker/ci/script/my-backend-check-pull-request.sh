@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./run.sh my-backend-check-pull-request "gradle test"
+./run.sh my-backend-check-pull-request "gradle test --info"
