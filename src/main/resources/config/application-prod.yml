@@ -111,4 +111,4 @@ fileService:
 
 optime:
     client.implementation: http
-    useOptimeFeedForWebCalendar: true
+    useOptimeFeedForWebCalendar: false
