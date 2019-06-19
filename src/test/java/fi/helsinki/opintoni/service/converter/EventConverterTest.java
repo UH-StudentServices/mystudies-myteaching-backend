@@ -27,9 +27,10 @@ import org.springframework.core.io.Resource;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class EventConverterTest extends SpringTest {
+
     @Autowired
     private EventConverter eventConverter;
 
@@ -37,14 +38,14 @@ public class EventConverterTest extends SpringTest {
     private Resource icalendar;
 
     @Test
-    public void thatICalendarContentToEventsAndBackWorks() throws Exception {
+    public void thatConvertingICalendarContentToEventsAndBackWorks() throws Exception {
         // ical format requires CRLF and git enforces LF as line separator
-        String iCalendarContent = SampleDataFiles.toText("ICalendar/icalendar.ics").replaceAll("\n", "\r\n");
+        String icalendarContent = SampleDataFiles.toText("ICalendar/icalendar.ics").replaceAll("\n", "\r\n");
 
         List<EventDto> eventDtos = eventConverter.toDtos(icalendar.getInputStream());
 
         String converted = eventConverter.toICalendar(eventDtos);
 
-        assertEquals(iCalendarContent, converted);
+        assertThat(converted).isEqualTo(icalendarContent);
     }
 }

@@ -49,7 +49,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -141,7 +140,7 @@ public class EventConverter {
 
         try {
             Calendar calendar = builder.build(calendarContent);
-            ArrayList<VEvent> events = calendar.getComponents(net.fortuna.ical4j.model.Component.VEVENT);
+            List<VEvent> events = calendar.getComponents(net.fortuna.ical4j.model.Component.VEVENT);
 
             return events
                 .stream()
