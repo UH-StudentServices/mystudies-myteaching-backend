@@ -103,3 +103,7 @@ embedlyApiKey: dd741e653b0e4841bc59a60650031057
 fileService:
     client.implementation: rest
     base.url: https://dev.files.it.helsinki.fi
+
+optime:
+    client.implementation: mock
+    useOptimeFeedForWebCalendar: true

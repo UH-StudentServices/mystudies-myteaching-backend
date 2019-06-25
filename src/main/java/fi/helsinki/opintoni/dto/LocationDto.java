@@ -17,6 +17,10 @@
 
 package fi.helsinki.opintoni.dto;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class LocationDto {
 
     public String locationString;
@@ -40,5 +44,13 @@ public class LocationDto {
 
     public String getLocationString() {
         return this.locationString;
+    }
+
+    public static List<LocationDto> getLocationsFromString(String commaDelimited) {
+        String[] parts = commaDelimited.split(",");
+        return Arrays.stream(parts)
+            .map(String::trim)
+            .map(LocationDto::new)
+            .collect(Collectors.toList());
     }
 }

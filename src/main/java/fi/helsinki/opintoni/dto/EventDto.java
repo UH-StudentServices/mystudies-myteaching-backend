@@ -18,18 +18,19 @@
 package fi.helsinki.opintoni.dto;
 
 import fi.helsinki.opintoni.dto.profile.CourseMaterialDto;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class EventDto implements Comparable<EventDto> {
 
     public enum Source {
         STUDY_REGISTRY,
-        COURSE_PAGE
+        COURSE_PAGE,
+        OPTIME
     }
 
     public enum Type {
@@ -51,21 +52,23 @@ public class EventDto implements Comparable<EventDto> {
     public final List<LocationDto> locations;
     public final boolean hasMaterial;
     public final OptimeExtrasDto optimeExtras;
+    public final String uid;
 
     EventDto(Type type,
-                    Source source,
-                    LocalDateTime startDate,
-                    LocalDateTime endDate,
-                    Integer realisationId,
-                    String title,
-                    String courseTitle,
-                    String courseUri,
-                    String courseImageUri,
-                    CourseMaterialDto courseMaterialDto,
-                    String moodleUri,
-                    boolean hasMaterial,
-                    List<LocationDto> locations,
-                    OptimeExtrasDto optimeExtras) {
+             Source source,
+             LocalDateTime startDate,
+             LocalDateTime endDate,
+             Integer realisationId,
+             String title,
+             String courseTitle,
+             String courseUri,
+             String courseImageUri,
+             CourseMaterialDto courseMaterialDto,
+             String moodleUri,
+             boolean hasMaterial,
+             List<LocationDto> locations,
+             OptimeExtrasDto optimeExtras,
+             String uid) {
         this.type = type;
         this.source = source;
         this.realisationId = realisationId;
@@ -80,6 +83,7 @@ public class EventDto implements Comparable<EventDto> {
         this.hasMaterial = hasMaterial;
         this.locations = locations;
         this.optimeExtras = optimeExtras;
+        this.uid = uid;
     }
 
     @Override
@@ -118,19 +122,18 @@ public class EventDto implements Comparable<EventDto> {
     public String getLocationsAsString() {
         return locations.stream()
             .map(LocationDto::getLocationString)
-            .filter(Objects::nonNull)
-            .filter(location -> !location.trim().isEmpty())
+            .filter(StringUtils::isNotBlank)
             .collect(Collectors.joining(", "));
     }
 
     public String getOptimeExtrasAsString() {
         return optimeExtras == null ?
-                "" :
-                optimeExtras.toString();
+            "" :
+            optimeExtras.toString();
     }
 
     public String getFullEventTitle() {
-        return Source.STUDY_REGISTRY.equals(source) ? title : String.format("%s, %s", title, courseTitle);
+        return Source.COURSE_PAGE.equals(source) ? String.format("%s, %s", title, courseTitle) : title;
     }
 
 }

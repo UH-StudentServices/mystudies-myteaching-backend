@@ -26,12 +26,37 @@ import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.resolver.LocationResolver;
+import fi.helsinki.opintoni.service.TimeService;
 import fi.helsinki.opintoni.util.CourseMaterialDtoFactory;
 import fi.helsinki.opintoni.util.CoursePageUriBuilder;
+import fi.helsinki.opintoni.util.TimeZoneUtils;
+import net.fortuna.ical4j.data.CalendarBuilder;
+import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.DateTime;
+import net.fortuna.ical4j.model.PropertyList;
+import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.component.VTimeZone;
+import net.fortuna.ical4j.model.property.CalScale;
+import net.fortuna.ical4j.model.property.Description;
+import net.fortuna.ical4j.model.property.DtEnd;
+import net.fortuna.ical4j.model.property.DtStart;
+import net.fortuna.ical4j.model.property.Location;
+import net.fortuna.ical4j.model.property.Summary;
+import net.fortuna.ical4j.model.property.Uid;
+import net.fortuna.ical4j.model.property.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static fi.helsinki.opintoni.dto.LocationDto.getLocationsFromString;
+import static fi.helsinki.opintoni.service.TimeService.HELSINKI_ZONE_ID;
 
 @Component
 public class EventConverter {
@@ -41,18 +66,24 @@ public class EventConverter {
     private final CoursePageUriBuilder coursePageUriBuilder;
     private final CourseMaterialDtoFactory courseMaterialDtoFactory;
     private final EnrollmentNameConverter enrollmentNameConverter;
+    private final TimeZoneUtils timeZoneUtils;
+    private final TimeService timeService;
 
     @Autowired
     public EventConverter(EventTypeResolver eventTypeResolver,
                           LocationResolver locationResolver,
                           CoursePageUriBuilder coursePageUriBuilder,
                           CourseMaterialDtoFactory courseMaterialDtoFactory,
-                          EnrollmentNameConverter enrollmentNameConverter) {
+                          EnrollmentNameConverter enrollmentNameConverter,
+                          TimeZoneUtils timeZoneUtils,
+                          TimeService timeService) {
         this.eventTypeResolver = eventTypeResolver;
         this.locationResolver = locationResolver;
         this.coursePageUriBuilder = coursePageUriBuilder;
         this.courseMaterialDtoFactory = courseMaterialDtoFactory;
         this.enrollmentNameConverter = enrollmentNameConverter;
+        this.timeZoneUtils = timeZoneUtils;
+        this.timeService = timeService;
     }
 
     public EventDto toDto(CoursePageEvent event, CoursePageCourseImplementation coursePage) {
@@ -90,6 +121,94 @@ public class EventConverter {
             .setOptimeExtras(event.optimeExtras == null ? null :
                 new OptimeExtrasDto(event.optimeExtras.otherNotes, event.optimeExtras.staffNotes))
             .createEventDto();
+    }
+
+    public EventDto toDto(VEvent v) {
+        return new EventDtoBuilder()
+            .setSource(EventDto.Source.OPTIME)
+            .setStartDate(toLocalDateTime(v.getStartDate().getDate()))
+            .setEndDate(toLocalDateTime(v.getEndDate().getDate()))
+            .setTitle(v.getSummary().getValue())
+            .setOptimeExtras(v.getDescription() != null ? new OptimeExtrasDto(v.getDescription().getValue()) : null)
+            .setLocations(getLocationsFromString(v.getLocation().getValue()))
+            .setUid(v.getUid().getValue())
+            .createEventDto();
+    }
+
+    public List<EventDto> toDtos(InputStream calendarContent) {
+        CalendarBuilder builder = new CalendarBuilder();
+
+        try {
+            Calendar calendar = builder.build(calendarContent);
+            List<VEvent> events = calendar.getComponents(net.fortuna.ical4j.model.Component.VEVENT);
+
+            return events
+                .stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String toICalendar(List<EventDto> events) {
+        VTimeZone timeZone = timeZoneUtils.getHelsinkiTimeZone();
+
+        Calendar calendar = new Calendar();
+        calendar.getProperties().add(Version.VERSION_2_0);
+        calendar.getProperties().add(CalScale.GREGORIAN);
+        calendar.getComponents().add(timeZone);
+
+        events.forEach(e -> {
+            VEvent event = eventDtoToVEvent(e);
+            calendar.getComponents().add(event);
+        });
+
+        return calendar.toString();
+    }
+
+    private Uid uid(String uidOrNull) {
+        return uidOrNull == null ? new Uid(UUID.randomUUID().toString()) : new Uid(uidOrNull);
+    }
+
+    private VEvent eventDtoToVEvent(EventDto eventDto) {
+        PropertyList eventProperties = new PropertyList();
+        eventProperties.add(new DtStart(convertStartDateToCalDate(eventDto)));
+        eventProperties.add(new DtEnd(convertEndDateToCalDate(eventDto)));
+        eventProperties.add(new Summary(eventDto.getFullEventTitle()));
+        if (!eventDto.getOptimeExtrasAsString().isEmpty()) {
+            eventProperties.add(new Description(eventDto.getOptimeExtrasAsString()));
+        }
+        eventProperties.add(new Location(eventDto.getLocationsAsString()));
+        eventProperties.add(uid(eventDto.uid));
+
+        return new VEvent(eventProperties);
+    }
+
+    private DateTime convertStartDateToCalDate(EventDto eventDto) {
+        return calDateTimeFromLocalDateTime(eventDto.startDate);
+    }
+
+    private DateTime calDateTimeFromLocalDateTime(LocalDateTime localDateTime) {
+        DateTime dateTime = new DateTime(Date.from(localDateTime.atZone(HELSINKI_ZONE_ID).toInstant()));
+
+        dateTime.setTimeZone(new net.fortuna.ical4j.model.TimeZone(timeZoneUtils.getHelsinkiTimeZone()));
+
+        return dateTime;
+    }
+
+    private DateTime convertEndDateToCalDate(EventDto eventDto) {
+        if (eventDto.endDate == null) {
+            LocalDateTime endOfDay = timeService.endOfDay(eventDto.startDate);
+            return calDateTimeFromLocalDateTime(endOfDay);
+        }
+
+        return calDateTimeFromLocalDateTime(eventDto.endDate);
+    }
+
+    private LocalDateTime toLocalDateTime(Date dt) {
+        return LocalDateTime.ofInstant(dt.toInstant(), HELSINKI_ZONE_ID);
     }
 
 }
