@@ -27,22 +27,13 @@ import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
-import fi.helsinki.opintoni.server.CoursePageServer;
-import fi.helsinki.opintoni.server.ESBServer;
-import fi.helsinki.opintoni.server.FlammaServer;
-import fi.helsinki.opintoni.server.GuideNewsServer;
-import fi.helsinki.opintoni.server.GuideServer;
-import fi.helsinki.opintoni.server.OodiServer;
-import fi.helsinki.opintoni.server.PublicWwwServer;
-import fi.helsinki.opintoni.server.SisuServer;
-import fi.helsinki.opintoni.server.UnisportServer;
-import fi.helsinki.opintoni.server.WebPageServer;
+import fi.helsinki.opintoni.server.*;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
 import fi.helsinki.opintoni.web.requestchain.TeacherRequestChain;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-import liquibase.integration.spring.SpringLiquibase;
+import liquibase.exception.LiquibaseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -180,9 +171,6 @@ public abstract class SpringTest {
     private CacheManager persistentCacheManager;
 
     @Autowired
-    private SpringLiquibase springLiquibase;
-
-    @Autowired
     protected AppConfiguration appConfiguration;
 
     @Autowired
@@ -198,7 +186,7 @@ public abstract class SpringTest {
     public MockServerRule mockServerRule = new MockServerRule(this);
 
     @Before
-    public final void baseInit() {
+    public final void baseInit() throws LiquibaseException {
         initRestServer();
         setSequences();
         clearCaches();
