@@ -17,10 +17,14 @@
 
 package fi.helsinki.opintoni.service.profile;
 
-import fi.helsinki.opintoni.domain.profile.*;
+import fi.helsinki.opintoni.domain.profile.ContactInformation;
+import fi.helsinki.opintoni.domain.profile.Profile;
+import fi.helsinki.opintoni.domain.profile.SomeLink;
 import fi.helsinki.opintoni.dto.profile.ContactInformationDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
-import fi.helsinki.opintoni.repository.profile.*;
+import fi.helsinki.opintoni.repository.profile.ContactInformationRepository;
+import fi.helsinki.opintoni.repository.profile.ProfileRepository;
+import fi.helsinki.opintoni.repository.profile.SomeLinkRepository;
 import fi.helsinki.opintoni.service.converter.profile.ContactInformationConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.profile.contactinformation.UpdateContactInformation;
 import org.springframework.beans.factory.annotation.Autowired;

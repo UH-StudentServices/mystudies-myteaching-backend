@@ -11,6 +11,8 @@ services:
       - POSTGRES_PASSWORD=opintoni
     volumes:
       - ../docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+    tmpfs:
+      - /var/lib/postgresql/data:rw
   my-studies-builder:
     build:
       context: ./builder

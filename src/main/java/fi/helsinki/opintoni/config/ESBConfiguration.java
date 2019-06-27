@@ -74,7 +74,7 @@ public class ESBConfiguration {
 
     @Bean
     public ESBClient esbClient() {
-        switch(getClientImplementation()) {
+        switch (getClientImplementation()) {
             case REST_IMPLEMENTATION:
                 return esbRestClient();
             case MOCK_IMPLEMENTATION:

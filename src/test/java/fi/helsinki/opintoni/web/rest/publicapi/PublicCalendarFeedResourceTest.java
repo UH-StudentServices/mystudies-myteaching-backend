@@ -26,9 +26,10 @@ import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringEndsWith;
 import org.hamcrest.core.StringStartsWith;
 import org.junit.Test;
+
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

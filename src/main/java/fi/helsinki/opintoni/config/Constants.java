@@ -19,7 +19,8 @@ package fi.helsinki.opintoni.config;
 
 public final class Constants {
 
-    private Constants() {}
+    private Constants() {
+    }
 
     public static final String SPRING_PROFILE_LOCAL_DEVELOPMENT = "local-dev";
     public static final String SPRING_PROFILE_LOCAL_SHIBBO = "local-shibbo";

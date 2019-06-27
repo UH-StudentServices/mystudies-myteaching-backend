@@ -21,7 +21,11 @@ import fi.helsinki.opintoni.config.AppConfiguration;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class FileSystemFileStorage implements FileStorage {
 

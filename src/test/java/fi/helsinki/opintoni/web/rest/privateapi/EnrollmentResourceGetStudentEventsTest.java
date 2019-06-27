@@ -37,7 +37,9 @@ import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityC
 import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_USER_LOCALE;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
     private static final String LANG_CODE_FI = Language.FI.getCode();

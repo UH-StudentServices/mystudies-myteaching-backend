@@ -17,7 +17,9 @@
 
 package fi.helsinki.opintoni.service.converter.profile;
 
-import fi.helsinki.opintoni.domain.profile.*;
+import fi.helsinki.opintoni.domain.profile.ComponentVisibility;
+import fi.helsinki.opintoni.domain.profile.Profile;
+import fi.helsinki.opintoni.domain.profile.WorkExperience;
 import fi.helsinki.opintoni.dto.profile.WorkExperienceDto;
 import fi.helsinki.opintoni.web.rest.privateapi.profile.workexperience.UpdateWorkExperience;
 import org.apache.commons.lang.StringUtils;

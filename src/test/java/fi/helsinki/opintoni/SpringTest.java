@@ -42,7 +42,7 @@ import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
 import fi.helsinki.opintoni.web.requestchain.TeacherRequestChain;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-import liquibase.integration.spring.SpringLiquibase;
+import liquibase.exception.LiquibaseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -180,9 +180,6 @@ public abstract class SpringTest {
     private CacheManager persistentCacheManager;
 
     @Autowired
-    private SpringLiquibase springLiquibase;
-
-    @Autowired
     protected AppConfiguration appConfiguration;
 
     @Autowired
@@ -198,7 +195,7 @@ public abstract class SpringTest {
     public MockServerRule mockServerRule = new MockServerRule(this);
 
     @Before
-    public final void baseInit() {
+    public final void baseInit() throws LiquibaseException {
         initRestServer();
         setSequences();
         clearCaches();

@@ -22,8 +22,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import fi.helsinki.opintoni.util.LocalDateTimeDeserializer;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OodiStudyAttainment {
 

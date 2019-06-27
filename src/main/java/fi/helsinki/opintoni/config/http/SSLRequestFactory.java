@@ -32,7 +32,8 @@ import javax.net.ssl.SSLContext;
 
 public class SSLRequestFactory {
 
-    private SSLRequestFactory() {}
+    private SSLRequestFactory() {
+    }
 
     public static ClientHttpRequestFactory clientHttpRequestFactory(AppConfiguration appConfiguration,
                                                                     SSLContext sslContext) {

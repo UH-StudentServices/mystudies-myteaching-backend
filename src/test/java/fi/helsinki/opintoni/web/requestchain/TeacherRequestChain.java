@@ -22,7 +22,10 @@ import fi.helsinki.opintoni.server.OodiServer;
 
 import java.util.Locale;
 
-import static fi.helsinki.opintoni.web.TestConstants.*;
+import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_USER_LOCALE;
+import static fi.helsinki.opintoni.web.TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID;
+import static fi.helsinki.opintoni.web.TestConstants.POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID;
+import static fi.helsinki.opintoni.web.TestConstants.TEACHER_COURSE_REALISATION_ID;
 
 public class TeacherRequestChain {
 

@@ -19,7 +19,15 @@ package fi.helsinki.opintoni.integration.studyregistry.oodi.mock;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fi.helsinki.opintoni.integration.studyregistry.oodi.*;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiClient;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiEnrollment;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiEvent;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiResponse;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiRoles;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiSingleResponse;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudyAttainment;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudyRight;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiTeacherCourse;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;

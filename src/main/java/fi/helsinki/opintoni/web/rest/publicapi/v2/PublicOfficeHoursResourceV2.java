@@ -23,12 +23,13 @@ import fi.helsinki.opintoni.service.v2.OfficeHoursServiceV2;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(

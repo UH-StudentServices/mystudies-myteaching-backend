@@ -18,7 +18,12 @@
 package fi.helsinki.opintoni.service.converter;
 
 import com.rometools.rome.feed.atom.Feed;
-import com.rometools.rome.feed.synd.*;
+import com.rometools.rome.feed.synd.SyndContent;
+import com.rometools.rome.feed.synd.SyndContentImpl;
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndEntryImpl;
+import com.rometools.rome.feed.synd.SyndFeed;
+import com.rometools.rome.feed.synd.SyndFeedImpl;
 import com.rometools.rome.io.FeedException;
 import fi.helsinki.opintoni.dto.NewsDto;
 import org.assertj.core.api.Assertions;

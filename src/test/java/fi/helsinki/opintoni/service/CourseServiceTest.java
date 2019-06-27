@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.CourseDto;
-
 import fi.helsinki.opintoni.web.TestConstants;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

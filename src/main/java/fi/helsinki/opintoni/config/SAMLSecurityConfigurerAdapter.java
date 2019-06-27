@@ -53,10 +53,10 @@ public class SAMLSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter 
 
     @Autowired
     private SAMLAuthenticationProvider samlAuthenticationProvider;
-    
+
     @Autowired
     private FilterChainProxy loginTargetFilter;
-    
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

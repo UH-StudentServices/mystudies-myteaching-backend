@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.integration.newsfeeds;
 
 import com.rometools.rome.feed.atom.Feed;
+
 import java.util.Locale;
 
 public interface FlammaClient {

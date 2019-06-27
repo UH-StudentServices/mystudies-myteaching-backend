@@ -22,7 +22,9 @@ import fi.helsinki.opintoni.localization.Language;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
-import static fi.helsinki.opintoni.localization.Language.*;
+import static fi.helsinki.opintoni.localization.Language.EN;
+import static fi.helsinki.opintoni.localization.Language.FI;
+import static fi.helsinki.opintoni.localization.Language.SV;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

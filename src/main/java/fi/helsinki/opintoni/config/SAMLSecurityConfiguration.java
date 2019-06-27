@@ -40,7 +40,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.saml.*;
+import org.springframework.security.saml.SAMLAuthenticationProvider;
+import org.springframework.security.saml.SAMLBootstrap;
+import org.springframework.security.saml.SAMLEntryPoint;
+import org.springframework.security.saml.SAMLLogoutFilter;
+import org.springframework.security.saml.SAMLLogoutProcessingFilter;
+import org.springframework.security.saml.SAMLProcessingFilter;
 import org.springframework.security.saml.context.SAMLContextProvider;
 import org.springframework.security.saml.key.JKSKeyManager;
 import org.springframework.security.saml.key.KeyManager;
@@ -57,7 +62,14 @@ import org.springframework.security.saml.processor.SAMLProcessorImpl;
 import org.springframework.security.saml.trust.httpclient.TLSProtocolConfigurer;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.springframework.security.saml.util.VelocityFactory;
-import org.springframework.security.saml.websso.*;
+import org.springframework.security.saml.websso.SingleLogoutProfile;
+import org.springframework.security.saml.websso.SingleLogoutProfileImpl;
+import org.springframework.security.saml.websso.WebSSOProfile;
+import org.springframework.security.saml.websso.WebSSOProfileConsumer;
+import org.springframework.security.saml.websso.WebSSOProfileConsumerHoKImpl;
+import org.springframework.security.saml.websso.WebSSOProfileConsumerImpl;
+import org.springframework.security.saml.websso.WebSSOProfileImpl;
+import org.springframework.security.saml.websso.WebSSOProfileOptions;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -67,7 +79,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
 
 @Configuration
 @Profile({
@@ -196,7 +213,7 @@ public class SAMLSecurityConfiguration {
     })
     public CachingMetadataManager metadata(@Autowired ParserPool parserPool,
                                            @Autowired ExtendedMetadataDelegate idpMetadata) throws Exception {
-        return  getMetadataProviders(parserPool, idpMetadata, true);
+        return getMetadataProviders(parserPool, idpMetadata, true);
     }
 
     private CachingMetadataManager getMetadataProviders(ParserPool parserPool, ExtendedMetadataDelegate idpMetadata,
@@ -215,7 +232,7 @@ public class SAMLSecurityConfiguration {
     })
     public CachingMetadataManager metadataLocalShibbo(@Autowired ParserPool parserPool,
                                                       @Autowired ExtendedMetadataDelegate idpMetadata) throws Exception {
-        return  getMetadataProviders(parserPool, idpMetadata, false);
+        return getMetadataProviders(parserPool, idpMetadata, false);
     }
 
     @Bean

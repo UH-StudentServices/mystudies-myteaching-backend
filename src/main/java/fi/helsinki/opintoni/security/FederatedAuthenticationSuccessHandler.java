@@ -17,13 +17,12 @@
 
 package fi.helsinki.opintoni.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.util.UriBuilder;
 import fi.helsinki.opintoni.web.arguments.ProfileRole;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
