@@ -17,7 +17,11 @@
 
 package fi.helsinki.opintoni.exception;
 
-import fi.helsinki.opintoni.exception.http.*;
+import fi.helsinki.opintoni.exception.http.BadRequestException;
+import fi.helsinki.opintoni.exception.http.CalendarFeedNotFoundException;
+import fi.helsinki.opintoni.exception.http.ForbiddenException;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
+import fi.helsinki.opintoni.exception.http.UnprocessableEntityException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;

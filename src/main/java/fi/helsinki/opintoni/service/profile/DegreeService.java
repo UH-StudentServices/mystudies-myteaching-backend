@@ -17,7 +17,9 @@
 
 package fi.helsinki.opintoni.service.profile;
 
-import fi.helsinki.opintoni.domain.profile.*;
+import fi.helsinki.opintoni.domain.profile.ComponentVisibility;
+import fi.helsinki.opintoni.domain.profile.Degree;
+import fi.helsinki.opintoni.domain.profile.Profile;
 import fi.helsinki.opintoni.dto.profile.DegreeDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.profile.DegreeRepository;

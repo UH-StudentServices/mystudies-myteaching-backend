@@ -18,8 +18,8 @@
 package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
-import org.junit.Test;
 import fi.helsinki.opintoni.security.TestSecurityContext;
+import org.junit.Test;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

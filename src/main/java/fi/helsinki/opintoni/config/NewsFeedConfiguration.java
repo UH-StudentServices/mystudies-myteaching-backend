@@ -37,7 +37,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Collections.*;
+import static java.util.Collections.singletonList;
 
 @Configuration
 @ConfigurationProperties(prefix = "newsfeeds")

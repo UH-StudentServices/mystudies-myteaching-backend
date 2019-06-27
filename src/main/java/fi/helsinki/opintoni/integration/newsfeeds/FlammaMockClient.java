@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.integration.newsfeeds;
 
 import com.google.common.collect.ImmutableMap;
 import com.rometools.rome.feed.atom.Feed;
+
 import java.util.Locale;
 
 public class FlammaMockClient extends NewsFeedsMockClient implements FlammaClient {

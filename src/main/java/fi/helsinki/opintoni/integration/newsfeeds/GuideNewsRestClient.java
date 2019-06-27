@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.integration.newsfeeds;
 
 import com.rometools.rome.feed.atom.Feed;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;

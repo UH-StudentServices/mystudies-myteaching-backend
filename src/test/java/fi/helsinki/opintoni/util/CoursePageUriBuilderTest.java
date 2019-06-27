@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.util;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

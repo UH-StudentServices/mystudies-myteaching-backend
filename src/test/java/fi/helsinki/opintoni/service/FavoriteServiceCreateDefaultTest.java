@@ -18,7 +18,11 @@
 package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.domain.*;
+import fi.helsinki.opintoni.domain.Favorite;
+import fi.helsinki.opintoni.domain.RssFavorite;
+import fi.helsinki.opintoni.domain.TwitterFavorite;
+import fi.helsinki.opintoni.domain.UnicafeFavorite;
+import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.repository.FavoriteRepository;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.service.favorite.FavoriteService;
@@ -28,8 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
 public class FavoriteServiceCreateDefaultTest extends SpringTest {

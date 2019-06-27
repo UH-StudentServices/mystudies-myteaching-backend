@@ -20,9 +20,9 @@ package fi.helsinki.opintoni.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
-import fi.helsinki.opintoni.service.profile.SessionService;
 import fi.helsinki.opintoni.service.TimeService;
 import fi.helsinki.opintoni.service.UserService;
+import fi.helsinki.opintoni.service.profile.SessionService;
 import fi.helsinki.opintoni.util.AuditLogger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,9 +44,17 @@ import java.util.Optional;
 import static com.google.common.collect.Lists.newArrayList;
 import static fi.helsinki.opintoni.config.Constants.LANG_COOKIE_NAME;
 import static fi.helsinki.opintoni.config.Constants.OPINTONI_HAS_LOGGED_IN;
-import static fi.helsinki.opintoni.localization.Language.*;
+import static fi.helsinki.opintoni.localization.Language.EN;
+import static fi.helsinki.opintoni.localization.Language.FI;
+import static fi.helsinki.opintoni.localization.Language.SV;
 import static java.util.Collections.singletonList;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.argThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FederatedAuthenticationSuccessHandlerTest {

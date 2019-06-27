@@ -17,18 +17,37 @@
 
 package fi.helsinki.opintoni.service.converter.profile;
 
-import fi.helsinki.opintoni.domain.profile.*;
-import fi.helsinki.opintoni.dto.profile.*;
+import fi.helsinki.opintoni.domain.profile.ComponentVisibility;
+import fi.helsinki.opintoni.domain.profile.Profile;
+import fi.helsinki.opintoni.domain.profile.ProfileComponent;
+import fi.helsinki.opintoni.domain.profile.TeacherProfileSection;
+import fi.helsinki.opintoni.dto.profile.ComponentVisibilityDto;
+import fi.helsinki.opintoni.dto.profile.ProfileDto;
+import fi.helsinki.opintoni.dto.profile.SummaryDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.profile.ProfileRepository;
 import fi.helsinki.opintoni.service.AvatarImageService;
-import fi.helsinki.opintoni.service.profile.*;
+import fi.helsinki.opintoni.service.profile.ComponentHeadingService;
+import fi.helsinki.opintoni.service.profile.ComponentOrderService;
+import fi.helsinki.opintoni.service.profile.ComponentVisibilityService;
+import fi.helsinki.opintoni.service.profile.ContactInformationService;
+import fi.helsinki.opintoni.service.profile.DegreeService;
+import fi.helsinki.opintoni.service.profile.FreeTextContentService;
+import fi.helsinki.opintoni.service.profile.JobSearchService;
+import fi.helsinki.opintoni.service.profile.LanguageProficiencyService;
+import fi.helsinki.opintoni.service.profile.ProfileBackgroundService;
+import fi.helsinki.opintoni.service.profile.ProfileKeywordRelationshipService;
+import fi.helsinki.opintoni.service.profile.ProfileService;
+import fi.helsinki.opintoni.service.profile.SampleService;
+import fi.helsinki.opintoni.service.profile.WorkExperienceService;
 import fi.helsinki.opintoni.util.UriBuilder;
 import fi.helsinki.opintoni.web.arguments.ProfileRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static fi.helsinki.opintoni.domain.profile.ComponentVisibility.Visibility.PUBLIC;

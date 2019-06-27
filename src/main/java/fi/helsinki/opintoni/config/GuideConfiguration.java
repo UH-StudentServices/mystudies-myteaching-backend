@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import static java.util.Collections.*;
+import static java.util.Collections.singletonList;
 
 @Configuration
 public class GuideConfiguration {
@@ -44,7 +44,7 @@ public class GuideConfiguration {
     public RestTemplate guideRestTemplate() {
         final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
-        RestTemplate restTemplate =  new RestTemplate(singletonList(converter));
+        RestTemplate restTemplate = new RestTemplate(singletonList(converter));
         restTemplate.setInterceptors(singletonList(new LoggingInterceptor()));
         return restTemplate;
     }

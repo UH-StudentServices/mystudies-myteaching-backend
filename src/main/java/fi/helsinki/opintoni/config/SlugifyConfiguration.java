@@ -32,9 +32,9 @@ public class SlugifyConfiguration {
         Slugify slugify = new Slugify();
 
         slugify.setCustomReplacements(ImmutableMap.of(
-            "ä", "a", 
+            "ä", "a",
             "å", "a",
-            "ö", "o"));            
+            "ö", "o"));
         return slugify;
     }
 

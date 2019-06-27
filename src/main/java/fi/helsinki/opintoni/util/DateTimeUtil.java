@@ -19,7 +19,8 @@ package fi.helsinki.opintoni.util;
 
 import fi.helsinki.opintoni.integration.DateFormatter;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DateTimeUtil {

@@ -17,18 +17,17 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
+import fi.helsinki.opintoni.dto.OptimeCalendarDto;
+import fi.helsinki.opintoni.security.authorization.TeacherRoleRequired;
+import fi.helsinki.opintoni.service.OptimeCalendarService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.TeacherNumber;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
-import fi.helsinki.opintoni.security.authorization.TeacherRoleRequired;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.ResponseEntity;
-
-import fi.helsinki.opintoni.service.OptimeCalendarService;
-import fi.helsinki.opintoni.dto.OptimeCalendarDto;
 
 @RestController
 @RequestMapping(

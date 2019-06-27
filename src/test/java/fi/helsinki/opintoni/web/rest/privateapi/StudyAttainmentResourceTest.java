@@ -22,11 +22,21 @@ import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
-import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.*;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.ATTAINMENT_DATE_DAY;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.ATTAINMENT_DATE_HOUR;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.ATTAINMENT_DATE_MINUTE;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.ATTAINMENT_DATE_MONTH;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.ATTAINMENT_DATE_YEAR;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.CREDITS;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.GRADE;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.LEARNING_OPPORTINITY_NAME;
+import static fi.helsinki.opintoni.sampledata.StudyAttainmentSampleData.TEACHER_NAME;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class StudyAttainmentResourceTest extends SpringTest {
 

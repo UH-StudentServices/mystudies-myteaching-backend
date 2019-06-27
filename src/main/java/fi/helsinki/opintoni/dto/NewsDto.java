@@ -17,7 +17,10 @@
 
 package fi.helsinki.opintoni.dto;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 public class NewsDto {
 

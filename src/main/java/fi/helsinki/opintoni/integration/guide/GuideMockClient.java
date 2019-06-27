@@ -17,10 +17,10 @@
 
 package fi.helsinki.opintoni.integration.guide;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.util.List;

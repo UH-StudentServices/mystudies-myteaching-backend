@@ -19,11 +19,11 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 
 import com.google.common.collect.ImmutableList;
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.domain.TeachingLanguage;
 import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
 import fi.helsinki.opintoni.dto.TeachingLanguageDto;
 import fi.helsinki.opintoni.localization.Language;
-import fi.helsinki.opintoni.domain.TeachingLanguage;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;

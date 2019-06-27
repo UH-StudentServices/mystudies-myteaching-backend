@@ -17,7 +17,11 @@
 
 package fi.helsinki.opintoni.config;
 
-import fi.helsinki.opintoni.service.storage.*;
+import fi.helsinki.opintoni.service.storage.FileService;
+import fi.helsinki.opintoni.service.storage.FileStorage;
+import fi.helsinki.opintoni.service.storage.FileSystemFileStorage;
+import fi.helsinki.opintoni.service.storage.FilesMemory;
+import fi.helsinki.opintoni.service.storage.MemoryFileStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

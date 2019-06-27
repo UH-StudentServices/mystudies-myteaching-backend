@@ -19,14 +19,19 @@ package fi.helsinki.opintoni.service.profile;
 
 import fi.helsinki.opintoni.domain.profile.ContactInformation;
 import fi.helsinki.opintoni.dto.profile.ContactInformationDto;
-import fi.helsinki.opintoni.integration.esb.*;
+import fi.helsinki.opintoni.integration.esb.ESBClient;
+import fi.helsinki.opintoni.integration.esb.ESBEmployeeInfo;
+import fi.helsinki.opintoni.integration.esb.ESBEmployeeInfoOrganization;
+import fi.helsinki.opintoni.integration.esb.ESBEmployeeInfoRecord;
 import fi.helsinki.opintoni.service.converter.LocalizedValueConverter;
 import fi.helsinki.opintoni.service.converter.profile.ContactInformationConverter;
 import fi.helsinki.opintoni.web.rest.privateapi.profile.contactinformation.UpdateContactInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 @Service
 public class EmployeeContactInformationService {

@@ -26,7 +26,6 @@ import fi.helsinki.opintoni.security.SecurityUtils;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import fi.helsinki.opintoni.web.rest.publicapi.PublicObarJWTResource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +50,7 @@ public class PrivateObarJWTResource extends PublicObarJWTResource {
 
     @Override
     @GetMapping("/obar-jwt-token")
-    public ResponseEntity<ObarJWTTokenDto> getObarJWTToken(@CookieValue(name = LANG_COOKIE_NAME, required = false) String obarLang, 
+    public ResponseEntity<ObarJWTTokenDto> getObarJWTToken(@CookieValue(name = LANG_COOKIE_NAME, required = false) String obarLang,
         @Nullable @RequestParam(name = PARAM_APP_NAME) String app) {
         AppUser user = super.securityUtils.getAppUser().orElseThrow(NotFoundException::new);
         if (user.isStudent()) {
