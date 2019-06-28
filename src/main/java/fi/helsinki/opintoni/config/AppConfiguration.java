@@ -27,9 +27,9 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 
 @Component
-@PropertySource(value = {
-    "file:${config.dir:/opt/opintoni/config}/default.properties",
-    "file:${config.dir:/opt/opintoni/config}/database.properties"},
+// local-shibbo configurations
+@PropertySource(
+    value = {"file:${config.dir}/default.properties"},
     ignoreResourceNotFound = true)
 public class AppConfiguration {
 
