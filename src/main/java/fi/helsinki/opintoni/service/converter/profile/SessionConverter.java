@@ -65,7 +65,7 @@ public class SessionConverter {
 
         try {
             sessionDto.openUniversity = oodiUserService.isOpenUniversityUser(appUser);
-            sessionDto. faculty = facultyConverter.getFacultyDto(appUser);
+            sessionDto.faculty = facultyConverter.getFacultyDto(appUser);
             appUser.getStudentNumber().ifPresent(studentNumber ->
                 sessionDto.pilotDegreeProgramme = pilotDegreeProgrammeResolver.isInPilotDegreeProgramme(studentNumber));
         } catch (OodiIntegrationException e) {
