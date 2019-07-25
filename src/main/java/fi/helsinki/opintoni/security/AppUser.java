@@ -188,10 +188,6 @@ public final class AppUser extends User {
                 throw new BadCredentialsException("User does not have personId");
             }
 
-            if (personId == null) {
-                throw new BadCredentialsException("User does not have personId");
-            }
-
             authorities = getAuthorities();
             return new AppUser(this);
         }
