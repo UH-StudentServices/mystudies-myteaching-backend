@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.security;
 
 import fi.helsinki.opintoni.config.Constants;
-import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.saml2.core.Attribute;
@@ -29,11 +28,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Profile({
@@ -46,8 +40,6 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
     private final Logger log = LoggerFactory.getLogger(SAMLUserDetailsService.class);
 
     private static final String SAML_ATTRIBUTE_EDU_PERSON_PRINCIPAL_NAME = "urn:oid:1.3.6.1.4.1.5923.1.1.1.6";
-    private static final String SAML_ATTRIBUTE_EDU_PERSON_AFFILIATION = "urn:oid:1.3.6.1.4.1.5923.1.1.1.1";
-    private static final String SAML_ATTRIBUTE_EDU_PERSON_PRIMARY_AFFILIATION = "urn:oid:1.3.6.1.4.1.5923.1.1.1.5";
     private static final String SAML_ATTRIBUTE_EMAIL = "urn:oid:0.9.2342.19200300.100.1.3";
     private static final String SAML_ATTRIBUTE_COMMON_NAME = "urn:oid:2.5.4.3";
     private static final String SAML_ATTRIBUTE_OODI_UID = "1.3.6.1.4.1.18869.1.1.1.32";
@@ -73,9 +65,6 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
 
         AppUser.AppUserBuilder builder = new AppUser.AppUserBuilder()
             .eduPersonPrincipalName(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_PRINCIPAL_NAME))
-            .eduPersonAffiliations(getEduPersonAffiliations(credential))
-            .eduPersonPrimaryAffiliation(
-                SAMLEduPersonAffiliation.fromValue(credential.getAttributeAsString(SAML_ATTRIBUTE_EDU_PERSON_PRIMARY_AFFILIATION)))
             .email(credential.getAttributeAsString(SAML_ATTRIBUTE_EMAIL))
             .commonName(credential.getAttributeAsString(SAML_ATTRIBUTE_COMMON_NAME))
             .personId(credential.getAttributeAsString(SAML_ATTRIBUTE_OODI_UID))
@@ -110,17 +99,5 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
      */
     private String getStudentNumber(SAMLCredential credential) {
         return StringUtils.substringAfterLast(credential.getAttributeAsString(SAML_ATTRIBUTE_STUDENT_NUMBER), ":");
-    }
-
-    private List<SAMLEduPersonAffiliation> getEduPersonAffiliations(SAMLCredential credential) {
-        String[] samlEduPersonAffiliation = credential.getAttributeAsStringArray(SAML_ATTRIBUTE_EDU_PERSON_AFFILIATION);
-
-        if (samlEduPersonAffiliation == null) {
-            return Collections.EMPTY_LIST;
-        }
-
-        return Arrays.stream(samlEduPersonAffiliation)
-            .map(SAMLEduPersonAffiliation::fromValue)
-            .collect(Collectors.toList());
     }
 }

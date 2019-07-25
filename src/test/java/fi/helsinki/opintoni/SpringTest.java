@@ -26,7 +26,6 @@ import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsRestClient;
 import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.security.AppUser;
-import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.server.CoursePageServer;
 import fi.helsinki.opintoni.server.ESBServer;
 import fi.helsinki.opintoni.server.FlammaServer;
@@ -69,10 +68,8 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.Filter;
 import javax.servlet.http.Cookie;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
-import static java.util.Collections.singletonList;
 import static org.assertj.core.util.Lists.newArrayList;
 
 /*
@@ -278,8 +275,6 @@ public abstract class SpringTest {
             new AppUser.AppUserBuilder()
                 .studentNumber(TestConstants.STUDENT_NUMBER)
                 .eduPersonPrincipalName("opiskelija@helsinki.fi")
-                .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
-                .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
                 .personId("1111")
                 .build(),
             ""));
@@ -291,8 +286,6 @@ public abstract class SpringTest {
             new AppUser.AppUserBuilder()
                 .employeeNumber(TestConstants.EMPLOYEE_NUMBER)
                 .eduPersonPrincipalName("opettaja@helsinki.fi")
-                .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.FACULTY))
-                .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
                 .teacherFacultyCode("A10000")
                 .personId("2222")
                 .build(),

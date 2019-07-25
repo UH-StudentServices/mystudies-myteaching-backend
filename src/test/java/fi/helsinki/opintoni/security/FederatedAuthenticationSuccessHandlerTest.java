@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.helsinki.opintoni.domain.User;
-import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.service.TimeService;
 import fi.helsinki.opintoni.service.UserService;
 import fi.helsinki.opintoni.service.profile.SessionService;
@@ -47,7 +46,6 @@ import static fi.helsinki.opintoni.config.Constants.OPINTONI_HAS_LOGGED_IN;
 import static fi.helsinki.opintoni.localization.Language.EN;
 import static fi.helsinki.opintoni.localization.Language.FI;
 import static fi.helsinki.opintoni.localization.Language.SV;
-import static java.util.Collections.singletonList;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.argThat;
 import static org.mockito.Mockito.mock;
@@ -98,7 +96,6 @@ public class FederatedAuthenticationSuccessHandlerTest {
             .studentNumber("1234")
             .personId(OODI_PERSON_ID)
             .preferredLanguage(appUserPreferredLanguage)
-            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .build();
 
         when(authentication.getPrincipal()).thenReturn(appUser);

@@ -18,10 +18,8 @@
 package fi.helsinki.opintoni.security;
 
 import com.google.common.collect.Iterables;
-import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.service.UserService;
 import org.junit.Test;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.saml.SAMLCredential;
 
@@ -60,20 +58,11 @@ public class SAMLUserDetailsServiceTest {
         assertThat(appUser.getPersonId()).isEqualTo(OODI_PERSON_ID);
         assertThat(appUser.getStudentNumber().get()).isEqualTo(SAML_STUDENT_NUMBER_FINAL);
         assertThat(appUser.getPreferredLanguage()).isEqualTo(SAML_PREFERRED_LANGUAGE);
-        assertThat(appUser.getEduPersonAffiliations().contains(SAMLEduPersonAffiliation.STUDENT)).isTrue();
-        assertThat(appUser.getEduPersonPrimaryAffiliation()).isEqualTo(SAMLEduPersonAffiliation.STUDENT);
         assertThat(appUser.getEmployeeNumber().isPresent()).isFalse();
         assertThat(appUser.getAuthorities()).hasSize(1);
 
         GrantedAuthority grantedAuthority = Iterables.getOnlyElement(appUser.getAuthorities());
         assertThat(grantedAuthority.getAuthority()).isEqualTo(AppUser.Role.STUDENT.name());
-    }
-
-    @Test(expected = BadCredentialsException.class)
-    public void thatStudentWithNoSAMLAffiliationsThrowsException() {
-        SAMLCredential credential = samlStudentCredentialWithNoAffiliations();
-
-        AppUser appUser = (AppUser) userDetailsService.loadUserBySAML(credential);
     }
 
     @Test
@@ -88,8 +77,6 @@ public class SAMLUserDetailsServiceTest {
         assertThat(appUser.getPersonId()).isEqualTo(OODI_PERSON_ID);
         assertThat(appUser.getEmployeeNumber().get()).isEqualTo(SAML_EMPLOYEE_NUMBER);
         assertThat(appUser.getPreferredLanguage()).isEqualTo(SAML_PREFERRED_LANGUAGE);
-        assertThat(appUser.getEduPersonAffiliations().contains(SAMLEduPersonAffiliation.FACULTY)).isTrue();
-        assertThat(appUser.getEduPersonPrimaryAffiliation()).isEqualTo(SAMLEduPersonAffiliation.FACULTY);
         assertThat(appUser.getStudentNumber().isPresent()).isFalse();
         assertThat(appUser.getAuthorities()).hasSize(1);
 
@@ -132,21 +119,11 @@ public class SAMLUserDetailsServiceTest {
         assertThat(appUser.hasRole(AppUser.Role.ADMIN)).isTrue();
     }
 
-    private SAMLCredential samlStudentCredentialWithNoAffiliations() {
-        SAMLCredential credential = samlCommonCredential();
-
-        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.25178.1.2.14")).thenReturn(SAML_STUDENT_NUMBER);
-        when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(null);
-        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.5")).thenReturn(SAMLEduPersonAffiliation.STUDENT.getValue());
-        return credential;
-    }
-
     private SAMLCredential samlStudentCredential() {
         SAMLCredential credential = samlCommonCredential();
 
         when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.25178.1.2.14")).thenReturn(SAML_STUDENT_NUMBER);
         when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAML_EDU_PERSON_AFFILIATION_MULTIVALUE);
-        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.5")).thenReturn(SAMLEduPersonAffiliation.STUDENT.getValue());
         return credential;
     }
 
@@ -154,7 +131,6 @@ public class SAMLUserDetailsServiceTest {
         SAMLCredential credential = samlCommonCredential();
         when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.3")).thenReturn(SAML_EMPLOYEE_NUMBER);
         when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAML_EDU_PERSON_AFFILIATION_FACULTY);
-        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.5")).thenReturn(SAMLEduPersonAffiliation.FACULTY.getValue());
         return credential;
     }
 
@@ -163,7 +139,6 @@ public class SAMLUserDetailsServiceTest {
         when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.3")).thenReturn(SAML_EMPLOYEE_NUMBER);
         when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.25178.1.2.14")).thenReturn(SAML_STUDENT_NUMBER);
         when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAML_EDU_PERSON_AFFILIATION_HYBRID);
-        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.5")).thenReturn(SAMLEduPersonAffiliation.FACULTY.getValue());
         return credential;
     }
 

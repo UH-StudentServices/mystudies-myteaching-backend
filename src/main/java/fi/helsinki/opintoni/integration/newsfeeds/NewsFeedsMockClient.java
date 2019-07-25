@@ -25,6 +25,7 @@ import com.rometools.rome.io.XmlReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -34,8 +35,8 @@ public class NewsFeedsMockClient {
 
     protected Feed getFeedFromPath(String mockResourcePath) {
         SyndFeedInput feedInput = new SyndFeedInput();
-        InputStream inputResource = ClassLoader.class.getResourceAsStream(mockResourcePath);
         try {
+            InputStream inputResource = new FileInputStream(mockResourcePath);
             SyndFeed syndFeed = feedInput.build(new XmlReader(inputResource));
             return (Feed) syndFeed.createWireFeed();
         } catch (FeedException | IOException e) {

@@ -26,14 +26,12 @@ import fi.helsinki.opintoni.repository.FavoriteRepository;
 import fi.helsinki.opintoni.repository.UsefulLinkRepository;
 import fi.helsinki.opintoni.repository.UserSettingsRepository;
 import fi.helsinki.opintoni.security.AppUser;
-import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserServiceTest extends SpringTest {
@@ -96,7 +94,6 @@ public class UserServiceTest extends SpringTest {
             .personId("111")
             .eduPersonPrincipalName("newUser")
             .studentNumber("123")
-            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .build();
     }
 

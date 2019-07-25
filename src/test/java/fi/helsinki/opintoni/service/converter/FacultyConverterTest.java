@@ -20,12 +20,10 @@ package fi.helsinki.opintoni.service.converter;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.FacultyDto;
 import fi.helsinki.opintoni.security.AppUser;
-import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import fi.helsinki.opintoni.web.TestConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class FacultyConverterTest extends SpringTest {
@@ -80,8 +78,6 @@ public class FacultyConverterTest extends SpringTest {
         return new AppUser.AppUserBuilder()
             .personId("123")
             .employeeNumber(TestConstants.EMPLOYEE_NUMBER)
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
-            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.FACULTY))
             .eduPersonPrincipalName("eduPersonPrincipalName")
             .teacherFacultyCode("A90000")
             .build();
@@ -91,8 +87,6 @@ public class FacultyConverterTest extends SpringTest {
         return new AppUser.AppUserBuilder()
             .personId("123")
             .studentNumber(TestConstants.STUDENT_NUMBER)
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
-            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
             .eduPersonPrincipalName("eduPersonPrincipalName")
             .build();
     }
