@@ -38,9 +38,6 @@ public class SAMLUserDetailsServiceTest {
     private static final String SAML_EMPLOYEE_NUMBER = "employeeNumber";
     private static final String OODI_PERSON_ID = "1440748";
     private static final String SAML_PREFERRED_LANGUAGE = "fi";
-    private static final String[] SAML_EDU_PERSON_AFFILIATION_MULTIVALUE = {"member", "student"};
-    private static final String[] SAML_EDU_PERSON_AFFILIATION_FACULTY = {"faculty"};
-    private static final String[] SAML_EDU_PERSON_AFFILIATION_HYBRID = {"faculty", "student", "member"};
 
     private final UserService userService = mock(UserService.class);
 
@@ -123,14 +120,12 @@ public class SAMLUserDetailsServiceTest {
         SAMLCredential credential = samlCommonCredential();
 
         when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.25178.1.2.14")).thenReturn(SAML_STUDENT_NUMBER);
-        when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAML_EDU_PERSON_AFFILIATION_MULTIVALUE);
         return credential;
     }
 
     private SAMLCredential samlTeacherCredential() {
         SAMLCredential credential = samlCommonCredential();
         when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.3")).thenReturn(SAML_EMPLOYEE_NUMBER);
-        when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAML_EDU_PERSON_AFFILIATION_FACULTY);
         return credential;
     }
 
@@ -138,7 +133,6 @@ public class SAMLUserDetailsServiceTest {
         SAMLCredential credential = samlCommonCredential();
         when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.3")).thenReturn(SAML_EMPLOYEE_NUMBER);
         when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.25178.1.2.14")).thenReturn(SAML_STUDENT_NUMBER);
-        when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.5923.1.1.1.1")).thenReturn(SAML_EDU_PERSON_AFFILIATION_HYBRID);
         return credential;
     }
 

@@ -118,19 +118,6 @@ public class AppUserTest {
         assertThat(isInRole(appUser, TEACHER)).isTrue();
     }
 
-    @Test
-    public void thatUserCanHaveTeacherRoleEvenIfPrimaryAffiliationIsStudent() {
-        AppUser appUser = new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
-            .personId(PERSON_ID)
-            .studentNumber(STUDENT_NUMBER)
-            .employeeNumber(EMPLOYEE_NUMBER)
-            .build();
-
-        assertThat(isInRole(appUser, STUDENT)).isTrue();
-        assertThat(isInRole(appUser, TEACHER)).isTrue();
-    }
-
     private boolean isInRole(AppUser appUser, Role role) {
         return appUser.getAuthorities()
             .stream()
