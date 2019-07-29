@@ -19,17 +19,13 @@ package fi.helsinki.opintoni.security;
 
 import com.google.common.collect.ImmutableMap;
 import fi.helsinki.opintoni.config.Constants;
-import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.function.Supplier;
-
-import static java.util.Collections.singletonList;
 
 @Component("demoUserDetailsService")
 @Profile({
@@ -58,8 +54,6 @@ public class DemoUserDetailsService implements UserDetailsService {
     private UserDetails newTeacher() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("doo_8@helsinki.fi")
-            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.FACULTY))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .teacherFacultyCode("H30")
             .email("doo_8@example.com")
             .commonName("Eero Jukola")
@@ -71,8 +65,6 @@ public class DemoUserDetailsService implements UserDetailsService {
     private UserDetails newStudent() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("doo_9@helsinki.fi")
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("doo_9@example.com")
             .commonName("Venla Jukola")
             .studentNumber("010000090")
@@ -83,8 +75,6 @@ public class DemoUserDetailsService implements UserDetailsService {
     private UserDetails newStudent2() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("doo_10@helsinki.fi")
-            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("doo_10@example.com")
             .commonName("Juhani Jukola")
             .studentNumber("010000100")
@@ -95,8 +85,6 @@ public class DemoUserDetailsService implements UserDetailsService {
     private UserDetails newOpenUniStudent() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("doo_11@helsinki.fi")
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.AFFILIATE)
             .email("doo_11@example.com")
             .commonName("Kaisa Rajamäki")
             .studentNumber("010000113")

@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.security;
 
 import com.google.common.collect.Sets;
-import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,7 +27,6 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -41,8 +39,6 @@ public final class AppUser extends User {
     private final String email;
     private final String commonName;
     private final String eduPersonPrincipalName;
-    private final List<SAMLEduPersonAffiliation> eduPersonAffiliations;
-    private final SAMLEduPersonAffiliation eduPersonPrimaryAffiliation;
     private final String personId;
     private final String preferredLanguage;
     private final Optional<String> teacherFacultyCode;
@@ -55,8 +51,6 @@ public final class AppUser extends User {
         super(builder.eduPersonPrincipalName, "password", builder.authorities);
 
         this.eduPersonPrincipalName = builder.eduPersonPrincipalName;
-        this.eduPersonAffiliations = builder.eduPersonAffiliations;
-        this.eduPersonPrimaryAffiliation = builder.eduPersonPrimaryAffiliation;
         this.email = builder.email;
         this.commonName = builder.commonName;
         this.studentNumber = builder.studentNumber;
@@ -99,14 +93,6 @@ public final class AppUser extends User {
         return preferredLanguage;
     }
 
-    public List<SAMLEduPersonAffiliation> getEduPersonAffiliations() {
-        return eduPersonAffiliations;
-    }
-
-    public SAMLEduPersonAffiliation getEduPersonPrimaryAffiliation() {
-        return eduPersonPrimaryAffiliation;
-    }
-
     public boolean hasRole(Role role) {
         return authorities.stream().anyMatch(a -> a.getAuthority().equals(role.name()));
     }
@@ -124,8 +110,6 @@ public final class AppUser extends User {
         return new ToStringBuilder(this)
             .append("email", email)
             .append("eduPersonPrincipalName", eduPersonPrincipalName)
-            .append("eduPersonAffiliation", eduPersonAffiliations.toString())
-            .append("eduPersonPrimaryAffiliation", eduPersonPrimaryAffiliation.getValue())
             .append("commonName", commonName)
             .append("studentNumber", studentNumber)
             .append("employeeNumber", employeeNumber)
@@ -136,8 +120,6 @@ public final class AppUser extends User {
     public static class AppUserBuilder {
 
         private String eduPersonPrincipalName;
-        private List<SAMLEduPersonAffiliation> eduPersonAffiliations;
-        private SAMLEduPersonAffiliation eduPersonPrimaryAffiliation;
         private String email;
         private String commonName;
         private String personId;
@@ -150,16 +132,6 @@ public final class AppUser extends User {
 
         public AppUserBuilder eduPersonPrincipalName(String eduPersonPrincipalName) {
             this.eduPersonPrincipalName = eduPersonPrincipalName;
-            return this;
-        }
-
-        public AppUserBuilder eduPersonAffiliations(List<SAMLEduPersonAffiliation> eduPersonAffiliations) {
-            this.eduPersonAffiliations = eduPersonAffiliations;
-            return this;
-        }
-
-        public AppUserBuilder eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation eduPersonPrimaryAffiliation) {
-            this.eduPersonPrimaryAffiliation = eduPersonPrimaryAffiliation;
             return this;
         }
 
@@ -210,12 +182,6 @@ public final class AppUser extends User {
 
             if (eduPersonPrincipalName == null) {
                 throw new BadCredentialsException("User does not have eduPersonPrincipalName");
-            }
-
-            if (eduPersonAffiliations == null || eduPersonAffiliations.isEmpty()) {
-                throw new BadCredentialsException(
-                    String.format("User (employeeNumber = %1$s, studentNumber = %2$s) does not have any eduPersonAffiliations",
-                        employeeNumber.orElse(""), studentNumber.orElse("")));
             }
 
             if (personId == null) {

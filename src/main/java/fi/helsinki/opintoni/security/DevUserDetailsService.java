@@ -18,16 +18,11 @@
 package fi.helsinki.opintoni.security;
 
 import fi.helsinki.opintoni.config.Constants;
-import fi.helsinki.opintoni.security.enumerated.SAMLEduPersonAffiliation;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Arrays;
-
-import static java.util.Collections.singletonList;
 
 @Component("localUserDetailsService")
 @Profile({
@@ -80,8 +75,6 @@ public class DevUserDetailsService implements org.springframework.security.core.
     private UserDetails createTeacher() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("opettaja@helsinki.fi")
-            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.FACULTY))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .teacherFacultyCode("H30")
             .email("opettaja@mail.helsinki.fi")
             .commonName("Olli Opettaja")
@@ -94,8 +87,6 @@ public class DevUserDetailsService implements org.springframework.security.core.
     private UserDetails createStudent() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("opiskelija@helsinki.fi")
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("opiskelija@mail.helsinki.fi")
             .commonName("Olli Opiskelija")
             .studentNumber("010189791")
@@ -106,8 +97,6 @@ public class DevUserDetailsService implements org.springframework.security.core.
     private UserDetails createMag() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("mag_simp@helsinki.fi")
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.MEMBER, SAMLEduPersonAffiliation.STUDENT))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("opiskelija@mail.helsinki.fi")
             .commonName("Maggie Simpson")
             .studentNumber("011631484")
@@ -118,8 +107,6 @@ public class DevUserDetailsService implements org.springframework.security.core.
     private UserDetails createHybridUser() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("hybriduser@helsinki.fi")
-            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .teacherFacultyCode("H50")
             .email("hybriduser@mail.helsinki.fi")
             .commonName("Hybrid User")
@@ -132,8 +119,6 @@ public class DevUserDetailsService implements org.springframework.security.core.
     private UserDetails createTestTeacher() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("testteacher@helsinki.fi")
-            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.FACULTY))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .teacherFacultyCode("H40")
             .email("testteacher@mail.helsinki.fi")
             .commonName("Test Teacher")
@@ -145,8 +130,6 @@ public class DevUserDetailsService implements org.springframework.security.core.
     private UserDetails createTestStudent() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("teststudent@helsinki.fi")
-            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("teststudent@mail.helsinki.fi")
             .commonName("Test Student")
             .studentNumber("010189791")
@@ -157,8 +140,6 @@ public class DevUserDetailsService implements org.springframework.security.core.
     private UserDetails createTestHybridUser() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("testhybriduser@helsinki.fi")
-            .eduPersonAffiliations(singletonList(SAMLEduPersonAffiliation.STUDENT))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.FACULTY)
             .teacherFacultyCode("H10")
             .email("testhybriduser@mail.helsinki.fi")
             .commonName("Test Hybrid User")
@@ -171,8 +152,6 @@ public class DevUserDetailsService implements org.springframework.security.core.
     private UserDetails createTestOpenUniStudent() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("testopenunistudent@helsinki.fi")
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.AFFILIATE))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.AFFILIATE)
             .email("testopenunistudent@mail.helsinki.fi")
             .commonName("Test Open Uni Student")
             .studentNumber(STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT)
@@ -183,8 +162,6 @@ public class DevUserDetailsService implements org.springframework.security.core.
     private UserDetails createTestNewStudent() {
         return new AppUser.AppUserBuilder()
             .eduPersonPrincipalName("testnewstudent@helsinki.fi")
-            .eduPersonAffiliations(Arrays.asList(SAMLEduPersonAffiliation.STUDENT))
-            .eduPersonPrimaryAffiliation(SAMLEduPersonAffiliation.STUDENT)
             .email("testnewstudent@mail.helsinki.fi")
             .commonName("Test New Student")
             .studentNumber(STUDENT_NUMBER_TEST_NEW_STUDENT)

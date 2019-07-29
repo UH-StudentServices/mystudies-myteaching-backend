@@ -25,7 +25,7 @@ import java.util.Locale;
 
 public class GuideNewsMockClient extends NewsFeedsMockClient implements GuideNewsClient {
 
-    private static final String MOCK_DATA_BASE = "/sampledata/newsfeeds/guide/";
+    private static final String MOCK_DATA_BASE = "src/main/resources/sampledata/newsfeeds/guide/";
 
     private static final ImmutableMap<String, String> LANG_FILES = ImmutableMap.of(
         "fi", "feed.xml",

@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public class FlammaMockClient extends NewsFeedsMockClient implements FlammaClient {
 
-    private static final String MOCK_DATA_BASE = "/sampledata/newsfeeds/flamma/";
+    private static final String MOCK_DATA_BASE = "src/main/resources/sampledata/newsfeeds/flamma/";
 
     private static final ImmutableMap<String, String> STUDENT_FILES = ImmutableMap.of(
         "fi", "atom-bulletin.xml",
