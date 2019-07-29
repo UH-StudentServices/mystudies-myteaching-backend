@@ -218,6 +218,10 @@ public final class AppUser extends User {
                         employeeNumber.orElse(""), studentNumber.orElse("")));
             }
 
+            if (personId == null) {
+                throw new BadCredentialsException("User does not have personId");
+            }
+
             authorities = getAuthorities();
             return new AppUser(this);
         }
