@@ -72,7 +72,6 @@ import org.springframework.security.saml.websso.WebSSOProfileImpl;
 import org.springframework.security.saml.websso.WebSSOProfileOptions;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.FilterChainProxy;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -233,15 +232,6 @@ public class SAMLSecurityConfiguration {
     public CachingMetadataManager metadataLocalShibbo(@Autowired ParserPool parserPool,
                                                       @Autowired ExtendedMetadataDelegate idpMetadata) throws Exception {
         return getMetadataProviders(parserPool, idpMetadata, false);
-    }
-
-    @Bean
-    public SimpleUrlAuthenticationFailureHandler authenticationFailureHandler() {
-        SimpleUrlAuthenticationFailureHandler failureHandler =
-            new SimpleUrlAuthenticationFailureHandler();
-        failureHandler.setUseForward(true);
-        failureHandler.setDefaultFailureUrl("/error");
-        return failureHandler;
     }
 
     @Bean

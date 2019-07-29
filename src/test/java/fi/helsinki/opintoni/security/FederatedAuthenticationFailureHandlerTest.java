@@ -33,7 +33,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CustomAuthenticationFailureHandlerTest {
+public class FederatedAuthenticationFailureHandlerTest {
 
     @Mock
     private AppConfiguration appConfiguration;
