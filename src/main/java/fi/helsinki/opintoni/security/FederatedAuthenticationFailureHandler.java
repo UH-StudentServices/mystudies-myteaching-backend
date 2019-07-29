@@ -29,12 +29,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class FederatedAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
     private final AppConfiguration appConfiguration;
 
     @Autowired
-    public CustomAuthenticationFailureHandler(AppConfiguration appConfiguration) {
+    public FederatedAuthenticationFailureHandler(AppConfiguration appConfiguration) {
         this.appConfiguration = appConfiguration;
     }
 

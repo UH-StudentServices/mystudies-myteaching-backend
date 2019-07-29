@@ -17,7 +17,7 @@
 
 package fi.helsinki.opintoni.config;
 
-import fi.helsinki.opintoni.security.CustomAuthenticationFailureHandler;
+import fi.helsinki.opintoni.security.FederatedAuthenticationFailureHandler;
 import fi.helsinki.opintoni.security.FederatedAuthenticationSuccessHandler;
 import fi.helsinki.opintoni.security.SAMLContextProviderReverseProxy;
 import fi.helsinki.opintoni.security.SAMLLogoutSuccessHandler;
@@ -119,7 +119,7 @@ public class SAMLSecurityConfiguration {
     private FederatedAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Autowired
-    private CustomAuthenticationFailureHandler authenticationFailureHandler;
+    private FederatedAuthenticationFailureHandler authenticationFailureHandler;
 
     @Autowired
     private SAMLLogoutSuccessHandler logoutSuccessHandler;

@@ -31,7 +31,7 @@ public class LocalAuthenticationSuccessHandler extends BaseAuthenticationSuccess
     }
 
     @Override
-    protected void handleAuthFailure(HttpServletResponse response) throws IOException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    protected void handleRegistryIntegrationException(HttpServletResponse response) throws IOException {
+        response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
     }
 }

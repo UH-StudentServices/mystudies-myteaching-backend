@@ -39,7 +39,7 @@ public class CustomAuthenticationFailureHandlerTest {
     private AppConfiguration appConfiguration;
 
     @InjectMocks
-    private CustomAuthenticationFailureHandler handler;
+    private FederatedAuthenticationFailureHandler handler;
 
     @Test
     public void thatFailedAuthenticationResultsInAccessDeniedPage() throws Exception {

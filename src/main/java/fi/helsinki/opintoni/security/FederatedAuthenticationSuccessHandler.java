@@ -30,7 +30,7 @@ import java.io.IOException;
 
 @Component
 public class FederatedAuthenticationSuccessHandler extends BaseAuthenticationSuccessHandler {
-    private static final String ERROR_PATH = "/error/maintenance";
+    private static final String REGISTRY_EXCEPTION_ERROR_PATH = "/error/maintenance";
 
     @Autowired
     private UriBuilder uriBuilder;
@@ -64,7 +64,7 @@ public class FederatedAuthenticationSuccessHandler extends BaseAuthenticationSuc
     }
 
     @Override
-    protected void handleAuthFailure(HttpServletResponse response) throws IOException {
-        response.sendRedirect(ERROR_PATH);
+    protected void handleRegistryIntegrationException(HttpServletResponse response) throws IOException {
+        response.sendRedirect(REGISTRY_EXCEPTION_ERROR_PATH);
     }
 }
