@@ -42,7 +42,10 @@ docker-compose up
 ### Obar integration
 
 Configuration key obar.baseUrl ([local config](https://github.com/UH-StudentServices/mystudies-myteaching-backend/blob/develop/src/main/resources/config/application.yml)) controls use of obar.
-See [frontend readme](https://github.com/UH-StudentServices/mystudies-myteaching-frontend/blob/develop/README.md) for details.  
+See [frontend readme](https://github.com/UH-StudentServices/mystudies-myteaching-frontend/blob/develop/README.md) for details.
+
+To use Obar in local development, uncomment the url value from a obar.baseUrl property from application.yml. This property must be left empty when
+local Opintoni header is used (for instance when running e2e tests). When using local url for obar.baseUrl, Obar application must be running locally.
 
 ### Running with gradle
 

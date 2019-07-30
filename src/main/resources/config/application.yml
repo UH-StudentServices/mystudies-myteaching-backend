@@ -437,7 +437,7 @@ oodi:
     useHttpClientCertificate: false
 
 obar:
-    baseUrl: http://localhost:8090
+    baseUrl: #http://localhost:8090
     privateKey: |
         -----BEGIN RSA PRIVATE KEY-----
         MIICXQIBAAKBgQDjOuYIREZqcc1wGBtu1emTbt7ryggKV2tbhRqn3nr+OPYfuBbN
