@@ -81,13 +81,13 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
             }
             handleAuthSuccess(request, response);
         } catch (OodiIntegrationException e) {
-            handleAuthFailure(response);
+            handleRegistryIntegrationException(response);
         }
     }
 
     protected abstract void handleAuthSuccess(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
-    protected abstract void handleAuthFailure(HttpServletResponse response) throws IOException;
+    protected abstract void handleRegistryIntegrationException(HttpServletResponse response) throws IOException;
 
     private void syncUserWithDatabase(AppUser appUser) {
         Optional<User> user = getUserFromDb(appUser);

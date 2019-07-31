@@ -17,25 +17,31 @@
 
 package fi.helsinki.opintoni.security;
 
+import fi.helsinki.opintoni.config.AppConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 @Component
-public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
-    @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException, ServletException {
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+public class FederatedAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-        PrintWriter writer = response.getWriter();
-        writer.write(exception.getMessage());
-        writer.flush();
+    private final AppConfiguration appConfiguration;
+
+    @Autowired
+    public FederatedAuthenticationFailureHandler(AppConfiguration appConfiguration) {
+        this.appConfiguration = appConfiguration;
+    }
+
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        AuthenticationException exception) throws IOException, ServletException {
+        response.sendRedirect(appConfiguration.get("appRelativeUrl") + "/error/accessdenied");
     }
 }

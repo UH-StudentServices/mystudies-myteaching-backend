@@ -17,8 +17,8 @@
 
 package fi.helsinki.opintoni.config;
 
-import fi.helsinki.opintoni.security.AuthFailureHandler;
 import fi.helsinki.opintoni.security.HttpAuthenticationEntryPoint;
+import fi.helsinki.opintoni.security.LocalAuthenticationFailureHandler;
 import fi.helsinki.opintoni.security.LocalAuthenticationSuccessHandler;
 import fi.helsinki.opintoni.security.LocalLogoutSuccessHandler;
 import fi.helsinki.opintoni.web.rest.RestConstants;
@@ -54,7 +54,7 @@ public class DemoSecurityConfiguration extends WebSecurityConfigurerAdapter impl
     private LocalAuthenticationSuccessHandler authSuccessHandler;
 
     @Autowired
-    private AuthFailureHandler authFailureHandler;
+    private LocalAuthenticationFailureHandler authFailureHandler;
 
     @Autowired
     private LocalLogoutSuccessHandler localLogoutSuccessHandler;

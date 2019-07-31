@@ -18,36 +18,30 @@
 package fi.helsinki.opintoni.security;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+@Component
+public class LocalAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-@RunWith(MockitoJUnitRunner.class)
-public class CustomAuthenticationFailureHandlerTest {
+    private final AppConfiguration appConfiguration;
 
-    @Mock
-    private AppConfiguration appConfiguration;
+    @Autowired
+    public LocalAuthenticationFailureHandler(AppConfiguration appConfiguration) {
+        this.appConfiguration = appConfiguration;
+    }
 
-    @InjectMocks
-    private CustomAuthenticationFailureHandler handler;
-
-    @Test
-    public void thatFailedAuthenticationResultsInAccessDeniedPage() throws Exception {
-        HttpServletResponse response = mock(HttpServletResponse.class);
-        when(appConfiguration.get("appRelativeUrl")).thenReturn("");
-
-        handler.onAuthenticationFailure(mock(HttpServletRequest.class), response, mock(AuthenticationException.class));
-
-        verify(response).sendRedirect("/error/accessdenied");
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request,
+                                        HttpServletResponse response,
+                                        AuthenticationException exception) throws IOException, ServletException {
+        response.sendError(HttpServletResponse.SC_FORBIDDEN);
     }
 }
