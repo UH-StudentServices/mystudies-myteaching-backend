@@ -67,18 +67,18 @@ public class UserSettingsService {
     }
 
     public UserSettingsDto findByUserId(Long userId) {
-        return userSettingsConverter.toDto(userSettingsRepository.findByUserId(userId));
+        return userSettingsConverter.toDto(userSettingsRepository.findByUserId(userId).orElseThrow(NotFoundException::new));
     }
 
-    public UserSettingsDto update(Long userSettingsId, UpdateUserSettingsRequest request) {
-        UserSettings userSettings = userSettingsRepository.findById(userSettingsId).orElseThrow(NotFoundException::new);
+    public UserSettingsDto update(Long userId, UpdateUserSettingsRequest request) {
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId).orElseThrow(NotFoundException::new);
         userSettings.showBanner = request.showBanner;
         userSettings.cookieConsent = request.cookieConsent;
         return userSettingsConverter.toDto(userSettingsRepository.save(userSettings));
     }
 
-    public void updateUserAvatar(Long userSettingsId, String imageBase64) {
-        UserSettings userSettings = userSettingsRepository.findById(userSettingsId).orElseThrow(NotFoundException::new);
+    public void updateUserAvatar(Long userId, String imageBase64) {
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId).orElseThrow(NotFoundException::new);
 
         if (userSettings.userAvatar == null) {
             userSettings.userAvatar = new UserAvatar();
@@ -90,7 +90,7 @@ public class UserSettingsService {
     }
 
     public BufferedImage getUserAvatarImage(Long userId) {
-        UserSettings userSettings = userSettingsRepository.findByUserId(userId);
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId).orElseThrow(NotFoundException::new);
 
         if (userSettings.userAvatar == null) {
             return null;
@@ -102,7 +102,7 @@ public class UserSettingsService {
     public BufferedImage getUserBackgroundImage(String personId) throws IOException {
         UserSettings userSettings =  userRepository
             .findByPersonId(personId)
-            .map(u -> userSettingsRepository.findByUserId(u.id))
+            .flatMap(u -> userSettingsRepository.findByUserId(u.id))
             .orElseThrow(notFoundException("Background not found"));
 
         if (userSettings.backgroundFilename != null) {

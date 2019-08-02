@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.domain.Favorite;
 import fi.helsinki.opintoni.domain.UsefulLink;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.domain.UserSettings;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.FavoriteRepository;
 import fi.helsinki.opintoni.repository.UsefulLinkRepository;
 import fi.helsinki.opintoni.repository.UserSettingsRepository;
@@ -65,7 +66,7 @@ public class UserServiceTest extends SpringTest {
     @Test
     public void thatSettingsAreCreated() {
         User user = saveStudent();
-        UserSettings userSettings = userSettingsRepository.findByUserId(user.id);
+        UserSettings userSettings = userSettingsRepository.findByUserId(user.id).orElseThrow(NotFoundException::new);
         userSettings.backgroundFilename = "Profile_1.jpg";
     }
 

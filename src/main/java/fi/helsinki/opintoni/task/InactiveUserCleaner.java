@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.task;
 
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.domain.UserSettings;
+import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.integration.iam.AccountStatus;
 import fi.helsinki.opintoni.integration.iam.IAMClient;
 import fi.helsinki.opintoni.repository.CalendarFeedRepository;
@@ -38,6 +39,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Transactional
@@ -142,10 +144,10 @@ public class InactiveUserCleaner {
     }
 
     private void deleteUserSettings(Long userId) {
-        UserSettings userSettings = userSettingsRepository.findByUserId(userId);
+        Optional<UserSettings> userSettings = userSettingsRepository.findByUserId(userId);
 
-        if (userSettings != null) {
-            deleteCustomBackgroundImage(userSettings);
+        if (!userSettings.isEmpty()) {
+            deleteCustomBackgroundImage(userSettings.get());
             userSettingsRepository.deleteByUserId(userId);
         }
     }

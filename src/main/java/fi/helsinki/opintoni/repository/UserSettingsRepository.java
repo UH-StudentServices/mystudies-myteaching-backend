@@ -20,9 +20,11 @@ package fi.helsinki.opintoni.repository;
 import fi.helsinki.opintoni.domain.UserSettings;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface UserSettingsRepository extends JpaRepository<UserSettings, Long> {
 
-    UserSettings findByUserId(Long userId);
+    Optional<UserSettings> findByUserId(Long userId);
 
     long deleteByUserId(Long userId);
 }
