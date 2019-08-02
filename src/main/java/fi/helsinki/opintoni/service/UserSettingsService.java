@@ -112,8 +112,8 @@ public class UserSettingsService {
         }
     }
 
-    public void deleteUserAvatar(Long id) {
-        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(NotFoundException::new);
+    public void deleteUserAvatar(Long userId) {
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId).orElseThrow(NotFoundException::new);
 
         if (userSettings.userAvatar == null) {
             return;
@@ -130,8 +130,8 @@ public class UserSettingsService {
             .orElseThrow(notFoundException("Avatar not found for user"));
     }
 
-    public UserSettingsDto updateBackground(Long id, UploadImageBase64Request request) {
-        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(NotFoundException::new);
+    public UserSettingsDto updateBackground(Long userId, UploadImageBase64Request request) {
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId).orElseThrow(NotFoundException::new);
         removeOldUploadedBackgroundFile(userSettings);
 
         byte[] bytes = imageService.createUserBackground(request.imageBase64);
@@ -144,8 +144,8 @@ public class UserSettingsService {
         return userSettingsConverter.toDto(userSettingsRepository.save(userSettings));
     }
 
-    public UserSettingsDto selectBackground(Long id, SelectBackgroundRequest request) {
-        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(NotFoundException::new);
+    public UserSettingsDto selectBackground(Long userId, SelectBackgroundRequest request) {
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId).orElseThrow(NotFoundException::new);
         removeOldUploadedBackgroundFile(userSettings);
 
         userSettings.backgroundFilename = request.filename;
