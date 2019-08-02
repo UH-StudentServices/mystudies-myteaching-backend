@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.task;
 
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.domain.UserSettings;
-import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.integration.iam.AccountStatus;
 import fi.helsinki.opintoni.integration.iam.IAMClient;
 import fi.helsinki.opintoni.repository.CalendarFeedRepository;
