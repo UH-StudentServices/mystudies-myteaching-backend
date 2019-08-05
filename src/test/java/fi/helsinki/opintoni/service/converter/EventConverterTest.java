@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.service.converter;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.sampledata.SampleDataFiles;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +38,6 @@ public class EventConverterTest extends SpringTest {
     private Resource icalendar;
 
     @Test
-    @Ignore("For some reason this fails on comparison failure in local environment and succeeds in CI.")
     public void thatConvertingICalendarContentToEventsAndBackWorks() throws Exception {
         // TODO: Fix Test failure in local test run
         // ical format requires CRLF and git enforces LF as line separator
