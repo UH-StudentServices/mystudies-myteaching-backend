@@ -143,7 +143,7 @@ public class InactiveUserCleaner {
     }
 
     private void deleteUserSettings(Long userId) {
-        Optional<UserSettings> userSettings = userSettingsRepository.findByUserId(userId);
+        Optional<UserSettings> userSettings = userSettingsRepository.findFirstByUserId(userId);
 
         if (!userSettings.isEmpty()) {
             deleteCustomBackgroundImage(userSettings.get());

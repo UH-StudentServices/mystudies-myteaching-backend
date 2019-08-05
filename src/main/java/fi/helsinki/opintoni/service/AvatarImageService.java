@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.domain.UserSettings;
-import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.UserSettingsRepository;
 import fi.helsinki.opintoni.service.profile.ProfileService;
 import fi.helsinki.opintoni.util.UriBuilder;
@@ -47,14 +46,14 @@ public class AvatarImageService {
     }
 
     private String getAvatarImageUrl(Supplier<String> defaultAvatarUrlSupplier, Long userId) {
-        UserSettings userSettings = userSettingsRepository.findByUserId(userId).orElseThrow(NotFoundException::new);
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId);
         return userSettings.hasAvatarImage() ?
             uriBuilder.getUserAvatarUrlByPersonId(userSettings.user.personId) :
             defaultAvatarUrlSupplier.get();
     }
 
     public String getProfileAvatarImageUrl(Long userId, ProfileService.ProfileUrlContext profileUrlContext) {
-        return userSettingsRepository.findByUserId(userId).orElseThrow(NotFoundException::new)
+        return userSettingsRepository.findByUserId(userId)
             .hasAvatarImage() ?
             uriBuilder.getProfileAvatarUrl(profileUrlContext) :
             uriBuilder.getProfileDefaultUserAvatarUrl();
