@@ -21,7 +21,6 @@ import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.domain.UserAvatar;
 import fi.helsinki.opintoni.domain.UserSettings;
 import fi.helsinki.opintoni.dto.UserSettingsDto;
-import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.repository.UserRepository;
 import fi.helsinki.opintoni.repository.UserSettingsRepository;
 import fi.helsinki.opintoni.service.converter.UserSettingsConverter;
@@ -70,15 +69,15 @@ public class UserSettingsService {
         return userSettingsConverter.toDto(userSettingsRepository.findByUserId(userId));
     }
 
-    public UserSettingsDto update(Long userSettingsId, UpdateUserSettingsRequest request) {
-        UserSettings userSettings = userSettingsRepository.findById(userSettingsId).orElseThrow(NotFoundException::new);
+    public UserSettingsDto update(Long userId, UpdateUserSettingsRequest request) {
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId);
         userSettings.showBanner = request.showBanner;
         userSettings.cookieConsent = request.cookieConsent;
         return userSettingsConverter.toDto(userSettingsRepository.save(userSettings));
     }
 
-    public void updateUserAvatar(Long userSettingsId, String imageBase64) {
-        UserSettings userSettings = userSettingsRepository.findById(userSettingsId).orElseThrow(NotFoundException::new);
+    public void updateUserAvatar(Long userId, String imageBase64) {
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId);
 
         if (userSettings.userAvatar == null) {
             userSettings.userAvatar = new UserAvatar();
@@ -112,8 +111,8 @@ public class UserSettingsService {
         }
     }
 
-    public void deleteUserAvatar(Long id) {
-        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(NotFoundException::new);
+    public void deleteUserAvatar(Long userId) {
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId);
 
         if (userSettings.userAvatar == null) {
             return;
@@ -130,8 +129,8 @@ public class UserSettingsService {
             .orElseThrow(notFoundException("Avatar not found for user"));
     }
 
-    public UserSettingsDto updateBackground(Long id, UploadImageBase64Request request) {
-        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(NotFoundException::new);
+    public UserSettingsDto updateBackground(Long userId, UploadImageBase64Request request) {
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId);
         removeOldUploadedBackgroundFile(userSettings);
 
         byte[] bytes = imageService.createUserBackground(request.imageBase64);
@@ -144,8 +143,8 @@ public class UserSettingsService {
         return userSettingsConverter.toDto(userSettingsRepository.save(userSettings));
     }
 
-    public UserSettingsDto selectBackground(Long id, SelectBackgroundRequest request) {
-        UserSettings userSettings = userSettingsRepository.findById(id).orElseThrow(NotFoundException::new);
+    public UserSettingsDto selectBackground(Long userId, SelectBackgroundRequest request) {
+        UserSettings userSettings = userSettingsRepository.findByUserId(userId);
         removeOldUploadedBackgroundFile(userSettings);
 
         userSettings.backgroundFilename = request.filename;

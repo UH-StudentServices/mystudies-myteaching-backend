@@ -38,6 +38,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Transactional
@@ -142,10 +143,10 @@ public class InactiveUserCleaner {
     }
 
     private void deleteUserSettings(Long userId) {
-        UserSettings userSettings = userSettingsRepository.findByUserId(userId);
+        Optional<UserSettings> userSettings = userSettingsRepository.findFirstByUserId(userId);
 
-        if (userSettings != null) {
-            deleteCustomBackgroundImage(userSettings);
+        if (!userSettings.isEmpty()) {
+            deleteCustomBackgroundImage(userSettings.get());
             userSettingsRepository.deleteByUserId(userId);
         }
     }

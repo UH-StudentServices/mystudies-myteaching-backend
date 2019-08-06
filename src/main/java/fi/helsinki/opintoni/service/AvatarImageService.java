@@ -53,7 +53,8 @@ public class AvatarImageService {
     }
 
     public String getProfileAvatarImageUrl(Long userId, ProfileService.ProfileUrlContext profileUrlContext) {
-        return userSettingsRepository.findByUserId(userId).hasAvatarImage() ?
+        return userSettingsRepository.findByUserId(userId)
+            .hasAvatarImage() ?
             uriBuilder.getProfileAvatarUrl(profileUrlContext) :
             uriBuilder.getProfileDefaultUserAvatarUrl();
     }
