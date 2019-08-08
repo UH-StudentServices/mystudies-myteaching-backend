@@ -22,7 +22,9 @@ RUN apt-get update \
   && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.gradle \
   && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.m2 \
   && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.sonar
-
+RUN ln -fs /usr/share/zoneinfo/Europe/Helsinki /etc/localtime
+ENV DEBIAN_FRONTEND="noninteractive"
+RUN dpkg-reconfigure --frontend noninteractive tzdata
 ENV PATH="/opt/gradle/gradle-5.1.1/bin:${PATH}"
 
 USER $USER_NAME
