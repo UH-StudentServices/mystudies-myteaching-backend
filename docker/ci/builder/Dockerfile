@@ -23,6 +23,7 @@ RUN apt-get update \
   && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.m2 \
   && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.sonar
 RUN locale -a
+RUN ls -la /etc/localtime
 RUN timedatectl list-timezones
 ENV LANG="LANG=fi_FI.UTF-8"
 ENV PATH="/opt/gradle/gradle-5.1.1/bin:${PATH}"
