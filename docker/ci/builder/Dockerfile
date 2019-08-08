@@ -25,7 +25,6 @@ RUN apt-get update \
 RUN ls -la /etc/localtime
 RUN ln -fs /usr/share/zoneinfo/Europe/Helsinki /etc/localtime
 ENV DEBIAN_FRONTEND="noninteractive"
-RUN apt-get install -y tzdata
 RUN dpkg-reconfigure --frontend noninteractive tzdata
 ENV PATH="/opt/gradle/gradle-5.1.1/bin:${PATH}"
 
