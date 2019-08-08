@@ -6,7 +6,7 @@ ARG GROUP_NAME
 ARG GROUP_ID
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends bash ca-certificates wget git unzip locales-all openssh-client \
+  && apt-get install -y --no-install-recommends bash ca-certificates wget git unzip openssh-client \
   && rm -rf /var/lib/apt/lists/* \
   && update-ca-certificates \
   && wget https://services.gradle.org/distributions/gradle-5.1.1-bin.zip \
@@ -22,13 +22,11 @@ RUN apt-get update \
   && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.gradle \
   && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.m2 \
   && chown -R $USER_NAME:$GROUP_NAME /home/$USER_NAME/.sonar
-RUN locale -a
 RUN ls -la /etc/localtime
 RUN ln -fs /usr/share/zoneinfo/Europe/Helsinki /etc/localtime
 ENV DEBIAN_FRONTEND="noninteractive"
 RUN apt-get install -y tzdata
 RUN dpkg-reconfigure --frontend noninteractive tzdata
-ENV LANG="LANG=fi_FI.UTF-8"
 ENV PATH="/opt/gradle/gradle-5.1.1/bin:${PATH}"
 
 USER $USER_NAME
