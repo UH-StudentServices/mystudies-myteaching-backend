@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.service.converter.profile;
 
 import fi.helsinki.opintoni.dto.SessionDto;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiIntegrationException;
-import fi.helsinki.opintoni.resolver.PilotDegreeProgrammeResolver;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.service.AvatarImageService;
 import fi.helsinki.opintoni.service.OodiUserService;
@@ -39,19 +38,16 @@ public class SessionConverter {
     private final OodiUserService oodiUserService;
     private final FacultyConverter facultyConverter;
     private final AvatarImageService avatarImageService;
-    private final PilotDegreeProgrammeResolver pilotDegreeProgrammeResolver;
 
     @Autowired
     public SessionConverter(ProfileService profileService,
                             OodiUserService oodiUserService,
                             FacultyConverter facultyConverter,
-                            AvatarImageService avatarImageService,
-                            PilotDegreeProgrammeResolver pilotDegreeProgrammeResolver) {
+                            AvatarImageService avatarImageService) {
         this.profileService = profileService;
         this.oodiUserService = oodiUserService;
         this.facultyConverter = facultyConverter;
         this.avatarImageService = avatarImageService;
-        this.pilotDegreeProgrammeResolver = pilotDegreeProgrammeResolver;
     }
 
     public SessionDto toDto(AppUser appUser, Long userId) {
@@ -66,8 +62,6 @@ public class SessionConverter {
         try {
             sessionDto.openUniversity = oodiUserService.isOpenUniversityUser(appUser);
             sessionDto.faculty = facultyConverter.getFacultyDto(appUser);
-            appUser.getStudentNumber().ifPresent(studentNumber ->
-                sessionDto.pilotDegreeProgramme = pilotDegreeProgrammeResolver.isInPilotDegreeProgramme(studentNumber));
         } catch (OodiIntegrationException e) {
             sessionDto.openUniversity = false;
         }
