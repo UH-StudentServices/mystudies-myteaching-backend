@@ -15,15 +15,11 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.service.converter.profile;
+package fi.helsinki.opintoni.service.converter;
 
 import fi.helsinki.opintoni.dto.SessionDto;
-import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiIntegrationException;
-import fi.helsinki.opintoni.resolver.PilotDegreeProgrammeResolver;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.service.AvatarImageService;
-import fi.helsinki.opintoni.service.OodiUserService;
-import fi.helsinki.opintoni.service.converter.FacultyConverter;
 import fi.helsinki.opintoni.service.profile.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,22 +32,13 @@ import java.util.stream.Collectors;
 public class SessionConverter {
 
     private final ProfileService profileService;
-    private final OodiUserService oodiUserService;
-    private final FacultyConverter facultyConverter;
     private final AvatarImageService avatarImageService;
-    private final PilotDegreeProgrammeResolver pilotDegreeProgrammeResolver;
 
     @Autowired
     public SessionConverter(ProfileService profileService,
-                            OodiUserService oodiUserService,
-                            FacultyConverter facultyConverter,
-                            AvatarImageService avatarImageService,
-                            PilotDegreeProgrammeResolver pilotDegreeProgrammeResolver) {
+                            AvatarImageService avatarImageService) {
         this.profileService = profileService;
-        this.oodiUserService = oodiUserService;
-        this.facultyConverter = facultyConverter;
         this.avatarImageService = avatarImageService;
-        this.pilotDegreeProgrammeResolver = pilotDegreeProgrammeResolver;
     }
 
     public SessionDto toDto(AppUser appUser, Long userId) {
@@ -62,15 +49,6 @@ public class SessionConverter {
         sessionDto.avatarUrl = avatarImageService.getAvatarImageUrl(userId);
         sessionDto.profilePathsByRoleAndLang = profileService.getUserProfilePathsByRoleAndLang(userId);
         sessionDto.roles = convertAuthoritiesToText(appUser);
-
-        try {
-            sessionDto.openUniversity = oodiUserService.isOpenUniversityUser(appUser);
-            sessionDto.faculty = facultyConverter.getFacultyDto(appUser);
-            appUser.getStudentNumber().ifPresent(studentNumber ->
-                sessionDto.pilotDegreeProgramme = pilotDegreeProgrammeResolver.isInPilotDegreeProgramme(studentNumber));
-        } catch (OodiIntegrationException e) {
-            sessionDto.openUniversity = false;
-        }
 
         return sessionDto;
     }

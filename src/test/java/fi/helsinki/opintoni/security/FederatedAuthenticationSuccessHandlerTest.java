@@ -21,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.service.TimeService;
 import fi.helsinki.opintoni.service.UserService;
-import fi.helsinki.opintoni.service.profile.SessionService;
+import fi.helsinki.opintoni.service.SessionService;
 import fi.helsinki.opintoni.util.AuditLogger;
 import org.junit.Test;
 import org.junit.runner.RunWith;

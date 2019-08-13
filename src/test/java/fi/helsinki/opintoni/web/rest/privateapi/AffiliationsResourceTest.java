@@ -25,39 +25,34 @@ import org.springframework.http.MediaType;
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class SessionResourceTest extends SpringTest {
-
+public class AffiliationsResourceTest extends SpringTest {
     @Test
-    public void getCurrentSessionReturnsCorrectResponse() throws Exception {
-        mockMvc.perform(get("/api/private/v1/session").with(securityContext(studentSecurityContext()))
+    public void getAffiliationsForStudentReturnsCorrectResponse() throws Exception {
+        defaultStudentRequestChain().enrollments().studyRights();
+
+        mockMvc.perform(get("/api/private/v1/affiliations").with(securityContext(studentSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.username").value("opiskelija@helsinki.fi"))
-            .andExpect(jsonPath("$.email").value("opiskelija@mail.helsinki.fi"))
-            .andExpect(jsonPath("$.name").value("Olli Opiskelija"))
-            .andExpect(jsonPath("$.roles", hasItem("STUDENT")))
-            .andExpect(jsonPath("$.profilePathsByRoleAndLang.student.en").value(contains("/en/olli-opiskelija")))
-            .andExpect(jsonPath("$.profilePathsByRoleAndLang.student.fi").value(contains("/fi/olli-opiskelija")));
+            .andExpect(jsonPath("$.openUniversity").value(false))
+            .andExpect(jsonPath("$.faculty.code").value("H70"));
     }
 
     @Test
-    public void getCurrentSessionForTeacherReturnsCorrectResponse() throws Exception {
-        mockMvc.perform(get("/api/private/v1/session").with(securityContext(teacherSecurityContext()))
+    public void getAffiliationsForTeacherReturnsCorrectResponse() throws Exception {
+        defaultTeacherRequestChain().courses("teachercoursesopenuniversity.json");
+
+        mockMvc.perform(get("/api/private/v1/affiliations").with(securityContext(teacherSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.username").value("opettaja@helsinki.fi"))
-            .andExpect(jsonPath("$.email").value("opettaja@mail.helsinki.fi"))
-            .andExpect(jsonPath("$.name").value("Olli Opettaja"))
-            .andExpect(jsonPath("$.roles", hasItem("TEACHER")));
+            .andExpect(jsonPath("$.openUniversity").value(true))
+            .andExpect(jsonPath("$.faculty.code").value("A93000"));
     }
 
 }

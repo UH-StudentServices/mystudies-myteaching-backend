@@ -18,10 +18,9 @@
 package fi.helsinki.opintoni.web.rest.privateapi;
 
 import com.codahale.metrics.annotation.Timed;
-import fi.helsinki.opintoni.dto.SessionDto;
-import fi.helsinki.opintoni.service.SessionService;
+import fi.helsinki.opintoni.dto.AffiliationsDto;
+import fi.helsinki.opintoni.service.AffiliationsService;
 import fi.helsinki.opintoni.web.WebConstants;
-import fi.helsinki.opintoni.web.arguments.UserId;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,25 +29,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * REST controller for managing the current user's account.
- */
 @RestController
 @RequestMapping(RestConstants.PRIVATE_API_V1)
-public class SessionResource extends AbstractResource {
+public class AffiliationsResource extends AbstractResource {
 
-    private final SessionService sessionService;
+    private final AffiliationsService affiliationsService;
 
     @Autowired
-    public SessionResource(SessionService sessionService) {
-        this.sessionService = sessionService;
+    public AffiliationsResource(AffiliationsService affiliationsService) {
+        this.affiliationsService = affiliationsService;
     }
 
-    @RequestMapping(value = "/session",
-            method = RequestMethod.GET,
-            produces = WebConstants.APPLICATION_JSON_UTF8)
+    @RequestMapping(value = "/affiliations",
+        method = RequestMethod.GET,
+        produces = WebConstants.APPLICATION_JSON_UTF8)
     @Timed
-    public ResponseEntity<SessionDto> getSession(@UserId Long userId) {
-        return response(() -> sessionService.getCurrentSession(userId));
+    public ResponseEntity<AffiliationsDto> getAffiliations() {
+        return response(affiliationsService.getAffiliations());
     }
 }
+

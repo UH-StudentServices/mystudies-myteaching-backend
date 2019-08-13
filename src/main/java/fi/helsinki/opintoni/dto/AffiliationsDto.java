@@ -15,25 +15,9 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.service.pilotdegreeprogramme;
+package fi.helsinki.opintoni.dto;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
-
-@Component
-@ConfigurationProperties
-public class PilotDegreeProgrammeProperties {
-
-    private List<String> pilotDegreeProgrammes = new ArrayList<>();
-
-    public List<String> getPilotDegreeProgrammes() {
-        return pilotDegreeProgrammes;
-    }
-
-    public void setPilotDegreeProgrammes(List<String> pilotDegreeProgrammes) {
-        this.pilotDegreeProgrammes = pilotDegreeProgrammes;
-    }
+public class AffiliationsDto {
+    public FacultyDto faculty;
+    public boolean openUniversity;
 }

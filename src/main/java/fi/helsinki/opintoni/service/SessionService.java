@@ -15,11 +15,11 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.service.profile;
+package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.dto.SessionDto;
 import fi.helsinki.opintoni.security.SecurityUtils;
-import fi.helsinki.opintoni.service.converter.profile.SessionConverter;
+import fi.helsinki.opintoni.service.converter.SessionConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
