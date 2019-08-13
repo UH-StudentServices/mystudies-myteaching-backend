@@ -31,7 +31,6 @@ public class FacultyConverter {
     public static final String OPEN_UNIVERSITY_FACULTY_CODE = "A93000";
 
     private final OodiUserService oodiUserService;
-    private final AppConfiguration appConfiguration;
     private final UserFacultyResolver userFacultyResolver;
 
     @Autowired
@@ -40,7 +39,6 @@ public class FacultyConverter {
                             UserFacultyResolver
                                 userFacultyResolver) {
         this.oodiUserService = oodiUserService;
-        this.appConfiguration = appConfiguration;
         this.userFacultyResolver = userFacultyResolver;
     }
 
