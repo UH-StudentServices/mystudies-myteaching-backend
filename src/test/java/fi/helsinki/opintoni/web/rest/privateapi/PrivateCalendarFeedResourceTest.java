@@ -20,10 +20,12 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 import fi.helsinki.opintoni.SpringTest;
 import org.junit.Test;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
+import static org.hamcrest.core.IsNot.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,6 +34,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PrivateCalendarFeedResourceTest extends SpringTest {
 
     private static final String CALENDAR_API_URL = "/api/private/v1/calendar";
+
+    private static final String EXISTING_STUDENT_FEED_URL = "/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8";
+
+    private ResultActions getStudentCalendarFeed() throws Exception {
+        return mockMvc.perform(get(CALENDAR_API_URL).with(securityContext(studentSecurityContext()))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void thatNonExistingCalendarFeedReturns404() throws Exception {
+        mockMvc.perform(get(CALENDAR_API_URL).with(securityContext(teacherSecurityContext()))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound());
+    }
 
     @Test
     public void thatCalendarFeedIsCreated() throws Exception {
@@ -43,10 +60,19 @@ public class PrivateCalendarFeedResourceTest extends SpringTest {
 
     @Test
     public void thatCalendarFeedIsReturned() throws Exception {
-        mockMvc.perform(get(CALENDAR_API_URL).with(securityContext(studentSecurityContext()))
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
+        getStudentCalendarFeed()
             .andExpect(jsonPath("$.feedUrl")
-                .value("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8"));
+                .value(EXISTING_STUDENT_FEED_URL));
+    }
+
+    @Test
+    public void thatCalendarFeedIsUpdated() throws Exception {
+        mockMvc.perform(post(CALENDAR_API_URL).with(securityContext(studentSecurityContext()))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
+
+        getStudentCalendarFeed()
+            .andExpect(jsonPath("$.feedUrl").exists())
+            .andExpect(jsonPath("$.feedUrl", not(EXISTING_STUDENT_FEED_URL)));
     }
 }

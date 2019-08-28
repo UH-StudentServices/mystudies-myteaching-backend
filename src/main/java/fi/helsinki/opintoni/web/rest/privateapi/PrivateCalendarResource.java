@@ -48,7 +48,7 @@ public class PrivateCalendarResource extends AbstractResource {
 
     @RequestMapping(method = RequestMethod.POST)
     @Timed
-    public ResponseEntity<CalendarFeedDto> createCalendarFeed(@UserId Long userId) throws Exception {
-        return response(calendarService.createCalendarFeed(userId));
+    public ResponseEntity<CalendarFeedDto> createOrUpdateCalendarFeed(@UserId Long userId) throws Exception {
+        return response(calendarService.createOrUpdateCalendarFeed(userId));
     }
 }

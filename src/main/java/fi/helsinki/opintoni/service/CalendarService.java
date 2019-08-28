@@ -60,8 +60,8 @@ public class CalendarService {
         return calendarTransactionalService.getCalendarFeed(userId);
     }
 
-    public CalendarFeedDto createCalendarFeed(Long userId) {
-        return calendarTransactionalService.createCalendarFeed(userId);
+    public CalendarFeedDto createOrUpdateCalendarFeed(Long userId) {
+        return calendarTransactionalService.createOrUpdateCalendarFeed(userId);
     }
 
     public String showCalendarFeed(String feedId, Locale locale) {
