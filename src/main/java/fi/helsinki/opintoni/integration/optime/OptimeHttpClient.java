@@ -17,6 +17,10 @@
 
 package fi.helsinki.opintoni.integration.optime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StopWatch;
+
 import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -25,9 +29,11 @@ import java.net.http.HttpResponse;
 
 public class OptimeHttpClient implements OptimeClient {
 
+    private static final Logger logger = LoggerFactory.getLogger(OptimeHttpClient.class);
+
     @Override
     public InputStream getICalendarContent(String feedUrl) {
-
+        StopWatch stopWatch = new StopWatch();
         HttpClient httpClient = HttpClient.newBuilder()
             .build();
 
@@ -36,9 +42,13 @@ public class OptimeHttpClient implements OptimeClient {
             .build();
         HttpResponse<InputStream> response = null;
         try {
+            stopWatch.start();
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofInputStream());
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            stopWatch.stop();
+            logger.info("Response for {} took {} seconds", request.uri(), stopWatch.getTotalTimeSeconds());
         }
 
         return response.body();

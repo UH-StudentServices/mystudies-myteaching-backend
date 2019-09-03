@@ -18,14 +18,35 @@
 package fi.helsinki.opintoni.dto;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang.StringUtils;
 
+import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class OptimeExtrasDto {
 
     public String otherNotes;
 
     public String staffNotes;
+
+    public static OptimeExtrasDto parse(String icalEventDescription) {
+        String[] descriptionParts = icalEventDescription.split("\\n\\n", -1);
+        if (descriptionParts.length < 2) {
+            return null;
+        }
+
+        String[] extraParts = descriptionParts[1].split("\\n", -1);
+        if (extraParts.length > 0) {
+            String extraInfo = StreamSupport
+                .stream(Arrays.spliterator(extraParts), false)
+                .filter(StringUtils::isNotBlank)
+                .collect(Collectors.joining(", "));
+            return extraInfo.isBlank() ? null : new OptimeExtrasDto(extraInfo, null);
+        }
+
+        return null;
+    }
 
     public OptimeExtrasDto(String otherNotes, String staffNotes) {
         this.otherNotes = otherNotes;
@@ -42,7 +63,7 @@ public class OptimeExtrasDto {
     public String toString() {
         return Lists.newArrayList(staffNotes, otherNotes)
             .stream()
-            .filter(s -> s != null && !s.isEmpty())
+            .filter(StringUtils::isNotBlank)
             .collect(Collectors.joining(", "));
     }
 }

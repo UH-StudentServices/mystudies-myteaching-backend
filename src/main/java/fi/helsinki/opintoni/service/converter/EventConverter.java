@@ -129,7 +129,7 @@ public class EventConverter {
             .setStartDate(toLocalDateTime(v.getStartDate().getDate()))
             .setEndDate(toLocalDateTime(v.getEndDate().getDate()))
             .setTitle(v.getSummary().getValue())
-            .setOptimeExtras(v.getDescription() != null ? new OptimeExtrasDto(v.getDescription().getValue()) : null)
+            .setOptimeExtras(v.getDescription() != null ? OptimeExtrasDto.parse(v.getDescription().getValue()) : null)
             .setLocations(getLocationsFromString(v.getLocation().getValue()))
             .setUid(v.getUid().getValue())
             .createEventDto();
