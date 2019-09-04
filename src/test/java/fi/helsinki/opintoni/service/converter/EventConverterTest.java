@@ -22,6 +22,16 @@ import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.sampledata.SampleDataFiles;
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.model.Calendar;
+import net.fortuna.ical4j.model.DateTime;
+import net.fortuna.ical4j.model.Property;
+import net.fortuna.ical4j.model.PropertyList;
+import net.fortuna.ical4j.model.component.VEvent;
+import net.fortuna.ical4j.model.property.Description;
+import net.fortuna.ical4j.model.property.DtEnd;
+import net.fortuna.ical4j.model.property.DtStart;
+import net.fortuna.ical4j.model.property.Location;
+import net.fortuna.ical4j.model.property.Summary;
+import net.fortuna.ical4j.model.property.Uid;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,5 +65,21 @@ public class EventConverterTest extends SpringTest {
         String converted = eventConverter.toICalendar(eventDtos);
 
         assertThat(converted).isEqualTo(calendar.toString());
+    }
+
+    @Test
+    public void thatParsingOptimeEventDescriptionToOptimeExtraInfoWorks() {
+        PropertyList<Property> eventProperties = new PropertyList<>();
+        eventProperties.add(new Description("testing optime extras parsing\n\n*extra info\n*more info\n*a bit more"));
+        eventProperties.add(new DtStart(new DateTime()));
+        eventProperties.add(new DtEnd(new DateTime()));
+        eventProperties.add(new Summary(""));
+        eventProperties.add(new Location(""));
+        eventProperties.add(new Uid(""));
+        VEvent event = new VEvent(eventProperties);
+
+        EventDto eventDto = eventConverter.toDto(event);
+
+        assertThat(eventDto.optimeExtras.toString()).isEqualTo("*extra info, *more info, *a bit more");
     }
 }
