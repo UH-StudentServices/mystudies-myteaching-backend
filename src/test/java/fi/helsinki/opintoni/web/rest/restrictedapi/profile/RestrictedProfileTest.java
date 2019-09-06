@@ -72,10 +72,6 @@ public abstract class RestrictedProfileTest extends AbstractProfileResourceTest 
         saveProfileWithVisibility(profileId, ProfileVisibility.RESTRICTED);
     }
 
-    private void saveProfileAsPrivate(long profileId) {
-        saveProfileWithVisibility(profileId, ProfileVisibility.PRIVATE);
-    }
-
     protected void saveProfileWithVisibility(long profileId, ProfileVisibility visibility) {
         Profile profile = profileRepository.findById(profileId).get();
         profile.visibility = visibility;

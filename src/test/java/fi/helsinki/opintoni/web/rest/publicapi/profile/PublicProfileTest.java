@@ -36,7 +36,6 @@ import fi.helsinki.opintoni.web.rest.privateapi.profile.AbstractProfileResourceT
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.EntityManager;
 import java.util.Arrays;
 import java.util.List;
 

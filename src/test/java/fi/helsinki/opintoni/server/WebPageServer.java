@@ -43,10 +43,6 @@ public class WebPageServer extends AbstractRestServiceServer {
             .andRespond(withSuccess(SampleDataFiles.toText("pagemetadata/document.html"), MediaType.TEXT_HTML));
     }
 
-    public void expectRssFeedRequest(String feedUrl) {
-        expectRssFeedRequest(feedUrl, "");
-    }
-
     public void expectRssFeedRequest(String firstFeedUrl, String secondFeedUrl) {
         server.expect(requestTo(RSSFeedSampleData.WEBPAGE_CONTAINING_RSS_FEED_URL))
             .andExpect(method(HttpMethod.GET))

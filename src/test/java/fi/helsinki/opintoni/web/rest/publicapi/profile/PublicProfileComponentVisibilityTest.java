@@ -17,18 +17,13 @@
 
 package fi.helsinki.opintoni.web.rest.publicapi.profile;
 
-import fi.helsinki.opintoni.repository.profile.ProfileRepository;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class PublicProfileComponentVisibilityTest extends PublicProfileTest {
-
-    @Autowired
-    private ProfileRepository profileRepository;
 
     @Before
     public void init() {

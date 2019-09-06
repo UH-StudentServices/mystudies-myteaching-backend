@@ -69,10 +69,6 @@ public class CoursePageServer extends AbstractRestServiceServer {
                 .andRespond(withStatus(responseStatus));
     }
 
-    public void expectCourseImplementationChangesRequest(LocalDateTime sinceDate) {
-        expectCourseImplementationChangesRequest(sinceDate, "coursepage/course_implementation_changes.json");
-    }
-
     private void expectCourseImplementationChangesRequest(LocalDateTime sinceDate, String responseFile) {
         server.expect(requestTo(courseImplementationChangesUrl(sinceDate)))
             .andExpect(method(HttpMethod.GET))
