@@ -36,6 +36,7 @@ import fi.helsinki.opintoni.web.rest.privateapi.profile.AbstractProfileResourceT
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.persistence.EntityManager;
 import java.util.Arrays;
 import java.util.List;
 
@@ -77,6 +78,7 @@ public abstract class PublicProfileTest extends AbstractProfileResourceTest {
 
     public void setPrivateVisibilityForEveryStudentProfileComponent() {
         componentVisibilityRepository.deleteAll();
+        componentVisibilityRepository.flush();
 
         Arrays.asList(ProfileComponent.values()).forEach(component -> {
             ComponentVisibility componentVisibility = new ComponentVisibility();
