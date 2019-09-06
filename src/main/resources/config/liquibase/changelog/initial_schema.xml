@@ -2127,4 +2127,16 @@
             </where>
         </delete>
     </changeSet>
+
+    <changeSet id="OO-1406 Add unique constraint to component visibility to prevent duplicate values" author="Juuso Lehtinen">
+        <sql>
+            CREATE UNIQUE INDEX unique_component_visibility_instance_name_not_null
+            ON component_visibility (profile_id, component, instance_name)
+            WHERE instance_name IS NOT null;
+
+            CREATE UNIQUE INDEX unique_component_visibility_instance_name_null
+            ON component_visibility (profile_id, component)
+            WHERE instance_name IS null;
+        </sql>
+    </changeSet>
 </databaseChangeLog>
