@@ -57,6 +57,7 @@ public abstract class RestrictedProfileTest extends AbstractProfileResourceTest 
 
     public void setPrivateVisibilitiesForEveryComponent() {
         componentVisibilityRepository.deleteAll();
+        componentVisibilityRepository.flush();
 
         Arrays.asList(ProfileComponent.values()).forEach(component -> {
             ComponentVisibility componentVisibility = new ComponentVisibility();
@@ -69,10 +70,6 @@ public abstract class RestrictedProfileTest extends AbstractProfileResourceTest 
 
     private void saveProfileAsRestricted(long profileId) {
         saveProfileWithVisibility(profileId, ProfileVisibility.RESTRICTED);
-    }
-
-    private void saveProfileAsPrivate(long profileId) {
-        saveProfileWithVisibility(profileId, ProfileVisibility.PRIVATE);
     }
 
     protected void saveProfileWithVisibility(long profileId, ProfileVisibility visibility) {

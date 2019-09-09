@@ -19,9 +19,7 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.FavoriteDto;
-import fi.helsinki.opintoni.dto.LinkFavoriteDto;
 import fi.helsinki.opintoni.dto.RssFavoriteDto;
-import fi.helsinki.opintoni.dto.TwitterFavoriteDto;
 import fi.helsinki.opintoni.dto.UnisportFavoriteDto;
 import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +33,6 @@ abstract class AbstractFavoriteServiceTest extends SpringTest {
     @Autowired
     protected FavoriteService favoriteService;
 
-    protected final void assertTwitterFavorite(FavoriteDto dto, Long id, String feedType, String value) {
-        assertFavorite(dto, id, "TWITTER");
-        assertThat(dto, instanceOf(TwitterFavoriteDto.class));
-
-        TwitterFavoriteDto twitterFavoriteDto = (TwitterFavoriteDto) dto;
-        assertThat(twitterFavoriteDto.feedType).isEqualTo(feedType);
-        assertThat(twitterFavoriteDto.value).isEqualTo(value);
-    }
-
     protected final void assertRssFavorite(FavoriteDto dto, Long id, String url) {
         assertFavorite(dto, id, "RSS");
         assertThat(dto, instanceOf(RssFavoriteDto.class));
@@ -55,15 +44,6 @@ abstract class AbstractFavoriteServiceTest extends SpringTest {
     protected final void assertUnisportFavorite(FavoriteDto dto, Long id) {
         assertFavorite(dto, id, "UNISPORT");
         assertThat(dto, instanceOf(UnisportFavoriteDto.class));
-    }
-
-    protected final void assertLinkFavorite(FavoriteDto dto, Long id, String url, String title) {
-        assertFavorite(dto, id, "LINK");
-        assertThat(dto, instanceOf(LinkFavoriteDto.class));
-
-        LinkFavoriteDto linkFavoriteDto = (LinkFavoriteDto) dto;
-        assertThat(linkFavoriteDto.url).isEqualTo(url);
-        assertThat(linkFavoriteDto.title).isEqualTo(title);
     }
 
     private void assertFavorite(FavoriteDto dto, Long id, String type) {

@@ -157,10 +157,6 @@ public class OodiServer extends AbstractRestServiceServer {
             );
     }
 
-    private String buildingsUrl() {
-        return oodiBaseUrl + "/codes/buildings";
-    }
-
     private String studyRightsUrl(String studentNumber) {
         return oodiBaseUrl + "/students/" + studentNumber + "/studyrights";
     }
@@ -187,10 +183,6 @@ public class OodiServer extends AbstractRestServiceServer {
 
     private String teacherEventsUrl(String teacherNumber) {
         return oodiBaseUrl + "/teachers/" + teacherNumber + "/events";
-    }
-
-    private String courseUnitRealisationUrl(String realisationId) {
-        return oodiBaseUrl + "/courseunitrealisations/" + realisationId;
     }
 
     private String courseUnitRealisationTeachersUrl(String realisationId) {
