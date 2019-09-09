@@ -2144,11 +2144,19 @@
 
             CREATE UNIQUE INDEX unique_component_visibility_instance_name_not_null
             ON component_visibility (profile_id, component, instance_name)
-            WHERE instance_name IS NOT null;
+            WHERE instance_name IS NOT null AND teacher_profile_section IS NULL;
 
             CREATE UNIQUE INDEX unique_component_visibility_instance_name_null
             ON component_visibility (profile_id, component)
-            WHERE instance_name IS null;
+            WHERE instance_name IS null AND teacher_profile_section IS NULL;
+
+            CREATE UNIQUE INDEX unique_component_visibility_instance_name_not_null_teacher_profile_not_null
+            ON component_visibility (profile_id, component, instance_name, teacher_profile_section)
+            WHERE instance_name IS NOT null AND teacher_profile_section IS NOT NULL;
+
+            CREATE UNIQUE INDEX unique_component_visibility_instance_name_null_teacher_profile_not_null
+            ON component_visibility (profile_id, component)
+            WHERE instance_name IS null AND teacher_profile_section IS NOT NULL;
         </sql>
     </changeSet>
 </databaseChangeLog>
