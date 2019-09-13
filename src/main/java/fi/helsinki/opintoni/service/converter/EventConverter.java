@@ -44,16 +44,19 @@ import net.fortuna.ical4j.model.property.Location;
 import net.fortuna.ical4j.model.property.Summary;
 import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static fi.helsinki.opintoni.dto.LocationDto.getLocationsFromString;
 import static fi.helsinki.opintoni.service.TimeService.HELSINKI_ZONE_ID;
@@ -124,12 +127,13 @@ public class EventConverter {
     }
 
     public EventDto toDto(VEvent v) {
+        String eventDescription = v.getDescription() != null ? v.getDescription().getValue() : null;
         return new EventDtoBuilder()
             .setSource(EventDto.Source.OPTIME)
             .setStartDate(toLocalDateTime(v.getStartDate().getDate()))
             .setEndDate(toLocalDateTime(v.getEndDate().getDate()))
-            .setTitle(v.getSummary().getValue())
-            .setOptimeExtras(v.getDescription() != null ? OptimeExtrasDto.parse(v.getDescription().getValue()) : null)
+            .setTitle(optimeEventTitleFromSummaryAndDescription(v.getSummary().getValue(), eventDescription))
+            .setOptimeExtras(eventDescription != null ? OptimeExtrasDto.parse(eventDescription) : null)
             .setLocations(getLocationsFromString(v.getLocation().getValue()))
             .setUid(v.getUid().getValue())
             .createEventDto();
@@ -211,4 +215,22 @@ public class EventConverter {
         return LocalDateTime.ofInstant(dt.toInstant(), HELSINKI_ZONE_ID);
     }
 
+    private String optimeEventTitleFromSummaryAndDescription(String summary, String description) {
+        String descriptionTitle = parseOptimeEventTitleFromDescription(description);
+        return descriptionTitle.isBlank() ? summary : String.format("%s, %s", summary, descriptionTitle);
+    }
+
+    private String parseOptimeEventTitleFromDescription(String description) {
+        if (StringUtils.isBlank(description)) {
+            return "";
+        }
+
+        String[] descriptionParts = description.split("\\n", -1);
+        return StreamSupport.stream(Arrays.spliterator(descriptionParts), false)
+            .filter(part -> part.matches("^\\s*[Tt]itle:.*$"))
+            .findFirst()
+            .orElse("")
+            .replaceFirst("[Tt]itle:", "")
+            .trim();
+    }
 }
