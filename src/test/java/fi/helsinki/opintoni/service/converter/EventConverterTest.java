@@ -82,4 +82,51 @@ public class EventConverterTest extends SpringTest {
 
         assertThat(eventDto.optimeExtras.toString()).isEqualTo("*extra info, *more info, *a bit more");
     }
+
+    @Test
+    public void thatParsingOptimeEventTitleFromSummaryAndDescriptionWorks() {
+        PropertyList<Property> eventProperties = new PropertyList<>();
+        eventProperties.add(new Summary("Event title"));
+        eventProperties.add(new Description("testing optime title parsing\n  Title:  Extra event title  \nsome fluff"));
+        eventProperties.add(new DtStart(new DateTime()));
+        eventProperties.add(new DtEnd(new DateTime()));
+        eventProperties.add(new Location(""));
+        eventProperties.add(new Uid(""));
+        VEvent event = new VEvent(eventProperties);
+
+        EventDto eventDto = eventConverter.toDto(event);
+
+        assertThat(eventDto.title).isEqualTo("Event title, Extra event title");
+    }
+
+    @Test
+    public void thatParsingOptimeEventTitleFromSummaryAndDescriptionWithoutTitlePartWorks() {
+        PropertyList<Property> eventProperties = new PropertyList<>();
+        eventProperties.add(new Summary("Event title"));
+        eventProperties.add(new Description("testing optime title parsing\nnothing to see here\nsome fluff"));
+        eventProperties.add(new DtStart(new DateTime()));
+        eventProperties.add(new DtEnd(new DateTime()));
+        eventProperties.add(new Location(""));
+        eventProperties.add(new Uid(""));
+        VEvent event = new VEvent(eventProperties);
+
+        EventDto eventDto = eventConverter.toDto(event);
+
+        assertThat(eventDto.title).isEqualTo("Event title");
+    }
+
+    @Test
+    public void thatParsingOptimeEventTitleFromSummaryWithoutDescriptionWorks() {
+        PropertyList<Property> eventProperties = new PropertyList<>();
+        eventProperties.add(new Summary("Event title"));
+        eventProperties.add(new DtStart(new DateTime()));
+        eventProperties.add(new DtEnd(new DateTime()));
+        eventProperties.add(new Location(""));
+        eventProperties.add(new Uid(""));
+        VEvent event = new VEvent(eventProperties);
+
+        EventDto eventDto = eventConverter.toDto(event);
+
+        assertThat(eventDto.title).isEqualTo("Event title");
+    }
 }
