@@ -250,10 +250,10 @@ httpClient:
 cache:
     timeToLiveSeconds: 3600
     studentEvents:
-        timeToLiveSeconds: 3600
+        timeToLiveSeconds: 600
         maxEntriesLocalHeap: 600
     studentEnrollments:
-        timeToLiveSeconds: 1800
+        timeToLiveSeconds: 600
         maxEntriesLocalHeap: 500
     teacherEvents:
         timeToLiveSeconds: 3600
