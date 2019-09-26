@@ -23,7 +23,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty("coursePage.checkUpdates.interval.seconds")
+@ConditionalOnProperty("coursePage.updateIntervalInSeconds")
 public class CourseImplementationCacheUpdaterScheduler {
     private final CourseImplementationCacheUpdater courseImplementationCacheUpdater;
 
@@ -32,7 +32,7 @@ public class CourseImplementationCacheUpdaterScheduler {
         this.courseImplementationCacheUpdater = courseImplementationCacheUpdater;
     }
 
-    @Scheduled(fixedDelayString = "${coursePage.checkUpdates.interval.seconds}000")
+    @Scheduled(fixedDelayString = "${coursePage.updateIntervalInSeconds}000")
     public void getCourseImplementationChangesAndUpdateCache() {
         courseImplementationCacheUpdater.getCourseImplementationChangesAndUpdateCache();
     }

@@ -56,5 +56,4 @@ public class DateTimeUtilTest  {
         LocalDate d = LocalDate.of(2016, 7, 1);
         assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo(EXPECTED_DATE_STRING);
     }
-
 }
