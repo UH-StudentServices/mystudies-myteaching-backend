@@ -17,8 +17,11 @@
 
 package fi.helsinki.opintoni.util;
 
+import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import org.junit.Test;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,4 +60,20 @@ public class DateTimeUtilTest  {
         assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo(EXPECTED_DATE_STRING);
     }
 
+    @Test
+    public void forManuallyInspectingASerializedCoursePageCourseImplementationFromRedis()  {
+        FileInputStream fileInStream = null;
+        try {
+            // on the server see the password in /opt/opintoni/config/application.properties and:
+            // redis-cli --raw -h localhost -a 'password' get "coursePage::129620052_fi" > /tmp/file.bin
+            // then copy the file over to local disk /tmp
+            fileInStream = new FileInputStream("/tmp/file.bin");
+            ObjectInputStream ois = new ObjectInputStream(fileInStream);
+            CoursePageCourseImplementation myClass2 = (CoursePageCourseImplementation) ois.readObject();
+            // Put a breakpoint on the next line and debug this test.
+            ois.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
