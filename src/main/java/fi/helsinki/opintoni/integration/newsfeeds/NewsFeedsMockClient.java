@@ -35,9 +35,9 @@ public class NewsFeedsMockClient {
 
     protected Feed getFeedFromPath(String mockResourcePath) {
         SyndFeedInput feedInput = new SyndFeedInput();
-        try {
-            InputStream inputResource = new FileInputStream(mockResourcePath);
-            SyndFeed syndFeed = feedInput.build(new XmlReader(inputResource));
+        try (InputStream inputResource = new FileInputStream(mockResourcePath);
+             XmlReader resourceReader = new XmlReader(inputResource)) {
+            SyndFeed syndFeed = feedInput.build(resourceReader);
             return (Feed) syndFeed.createWireFeed();
         } catch (FeedException | IOException e) {
             log.error(e.getMessage());

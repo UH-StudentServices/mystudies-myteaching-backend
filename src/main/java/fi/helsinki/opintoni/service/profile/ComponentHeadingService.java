@@ -73,10 +73,8 @@ public class ComponentHeadingService {
     }
 
     public void delete(Long profileId, ProfileComponent component) {
-        componentHeadingRepository.findByProfileIdAndComponent(profileId, component)
-            .map(componentHeading -> {
-                componentHeadingRepository.delete(componentHeading);
-                return true;
-            });
+        componentHeadingRepository
+            .findByProfileIdAndComponent(profileId, component)
+            .ifPresent(componentHeadingRepository::delete);
     }
 }

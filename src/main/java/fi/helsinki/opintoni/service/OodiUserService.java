@@ -31,6 +31,7 @@ public class OodiUserService {
         this.oodiUserRoleService = oodiUserRoleService;
     }
 
+    @SuppressWarnings("squid:S3655") // User having either employee number and/or student number is guaranteed in appUser instance creation
     public boolean isOpenUniversityUser(AppUser appUser) {
         if (appUser.isTeacher()) {
             return oodiUserRoleService.isOpenUniversityTeacher(appUser.getEmployeeNumber().get());

@@ -66,6 +66,7 @@ public class UserFacultyResolver {
         return appConfiguration.get("userDefaults.defaultFacultyCode");
     }
 
+    @SuppressWarnings("squid:S3655") // Student user having a student number is guaranteed in appUser instance creation
     public String getFacultyCode(AppUser appUser) {
         return appUser.isTeacher()
             ? getTeacherFacultyCode(appUser)

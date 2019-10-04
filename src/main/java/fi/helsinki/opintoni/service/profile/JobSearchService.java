@@ -70,9 +70,8 @@ public class JobSearchService {
     }
 
     public void delete(Long profileId) {
-        jobSearchRepository.findByProfileId(profileId).map(jobSearch -> {
-            jobSearchRepository.deleteById(jobSearch.id);
-            return true;
-        });
+        jobSearchRepository
+            .findByProfileId(profileId)
+            .ifPresent(jobSearchRepository::delete);
     }
 }

@@ -48,17 +48,22 @@ public class OfficeHoursDto {
     @MaxYearFromNow
     public LocalDate expirationDate;
 
-    public OfficeHoursDto() {
-
+    private OfficeHoursDto() {
+        // keeps jackson happy and sonar from complaining about not initialized @NotNull annotated variables
+        this.name = "";
+        this.description = "";
+        this.expirationDate = LocalDate.now();
     }
 
-    public OfficeHoursDto(String name,
-                          String description,
-                          String additionalInfo,
-                          String location,
-                          List<DegreeProgrammeDto> degreeProgrammes,
-                          List<TeachingLanguageDto> languages,
-                          LocalDate expirationDate) {
+    OfficeHoursDto(Long id,
+                   String name,
+                   String description,
+                   String additionalInfo,
+                   String location,
+                   List<DegreeProgrammeDto> degreeProgrammes,
+                   List<TeachingLanguageDto> languages,
+                   LocalDate expirationDate) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.additionalInfo = additionalInfo;

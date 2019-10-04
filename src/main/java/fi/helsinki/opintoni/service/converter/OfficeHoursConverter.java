@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.service.converter;
 import fi.helsinki.opintoni.domain.OfficeHours;
 import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
+import fi.helsinki.opintoni.dto.OfficeHoursDtoBuilder;
 import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
@@ -28,24 +29,23 @@ import java.util.stream.Collectors;
 public class OfficeHoursConverter {
 
     public OfficeHoursDto toDto(OfficeHours officeHours) {
-        OfficeHoursDto officeHoursDto = new OfficeHoursDto();
+        OfficeHoursDtoBuilder officeHoursDtoBuilder = new OfficeHoursDtoBuilder();
         if (officeHours != null) {
-            officeHoursDto.id = officeHours.id;
-            officeHoursDto.description = officeHours.description;
-            officeHoursDto.additionalInfo = officeHours.additionalInfo;
-            officeHoursDto.location = officeHours.location;
-            officeHoursDto.name = officeHours.name;
-            officeHoursDto.expirationDate = officeHours.expirationDate;
-
-            officeHoursDto.degreeProgrammes = officeHours.degreeProgrammes.stream()
-                .map(degreeProgramme -> new DegreeProgrammeDto(degreeProgramme.degreeCode))
-                .collect(Collectors.toList());
-
-            officeHoursDto.languages = officeHours.teachingLanguages.stream()
-                .map(teachingLanguage -> teachingLanguage.language.toDto())
-                .collect(Collectors.toList());
+            officeHoursDtoBuilder
+                .setId(officeHours.id)
+                .setDescription(officeHours.description)
+                .setAdditionalInfo(officeHours.additionalInfo)
+                .setLocation(officeHours.location)
+                .setName(officeHours.name)
+                .setExpirationDate(officeHours.expirationDate)
+                .setDegreeProgrammes(officeHours.degreeProgrammes.stream()
+                    .map(degreeProgramme -> new DegreeProgrammeDto(degreeProgramme.degreeCode))
+                    .collect(Collectors.toList()))
+                .setLanguages(officeHours.teachingLanguages.stream()
+                    .map(teachingLanguage -> teachingLanguage.language.toDto())
+                    .collect(Collectors.toList()));
         }
 
-        return officeHoursDto;
+        return officeHoursDtoBuilder.createOfficeHoursDto();
     }
 }
