@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.integration.studyregistry;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.util.DateTimeUtil;
-import fi.helsinki.opintoni.web.TestConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
