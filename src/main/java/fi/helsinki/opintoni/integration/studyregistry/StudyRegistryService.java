@@ -69,10 +69,12 @@ public class StudyRegistryService {
         return getStudyRegistry(TEACHER_EVENTS).getTeacherEvents(teacherNumber);
     }
 
+    @Cacheable(value = CacheConstants.STUDY_ATTAINMENTS, cacheManager = "transientCacheManager")
     public List<StudyAttainment> getStudyAttainments(String personId) {
         return getStudyRegistry(STUDY_ATTAINMENTS).getStudyAttainments(personId);
     }
 
+    @Cacheable(value = CacheConstants.STUDY_ATTAINMENTS, cacheManager = "transientCacheManager")
     public List<StudyAttainment> getStudyAttainments(String personId, String studentNumber) {
         return getStudyRegistry(STUDY_ATTAINMENTS).getStudyAttainments(personId, studentNumber);
     }
@@ -82,6 +84,7 @@ public class StudyRegistryService {
         return getStudyRegistry(TEACHER_COURSES).getTeacherCourses(teacherNumber, sinceDateString);
     }
 
+    @Cacheable(value = CacheConstants.STUDY_RIGHTS, cacheManager = "transientCacheManager")
     public List<StudyRight> getStudentStudyRights(String studentNumber) {
         return getStudyRegistry(STUDY_RIGHTS).getStudentStudyRights(studentNumber);
     }

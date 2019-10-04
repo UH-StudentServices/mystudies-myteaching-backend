@@ -92,7 +92,6 @@ public class OodiRestClient implements OodiClient {
     }
 
     @Override
-    @Cacheable(value = CacheConstants.TEACHER_EVENTS, cacheManager = "transientCacheManager")
     public List<OodiEvent> getTeacherEvents(String teacherNumber) {
         return getOodiData(baseUrl + "/teachers/{teacherNumber}/events",
             new ParameterizedTypeReference<OodiResponse<OodiEvent>>() {
