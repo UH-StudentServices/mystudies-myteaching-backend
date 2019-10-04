@@ -18,11 +18,9 @@
 package fi.helsinki.opintoni.integration.studyregistry.oodi;
 
 import com.google.common.collect.Lists;
-import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
@@ -92,7 +90,6 @@ public class OodiRestClient implements OodiClient {
     }
 
     @Override
-    @Cacheable(value = CacheConstants.TEACHER_EVENTS, cacheManager = "transientCacheManager")
     public List<OodiEvent> getTeacherEvents(String teacherNumber) {
         return getOodiData(baseUrl + "/teachers/{teacherNumber}/events",
             new ParameterizedTypeReference<OodiResponse<OodiEvent>>() {

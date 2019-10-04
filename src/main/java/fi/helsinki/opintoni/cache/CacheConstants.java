@@ -49,6 +49,9 @@ public class CacheConstants {
 
     public static final String FEEDS = "feeds";
 
+    public static final String STUDY_RIGHTS = "studyRights";
+    public static final String STUDY_ATTAINMENTS = "studyAttainments";
+
     public static final ImmutableList<String> TRANSIENT_CACHE_NAMES = ImmutableList.<String>builder()
         .add(STUDENT_EVENTS)
         .add(STUDENT_ENROLLMENTS)
@@ -67,6 +70,8 @@ public class CacheConstants {
         .add(FEEDS)
         .add(GUIDE_GENERAL_NEWS)
         .add(GUIDE_PROGRAMME_NEWS)
+        .add(STUDY_ATTAINMENTS)
+        .add(STUDY_RIGHTS)
         .build();
 
     public static final ImmutableSet<String> PERSISTENT_CACHE_NAMES = ImmutableSet.<String>builder()
