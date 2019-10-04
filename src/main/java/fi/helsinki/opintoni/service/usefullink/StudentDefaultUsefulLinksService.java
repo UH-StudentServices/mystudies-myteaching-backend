@@ -46,12 +46,14 @@ public class StudentDefaultUsefulLinksService extends DefaultUsefulLinksService 
     }
 
     public void createDefaultLinks(User user, AppUser appUser) {
-        List<Map<String, String>> usefulLinksPropertiesForUser =
-            oodiUserRoleService.isOpenUniversityStudent(appUser.getStudentNumber().get()) ?
-            openUniversityDefaultUsefulLinks : defaultUsefulLinks;
+        appUser.getStudentNumber().ifPresent(studentNumber -> {
+            List<Map<String, String>> usefulLinksPropertiesForUser =
+                oodiUserRoleService.isOpenUniversityStudent(studentNumber) ?
+                    openUniversityDefaultUsefulLinks : defaultUsefulLinks;
 
-        List<UsefulLink> usefulLinks = createLocalizedUsefulLinks(usefulLinksPropertiesForUser, user);
+            List<UsefulLink> usefulLinks = createLocalizedUsefulLinks(usefulLinksPropertiesForUser, user);
 
-        usefulLinkTransactionalService.save(usefulLinks);
+            usefulLinkTransactionalService.save(usefulLinks);
+        });
     }
 }

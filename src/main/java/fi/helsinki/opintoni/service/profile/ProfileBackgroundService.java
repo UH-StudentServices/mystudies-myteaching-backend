@@ -33,7 +33,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 @Service
@@ -65,21 +64,15 @@ public class ProfileBackgroundService {
     }
 
     public String getProfileBackgroundUri(Long profileId) {
-        return getProfileBackgroundUri(profileRepository.findById(profileId).get());
+        return getProfileBackgroundUri(profileRepository.findById(profileId).orElseThrow(NotFoundException::new));
     }
 
     public String getProfileBackgroundUri(Profile profile) {
-        Optional<ProfileBackground> backgroundOptional = profileBackgroundRepository.findByProfileId(profile.id);
-
-        if (backgroundOptional.isPresent()) {
-            ProfileBackground background = backgroundOptional.get();
-
-            return HAS_DEFAULT_BACKGROUND.test(background)
-                ? uriBuilder.getSystemBackgroundImageUri(background.backgroundFilename)
-                : uriBuilder.getCustomBackgroundImageUri(background.uploadedBackgroundFilename);
-        }
-
-        return userSettingsService.findByUserId(profile.user.id).backgroundUri;
+        return profileBackgroundRepository.findByProfileId(profile.id)
+            .map(backGround -> HAS_DEFAULT_BACKGROUND.test(backGround) ?
+                uriBuilder.getSystemBackgroundImageUri(backGround.backgroundFilename) :
+                uriBuilder.getCustomBackgroundImageUri(backGround.uploadedBackgroundFilename))
+            .orElse(userSettingsService.findByUserId(profile.user.id).backgroundUri);
     }
 
     public void selectBackground(Long profileId, SelectBackgroundRequest request) {
@@ -107,17 +100,12 @@ public class ProfileBackgroundService {
     }
 
     private ProfileBackground getProfileBackgroundEntity(Long profileId) {
-        Optional<ProfileBackground> profileBackgroundOptional = profileBackgroundRepository.findByProfileId(profileId);
-        ProfileBackground profileBackground;
-
-        if (!profileBackgroundOptional.isPresent()) {
-            profileBackground = new ProfileBackground();
-            profileBackground.profile = profileRepository.findById(profileId).orElseThrow(NotFoundException::new);
-        } else {
-            profileBackground = profileBackgroundOptional.get();
-        }
-
-        return profileBackground;
+        return profileBackgroundRepository.findByProfileId(profileId)
+            .orElseGet(() -> {
+                ProfileBackground profileBackground = new ProfileBackground();
+                profileBackground.profile = profileRepository.findById(profileId).orElseThrow(NotFoundException::new);
+                return profileBackground;
+            });
     }
 
     private void removeOldBackgroundFile(ProfileBackground profileBackground) {

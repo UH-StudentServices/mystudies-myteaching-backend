@@ -46,17 +46,17 @@ public class AngularCookieLocaleResolver extends CookieLocaleResolver {
 
     @Override
     public Locale resolveLocale(HttpServletRequest request) {
-        parseLocaleCookieIfNecessary(request);
+        parseLocaleCookie(request);
         return (Locale) request.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME);
     }
 
     @Override
     public LocaleContext resolveLocaleContext(final HttpServletRequest request) {
-        parseLocaleCookieIfNecessary(request);
+        parseLocaleCookie(request);
         return () -> (Locale) request.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME);
     }
 
-    private void parseLocaleCookieIfNecessary(HttpServletRequest request) {
+    private void parseLocaleCookie(HttpServletRequest request) {
         if (request.getAttribute(LOCALE_REQUEST_ATTRIBUTE_NAME) == null) {
             Locale locale = Optional.ofNullable(WebUtils.getCookie(request, getCookieName()))
                 .map(Cookie::getValue)

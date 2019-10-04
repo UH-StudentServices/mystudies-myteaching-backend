@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.TeachingLanguage;
 import fi.helsinki.opintoni.dto.DegreeProgrammeDto;
 import fi.helsinki.opintoni.dto.OfficeHoursDto;
+import fi.helsinki.opintoni.dto.OfficeHoursDtoBuilder;
 import fi.helsinki.opintoni.dto.TeachingLanguageDto;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.web.WebConstants;
@@ -83,14 +84,14 @@ public class OfficeHoursResourceTest extends SpringTest {
 
     @Test
     public void thatOfficeHoursUpdateWithBlankDegreeProgrammeCodeIsNotAccepted() throws Exception {
-        OfficeHoursDto officeHoursDto = new OfficeHoursDto(
-            TEACHER_NAME,
-            OFFICE_HOURS,
-            ADDITIONAL_INFO_2,
-            LOCATION_2,
-            createProgrammeDtoList("", DEGREE_CODE_2),
-            createLanguageDtoList(),
-            YEAR_FROM_NOW);
+        OfficeHoursDto officeHoursDto = new OfficeHoursDtoBuilder()
+            .setName(TEACHER_NAME)
+            .setDescription(OFFICE_HOURS)
+            .setAdditionalInfo(ADDITIONAL_INFO_2)
+            .setLocation(LOCATION_2)
+            .setDegreeProgrammes(createProgrammeDtoList("", DEGREE_CODE_2))
+            .setLanguages(createLanguageDtoList()).setExpirationDate(YEAR_FROM_NOW)
+            .createOfficeHoursDto();
 
         performPostOfficeHours(officeHoursDto)
             .andExpect(status().is4xxClientError());
@@ -98,14 +99,14 @@ public class OfficeHoursResourceTest extends SpringTest {
 
     @Test
     public void thatOfficeHoursUpdateSucceedsWithCodeOfRealisticLength() throws Exception {
-        OfficeHoursDto officeHoursDto = new OfficeHoursDto(
-            TEACHER_NAME,
-            OFFICE_HOURS,
-            ADDITIONAL_INFO_2,
-            LOCATION_2,
-            createProgrammeDtoList("KH60_001 SH60_035", DEGREE_CODE_2),
-            createLanguageDtoList(),
-            YEAR_FROM_NOW);
+        OfficeHoursDto officeHoursDto = new OfficeHoursDtoBuilder()
+            .setName(TEACHER_NAME)
+            .setDescription(OFFICE_HOURS)
+            .setAdditionalInfo(ADDITIONAL_INFO_2)
+            .setLocation(LOCATION_2)
+            .setDegreeProgrammes(createProgrammeDtoList("KH60_001 SH60_035", DEGREE_CODE_2))
+            .setLanguages(createLanguageDtoList()).setExpirationDate(YEAR_FROM_NOW)
+            .createOfficeHoursDto();
 
         performPostOfficeHours(officeHoursDto)
             .andExpect(status().isOk());
@@ -113,14 +114,15 @@ public class OfficeHoursResourceTest extends SpringTest {
 
     @Test
     public void thatOfficeHoursAreUpdated() throws Exception {
-        OfficeHoursDto officeHoursDto = new OfficeHoursDto(
-            TEACHER_NAME,
-            OFFICE_HOURS,
-            ADDITIONAL_INFO_2,
-            LOCATION_2,
-            createProgrammeDtoList(DEGREE_CODE_1, DEGREE_CODE_2),
-            createLanguageDtoList(),
-            YEAR_FROM_NOW);
+        OfficeHoursDto officeHoursDto = new OfficeHoursDtoBuilder()
+            .setName(TEACHER_NAME)
+            .setDescription(OFFICE_HOURS)
+            .setAdditionalInfo(ADDITIONAL_INFO_2)
+            .setLocation(LOCATION_2)
+            .setDegreeProgrammes(createProgrammeDtoList(DEGREE_CODE_1, DEGREE_CODE_2))
+            .setLanguages(createLanguageDtoList())
+            .setExpirationDate(YEAR_FROM_NOW)
+            .createOfficeHoursDto();
 
         performPostOfficeHours(officeHoursDto)
             .andExpect(status().isOk())
@@ -147,25 +149,21 @@ public class OfficeHoursResourceTest extends SpringTest {
 
     @Test
     public void thatMultipleOfficeHoursCanBeAdded() throws Exception {
-        OfficeHoursDto officeHoursDto = new OfficeHoursDto(
-            TEACHER_NAME,
-            OFFICE_HOURS,
-            null,
-            null,
-            createProgrammeDtoList(DEGREE_CODE_1, DEGREE_CODE_2),
-            createLanguageDtoList(),
-            YEAR_FROM_NOW
-        );
+        OfficeHoursDto officeHoursDto = new OfficeHoursDtoBuilder()
+            .setName(TEACHER_NAME)
+            .setDescription(OFFICE_HOURS)
+            .setDegreeProgrammes(createProgrammeDtoList(DEGREE_CODE_1, DEGREE_CODE_2))
+            .setLanguages(createLanguageDtoList())
+            .setExpirationDate(YEAR_FROM_NOW)
+            .createOfficeHoursDto();
 
-        OfficeHoursDto officeHoursDto2 = new OfficeHoursDto(
-            TEACHER_NAME_2,
-            OFFICE_HOURS_2,
-            null,
-            null,
-            createProgrammeDtoList(),
-            createLanguageDtoList(TEACHING_LANGUAGE_2),
-            YEAR_FROM_NOW
-        );
+        OfficeHoursDto officeHoursDto2 = new OfficeHoursDtoBuilder()
+            .setName(TEACHER_NAME_2)
+            .setDescription(OFFICE_HOURS_2)
+            .setDegreeProgrammes(createProgrammeDtoList())
+            .setLanguages(createLanguageDtoList(TEACHING_LANGUAGE_2))
+            .setExpirationDate(YEAR_FROM_NOW)
+            .createOfficeHoursDto();
 
         performPostOfficeHours(officeHoursDto, officeHoursDto2)
             .andExpect(status().isOk())
@@ -186,15 +184,13 @@ public class OfficeHoursResourceTest extends SpringTest {
 
     @Test
     public void thatExpirationDateCantBeMoreThanYearFromNow() throws Exception {
-        OfficeHoursDto officeHoursDto = new OfficeHoursDto(
-            TEACHER_NAME,
-            OFFICE_HOURS,
-            null,
-            null,
-            createProgrammeDtoList(DEGREE_CODE_1, DEGREE_CODE_2),
-            createLanguageDtoList(),
-            INVALID_EXPIRATION_DATE
-        );
+        OfficeHoursDto officeHoursDto = new OfficeHoursDtoBuilder()
+            .setName(TEACHER_NAME)
+            .setDescription(OFFICE_HOURS)
+            .setDegreeProgrammes(createProgrammeDtoList(DEGREE_CODE_1, DEGREE_CODE_2))
+            .setLanguages(createLanguageDtoList())
+            .setExpirationDate(INVALID_EXPIRATION_DATE)
+            .createOfficeHoursDto();
 
         performPostOfficeHours(officeHoursDto)
             .andExpect(status().isUnprocessableEntity());
@@ -202,15 +198,13 @@ public class OfficeHoursResourceTest extends SpringTest {
 
     @Test
     public void thatOfficeHoursWithTeachingLanguageIsSaved() throws Exception {
-        OfficeHoursDto officeHoursDto = new OfficeHoursDto(
-            TEACHER_NAME,
-            OFFICE_HOURS,
-            null,
-            null,
-            createProgrammeDtoList(),
-            createLanguageDtoList(TEACHING_LANGUAGE_1),
-            YEAR_FROM_NOW
-        );
+        OfficeHoursDto officeHoursDto = new OfficeHoursDtoBuilder()
+            .setName(TEACHER_NAME)
+            .setDescription(OFFICE_HOURS)
+            .setDegreeProgrammes(createProgrammeDtoList())
+            .setLanguages(createLanguageDtoList(TEACHING_LANGUAGE_1))
+            .setExpirationDate(YEAR_FROM_NOW)
+            .createOfficeHoursDto();
 
         performPostOfficeHours(officeHoursDto)
             .andExpect(status().isOk())
@@ -222,15 +216,13 @@ public class OfficeHoursResourceTest extends SpringTest {
 
     @Test
     public void thatOfficeHoursWithInvalidTeachingLanguageCodeIsNotAccepted() throws Exception {
-        OfficeHoursDto officeHoursDto = new OfficeHoursDto(
-            TEACHER_NAME,
-            OFFICE_HOURS,
-            null,
-            null,
-            createProgrammeDtoList(),
-            ImmutableList.of(new TeachingLanguageDto("no_such_language", Collections.emptyMap())),
-            YEAR_FROM_NOW
-        );
+        OfficeHoursDto officeHoursDto = new OfficeHoursDtoBuilder()
+            .setName(TEACHER_NAME)
+            .setDescription(OFFICE_HOURS)
+            .setDegreeProgrammes(createProgrammeDtoList())
+            .setLanguages(ImmutableList.of(new TeachingLanguageDto("no_such_language", Collections.emptyMap())))
+            .setExpirationDate(YEAR_FROM_NOW)
+            .createOfficeHoursDto();
 
         performPostOfficeHours(officeHoursDto)
             .andExpect(status().isBadRequest());
@@ -238,15 +230,13 @@ public class OfficeHoursResourceTest extends SpringTest {
 
     @Test
     public void thatOfficeHoursWithDegreeProgrammesAndTeachingLanguagesIsNotAccepted() throws Exception {
-        OfficeHoursDto officeHoursDto = new OfficeHoursDto(
-            TEACHER_NAME,
-            OFFICE_HOURS,
-            null,
-            null,
-            createProgrammeDtoList(DEGREE_CODE_1),
-            createLanguageDtoList(TEACHING_LANGUAGE_1),
-            YEAR_FROM_NOW
-        );
+        OfficeHoursDto officeHoursDto = new OfficeHoursDtoBuilder()
+            .setName(TEACHER_NAME)
+            .setDescription(OFFICE_HOURS)
+            .setDegreeProgrammes(createProgrammeDtoList(DEGREE_CODE_1))
+            .setLanguages(createLanguageDtoList(TEACHING_LANGUAGE_1))
+            .setExpirationDate(YEAR_FROM_NOW)
+            .createOfficeHoursDto();
 
         performPostOfficeHours(officeHoursDto)
             .andExpect(status().isUnprocessableEntity());
@@ -257,15 +247,11 @@ public class OfficeHoursResourceTest extends SpringTest {
     //or create new ones without having either degree programmes or teaching languages set.
     @Test
     public void thatOfficeHoursWithoutDegreeProgrammesAndTeachingLanguagesIsAccepted() throws Exception {
-        OfficeHoursDto officeHoursDto = new OfficeHoursDto(
-            TEACHER_NAME,
-            OFFICE_HOURS,
-            null,
-            null,
-            null,
-            null,
-            YEAR_FROM_NOW
-        );
+        OfficeHoursDto officeHoursDto = new OfficeHoursDtoBuilder()
+            .setName(TEACHER_NAME)
+            .setDescription(OFFICE_HOURS)
+            .setExpirationDate(YEAR_FROM_NOW)
+            .createOfficeHoursDto();
 
         performPostOfficeHours(officeHoursDto)
             .andExpect(status().isOk());
