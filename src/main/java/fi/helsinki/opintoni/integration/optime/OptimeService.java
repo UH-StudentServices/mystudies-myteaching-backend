@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.integration.optime;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.service.converter.EventConverter;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -48,8 +50,17 @@ public class OptimeService {
         return optimeClient.getICalendarContent(feedUrl);
     }
 
+    /**
+     * Fetches Optime events from given URL.
+     *
+     * @param feedUrl is URL to Optime Calendar.
+     * @return fetched events and if given URL is null or blank then return empty list.
+     */
     @Cacheable(value = CacheConstants.TEACHER_EVENTS, cacheManager = "transientCacheManager")
     public List<EventDto> getOptimeEvents(String feedUrl) {
+        if (StringUtils.isBlank(feedUrl)) {
+            return Collections.emptyList();
+        }
         return eventConverter.toDtos(getICalendarContent(feedUrl));
     }
 }
