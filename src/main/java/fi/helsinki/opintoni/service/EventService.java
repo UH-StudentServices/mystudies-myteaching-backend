@@ -19,13 +19,13 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.config.OptimeConfiguration;
 import fi.helsinki.opintoni.dto.EventDto;
-import fi.helsinki.opintoni.dto.EventDtoBuilder;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.optime.OptimeService;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.service.converter.EventConverter;
+import fi.helsinki.opintoni.util.EventUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -113,39 +112,7 @@ public class EventService {
                 .filter(e -> e.begin != null)
                 .map(e -> eventConverter.toDto(e, c)));
 
-        return mergeStreams(Stream.concat(studyRegistryEventDtos, optimeEventDtos), coursePageEventDtos);
-    }
-
-    private List<EventDto> mergeStreams(Stream<EventDto> s1, Stream<EventDto> s2) {
-        return Stream
-            .concat(s1, s2)
-            .collect(Collectors.toMap(EventDto::getRealisationIdAndTimes, Function.identity(), (a, b) -> new EventDtoBuilder()
-                .setType(a.type)
-                .setSource(getEventSource(a, b))
-                .setStartDate(a.startDate)
-                .setEndDate(a.endDate)
-                .setRealisationId(a.realisationId)
-                .setTitle(a.title)
-                .setCourseTitle(a.courseTitle)
-                .setCourseUri(a.courseUri)
-                .setCourseImageUri(a.courseImageUri)
-                .setCourseMaterialDto(a.courseMaterial)
-                .setMoodleUri(a.moodleUri)
-                .setHasMaterial(a.hasMaterial)
-                .setLocations(Stream.concat(a.locations.stream(), b.locations.stream()).collect(Collectors.toList()))
-                .setOptimeExtras(a.optimeExtras != null ? a.optimeExtras : b.optimeExtras)
-                .createEventDto())).values().stream()
-            .sorted()
-            .collect(Collectors.toList());
-    }
-
-    private EventDto.Source getEventSource(EventDto lhs, EventDto rhs) {
-        if (lhs.source == EventDto.Source.STUDY_REGISTRY || rhs.source == EventDto.Source.STUDY_REGISTRY) {
-            return EventDto.Source.STUDY_REGISTRY;
-        } else if (lhs.source == EventDto.Source.OPTIME || rhs.source == EventDto.Source.OPTIME) {
-            return EventDto.Source.OPTIME;
-        }
-        return EventDto.Source.COURSE_PAGE;
+        return EventUtils.mergeStreams(Stream.concat(studyRegistryEventDtos, optimeEventDtos), coursePageEventDtos);
     }
 
     private CoursePageCourseImplementation getCoursePage(Map<String, CoursePageCourseImplementation> coursePages, String realisationId) {
