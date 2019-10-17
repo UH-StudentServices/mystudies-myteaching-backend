@@ -2159,4 +2159,12 @@
             WHERE instance_name IS null AND teacher_profile_section IS NOT NULL;
         </sql>
     </changeSet>
+    <changeSet id="OO-1426 use https address for event calendar feed" author="Joni Korhonen">
+        <update tableName="rss_favorite">
+            <column name="url" value="https://helsinginyliopisto.etapahtuma.fi/Default.aspx?tabid=959&amp;format=atom" />
+            <where>
+                url = 'http://helsinginyliopisto.etapahtuma.fi/Default.aspx?tabid=959&amp;format=atom'
+            </where>
+        </update>
+    </changeSet>
 </databaseChangeLog>
