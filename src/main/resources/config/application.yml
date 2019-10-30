@@ -213,7 +213,7 @@ newsfeeds:
 
 optime:
     client.implementation: mock
-    useOptimeFeedForWebCalendar: true
+    useOptimeFeedForWebCalendar: false
 
 publicWww:
     base.url: https://www.helsinki.fi
