@@ -19,6 +19,8 @@ package fi.helsinki.opintoni.security;
 
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -119,6 +121,7 @@ public final class AppUser extends User {
 
     public static class AppUserBuilder {
 
+        private static Logger logger = LoggerFactory.getLogger(AppUserBuilder.class);
         private String eduPersonPrincipalName;
         private String email;
         private String commonName;
@@ -129,6 +132,13 @@ public final class AppUser extends User {
         private Optional<String> employeeNumber = Optional.empty();
         private Collection<GrantedAuthority> authorities = Collections.emptyList();
         private Set<Role> roles = Sets.newHashSet();
+
+        public AppUserBuilder() {}
+
+        // For testing only.
+        protected AppUserBuilder(Logger logger) {
+            AppUserBuilder.logger = logger;
+        }
 
         public AppUserBuilder eduPersonPrincipalName(String eduPersonPrincipalName) {
             this.eduPersonPrincipalName = eduPersonPrincipalName;
@@ -177,19 +187,24 @@ public final class AppUser extends User {
 
         public AppUser build() {
             if (!employeeNumber.isPresent() && !studentNumber.isPresent()) {
-                throw new BadCredentialsException("User does not have teacher nor student number: " + this);
+                fail("User does not have teacher nor student number");
             }
 
             if (eduPersonPrincipalName == null) {
-                throw new BadCredentialsException("User does not have eduPersonPrincipalName: " + this);
+                fail("User does not have eduPersonPrincipalName");
             }
 
             if (personId == null) {
-                throw new BadCredentialsException("User does not have personId: " + this);
+                fail("User does not have personId");
             }
 
             authorities = getAuthorities();
             return new AppUser(this);
+        }
+
+        private void fail(String message) {
+            logger.error(message + ": " + this);
+            throw new BadCredentialsException(message);
         }
 
         @Override
