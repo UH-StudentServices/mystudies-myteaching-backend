@@ -19,8 +19,8 @@ package fi.helsinki.opintoni.security;
 
 import com.google.common.collect.Sets;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -121,7 +121,7 @@ public final class AppUser extends User {
 
     public static class AppUserBuilder {
 
-        private static Log logger = LogFactory.getLog(AppUserBuilder.class);
+        private static Logger logger = LoggerFactory.getLogger(AppUserBuilder.class);
         private String eduPersonPrincipalName;
         private String email;
         private String commonName;
@@ -136,8 +136,8 @@ public final class AppUser extends User {
         public AppUserBuilder() {}
 
         // For testing only.
-        protected AppUserBuilder(Log logger) {
-            AppUserBuilder.logger =  logger;
+        protected AppUserBuilder(Logger logger) {
+            AppUserBuilder.logger = logger;
         }
 
         public AppUserBuilder eduPersonPrincipalName(String eduPersonPrincipalName) {
