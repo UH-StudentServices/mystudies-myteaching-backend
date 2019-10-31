@@ -17,7 +17,13 @@
 
 package fi.helsinki.opintoni.security;
 
+import org.apache.commons.logging.Log;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.authentication.BadCredentialsException;
 
 import static fi.helsinki.opintoni.security.AppUser.Role;
@@ -26,17 +32,29 @@ import static fi.helsinki.opintoni.security.AppUser.Role.STUDENT;
 import static fi.helsinki.opintoni.security.AppUser.Role.TEACHER;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.verify;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AppUserTest {
+
+    @Mock
+    private Log logger;
+
+    private AppUser.AppUserBuilder appUserBuilder;
 
     private static final String STUDENT_NUMBER = "123";
     private static final String EMPLOYEE_NUMBER = "321";
     private static final String EDU_PERSON_PRINCIPAL_NAME = "eduPersonPrincipalName";
     private static final String PERSON_ID = "1234";
 
+    @Before
+    public void setUp() {
+        appUserBuilder = new AppUser.AppUserBuilder(logger);
+    }
+
     @Test
     public void thatAppUserWithoutTeacherNorStudentNumberCannotBeCreated() {
-        failsWithMessage(new AppUser.AppUserBuilder()
+        failsWithMessage(appUserBuilder
                 .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
                 .personId(PERSON_ID),
             "User does not have teacher nor student number",
@@ -45,7 +63,7 @@ public class AppUserTest {
 
     @Test
     public void thatAppUserWithoutPersonIdCannotBeCreated() {
-        failsWithMessage(new AppUser.AppUserBuilder()
+        failsWithMessage(appUserBuilder
                 .studentNumber(STUDENT_NUMBER)
                 .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME),
             "User does not have personId",
@@ -54,21 +72,22 @@ public class AppUserTest {
 
     @Test
     public void thatAppUserWithoutEppnNumberCannotBeCreated() {
-        failsWithMessage(new AppUser.AppUserBuilder()
+        failsWithMessage(appUserBuilder
                 .studentNumber(STUDENT_NUMBER)
                 .personId(PERSON_ID),
             "User does not have eduPersonPrincipalName",
             "personId=1234");
     }
 
-    private void failsWithMessage(AppUser.AppUserBuilder ub, String...expectedMessages) {
+    private void failsWithMessage(AppUser.AppUserBuilder ub, String expectedMessage, String expectedObjectData) {
         try {
             ub.build();
             fail("Should have thrown an exception.");
         } catch (BadCredentialsException e) {
-            for (String message : expectedMessages) {
-                assertThat(e.getMessage()).contains(message);
-            }
+            assertThat(e.getMessage()).contains(expectedMessage);
+
+            verify(logger).error(Mockito.contains(expectedMessage));
+            verify(logger).error(Mockito.contains(expectedObjectData));
         }
     }
 
