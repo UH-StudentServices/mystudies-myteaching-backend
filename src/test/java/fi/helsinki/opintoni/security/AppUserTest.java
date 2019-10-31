@@ -65,8 +65,8 @@ public class AppUserTest {
         try {
             ub.build();
             fail("Should have thrown an exception.");
-        } catch(BadCredentialsException e) {
-            for(String message : expectedMessages) {
+        } catch (BadCredentialsException e) {
+            for (String message : expectedMessages) {
                 assertThat(e.getMessage()).contains(message);
             }
         }
