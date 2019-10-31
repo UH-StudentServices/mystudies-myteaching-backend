@@ -177,19 +177,31 @@ public final class AppUser extends User {
 
         public AppUser build() {
             if (!employeeNumber.isPresent() && !studentNumber.isPresent()) {
-                throw new BadCredentialsException("User does not have teacher nor student number");
+                throw new BadCredentialsException("User does not have teacher nor student number: " + this);
             }
 
             if (eduPersonPrincipalName == null) {
-                throw new BadCredentialsException("User does not have eduPersonPrincipalName");
+                throw new BadCredentialsException("User does not have eduPersonPrincipalName: " + this);
             }
 
             if (personId == null) {
-                throw new BadCredentialsException("User does not have personId");
+                throw new BadCredentialsException("User does not have personId: " + this);
             }
 
             authorities = getAuthorities();
             return new AppUser(this);
+        }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                .append("email", email)
+                .append("eduPersonPrincipalName", eduPersonPrincipalName)
+                .append("commonName", commonName)
+                .append("studentNumber", studentNumber)
+                .append("employeeNumber", employeeNumber)
+                .append("personId", personId)
+                .toString();
         }
 
         private Set<GrantedAuthority> getAuthorities() {
