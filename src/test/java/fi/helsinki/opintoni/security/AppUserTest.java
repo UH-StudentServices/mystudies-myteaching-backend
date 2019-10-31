@@ -17,13 +17,13 @@
 
 package fi.helsinki.opintoni.security;
 
-import org.apache.commons.logging.Log;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.slf4j.Logger;
 import org.springframework.security.authentication.BadCredentialsException;
 
 import static fi.helsinki.opintoni.security.AppUser.Role;
@@ -38,7 +38,7 @@ import static org.mockito.Mockito.verify;
 public class AppUserTest {
 
     @Mock
-    private Log logger;
+    private Logger logger;
 
     private AppUser.AppUserBuilder appUserBuilder;
 
