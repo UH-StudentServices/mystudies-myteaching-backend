@@ -25,6 +25,7 @@ import static fi.helsinki.opintoni.security.AppUser.Role.ADMIN;
 import static fi.helsinki.opintoni.security.AppUser.Role.STUDENT;
 import static fi.helsinki.opintoni.security.AppUser.Role.TEACHER;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 public class AppUserTest {
 
@@ -33,12 +34,18 @@ public class AppUserTest {
     private static final String EDU_PERSON_PRINCIPAL_NAME = "eduPersonPrincipalName";
     private static final String PERSON_ID = "1234";
 
-    @Test(expected = BadCredentialsException.class)
+    @Test
     public void thatAppUserWithoutTeacherNorStudentNumberCannotBeCreated() {
-        new AppUser.AppUserBuilder()
-            .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
-            .personId(PERSON_ID)
-            .build();
+        try {
+            new AppUser.AppUserBuilder()
+                .eduPersonPrincipalName(EDU_PERSON_PRINCIPAL_NAME)
+                .personId(PERSON_ID)
+                .build();
+            fail("Should have thrown an exception.");
+        } catch (BadCredentialsException e) {
+            assertThat(e.getMessage()).contains("User does not have teacher nor student number");
+            assertThat(e.getMessage()).contains("eduPersonPrincipalName=eduPersonPrincipalName");
+        }
     }
 
     @Test(expected = BadCredentialsException.class)

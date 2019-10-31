@@ -177,15 +177,15 @@ public final class AppUser extends User {
 
         public AppUser build() {
             if (!employeeNumber.isPresent() && !studentNumber.isPresent()) {
-                throw new BadCredentialsException("User does not have teacher nor student number");
+                throw new BadCredentialsException("User does not have teacher nor student number: " + new AppUser(this));
             }
 
             if (eduPersonPrincipalName == null) {
-                throw new BadCredentialsException("User does not have eduPersonPrincipalName");
+                throw new BadCredentialsException("User does not have eduPersonPrincipalName: " + new AppUser(this));
             }
 
             if (personId == null) {
-                throw new BadCredentialsException("User does not have personId");
+                throw new BadCredentialsException("User does not have personId: " + new AppUser(this));
             }
 
             authorities = getAuthorities();
