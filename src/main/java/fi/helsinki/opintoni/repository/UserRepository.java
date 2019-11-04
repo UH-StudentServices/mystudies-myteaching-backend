@@ -30,6 +30,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByPersonId(String personId);
 
+    Optional<User> findByEduPersonPrincipalNameOrPersonId(String eduPersonPrincipalName, String personId);
+
     @Query(
         value = "select * from user_account u where u.last_login_date < now() - interval '1 year' " +
         "and u.account_status = 'ACTIVE' " +

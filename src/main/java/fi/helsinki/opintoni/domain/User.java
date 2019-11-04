@@ -44,7 +44,7 @@ public class User extends AbstractAuditingEntity {
     public Long id;
 
     /*
-     * eduPersonPrincipalName is the unique identifier in SSO (it will never change)
+     * eduPersonPrincipalName is the unique identifier in SSO (it will never change, unless it changes)
      */
     @NotNull
     @Column(name = "edu_person_principal_name")
