@@ -76,6 +76,10 @@ public class UserService {
         return userRepository.findByPersonId(personId);
     }
 
+    public Optional<User> findFirstByEduPersonPrincipalNameOrPersonId(String eduPersonPrincipalName, String personId) {
+        return userRepository.findByEduPersonPrincipalNameOrPersonId(eduPersonPrincipalName, personId);
+    }
+
     public User createNewUser(AppUser appUser) {
         User user = new User();
         user.eduPersonPrincipalName = appUser.getEduPersonPrincipalName();

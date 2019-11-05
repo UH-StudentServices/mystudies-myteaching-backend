@@ -17,11 +17,8 @@
 
 package fi.helsinki.opintoni.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.helsinki.opintoni.domain.User;
-import fi.helsinki.opintoni.service.TimeService;
 import fi.helsinki.opintoni.service.UserService;
-import fi.helsinki.opintoni.service.SessionService;
 import fi.helsinki.opintoni.util.AuditLogger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -70,16 +67,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
     private final Authentication authentication = mock(Authentication.class);
 
     @Mock
-    private ObjectMapper mapper;
-
-    @Mock
     private UserService userService;
-
-    @Mock
-    private SessionService sessionService;
-
-    @Mock
-    private TimeService timeService;
 
     @Mock
     private Environment env;
@@ -108,7 +96,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
         Optional<User> user = Optional.of(new User());
         HttpServletResponse response = mockResponse();
 
-        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(user);
+        when(userService.findFirstByEduPersonPrincipalNameOrPersonId(EDU_PRINCIPAL_NAME, OODI_PERSON_ID)).thenReturn(user);
 
         handler.onAuthenticationSuccess(mockRequest(), response, authentication);
 
@@ -119,7 +107,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
     public void thatMissingOodiPersonIdIsUpdated() throws Exception {
         setupMocks(FI.getCode());
         Optional<User> user = Optional.of(new User());
-        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(user);
+        when(userService.findFirstByEduPersonPrincipalNameOrPersonId(EDU_PRINCIPAL_NAME, OODI_PERSON_ID)).thenReturn(user);
 
         handler.onAuthenticationSuccess(mockRequest(), mockResponse(), authentication);
 
@@ -129,17 +117,29 @@ public class FederatedAuthenticationSuccessHandlerTest {
     @Test
     public void thatNewUserIsSaved() throws Exception {
         setupMocks(FI.getCode());
-        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
+        when(userService.findFirstByEduPersonPrincipalNameOrPersonId(EDU_PRINCIPAL_NAME, OODI_PERSON_ID)).thenReturn(Optional.empty());
 
         handler.onAuthenticationSuccess(mockRequest(), mockResponse(), authentication);
 
         verify(userService, times(1)).createNewUser(any(AppUser.class));
     }
 
+    @Test
+    public void thatChangedEduPersonPrincipalNameIsUpdated() throws Exception {
+        setupMocks(FI.getCode());
+        User user = new User();
+        user.eduPersonPrincipalName = "oldEduPersonPrincipal";
+        when(userService.findFirstByEduPersonPrincipalNameOrPersonId(EDU_PRINCIPAL_NAME, OODI_PERSON_ID)).thenReturn(Optional.of(user));
+
+        handler.onAuthenticationSuccess(mockRequest(), mockResponse(), authentication);
+
+        verify(userService, times(1)).save(argThat(new UserMatcher()));
+    }
+
     private void assertLanguageCookieAddedScenario(String userPreferredLanguage, String expectedCookieLanguage) throws Exception {
         setupMocks(userPreferredLanguage);
         HttpServletResponse response = mockResponse();
-        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
+        when(userService.findFirstByEduPersonPrincipalNameOrPersonId(EDU_PRINCIPAL_NAME, OODI_PERSON_ID)).thenReturn(Optional.empty());
 
         handler.onAuthenticationSuccess(mockRequest(), response, authentication);
 
@@ -164,7 +164,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
     private void assertLanguageCookieNotAddedScenario(HttpServletRequest request, String langCode) throws Exception {
         setupMocks(langCode);
         HttpServletResponse response = mockResponse();
-        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
+        when(userService.findFirstByEduPersonPrincipalNameOrPersonId(EDU_PRINCIPAL_NAME, OODI_PERSON_ID)).thenReturn(Optional.empty());
 
         handler.onAuthenticationSuccess(request, response, authentication);
 
@@ -199,7 +199,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
     public void thatHasLoggedInCookieIsAdded() throws IOException, ServletException {
         setupMocks(FI.getCode());
         HttpServletResponse response = mockResponse();
-        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
+        when(userService.findFirstByEduPersonPrincipalNameOrPersonId(EDU_PRINCIPAL_NAME, OODI_PERSON_ID)).thenReturn(Optional.empty());
 
         handler.onAuthenticationSuccess(mockRequest(), response, authentication);
 
@@ -213,7 +213,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
         HttpServletRequest request = mockRequest();
 
         when(request.getRemoteAddr()).thenReturn(REMOTE_ADDRESS);
-        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(Optional.empty());
+        when(userService.findFirstByEduPersonPrincipalNameOrPersonId(EDU_PRINCIPAL_NAME, OODI_PERSON_ID)).thenReturn(Optional.empty());
 
         handler.onAuthenticationSuccess(request, response, authentication);
 
@@ -231,7 +231,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
         Optional<User> oldUser = Optional.of(user);
         HttpServletResponse response = mockResponse();
 
-        when(userService.findFirstByEduPersonPrincipalName(EDU_PRINCIPAL_NAME)).thenReturn(oldUser);
+        when(userService.findFirstByEduPersonPrincipalNameOrPersonId(EDU_PRINCIPAL_NAME, OODI_PERSON_ID)).thenReturn(oldUser);
 
         handler.onAuthenticationSuccess(mockRequest(), response, authentication);
 
@@ -276,7 +276,7 @@ public class FederatedAuthenticationSuccessHandlerTest {
 
         @Override
         public boolean matches(User user) {
-            return user.personId.equals(OODI_PERSON_ID);
+            return user.personId.equals(OODI_PERSON_ID) && user.eduPersonPrincipalName.equals(EDU_PRINCIPAL_NAME);
         }
     }
 }

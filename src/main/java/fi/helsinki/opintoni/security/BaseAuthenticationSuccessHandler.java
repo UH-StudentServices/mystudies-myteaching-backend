@@ -27,6 +27,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.util.StringUtils;
@@ -76,7 +77,7 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
                 addLanguageCookieForUserPreferredLanguageIfSupported(appUser, response);
             }
 
-            if (!env.acceptsProfiles(Constants.SPRING_PROFILE_DEMO)) {
+            if (!env.acceptsProfiles(Profiles.of(Constants.SPRING_PROFILE_DEMO))) {
                 addHasLoggedInCookie(response);
             }
             handleAuthSuccess(request, response);
@@ -112,7 +113,7 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
     }
 
     private Optional<User> getUserFromDb(AppUser appUser) {
-        return userService.findFirstByEduPersonPrincipalName(appUser.getEduPersonPrincipalName());
+        return userService.findFirstByEduPersonPrincipalNameOrPersonId(appUser.getEduPersonPrincipalName(), appUser.getPersonId());
     }
 
     private void createNewUser(AppUser appUser) {
@@ -126,6 +127,10 @@ public abstract class BaseAuthenticationSuccessHandler implements Authentication
 
         if (user.personId == null) {
             user.personId = appUser.getPersonId();
+        }
+
+        if (!appUser.getEduPersonPrincipalName().equals(user.eduPersonPrincipalName)) {
+            user.eduPersonPrincipalName = appUser.getEduPersonPrincipalName();
         }
 
         user.lastLoginDate = DateTime.now();
