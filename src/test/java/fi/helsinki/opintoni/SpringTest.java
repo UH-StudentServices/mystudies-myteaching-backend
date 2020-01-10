@@ -34,7 +34,6 @@ import fi.helsinki.opintoni.server.GuideServer;
 import fi.helsinki.opintoni.server.OodiServer;
 import fi.helsinki.opintoni.server.PublicWwwServer;
 import fi.helsinki.opintoni.server.SisuServer;
-import fi.helsinki.opintoni.server.UnisportServer;
 import fi.helsinki.opintoni.server.WebPageServer;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
@@ -131,7 +130,6 @@ public abstract class SpringTest {
     protected WebPageServer webPageServer;
     protected FlammaServer flammaServer;
     protected PublicWwwServer publicWwwServer;
-    protected UnisportServer unisportServer;
     protected ESBServer esbServer;
     protected GuideNewsServer guideNewsServer;
 
@@ -160,9 +158,6 @@ public abstract class SpringTest {
 
     @Autowired
     protected RestTemplate metaDataRestTemplate;
-
-    @Autowired
-    RestTemplate unisportRestTemplate;
 
     @Autowired
     private Filter springSecurityFilterChain;
@@ -209,7 +204,6 @@ public abstract class SpringTest {
             guideNewsRestClient.getRestTemplate());
         publicWwwServer = new PublicWwwServer(appConfiguration, publicWwwRestClient.getRestTemplate());
         webPageServer = new WebPageServer(metaDataRestTemplate);
-        unisportServer = new UnisportServer(appConfiguration, unisportRestTemplate);
         esbServer = new ESBServer(appConfiguration, esbRestTemplate);
         configureMockMvc();
     }
@@ -239,7 +233,6 @@ public abstract class SpringTest {
         guideNewsServer.verify();
         publicWwwServer.verify();
         webPageServer.verify();
-        unisportServer.verify();
         esbServer.verify();
     }
 

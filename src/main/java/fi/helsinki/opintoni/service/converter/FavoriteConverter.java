@@ -23,15 +23,12 @@ import fi.helsinki.opintoni.domain.LinkFavorite;
 import fi.helsinki.opintoni.domain.RssFavorite;
 import fi.helsinki.opintoni.domain.TwitterFavorite;
 import fi.helsinki.opintoni.domain.UnicafeFavorite;
-import fi.helsinki.opintoni.domain.UnisportFavorite;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.dto.LinkFavoriteDto;
 import fi.helsinki.opintoni.dto.RssFavoriteDto;
 import fi.helsinki.opintoni.dto.TwitterFavoriteDto;
 import fi.helsinki.opintoni.dto.UnicafeFavoriteDto;
-import fi.helsinki.opintoni.dto.UnisportFavoriteDto;
 import fi.helsinki.opintoni.exception.http.UnprocessableEntityException;
-import fi.helsinki.opintoni.integration.unisport.UnisportClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,12 +36,10 @@ import org.springframework.stereotype.Component;
 public class FavoriteConverter {
 
     private final AppConfiguration appConfiguration;
-    private final UnisportClient unisportClient;
 
     @Autowired
-    public FavoriteConverter(AppConfiguration appConfiguration, UnisportClient unisportClient) {
+    public FavoriteConverter(AppConfiguration appConfiguration) {
         this.appConfiguration = appConfiguration;
-        this.unisportClient = unisportClient;
     }
 
     public FavoriteDto toDto(Favorite favorite) {
@@ -57,8 +52,6 @@ public class FavoriteConverter {
                 return toLinkDto((LinkFavorite) favorite);
             case UNICAFE:
                 return toUnicafeDto((UnicafeFavorite) favorite);
-            case UNISPORT:
-                return toUnisportFavoriteDto((UnisportFavorite) favorite);
             case FLAMMA_NEWS:
             case FLAMMA_EVENTS:
                 return toFavoriteDto(favorite);
@@ -103,12 +96,6 @@ public class FavoriteConverter {
 
     private FavoriteDto toFavoriteDto(Favorite favorite) {
         return new FavoriteDto(
-            favorite.id,
-            favorite.type.name());
-    }
-
-    private UnisportFavoriteDto toUnisportFavoriteDto(Favorite favorite) {
-        return new UnisportFavoriteDto(
             favorite.id,
             favorite.type.name());
     }

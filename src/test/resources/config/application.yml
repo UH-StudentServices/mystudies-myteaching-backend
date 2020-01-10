@@ -146,15 +146,6 @@ optime:
     client.implementation: mock
     useOptimeFeedForWebCalendar: false
 
-unisport:
-    userAuthorizationUrl: https://unisport.fi/ext/opintoni/authorization
-    client.implementation: rest
-    base.url: https://unisport.fi
-    jwt.service.implementation: mock
-    tokenValidForSeconds: 10
-
-unisportApiKey: foobar123
-
 esb:
     base.url: https://esbmt2.it.helsinki.fi/devel
     client.implementation: rest
@@ -207,8 +198,6 @@ recommendations:
   uidPrefix: opintohistoriatesti_
 
 environment: test
-
-unisportMyReservationsUrl: https://unisport.fi/yol/web/fi/shibbolethAuth.do
 
 httpClient:
   readTimeout: 5000

@@ -23,7 +23,6 @@ import fi.helsinki.opintoni.domain.Favorite;
 import fi.helsinki.opintoni.domain.RssFavorite;
 import fi.helsinki.opintoni.domain.TwitterFavorite;
 import fi.helsinki.opintoni.domain.UnicafeFavorite;
-import fi.helsinki.opintoni.domain.UnisportFavorite;
 import fi.helsinki.opintoni.domain.User;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
@@ -77,17 +76,6 @@ public class FavoriteService {
         favorite.url = saveRssFavoriteRequest.url;
         favorite.type = Favorite.Type.RSS;
         favorite.orderIndex = maxOrderIndex + 1;
-        favorite.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
-
-        favoriteRepository.save(favorite);
-
-        return favoriteConverter.toDto(favorite);
-    }
-
-    public FavoriteDto insertUnisportFavorite(Long userId) {
-        UnisportFavorite favorite = new UnisportFavorite();
-        favorite.type = Favorite.Type.UNISPORT;
-        favorite.orderIndex = orderIndex().apply(userId) + 1;
         favorite.user = userRepository.findById(userId).orElseThrow(NotFoundException::new);
 
         favoriteRepository.save(favorite);

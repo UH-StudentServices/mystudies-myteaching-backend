@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.sampledata.RSSFeedSampleData;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.WebTestUtils;
@@ -30,7 +29,6 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
-import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -64,16 +62,6 @@ public class FavoriteResourceTest extends SpringTest {
     }
 
     @Test
-    public void thatUnisportFavoriteIsSaved() throws Exception {
-        mockMvc.perform(post("/api/private/v1/favorites/unisport").with(securityContext(studentSecurityContext()))
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.id").value(any(Number.class)));
-    }
-
-    @Test
     public void thatFlammaNewsFavoriteIsSaved() throws Exception {
         mockMvc.perform(post("/api/private/v1/favorites/flamma/FLAMMA_NEWS").with(securityContext(studentSecurityContext()))
             .contentType(MediaType.APPLICATION_JSON)
@@ -99,31 +87,6 @@ public class FavoriteResourceTest extends SpringTest {
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    public void thatUnisportReservationsAreReturned() throws Exception {
-        unisportServer.expectAuthorization();
-        unisportServer.expectUserReservations();
-
-        mockMvc.perform(get("/api/private/v1/favorites/unisport").with(securityContext(studentSecurityContext()))
-            .cookie(langCookie(Language.FI))
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.events[2].name").value("Testikurssin tapahtuma"));
-    }
-
-    @Test
-    public void thatUnisportAuthorizationUrlIsReturned() throws Exception {
-        unisportServer.expectAuthorizationFailWith404();
-
-        mockMvc.perform(get("/api/private/v1/favorites/unisport").with(securityContext(teacherSecurityContext()))
-            .cookie(langCookie(Language.FI))
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$.authorizationUrl").value("https://unisport.fi/ext/opintoni/authorization"));
     }
 
     @Test

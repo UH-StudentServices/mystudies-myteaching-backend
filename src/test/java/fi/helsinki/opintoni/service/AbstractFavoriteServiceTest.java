@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.service;
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.FavoriteDto;
 import fi.helsinki.opintoni.dto.RssFavoriteDto;
-import fi.helsinki.opintoni.dto.UnisportFavoriteDto;
 import fi.helsinki.opintoni.service.favorite.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,11 +38,6 @@ abstract class AbstractFavoriteServiceTest extends SpringTest {
 
         RssFavoriteDto rssFavoriteDto = (RssFavoriteDto) dto;
         assertThat(rssFavoriteDto.url).isEqualTo(url);
-    }
-
-    protected final void assertUnisportFavorite(FavoriteDto dto, Long id) {
-        assertFavorite(dto, id, "UNISPORT");
-        assertThat(dto, instanceOf(UnisportFavoriteDto.class));
     }
 
     private void assertFavorite(FavoriteDto dto, Long id, String type) {
