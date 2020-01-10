@@ -86,3 +86,4 @@ First start docker containers for local dev PostgreSQL and redis
 Then run: `java -jar build/libs/app-{VERSION_NUMBER}-SNAPSHOT.jar --spring.profiles.active=local-dev`
 
 Replace VERSION_NUMBER with an actual version number present in the jar file name in `build/libs` directory.
+
