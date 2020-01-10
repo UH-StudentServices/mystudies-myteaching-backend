@@ -2167,4 +2167,11 @@
             </where>
         </update>
     </changeSet>
+
+    <changeSet id="OO-1452 remove unisport favorites" author="Joni Korhonen">
+        <sql>
+            delete from favorite where id in (select id from unisport_favorite);
+        </sql>
+        <dropTable tableName="unisport_favorite" />
+    </changeSet>
 </databaseChangeLog>

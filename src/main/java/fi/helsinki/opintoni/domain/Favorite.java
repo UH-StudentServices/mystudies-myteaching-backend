@@ -43,7 +43,6 @@ public class Favorite extends AbstractAuditingEntity implements Ownership {
         RSS,
         LINK,
         UNICAFE,
-        UNISPORT,
         FLAMMA_NEWS,
         FLAMMA_EVENTS
     }

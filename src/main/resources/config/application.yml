@@ -219,15 +219,6 @@ publicWww:
     base.url: https://www.helsinki.fi
     path: fi/feeds/filtered-news/rss/11405/all
 
-unisport:
-    base.url: https://beta.unisport.fi
-    tokenValidForSeconds: 10
-    jwt.service.implementation: expiring
-    client.implementation: mock
-    userAuthorizationUrl: http://yol-test.it.helsinki.fi/ext/opintoni/authorization
-
-unisportApiKey: foobar123
-
 search:
   maxSearchResults: 100
   maxCategoryResults: 10
