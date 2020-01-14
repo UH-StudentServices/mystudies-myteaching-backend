@@ -33,8 +33,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URLConnection;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping(value = RestConstants.PUBLIC_FILES_API_V1)
@@ -49,8 +51,8 @@ public class PublicFilesResource extends AbstractResource {
 
     @GetMapping("/{path}/{filename:.+}")
     public ResponseEntity<InputStreamResource> getFile(@PathVariable("path") String path,
-                                                       @PathVariable("filename") String filename) {
-        MediaType contentType = MediaType.valueOf(URLConnection.guessContentTypeFromName(filename));
+                                                       @PathVariable("filename") String filename) throws IOException {
+        MediaType contentType = MediaType.valueOf(Files.probeContentType(Paths.get(filename)));
         HttpHeaders headers = new HttpHeaders();
 
         FileServiceInOutStream inOutStream = profileFilesService.getFile(path, filename);
