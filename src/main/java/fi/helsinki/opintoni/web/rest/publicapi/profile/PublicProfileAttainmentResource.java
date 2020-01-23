@@ -27,9 +27,9 @@ import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -37,7 +37,7 @@ import java.util.Locale;
 
 @RestController
 @RequestMapping(
-    value = RestConstants.PUBLIC_API_V1_PROFILE + "/{profileId:" + RestConstants.MATCH_NUMBER + "}/attainment",
+    value = RestConstants.PUBLIC_API_V1_PROFILE,
     produces = WebConstants.APPLICATION_JSON_UTF8)
 @PublicVisibility(ProfileComponent.ATTAINMENTS)
 public class PublicProfileAttainmentResource extends AbstractResource {
@@ -49,10 +49,15 @@ public class PublicProfileAttainmentResource extends AbstractResource {
         this.studyAttainmentService = studyAttainmentService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = WebConstants.APPLICATION_JSON_UTF8)
+    @GetMapping("/{profileId:" + RestConstants.MATCH_NUMBER + "}/attainment")
     @Timed
     public ResponseEntity<List<StudyAttainmentDto>> getStudyAttainments(@PathVariable Long profileId, Locale locale) {
         return response(studyAttainmentService.getWhitelistedAttainmentsByProfileId(profileId, locale));
     }
 
+    @GetMapping("/{sharedLinkFragment:.*}/attainment")
+    @Timed
+    public ResponseEntity<List<StudyAttainmentDto>> getStudyAttainmentsWithSharedLink(@PathVariable String sharedLinkFragment, Locale locale) {
+        return response(studyAttainmentService.getWhiteListedAttainmentsBySharedLink(sharedLinkFragment, locale));
+    }
 }

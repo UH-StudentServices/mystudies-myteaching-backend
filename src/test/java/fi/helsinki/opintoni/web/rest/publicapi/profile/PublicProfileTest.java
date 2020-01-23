@@ -45,6 +45,12 @@ public abstract class PublicProfileTest extends AbstractProfileResourceTest {
 
     protected static final String PUBLIC_STUDENT_PROFILE_API_PATH = RestConstants.PUBLIC_API_V1 + "/profile/2";
 
+    protected static final String ACTIVE_SHARED_LINK = "/a3728b39-7099-4f8c-9413-da2817eeccf9";
+    protected static final String EXPIRED_SHARED_LINK = "/b2672af7-306f-43aa-ab3f-acbc6a41f47f";
+
+    protected static final String ACTIVE_SHARED_STUDENT_PROFILE_API_PATH = RestConstants.PUBLIC_API_V1 + "/profile" + ACTIVE_SHARED_LINK;
+    protected static final String EXPIRED_SHARED_STUDENT_PROFILE_API_PATH = RestConstants.PUBLIC_API_V1 + "/profile" + EXPIRED_SHARED_LINK;
+
     protected static final long STUDENT_PROFILE_ID = 2L;
     protected static final long TEACHER_PROFILE_ID = 4L;
 

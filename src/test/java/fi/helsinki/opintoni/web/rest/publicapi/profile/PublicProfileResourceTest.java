@@ -52,8 +52,6 @@ public class PublicProfileResourceTest extends PublicProfileTest {
     private static final String PUBLIC_FREE_TEXT_CONTENT_ITEM_INSTANCE_NAME = "4c024239-8dab-4ea0-a686-fe373b040f48";
 
     private static final String SHARED_LINK_PATH = "/profile/shared";
-    private static final String ACTIVE_SHARED_LINK = "/a3728b39-7099-4f8c-9413-da2817eeccf9";
-    private static final String EXPIRED_SHARED_LINK = "/b2672af7-306f-43aa-ab3f-acbc6a41f47f";
 
     @Autowired
     private UserSettingsService userSettingsService;

@@ -37,7 +37,7 @@ public class PublicProfileAttainmentResourceTest extends PublicProfileTest {
     public void thatAttainmentsAreReturned() throws Exception {
         defaultStudentRequestChain().roles().attainments();
 
-        mockMvc.perform(get(PUBLIC_STUDENT_PROFILE_API_PATH + "/attainment"))
+        mockMvc.perform(get(PUBLIC_STUDENT_PROFILE_API_PATH + ATTAINMENT))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(2)));
@@ -47,7 +47,7 @@ public class PublicProfileAttainmentResourceTest extends PublicProfileTest {
     public void thatGradesAreReturnedWhenConfigured() throws Exception {
         defaultStudentRequestChain().roles().attainments();
 
-        mockMvc.perform(get(PUBLIC_STUDENT_PROFILE_API_PATH + "/attainment"))
+        mockMvc.perform(get(PUBLIC_STUDENT_PROFILE_API_PATH + ATTAINMENT))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].grade").value(StudyAttainmentSampleData.GRADE));
     }
@@ -61,8 +61,24 @@ public class PublicProfileAttainmentResourceTest extends PublicProfileTest {
 
         defaultStudentRequestChain().roles().attainments();
 
-        mockMvc.perform(get(PUBLIC_STUDENT_PROFILE_API_PATH + "/attainment"))
+        mockMvc.perform(get(PUBLIC_STUDENT_PROFILE_API_PATH + ATTAINMENT))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].grade").isEmpty());
+    }
+
+    @Test
+    public void thatSharedProfileWhitelistedAttainmentsAreFound() throws Exception {
+        defaultStudentRequestChain().roles().attainments();
+
+        mockMvc.perform(get(ACTIVE_SHARED_STUDENT_PROFILE_API_PATH + ATTAINMENT))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    public void thatSharedProfileWhitelistedAttainmentsAreNotFoundWithExpiredLink() throws Exception {
+        mockMvc.perform(get(EXPIRED_SHARED_STUDENT_PROFILE_API_PATH + ATTAINMENT))
+            .andExpect(status().isNotFound());
     }
 }
