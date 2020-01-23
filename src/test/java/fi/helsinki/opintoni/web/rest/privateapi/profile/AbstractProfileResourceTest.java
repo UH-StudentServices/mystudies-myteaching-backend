@@ -42,6 +42,7 @@ public abstract class AbstractProfileResourceTest extends SpringTest {
     protected static final String ABSOLUTE_PUBLIC_API_PATH = ABSOLUTE_BASE_URL + RestConstants.PUBLIC_API_V1;
     protected static final String ABSOLUTE_RESTRICTED_API_PATH = ABSOLUTE_BASE_URL + RestConstants.RESTRICTED_API_V1;
     protected static final String PROFILE_IMAGE = "/profile-image";
+    protected static final String ATTAINMENT = "/attainment";
 
     private static final String EMPLOYEE_NUMBER = "010540";
 

@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.domain.profile.StudyAttainmentWhitelist;
 import fi.helsinki.opintoni.dto.StudyAttainmentDto;
 import fi.helsinki.opintoni.integration.studyregistry.StudyAttainment;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
+import fi.helsinki.opintoni.repository.profile.ProfileSharedLinkRepository;
 import fi.helsinki.opintoni.service.converter.StudyAttainmentConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,14 +36,17 @@ import java.util.stream.Collectors;
 @Service
 public class StudyAttainmentService {
 
+    private final ProfileSharedLinkRepository profileSharedLinkRepository;
     private final StudyRegistryService studyRegistryService;
     private final StudyAttainmentConverter studyAttainmentConverter;
     private final StudyAttainmentTransactionalService studyAttainmentTransactionalService;
 
     @Autowired
-    public StudyAttainmentService(StudyRegistryService studyRegistryService,
+    public StudyAttainmentService(ProfileSharedLinkRepository profileSharedLinkRepository,
+                                  StudyRegistryService studyRegistryService,
                                   StudyAttainmentConverter studyAttainmentConverter,
                                   StudyAttainmentTransactionalService studyAttainmentTransactionalService) {
+        this.profileSharedLinkRepository = profileSharedLinkRepository;
         this.studyRegistryService = studyRegistryService;
         this.studyAttainmentConverter = studyAttainmentConverter;
         this.studyAttainmentTransactionalService = studyAttainmentTransactionalService;
@@ -52,7 +56,19 @@ public class StudyAttainmentService {
         return s1.attainmentDate.compareTo(s2.attainmentDate);
     }
 
+    public List<StudyAttainmentDto> getWhiteListedAttainmentsBySharedLink(String sharedLinkFragment, Locale locale) {
+        Long profileId = profileSharedLinkRepository.findBySharedPathFragment(sharedLinkFragment)
+            .map(sharedLink -> sharedLink.isActive() ? sharedLink.profile.id : null)
+            .orElse(null);
+
+        return getWhitelistedAttainmentsByProfileId(profileId, locale);
+    }
+
     public List<StudyAttainmentDto> getWhitelistedAttainmentsByProfileId(Long profileId, Locale locale) {
+        if (profileId == null) {
+            return Lists.newArrayList();
+        }
+
         Profile profile = studyAttainmentTransactionalService.findProfile(profileId);
         return studyAttainmentTransactionalService.findByProfileId(profileId)
             .map(whitelist -> {
