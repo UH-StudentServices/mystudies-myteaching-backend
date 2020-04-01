@@ -28,15 +28,13 @@ The following directories must exist on host machine
 For local development:
 
 ```
-cd docker/local-dev
-docker-compose up
+docker-compose  -f docker/local-dev/docker-compose.yml up
 ```
 
 For local test runs:
 
 ```
-cd docker/local-test
-docker-compose up
+docker-compose  -f docker/local-test/docker-compose.yml up
 ```
 
 ### Obar integration

@@ -2174,4 +2174,12 @@
         </sql>
         <dropTable tableName="unisport_favorite" />
     </changeSet>
+
+    <changeSet id="OO-1465" author="Tero">
+        <createIndex indexName="idx_localization_localized_text_id"
+                     tableName="localization"
+                     unique="false">
+            <column name="localized_text_id" />
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>
