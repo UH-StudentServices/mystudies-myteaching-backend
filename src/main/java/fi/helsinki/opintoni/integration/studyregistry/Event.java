@@ -44,4 +44,6 @@ public class Event {
     public boolean isCancelled;
 
     public OptimeExtras optimeExtras;
+
+    public boolean isHidden;
 }

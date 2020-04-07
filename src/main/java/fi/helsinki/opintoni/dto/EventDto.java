@@ -53,6 +53,7 @@ public class EventDto implements Comparable<EventDto> {
     public final boolean hasMaterial;
     public final OptimeExtrasDto optimeExtras;
     public final String uid;
+    public final boolean isHidden;
 
     EventDto(Type type,
              Source source,
@@ -68,7 +69,8 @@ public class EventDto implements Comparable<EventDto> {
              boolean hasMaterial,
              List<LocationDto> locations,
              OptimeExtrasDto optimeExtras,
-             String uid) {
+             String uid,
+             boolean isHidden) {
         this.type = type;
         this.source = source;
         this.realisationId = realisationId;
@@ -84,6 +86,7 @@ public class EventDto implements Comparable<EventDto> {
         this.locations = locations;
         this.optimeExtras = optimeExtras;
         this.uid = uid;
+        this.isHidden = isHidden;
     }
 
     @Override
@@ -97,6 +100,7 @@ public class EventDto implements Comparable<EventDto> {
             .append("courseImageUri", courseImageUri)
             .append("moodleUri", moodleUri)
             .append("hasMaterial", hasMaterial)
+            .append("isHidden", isHidden)
             .toString();
     }
 

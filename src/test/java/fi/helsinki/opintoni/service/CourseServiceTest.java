@@ -63,6 +63,17 @@ public class CourseServiceTest extends SpringTest {
     }
 
     @Test
+    public void thatTeacherCourseDtosHaveHiddenField() {
+        expectTeacherCourses();
+
+        Set<CourseDto> courseDtos = courseService
+            .getCourses(Optional.empty(), Optional.of(TestConstants.EMPLOYEE_NUMBER), DEFAULT_USER_LOCALE);
+
+        assertThat(courseDtos).hasSize(3);
+        assertThat(courseDtos.stream().filter(courseDto -> courseDto.isHidden).count()).isEqualTo(1);
+    }
+
+    @Test
     public void thatStudentAndTeacherCourseDtosAreFetched() {
         expectTeacherCourses();
         expectStudentCourses();

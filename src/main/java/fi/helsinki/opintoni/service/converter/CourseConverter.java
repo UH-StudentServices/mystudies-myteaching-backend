@@ -76,7 +76,6 @@ public class CourseConverter {
                 coursePageUriBuilder.getImageUri(coursePage),
                 coursePage.url,
                 courseMaterialDtoFactory.fromCoursePage(coursePage),
-                enrollment.webOodiUri,
                 enrollment.startDate,
                 enrollment.endDate,
                 enrollment.realisationId,
@@ -87,6 +86,7 @@ public class CourseConverter {
                     .stream().map(t -> t.name).collect(Collectors.toList()),
                 eventTypeResolver.isExam(enrollment.typeCode),
                 enrollment.isCancelled,
+                enrollment.isHidden,
                 null);
 
         }
@@ -111,7 +111,6 @@ public class CourseConverter {
                 coursePageUriBuilder.getImageUri(coursePage),
                 coursePage.url,
                 courseMaterialDtoFactory.fromCoursePage(coursePage),
-                teacherCourse.webOodiUri,
                 teacherCourse.startDate,
                 teacherCourse.endDate,
                 teacherCourse.realisationId,
@@ -121,6 +120,7 @@ public class CourseConverter {
                 Lists.newArrayList(),
                 eventTypeResolver.isExam(teacherCourse.realisationTypeCode),
                 teacherCourse.isCancelled,
+                teacherCourse.isHidden,
                 teacherCourse.teacherRole);
         }
         return Optional.ofNullable(dto);

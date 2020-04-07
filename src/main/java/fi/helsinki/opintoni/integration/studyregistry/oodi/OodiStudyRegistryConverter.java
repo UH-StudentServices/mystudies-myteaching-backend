@@ -40,13 +40,13 @@ public class OodiStudyRegistryConverter {
         enrollment.credits = oodiEnrollment.credits;
         enrollment.typeCode = oodiEnrollment.typeCode;
         enrollment.rootId = oodiEnrollment.rootId;
-        enrollment.webOodiUri = oodiEnrollment.webOodiUri;
         enrollment.endDate = oodiEnrollment.endDate;
         enrollment.isCancelled = oodiEnrollment.isCancelled;
         enrollment.learningOpportunityId = oodiEnrollment.learningOpportunityId;
         enrollment.name = oodiLocalizedValuesToLocalizedTexts(oodiEnrollment.name);
         enrollment.parentId = oodiEnrollment.parentId;
         enrollment.position = oodiEnrollment.position;
+        enrollment.isHidden = oodiEnrollment.isHidden;
         enrollment.realisationId = oodiEnrollment.realisationId;
         enrollment.startDate = oodiEnrollment.startDate;
 
@@ -66,6 +66,7 @@ public class OodiStudyRegistryConverter {
         event.realisationName = oodiLocalizedValuesToLocalizedTexts(oodiEvent.realisationName);
         event.realisationRootName = oodiLocalizedValuesToLocalizedTexts(oodiEvent.realisationRootName);
         event.typeCode = oodiEvent.typeCode;
+        event.isHidden = oodiEvent.isHidden;
 
         return event;
     }
@@ -89,8 +90,8 @@ public class OodiStudyRegistryConverter {
         teacherCourse.realisationTypeCode = oodiTeacherCourse.realisationTypeCode;
         teacherCourse.realisationRootName = oodiLocalizedValuesToLocalizedTexts(oodiTeacherCourse.realisationRootName);
         teacherCourse.teacherRole = oodiTeacherCourse.teacherRole;
-        teacherCourse.webOodiUri = oodiTeacherCourse.webOodiUri;
         teacherCourse.endDate = oodiTeacherCourse.endDate;
+        teacherCourse.isHidden = oodiTeacherCourse.isHidden;
         teacherCourse.isCancelled = oodiTeacherCourse.isCancelled;
         teacherCourse.learningOpportunityId = oodiTeacherCourse.learningOpportunityId;
         teacherCourse.name = oodiLocalizedValuesToLocalizedTexts(oodiTeacherCourse.realisationName);

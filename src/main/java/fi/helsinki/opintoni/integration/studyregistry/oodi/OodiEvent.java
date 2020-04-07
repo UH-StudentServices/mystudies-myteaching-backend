@@ -62,4 +62,7 @@ public class OodiEvent {
 
     @JsonProperty("optimeExtras")
     public OptimeExtras optimeExtras;
+
+    @JsonProperty("hidden")
+    public boolean isHidden;
 }

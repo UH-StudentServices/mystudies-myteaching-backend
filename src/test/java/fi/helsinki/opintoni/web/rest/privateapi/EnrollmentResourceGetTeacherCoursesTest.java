@@ -58,7 +58,6 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[0].endDate[2]").value(27))
             .andExpect(jsonPath("$[0].endDate[3]").value(0))
             .andExpect(jsonPath("$[0].endDate[4]").value(0))
-            .andExpect(jsonPath("$[0].webOodiUri").value("https://weboodi.helsinki.fi/"))
             .andExpect(jsonPath("$[0].isExam").value(false))
             .andExpect(jsonPath("$[0].isCancelled").value(false))
             .andExpect(jsonPath("$[0].realisationId").value(ROOT_REALISATION_ID))
@@ -68,7 +67,9 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[1].isExam").value(true))
             .andExpect(jsonPath("$[1].isCancelled").value(true))
             .andExpect(jsonPath("$[1].parentId").value(PARENT_REALISATION_ID))
-            .andExpect(jsonPath("$[2].name").value(STUDY_GROUP_WITHOUT_PARENT_TITLE));
+            .andExpect(jsonPath("$[1].isHidden").value(false))
+            .andExpect(jsonPath("$[2].name").value(STUDY_GROUP_WITHOUT_PARENT_TITLE))
+            .andExpect(jsonPath("$[2].isHidden").value(true));
     }
 
     private void expectTeacherCourses() {

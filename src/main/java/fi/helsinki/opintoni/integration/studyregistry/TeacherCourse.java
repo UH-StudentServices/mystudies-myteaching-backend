@@ -24,8 +24,6 @@ import java.util.List;
 public class TeacherCourse extends CourseRealisation {
     public List<LocalizedText> realisationName = Lists.newArrayList();
 
-    public String webOodiUri;
-
     public Integer realisationTypeCode;
 
     public String rootId;

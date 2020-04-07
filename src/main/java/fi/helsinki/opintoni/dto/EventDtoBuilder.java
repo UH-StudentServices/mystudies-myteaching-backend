@@ -38,6 +38,7 @@ public class EventDtoBuilder {
     private List<LocationDto> locations;
     private OptimeExtrasDto optimeExtras;
     private String uid;
+    private boolean isHidden;
 
     public EventDtoBuilder() {
     }
@@ -117,9 +118,14 @@ public class EventDtoBuilder {
         return this;
     }
 
+    public EventDtoBuilder setHidden(boolean isHidden) {
+        this.isHidden = isHidden;
+        return this;
+    }
+
     public EventDto createEventDto() {
         return new EventDto(
-            type, 
+            type,
             source,
             startDate,
             endDate,
@@ -133,6 +139,7 @@ public class EventDtoBuilder {
             hasMaterial,
             locations,
             optimeExtras,
-            uid);
+            uid,
+            isHidden);
     }
 }

@@ -33,7 +33,6 @@ public class CourseDto {
     public final String imageUri;
     public final String coursePageUri;
     public final CourseMaterialDto courseMaterial;
-    public final String webOodiUri;
     public final LocalDateTime startDate;
     public final LocalDateTime endDate;
     public final String realisationId;
@@ -43,6 +42,7 @@ public class CourseDto {
     public final List<String> teachers;
     public final boolean isExam;
     public final boolean isCancelled;
+    public final boolean isHidden;
     public final String teacherRole;
 
     public CourseDto(String code,
@@ -51,7 +51,6 @@ public class CourseDto {
                      String imageUri,
                      String coursePageUri,
                      CourseMaterialDto courseMaterial,
-                     String webOodiUri,
                      LocalDateTime startDate,
                      LocalDateTime endDate,
                      String realisationId,
@@ -61,6 +60,7 @@ public class CourseDto {
                      List<String> teachers,
                      boolean isExam,
                      boolean isCancelled,
+                     boolean isHidden,
                      String teacherRole) {
         this.typeCode = typeCode;
         this.code = code;
@@ -68,7 +68,6 @@ public class CourseDto {
         this.imageUri = imageUri;
         this.coursePageUri = coursePageUri;
         this.courseMaterial = courseMaterial;
-        this.webOodiUri = webOodiUri;
         this.startDate = startDate;
         this.endDate = endDate;
         this.realisationId = realisationId;
@@ -78,6 +77,7 @@ public class CourseDto {
         this.teachers = teachers;
         this.isExam = isExam;
         this.isCancelled = isCancelled;
+        this.isHidden = isHidden;
         this.teacherRole = teacherRole;
     }
 
@@ -90,7 +90,6 @@ public class CourseDto {
             .append("imageUri", imageUri)
             .append("coursePageUri", coursePageUri)
             .append("courseMaterial", courseMaterial)
-            .append("webOodiUri", webOodiUri)
             .append("startDate", startDate)
             .append("endDate", endDate)
             .append("realisationId", realisationId)
@@ -99,6 +98,7 @@ public class CourseDto {
             .append("teachers", teachers.stream().collect(Collectors.joining(", ")))
             .append("isExam", isExam)
             .append("isCancelled", isCancelled)
+            .append("isHidden", isHidden)
             .append("teacherRole", teacherRole)
             .toString();
     }

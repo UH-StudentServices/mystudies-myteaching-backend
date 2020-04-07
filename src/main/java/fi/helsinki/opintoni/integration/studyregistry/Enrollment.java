@@ -22,7 +22,5 @@ public class Enrollment extends CourseRealisation {
 
     public Integer typeCode;
 
-    public String webOodiUri;
-
     public String rootId;
 }

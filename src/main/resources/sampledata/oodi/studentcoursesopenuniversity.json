@@ -25,7 +25,10 @@
       "course_id": 123456789,
       "type_code": 5,
       "image_uri": null,
-      "weboodi_uri": "https://weboodi.helsinki.fi",
+      "hidden": false,
+      "weboodi_uri_en": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=6&avattavaSivu=opettaptied&OpetTap=123456789",
+      "weboodi_uri_fi": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=1&avattavaSivu=opettaptied&OpetTap=123456789",
+      "weboodi_uri_sv": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=2&avattavaSivu=opettaptied&OpetTap=123456789",
       "learningopportunity_id": "A52736",
       "cancelled": false,
       "position": "root"

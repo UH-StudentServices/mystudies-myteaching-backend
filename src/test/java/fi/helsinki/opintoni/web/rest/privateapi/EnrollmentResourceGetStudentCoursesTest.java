@@ -105,7 +105,6 @@ public class EnrollmentResourceGetStudentCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[0].endDate[2]").value(4))
             .andExpect(jsonPath("$[0].endDate[3]").value(0))
             .andExpect(jsonPath("$[0].endDate[4]").value(0))
-            .andExpect(jsonPath("$[0].webOodiUri").value("https://weboodi.helsinki.fi"))
             .andExpect(jsonPath("$[0].courseMaterial.courseMaterialUri").value(expectedCourseMaterialUri))
             .andExpect(jsonPath("$[0].courseMaterial.courseMaterialType").value(expectedCourseMaterialType.toString()))
             .andExpect(jsonPath("$[0].teachers[0]").value("Rantala Kari A"))

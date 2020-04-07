@@ -27,9 +27,6 @@ public class OodiTeacherCourse extends OodiCourseUnitRealisation {
     @JsonProperty("realisation_name")
     public List<OodiLocalizedValue> realisationName = Lists.newArrayList();
 
-    @JsonProperty("weboodi_uri")
-    public String webOodiUri;
-
     @JsonProperty("realisation_type_code")
     public Integer realisationTypeCode;
 
