@@ -46,4 +46,7 @@ public class OodiCourseUnitRealisation {
 
     @JsonProperty("position")
     public String position;
+
+    @JsonProperty("hidden")
+    public boolean isHidden;
 }

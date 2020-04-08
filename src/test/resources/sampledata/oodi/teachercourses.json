@@ -17,25 +17,36 @@
           "text": "Formulation III"
         }
       ],
-      "show_students": 1,
+      "realisation_root_name": [
+        {
+          "langcode": "fi",
+          "text": "Formulointi III"
+        },
+        {
+          "langcode": "sv",
+          "text": "Formulering III"
+        },
+        {
+          "langcode": "en",
+          "text": "Formulation III"
+        }
+      ],
       "realisation_type_code": 17,
       "enroll_end_date": "2015-10-19T20:59:00.000Z",
       "enroll_start_date": "2015-09-18T12:00:00.000Z",
-      "faculty_code": "H10",
       "teacher_role_code": 3,
       "end_date": "2016-04-26T21:00:00.000Z",
       "start_date": "2015-10-25T22:00:00.000Z",
       "credits": 10,
-      "organisation_name": "Eksegetiikka",
-      "show_hierarchy": 1,
       "course_id": 99903629,
       "parent_id": null,
       "root_id": 99903629,
-      "image_uri": null,
-      "weboodi_uri": "https://weboodi.helsinki.fi/",
+      "hidden": false,
+      "weboodi_uri_en": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=6&avattavaSivu=opettaptied&OpetTap=99903629",
+      "weboodi_uri_fi": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=1&avattavaSivu=opettaptied&OpetTap=99903629",
+      "weboodi_uri_sv": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=2&avattavaSivu=opettaptied&OpetTap=99903629",
       "learningopportunity_id": "10440",
       "teacher_id": "010540",
-      "organisation_code": "H1001",
       "teacher_role": "official",
       "cancelled": false,
       "position": "root"
@@ -55,25 +66,36 @@
           "text": "Formulation III practice"
         }
       ],
-      "show_students": 1,
+      "realisation_root_name": [
+        {
+          "langcode": "fi",
+          "text": "Formulointi III"
+        },
+        {
+          "langcode": "sv",
+          "text": "Formulering III"
+        },
+        {
+          "langcode": "en",
+          "text": "Formulation III"
+        }
+      ],
       "realisation_type_code": 27,
       "enroll_end_date": "2016-03-19T20:59:00.000Z",
       "enroll_start_date": "2016-09-18T12:00:00.000Z",
-      "faculty_code": "H10",
       "teacher_role_code": 3,
       "end_date": "2016-04-26T21:00:00.000Z",
       "start_date": "2015-10-25T22:00:00.000Z",
       "credits": 10,
-      "organisation_name": "Eksegetiikka",
-      "show_hierarchy": 1,
       "course_id": 99903628,
       "parent_id": 99903630,
       "root_id": 99903629,
-      "image_uri": null,
-      "weboodi_uri": "https://weboodi.helsinki.fi/",
+      "hidden": false,
+      "weboodi_uri_en": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=6&avattavaSivu=opettaptied&OpetTap=99903628",
+      "weboodi_uri_fi": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=1&avattavaSivu=opettaptied&OpetTap=99903628",
+      "weboodi_uri_sv": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=2&avattavaSivu=opettaptied&OpetTap=99903628",
       "learningopportunity_id": "10442",
       "teacher_id": "010540",
-      "organisation_code": "H1003",
       "cancelled": true,
       "position": "studygroup"
     },
@@ -92,25 +114,36 @@
           "text": "Formulation III studygroupset"
         }
       ],
-      "show_students": 1,
+      "realisation_root_name": [
+        {
+          "langcode": "fi",
+          "text": "Formulointi III"
+        },
+        {
+          "langcode": "sv",
+          "text": "Formulering III"
+        },
+        {
+          "langcode": "en",
+          "text": "Formulation III"
+        }
+      ],
       "realisation_type_code": 27,
       "enroll_end_date": "2016-03-19T20:59:00.000Z",
       "enroll_start_date": "2016-09-18T12:00:00.000Z",
-      "faculty_code": "H10",
       "teacher_role_code": 3,
       "end_date": "2016-04-26T21:00:00.000Z",
       "start_date": "2015-10-25T22:00:00.000Z",
       "credits": 10,
-      "organisation_name": "Eksegetiikka",
-      "show_hierarchy": 1,
       "course_id": 99903630,
       "parent_id": 99903629,
       "root_id": 99903629,
-      "image_uri": null,
-      "weboodi_uri": "https://weboodi.helsinki.fi/",
+      "hidden": false,
+      "weboodi_uri_en": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=6&avattavaSivu=opettaptied&OpetTap=99903630",
+      "weboodi_uri_fi": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=1&avattavaSivu=opettaptied&OpetTap=99903630",
+      "weboodi_uri_sv": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=2&avattavaSivu=opettaptied&OpetTap=99903630",
       "learningopportunity_id": "10442",
       "teacher_id": "010540",
-      "organisation_code": "H1003",
       "cancelled": false,
       "position": "studygroupset"
     },
@@ -130,6 +163,7 @@
       "realisation_type_code": 17,
       "end_date": "2030-04-26T21:00:00.000Z",
       "start_date": "2015-10-25T22:00:00.000Z",
+      "hidden": true,
       "course_id": 1234567,
       "parent_id": 7654321,
       "root_id": 7654321,

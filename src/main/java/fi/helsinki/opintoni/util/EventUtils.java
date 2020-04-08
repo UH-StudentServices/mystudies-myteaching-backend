@@ -45,6 +45,7 @@ public class EventUtils {
                 .setHasMaterial(a.hasMaterial)
                 .setLocations(Stream.concat(a.locations.stream(), b.locations.stream()).collect(Collectors.toList()))
                 .setOptimeExtras(a.optimeExtras != null ? a.optimeExtras : b.optimeExtras)
+                .setHidden(a.isHidden || b.isHidden)
                 .createEventDto())).values().stream()
             .sorted()
             .collect(Collectors.toList());

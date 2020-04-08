@@ -38,4 +38,6 @@ public class CourseRealisation {
     public boolean isCancelled;
 
     public String position;
+
+    public boolean isHidden;
 }

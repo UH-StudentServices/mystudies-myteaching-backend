@@ -123,6 +123,7 @@ public class EventConverter {
             .setLocations(locationResolver.getLocations(event))
             .setOptimeExtras(event.optimeExtras == null ? null :
                 new OptimeExtrasDto(event.optimeExtras.otherNotes, event.optimeExtras.staffNotes))
+            .setHidden(event.isHidden)
             .createEventDto();
     }
 
