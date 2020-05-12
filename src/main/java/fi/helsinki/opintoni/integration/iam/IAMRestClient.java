@@ -37,7 +37,7 @@ public class IAMRestClient implements IAMClient {
 
     @Override
     public Optional<AccountStatus> getAccountStatus(String username) {
-        String url = String.join("/ ", baseUrl, username, "status");
+        String url = String.join("/", baseUrl, "account", username, "status");
         try {
             return Optional.ofNullable(restTemplate.getForObject(url, AccountStatus.class));
         } catch (Exception e) {

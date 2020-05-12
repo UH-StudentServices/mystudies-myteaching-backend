@@ -88,6 +88,8 @@ public class InactiveUserCleaner {
     public void cleanInactiveUsers() {
         log.info("Start cleaning of inactive users from DB");
         findInactiveUsers().forEach(this::processUser);
+        log.info("Cleaning of inactive users from DB completed");
+
     }
 
     public List<User> findInactiveUsers() {
