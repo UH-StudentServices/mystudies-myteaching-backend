@@ -17,3 +17,10 @@ log/
 .vagrant/
 
 ci-deploy.properties
+
+# vsc
+.classpath
+.project
+.settings/
+.vscode/
+bin/
