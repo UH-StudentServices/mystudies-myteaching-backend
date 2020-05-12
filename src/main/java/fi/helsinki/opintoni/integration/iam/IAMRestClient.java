@@ -41,7 +41,7 @@ public class IAMRestClient implements IAMClient {
         try {
             return Optional.ofNullable(restTemplate.getForObject(url, AccountStatus.class));
         } catch (Exception e) {
-            log.error("IAM status request failed", e);
+            log.error("IAM status request failed: {}", e.getMessage());
             return Optional.empty();
         }
     }

@@ -104,7 +104,7 @@ public class InactiveUserCleaner {
                 updateAccountActiveUntilDate(user, status);
             }
         } catch (Exception e) {
-            log.error("Processing user {} failed", user.id, e);
+            log.error("Processing user {} failed: {}", user.id, e.getMessage());
         }
     }
 
