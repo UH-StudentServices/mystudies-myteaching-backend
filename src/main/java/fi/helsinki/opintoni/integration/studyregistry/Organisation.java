@@ -17,30 +17,18 @@
 
 package fi.helsinki.opintoni.integration.studyregistry;
 
-import com.google.common.collect.Lists;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseRealisation {
-    public List<LocalizedText> name = Lists.newArrayList();
+public class Organisation {
 
-    public String learningOpportunityId;
+    public String code;
+    public List<LocalizedText> name = new ArrayList<>();
 
-    public LocalDateTime endDate;
+    public Organisation() {}
 
-    public LocalDateTime startDate;
-
-    public String realisationId;
-
-    public String parentId;
-
-    public boolean isCancelled;
-
-    public String position;
-
-    public boolean isHidden;
-
-    public List<Organisation> organisations = new ArrayList<>();
+    public Organisation(String code, List<LocalizedText> name) {
+        this.code = code;
+        this.name = name;
+    }
 }

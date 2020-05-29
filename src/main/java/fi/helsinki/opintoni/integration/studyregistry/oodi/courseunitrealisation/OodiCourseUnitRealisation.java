@@ -22,6 +22,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import fi.helsinki.opintoni.util.LocalDateTimeDeserializer;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OodiCourseUnitRealisation {
     @JsonProperty("learningopportunity_id")
@@ -49,4 +51,7 @@ public class OodiCourseUnitRealisation {
 
     @JsonProperty("hidden")
     public boolean isHidden;
+
+    @JsonProperty("organisations")
+    public List<OodiOrganisation> organisations = new ArrayList<>();
 }

@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.integration.studyregistry.oodi;
 import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.integration.studyregistry.LocalizedText;
+import fi.helsinki.opintoni.integration.studyregistry.Organisation;
 import fi.helsinki.opintoni.integration.studyregistry.Person;
 import fi.helsinki.opintoni.integration.studyregistry.StudyAttainment;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryLocale;
@@ -30,7 +31,8 @@ import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Component
 public class OodiStudyRegistryConverter {
@@ -49,6 +51,9 @@ public class OodiStudyRegistryConverter {
         enrollment.isHidden = oodiEnrollment.isHidden;
         enrollment.realisationId = oodiEnrollment.realisationId;
         enrollment.startDate = oodiEnrollment.startDate;
+        enrollment.organisations = oodiEnrollment.organisations.stream()
+            .map(org -> new Organisation(org.code, oodiLocalizedValuesToLocalizedTexts(org.name)))
+            .collect(toList());
 
         return enrollment;
     }
@@ -100,6 +105,9 @@ public class OodiStudyRegistryConverter {
         teacherCourse.realisationId = oodiTeacherCourse.realisationId;
         teacherCourse.startDate = oodiTeacherCourse.startDate;
         teacherCourse.endDate = oodiTeacherCourse.endDate;
+        teacherCourse.organisations = oodiTeacherCourse.organisations.stream()
+            .map(org -> new Organisation(org.code, oodiLocalizedValuesToLocalizedTexts(org.name)))
+            .collect(toList());
 
         return teacherCourse;
     }
@@ -119,7 +127,7 @@ public class OodiStudyRegistryConverter {
             teacher.name = oodiCourseUnitRealisationTeacher.fullName;
 
             return teacher;
-        }).collect(Collectors.toList());
+        }).collect(toList());
     }
 
     public Person oodiRolesToPerson(OodiRoles oodiRoles) {
@@ -136,7 +144,7 @@ public class OodiStudyRegistryConverter {
             teacher.name = oodiTeacher.shortName;
 
             return teacher;
-        }).collect(Collectors.toList());
+        }).collect(toList());
     }
 
     private List<LocalizedText> oodiLocalizedValuesToLocalizedTexts(List<OodiLocalizedValue> oodiLocalizedValues) {
@@ -145,7 +153,7 @@ public class OodiStudyRegistryConverter {
             localizedText.text = oodiLocalizedValue.text;
             localizedText.langcode = oodiLocaleToStudyRegistryLocale(oodiLocalizedValue.langcode);
             return localizedText;
-        }).collect(Collectors.toList());
+        }).collect(toList());
     }
 
     private StudyRegistryLocale oodiLocaleToStudyRegistryLocale(OodiLocale oodiLocale) {

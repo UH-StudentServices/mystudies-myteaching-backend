@@ -15,32 +15,15 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.studyregistry;
+package fi.helsinki.opintoni.integration.coursecms;
 
-import com.google.common.collect.Lists;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class CourseRealisation {
-    public List<LocalizedText> name = Lists.newArrayList();
+public interface CourseCmsClient {
 
-    public String learningOpportunityId;
+    CourseCmsCourseUnitRealisation getCoursePage(String curId, Locale locale);
 
-    public LocalDateTime endDate;
+    List<CourseCmsCourseUnitRealisation> getCoursePages(List<String> curIds, Locale locale);
 
-    public LocalDateTime startDate;
-
-    public String realisationId;
-
-    public String parentId;
-
-    public boolean isCancelled;
-
-    public String position;
-
-    public boolean isHidden;
-
-    public List<Organisation> organisations = new ArrayList<>();
 }

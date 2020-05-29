@@ -15,8 +15,32 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.studyregistry.sisu;
+package fi.helsinki.opintoni.integration.coursecms;
 
-public class Constants {
-    public static final String SISU_PRIVATE_PERSON_ID_PREFIX = "hy-hlo-";
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.List;
+
+public class CourseCmsResponseWrapper {
+
+    @JsonProperty("data")
+    List<CourseCmsCourseUnitRealisation> data;
+    @JsonProperty("errors")
+    List<CmsResponseError> errors;
+
+    public static class CmsResponseError {
+        public String title;
+        public String status;
+        public String detail;
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this)
+                .append("title", title)
+                .append("status", status)
+                .append("detail", detail)
+                .toString();
+        }
+    }
 }

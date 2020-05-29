@@ -18,7 +18,9 @@
 package fi.helsinki.opintoni.util;
 
 import fi.helsinki.opintoni.dto.profile.CourseMaterialDto;
+import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -44,6 +46,16 @@ public class CourseMaterialDtoFactory {
             return new CourseMaterialDto(coursePage.wikiUrl, WIKI);
         } else if (coursePage.hasMaterial && coursePage.url != null) {
             return new CourseMaterialDto(coursePageUriBuilder.getMaterialUri(coursePage), COURSE_PAGE);
+        } else {
+            return null;
+        }
+    }
+
+    public CourseMaterialDto fromCoursePage(CourseCmsCourseUnitRealisation coursePage) {
+        if (coursePage == null) {
+            return null;
+        } else if (coursePage.moodleLink != null && StringUtils.isNotBlank(coursePage.moodleLink.uri)) {
+            return new CourseMaterialDto(coursePage.moodleLink.uri, MOODLE);
         } else {
             return null;
         }

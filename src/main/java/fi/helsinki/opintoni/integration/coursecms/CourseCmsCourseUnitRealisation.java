@@ -15,32 +15,21 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.studyregistry;
+package fi.helsinki.opintoni.integration.coursecms;
 
-import com.google.common.collect.Lists;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 
-public class CourseRealisation {
-    public List<LocalizedText> name = Lists.newArrayList();
+public class CourseCmsCourseUnitRealisation implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-    public String learningOpportunityId;
-
-    public LocalDateTime endDate;
-
-    public LocalDateTime startDate;
-
-    public String realisationId;
-
-    public String parentId;
-
-    public boolean isCancelled;
-
-    public String position;
-
-    public boolean isHidden;
-
-    public List<Organisation> organisations = new ArrayList<>();
+    @JsonProperty("field_course_unit_realisation_id")
+    public String courseUnitRealisationId;
+    @JsonProperty("field_introduction_title")
+    public String name;
+    @JsonProperty("field_image")
+    public CourseCmsFile courseImage;
+    @JsonProperty("field_moodle_link")
+    public CourseCmsLink moodleLink;
 }

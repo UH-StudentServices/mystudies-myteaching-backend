@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.integration.coursepage;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
@@ -52,7 +53,7 @@ public class CoursePageMockClient implements CoursePageClient {
             return new CoursePageCourseImplementation();
         }
 
-        Resource courses = "123456789".equals(courseImplementationId) ? course1 : course2;
+        Resource courses = StringUtils.equalsAny(courseImplementationId, "123456789", "345678912") ? course1 : course2;
         CoursePageCourseImplementation course = getResponse(courses, new TypeReference<List<CoursePageCourseImplementation>>() {
         }).get(0);
 

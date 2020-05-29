@@ -28,6 +28,8 @@ public class CacheConstants {
     public static final String TEACHER_EVENTS = "teacherEvents";
     public static final String TEACHER_COURSES = "teacherCourses";
 
+    public static final String COURSE_CMS = "courseCms";
+
     public static final String COURSE_PAGE = "coursePage";
 
     public static final String GUIDE_DEGREE_PROGRAMMES = "guideDegreeProgrammes";
@@ -72,6 +74,7 @@ public class CacheConstants {
         .add(GUIDE_PROGRAMME_NEWS)
         .add(STUDY_ATTAINMENTS)
         .add(STUDY_RIGHTS)
+        .add(COURSE_CMS)
         .build();
 
     public static final ImmutableSet<String> PERSISTENT_CACHE_NAMES = ImmutableSet.<String>builder()
