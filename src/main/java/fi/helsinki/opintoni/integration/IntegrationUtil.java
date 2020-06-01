@@ -21,20 +21,20 @@ import org.apache.commons.lang3.StringUtils;
 
 public final class IntegrationUtil {
 
-    public static final String SISU_OODI_COURSE_UNIT_REALISATION_ID_PREFIX = "hy-cur-";
-    public static final String SISU_OPTIME_COURSE_UNIT_REALISATION_PREFIX = "hy-opt-cur-";
-    public static final String SISU_NATIVE_COURSE_UNIT_REALISATION_PREFIX = "otm-";
+    public static final String SISU_COURSE_UNIT_REALISATION_FROM_OODI_ID_PREFIX = "hy-cur-";
+    public static final String SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX = "hy-opt-cur-";
+    public static final String SISU_COURSE_UNIT_REALISATION_PREFIX = "otm-";
 
     public static final String SISU_PRIVATE_PERSON_ID_PREFIX = "hy-hlo-";
 
     public static String getSisuCourseUnitRealisationId(String id) {
         if (StringUtils.startsWithAny(id.toLowerCase(),
-            SISU_OODI_COURSE_UNIT_REALISATION_ID_PREFIX,
-            SISU_OPTIME_COURSE_UNIT_REALISATION_PREFIX,
-            SISU_NATIVE_COURSE_UNIT_REALISATION_PREFIX)) {
+            SISU_COURSE_UNIT_REALISATION_FROM_OODI_ID_PREFIX,
+            SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX,
+            SISU_COURSE_UNIT_REALISATION_PREFIX)) {
             return id;
         }
-        return SISU_OODI_COURSE_UNIT_REALISATION_ID_PREFIX + id;
+        return SISU_COURSE_UNIT_REALISATION_FROM_OODI_ID_PREFIX + id;
     }
 
     public static String getSisuPrivatePersonId(String id) {

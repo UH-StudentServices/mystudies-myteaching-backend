@@ -57,7 +57,7 @@ public class CourseCmsRestClientTest extends SpringTest {
     }
 
     @Test
-    public void thatDefaultCourseUnitRealisationIsReturnedIfCmsDataDoesNotExist() {
+    public void thatEmptyCourseUnitRealisationIsReturnedIfCmsDataDoesNotExist() {
         defaultTeacherRequestChain().courseCmsCourseUnitRealisation(TEACHER_COURSE_REALISATION_ID, "course_empty.json", FI);
         CourseCmsCourseUnitRealisation coursePage = courseCmsClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, FI);
         assertThat(coursePage.courseUnitRealisationId).isEqualTo(getSisuCourseUnitRealisationId(TEACHER_COURSE_REALISATION_ID));

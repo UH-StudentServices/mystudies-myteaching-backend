@@ -52,12 +52,9 @@ public class CourseMaterialDtoFactory {
     }
 
     public CourseMaterialDto fromCoursePage(CourseCmsCourseUnitRealisation coursePage) {
-        if (coursePage == null) {
-            return null;
-        } else if (coursePage.moodleLink != null && StringUtils.isNotBlank(coursePage.moodleLink.uri)) {
+        if (coursePage != null && coursePage.moodleLink != null && StringUtils.isNotBlank(coursePage.moodleLink.uri)) {
             return new CourseMaterialDto(coursePage.moodleLink.uri, MOODLE);
-        } else {
-            return null;
         }
+        return null;
     }
 }

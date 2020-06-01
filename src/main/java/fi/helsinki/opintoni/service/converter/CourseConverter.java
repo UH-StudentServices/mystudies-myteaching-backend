@@ -151,7 +151,7 @@ public class CourseConverter {
         dto.imageUri = coursePageUriBuilder.getImageUri(coursePage);
         dto.coursePageUri = coursePageUriBuilder.getNewCoursePageUri(coursePage, locale);
         dto.courseMaterial = courseMaterialDtoFactory.fromCoursePage(coursePage);
-        // Courses using new course page always have valid course page url
+        // Courses using new course page always have published course page, even without cms data.
         dto.isHidden = false;
     }
 }

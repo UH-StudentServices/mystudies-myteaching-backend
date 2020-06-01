@@ -26,11 +26,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.StringJoiner;
 
 @Component
 public class CoursePageUriBuilder {
 
-    private static final Map<String, String> NEW_COURSE_PAGE_LOCALIZED_URL_SLUG = Map.of(
+    private static final Map<String, String> NEW_COURSE_PAGE_LOCALIZED_BASE_PATH = Map.of(
         "fi", "opintotarjonta",
         "sv", "studieutbud",
         "en", "studies"
@@ -61,9 +62,12 @@ public class CoursePageUriBuilder {
 
     public String getNewCoursePageUri(CourseCmsCourseUnitRealisation coursePage, Locale locale) {
         return coursePage != null && StringUtils.isNotBlank(coursePage.courseUnitRealisationId)
-            ? appConfiguration.get("studies.base.url") + "/" +
-                NEW_COURSE_PAGE_LOCALIZED_URL_SLUG.get(locale != null ? locale.getLanguage() : "fi") +
-                "/cur/" + coursePage.courseUnitRealisationId
+            ? new StringJoiner("/")
+                .add(appConfiguration.get("studies.base.url"))
+                .add(NEW_COURSE_PAGE_LOCALIZED_BASE_PATH.get(locale != null ? locale.getLanguage() : "fi"))
+                .add("cur")
+                .add(coursePage.courseUnitRealisationId)
+                .toString()
             : null;
     }
 }

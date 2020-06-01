@@ -42,6 +42,8 @@ public class CoursePageMockClient implements CoursePageClient {
 
     private static final long TEST_COURSE_IMPLEMENTATION_ID = 123456789L;
     private static final String TEST_COURSE_IMPLEMENTATION_NOT_FOUND_ID = "109155865";
+    private static final String TEST_COURSE_IMPLEMENTATION_1_ID = "123456789";
+    private static final String TEST_COURSE_IMPLEMENTATION_2_ID = "345678912";
 
     public CoursePageMockClient(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -53,7 +55,8 @@ public class CoursePageMockClient implements CoursePageClient {
             return new CoursePageCourseImplementation();
         }
 
-        Resource courses = StringUtils.equalsAny(courseImplementationId, "123456789", "345678912") ? course1 : course2;
+        Resource courses = StringUtils.equalsAny(courseImplementationId,
+            TEST_COURSE_IMPLEMENTATION_1_ID, TEST_COURSE_IMPLEMENTATION_2_ID) ? course1 : course2;
         CoursePageCourseImplementation course = getResponse(courses, new TypeReference<List<CoursePageCourseImplementation>>() {
         }).get(0);
 
