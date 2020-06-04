@@ -17,11 +17,15 @@
 
 package fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiLocalizedValue;
 
 import java.util.List;
 
 public class OodiOrganisation {
+    @JsonProperty("code")
     public String code;
+
+    @JsonProperty("name")
     public List<OodiLocalizedValue> name;
 }
