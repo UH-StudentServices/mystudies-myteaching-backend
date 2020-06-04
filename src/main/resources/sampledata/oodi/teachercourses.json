@@ -104,6 +104,55 @@
       "realisation_name": [
         {
           "langcode": "fi",
+          "text": "Formulointi I"
+        },
+        {
+          "langcode": "sv",
+          "text": "Formulering I"
+        },
+        {
+          "langcode": "en",
+          "text": "Formulation I"
+        }
+      ],
+      "realisation_root_name": [
+        {
+          "langcode": "fi",
+          "text": "Formulointi I"
+        },
+        {
+          "langcode": "sv",
+          "text": "Formulering I"
+        },
+        {
+          "langcode": "en",
+          "text": "Formulation I"
+        }
+      ],
+      "realisation_type_code": 17,
+      "enroll_end_date": "2020-10-19T20:59:00.000Z",
+      "enroll_start_date": "2019-09-29T12:00:00.000Z",
+      "teacher_role_code": 3,
+      "end_date": "2021-04-26T21:00:00.000Z",
+      "start_date": "2020-09-25T22:00:00.000Z",
+      "credits": 10,
+      "hidden": true,
+      "course_id": 234567891,
+      "parent_id": null,
+      "root_id": 234567891,
+      "weboodi_uri_en": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=6&avattavaSivu=opettaptied&OpetTap=234567891",
+      "weboodi_uri_fi": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=1&avattavaSivu=opettaptied&OpetTap=234567891",
+      "weboodi_uri_sv": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=2&avattavaSivu=opettaptied&OpetTap=234567891",
+      "learningopportunity_id": "10440",
+      "teacher_id": "010540",
+      "teacher_role": "official",
+      "cancelled": false,
+      "position": "root"
+    },
+    {
+      "realisation_name": [
+        {
+          "langcode": "fi",
           "text": "Formulointi II - tentti"
         },
         {
@@ -171,6 +220,75 @@
       "learningopportunity_id": "453421",
       "cancelled": false,
       "position": "studygroupset"
+    },
+    {
+      "realisation_name": [
+        {
+          "langcode": "fi",
+          "text": "Avoin I"
+        },
+        {
+          "langcode": "sv",
+          "text": "Öppna I"
+        },
+        {
+          "langcode": "en",
+          "text": "Open I"
+        }
+      ],
+      "realisation_root_name": [
+        {
+          "langcode": "fi",
+          "text": "Avoin I"
+        },
+        {
+          "langcode": "sv",
+          "text": "Öppna I"
+        },
+        {
+          "langcode": "en",
+          "text": "Open I"
+        }
+      ],
+      "realisation_type_code": 17,
+      "enroll_end_date": "2020-10-19T20:59:00.000Z",
+      "enroll_start_date": "2019-09-29T12:00:00.000Z",
+      "teacher_role_code": 3,
+      "end_date": "2021-04-26T21:00:00.000Z",
+      "start_date": "2020-09-25T22:00:00.000Z",
+      "credits": 10,
+      "hidden": false,
+      "course_id": 345678912,
+      "parent_id": null,
+      "root_id": 345678912,
+      "weboodi_uri_en": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=6&avattavaSivu=opettaptied&OpetTap=345678912",
+      "weboodi_uri_fi": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=1&avattavaSivu=opettaptied&OpetTap=345678912",
+      "weboodi_uri_sv": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=2&avattavaSivu=opettaptied&OpetTap=345678912",
+      "learningopportunity_id": "10440",
+      "teacher_id": "010540",
+      "teacher_role": "official",
+      "cancelled": false,
+      "position": "root",
+      "organisations": [
+        {
+          "code": "H930",
+          "percentage": 100,
+          "name": [
+            {
+              "langcode": "fi",
+              "text": "Avoin yliopisto"
+            },
+            {
+              "langcode": "sv",
+              "text": "Öppna universitetet"
+            },
+            {
+              "langcode": "en",
+              "text": "Open University"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

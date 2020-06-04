@@ -1,0 +1,22 @@
+{
+  "type": "node--course",
+  "id": "34edce8f-e127-4095-839c-344f2e72e311",
+  "links": {
+    "self": {
+      "href": "https:\/\/master.uh-courses.silta.wdr.io\/fi\/jsonapi\/node\/course\/34edce8f-e127-4095-839c-344f2e72e311?resourceVersion=id%3A101"
+    }
+  },
+  "field_introduction_title": null,
+  "field_moodle_link": null,
+  "field_image": {
+    "data": null,
+    "links": {
+      "related": {
+        "href": "https:\/\/master.uh-courses.silta.wdr.io\/fi\/jsonapi\/node\/course\/34edce8f-e127-4095-839c-344f2e72e311\/field_image?resourceVersion=id%3A101"
+      },
+      "self": {
+        "href": "https:\/\/master.uh-courses.silta.wdr.io\/fi\/jsonapi\/node\/course\/34edce8f-e127-4095-839c-344f2e72e311\/relationships\/field_image?resourceVersion=id%3A101"
+      }
+    }
+  }
+}

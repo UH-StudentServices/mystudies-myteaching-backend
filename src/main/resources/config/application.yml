@@ -279,6 +279,9 @@ cache:
     studyAttainments:
         timeToLiveSeconds: 3600
         maxEntriesLocalHeap: 500
+    courseCms:
+        timeToLiveSeconds: 3600
+        maxEntriesLocalHeap: 500
 
 staticResourceCachingPeriod: 31536000
 
@@ -287,6 +290,14 @@ coursePage:
     api.path: /api/v1
     client.implementation: mock
     defaultCourseImageUri: /assets/images/course/default_course_image.jpg
+
+courseCms:
+    base.url: https://master.uh-courses.silta.wdr.io
+    client.implementation: mock
+    enabled: true
+    useAfterDate: 2020-07-27
+
+studies.base.url: https://studies-qa.it.helsinki.fi
 
 fileStorage:
   path: /opt/opintoni/files

@@ -56,4 +56,8 @@ public class AppConfiguration {
         return Integer.valueOf(get(key));
     }
 
+    public boolean getBoolean(String key) {
+        return Boolean.valueOf(get(key)).booleanValue();
+    }
+
 }

@@ -1,0 +1,73 @@
+{
+  "type": "node--course",
+  "id": "b166efbe-d943-4d85-bccb-d8d97012225f",
+  "links": {
+    "self": {
+      "href": "https:\/\/master.uh-courses.silta.wdr.io\/fi\/jsonapi\/node\/course\/b166efbe-d943-4d85-bccb-d8d97012225f?resourceVersion=id%3A98"
+    }
+  },
+  "field_introduction_title": "Sosiaaliset rakenteet sotaa k\u00e4yviss\u00e4 yhteis\u00f6iss\u00e4",
+  "field_moodle_link": {
+    "uri": "https:\/\/moodle.helsinki.fi\/course\/view.php?id=29433",
+    "title": "Moodle",
+    "options": []
+  },
+  "field_image": {
+    "type": "file--file",
+    "id": "f2df7ca3-27ea-40c7-899a-60307bfe8a3a",
+    "links": {
+      "self": {
+        "href": "https:\/\/master.uh-courses.silta.wdr.io\/fi\/jsonapi\/file\/file\/f2df7ca3-27ea-40c7-899a-60307bfe8a3a"
+      }
+    },
+    "drupal_internal__fid": 20,
+    "langcode": "en",
+    "filename": "IMG_0255.JPG",
+    "uri": {
+      "value": "public:\/\/2020-02\/IMG_0255.JPG",
+      "url": "\/sites\/default\/files\/2020-02\/IMG_0255.JPG"
+    },
+    "filemime": "image\/jpeg",
+    "filesize": 5529744,
+    "status": true,
+    "created": "2020-02-24T10:09:45+00:00",
+    "changed": "2020-02-24T10:34:01+00:00",
+    "meta": {
+      "alt": "Palava nuotio",
+      "title": "",
+      "width": 4608,
+      "height": 3456,
+      "derivatives": {
+        "large": {
+          "url": "\/sites\/default\/files\/styles\/large\/public\/2020-02\/IMG_0255.JPG?itok=lpF5xqgj",
+          "width": 480,
+          "height": 360
+        },
+        "max_width_825": {
+          "url": "\/sites\/default\/files\/styles\/max_width_825\/public\/2020-02\/IMG_0255.JPG?itok=CSCU2_sy",
+          "width": 825,
+          "height": 619
+        },
+        "medium": {
+          "url": "\/sites\/default\/files\/styles\/medium\/public\/2020-02\/IMG_0255.JPG?itok=lNaMA-er",
+          "width": 220,
+          "height": 165
+        },
+        "preview": {
+          "url": "\/sites\/default\/files\/styles\/preview\/public\/2020-02\/IMG_0255.JPG?itok=p3-vU3vD",
+          "width": 100,
+          "height": 75
+        },
+        "thumbnail": {
+          "url": "\/sites\/default\/files\/styles\/thumbnail\/public\/2020-02\/IMG_0255.JPG?itok=7paZC_EG",
+          "width": 100,
+          "height": 75
+        }
+      }
+    },
+    "uid": {
+      "type": "user--user",
+      "id": "c8954d13-d6b2-4521-b384-fb006b924625"
+    }
+  }
+}

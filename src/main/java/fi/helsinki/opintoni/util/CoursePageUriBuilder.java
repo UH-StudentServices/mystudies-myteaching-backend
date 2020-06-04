@@ -18,12 +18,24 @@
 package fi.helsinki.opintoni.util;
 
 import fi.helsinki.opintoni.config.AppConfiguration;
+import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Locale;
+import java.util.Map;
+import java.util.StringJoiner;
+
 @Component
 public class CoursePageUriBuilder {
+
+    private static final Map<String, String> NEW_COURSE_PAGE_LOCALIZED_BASE_PATH = Map.of(
+        "fi", "opintotarjonta",
+        "sv", "studieutbud",
+        "en", "studies"
+    );
 
     private final AppConfiguration appConfiguration;
 
@@ -40,5 +52,22 @@ public class CoursePageUriBuilder {
         return (coursePage != null && coursePage.imageUrl != null)
             ? coursePage.imageUrl
             : appConfiguration.get("coursePage.defaultCourseImageUri");
+    }
+
+    public String getImageUri(CourseCmsCourseUnitRealisation coursePage) {
+        return coursePage != null && coursePage.courseImage != null && coursePage.courseImage.uri != null
+            ? appConfiguration.get("courseCms.base.url") + coursePage.courseImage.uri.url
+            : appConfiguration.get("coursePage.defaultCourseImageUri");
+    }
+
+    public String getNewCoursePageUri(CourseCmsCourseUnitRealisation coursePage, Locale locale) {
+        return coursePage != null && StringUtils.isNotBlank(coursePage.courseUnitRealisationId)
+            ? new StringJoiner("/")
+                .add(appConfiguration.get("studies.base.url"))
+                .add(NEW_COURSE_PAGE_LOCALIZED_BASE_PATH.get(locale != null ? locale.getLanguage() : "fi"))
+                .add("cur")
+                .add(coursePage.courseUnitRealisationId)
+                .toString()
+            : null;
     }
 }

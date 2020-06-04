@@ -19,8 +19,11 @@ package fi.helsinki.opintoni.service.converter;
 
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.CourseDto;
+import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
+import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
+import fi.helsinki.opintoni.integration.studyregistry.CourseRealisation;
 import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
@@ -28,6 +31,7 @@ import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.util.CourseMaterialDtoFactory;
 import fi.helsinki.opintoni.util.CoursePageUriBuilder;
+import fi.helsinki.opintoni.util.CoursePageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,43 +43,44 @@ import java.util.stream.Collectors;
 public class CourseConverter {
 
     private final CoursePageClient coursePageClient;
+    private final CourseCmsClient courseCmsClient;
     private final StudyRegistryService studyRegistryService;
     private final CoursePageUriBuilder coursePageUriBuilder;
     private final EventTypeResolver eventTypeResolver;
     private final LocalizedValueConverter localizedValueConverter;
     private final CourseMaterialDtoFactory courseMaterialDtoFactory;
     private final EnrollmentNameConverter enrollmentNameConverter;
+    private final CoursePageUtil coursePageUtil;
 
     @Autowired
     public CourseConverter(CoursePageClient coursePageClient,
+                           CourseCmsClient courseCmsClient,
                            StudyRegistryService studyRegistryService,
                            CoursePageUriBuilder coursePageUriBuilder,
                            EventTypeResolver eventTypeResolver,
                            LocalizedValueConverter localizedValueConverter,
                            CourseMaterialDtoFactory courseMaterialDtoFactory,
-                           EnrollmentNameConverter enrollmentNameConverter) {
+                           EnrollmentNameConverter enrollmentNameConverter,
+                           CoursePageUtil coursePageUtil) {
         this.coursePageClient = coursePageClient;
+        this.courseCmsClient = courseCmsClient;
         this.studyRegistryService = studyRegistryService;
         this.coursePageUriBuilder = coursePageUriBuilder;
         this.eventTypeResolver = eventTypeResolver;
         this.localizedValueConverter = localizedValueConverter;
         this.courseMaterialDtoFactory = courseMaterialDtoFactory;
         this.enrollmentNameConverter = enrollmentNameConverter;
+        this.coursePageUtil = coursePageUtil;
     }
 
     public Optional<CourseDto> toDto(Enrollment enrollment, Locale locale) {
         CourseDto dto = null;
 
         if (!isPositionStudygroupset(enrollment.position)) {
-            CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(enrollment.realisationId, locale);
-
             dto = new CourseDto(
                 enrollment.learningOpportunityId,
                 enrollment.typeCode,
                 localizedValueConverter.toLocalizedString(enrollment.name, locale),
-                coursePageUriBuilder.getImageUri(coursePage),
-                coursePage.url,
-                courseMaterialDtoFactory.fromCoursePage(coursePage),
                 enrollment.startDate,
                 enrollment.endDate,
                 enrollment.realisationId,
@@ -89,6 +94,7 @@ public class CourseConverter {
                 enrollment.isHidden,
                 null);
 
+            enrichWithCoursePageData(dto, enrollment, locale);
         }
         return Optional.ofNullable(dto);
     }
@@ -97,8 +103,6 @@ public class CourseConverter {
         CourseDto dto = null;
 
         if (!isPositionStudygroupset(teacherCourse.position)) {
-            CoursePageCourseImplementation coursePage = coursePageClient.getCoursePage(teacherCourse.realisationId, locale);
-
             dto = new CourseDto(
                 teacherCourse.learningOpportunityId,
                 teacherCourse.realisationTypeCode,
@@ -108,9 +112,6 @@ public class CourseConverter {
                         teacherCourse.realisationRootName,
                         locale) :
                     localizedValueConverter.toLocalizedString(teacherCourse.realisationName, locale),
-                coursePageUriBuilder.getImageUri(coursePage),
-                coursePage.url,
-                courseMaterialDtoFactory.fromCoursePage(coursePage),
                 teacherCourse.startDate,
                 teacherCourse.endDate,
                 teacherCourse.realisationId,
@@ -122,11 +123,35 @@ public class CourseConverter {
                 teacherCourse.isCancelled,
                 teacherCourse.isHidden,
                 teacherCourse.teacherRole);
+
+            enrichWithCoursePageData(dto, teacherCourse, locale);
         }
         return Optional.ofNullable(dto);
     }
 
     private boolean isPositionStudygroupset(String position) {
         return Position.getByValue(position).equals(Position.STUDY_GROUP_SET);
+    }
+
+    private void enrichWithCoursePageData(CourseDto dto, CourseRealisation courseRealisation, Locale locale) {
+        if (coursePageUtil.useNewCoursePageIntegration(courseRealisation)) {
+            enrichWithCoursePageData(dto, courseCmsClient.getCoursePage(dto.realisationId, locale), locale);
+        } else {
+            enrichWithCoursePageData(dto, coursePageClient.getCoursePage(dto.realisationId, locale));
+        }
+    }
+
+    private void enrichWithCoursePageData(CourseDto dto, CoursePageCourseImplementation coursePage) {
+        dto.imageUri = coursePageUriBuilder.getImageUri(coursePage);
+        dto.coursePageUri = coursePage.url;
+        dto.courseMaterial = courseMaterialDtoFactory.fromCoursePage(coursePage);
+    }
+
+    private void enrichWithCoursePageData(CourseDto dto, CourseCmsCourseUnitRealisation coursePage, Locale locale) {
+        dto.imageUri = coursePageUriBuilder.getImageUri(coursePage);
+        dto.coursePageUri = coursePageUriBuilder.getNewCoursePageUri(coursePage, locale);
+        dto.courseMaterial = courseMaterialDtoFactory.fromCoursePage(coursePage);
+        // Courses using new course page always have published course page, even without cms data.
+        dto.isHidden = false;
     }
 }

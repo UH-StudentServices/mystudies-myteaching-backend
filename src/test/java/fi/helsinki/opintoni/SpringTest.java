@@ -26,6 +26,7 @@ import fi.helsinki.opintoni.integration.newsfeeds.GuideNewsRestClient;
 import fi.helsinki.opintoni.integration.publicwww.PublicWwwRestClient;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.security.AppUser;
+import fi.helsinki.opintoni.server.CourseCmsServer;
 import fi.helsinki.opintoni.server.CoursePageServer;
 import fi.helsinki.opintoni.server.ESBServer;
 import fi.helsinki.opintoni.server.FlammaServer;
@@ -126,6 +127,7 @@ public abstract class SpringTest {
     protected OodiServer oodiServer;
     protected SisuServer sisuServer;
     protected CoursePageServer coursePageServer;
+    protected CourseCmsServer courseCmsServer;
     protected GuideServer guideServer;
     protected WebPageServer webPageServer;
     protected FlammaServer flammaServer;
@@ -140,6 +142,9 @@ public abstract class SpringTest {
 
     @Autowired
     protected RestTemplate coursePageRestTemplate;
+
+    @Autowired
+    protected RestTemplate courseCmsRestTemplate;
 
     @Autowired
     protected RestTemplate guideRestTemplate;
@@ -198,6 +203,7 @@ public abstract class SpringTest {
         oodiServer = new OodiServer(appConfiguration, oodiRestTemplate);
         sisuServer = new SisuServer(appConfiguration, mockServerRule.getClient());
         coursePageServer = new CoursePageServer(appConfiguration, coursePageRestTemplate);
+        courseCmsServer = new CourseCmsServer(appConfiguration, courseCmsRestTemplate);
         guideServer = new GuideServer(appConfiguration, guideRestTemplate);
         flammaServer = new FlammaServer(appConfiguration, flammaRestClient.getRestTemplate());
         guideNewsServer = new GuideNewsServer(appConfiguration,
@@ -228,6 +234,7 @@ public abstract class SpringTest {
     public void verifyMockServers() {
         oodiServer.verify();
         coursePageServer.verify();
+        courseCmsServer.verify();
         guideServer.verify();
         flammaServer.verify();
         guideNewsServer.verify();
@@ -289,11 +296,16 @@ public abstract class SpringTest {
         return new TeacherRequestChain(TestConstants.EMPLOYEE_NUMBER,
             DateTimeUtil.getSemesterStartDateString(LocalDate.now()),
             oodiServer,
-            coursePageServer);
+            coursePageServer, courseCmsServer);
     }
 
     protected TeacherRequestChain teacherRequestChain(String teacherNumber) {
-        return new TeacherRequestChain(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()), oodiServer, coursePageServer);
+        return new TeacherRequestChain(
+            teacherNumber,
+            DateTimeUtil.getSemesterStartDateString(LocalDate.now()),
+            oodiServer,
+            coursePageServer,
+            courseCmsServer);
     }
 
     protected StudentRequestChain defaultStudentRequestChain() {

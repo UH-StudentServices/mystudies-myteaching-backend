@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.config.OptimeConfiguration;
 import fi.helsinki.opintoni.dto.EventDto;
+import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.optime.OptimeService;
@@ -42,6 +43,7 @@ public class EventService {
 
     private final StudyRegistryService studyRegistryService;
     private final CoursePageClient coursePageClient;
+    private final CourseCmsClient courseCmsClient;
     private final CourseService courseService;
     private final EventConverter eventConverter;
     private final OptimeConfiguration optimeConfiguration;
@@ -51,6 +53,7 @@ public class EventService {
     @Autowired
     public EventService(StudyRegistryService studyRegistryService,
                         CoursePageClient coursePageClient,
+                        CourseCmsClient courseCmsClient,
                         CourseService courseService,
                         EventConverter eventConverter,
                         OptimeConfiguration optimeConfiguration,
@@ -59,6 +62,7 @@ public class EventService {
 
         this.studyRegistryService = studyRegistryService;
         this.coursePageClient = coursePageClient;
+        this.courseCmsClient = courseCmsClient;
         this.courseService = courseService;
         this.eventConverter = eventConverter;
         this.optimeConfiguration = optimeConfiguration;

@@ -26,7 +26,7 @@ import org.junit.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static fi.helsinki.opintoni.integration.studyregistry.sisu.Constants.SISU_PRIVATE_PERSON_ID_PREFIX;
+import static fi.helsinki.opintoni.integration.IntegrationUtil.SISU_PRIVATE_PERSON_ID_PREFIX;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SisuStudyRegistryTest extends SpringTest {

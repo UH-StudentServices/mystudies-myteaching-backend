@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.web.requestchain;
 
+import fi.helsinki.opintoni.server.CourseCmsServer;
 import fi.helsinki.opintoni.server.CoursePageServer;
 import fi.helsinki.opintoni.server.OodiServer;
 
@@ -33,14 +34,20 @@ public class TeacherRequestChain {
 
     private final OodiServer oodiServer;
     private final CoursePageServer coursePageServer;
+    private final CourseCmsServer courseCmsServer;
     private final String teacherNumber;
     private final String sinceDateString;
 
-    public TeacherRequestChain(String teacherNumber, String sinceDateString, OodiServer oodiServer, CoursePageServer coursePageServer) {
+    public TeacherRequestChain(String teacherNumber,
+                               String sinceDateString,
+                               OodiServer oodiServer,
+                               CoursePageServer coursePageServer,
+                               CourseCmsServer courseCmsServer) {
         this.oodiServer = oodiServer;
         this.coursePageServer = coursePageServer;
         this.teacherNumber = teacherNumber;
         this.sinceDateString = sinceDateString;
+        this.courseCmsServer = courseCmsServer;
     }
 
     public TeacherRequestChain courses() {
@@ -98,5 +105,25 @@ public class TeacherRequestChain {
                 courseImplementationId,
                 locale);
         return builder.expectImplementation(responseFile);
+    }
+
+    public CourseCmsRequestChain<TeacherRequestChain> courseCmsCourseUnitRealisation(Locale locale) {
+        return courseCmsCourseUnitRealisation(TEACHER_COURSE_REALISATION_ID, locale);
+    }
+
+    public CourseCmsRequestChain<TeacherRequestChain> courseCmsCourseUnitRealisation(
+        String courseUnitRealisationId, Locale locale) {
+        return courseCmsCourseUnitRealisation(courseUnitRealisationId, "course.json", locale);
+    }
+
+    public CourseCmsRequestChain<TeacherRequestChain> courseCmsCourseUnitRealisation(
+        String courseUnitRealisationId, String responseFile, Locale locale) {
+        CourseCmsRequestChain<TeacherRequestChain> builder = new CourseCmsRequestChain<>(
+            this,
+            courseCmsServer,
+            courseUnitRealisationId,
+            locale
+        );
+        return builder.expectCourseUnitRealisation(responseFile);
     }
 }

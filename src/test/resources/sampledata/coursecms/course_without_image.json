@@ -1,0 +1,42 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http:\/\/jsonapi.org\/format\/1.0\/"
+        }
+      }
+    },
+    "parsed": true
+  },
+  "data": [
+    {
+      "type": "node--course",
+      "id": "34edce8f-e127-4095-839c-344f2e72e311",
+      "links": {
+        "self": {
+          "href": "https:\/\/master.uh-courses.silta.wdr.io\/fi\/jsonapi\/node\/course\/34edce8f-e127-4095-839c-344f2e72e311?resourceVersion=id%3A101"
+        }
+      },
+      "field_introduction_title": null,
+      "field_moodle_link": null,
+      "field_image": {
+        "data": null,
+        "links": {
+          "related": {
+            "href": "https:\/\/master.uh-courses.silta.wdr.io\/fi\/jsonapi\/node\/course\/34edce8f-e127-4095-839c-344f2e72e311\/field_image?resourceVersion=id%3A101"
+          },
+          "self": {
+            "href": "https:\/\/master.uh-courses.silta.wdr.io\/fi\/jsonapi\/node\/course\/34edce8f-e127-4095-839c-344f2e72e311\/relationships\/field_image?resourceVersion=id%3A101"
+          }
+        }
+      }
+    }
+  ],
+  "links": {
+    "self": {
+      "href": "https:\/\/master.uh-courses.silta.wdr.io\/fi\/jsonapi\/node\/course?fields%5Bnode--course%5D=title%2Cfield_introduction_title%2Cfield_moodle_link%2Cfield_image\u0026filter%5Bcur-id%5D%5Bcondition%5D%5Boperator%5D=IN\u0026filter%5Bcur-id%5D%5Bcondition%5D%5Bpath%5D=field_course_unit_realisation_id\u0026filter%5Bcur-id%5D%5Bcondition%5D%5Bvalue%5D%5B0%5D=hy-cur-130779665\u0026filter%5Bcur-id%5D%5Bcondition%5D%5Bvalue%5D%5B1%5D=hy-cur-130824531\u0026include=field_image\u0026jsonapi_include=1"
+    }
+  }
+}

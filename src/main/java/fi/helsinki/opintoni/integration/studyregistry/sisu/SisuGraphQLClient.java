@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
 
-import static fi.helsinki.opintoni.integration.studyregistry.sisu.Constants.SISU_PRIVATE_PERSON_ID_PREFIX;
+import static fi.helsinki.opintoni.integration.IntegrationUtil.getSisuPrivatePersonId;
 
 public class SisuGraphQLClient implements SisuClient {
     private final String endPointURL;
@@ -52,12 +52,7 @@ public class SisuGraphQLClient implements SisuClient {
     }
 
     private <T> T queryWithPrivatePersonId(String id, Class<T> type) {
-
-        if (!id.startsWith(SISU_PRIVATE_PERSON_ID_PREFIX)) {
-            id = SISU_PRIVATE_PERSON_ID_PREFIX + id;
-        }
-
-        return queryWithArguments(new Arguments("private_person", new Argument("id", id)), type);
+        return queryWithArguments(new Arguments("private_person", new Argument<>("id", getSisuPrivatePersonId(id))), type);
     }
 
     private <T> T queryWithArguments(Arguments arguments, Class<T> type) {

@@ -22,6 +22,8 @@ import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
+import java.util.Locale;
+
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -70,6 +72,69 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[1].isHidden").value(false))
             .andExpect(jsonPath("$[2].name").value(STUDY_GROUP_WITHOUT_PARENT_TITLE))
             .andExpect(jsonPath("$[2].isHidden").value(true));
+    }
+
+    @Test
+    public void thatTeacherCoursesAreEnrichedWithCourseCmsDataForCoursesStartingAfterCutOffDate() throws Exception {
+        defaultTeacherRequestChain()
+            .courses("teachercourses_singlecourse_after_coursecms_cutoff.json")
+            .courseCmsCourseUnitRealisation(ROOT_REALISATION_ID, new Locale("fi"));
+
+        mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")
+            .with(securityContext(teacherSecurityContext()))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$[0].code").value("10440"))
+            .andExpect(jsonPath("$[0].name").value("Formulointi II"))
+            .andExpect(jsonPath("$[0].startDate[0]").value(2020))
+            .andExpect(jsonPath("$[0].startDate[1]").value(10))
+            .andExpect(jsonPath("$[0].startDate[2]").value(26))
+            .andExpect(jsonPath("$[0].startDate[3]").value(0))
+            .andExpect(jsonPath("$[0].startDate[4]").value(0))
+            .andExpect(jsonPath("$[0].endDate[0]").value(2021))
+            .andExpect(jsonPath("$[0].endDate[1]").value(4))
+            .andExpect(jsonPath("$[0].endDate[2]").value(27))
+            .andExpect(jsonPath("$[0].endDate[3]").value(0))
+            .andExpect(jsonPath("$[0].endDate[4]").value(0))
+            .andExpect(jsonPath("$[0].isExam").value(false))
+            .andExpect(jsonPath("$[0].isCancelled").value(false))
+            .andExpect(jsonPath("$[0].realisationId").value(ROOT_REALISATION_ID))
+            .andExpect(jsonPath("$[0].parentId").isEmpty())
+            .andExpect(jsonPath("$[0].isHidden").value(false))
+            .andExpect(jsonPath("$[0].coursePageUri").value("https://studies-qa.it.helsinki.fi/opintotarjonta/cur/course"));
+    }
+
+    @Test
+    public void thatTeacherCoursesForOpenUniversityStartingAfterCutOffDateAreEnrichedWithOldCoursePageData() throws Exception {
+        defaultTeacherRequestChain()
+            .courses("teachercourses_singlecourse_for_open_university_after_coursecms_cutoff.json")
+            .courseImplementationWithRealisationId(ROOT_REALISATION_ID);
+
+        mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")
+            .with(securityContext(teacherSecurityContext()))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$[0].code").value("10440"))
+            .andExpect(jsonPath("$[0].name").value("Formulointi II"))
+            .andExpect(jsonPath("$[0].startDate[0]").value(2020))
+            .andExpect(jsonPath("$[0].startDate[1]").value(10))
+            .andExpect(jsonPath("$[0].startDate[2]").value(26))
+            .andExpect(jsonPath("$[0].startDate[3]").value(0))
+            .andExpect(jsonPath("$[0].startDate[4]").value(0))
+            .andExpect(jsonPath("$[0].endDate[0]").value(2021))
+            .andExpect(jsonPath("$[0].endDate[1]").value(4))
+            .andExpect(jsonPath("$[0].endDate[2]").value(27))
+            .andExpect(jsonPath("$[0].endDate[3]").value(0))
+            .andExpect(jsonPath("$[0].endDate[4]").value(0))
+            .andExpect(jsonPath("$[0].isExam").value(false))
+            .andExpect(jsonPath("$[0].isCancelled").value(false))
+            .andExpect(jsonPath("$[0].realisationId").value(ROOT_REALISATION_ID))
+            .andExpect(jsonPath("$[0].parentId").isEmpty())
+            .andExpect(jsonPath("$[0].coursePageUri").value("https://dev.student.helsinki.fi/tvt"));
     }
 
     private void expectTeacherCourses() {

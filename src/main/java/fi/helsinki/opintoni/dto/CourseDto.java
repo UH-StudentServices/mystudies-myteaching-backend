@@ -27,23 +27,23 @@ import java.util.stream.Collectors;
 
 public class CourseDto {
 
-    public final String code;
-    public final Integer typeCode;
-    public final String name;
-    public final String imageUri;
-    public final String coursePageUri;
-    public final CourseMaterialDto courseMaterial;
-    public final LocalDateTime startDate;
-    public final LocalDateTime endDate;
-    public final String realisationId;
-    public final String parentId;
-    public final String rootId;
-    public final Integer credits;
-    public final List<String> teachers;
-    public final boolean isExam;
-    public final boolean isCancelled;
-    public final boolean isHidden;
-    public final String teacherRole;
+    public String code;
+    public Integer typeCode;
+    public String name;
+    public String imageUri;
+    public String coursePageUri;
+    public CourseMaterialDto courseMaterial;
+    public LocalDateTime startDate;
+    public LocalDateTime endDate;
+    public String realisationId;
+    public String parentId;
+    public String rootId;
+    public Integer credits;
+    public List<String> teachers;
+    public boolean isExam;
+    public boolean isCancelled;
+    public boolean isHidden;
+    public String teacherRole;
 
     public CourseDto(String code,
                      Integer typeCode,
@@ -68,6 +68,36 @@ public class CourseDto {
         this.imageUri = imageUri;
         this.coursePageUri = coursePageUri;
         this.courseMaterial = courseMaterial;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.realisationId = realisationId;
+        this.parentId = parentId;
+        this.rootId = rootId;
+        this.credits = credits;
+        this.teachers = teachers;
+        this.isExam = isExam;
+        this.isCancelled = isCancelled;
+        this.isHidden = isHidden;
+        this.teacherRole = teacherRole;
+    }
+
+    public CourseDto(String code,
+                     Integer typeCode,
+                     String name,
+                     LocalDateTime startDate,
+                     LocalDateTime endDate,
+                     String realisationId,
+                     String parentId,
+                     String rootId,
+                     Integer credits,
+                     List<String> teachers,
+                     boolean isExam,
+                     boolean isCancelled,
+                     boolean isHidden,
+                     String teacherRole) {
+        this.typeCode = typeCode;
+        this.code = code;
+        this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.realisationId = realisationId;
