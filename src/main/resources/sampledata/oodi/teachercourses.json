@@ -268,27 +268,7 @@
       "teacher_id": "010540",
       "teacher_role": "official",
       "cancelled": false,
-      "position": "root",
-      "organisations": [
-        {
-          "code": "H930",
-          "percentage": 100,
-          "name": [
-            {
-              "langcode": "fi",
-              "text": "Avoin yliopisto"
-            },
-            {
-              "langcode": "sv",
-              "text": "Öppna universitetet"
-            },
-            {
-              "langcode": "en",
-              "text": "Open University"
-            }
-          ]
-        }
-      ]
+      "position": "root"
     }
   ]
 }

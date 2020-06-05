@@ -46,27 +46,7 @@
       "weboodi_uri_sv": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=2&avattavaSivu=opettaptied&OpetTap=99903629",
       "learningopportunity_id": "10440",
       "teacher_id": "010540",
-      "position": "root",
-      "organisations": [
-        {
-          "code": "H930",
-          "percentage": 100,
-          "name": [
-            {
-              "langcode": "fi",
-              "text": "Avoin yliopisto"
-            },
-            {
-              "langcode": "sv",
-              "text": "Öppna universitetet"
-            },
-            {
-              "langcode": "en",
-              "text": "Open University"
-            }
-          ]
-        }
-      ]
+      "position": "root"
     }
   ]
 }

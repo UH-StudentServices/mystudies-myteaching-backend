@@ -78,6 +78,7 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
     public void thatTeacherCoursesAreEnrichedWithCourseCmsDataForCoursesStartingAfterCutOffDate() throws Exception {
         defaultTeacherRequestChain()
             .courses("teachercourses_singlecourse_after_coursecms_cutoff.json")
+            .course("99903629", "normal_courseunitrealisation.json")
             .courseCmsCourseUnitRealisation(ROOT_REALISATION_ID, new Locale("fi"));
 
         mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")
@@ -110,6 +111,7 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
     public void thatTeacherCoursesForOpenUniversityStartingAfterCutOffDateAreEnrichedWithOldCoursePageData() throws Exception {
         defaultTeacherRequestChain()
             .courses("teachercourses_singlecourse_for_open_university_after_coursecms_cutoff.json")
+            .course("99903629", "openuni_courseunitrealisation.json")
             .courseImplementationWithRealisationId(ROOT_REALISATION_ID);
 
         mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")

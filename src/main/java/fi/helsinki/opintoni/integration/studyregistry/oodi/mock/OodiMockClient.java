@@ -28,6 +28,7 @@ import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiSingleResponse;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudyAttainment;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudyRight;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiTeacherCourse;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -40,6 +41,8 @@ import static fi.helsinki.opintoni.security.DevUserDetailsService.STUDENT_NUMBER
 import static fi.helsinki.opintoni.security.DevUserDetailsService.STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT;
 
 public class OodiMockClient implements OodiClient {
+
+    private static final String OPEN_UNIVERSITY_REALISATION_ID = "345678912";
 
     @Value("classpath:sampledata/oodi/studentcourses.json")
     private Resource studentCourses;
@@ -82,6 +85,12 @@ public class OodiMockClient implements OodiClient {
 
     @Value("classpath:sampledata/oodi/learningopportunity_b.json")
     private Resource learningOpportunityB;
+
+    @Value("classpath:sampledata/oodi/openuni_courseunitrealisation.json")
+    private Resource openUniversityCourseUnitRealisation;
+
+    @Value("classpath:sampledata/oodi/normal_courseunitrealisation.json")
+    private Resource normalCourseUnitRealisation;
 
     private final ObjectMapper objectMapper;
 
@@ -155,6 +164,19 @@ public class OodiMockClient implements OodiClient {
     public List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId) {
         return getOodiResponse(getCourseUnitRealisationTeachers, new TypeReference<OodiResponse<OodiCourseUnitRealisationTeacher>>() {
         });
+    }
+
+    @Override
+    public OodiCourseUnitRealisation getGdprCourseUnitRealisation(String realisationId) {
+        Resource curResource = OPEN_UNIVERSITY_REALISATION_ID.equals(realisationId)
+            ? openUniversityCourseUnitRealisation
+            : normalCourseUnitRealisation;
+
+        OodiCourseUnitRealisation cur = getSingleOodiResponse(curResource, new TypeReference<OodiSingleResponse<OodiCourseUnitRealisation>>() {
+        });
+        cur.realisationId = realisationId;
+
+        return cur;
     }
 
     @Override

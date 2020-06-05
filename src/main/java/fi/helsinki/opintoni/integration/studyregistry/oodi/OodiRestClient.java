@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.integration.studyregistry.oodi;
 
 import com.google.common.collect.Lists;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,6 +81,13 @@ public class OodiRestClient implements OodiClient {
         return getOodiData(baseUrl + "/courseunitrealisations/{realisationId}/teachers",
             new ParameterizedTypeReference<OodiResponse<OodiCourseUnitRealisationTeacher>>() {
             }, realisationId);
+    }
+
+    @Override
+    public OodiCourseUnitRealisation getGdprCourseUnitRealisation(String realisationId) {
+        return getSingleOodiData(baseUrl + "/courseunitrealisations/gdpr/{realisationId}",
+            new ParameterizedTypeReference<OodiSingleResponse<OodiCourseUnitRealisation>>() {
+            }, OodiCourseUnitRealisation.class, realisationId);
     }
 
     @Override

@@ -21,6 +21,7 @@ import fi.helsinki.opintoni.server.CourseCmsServer;
 import fi.helsinki.opintoni.server.CoursePageServer;
 import fi.helsinki.opintoni.server.OodiServer;
 
+import java.util.List;
 import java.util.Locale;
 
 import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_USER_LOCALE;
@@ -60,14 +61,26 @@ public class TeacherRequestChain {
         return this;
     }
 
+    public TeacherRequestChain course(String realisationId, String responseFile) {
+        oodiServer.expectGdprCourseUnitRealisationRequest(realisationId, responseFile);
+        return this;
+    }
+
     public TeacherRequestChain defaultCoursesWithImplementationsAndRealisations() {
-        return courses()
-            .defaultCourseImplementation()
+        TeacherRequestChain chain = courses();
+
+        for (String realisationId : List.of("99903629", "99903628", "99903630", "1234567")) {
+            chain.course(realisationId, "normal_courseunitrealisation.json");
+        }
+
+        chain.defaultCourseImplementation()
             .and()
             .examCourseImplementation()
             .and()
             .courseImplementationWithRealisationId(POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID)
             .and();
+
+        return chain;
     }
 
     public TeacherRequestChain events() {
