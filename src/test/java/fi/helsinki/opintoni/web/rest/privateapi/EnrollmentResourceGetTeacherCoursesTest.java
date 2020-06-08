@@ -79,6 +79,8 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
         defaultTeacherRequestChain()
             .courses("teachercourses_singlecourse_after_coursecms_cutoff.json")
             .course("99903629", "normal_courseunitrealisation.json")
+            .oodiHierarchy("99903629")
+            .and()
             .courseCmsCourseUnitRealisation(ROOT_REALISATION_ID, new Locale("fi"));
 
         mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")

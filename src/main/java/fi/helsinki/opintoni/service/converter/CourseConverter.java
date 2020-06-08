@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
+import fi.helsinki.opintoni.integration.sotka.SotkaClient;
 import fi.helsinki.opintoni.integration.studyregistry.CourseRealisation;
 import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
@@ -44,6 +45,7 @@ public class CourseConverter {
 
     private final CoursePageClient coursePageClient;
     private final CourseCmsClient courseCmsClient;
+    private final SotkaClient sotkaClient;
     private final StudyRegistryService studyRegistryService;
     private final CoursePageUriBuilder coursePageUriBuilder;
     private final EventTypeResolver eventTypeResolver;
@@ -55,6 +57,7 @@ public class CourseConverter {
     @Autowired
     public CourseConverter(CoursePageClient coursePageClient,
                            CourseCmsClient courseCmsClient,
+                           SotkaClient sotkaClient,
                            StudyRegistryService studyRegistryService,
                            CoursePageUriBuilder coursePageUriBuilder,
                            EventTypeResolver eventTypeResolver,
@@ -64,6 +67,7 @@ public class CourseConverter {
                            CoursePageUtil coursePageUtil) {
         this.coursePageClient = coursePageClient;
         this.courseCmsClient = courseCmsClient;
+        this.sotkaClient = sotkaClient;
         this.studyRegistryService = studyRegistryService;
         this.coursePageUriBuilder = coursePageUriBuilder;
         this.eventTypeResolver = eventTypeResolver;
@@ -135,7 +139,8 @@ public class CourseConverter {
 
     private void enrichWithCoursePageData(CourseDto dto, CourseRealisation courseRealisation, Locale locale) {
         if (coursePageUtil.useNewCoursePageIntegration(courseRealisation)) {
-            enrichWithCoursePageData(dto, courseCmsClient.getCoursePage(dto.realisationId, locale), locale);
+            String optimeId = sotkaClient.getOodiHierarchy(dto.realisationId).optimeId;
+            enrichWithCoursePageData(dto, courseCmsClient.getCoursePage(optimeId != null ? optimeId : dto.realisationId, locale), locale);
         } else {
             enrichWithCoursePageData(dto, coursePageClient.getCoursePage(dto.realisationId, locale));
         }

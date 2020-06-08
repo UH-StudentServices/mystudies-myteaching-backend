@@ -299,6 +299,10 @@ courseCms:
 
 studies.base.url: https://studies-qa.it.helsinki.fi
 
+sotka:
+    base.url: https://esbmt2.it.helsinki.fi/sotkuqa
+    client.implementation: mock
+
 fileStorage:
   path: /opt/opintoni/files
   uri: /files

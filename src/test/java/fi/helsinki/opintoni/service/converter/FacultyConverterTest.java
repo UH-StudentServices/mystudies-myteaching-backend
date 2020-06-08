@@ -33,7 +33,7 @@ public class FacultyConverterTest extends SpringTest {
 
     @Test
     public void thatOpenUniversityTeacherFacultyIsReturned() {
-        defaultTeacherRequestChain().courses("teachercoursesopenuniversity.json");
+        defaultTeacherRequestChain().openUniversityCourses();
 
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createTeacher());
 
@@ -58,7 +58,7 @@ public class FacultyConverterTest extends SpringTest {
 
     @Test
     public void thatTeacherFacultyIsReturned() {
-        defaultTeacherRequestChain().courses();
+        defaultTeacherRequestChain().defaultCourses();
 
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createTeacher());
 

@@ -35,6 +35,7 @@ import fi.helsinki.opintoni.server.GuideServer;
 import fi.helsinki.opintoni.server.OodiServer;
 import fi.helsinki.opintoni.server.PublicWwwServer;
 import fi.helsinki.opintoni.server.SisuServer;
+import fi.helsinki.opintoni.server.SotkaServer;
 import fi.helsinki.opintoni.server.WebPageServer;
 import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
@@ -134,6 +135,7 @@ public abstract class SpringTest {
     protected PublicWwwServer publicWwwServer;
     protected ESBServer esbServer;
     protected GuideNewsServer guideNewsServer;
+    protected SotkaServer sotkaServer;
 
     protected MockMvc mockMvc;
 
@@ -148,6 +150,9 @@ public abstract class SpringTest {
 
     @Autowired
     protected RestTemplate guideRestTemplate;
+
+    @Autowired
+    protected RestTemplate sotkaRestTemplate;
 
     @Autowired
     protected FlammaRestClient flammaRestClient;
@@ -205,6 +210,7 @@ public abstract class SpringTest {
         coursePageServer = new CoursePageServer(appConfiguration, coursePageRestTemplate);
         courseCmsServer = new CourseCmsServer(appConfiguration, courseCmsRestTemplate);
         guideServer = new GuideServer(appConfiguration, guideRestTemplate);
+        sotkaServer = new SotkaServer(appConfiguration, sotkaRestTemplate);
         flammaServer = new FlammaServer(appConfiguration, flammaRestClient.getRestTemplate());
         guideNewsServer = new GuideNewsServer(appConfiguration,
             guideNewsRestClient.getRestTemplate());
@@ -236,6 +242,7 @@ public abstract class SpringTest {
         coursePageServer.verify();
         courseCmsServer.verify();
         guideServer.verify();
+        sotkaServer.verify();
         flammaServer.verify();
         guideNewsServer.verify();
         publicWwwServer.verify();
@@ -296,7 +303,7 @@ public abstract class SpringTest {
         return new TeacherRequestChain(TestConstants.EMPLOYEE_NUMBER,
             DateTimeUtil.getSemesterStartDateString(LocalDate.now()),
             oodiServer,
-            coursePageServer, courseCmsServer);
+            coursePageServer, courseCmsServer, sotkaServer);
     }
 
     protected TeacherRequestChain teacherRequestChain(String teacherNumber) {
@@ -305,7 +312,7 @@ public abstract class SpringTest {
             DateTimeUtil.getSemesterStartDateString(LocalDate.now()),
             oodiServer,
             coursePageServer,
-            courseCmsServer);
+            courseCmsServer, sotkaServer);
     }
 
     protected StudentRequestChain defaultStudentRequestChain() {

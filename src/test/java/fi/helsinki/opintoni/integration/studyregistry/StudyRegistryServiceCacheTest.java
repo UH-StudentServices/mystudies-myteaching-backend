@@ -56,7 +56,7 @@ public class StudyRegistryServiceCacheTest extends SpringTest {
 
     @Test
     public void thatTeacherCoursesAreCached() {
-        teacherRequestChain(EMPLOYEE_NUMBER).courses();
+        teacherRequestChain(EMPLOYEE_NUMBER).defaultCourses();
 
         String sinceDateString = DateTimeUtil.getSemesterStartDateString(LocalDate.now());
 
