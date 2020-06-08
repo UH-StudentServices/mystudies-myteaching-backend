@@ -56,6 +56,13 @@ public class SotkaServer extends AbstractRestServiceServer {
             ));
     }
 
+    public void expectOodiHierarchyRequestRealisationNotFoundFromSotka(String oodiRealisationId) {
+        server.expect(requestTo(sotkaOodiHierarchyUrl(oodiRealisationId)))
+            .andExpect(method(HttpMethod.GET))
+            // Based on what is returned in QA env for realisations not found from sotka
+            .andRespond(withSuccess("null", MediaType.APPLICATION_JSON));
+    }
+
     private String sotkaOodiHierarchyUrl(String oodiRealisationId) {
         return sotkaBaseUrl + "/oodi/hierarchy/" + oodiRealisationId;
     }

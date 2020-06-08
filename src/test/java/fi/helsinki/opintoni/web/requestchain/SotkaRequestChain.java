@@ -41,6 +41,11 @@ public class SotkaRequestChain<T> implements NestedRequestChain<T> {
         return this;
     }
 
+    public SotkaRequestChain<T> expectOodiHierarchyNotFound() {
+        sotkaServer.expectOodiHierarchyRequestRealisationNotFoundFromSotka(oodiRealisationId);
+        return this;
+    }
+
     @Override
     public T and() {
         return parentBuilder;
