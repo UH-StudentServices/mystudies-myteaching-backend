@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.integration.studyregistry.oodi;
 
+import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
 
 import java.util.List;
@@ -36,6 +37,8 @@ public interface OodiClient {
     List<OodiStudyRight> getStudentStudyRights(String studentNumber);
 
     List<OodiCourseUnitRealisationTeacher> getCourseUnitRealisationTeachers(String realisationId);
+
+    OodiCourseUnitRealisation getGdprCourseUnitRealisation(String realisationId);
 
     OodiRoles getRoles(String oodiPersonId);
 }

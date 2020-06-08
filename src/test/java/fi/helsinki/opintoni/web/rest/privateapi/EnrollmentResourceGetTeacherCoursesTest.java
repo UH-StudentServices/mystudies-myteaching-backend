@@ -37,6 +37,7 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
     private static final String ROOT_REALISATION_ID = "99903629";
     private static final String STUDY_GROUP_WITHOUT_PARENT_TITLE = "Realisat... Study subgroup name";
     private static final String OFFICIAL_ROLE_NAME = "official";
+    private static final String SISU_REALISATION_FROM_OPTIME_ID = "hy-opt-cur-2021-b33fa3e8-c4a5-4b71-894d-7f4a3639e911";
 
     @Test
     public void thatTeacherCoursesAreReturned() throws Exception {
@@ -78,7 +79,45 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
     public void thatTeacherCoursesAreEnrichedWithCourseCmsDataForCoursesStartingAfterCutOffDate() throws Exception {
         defaultTeacherRequestChain()
             .courses("teachercourses_singlecourse_after_coursecms_cutoff.json")
-            .courseCmsCourseUnitRealisation(ROOT_REALISATION_ID, new Locale("fi"));
+            .course("99903629", "normal_courseunitrealisation.json")
+            .oodiHierarchy("99903629")
+            .and()
+            .courseCmsCourseUnitRealisation(SISU_REALISATION_FROM_OPTIME_ID, new Locale("fi"));
+
+        mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")
+            .with(securityContext(teacherSecurityContext()))
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$[0].code").value("10440"))
+            .andExpect(jsonPath("$[0].name").value("Formulointi II"))
+            .andExpect(jsonPath("$[0].startDate[0]").value(2020))
+            .andExpect(jsonPath("$[0].startDate[1]").value(10))
+            .andExpect(jsonPath("$[0].startDate[2]").value(26))
+            .andExpect(jsonPath("$[0].startDate[3]").value(0))
+            .andExpect(jsonPath("$[0].startDate[4]").value(0))
+            .andExpect(jsonPath("$[0].endDate[0]").value(2021))
+            .andExpect(jsonPath("$[0].endDate[1]").value(4))
+            .andExpect(jsonPath("$[0].endDate[2]").value(27))
+            .andExpect(jsonPath("$[0].endDate[3]").value(0))
+            .andExpect(jsonPath("$[0].endDate[4]").value(0))
+            .andExpect(jsonPath("$[0].isExam").value(false))
+            .andExpect(jsonPath("$[0].isCancelled").value(false))
+            .andExpect(jsonPath("$[0].realisationId").value(ROOT_REALISATION_ID))
+            .andExpect(jsonPath("$[0].parentId").isEmpty())
+            .andExpect(jsonPath("$[0].isHidden").value(false))
+            .andExpect(jsonPath("$[0].coursePageUri").value("https://studies-qa.it.helsinki.fi/opintotarjonta/cur/course"));
+    }
+
+    @Test
+    public void thatTeacherCourseCourseCmsDataIsFetchedWithOodiIdIfSotkaDataIsNotFoundForRealisation() throws Exception {
+        defaultTeacherRequestChain()
+            .courses("teachercourses_singlecourse_after_coursecms_cutoff.json")
+            .course("99903629", "normal_courseunitrealisation.json")
+            .oodiHierarchyNotFound("99903629")
+            .and()
+            .courseCmsCourseUnitRealisation("99903629", new Locale("fi"));
 
         mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")
             .with(securityContext(teacherSecurityContext()))
@@ -110,6 +149,7 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
     public void thatTeacherCoursesForOpenUniversityStartingAfterCutOffDateAreEnrichedWithOldCoursePageData() throws Exception {
         defaultTeacherRequestChain()
             .courses("teachercourses_singlecourse_for_open_university_after_coursecms_cutoff.json")
+            .course("99903629", "openuni_courseunitrealisation.json")
             .courseImplementationWithRealisationId(ROOT_REALISATION_ID);
 
         mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")

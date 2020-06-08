@@ -18,10 +18,10 @@
 package fi.helsinki.opintoni.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
-import fi.helsinki.opintoni.integration.coursecms.CourseCmsMockClient;
-import fi.helsinki.opintoni.integration.coursecms.CourseCmsRestClient;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
+import fi.helsinki.opintoni.integration.sotka.SotkaClient;
+import fi.helsinki.opintoni.integration.sotka.SotkaMockClient;
+import fi.helsinki.opintoni.integration.sotka.SotkaRestClient;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,10 +29,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import static java.util.Collections.singletonList;
+import java.util.Collections;
 
 @Configuration
-public class CourseCmsConfiguration {
+public class SotkaConfiguration {
 
     @Autowired
     private AppConfiguration appConfiguration;
@@ -41,31 +41,31 @@ public class CourseCmsConfiguration {
     private ObjectMapper objectMapper;
 
     @Bean
-    public RestTemplate courseCmsRestTemplate() {
+    public RestTemplate sotkaRestTemplate() {
         final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
-        RestTemplate restTemplate = new RestTemplate(singletonList(converter));
-        restTemplate.setInterceptors(singletonList(new LoggingInterceptor()));
+        RestTemplate restTemplate = new RestTemplate(Collections.singletonList(converter));
+        restTemplate.setInterceptors(Collections.singletonList(new LoggingInterceptor()));
         return restTemplate;
     }
 
     @Bean
-    public CourseCmsClient courseCmsRestClient() {
-        return new CourseCmsRestClient(appConfiguration.get("courseCms.base.url"), courseCmsRestTemplate());
+    public SotkaClient sotkaRestClient() {
+        return new SotkaRestClient(appConfiguration.get("sotka.base.url"), sotkaRestTemplate());
     }
 
     @Bean
-    public CourseCmsClient courseCmsMockClient() {
-        return new CourseCmsMockClient(objectMapper);
+    public SotkaClient sotkaMockClient() {
+        return new SotkaMockClient(objectMapper);
     }
 
     @Bean
-    public CourseCmsClient courseCmsClient() {
+    public SotkaClient sotkaClient() {
         return NamedDelegatesProxy.builder(
-            CourseCmsClient.class,
-            () -> appConfiguration.get("courseCms.client.implementation"))
-            .with("rest", courseCmsRestClient())
-            .with("mock", courseCmsMockClient())
+            SotkaClient.class,
+            () -> appConfiguration.get("sotka.client.implementation"))
+            .with("rest", sotkaRestClient())
+            .with("mock", sotkaMockClient())
             .build();
     }
 }

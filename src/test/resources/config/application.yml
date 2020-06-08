@@ -146,6 +146,10 @@ courseCms:
 
 studies.base.url: https://studies-qa.it.helsinki.fi
 
+sotka:
+    base.url: https://esbmt2.it.helsinki.fi/sotkuqa
+    client.implementation: rest
+
 guide:
     base.url: http://mock.guide.student.helsinki.fi
     client.implementation: rest

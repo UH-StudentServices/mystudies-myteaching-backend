@@ -157,6 +157,15 @@ public class OodiServer extends AbstractRestServiceServer {
             );
     }
 
+    public void expectGdprCourseUnitRealisationRequest(String realisationId, String responseFile) {
+        server.expect(requestTo(gdprCourseUnitRealisationUrl(realisationId)))
+            .andExpect(method(HttpMethod.GET))
+            .andRespond(withSuccess(
+                SampleDataFiles.toText("oodi/" + responseFile),
+                MediaType.APPLICATION_JSON
+            ));
+    }
+
     private String studyRightsUrl(String studentNumber) {
         return oodiBaseUrl + "/students/" + studentNumber + "/studyrights";
     }
@@ -195,5 +204,9 @@ public class OodiServer extends AbstractRestServiceServer {
 
     private String rolesUrl(String oodiPersonId) {
         return oodiBaseUrl + "/persons/" + oodiPersonId + "/roles";
+    }
+
+    private String gdprCourseUnitRealisationUrl(String realisationId) {
+        return oodiBaseUrl + "/courseunitrealisations/gdpr/" + realisationId;
     }
 }

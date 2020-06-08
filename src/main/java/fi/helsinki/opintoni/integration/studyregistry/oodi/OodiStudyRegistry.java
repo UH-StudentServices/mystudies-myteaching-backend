@@ -25,6 +25,7 @@ import fi.helsinki.opintoni.integration.studyregistry.StudyRegistry;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRight;
 import fi.helsinki.opintoni.integration.studyregistry.Teacher;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.OodiCourseUnitRealisation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -98,6 +99,10 @@ public class OodiStudyRegistry implements StudyRegistry {
         List<OodiTeacherCourse> oodiTeacherCourses = oodiClient.getTeacherCourses(teacherNumber, sinceDateString);
 
         return oodiTeacherCourses.stream()
+            .peek(teacherCourse -> {
+                OodiCourseUnitRealisation oodiCourse = oodiClient.getGdprCourseUnitRealisation(teacherCourse.realisationId);
+                teacherCourse.organisations.addAll(oodiCourse.organisations);
+            })
             .map(oodiStudyRegistryConverter::oodiTeacherCourseToTeacherCourse)
             .collect(Collectors.toList());
     }

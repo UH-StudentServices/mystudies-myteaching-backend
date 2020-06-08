@@ -1,0 +1,26 @@
+{
+  "deletedOodiCURIds" : [ ],
+  "activeOodiCURId" : 99903629,
+  "studyGroupSets" : [ {
+    "optimeId" : "hy-opt-sgs-2021-bc1be33d-f145-436f-9dea-f9d7c4d07170",
+    "oodiId" : 0,
+    "deleted" : false,
+    "studySubGroups" : [ {
+      "optimeId" : "hy-opt-ssg-2021-a303122b-7559-479b-afc2-04ef65c09a9b",
+      "oodiId" : 132408953,
+      "deleted" : false
+    }, {
+      "optimeId" : "hy-opt-ssg-2021-8c1d20c0-610e-4f89-9d6e-a0af2af8fd03",
+      "oodiId" : 132408954,
+      "deleted" : false
+    }, {
+      "optimeId" : "hy-opt-ssg-2021-464331e2-e6b5-4c7c-b43f-e51cb3dccf89",
+      "oodiId" : 132408955,
+      "deleted" : false
+    } ]
+  } ],
+  "optimeId" : "hy-cur-99903629",
+  "oodiId" : 99903629,
+  "aiId" : "hy-AI-117908537-default-teaching-participation",
+  "deleted" : false
+}

@@ -149,7 +149,7 @@ public class UsefulLinkServiceTest extends SpringTest {
     public void thatTeacherDefaultUsefulLinksAreCreated() {
         configureTeacherSecurityContext();
 
-        defaultTeacherRequestChain().courses();
+        defaultTeacherRequestChain().defaultCourses();
 
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
         assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_DEFAULT_TEACHER);
@@ -225,7 +225,7 @@ public class UsefulLinkServiceTest extends SpringTest {
     public void thatOpenUniversityLinkIsAddedForTeacher() {
         configureTeacherSecurityContext();
 
-        defaultTeacherRequestChain().courses("teachercoursesopenuniversity.json");
+        defaultTeacherRequestChain().openUniversityCourses();
 
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
 

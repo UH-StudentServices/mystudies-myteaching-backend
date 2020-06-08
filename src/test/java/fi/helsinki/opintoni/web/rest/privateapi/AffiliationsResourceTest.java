@@ -45,7 +45,7 @@ public class AffiliationsResourceTest extends SpringTest {
 
     @Test
     public void getAffiliationsForTeacherReturnsCorrectResponse() throws Exception {
-        defaultTeacherRequestChain().courses("teachercoursesopenuniversity.json");
+        defaultTeacherRequestChain().openUniversityCourses();
 
         mockMvc.perform(get("/api/private/v1/affiliations").with(securityContext(teacherSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
