@@ -31,7 +31,4 @@ public class OodiEnrollment extends OodiCourseUnitRealisation {
 
     @JsonProperty("type_code")
     public Integer typeCode;
-
-    @JsonProperty("root_id")
-    public String rootId;
 }

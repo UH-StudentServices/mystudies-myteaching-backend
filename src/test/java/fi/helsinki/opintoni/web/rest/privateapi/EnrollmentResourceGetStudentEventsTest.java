@@ -168,19 +168,17 @@ public class EnrollmentResourceGetStudentEventsTest extends SpringTest {
 
     private void expectEvents(String langCode) {
         defaultStudentRequestChain()
+            .enrollments()
             .events()
-            .defaultImplementationWithLocale(new Locale(langCode))
-            .and()
-            .enrollments();
+            .defaultImplementationWithLocale(new Locale(langCode));
     }
 
     private void expectEventsWithOverlap(String langCode) {
         defaultStudentRequestChain()
+            .enrollments()
             .events()
             .courseImplementationWithLocaleRequestChain("123456789", new Locale(langCode), "course_with_overlapping_data.json")
-            .and()
-            .enrollments();
+            .and();
     }
 
 }
-

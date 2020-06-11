@@ -26,8 +26,6 @@ public class TeacherCourse extends CourseRealisation {
 
     public Integer realisationTypeCode;
 
-    public String rootId;
-
     public List<LocalizedText> realisationRootName = Lists.newArrayList();
 
     public String teacherRole;

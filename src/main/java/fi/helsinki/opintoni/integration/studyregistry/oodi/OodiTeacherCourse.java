@@ -30,9 +30,6 @@ public class OodiTeacherCourse extends OodiCourseUnitRealisation {
     @JsonProperty("realisation_type_code")
     public Integer realisationTypeCode;
 
-    @JsonProperty("root_id")
-    public String rootId;
-
     @JsonProperty("realisation_root_name")
     public List<OodiLocalizedValue> realisationRootName = Lists.newArrayList();
 

@@ -68,6 +68,6 @@ public class CoursePageUriBuilder {
                 .add("cur")
                 .add(coursePage.courseUnitRealisationId)
                 .toString()
-            : null;
+            : appConfiguration.get("courseCms.defaultCourseImageUri");
     }
 }

@@ -45,7 +45,8 @@
       "weboodi_uri_fi": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=1&avattavaSivu=opettaptied&OpetTap=99903629",
       "weboodi_uri_sv": "https://weboodi.helsinki.fi/hy/alkusivu.jsp?Kieli=2&avattavaSivu=opettaptied&OpetTap=99903629",
       "learningopportunity_id": "10440",
-      "teacher_id": "010540"
+      "teacher_id": "010540",
+      "position": "root"
     }
   ]
 }

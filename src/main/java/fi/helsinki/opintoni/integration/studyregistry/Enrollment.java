@@ -21,6 +21,4 @@ public class Enrollment extends CourseRealisation {
     public Integer credits;
 
     public Integer typeCode;
-
-    public String rootId;
 }
