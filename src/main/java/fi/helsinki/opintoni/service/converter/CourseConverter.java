@@ -133,8 +133,8 @@ public class CourseConverter {
         return Optional.ofNullable(dto);
     }
 
-    private boolean isPositionStudyGroup(String position) {
-        return Position.getByValue(position).equals(Position.STUDY_GROUP);
+    private boolean isPositionRoot(String position) {
+        return Position.getByValue(position).equals(Position.ROOT);
     }
 
     private boolean isPositionStudyGroupSet(String position) {
@@ -143,7 +143,7 @@ public class CourseConverter {
 
     private void enrichWithCoursePageData(CourseDto dto, CourseRealisation courseRealisation, Locale locale) {
         if (coursePageUtil.useNewCoursePageIntegration(courseRealisation)) {
-            String realisationId = isPositionStudyGroup(courseRealisation.position) ? dto.realisationId : dto.rootId;
+            String realisationId = isPositionRoot(courseRealisation.position) ? dto.realisationId : dto.rootId;
             String optimeId = sotkaClient.getOodiHierarchy(realisationId).optimeId;
 
             enrichWithCoursePageData(dto, courseCmsClient.getCoursePage(optimeId != null ? optimeId : dto.realisationId, locale), locale);
