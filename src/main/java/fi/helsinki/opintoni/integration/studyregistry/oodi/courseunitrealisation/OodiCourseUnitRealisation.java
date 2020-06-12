@@ -40,6 +40,9 @@ public class OodiCourseUnitRealisation {
     @JsonProperty("course_id")
     public String realisationId;
 
+    @JsonProperty("root_id")
+    public String rootId;
+
     @JsonProperty("parent_id")
     public String parentId;
 

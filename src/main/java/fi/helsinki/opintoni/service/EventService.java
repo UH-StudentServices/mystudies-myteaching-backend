@@ -20,16 +20,25 @@ package fi.helsinki.opintoni.service;
 import fi.helsinki.opintoni.config.OptimeConfiguration;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
+import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.optime.OptimeService;
+import fi.helsinki.opintoni.integration.sotka.SotkaClient;
+import fi.helsinki.opintoni.integration.studyregistry.CourseRealisation;
+import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
+import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.Position;
 import fi.helsinki.opintoni.service.converter.EventConverter;
+import fi.helsinki.opintoni.util.CoursePageUtil;
+import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.util.EventUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -44,17 +53,30 @@ public class EventService {
     private final StudyRegistryService studyRegistryService;
     private final CoursePageClient coursePageClient;
     private final CourseCmsClient courseCmsClient;
-    private final CourseService courseService;
+    private final SotkaClient sotkaClient;
+    private final CoursePageUtil coursePageUtil;
     private final EventConverter eventConverter;
     private final OptimeConfiguration optimeConfiguration;
     private final OptimeService optimeService;
     private final OptimeCalendarService optimeCalendarService;
 
+    private static class Pair<X, Y> {
+
+        public X x;
+        public Y y;
+
+        public Pair(X x, Y y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
     @Autowired
     public EventService(StudyRegistryService studyRegistryService,
                         CoursePageClient coursePageClient,
                         CourseCmsClient courseCmsClient,
-                        CourseService courseService,
+                        SotkaClient sotkaClient,
+                        CoursePageUtil coursePageUtil,
                         EventConverter eventConverter,
                         OptimeConfiguration optimeConfiguration,
                         OptimeService optimeService,
@@ -63,7 +85,8 @@ public class EventService {
         this.studyRegistryService = studyRegistryService;
         this.coursePageClient = coursePageClient;
         this.courseCmsClient = courseCmsClient;
-        this.courseService = courseService;
+        this.sotkaClient = sotkaClient;
+        this.coursePageUtil = coursePageUtil;
         this.eventConverter = eventConverter;
         this.optimeConfiguration = optimeConfiguration;
         this.optimeService = optimeService;
@@ -71,10 +94,14 @@ public class EventService {
     }
 
     public List<EventDto> getStudentEvents(String studentNumber, Locale locale) {
+        List<Enrollment> enrollments = studyRegistryService.getEnrollments(studentNumber).stream()
+            .filter(e -> !e.isCancelled)
+            .collect(Collectors.toList());
+
         return filterEnrichAndMergeEvents(
             studyRegistryService.getStudentEvents(studentNumber),
             Collections.emptyList(),
-            courseService.getStudentCourseIds(studentNumber),
+            enrollments,
             locale);
     }
 
@@ -90,24 +117,48 @@ public class EventService {
             studyRegistryEvents = studyRegistryService.getTeacherEvents(teacherNumber);
         }
 
+        List<TeacherCourse> courses = studyRegistryService.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()))
+            .stream()
+            .filter(c -> !c.isCancelled)
+            .collect(Collectors.toList());
+
         return filterEnrichAndMergeEvents(
             studyRegistryEvents,
             optimeEvents,
-            courseService.getTeacherCourseIds(teacherNumber),
+            courses,
             locale);
     }
 
     private List<EventDto> filterEnrichAndMergeEvents(
         List<Event> studyRegistryEvents,
         List<EventDto> optimeEvents,
-        List<String> courseIds,
+        List<? extends CourseRealisation> courses,
         Locale locale) {
+
+        List<String> courseIds = courses.stream()
+            .map(c -> c.realisationId)
+            .collect(Collectors.toList());
 
         Map<String, CoursePageCourseImplementation> coursePages = getCoursePages(studyRegistryEvents, courseIds, locale);
 
+        Map<String, CourseCmsCourseUnitRealisation> newCoursePages = courses.stream()
+            .filter(coursePageUtil::useNewCoursePageIntegration)
+            .map(c -> Position.getByValue(c.position).equals(Position.ROOT) ? c.realisationId : c.rootId)
+            .distinct()
+            .map(courseId -> {
+                String optimeId = sotkaClient.getOodiHierarchy(courseId).optimeId;
+                return new Pair<>(courseId, courseCmsClient.getCoursePage(optimeId != null ? optimeId : courseId, locale));
+            })
+            .collect(Collectors.toMap(p -> p.x, p -> p.y));
+
         Stream<EventDto> studyRegistryEventDtos = studyRegistryEvents.stream()
             .filter(event -> !event.isCancelled && event.startDate != null)
-            .map(event -> eventConverter.toDto(event, getCoursePage(coursePages, getRealisationId(event)), locale));
+            .map(event ->
+                eventConverter.toDto(
+                    event,
+                    getCoursePage(coursePages, getRealisationId(event)),
+                    getNewCoursePage(newCoursePages, getRealisationRootId(event, courses)),
+                    locale));
 
         Stream<EventDto> optimeEventDtos = optimeEvents.stream();
 
@@ -125,8 +176,23 @@ public class EventService {
             .orElseGet(CoursePageCourseImplementation::new);
     }
 
+    private CourseCmsCourseUnitRealisation getNewCoursePage(Map<String, CourseCmsCourseUnitRealisation> coursePages, String realisationId) {
+        return coursePages.getOrDefault(realisationId, null);
+    }
+
     private String getRealisationId(Event event) {
         return String.valueOf(event.realisationId);
+    }
+
+    private String getRealisationRootId(Event event, List<? extends CourseRealisation> courses) {
+        String eventRealisationId = getRealisationId(event);
+        return courses.stream()
+            .filter(c -> String.valueOf(c.realisationId).equals(eventRealisationId))
+            .findFirst()
+            .map(courseRealisation ->
+                Position.getByValue(courseRealisation.position).equals(Position.ROOT)
+                    ? courseRealisation.realisationId : courseRealisation.rootId)
+            .orElse("");
     }
 
     private Map<String, CoursePageCourseImplementation> getCoursePages(

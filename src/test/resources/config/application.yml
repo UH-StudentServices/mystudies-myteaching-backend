@@ -139,7 +139,7 @@ coursePage:
     defaultCourseImageUri: https://dev.student.helsinki.fi/default
 
 courseCms:
-    base.url: https://master.uh-courses.silta.wdr.io
+    base.url: https://cms.studies-qa.helsinki.fi
     client.implementation: rest
     enabled: true
     useAfterDate: 2020-07-27

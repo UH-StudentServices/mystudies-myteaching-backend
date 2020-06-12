@@ -296,6 +296,7 @@ courseCms:
     client.implementation: mock
     enabled: true
     useAfterDate: 2020-07-27
+    defaultCourseImageUri: /assets/images/course/default_course_image.jpg
 
 studies.base.url: https://studies-qa.it.helsinki.fi
 

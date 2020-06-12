@@ -24,6 +24,8 @@ import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
+import java.util.Locale;
+
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.hamcrest.Matchers.hasSize;
@@ -77,6 +79,31 @@ public class EnrollmentResourceGetTeacherEventsTest extends SpringTest {
             .andExpect(jsonPath("$[3].source").value(EventDto.Source.COURSE_PAGE.name()))
             .andExpect(jsonPath("$[3].type").value(EventDto.Type.EXAM.name()))
             .andExpect(jsonPath("$[3].isHidden").value(false));
+    }
+
+    @Test
+    public void thatTeacherEventsAreEnrichedWithNewCoursePageDataForCoursesStartingAfterCutOffDate() throws Exception {
+        defaultTeacherRequestChain()
+            .events()
+            .defaultCourseImplementation()
+            .and()
+            .courses("teachercourses_singlecourse_after_coursecms_cutoff.json")
+            .course("99903629", "normal_courseunitrealisation.json")
+            .oodiHierarchy("99903629")
+            .and()
+            .courseCmsCourseUnitRealisation("hy-opt-cur-2021-b33fa3e8-c4a5-4b71-894d-7f4a3639e911", new Locale("fi"))
+            .and();
+
+        mockMvc.perform(get("/api/private/v1/teachers/enrollments/events")
+            .with(securityContext(teacherSecurityContext()))
+            .characterEncoding("UTF-8")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$", hasSize(4)))
+            .andExpect(jsonPath("$[1].title").value("Formulointi II"))
+            .andExpect(jsonPath("$[1].courseUri").value("https://studies-qa.it.helsinki.fi/opintotarjonta/cur/course"));
     }
 
     private void expectEvents() {

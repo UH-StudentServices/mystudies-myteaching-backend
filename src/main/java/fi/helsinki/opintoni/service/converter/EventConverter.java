@@ -21,6 +21,7 @@ import com.google.common.collect.ImmutableList;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.dto.EventDtoBuilder;
 import fi.helsinki.opintoni.dto.OptimeExtrasDto;
+import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageEvent;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
@@ -106,25 +107,37 @@ public class EventConverter {
             .createEventDto();
     }
 
-    public EventDto toDto(Event event, CoursePageCourseImplementation coursePage, Locale locale) {
-        return new EventDtoBuilder()
+    public EventDto toDto(Event event, CoursePageCourseImplementation coursePage, CourseCmsCourseUnitRealisation newCoursePage, Locale locale) {
+        EventDtoBuilder builder = new EventDtoBuilder()
             .setType(eventTypeResolver.getEventTypeByOodiTypeCode(event.typeCode))
             .setSource(EventDto.Source.STUDY_REGISTRY)
             .setStartDate(event.startDate)
             .setEndDate(event.endDate)
             .setRealisationId(event.realisationId)
             .setTitle(enrollmentNameConverter.getRealisationNameWithRootName(event.realisationName, event.realisationRootName, locale))
-            .setCourseTitle(coursePage.title)
-            .setCourseUri(coursePage.url)
-            .setCourseImageUri(coursePageUriBuilder.getImageUri(coursePage))
-            .setCourseMaterialDto(courseMaterialDtoFactory.fromCoursePage(coursePage))
-            .setMoodleUri(coursePage.moodleUrl)
-            .setHasMaterial(coursePage.hasMaterial)
             .setLocations(locationResolver.getLocations(event))
             .setOptimeExtras(event.optimeExtras == null ? null :
                 new OptimeExtrasDto(event.optimeExtras.otherNotes, event.optimeExtras.staffNotes))
-            .setHidden(event.isHidden)
-            .createEventDto();
+            .setHidden(event.isHidden);
+
+        if (newCoursePage != null) {
+            builder
+                .setCourseTitle(newCoursePage.name)
+                .setCourseUri(coursePageUriBuilder.getNewCoursePageUri(newCoursePage, locale))
+                .setCourseImageUri(coursePageUriBuilder.getImageUri(newCoursePage))
+                .setMoodleUri(newCoursePage.moodleLink != null && StringUtils.isNotBlank(newCoursePage.moodleLink.uri)
+                    ? newCoursePage.moodleLink.uri : null);
+        } else {
+            builder
+                .setCourseTitle(coursePage.title)
+                .setCourseUri(coursePage.url)
+                .setCourseImageUri(coursePageUriBuilder.getImageUri(coursePage))
+                .setCourseMaterialDto(courseMaterialDtoFactory.fromCoursePage(coursePage))
+                .setMoodleUri(coursePage.moodleUrl)
+                .setHasMaterial(coursePage.hasMaterial);
+        }
+
+        return builder.createEventDto();
     }
 
     public EventDto toDto(VEvent v) {

@@ -42,15 +42,16 @@ public class OodiStudyRegistryConverter {
         enrollment.credits = oodiEnrollment.credits;
         enrollment.typeCode = oodiEnrollment.typeCode;
         enrollment.rootId = oodiEnrollment.rootId;
-        enrollment.endDate = oodiEnrollment.endDate;
         enrollment.isCancelled = oodiEnrollment.isCancelled;
         enrollment.learningOpportunityId = oodiEnrollment.learningOpportunityId;
         enrollment.name = oodiLocalizedValuesToLocalizedTexts(oodiEnrollment.name);
         enrollment.parentId = oodiEnrollment.parentId;
+        enrollment.rootId = oodiEnrollment.rootId;
         enrollment.position = oodiEnrollment.position;
         enrollment.isHidden = oodiEnrollment.isHidden;
         enrollment.realisationId = oodiEnrollment.realisationId;
         enrollment.startDate = oodiEnrollment.startDate;
+        enrollment.endDate = oodiEnrollment.endDate;
         enrollment.organisations = oodiEnrollment.organisations.stream()
             .map(org -> new Organisation(org.code, oodiLocalizedValuesToLocalizedTexts(org.name)))
             .collect(toList());
@@ -95,7 +96,6 @@ public class OodiStudyRegistryConverter {
         teacherCourse.realisationTypeCode = oodiTeacherCourse.realisationTypeCode;
         teacherCourse.realisationRootName = oodiLocalizedValuesToLocalizedTexts(oodiTeacherCourse.realisationRootName);
         teacherCourse.teacherRole = oodiTeacherCourse.teacherRole;
-        teacherCourse.endDate = oodiTeacherCourse.endDate;
         teacherCourse.isHidden = oodiTeacherCourse.isHidden;
         teacherCourse.isCancelled = oodiTeacherCourse.isCancelled;
         teacherCourse.learningOpportunityId = oodiTeacherCourse.learningOpportunityId;

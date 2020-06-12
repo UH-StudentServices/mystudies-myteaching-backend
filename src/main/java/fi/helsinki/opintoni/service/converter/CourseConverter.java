@@ -80,7 +80,7 @@ public class CourseConverter {
     public Optional<CourseDto> toDto(Enrollment enrollment, Locale locale) {
         CourseDto dto = null;
 
-        if (!isPositionStudygroupset(enrollment.position)) {
+        if (!isPositionStudyGroupSet(enrollment.position)) {
             dto = new CourseDto(
                 enrollment.learningOpportunityId,
                 enrollment.typeCode,
@@ -106,7 +106,7 @@ public class CourseConverter {
     public Optional<CourseDto> toDto(TeacherCourse teacherCourse, Locale locale, boolean isChildCourseWithoutRoot) {
         CourseDto dto = null;
 
-        if (!isPositionStudygroupset(teacherCourse.position)) {
+        if (!isPositionStudyGroupSet(teacherCourse.position)) {
             dto = new CourseDto(
                 teacherCourse.learningOpportunityId,
                 teacherCourse.realisationTypeCode,
@@ -133,13 +133,19 @@ public class CourseConverter {
         return Optional.ofNullable(dto);
     }
 
-    private boolean isPositionStudygroupset(String position) {
+    private boolean isPositionStudyGroup(String position) {
+        return Position.getByValue(position).equals(Position.STUDY_GROUP);
+    }
+
+    private boolean isPositionStudyGroupSet(String position) {
         return Position.getByValue(position).equals(Position.STUDY_GROUP_SET);
     }
 
     private void enrichWithCoursePageData(CourseDto dto, CourseRealisation courseRealisation, Locale locale) {
         if (coursePageUtil.useNewCoursePageIntegration(courseRealisation)) {
-            String optimeId = sotkaClient.getOodiHierarchy(dto.realisationId).optimeId;
+            String realisationId = isPositionStudyGroup(courseRealisation.position) ? dto.realisationId : dto.rootId;
+            String optimeId = sotkaClient.getOodiHierarchy(realisationId).optimeId;
+
             enrichWithCoursePageData(dto, courseCmsClient.getCoursePage(optimeId != null ? optimeId : dto.realisationId, locale), locale);
         } else {
             enrichWithCoursePageData(dto, coursePageClient.getCoursePage(dto.realisationId, locale));

@@ -34,6 +34,8 @@ public class CourseRealisation {
 
     public String realisationId;
 
+    public String rootId;
+
     public String parentId;
 
     public boolean isCancelled;

@@ -168,19 +168,17 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
     private void expectEvents(Language language) {
         defaultStudentRequestChain()
             .roles("roleswithstudentrole.json")
+            .enrollments()
             .events()
-            .defaultImplementationWithLocale(new Locale(language.getCode()))
-            .and()
-            .enrollments();
+            .defaultImplementationWithLocale(new Locale(language.getCode()));
     }
 
     private void expectOverlapping(Language language) {
         defaultStudentRequestChain()
             .roles("roleswithstudentrole.json")
+            .enrollments()
             .events()
-            .courseImplementationWithLocaleRequestChain("123456789", new Locale(language.getCode()), "course_with_overlapping_data.json")
-            .and()
-            .enrollments();
+            .courseImplementationWithLocaleRequestChain("123456789", new Locale(language.getCode()), "course_with_overlapping_data.json");
     }
 
 }
