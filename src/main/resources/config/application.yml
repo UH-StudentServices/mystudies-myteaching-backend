@@ -147,7 +147,7 @@ userDefaults:
               orderIndex: 1
 
 courses:
-    examTypeCodes: 8,16,19,20,23,27,28
+    examTypeCodes: 8,16,19,20,23,27,28,29
 
 avatarSize: 510
 
@@ -296,7 +296,7 @@ courseCms:
     client.implementation: mock
     enabled: true
     useAfterDate: 2020-07-27
-    defaultCourseImageUri: /assets/images/course/default_course_image.jpg
+    defaultCourseImageUri: /assets/images/course/default_new_course_page_image.jpg
 
 studies.base.url: https://studies-qa.it.helsinki.fi
 

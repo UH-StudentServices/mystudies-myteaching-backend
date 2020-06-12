@@ -57,7 +57,7 @@ public class CoursePageUriBuilder {
     public String getImageUri(CourseCmsCourseUnitRealisation coursePage) {
         return coursePage != null && coursePage.courseImage != null && coursePage.courseImage.uri != null
             ? appConfiguration.get("courseCms.base.url") + coursePage.courseImage.uri.url
-            : appConfiguration.get("coursePage.defaultCourseImageUri");
+            : appConfiguration.get("courseCms.defaultCourseImageUri");
     }
 
     public String getNewCoursePageUri(CourseCmsCourseUnitRealisation coursePage, Locale locale) {
