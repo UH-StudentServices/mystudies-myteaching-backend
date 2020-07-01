@@ -202,30 +202,15 @@ public class InactiveUserCleanerTest extends SpringTest {
         assertThat(user.accountActiveUntilDate).isGreaterThan(DateTime.now().plusDays(1));
     }
 
-    @Test
-    public void thatUserIsProcessedIfPersonIdIsMissing() {
-        long userId = createUser(null, "withoutPersonId@helsinki.fi", null);
-
-        inactiveUserCleaner.cleanInactiveUsers();
-
-        User user = userRepository.findById(userId).orElseThrow(IllegalStateException::new);
-
-        assertThat(user.accountActiveUntilDate).isNotNull();
-    }
-
     private long createUser(DateTime accountActiveUntilDate) {
         return createUser(accountActiveUntilDate, "inactiveuser2@helsinki.fi");
     }
 
     private long createUser(DateTime accountActiveUntilDate, String eppn) {
-        return createUser(accountActiveUntilDate, eppn, "805");
-    }
-
-    private long createUser(DateTime accountActiveUntilDate, String eppn, String personId) {
         User user = new User();
 
         user.eduPersonPrincipalName = eppn;
-        user.personId = personId;
+        user.personId = "805";
         user.accountStatus = User.AccountStatus.ACTIVE;
         user.lastLoginDate = DateTime.now().minusYears(1).minusDays(60);
         user.accountActiveUntilDate = accountActiveUntilDate;

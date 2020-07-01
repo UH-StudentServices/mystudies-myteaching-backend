@@ -46,9 +46,7 @@ public class User extends AbstractAuditingEntity {
     @Column(name = "edu_person_principal_name")
     public String eduPersonPrincipalName;
 
-    // Person id is required to log in and is used as primary key for several integrations
-    // but left as nullable for legacy reasons. Login process prevents creation of new user
-    // accounts without person id
+    @NotNull
     @Column(name = "person_id")
     public String personId;
 
