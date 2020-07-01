@@ -38,21 +38,29 @@ public class User extends AbstractAuditingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
+
     /*
      * eduPersonPrincipalName is the unique identifier in SSO (it will never change, unless it changes)
      */
     @NotNull
     @Column(name = "edu_person_principal_name")
     public String eduPersonPrincipalName;
+
+    // Person id is required to log in and is used as primary key for several integrations
+    // but left as nullable for legacy reasons. Login process prevents creation of new user
+    // accounts without person id
     @Column(name = "person_id")
     public String personId;
+
     @NotNull
     @Column(name = "last_login_date")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     public DateTime lastLoginDate;
+
     @Column(name = "account_active_until_date")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     public DateTime accountActiveUntilDate;
+
     @NotNull
     @Column(name = "account_status")
     @Enumerated(EnumType.STRING)

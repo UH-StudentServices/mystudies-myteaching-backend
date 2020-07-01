@@ -197,7 +197,9 @@ public class InactiveUserCleanerTest extends SpringTest {
         User user = userRepository.findById(userId).orElseThrow(IllegalStateException::new);
 
         assertThat(user.accountStatus).isEqualTo(User.AccountStatus.ACTIVE);
-        assertThat(user.accountActiveUntilDate).isGreaterThan(DateTime.now());
+        // Make sure active until is moved far enough in future so it doesn't
+        // show up again in later batches of current cleaning run
+        assertThat(user.accountActiveUntilDate).isGreaterThan(DateTime.now().plusDays(1));
     }
 
     @Test
