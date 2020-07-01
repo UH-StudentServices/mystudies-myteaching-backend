@@ -180,7 +180,7 @@ public class InactiveUserCleanerTest extends SpringTest {
     public void thatOnlyInactiveUsersAreFetchedFromDB() {
         long activeUserId = createUser(DateTime.now().plusDays(1));
 
-        List<User> inactiveUsers = inactiveUserCleaner.findInactiveUsers();
+        List<User> inactiveUsers = inactiveUserCleaner.findInactiveUsers(Long.MAX_VALUE);
         List<Long> userIds = inactiveUsers.stream().map(u -> u.id).collect(Collectors.toList());
 
         assertThat(inactiveUsers.size()).isEqualTo(1);
@@ -188,12 +188,27 @@ public class InactiveUserCleanerTest extends SpringTest {
         assertThat(userIds).doesNotContain(activeUserId);
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void thatThrowsExceptionWhenUserAccountIsNotFoundFromIAM() {
+    @Test
+    public void thatUserIsSkippedWhenUserAccountIsNotFoundFromIAM() {
         long userId = createUser(DateTime.now().minusYears(1), "notfound@helsinki.fi");
-        User user = userRepository.getOne(userId);
 
-        inactiveUserCleaner.fetchAccountStatus(user);
+        inactiveUserCleaner.cleanInactiveUsers();
+
+        User user = userRepository.findById(userId).orElseThrow(IllegalStateException::new);
+
+        assertThat(user.accountStatus).isEqualTo(User.AccountStatus.ACTIVE);
+        assertThat(user.accountActiveUntilDate).isGreaterThan(DateTime.now());
+    }
+
+    @Test
+    public void thatUserIsProcessedIfPersonIdIsMissing() {
+        long userId = createUser(null, "withoutPersonId@helsinki.fi", null);
+
+        inactiveUserCleaner.cleanInactiveUsers();
+
+        User user = userRepository.findById(userId).orElseThrow(IllegalStateException::new);
+
+        assertThat(user.accountActiveUntilDate).isNotNull();
     }
 
     private long createUser(DateTime accountActiveUntilDate) {
@@ -201,10 +216,14 @@ public class InactiveUserCleanerTest extends SpringTest {
     }
 
     private long createUser(DateTime accountActiveUntilDate, String eppn) {
+        return createUser(accountActiveUntilDate, eppn, "805");
+    }
+
+    private long createUser(DateTime accountActiveUntilDate, String eppn, String personId) {
         User user = new User();
 
         user.eduPersonPrincipalName = eppn;
-        user.personId = "805";
+        user.personId = personId;
         user.accountStatus = User.AccountStatus.ACTIVE;
         user.lastLoginDate = DateTime.now().minusYears(1).minusDays(60);
         user.accountActiveUntilDate = accountActiveUntilDate;

@@ -35,34 +35,24 @@ import javax.validation.constraints.NotNull;
 @Table(name = "user_account")
 public class User extends AbstractAuditingEntity {
 
-    public enum AccountStatus {
-        ACTIVE, INACTIVE;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-
     /*
      * eduPersonPrincipalName is the unique identifier in SSO (it will never change, unless it changes)
      */
     @NotNull
     @Column(name = "edu_person_principal_name")
     public String eduPersonPrincipalName;
-
-    @NotNull
     @Column(name = "person_id")
     public String personId;
-
     @NotNull
     @Column(name = "last_login_date")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     public DateTime lastLoginDate;
-
     @Column(name = "account_active_until_date")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     public DateTime accountActiveUntilDate;
-
     @NotNull
     @Column(name = "account_status")
     @Enumerated(EnumType.STRING)
@@ -74,5 +64,9 @@ public class User extends AbstractAuditingEntity {
             .append("id", id)
             .append("eduPersonPrincipalName", eduPersonPrincipalName)
             .toString();
+    }
+
+    public enum AccountStatus {
+        ACTIVE, INACTIVE
     }
 }

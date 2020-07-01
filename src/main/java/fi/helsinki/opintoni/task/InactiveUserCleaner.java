@@ -34,19 +34,23 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
-@Transactional
 public class InactiveUserCleaner {
 
     private static final Logger log = LoggerFactory.getLogger(InactiveUserCleaner.class);
 
     private static final String USER_NAME_SUFFIX = "@helsinki.fi";
+    private static final int MAX_BATCHES_TO_PROCESS = 1000;
+    private static final int USERS_BATCH_SIZE = 100;
 
     private final UserRepository userRepository;
     private final UserSettingsRepository userSettingsRepository;
@@ -85,34 +89,80 @@ public class InactiveUserCleaner {
         this.iamClient = iamClient;
     }
 
+    @Async("taskExecutor")
     public void cleanInactiveUsers() {
         log.info("Start cleaning of inactive users from DB");
-        findInactiveUsers().forEach(this::processUser);
-        log.info("Cleaning of inactive users from DB completed");
+        AtomicInteger processed = new AtomicInteger(0);
+        AtomicInteger removed = new AtomicInteger(0);
+        int batches = 0;
 
-    }
+        List<User> inactiveUsers = findInactiveUsers(USERS_BATCH_SIZE);
+        do {
+            inactiveUsers.forEach(user -> {
+                boolean userRemoved = processUser(user);
+                processed.incrementAndGet();
+                if (userRemoved) {
+                    removed.incrementAndGet();
+                }
+            });
+            batches++;
+        } while (!(inactiveUsers = findInactiveUsers(USERS_BATCH_SIZE)).isEmpty() && batches < MAX_BATCHES_TO_PROCESS);
 
-    public List<User> findInactiveUsers() {
-        return userRepository.findInactiveUsers();
-    }
-
-    private void processUser(User user) {
-        try {
-            AccountStatus status = fetchAccountStatus(user);
-
-            if (hasInactiveIamAccount(status)) {
-                deleteUserData(user);
-            } else {
-                updateAccountActiveUntilDate(user, status);
-            }
-        } catch (Exception e) {
-            log.error("Processing user {} failed: {}", user.id, e.getMessage());
+        if (batches >= MAX_BATCHES_TO_PROCESS) {
+            log.info(
+                "Max batches to process limit ({} batches of {} users) exceeded while cleaning inactive users, processed {} users, removed {} users",
+                MAX_BATCHES_TO_PROCESS, USERS_BATCH_SIZE, processed.get(), removed.get());
+        } else {
+            log.info("Cleaning of inactive users from DB completed, processed {} users, removed {} users", processed.get(), removed.get());
         }
     }
 
-    public AccountStatus fetchAccountStatus(User user) {
+    /**
+     * Fetches inactive users.
+     *
+     * @param limit How many users at most to fetch
+     * @return List of at most {@code limit} inactive users
+     */
+    public List<User> findInactiveUsers(long limit) {
+        return userRepository.findInactiveUsers(limit, 0);
+    }
+
+    /**
+     * Checks user account status from IAM and removes the account if it is inactive.
+     *
+     * @param user user to process
+     * @return {@code true} if user was removed
+     */
+    @Transactional
+    public boolean processUser(User user) {
+        AtomicBoolean userRemoved = new AtomicBoolean(false);
+        fetchAccountStatus(user).ifPresentOrElse(
+            status -> {
+                try {
+                    if (hasInactiveIamAccount(status)) {
+                        deleteUserData(user);
+                        log.info("User {} had inactive IAM account, deleted", user.id);
+                        userRemoved.set(true);
+                    } else {
+                        updateAccountActiveUntilDate(user, status);
+                        log.info("User {} has active IAM account, keep active", user.id);
+                    }
+                } catch (Exception e) {
+                    log.error("Processing user {} failed, {}", user.id, e.getCause(), e);
+                }
+            },
+            () -> {
+                // Set active until date to future to avoid extra looping in batch processing
+                updateAccountActiveUntilDate(user, DateTime.now().plusMonths(1));
+                log.warn("User {} not found in IAM, skipping", user.id);
+            }
+        );
+        return userRemoved.get();
+    }
+
+    public Optional<AccountStatus> fetchAccountStatus(User user) {
         String username = user.eduPersonPrincipalName.replace(USER_NAME_SUFFIX, "");
-        return iamClient.getAccountStatus(username).orElseThrow(IllegalStateException::new);
+        return iamClient.getAccountStatus(username);
     }
 
     private boolean hasInactiveIamAccount(AccountStatus status) {
@@ -120,7 +170,11 @@ public class InactiveUserCleaner {
     }
 
     private void updateAccountActiveUntilDate(User user, AccountStatus status) {
-        user.accountActiveUntilDate = new DateTime(status.endDate);
+        updateAccountActiveUntilDate(user, new DateTime(status.endDate));
+    }
+
+    private void updateAccountActiveUntilDate(User user, DateTime activeUntil) {
+        user.accountActiveUntilDate = activeUntil;
         userRepository.save(user);
     }
 
@@ -132,11 +186,11 @@ public class InactiveUserCleaner {
         officeHoursRepository.deleteByUserId(user.id);
         deleteUserSettings(user.id);
 
-        if (!hasProfile(user)) {
-            userRepository.delete(user);
-        } else {
+        if (hasProfile(user)) {
             user.accountStatus = User.AccountStatus.INACTIVE;
             userRepository.save(user);
+        } else {
+            userRepository.delete(user);
         }
     }
 
@@ -145,12 +199,10 @@ public class InactiveUserCleaner {
     }
 
     private void deleteUserSettings(Long userId) {
-        Optional<UserSettings> userSettings = userSettingsRepository.findFirstByUserId(userId);
-
-        if (!userSettings.isEmpty()) {
-            deleteCustomBackgroundImage(userSettings.get());
+        userSettingsRepository.findFirstByUserId(userId).ifPresent(userSettings -> {
+            deleteCustomBackgroundImage(userSettings);
             userSettingsRepository.deleteByUserId(userId);
-        }
+        });
     }
 
     private void deleteCustomBackgroundImage(UserSettings userSettings) {
