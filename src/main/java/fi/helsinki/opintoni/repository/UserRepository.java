@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.repository;
 import fi.helsinki.opintoni.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(
         value = "select * from user_account u where u.last_login_date < now() - interval '1 year' " +
         "and u.account_status = 'ACTIVE' " +
-        "and (u.account_active_until_date is null or u.account_active_until_date < now())", nativeQuery = true)
-    List<User> findInactiveUsers();
+        "and (u.account_active_until_date is null or u.account_active_until_date < now()) limit :limit offset :offset", nativeQuery = true)
+    List<User> findInactiveUsers(@Param("limit") long limit, @Param("offset") long offset);
 }

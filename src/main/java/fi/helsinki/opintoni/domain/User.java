@@ -35,10 +35,6 @@ import javax.validation.constraints.NotNull;
 @Table(name = "user_account")
 public class User extends AbstractAuditingEntity {
 
-    public enum AccountStatus {
-        ACTIVE, INACTIVE;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
@@ -74,5 +70,9 @@ public class User extends AbstractAuditingEntity {
             .append("id", id)
             .append("eduPersonPrincipalName", eduPersonPrincipalName)
             .toString();
+    }
+
+    public enum AccountStatus {
+        ACTIVE, INACTIVE
     }
 }

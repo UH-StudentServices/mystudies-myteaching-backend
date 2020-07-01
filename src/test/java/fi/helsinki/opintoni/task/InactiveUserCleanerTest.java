@@ -180,7 +180,7 @@ public class InactiveUserCleanerTest extends SpringTest {
     public void thatOnlyInactiveUsersAreFetchedFromDB() {
         long activeUserId = createUser(DateTime.now().plusDays(1));
 
-        List<User> inactiveUsers = inactiveUserCleaner.findInactiveUsers();
+        List<User> inactiveUsers = inactiveUserCleaner.findInactiveUsers(Long.MAX_VALUE);
         List<Long> userIds = inactiveUsers.stream().map(u -> u.id).collect(Collectors.toList());
 
         assertThat(inactiveUsers.size()).isEqualTo(1);
@@ -188,12 +188,18 @@ public class InactiveUserCleanerTest extends SpringTest {
         assertThat(userIds).doesNotContain(activeUserId);
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void thatThrowsExceptionWhenUserAccountIsNotFoundFromIAM() {
+    @Test
+    public void thatUserIsSkippedWhenUserAccountIsNotFoundFromIAM() {
         long userId = createUser(DateTime.now().minusYears(1), "notfound@helsinki.fi");
-        User user = userRepository.getOne(userId);
 
-        inactiveUserCleaner.fetchAccountStatus(user);
+        inactiveUserCleaner.cleanInactiveUsers();
+
+        User user = userRepository.findById(userId).orElseThrow(IllegalStateException::new);
+
+        assertThat(user.accountStatus).isEqualTo(User.AccountStatus.ACTIVE);
+        // Make sure active until is moved far enough in future so it doesn't
+        // show up again in later batches of current cleaning run
+        assertThat(user.accountActiveUntilDate).isGreaterThan(DateTime.now().plusDays(1));
     }
 
     private long createUser(DateTime accountActiveUntilDate) {
