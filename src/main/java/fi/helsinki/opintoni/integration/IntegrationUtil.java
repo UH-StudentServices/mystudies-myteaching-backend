@@ -21,14 +21,14 @@ import org.apache.commons.lang3.StringUtils;
 
 public final class IntegrationUtil {
 
-    public static final String SISU_COURSE_UNIT_REALISATION_FROM_OODI_ID_PREFIX = "hy-cur-";
+    public static final String SISU_COURSE_UNIT_REALISATION_FROM_OODI_ID_PREFIX = "hy-CUR-";
     public static final String SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX = "hy-opt-cur-";
     public static final String SISU_COURSE_UNIT_REALISATION_PREFIX = "otm-";
 
     public static final String SISU_PRIVATE_PERSON_ID_PREFIX = "hy-hlo-";
 
     public static String getSisuCourseUnitRealisationId(String id) {
-        if (StringUtils.startsWithAny(id.toLowerCase(),
+        if (StringUtils.startsWithAny(id,
             SISU_COURSE_UNIT_REALISATION_FROM_OODI_ID_PREFIX,
             SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX,
             SISU_COURSE_UNIT_REALISATION_PREFIX)) {
