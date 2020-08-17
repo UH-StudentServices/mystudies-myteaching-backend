@@ -20,13 +20,17 @@ package fi.helsinki.opintoni.util;
 import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
+import fi.helsinki.opintoni.security.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.net.URLEncoder;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringJoiner;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Component
 public class CoursePageUriBuilder {
@@ -38,10 +42,12 @@ public class CoursePageUriBuilder {
     );
 
     private final AppConfiguration appConfiguration;
+    private final SecurityUtils securityUtils;
 
     @Autowired
-    public CoursePageUriBuilder(AppConfiguration appConfiguration) {
+    public CoursePageUriBuilder(AppConfiguration appConfiguration, SecurityUtils securityUtils) {
         this.appConfiguration = appConfiguration;
+        this.securityUtils = securityUtils;
     }
 
     public String getMaterialUri(CoursePageCourseImplementation coursePage) {
@@ -61,13 +67,19 @@ public class CoursePageUriBuilder {
     }
 
     public String getNewCoursePageUri(CourseCmsCourseUnitRealisation coursePage, Locale locale) {
-        return coursePage != null && StringUtils.isNotBlank(coursePage.courseUnitRealisationId)
-            ? new StringJoiner("/")
+        String curId = coursePage != null && StringUtils.isNotBlank(coursePage.courseUnitRealisationId) ?
+            coursePage.courseUnitRealisationId :
+            "MISSING_CUR_ID";
+
+        String url = new StringJoiner("/")
                 .add(appConfiguration.get("studies.base.url"))
                 .add(NEW_COURSE_PAGE_LOCALIZED_BASE_PATH.get(locale != null ? locale.getLanguage() : "fi"))
                 .add("cur")
-                .add(coursePage.courseUnitRealisationId)
-                .toString()
-            : appConfiguration.get("courseCms.defaultCourseImageUri");
+                .add(curId)
+                .toString();
+
+        return securityUtils.getCurrentLogin() != null ?
+            appConfiguration.get("studies.base.url") + "/Shibboleth.sso/Login?target=" + URLEncoder.encode(url, UTF_8) :
+            url;
     }
 }

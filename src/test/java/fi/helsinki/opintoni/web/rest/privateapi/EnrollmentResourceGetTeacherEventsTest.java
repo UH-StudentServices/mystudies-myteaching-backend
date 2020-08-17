@@ -103,7 +103,7 @@ public class EnrollmentResourceGetTeacherEventsTest extends SpringTest {
             .andExpect(jsonPath("$").isArray())
             .andExpect(jsonPath("$", hasSize(4)))
             .andExpect(jsonPath("$[1].title").value("Formulointi II"))
-            .andExpect(jsonPath("$[1].courseUri").value("https://studies-qa.it.helsinki.fi/opintotarjonta/cur/course"));
+            .andExpect(jsonPath("$[1].courseUri").value("https://studies-qa.it.helsinki.fi/Shibboleth.sso/Login?target=https%3A%2F%2Fstudies-qa.it.helsinki.fi%2Fopintotarjonta%2Fcur%2Fcourse"));
     }
 
     private void expectEvents() {

@@ -107,7 +107,7 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[0].realisationId").value(ROOT_REALISATION_ID))
             .andExpect(jsonPath("$[0].parentId").isEmpty())
             .andExpect(jsonPath("$[0].isHidden").value(false))
-            .andExpect(jsonPath("$[0].coursePageUri").value("https://studies-qa.it.helsinki.fi/opintotarjonta/cur/course"));
+            .andExpect(jsonPath("$[0].coursePageUri").value("https://studies-qa.it.helsinki.fi/Shibboleth.sso/Login?target=https%3A%2F%2Fstudies-qa.it.helsinki.fi%2Fopintotarjonta%2Fcur%2Fcourse"));
     }
 
     @Test
@@ -142,7 +142,7 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[0].realisationId").value(ROOT_REALISATION_ID))
             .andExpect(jsonPath("$[0].parentId").isEmpty())
             .andExpect(jsonPath("$[0].isHidden").value(false))
-            .andExpect(jsonPath("$[0].coursePageUri").value("https://studies-qa.it.helsinki.fi/opintotarjonta/cur/course"));
+            .andExpect(jsonPath("$[0].coursePageUri").value("https://studies-qa.it.helsinki.fi/Shibboleth.sso/Login?target=https%3A%2F%2Fstudies-qa.it.helsinki.fi%2Fopintotarjonta%2Fcur%2Fcourse"));
     }
 
     @Test
