@@ -146,19 +146,19 @@ public class CourseConverter {
             String realisationId = isPositionRoot(courseRealisation.position) ? dto.realisationId : dto.rootId;
             String optimeId = sotkaClient.getOodiHierarchy(realisationId).optimeId;
 
-            enrichWithCoursePageData(dto, courseCmsClient.getCoursePage(optimeId != null ? optimeId : dto.realisationId, locale), locale);
+            enrichWithNewCoursePageData(dto, courseCmsClient.getCoursePage(optimeId != null ? optimeId : dto.realisationId, locale), locale);
         } else {
-            enrichWithCoursePageData(dto, coursePageClient.getCoursePage(dto.realisationId, locale));
+            enrichWithOldCoursePageData(dto, coursePageClient.getCoursePage(dto.realisationId, locale));
         }
     }
 
-    private void enrichWithCoursePageData(CourseDto dto, CoursePageCourseImplementation coursePage) {
+    private void enrichWithOldCoursePageData(CourseDto dto, CoursePageCourseImplementation coursePage) {
         dto.imageUri = coursePageUriBuilder.getImageUri(coursePage);
         dto.coursePageUri = coursePage.url;
         dto.courseMaterial = courseMaterialDtoFactory.fromCoursePage(coursePage);
     }
 
-    private void enrichWithCoursePageData(CourseDto dto, CourseCmsCourseUnitRealisation coursePage, Locale locale) {
+    private void enrichWithNewCoursePageData(CourseDto dto, CourseCmsCourseUnitRealisation coursePage, Locale locale) {
         dto.imageUri = coursePageUriBuilder.getImageUri(coursePage);
         dto.coursePageUri = coursePageUriBuilder.getNewCoursePageUri(coursePage, locale);
         dto.courseMaterial = courseMaterialDtoFactory.fromCoursePage(coursePage);
