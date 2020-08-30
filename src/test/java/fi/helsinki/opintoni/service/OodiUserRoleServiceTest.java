@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.service;
 import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
-import fi.helsinki.opintoni.util.DateTimeUtil;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -49,7 +48,7 @@ public class OodiUserRoleServiceTest {
     }
 
     private void setupOodiClientMockForTeacher(List<String> enrollments) {
-        when(studyRegistryService.getTeacherCourses(TEACHER_NUMBER, DateTimeUtil.getSemesterStartDateString(LocalDate.now())))
+        when(studyRegistryService.getTeacherCourses(TEACHER_NUMBER, LocalDate.now()))
             .thenReturn(courses(enrollments));
     }
 

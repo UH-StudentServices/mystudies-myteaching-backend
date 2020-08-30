@@ -58,10 +58,10 @@ public class StudyRegistryServiceCacheTest extends SpringTest {
     public void thatTeacherCoursesAreCached() {
         teacherRequestChain(EMPLOYEE_NUMBER).defaultCourses();
 
-        String sinceDateString = DateTimeUtil.getSemesterStartDateString(LocalDate.now());
+        LocalDate sinceDate = DateTimeUtil.getSemesterStartDate(LocalDate.now());
 
-        List<TeacherCourse> courses = studyRegistryService.getTeacherCourses(EMPLOYEE_NUMBER, sinceDateString);
-        List<TeacherCourse> cachedCourses = studyRegistryService.getTeacherCourses(EMPLOYEE_NUMBER, sinceDateString);
+        List<TeacherCourse> courses = studyRegistryService.getTeacherCourses(EMPLOYEE_NUMBER, sinceDate);
+        List<TeacherCourse> cachedCourses = studyRegistryService.getTeacherCourses(EMPLOYEE_NUMBER, sinceDate);
 
         assertThat(cachedCourses).isSameAs(courses);
     }
