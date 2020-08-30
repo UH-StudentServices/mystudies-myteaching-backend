@@ -50,17 +50,20 @@ public class SisuStudyRegistry implements StudyRegistry {
 
     @Override
     public List<Enrollment> getEnrollments(String studentNumber) {
-        return null;
+        throw new UnsupportedOperationException();
+
     }
 
     @Override
     public List<Event> getStudentEvents(String studentNumber) {
-        return null;
+        throw new UnsupportedOperationException();
+
     }
 
     @Override
     public List<Event> getTeacherEvents(String teacherNumber) {
-        return null;
+        throw new UnsupportedOperationException();
+
     }
 
     @Override
@@ -78,7 +81,7 @@ public class SisuStudyRegistry implements StudyRegistry {
 
     @Override
     public List<TeacherCourse> getTeacherCourses(String teacherNumber, LocalDate since) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
