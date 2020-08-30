@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.COURSE_REALISATION_TEACHERS;
@@ -80,8 +81,8 @@ public class StudyRegistryService {
     }
 
     @Cacheable(value = CacheConstants.TEACHER_COURSES, cacheManager = "transientCacheManager")
-    public List<TeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
-        return getStudyRegistry(TEACHER_COURSES).getTeacherCourses(teacherNumber, sinceDateString);
+    public List<TeacherCourse> getTeacherCourses(String teacherNumber, LocalDate sinceDate) {
+        return sisuStudyRegistry.getTeacherCourses(teacherNumber, sinceDate);
     }
 
     @Cacheable(value = CacheConstants.STUDY_RIGHTS, cacheManager = "transientCacheManager")

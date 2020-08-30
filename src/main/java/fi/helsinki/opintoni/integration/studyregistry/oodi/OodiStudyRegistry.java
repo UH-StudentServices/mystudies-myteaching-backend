@@ -26,10 +26,13 @@ import fi.helsinki.opintoni.integration.studyregistry.StudyRight;
 import fi.helsinki.opintoni.integration.studyregistry.Teacher;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.OodiCourseUnitRealisation;
+import fi.helsinki.opintoni.util.DateTimeUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -95,8 +98,8 @@ public class OodiStudyRegistry implements StudyRegistry {
     }
 
     @Override
-    public List<TeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
-        List<OodiTeacherCourse> oodiTeacherCourses = oodiClient.getTeacherCourses(teacherNumber, sinceDateString);
+    public List<TeacherCourse> getTeacherCourses(String teacherNumber, LocalDate since) {
+        List<OodiTeacherCourse> oodiTeacherCourses = oodiClient.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateOodiString(since));
 
         return oodiTeacherCourses.stream()
             .peek(teacherCourse -> {

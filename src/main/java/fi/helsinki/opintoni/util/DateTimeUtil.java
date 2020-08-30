@@ -28,11 +28,18 @@ public class DateTimeUtil {
     private static final int SEMESTER_START_MONTH = 8;
     private static final int SEMESTER_START_MONTH_LIMIT = 5;
 
-    public static String getSemesterStartDateString(LocalDate now) {
+    public static String getSemesterStartDateOodiString(LocalDate now) {
+        return getSemesterStartDate(now).format(DateTimeFormatter.ofPattern(DateFormatter.UTC_TIME_FORMAT_OODI));
+    }
+
+    public static String getSemesterStartDateSisuString(LocalDate now) {
+        return getSemesterStartDate(now).format(DateTimeFormatter.ofPattern(DateFormatter.DATE_FORMAT_SISU));
+    }
+
+    public static LocalDate getSemesterStartDate(LocalDate now) {
         int year = now.getYear();
         int month = now.getMonthValue();
-        LocalDateTime semesterStartDate = LocalDateTime.of(month < SEMESTER_START_MONTH ? year - 1 : year, SEMESTER_START_MONTH_LIMIT, 1, 0, 0, 0);
-        return semesterStartDate.format(DateTimeFormatter.ofPattern(DateFormatter.UTC_TIME_FORMAT_OODI));
+        return LocalDate.of(month < SEMESTER_START_MONTH ? year - 1 : year, SEMESTER_START_MONTH_LIMIT, 1);
     }
 
 }

@@ -17,6 +17,7 @@
 
 package fi.helsinki.opintoni.integration.studyregistry;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface StudyRegistry {
@@ -31,7 +32,7 @@ public interface StudyRegistry {
 
     List<StudyAttainment> getStudyAttainments(String personId, String studentNumber);
 
-    List<TeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString);
+    List<TeacherCourse> getTeacherCourses(String teacherNumber, LocalDate sinceDate);
 
     List<StudyRight> getStudentStudyRights(String studentNumber);
 

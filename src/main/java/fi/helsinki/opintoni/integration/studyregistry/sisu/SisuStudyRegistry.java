@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,18 +77,18 @@ public class SisuStudyRegistry implements StudyRegistry {
     }
 
     @Override
-    public List<TeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
+    public List<TeacherCourse> getTeacherCourses(String teacherNumber, LocalDate since) {
         return null;
     }
 
     @Override
     public List<StudyRight> getStudentStudyRights(String studentNumber) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public List<Teacher> getCourseRealisationTeachers(String realisationId) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
