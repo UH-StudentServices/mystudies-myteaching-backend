@@ -51,19 +51,16 @@ public class SisuStudyRegistry implements StudyRegistry {
     @Override
     public List<Enrollment> getEnrollments(String studentNumber) {
         throw new UnsupportedOperationException();
-
     }
 
     @Override
     public List<Event> getStudentEvents(String studentNumber) {
         throw new UnsupportedOperationException();
-
     }
 
     @Override
     public List<Event> getTeacherEvents(String teacherNumber) {
         throw new UnsupportedOperationException();
-
     }
 
     @Override
