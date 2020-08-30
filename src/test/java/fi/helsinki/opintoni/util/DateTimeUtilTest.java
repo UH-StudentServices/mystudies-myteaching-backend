@@ -30,30 +30,30 @@ public class DateTimeUtilTest  {
     @Test
     public void thatLastSemesterStringIsObtainedCorrectlyBeforeEndOfYear() {
         LocalDate d = LocalDate.of(2015, 10, 10);
-        assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo(EXPECTED_DATE_STRING);
+        assertThat(DateTimeUtil.getSemesterStartDateOodiString(d)).isEqualTo(EXPECTED_DATE_STRING);
     }
 
     @Test
     public void thatLastSemesterStringIsObtainedCorrectlyAfterEndOfYear() {
         LocalDate d = LocalDate.of(2016, 4, 10);
-        assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo(EXPECTED_DATE_STRING);
+        assertThat(DateTimeUtil.getSemesterStartDateOodiString(d)).isEqualTo(EXPECTED_DATE_STRING);
     }
 
     @Test
     public void thatLastSemesterStringIsObtainedCorrectlyAtBeginnigOfAugust() {
         LocalDate d = LocalDate.of(2015, 8, 1);
-        assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo(EXPECTED_DATE_STRING);
+        assertThat(DateTimeUtil.getSemesterStartDateOodiString(d)).isEqualTo(EXPECTED_DATE_STRING);
     }
 
     @Test
     public void thatLastSemesterStringIsObtainedCorrectlyAtFirstOfMay() {
         LocalDate d = LocalDate.of(2016, 5, 1);
-        assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo(EXPECTED_DATE_STRING);
+        assertThat(DateTimeUtil.getSemesterStartDateOodiString(d)).isEqualTo(EXPECTED_DATE_STRING);
     }
 
     @Test
     public void thatLastSemesterStringIsObtainedCorrectlyAfterFirstOfMay() {
         LocalDate d = LocalDate.of(2016, 7, 1);
-        assertThat(DateTimeUtil.getSemesterStartDateString(d)).isEqualTo(EXPECTED_DATE_STRING);
+        assertThat(DateTimeUtil.getSemesterStartDateOodiString(d)).isEqualTo(EXPECTED_DATE_STRING);
     }
 }

@@ -301,7 +301,7 @@ public abstract class SpringTest {
 
     protected TeacherRequestChain defaultTeacherRequestChain() {
         return new TeacherRequestChain(TestConstants.EMPLOYEE_NUMBER,
-            DateTimeUtil.getSemesterStartDateString(LocalDate.now()),
+            DateTimeUtil.getSemesterStartDateOodiString(LocalDate.now()),
             oodiServer,
             coursePageServer, courseCmsServer, sotkaServer);
     }
@@ -309,7 +309,7 @@ public abstract class SpringTest {
     protected TeacherRequestChain teacherRequestChain(String teacherNumber) {
         return new TeacherRequestChain(
             teacherNumber,
-            DateTimeUtil.getSemesterStartDateString(LocalDate.now()),
+            DateTimeUtil.getSemesterStartDateOodiString(LocalDate.now()),
             oodiServer,
             coursePageServer,
             courseCmsServer, sotkaServer);
