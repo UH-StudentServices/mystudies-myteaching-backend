@@ -24,6 +24,7 @@ public class CacheConstants {
 
     public static final String STUDENT_EVENTS = "studentEvents";
     public static final String STUDENT_ENROLLMENTS = "studentEnrollments";
+    public static final String GRAPHQL_CUR_SEARCH = "graphqlCurSearch";
 
     public static final String TEACHER_EVENTS = "teacherEvents";
     public static final String TEACHER_COURSES = "teacherCourses";
@@ -75,6 +76,7 @@ public class CacheConstants {
         .add(STUDY_ATTAINMENTS)
         .add(STUDY_RIGHTS)
         .add(COURSE_CMS)
+        .add(GRAPHQL_CUR_SEARCH)
         .build();
 
     public static final ImmutableSet<String> PERSISTENT_CACHE_NAMES = ImmutableSet.<String>builder()
