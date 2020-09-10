@@ -29,12 +29,12 @@ import org.springframework.http.client.ClientHttpResponse;
 
 import java.io.IOException;
 
-public class OodiExceptionInterceptor implements ClientHttpRequestInterceptor {
+public class HttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
     private final ObjectMapper objectMapper;
     private final Environment env;
 
-    public OodiExceptionInterceptor(ObjectMapper objectMapper,
+    public HttpRequestInterceptor(ObjectMapper objectMapper,
                                     Environment env) {
         this.objectMapper = objectMapper;
         this.env = env;
