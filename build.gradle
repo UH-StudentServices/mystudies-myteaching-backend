@@ -26,6 +26,7 @@ plugins {
     id 'jacoco'
     id 'checkstyle'
     id 'org.sonarqube' version '2.6.2'
+    id "io.github.kobylynskyi.graphql.codegen" version "3.0.0"
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -41,6 +42,7 @@ bootJar {
 
 bootRun {
     main = project.properties['mainClass'] ?: mainClass
+// jvmArgs=["-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=localhost:5005"]
 }
 
 bootJar {
@@ -50,6 +52,7 @@ bootJar {
 checkstyle {
     configDir = rootProject.file('gradle-config/checkstyle')
     toolVersion = '8.12'
+    checkstyleMain.source = "src/main/java"
 }
 
 sonarqube {
@@ -179,7 +182,7 @@ dependencies {
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     compile group: 'com.rometools', name: 'rome', version: '1.5.1'
 
-    compile group: 'io.aexp.nodes.graphql', name: 'nodes', version: nodes_version
+    compile group: 'io.github.kobylynskyi', name: 'graphql-java-codegen', version: '3.0.0'
 
     errorprone group: 'com.google.errorprone', name:'error_prone_core', version: error_prone_core_version
 
@@ -301,4 +304,23 @@ gitProperties {
 }
 
 clean.dependsOn installGitHooks
+
+graphqlCodegen {
+    // config options: https://github.com/kobylynskyi/graphql-java-codegen/blob/master/docs/codegen-options.md
+    graphqlSchemas.includePattern = "sisu\\.schema\\.graphql"
+    outputDir = new File("$buildDir/generated")
+    packageName = "fi.helsinki.opintoni.integration.studyregistry.sisu.model"
+    apiPackageName = "fi.helsinki.opintoni.integration.studyregistry.sisu.api"
+    generateClient = true
+    customAnnotationsMapping = [
+        DateTime: ["@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.example.json.EpochMillisScalarDeserializer.class)"]
+    ]
+    modelNameSuffix = "TO"
+}
+
+// Automatically generate GraphQL code on project build:
+compileJava.dependsOn 'graphqlCodegen'
+
+// Add generated sources to project source sets:
+sourceSets.main.java.srcDir "$buildDir/generated"
 
