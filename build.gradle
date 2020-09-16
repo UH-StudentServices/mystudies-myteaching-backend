@@ -322,5 +322,11 @@ graphqlCodegen {
 compileJava.dependsOn 'graphqlCodegen'
 
 // Add generated sources to project source sets:
-sourceSets.main.java.srcDir "$buildDir/generated"
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated"
+        }
+    }
+}
 
