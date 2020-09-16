@@ -17,38 +17,42 @@
 
 package fi.helsinki.opintoni.config;
 
+import java.io.File;
+import java.security.KeyStore;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.net.ssl.SSLContext;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+
+import org.apache.http.ssl.SSLContextBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
 import fi.helsinki.opintoni.config.http.SSLRequestFactory;
 import fi.helsinki.opintoni.exception.SSLContextException;
+import fi.helsinki.opintoni.integration.interceptor.HttpRequestInterceptor;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
-import fi.helsinki.opintoni.integration.interceptor.OodiExceptionInterceptor;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiClient;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiRestClient;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.mock.OodiMockClient;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuClient;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuGraphQLClient;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.mock.SisuMockClient;
-import fi.helsinki.opintoni.util.NamedDelegatesProxy;
-import org.apache.http.ssl.SSLContextBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
-
-import javax.annotation.PostConstruct;
-import javax.net.ssl.SSLContext;
-import java.io.File;
-import java.security.KeyStore;
-import java.util.List;
 
 @Configuration
 public class StudyRegistryConfiguration {
@@ -66,6 +70,12 @@ public class StudyRegistryConfiguration {
 
     @Value("${oodi.useHttpClientCertificate:false}")
     private boolean useHttpClientCertificate;
+
+    @Value("${sisu.baseUrl}")
+    private String sisuBaseUrl;
+
+    @Value("${sisu.apiPath}")
+    private String sisuApiPath;
 
     @Autowired
     public StudyRegistryConfiguration(AppConfiguration appConfiguration, Environment env, ObjectMapper objectMapper) {
@@ -101,7 +111,7 @@ public class StudyRegistryConfiguration {
 
         restTemplate.setInterceptors(Lists.newArrayList(
             new LoggingInterceptor(),
-            new OodiExceptionInterceptor(objectMapper, env)
+            new HttpRequestInterceptor(objectMapper, env)
         ));
         restTemplate.setMessageConverters(getConverters());
         return restTemplate;
@@ -114,43 +124,34 @@ public class StudyRegistryConfiguration {
     }
 
     @Bean
+    @ConditionalOnExpression("'${oodi.client.implementation}' == 'mock'")
     public OodiClient oodiMockClient() {
         return new OodiMockClient(objectMapper);
     }
 
     @Bean
+    @ConditionalOnExpression("'${oodi.client.implementation}' == 'rest'")
     public OodiClient oodiRestClient() {
         return new OodiRestClient(appConfiguration.get("oodi.base.url"), oodiRestTemplate());
     }
 
     @Bean
+    @ConditionalOnExpression("'${sisu.client.implementation}' == 'graphQL'")
+    public SisuGraphQLClient sisuGraphQLClient() {
+        RestTemplate restTemplate = new RestTemplate(SSLRequestFactory.clientHttpRequestFactory(
+            appConfiguration, sslContext()));
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+        restTemplate.setInterceptors(Lists.newArrayList(
+            new LoggingInterceptor()
+        ));
+
+        return new SisuGraphQLClient(sisuBaseUrl + sisuApiPath, restTemplate);
+    }
+
+    @Bean
+    @ConditionalOnExpression("'${sisu.client.implementation}' == 'mock'")
     public SisuClient sisuMockClient() {
         return new SisuMockClient();
-    }
-
-    @Bean
-    public SisuClient sisuGraphQLClient() {
-        return new SisuGraphQLClient(appConfiguration.get("sisu.baseUrl") + appConfiguration.get("sisu.apiPath"));
-    }
-
-    @Bean
-    public OodiClient oodiClient() {
-        return NamedDelegatesProxy.builder(
-            OodiClient.class,
-            () -> appConfiguration.get("oodi.client.implementation"))
-            .with("rest", oodiRestClient())
-            .with("mock", oodiMockClient())
-            .build();
-    }
-
-    @Bean
-    public SisuClient sisuClient() {
-        return NamedDelegatesProxy.builder(
-            SisuClient.class,
-            () -> appConfiguration.get("sisu.client.implementation"))
-            .with("graphQL", sisuGraphQLClient())
-            .with("mock", sisuMockClient())
-            .build();
     }
 
     private SSLContext createSslContextWithClientCertificate(String keystoreLocation, String keystorePassword) {
