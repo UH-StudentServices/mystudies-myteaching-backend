@@ -19,6 +19,8 @@ package fi.helsinki.opintoni.integration.coursepage;
 
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.cache.CacheConstants;
+import fi.helsinki.opintoni.integration.IntegrationUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
@@ -30,8 +32,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
-import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
 
 public class CoursePageRestClient implements CoursePageClient {
@@ -90,7 +92,7 @@ public class CoursePageRestClient implements CoursePageClient {
 
         try {
             List<CoursePageCourseImplementation> coursePageCourseImplementationList =
-                    getCoursePages(singletonList(courseImplementationId), locale);
+                    getCoursePages(List.of(courseImplementationId), locale);
 
             if (coursePageCourseImplementationList != null) {
                 return coursePageCourseImplementationList.isEmpty()
@@ -107,7 +109,8 @@ public class CoursePageRestClient implements CoursePageClient {
 
     @Override
     public List<CoursePageCourseImplementation> getCoursePages(List<String> courseImplementationIds, Locale locale) {
-        return Lists.partition(courseImplementationIds, COURSE_IMPLEMENTATION_BATCH_SIZE).parallelStream()
+        List<String> strippedIds = courseImplementationIds.stream().map(IntegrationUtil::stripKnownSisuCurPrefixes).collect(Collectors.toList());
+        return Lists.partition(strippedIds, COURSE_IMPLEMENTATION_BATCH_SIZE).parallelStream()
             .map(idListPartition ->
                 getCoursePageData("/course_implementation/{courseImplementationIds}",
                     new ParameterizedTypeReference<List<CoursePageCourseImplementation>>() {
@@ -134,7 +137,8 @@ public class CoursePageRestClient implements CoursePageClient {
 
     private CoursePageCourseImplementation getEmptyCoursePageImplementation(String courseImplementationId) {
         CoursePageCourseImplementation emptyCourseContent = new CoursePageCourseImplementation();
-        emptyCourseContent.courseImplementationId = Integer.parseInt(courseImplementationId);
+        String strippedCurId = IntegrationUtil.stripKnownSisuCurPrefixes(courseImplementationId);
+        emptyCourseContent.courseImplementationId = Integer.parseInt(strippedCurId);
         return emptyCourseContent;
     }
 

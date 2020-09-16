@@ -27,7 +27,7 @@ public class EventDtoBuilder {
     private EventDto.Source source;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private Integer realisationId;
+    private String realisationId;
     private String title;
     private String courseTitle;
     private String courseUri;
@@ -63,7 +63,7 @@ public class EventDtoBuilder {
         return this;
     }
 
-    public EventDtoBuilder setRealisationId(Integer realisationId) {
+    public EventDtoBuilder setRealisationId(String realisationId) {
         this.realisationId = realisationId;
         return this;
     }

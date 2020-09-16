@@ -17,11 +17,10 @@
 
 package fi.helsinki.opintoni.util;
 
-import fi.helsinki.opintoni.integration.DateFormatter;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import fi.helsinki.opintoni.integration.DateFormatter;
 
 public class DateTimeUtil {
 
@@ -29,7 +28,7 @@ public class DateTimeUtil {
     private static final int SEMESTER_START_MONTH_LIMIT = 5;
 
     public static String getSemesterStartDateOodiString(LocalDate now) {
-        return getSemesterStartDate(now).format(DateTimeFormatter.ofPattern(DateFormatter.UTC_TIME_FORMAT_OODI));
+        return getSemesterStartDate(now).atStartOfDay().format(DateTimeFormatter.ofPattern(DateFormatter.UTC_TIME_FORMAT_OODI));
     }
 
     public static String getSemesterStartDateSisuString(LocalDate now) {

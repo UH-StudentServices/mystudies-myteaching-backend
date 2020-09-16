@@ -17,70 +17,88 @@
 
 package fi.helsinki.opintoni.integration.studyregistry.sisu.mock;
 
-import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuClient;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Attainment;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnit;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Grade;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.GradeScale;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.LocalizedString;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyAttainmentRequest;
-
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+
+import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuClient;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AttainmentTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Authenticated_course_unit_realisation_searchQueryResponse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitRealisationTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.GradeScaleTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.GradeTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.LocalizedStringTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personQueryResponse;
 
 public class SisuMockClient implements SisuClient {
 
     @Override
-    public PrivatePersonRequest getPrivatePerson(String id) {
-        PrivatePersonRequest privatePersonRequest = new PrivatePersonRequest();
-        privatePersonRequest.studentNumber = "010189791";
-        privatePersonRequest.employeeNumber = "010540";
-        return privatePersonRequest;
+    public Authenticated_course_unit_realisation_searchQueryResponse curSearch(String personId, LocalDate since) {
+        Authenticated_course_unit_realisation_searchQueryResponse r = new Authenticated_course_unit_realisation_searchQueryResponse();
+        CourseUnitRealisationTO cur = new CourseUnitRealisationTO();
+        cur.setCourseUnits(List.of(getCourseUnit("abc")));
+        r.setData(Map.of(personId, List.of(cur)));
+        return r;
     }
 
     @Override
-    public StudyAttainmentRequest getStudyAttainments(String id) {
-        Attainment attainment = new Attainment();
-        attainment.id = "hy-opinto-126377006";
-        attainment.credits = 5.0;
-        attainment.attainmentDate = "2019-05-09";
-        attainment.gradeScale = getGradeScale();
-        attainment.courseUnit = getCourseUnit();
-        StudyAttainmentRequest studyAttainmentRequest = new StudyAttainmentRequest();
-        studyAttainmentRequest.attainments = List.of(attainment);
-        return studyAttainmentRequest;
+    public Private_personQueryResponse getPrivatePerson(String personId) {
+        Private_personQueryResponse r = new Private_personQueryResponse();
+        PrivatePersonTO pp = new PrivatePersonTO();
+        pp.setStudentNumber("010189791");
+        pp.setEmployeeNumber("010540");
+        r.setData(Map.of(personId, pp));
+        return r;
     }
 
-    private CourseUnit getCourseUnit() {
-        CourseUnit courseUnit = new CourseUnit();
-        courseUnit.name = getLocalizedString("Integraalilaskenta", "Integral Calculus", "Integral kalkyl");
+    @Override
+    public Private_personQueryResponse getStudyAttainments(String personId) {
+        AttainmentTO attainment = new AttainmentTO();
+        attainment.setId("hy-opinto-126377006");
+        attainment.setCredits(5.0);
+        attainment.setAttainmentDate("2019-05-09");
+        attainment.setGradeScale(getGradeScale());
+        attainment.setCourseUnit(getCourseUnit("abc-123"));
+        PrivatePersonTO pp = new PrivatePersonTO();
+        pp.setAttainments(List.of(attainment));
+        Private_personQueryResponse r = new Private_personQueryResponse();
+        r.setData(Map.of(personId, pp));
+        return r;
+    }
+
+    private CourseUnitTO getCourseUnit(String code) {
+        CourseUnitTO courseUnit = new CourseUnitTO();
+        courseUnit.setCode(code);
+        courseUnit.setName(getLocalizedString("Integraalilaskenta", "Integral Calculus", "Integral kalkyl"));
         return courseUnit;
     }
 
-    private GradeScale getGradeScale() {
-        GradeScale gradeScale = new GradeScale();
-        Grade grade0 = getGrade(0, "0", "0", "0");
-        Grade grade1 = getGrade(1, "1", "1", "1");
-        Grade grade2 = getGrade(2, "2", "2", "2");
-        Grade grade3 = getGrade(3, "3", "3", "3");
-        Grade grade4 = getGrade(4, "4", "4", "4");
-        Grade grade5 = getGrade(5, "5", "5", "5");
-        gradeScale.grades = List.of(grade0, grade1, grade2, grade3, grade4, grade5);
+    private GradeScaleTO getGradeScale() {
+        GradeScaleTO gradeScale = new GradeScaleTO();
+        GradeTO grade0 = getGrade("0", "0", "0", "0");
+        GradeTO grade1 = getGrade("1", "1", "1", "1");
+        GradeTO grade2 = getGrade("2", "2", "2", "2");
+        GradeTO grade3 = getGrade("3", "3", "3", "3");
+        GradeTO grade4 = getGrade("4", "4", "4", "4");
+        GradeTO grade5 = getGrade("5", "5", "5", "5");
+        gradeScale.setGrades(List.of(grade0, grade1, grade2, grade3, grade4, grade5));
         return gradeScale;
     }
 
-    private Grade getGrade(int id, String fi, String en, String sv) {
-        Grade grade = new Grade();
-        grade.localId = id;
-        grade.abbreviation = getLocalizedString(fi, en, sv);
+    private GradeTO getGrade(String id, String fi, String en, String sv) {
+        GradeTO grade = new GradeTO();
+        grade.setLocalId(id);
+        grade.setAbbreviation(getLocalizedString(fi, en, sv));
         return grade;
     }
 
-    private LocalizedString getLocalizedString(String fi, String en, String sv) {
-        LocalizedString localizedString = new LocalizedString();
-        localizedString.fi = fi;
-        localizedString.sv = sv;
-        localizedString.en = en;
+    private LocalizedStringTO getLocalizedString(String fi, String en, String sv) {
+        LocalizedStringTO localizedString = new LocalizedStringTO();
+        localizedString.setFi(fi);
+        localizedString.setSv(sv);
+        localizedString.setEn(en);
         return localizedString;
     }
 }

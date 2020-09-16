@@ -22,10 +22,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import fi.helsinki.opintoni.integration.IntegrationUtil;
+
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -56,7 +60,7 @@ public final class AppUser extends User {
         this.email = builder.email;
         this.commonName = builder.commonName;
         this.studentNumber = builder.studentNumber;
-        this.personId = builder.personId;
+        this.personId = builder.personId; //todo works until oodi is the master for persons
         this.employeeNumber = builder.employeeNumber;
         this.authorities = builder.authorities;
         this.teacherFacultyCode = builder.teacherFacultyCode;
@@ -81,6 +85,10 @@ public final class AppUser extends User {
 
     public String getPersonId() {
         return personId;
+    }
+
+    public String getSisuPersonId() {
+        return IntegrationUtil.getSisuPrivatePersonId(getPersonId());
     }
 
     public String getEduPersonPrincipalName() {
@@ -117,6 +125,10 @@ public final class AppUser extends User {
             .append("employeeNumber", employeeNumber)
             .append("personId", personId)
             .toString();
+    }
+
+    public static AppUser appUser(Principal principal) {
+        return (AppUser) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
     }
 
     public static class AppUserBuilder {

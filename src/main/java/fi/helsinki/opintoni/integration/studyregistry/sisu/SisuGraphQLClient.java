@@ -17,65 +17,154 @@
 
 package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyAttainmentRequest;
-import io.aexp.nodes.graphql.Argument;
-import io.aexp.nodes.graphql.Arguments;
-import io.aexp.nodes.graphql.GraphQLRequestEntity;
-import io.aexp.nodes.graphql.GraphQLResponseEntity;
-import io.aexp.nodes.graphql.GraphQLTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.StopWatch;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.List;
 
-import static fi.helsinki.opintoni.integration.IntegrationUtil.getSisuPrivatePersonId;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
+import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequest;
+
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
+
+import fi.helsinki.opintoni.cache.CacheConstants;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AcceptorPersonResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AddressResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AttainmentResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Authenticated_course_unit_realisation_searchQueryRequest;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Authenticated_course_unit_realisation_searchQueryResponse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.BuildingResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitRealisationOrganisationResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitRealisationResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.DatePeriodInputTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.DatePeriodResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.EventOverrideResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.LocalizedStringResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.LocationResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.OrganisationResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personQueryRequest;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personQueryResponse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personsQueryRequest;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PublicPersonResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyEventRealisationResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyEventResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyGroupSetResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudySubGroupResponseProjection;
+import fi.helsinki.opintoni.util.DateTimeUtil;
 
 public class SisuGraphQLClient implements SisuClient {
-    private final String endPointURL;
 
-    private static final Logger log = LoggerFactory.getLogger(SisuGraphQLClient.class);
+    private final RestTemplate restTemplate;
+    private final String url;
 
-    public SisuGraphQLClient(String endPointURL) {
-        this.endPointURL = endPointURL;
+    public SisuGraphQLClient(String url, RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+        this.url = url;
     }
+
+    private <T> T execute(GraphQLRequest request, Class<T> type) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> httpEntity = new HttpEntity<>(request.toHttpJsonBody(), headers);
+        return restTemplate.exchange(url, HttpMethod.POST, httpEntity, type).getBody();
+    }
+
+    private static final LocalizedStringResponseProjection ALL_LANGUAGES = new LocalizedStringResponseProjection().en().fi().sv();
 
     @Override
-    public PrivatePersonRequest getPrivatePerson(String id) {
+    @Cacheable(value = CacheConstants.GRAPHQL_CUR_SEARCH, cacheManager = "transientCacheManager", sync = true)
+    public  Authenticated_course_unit_realisation_searchQueryResponse curSearch(String responsiblePerson, LocalDate since) {
+        GraphQLOperationRequest qr = getTeacherCoursesRequest(responsiblePerson, since);
 
-        return queryWithPrivatePersonId(id, PrivatePersonRequest.class);
+        CourseUnitRealisationResponseProjection curp = new CourseUnitRealisationResponseProjection()
+            .name(ALL_LANGUAGES)
+            .id()
+            .organisations(new CourseUnitRealisationOrganisationResponseProjection()
+                .organisation(new OrganisationResponseProjection().code().name(ALL_LANGUAGES)))
+            .courseUnits(new CourseUnitResponseProjection().code())
+            .flowState()
+            .courseUnitRealisationTypeUrn()
+            .activityPeriod(new DatePeriodResponseProjection().startDate().endDate())
+            .studyGroupSets(
+                new StudyGroupSetResponseProjection()
+                .name(ALL_LANGUAGES)
+                .studySubGroups(new StudySubGroupResponseProjection()
+                    .name(ALL_LANGUAGES)
+                    .teacherIds()
+                    .studyEvents(
+                        new StudyEventResponseProjection()
+                            .overrides(new EventOverrideResponseProjection()
+                                .notice(ALL_LANGUAGES)
+                                .eventDate()
+                                .irregularLocations(new LocationResponseProjection()
+                                    .name(ALL_LANGUAGES).building(new BuildingResponseProjection()
+                                        .address(new AddressResponseProjection().postalCode().streetAddress())
+                                    )
+                                )
+                            )
+                            .locations(new LocationResponseProjection()
+                                .name(ALL_LANGUAGES)
+                                .building(
+                                    new BuildingResponseProjection()
+                                        .address(new AddressResponseProjection().streetAddress())
+                                        .name(ALL_LANGUAGES)
+                                )
+                            )
+                            .events(
+                                new StudyEventRealisationResponseProjection()
+                                    .end()
+                                    .start()
+                                    .cancelled()
+                                    .excluded()))));
 
+        GraphQLRequest gqlRequest = new GraphQLRequest(qr, curp);
+
+        return execute(gqlRequest, Authenticated_course_unit_realisation_searchQueryResponse.class);
     }
 
+    private GraphQLOperationRequest getTeacherCoursesRequest(String id, LocalDate now) {
+        String start = DateTimeUtil.getSemesterStartDateSisuString(now);
+        String end = DateTimeUtil.getSemesterStartDateSisuString(now.plus(1, ChronoUnit.YEARS));
+
+        return new Authenticated_course_unit_realisation_searchQueryRequest.Builder()
+            .setResponsiblePersonIds(Arrays.asList(id))
+            .setActivityPeriods(Arrays.asList(new DatePeriodInputTO(end, start)))
+            .setLimit(10000d)
+            .build();
+    }
+
+    // TODO cache
     @Override
-    public StudyAttainmentRequest getStudyAttainments(String id) {
-        return queryWithPrivatePersonId(id, StudyAttainmentRequest.class);
+    public Private_personQueryResponse getPrivatePerson(String personId) {
+        GraphQLOperationRequest qr = new Private_personsQueryRequest.Builder().setIds(List.of(personId)).build();
+        PrivatePersonResponseProjection projection =  new PrivatePersonResponseProjection()
+            .studentNumber()
+            .employeeNumber();
+        GraphQLRequest gqlRequest = new GraphQLRequest(qr, projection);
+        return execute(gqlRequest, Private_personQueryResponse.class);
     }
 
-    private <T> T queryWithPrivatePersonId(String id, Class<T> type) {
-        return queryWithArguments(new Arguments("private_person", new Argument<>("id", getSisuPrivatePersonId(id))), type);
+    // TODO cache
+    @Override
+    public Private_personQueryResponse getStudyAttainments(String personId) {
+        GraphQLOperationRequest qr = new Private_personQueryRequest.Builder().setId(personId).build();
+        PrivatePersonResponseProjection projection =  new PrivatePersonResponseProjection()
+            .studentNumber()
+            .employeeNumber()
+            .attainments(new AttainmentResponseProjection()
+                .acceptorPersons(new AcceptorPersonResponseProjection()
+                .person(new PublicPersonResponseProjection()
+                    .firstName().lastName())));
+        GraphQLRequest gqlRequest = new GraphQLRequest(qr, projection);
+        return execute(gqlRequest, Private_personQueryResponse.class);
     }
 
-    private <T> T queryWithArguments(Arguments arguments, Class<T> type) {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-
-        GraphQLTemplate graphQLTemplate = new GraphQLTemplate();
-
-        try {
-            GraphQLRequestEntity requestEntity = GraphQLRequestEntity.Builder()
-                .url(endPointURL)
-                .request(type)
-                .arguments(arguments)
-                .build();
-
-            GraphQLResponseEntity<T> responseEntity = graphQLTemplate.query(requestEntity, type);
-
-            return responseEntity.getResponse();
-        } catch (Exception e) {
-            throw new RuntimeException("GraphQL query failed with exception: ", e);
-        } finally {
-            stopWatch.stop();
-            log.info("GrapQL query {} took {} seconds", arguments.toString(), stopWatch.getTotalTimeSeconds());
-        }
-    }
 }

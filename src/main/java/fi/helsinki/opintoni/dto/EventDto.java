@@ -42,7 +42,7 @@ public class EventDto implements Comparable<EventDto> {
     public final Source source;
     public final LocalDateTime startDate;
     public final LocalDateTime endDate;
-    public final Integer realisationId;
+    public final String realisationId;
     public final String title;
     public final String courseTitle;
     public final String courseUri;
@@ -59,7 +59,7 @@ public class EventDto implements Comparable<EventDto> {
              Source source,
              LocalDateTime startDate,
              LocalDateTime endDate,
-             Integer realisationId,
+             String realisationId,
              String title,
              String courseTitle,
              String courseUri,

@@ -17,6 +17,15 @@
 
 package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.integration.studyregistry.Person;
@@ -25,27 +34,20 @@ import fi.helsinki.opintoni.integration.studyregistry.StudyRegistry;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRight;
 import fi.helsinki.opintoni.integration.studyregistry.Teacher;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyAttainmentRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personQueryResponse;
 
 @Component
 @Qualifier("sisuStudyRegistry")
 public class SisuStudyRegistry implements StudyRegistry {
 
-    private final SisuClient sisuClient;
     private final SisuStudyRegistryConverter sisuStudyRegistryConverter;
+    private final SisuClient sisuClient;
 
     @Autowired
     public SisuStudyRegistry(SisuClient sisuClient, SisuStudyRegistryConverter sisuStudyRegistryConverter) {
-        this.sisuClient = sisuClient;
         this.sisuStudyRegistryConverter = sisuStudyRegistryConverter;
+        this.sisuClient = sisuClient;
     }
 
     @Override
@@ -60,13 +62,16 @@ public class SisuStudyRegistry implements StudyRegistry {
 
     @Override
     public List<Event> getTeacherEvents(String teacherNumber) {
-        throw new UnsupportedOperationException();
+        return sisuStudyRegistryConverter.sisuCurSearchResultToEvents(
+            sisuClient.curSearch(teacherNumber, LocalDate.now(ZoneId.of("Europe/Helsinki"))), teacherNumber);
     }
 
     @Override
     public List<StudyAttainment> getStudyAttainments(String personId) {
-        StudyAttainmentRequest studyAttainmentRequest = sisuClient.getStudyAttainments(personId);
-        return studyAttainmentRequest.attainments.stream()
+        Private_personQueryResponse res = sisuClient.getStudyAttainments(personId);
+        return res.getData().values().stream().findFirst().stream()
+            .map(PrivatePersonTO::getAttainments)
+            .flatMap(List::stream)
             .map(sisuStudyRegistryConverter::sisuAttainmentToStudyAttainment)
             .collect(Collectors.toList());
     }
@@ -77,8 +82,8 @@ public class SisuStudyRegistry implements StudyRegistry {
     }
 
     @Override
-    public List<TeacherCourse> getTeacherCourses(String teacherNumber, LocalDate since) {
-        throw new UnsupportedOperationException();
+    public List<TeacherCourse> getTeacherCourses(String hloId, LocalDate since) {
+        return sisuStudyRegistryConverter.sisuCURSearchResultToTeacherCourseList(sisuClient.curSearch(hloId, LocalDate.now()));
     }
 
     @Override
@@ -93,7 +98,6 @@ public class SisuStudyRegistry implements StudyRegistry {
 
     @Override
     public Person getPerson(String personId) {
-        PrivatePersonRequest privatePersonRequest = sisuClient.getPrivatePerson(personId);
-        return sisuStudyRegistryConverter.sisuPrivatePersonToPerson(privatePersonRequest);
+        return sisuStudyRegistryConverter.sisuPrivatePersonToPerson(sisuClient.getPrivatePerson(personId));
     }
 }

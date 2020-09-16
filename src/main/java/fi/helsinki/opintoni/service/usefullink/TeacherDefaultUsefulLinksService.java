@@ -35,17 +35,17 @@ public class TeacherDefaultUsefulLinksService extends DefaultUsefulLinksService 
     private final List<Map<String, String>> openUniversityDefaultUsefulLinks;
     private final List<Map<String, String>> facultyLinkOptions;
     private final UsefulLinkTransactionalService usefulLinkTransactionalService;
-    private final UserRoleService oodiUserRoleService;
+    private final UserRoleService userRoleService;
     private final UserFacultyResolver userFacultyResolver;
 
     @Autowired
     public TeacherDefaultUsefulLinksService(UsefulLinksProperties usefulLinksProperties,
                                             FacultyUsefulLinksProperties facultyLinksProperties,
                                             UsefulLinkTransactionalService usefulLinkTransactionalService,
-                                            UserRoleService oodiUserRoleService,
+                                            UserRoleService userRoleService,
                                             UserFacultyResolver userFacultyResolver) {
         this.usefulLinkTransactionalService = usefulLinkTransactionalService;
-        this.oodiUserRoleService = oodiUserRoleService;
+        this.userRoleService = userRoleService;
         this.userFacultyResolver = userFacultyResolver;
         this.openUniversityDefaultUsefulLinks = usefulLinksProperties.getTeacherOpenUniversityDefaultUsefulLinks();
         this.defaultUsefulLinks = usefulLinksProperties.getTeacherDefaultUsefulLinks();
@@ -53,13 +53,12 @@ public class TeacherDefaultUsefulLinksService extends DefaultUsefulLinksService 
     }
 
     public void createDefaultLinks(User user, AppUser appUser) {
-        appUser.getEmployeeNumber().ifPresent(employeeNumber -> {
-            List<UsefulLink> usefulLinks = oodiUserRoleService.isOpenUniversityTeacher(employeeNumber)
-                ? createLocalizedUsefulLinks(openUniversityDefaultUsefulLinks, user)
-                : createUsefulLinksForTeacher(user, appUser);
+        boolean isOu = userRoleService.isOpenUniversityTeacher(appUser.getSisuPersonId());
+        List<UsefulLink> usefulLinks = userRoleService.isOpenUniversityTeacher(appUser.getSisuPersonId())
+            ? createLocalizedUsefulLinks(openUniversityDefaultUsefulLinks, user)
+            : createUsefulLinksForTeacher(user, appUser);
 
-            usefulLinkTransactionalService.save(usefulLinks);
-        });
+        usefulLinkTransactionalService.save(usefulLinks);
     }
 
     private List<UsefulLink> createUsefulLinksForTeacher(User user, AppUser appUser) {

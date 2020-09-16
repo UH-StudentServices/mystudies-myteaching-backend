@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.config.OptimeConfiguration;
 import fi.helsinki.opintoni.dto.EventDto;
+import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
@@ -30,7 +31,6 @@ import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
-import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.Position;
 import fi.helsinki.opintoni.service.converter.EventConverter;
 import fi.helsinki.opintoni.util.CoursePageUtil;
 import fi.helsinki.opintoni.util.DateTimeUtil;
@@ -43,7 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -59,17 +59,6 @@ public class EventService {
     private final OptimeConfiguration optimeConfiguration;
     private final OptimeService optimeService;
     private final OptimeCalendarService optimeCalendarService;
-
-    private static class Pair<X, Y> {
-
-        public X x;
-        public Y y;
-
-        public Pair(X x, Y y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
 
     @Autowired
     public EventService(StudyRegistryService studyRegistryService,
@@ -105,7 +94,7 @@ public class EventService {
             locale);
     }
 
-    public List<EventDto> getTeacherEvents(String teacherNumber, Locale locale) {
+    public List<EventDto> getTeacherEvents(final String teacherNumber, final Locale locale) {
 
         List<EventDto> optimeEvents = Collections.emptyList();
         List<Event> studyRegistryEvents = Collections.emptyList();
@@ -117,7 +106,7 @@ public class EventService {
             studyRegistryEvents = studyRegistryService.getTeacherEvents(teacherNumber);
         }
 
-        List<TeacherCourse> courses = studyRegistryService.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()))
+        List<TeacherCourse> courses = studyRegistryService.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDate(LocalDate.now()))
             .stream()
             .filter(c -> !c.isCancelled)
             .collect(Collectors.toList());
@@ -135,29 +124,31 @@ public class EventService {
         List<? extends CourseRealisation> courses,
         Locale locale) {
 
-        List<String> courseIds = courses.stream()
+        Map<Boolean, List<CourseRealisation>> partitioned = courses.stream()
+            .collect(Collectors.partitioningBy(coursePageUtil::useNewCoursePageIntegration));
+
+        List<String> useOld = partitioned.get(false).stream().map(cr -> {
+            return IntegrationUtil.stripKnownSisuCurPrefixes(cr.realisationId);
+        }).collect(Collectors.toList());
+
+        /// XXX TODO use sotka here
+        Map<String, CoursePageCourseImplementation> coursePages = getOldCoursePages(studyRegistryEvents, useOld, locale);
+
+        Map<String, CourseCmsCourseUnitRealisation> newCoursePages = partitioned.get(true).stream()
             .map(c -> c.realisationId)
-            .collect(Collectors.toList());
-
-        Map<String, CoursePageCourseImplementation> coursePages = getCoursePages(studyRegistryEvents, courseIds, locale);
-
-        Map<String, CourseCmsCourseUnitRealisation> newCoursePages = courses.stream()
-            .filter(coursePageUtil::useNewCoursePageIntegration)
-            .map(c -> Position.getByValue(c.position).equals(Position.ROOT) ? c.realisationId : c.rootId)
             .distinct()
-            .map(courseId -> {
-                String optimeId = sotkaClient.getOodiHierarchy(courseId).optimeId;
-                return new Pair<>(courseId, courseCmsClient.getCoursePage(optimeId != null ? optimeId : courseId, locale));
+            .map(realisationId -> {
+                return Map.entry(realisationId, courseCmsClient.getCoursePage(realisationId, locale));
             })
-            .collect(Collectors.toMap(p -> p.x, p -> p.y));
+            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
 
         Stream<EventDto> studyRegistryEventDtos = studyRegistryEvents.stream()
             .filter(event -> !event.isCancelled && event.startDate != null)
             .map(event ->
                 eventConverter.toDto(
                     event,
-                    getCoursePage(coursePages, getRealisationId(event)),
-                    getNewCoursePage(newCoursePages, getRealisationRootId(event, courses)),
+                    getCoursePage(coursePages, event.realisationId),
+                    getNewCoursePage(newCoursePages, event.realisationId),
                     locale));
 
         Stream<EventDto> optimeEventDtos = optimeEvents.stream();
@@ -166,36 +157,19 @@ public class EventService {
             .flatMap(c -> c.events.stream()
                 .filter(e -> e.begin != null)
                 .map(e -> eventConverter.toDto(e, c)));
-
         return EventUtils.mergeStreams(Stream.concat(studyRegistryEventDtos, optimeEventDtos), coursePageEventDtos);
     }
 
     private CoursePageCourseImplementation getCoursePage(Map<String, CoursePageCourseImplementation> coursePages, String realisationId) {
-        return Optional
-            .ofNullable(coursePages.get(realisationId))
-            .orElseGet(CoursePageCourseImplementation::new);
+        return coursePages.getOrDefault(realisationId, new CoursePageCourseImplementation());
     }
 
-    private CourseCmsCourseUnitRealisation getNewCoursePage(Map<String, CourseCmsCourseUnitRealisation> coursePages, String realisationId) {
+    private CourseCmsCourseUnitRealisation getNewCoursePage(Map<String, CourseCmsCourseUnitRealisation> coursePages,
+        String realisationId) {
         return coursePages.getOrDefault(realisationId, null);
     }
 
-    private String getRealisationId(Event event) {
-        return String.valueOf(event.realisationId);
-    }
-
-    private String getRealisationRootId(Event event, List<? extends CourseRealisation> courses) {
-        String eventRealisationId = getRealisationId(event);
-        return courses.stream()
-            .filter(c -> String.valueOf(c.realisationId).equals(eventRealisationId))
-            .findFirst()
-            .map(courseRealisation ->
-                Position.getByValue(courseRealisation.position).equals(Position.ROOT)
-                    ? courseRealisation.realisationId : courseRealisation.rootId)
-            .orElse("");
-    }
-
-    private Map<String, CoursePageCourseImplementation> getCoursePages(
+    private Map<String, CoursePageCourseImplementation> getOldCoursePages(
         List<Event> events,
         List<String> courseIds,
         Locale locale) {
@@ -212,7 +186,7 @@ public class EventService {
     private Stream<String> getEventCourseIds(List<Event> events) {
         return events
             .stream()
-            .map(event -> String.valueOf(event.realisationId));
+            .map(event -> event.realisationId);
     }
 
 }

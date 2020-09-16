@@ -17,77 +17,253 @@
 
 package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import com.google.common.base.Splitter;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+
+import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.integration.studyregistry.LocalizedText;
+import fi.helsinki.opintoni.integration.studyregistry.OptimeExtras;
+import fi.helsinki.opintoni.integration.studyregistry.Organisation;
 import fi.helsinki.opintoni.integration.studyregistry.Person;
 import fi.helsinki.opintoni.integration.studyregistry.StudyAttainment;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryLocale;
 import fi.helsinki.opintoni.integration.studyregistry.Teacher;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AcceptorPerson;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Attainment;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Grade;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.GradeScale;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.LocalizedString;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PublicPerson;
-import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AcceptorPersonTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AttainmentTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Authenticated_course_unit_realisation_searchQueryResponse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitRealisationTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.GradeScaleTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.GradeTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.LocalizedStringTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.LocationTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personQueryResponse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PublicPersonTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyEventRealisationTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyEventTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudySubGroupTO;
 
 @Component
 public class SisuStudyRegistryConverter {
 
+    private static final ZoneId HELSINKI_ZONE_ID = ZoneId.of("Europe/Helsinki");
     public static final String DATE_PATTERN = "yyyy-MM-dd";
+    static DateTimeFormatter sisuDateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME;
 
-    public StudyAttainment sisuAttainmentToStudyAttainment(Attainment attainment) {
+    private static final Map<String, Integer> SISU_CUR_TYPE_TO_TYPE_CODE;
+    private static final Integer DEFAULT_CUR_TYPE_CODE = 17;
+
+    static {
+        Map<String, Integer> typeMapping = new HashMap<>();
+        typeMapping.put("urn:code:course-unit-realisation-type:independent-work-essay", 21);
+        typeMapping.put("urn:code:course-unit-realisation-type:independent-work-presentation", 99);
+        typeMapping.put("urn:code:course-unit-realisation-type:teaching-participation-seminar", 10);
+        typeMapping.put("urn:code:course-unit-realisation-type:licentiate-thesis", 99);
+        typeMapping.put("urn:code:course-unit-realisation-type:teaching-participation-lab", 22);
+        typeMapping.put("urn:code:course-unit-realisation-type:teaching-participation-online", 26);
+        typeMapping.put("urn:code:course-unit-realisation-type:training-training", 3);
+        typeMapping.put("urn:code:course-unit-realisation-type:exam-exam", 19);
+        typeMapping.put("urn:code:course-unit-realisation-type:exam-electronic", 28);
+        typeMapping.put("urn:code:course-unit-realisation-type:thesis-doctoral", 99);
+        typeMapping.put("urn:code:course-unit-realisation-type:independent-work-project", 99);
+        typeMapping.put("urn:code:course-unit-realisation-type:teaching-participation-field-course", 12);
+        typeMapping.put("urn:code:course-unit-realisation-type:thesis-bachelor", 99);
+        typeMapping.put("urn:code:course-unit-realisation-type:teaching-participation-individual-teaching", 17);
+        typeMapping.put("urn:code:course-unit-realisation-type:teaching-participation-project", 17);
+        typeMapping.put("urn:code:course-unit-realisation-type:thesis-masters", 99);
+        typeMapping.put("urn:code:course-unit-realisation-type:exam-midterm", 19);
+        typeMapping.put("urn:code:course-unit-realisation-type:teaching-participation-lectures", 17);
+        typeMapping.put("urn:code:course-unit-realisation-type:exam-final", 19);
+        typeMapping.put("urn:code:course-unit-realisation-type:independent-work-learning-diary", 99);
+        typeMapping.put("urn:code:course-unit-realisation-type:teaching-participation-small-group", 17);
+
+        SISU_CUR_TYPE_TO_TYPE_CODE = typeMapping;
+    }
+
+    public StudyAttainment sisuAttainmentToStudyAttainment(AttainmentTO attainment) {
         StudyAttainment studyAttainment = new StudyAttainment();
         studyAttainment.attainmentDate = LocalDate
-            .parse(attainment.attainmentDate, DateTimeFormatter.ofPattern(DATE_PATTERN))
-            .atStartOfDay();
-        studyAttainment.credits = attainment.credits.intValue();
-        studyAttainment.grade = sisuGradeScaleToLocalizedTextList(attainment.gradeScale, attainment.gradeId);
-        studyAttainment.studyAttainmentId = attainment.id;
-        studyAttainment.learningOpportunityName = sisuLocalizedStringToLocalizedTextList(attainment.courseUnit.name);
-        studyAttainment.teachers = attainment.acceptorPersons != null ? attainment.acceptorPersons.stream()
+                .parse(attainment.getAttainmentDate(), DateTimeFormatter.ofPattern(DATE_PATTERN)).atStartOfDay();
+        studyAttainment.credits = attainment.getCredits().intValue();
+        studyAttainment.grade = sisuGradeScaleToLocalizedTextList(attainment.getGradeScale(), attainment.getGradeId());
+        studyAttainment.studyAttainmentId = attainment.getId();
+        studyAttainment.learningOpportunityName = localizedStringToToLocalizedText(attainment.getCourseUnit().getName());
+        studyAttainment.teachers = Optional.ofNullable(attainment.getAcceptorPersons()).stream()
+            .flatMap(List::stream)
             .map(this::sisuAcceptorPersonToTeacher)
-            .collect(Collectors.toList())
-            : new ArrayList<>();
+            .collect(Collectors.toList());
         return studyAttainment;
     }
 
-    public List<LocalizedText> sisuGradeScaleToLocalizedTextList(GradeScale scale, Integer gradeId) {
-        Grade grade = scale.grades.stream()
-            .filter((g) -> g.localId.equals(gradeId))
+    public List<LocalizedText> sisuGradeScaleToLocalizedTextList(GradeScaleTO scale, String gradeId) {
+        GradeTO grade = scale.getGrades().stream()
+            .filter((g) -> g.getLocalId().equals(gradeId))
             .findFirst()
             .orElseThrow();
-        return sisuLocalizedStringToLocalizedTextList(grade.abbreviation);
+        return localizedStringToToLocalizedText(grade.getAbbreviation());
     }
 
-    public Person sisuPrivatePersonToPerson(PrivatePersonRequest privatePersonRequest) {
+    public Person sisuPrivatePersonToPerson(Private_personQueryResponse privatePersonQueryResponse) {
         Person person = new Person();
-        person.studentNumber = privatePersonRequest.studentNumber;
-        person.teacherNumber = privatePersonRequest.employeeNumber;
+        person.studentNumber = privatePersonQueryResponse.private_person().getStudentNumber();
+        person.teacherNumber = privatePersonQueryResponse.private_person().getEmployeeNumber();
         return person;
     }
 
-    private Teacher sisuAcceptorPersonToTeacher(AcceptorPerson acceptorPerson) {
+    private Teacher sisuAcceptorPersonToTeacher(AcceptorPersonTO acceptorPerson) {
         Teacher teacher = new Teacher();
-        PublicPerson person = acceptorPerson.person;
-        String firstName = person.firstName != null ? person.firstName : "";
-        String lastName = person.lastName != null ? person.lastName : "";
+        PublicPersonTO person = acceptorPerson.getPerson();
+        String firstName = person.getFirstName() != null ? person.getFirstName() : "";
+        String lastName = person.getLastName() != null ? person.getLastName() : "";
         teacher.name = String.format("%s %s", firstName, lastName);
         return teacher;
     }
 
-    private List<LocalizedText> sisuLocalizedStringToLocalizedTextList(LocalizedString localizedString) {
+    public List<TeacherCourse> sisuCURSearchResultToTeacherCourseList(
+            Authenticated_course_unit_realisation_searchQueryResponse curResult) {
+        return curResult.authenticated_course_unit_realisation_search().stream().map(this::sisuCurToTeacherCourse)
+                .collect(Collectors.toList());
+    }
+
+    public TeacherCourse sisuCurToTeacherCourse(CourseUnitRealisationTO cur) {
+        TeacherCourse tc = new TeacherCourse();
+        tc.realisationId = cur.getId();
+        tc.startDate = sisuDateStringToLocalDate(cur.getActivityPeriod().getStartDate());
+        tc.endDate = sisuDateStringToLocalDate(cur.getActivityPeriod().getEndDate()).minusDays(1); // XXX end date -1
+        tc.isCancelled = "CANCELLED".equals(cur.getFlowState());
+        tc.isHidden = "NOT_READY".equals(cur.getFlowState());  // XXX sisun haku ei palauta muita kun PUBLISHED
+        if (cur.getName() != null) {
+            tc.name = localizedStringToToLocalizedText(cur.getName());
+            tc.realisationName = localizedStringToToLocalizedText(cur.getName());
+        }
+        tc.learningOpportunityId = cur.getCourseUnits().get(0).getCode(); // XXX jos monta CU:ta niin minkä CU:n koodi?
+        tc.organisations = cur.getOrganisations().stream().map(sisuorg -> {
+            Organisation org = new Organisation();
+            org.code = sisuorg.getOrganisation().getCode();
+            org.name = localizedStringToToLocalizedText(sisuorg.getOrganisation().getName());
+            return org;
+        }).collect(Collectors.toList());
+        // TODO poista oodismi
+        tc.realisationTypeCode = SISU_CUR_TYPE_TO_TYPE_CODE.getOrDefault(cur.getCourseUnitRealisationTypeUrn(), DEFAULT_CUR_TYPE_CODE);
+        return tc;
+    }
+
+    private LocalDateTime sisuDateStringToLocalDate(String sisuDateString) {
+        return LocalDate.parse(sisuDateString).atStartOfDay();
+    }
+
+    private List<LocalizedText> localizedStringToToLocalizedText(LocalizedStringTO name) {
         return List.of(
-            new LocalizedText(StudyRegistryLocale.FI, localizedString.fi),
-            new LocalizedText(StudyRegistryLocale.SV, localizedString.sv),
-            new LocalizedText(StudyRegistryLocale.EN, localizedString.en)
+            new LocalizedText(StudyRegistryLocale.FI, name.getFi()),
+            new LocalizedText(StudyRegistryLocale.SV, name.getSv()),
+            new LocalizedText(StudyRegistryLocale.EN, name.getEn())
         );
+    }
+
+    public List<Event> sisuCurSearchResultToEvents(Authenticated_course_unit_realisation_searchQueryResponse curSearchResult, String teacherNumber) {
+        return curSearchResult.authenticated_course_unit_realisation_search().stream()
+           .map(cur -> sisuCurToTeacherEvents(cur, teacherNumber))
+           .flatMap(x -> x.stream())
+           .collect(Collectors.toList());
+    }
+
+    private LocalDateTime parseDateTime(String datetime) {
+        return LocalDateTime.parse(datetime, sisuDateTimeFormatter);
+    }
+
+    private Event sisuEventToEvent(CourseUnitRealisationTO cur, StudySubGroupTO ssg, StudyEventTO se, StudyEventRealisationTO sisuEvent) {
+        Event event = new Event();
+        event.realisationId = cur.getId();
+        event.realisationName = localizedStringToToLocalizedText(ssg.getName());
+        event.realisationRootName = localizedStringToToLocalizedText(cur.getName());
+        // TODO ui still expects to see oodi data...
+        event.typeCode = SISU_CUR_TYPE_TO_TYPE_CODE.getOrDefault(cur.getCourseUnitRealisationTypeUrn(), DEFAULT_CUR_TYPE_CODE);
+        event.startDate = parseDateTime(sisuEvent.getStart());
+        event.endDate = parseDateTime(sisuEvent.getEnd());
+        Optional.ofNullable(se.getLocations()).stream()
+            .flatMap(List::stream)
+            .findFirst()
+            .ifPresent(loc -> {
+                if (loc.getName() != null) {
+                    event.roomName = loc.getName().getFi(); // XXX fi only ?
+                }
+                if (loc.getBuilding() != null) {
+                    event.buildingStreet = loc.getBuilding().getAddress().getStreetAddress();
+                    event.buildingZipCode = loc.getBuilding().getAddress().getPostalCode();
+                }
+            });
+
+        Optional.ofNullable(se.getOverrides()).stream()
+            .flatMap(List::stream)
+            .filter(override -> override.getEventDate().equals(sisuEvent.getStart()))
+            .findFirst()
+            .ifPresent(override -> {
+                if (override.getNotice() != null && StringUtils.isNotBlank(override.getNotice().getFi())) { // XXX fi only ?
+                    event.optimeExtras = parseOptimeExtras(override.getNotice().getFi()); // XXX fi only?
+                }
+                setEventLocation(event, override.getIrregularLocations());
+            }
+        );
+        return event;
+    }
+
+    public List<Event> sisuCurToTeacherEvents(CourseUnitRealisationTO cur, String teacherNumber) {
+        return cur.getStudyGroupSets().stream()
+            .map(sgs -> sgs.getStudySubGroups().stream()
+                .filter(ssg -> ssg.getTeacherIds().contains(teacherNumber))
+                .map(ssg -> ssg.getStudyEvents().stream()
+                    .map(se -> se.getEvents().stream()
+                        .map(sisuEvent -> sisuEventToEvent(cur, ssg, se, sisuEvent))
+                    )
+                )
+            ).flatMap(Function.identity()).flatMap(Function.identity()).flatMap(Function.identity()).collect(Collectors.toList());
+    }
+
+    /**
+     * Parses optime extras from zero width space (u200b) separated string.
+     *
+     * @see fi.helsinki.mystudies.integration.studyregistry.sisu.model.SisuEventOverride
+     *
+     * @param extras Zero width space separated string
+     * @return optime extras parsed from input string
+     */
+    public static OptimeExtras parseOptimeExtras(String extras) {
+        OptimeExtras oe = new OptimeExtras();
+        if (StringUtils.isBlank(extras)) {
+            return oe;
+        }
+
+        List<String> split = Splitter.on('\u200b').splitToList(extras);
+        if (split.size() == 3) {
+            oe.roomNotes = split.get(0).trim();
+            oe.staffNotes = split.get(1).trim();
+            oe.otherNotes = split.get(2).trim();
+        }
+        return oe;
+    }
+
+    private void setEventLocation(Event event, List<LocationTO> locations) {
+        Optional<LocationTO> loc = locations.stream().findFirst();
+        loc.ifPresent(location -> {
+            event.roomName = location.getName() != null ? location.getName().getFi() : null;
+            if (location.getBuilding() != null && location.getBuilding().getAddress() != null) {
+                event.buildingStreet = location.getBuilding().getAddress().getStreetAddress();
+                event.buildingZipCode = location.getBuilding().getAddress().getPostalCode();
+            }
+        });
     }
 
 }

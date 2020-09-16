@@ -103,51 +103,43 @@ public class CourseConverter {
         return Optional.ofNullable(dto);
     }
 
-    public Optional<CourseDto> toDto(TeacherCourse teacherCourse, Locale locale, boolean isChildCourseWithoutRoot) {
-        CourseDto dto = null;
-
-        if (!isPositionStudyGroupSet(teacherCourse.position)) {
-            dto = new CourseDto(
-                teacherCourse.learningOpportunityId,
-                teacherCourse.realisationTypeCode,
-                isChildCourseWithoutRoot ?
-                    enrollmentNameConverter.getRealisationNameWithRootName(
-                        teacherCourse.realisationName,
-                        teacherCourse.realisationRootName,
-                        locale) :
-                    localizedValueConverter.toLocalizedString(teacherCourse.realisationName, locale),
-                teacherCourse.startDate,
-                teacherCourse.endDate,
-                teacherCourse.realisationId,
-                teacherCourse.parentId,
-                teacherCourse.rootId,
-                null,
-                Lists.newArrayList(),
-                eventTypeResolver.isExam(teacherCourse.realisationTypeCode),
-                teacherCourse.isCancelled,
-                teacherCourse.isHidden,
-                teacherCourse.teacherRole);
-
-            enrichWithCoursePageData(dto, teacherCourse, locale);
-        }
-        return Optional.ofNullable(dto);
-    }
-
-    private boolean isPositionRoot(String position) {
-        return Position.getByValue(position).equals(Position.ROOT);
-    }
-
     private boolean isPositionStudyGroupSet(String position) {
         return Position.getByValue(position).equals(Position.STUDY_GROUP_SET);
     }
 
+    public CourseDto toDto(TeacherCourse teacherCourse, Locale locale, boolean isChildCourseWithoutRoot) {
+        CourseDto dto = new CourseDto(
+            teacherCourse.learningOpportunityId,
+            teacherCourse.realisationTypeCode,
+            isChildCourseWithoutRoot ?
+                enrollmentNameConverter.getRealisationNameWithRootName(
+                    teacherCourse.realisationName,
+                    teacherCourse.realisationRootName,
+                    locale) :
+                localizedValueConverter.toLocalizedString(teacherCourse.realisationName, locale),
+            teacherCourse.startDate,
+            teacherCourse.endDate,
+            teacherCourse.realisationId,
+            teacherCourse.parentId,
+            teacherCourse.rootId,
+            null,
+            Lists.newArrayList(),
+            eventTypeResolver.isExam(teacherCourse.realisationTypeCode),
+            teacherCourse.isCancelled,
+            teacherCourse.isHidden,
+            teacherCourse.teacherRole);
+
+        enrichWithCoursePageData(dto, teacherCourse, locale);
+        return dto;
+    }
+
     private void enrichWithCoursePageData(CourseDto dto, CourseRealisation courseRealisation, Locale locale) {
         if (coursePageUtil.useNewCoursePageIntegration(courseRealisation)) {
-            String realisationId = isPositionRoot(courseRealisation.position) ? dto.realisationId : dto.rootId;
-            String optimeId = sotkaClient.getOodiHierarchy(realisationId).optimeId;
-
-            enrichWithNewCoursePageData(dto, courseCmsClient.getCoursePage(optimeId != null ? optimeId : dto.realisationId, locale), locale);
+            enrichWithNewCoursePageData(dto, courseCmsClient.getCoursePage(dto.realisationId, locale), locale);
         } else {
+            // TODO use sotka
+            // String realisationId = dto.realisationId;
+            // String optimeId = sotkaClient.getOodiHierarchy(realisationId).optimeId;
             enrichWithOldCoursePageData(dto, coursePageClient.getCoursePage(dto.realisationId, locale));
         }
     }

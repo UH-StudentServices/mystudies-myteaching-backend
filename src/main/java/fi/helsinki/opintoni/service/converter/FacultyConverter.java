@@ -21,7 +21,7 @@ import fi.helsinki.opintoni.config.AppConfiguration;
 import fi.helsinki.opintoni.dto.FacultyDto;
 import fi.helsinki.opintoni.resolver.UserFacultyResolver;
 import fi.helsinki.opintoni.security.AppUser;
-import fi.helsinki.opintoni.service.OodiUserService;
+import fi.helsinki.opintoni.service.OpenUniversityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,20 +30,20 @@ public class FacultyConverter {
 
     public static final String OPEN_UNIVERSITY_FACULTY_CODE = "A93000";
 
-    private final OodiUserService oodiUserService;
+    private final OpenUniversityService userService;
     private final UserFacultyResolver userFacultyResolver;
 
     @Autowired
-    public FacultyConverter(OodiUserService oodiUserService,
+    public FacultyConverter(OpenUniversityService userService,
                             AppConfiguration appConfiguration,
                             UserFacultyResolver
                                 userFacultyResolver) {
-        this.oodiUserService = oodiUserService;
+        this.userService = userService;
         this.userFacultyResolver = userFacultyResolver;
     }
 
     public FacultyDto getFacultyDto(AppUser appUser) {
-        if (oodiUserService.isOpenUniversityUser(appUser)) {
+        if (userService.isOpenUniversityUser(appUser)) {
             return createOpenUniversityFaculty();
         } else {
             return createFaculty(appUser);

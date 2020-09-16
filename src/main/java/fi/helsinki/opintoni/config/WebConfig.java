@@ -26,7 +26,6 @@ import fi.helsinki.opintoni.security.authorization.profile.RestrictedProfileInte
 import fi.helsinki.opintoni.service.UserService;
 import fi.helsinki.opintoni.web.arguments.PersonIdArgumentResolver;
 import fi.helsinki.opintoni.web.arguments.StudentNumberArgumentResolver;
-import fi.helsinki.opintoni.web.arguments.TeacherNumberArgumentResolver;
 import fi.helsinki.opintoni.web.arguments.UserIdArgumentResolver;
 import fi.helsinki.opintoni.web.arguments.UsernameArgumentResolver;
 import fi.helsinki.opintoni.web.rest.RestConstants;
@@ -78,7 +77,6 @@ public class WebConfig implements WebMvcConfigurer {
             new AuthenticationPrincipalArgumentResolver(),
             new StudentNumberArgumentResolver(securityUtils),
             new PersonIdArgumentResolver(securityUtils),
-            new TeacherNumberArgumentResolver(securityUtils),
             new UserIdArgumentResolver(userService, securityUtils),
             new UsernameArgumentResolver(userService, securityUtils)));
     }

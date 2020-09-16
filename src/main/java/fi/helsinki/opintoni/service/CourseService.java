@@ -21,11 +21,11 @@ import fi.helsinki.opintoni.dto.CourseDto;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
 import fi.helsinki.opintoni.service.converter.CourseConverter;
-import fi.helsinki.opintoni.util.DateTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -51,17 +51,15 @@ public class CourseService {
     }
 
     public List<CourseDto> getTeacherCourses(String teacherNumber, Locale locale) {
-        List<TeacherCourse> oodiTeacherCourses = studyRegistryService
-            .getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()));
+        List<TeacherCourse> teacherCourses = studyRegistryService
+            .getTeacherCourses(teacherNumber, LocalDate.now(ZoneId.of("Europe/Helsinki")));
 
-        Map<String, TeacherCourse> coursesByRealisationIds = oodiTeacherCourses.stream()
+        Map<String, TeacherCourse> coursesByRealisationIds = teacherCourses.stream()
               .collect(Collectors.toMap(c -> c.realisationId, Function.identity()));
 
-        return oodiTeacherCourses
+        return teacherCourses
             .stream()
             .map(c -> courseConverter.toDto(c, locale, isChildCourseWithoutRoot(c, coursesByRealisationIds)))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
             .collect(toList());
     }
 
@@ -74,7 +72,7 @@ public class CourseService {
     }
 
     public List<String> getTeacherCourseIds(String teacherNumber) {
-        return studyRegistryService.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now())).stream()
+        return studyRegistryService.getTeacherCourses(teacherNumber, LocalDate.now()).stream()
             .filter(e -> !e.isCancelled)
             .map(e -> String.valueOf(e.realisationId))
             .collect(toList());

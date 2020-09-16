@@ -33,15 +33,15 @@ import static fi.helsinki.opintoni.service.converter.FacultyConverter.OPEN_UNIVE
 public class UserFacultyResolver {
 
     private final StudyRegistryService studyRegistryService;
-    private final UserRoleService oodiUserRoleService;
+    private final UserRoleService userRoleService;
     private final AppConfiguration appConfiguration;
 
     @Autowired
     public UserFacultyResolver(StudyRegistryService studyRegistryService,
-                               UserRoleService oodiUserRoleService,
+                               UserRoleService userRoleSymbol,
                                AppConfiguration appConfiguration) {
         this.studyRegistryService = studyRegistryService;
-        this.oodiUserRoleService = oodiUserRoleService;
+        this.userRoleService = userRoleSymbol;
         this.appConfiguration = appConfiguration;
     }
 
@@ -51,7 +51,7 @@ public class UserFacultyResolver {
     }
 
     public String getStudentFacultyCode(String studentNumber) {
-        if (oodiUserRoleService.isOpenUniversityStudent(studentNumber)) {
+        if (userRoleService.isOpenUniversityStudent(studentNumber)) {
             return OPEN_UNIVERSITY_FACULTY_CODE;
         }
         List<StudyRight> studyRights = studyRegistryService.getStudentStudyRights(studentNumber);

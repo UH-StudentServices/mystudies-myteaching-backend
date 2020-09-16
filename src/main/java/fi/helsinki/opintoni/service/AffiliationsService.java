@@ -27,14 +27,14 @@ import static fi.helsinki.opintoni.exception.http.ForbiddenException.forbiddenEx
 @Service
 public class AffiliationsService {
 
-    private final OodiUserService oodiUserService;
+    private final OpenUniversityService userService;
     private final FacultyConverter facultyConverter;
     private final SecurityUtils securityUtils;
 
-    public AffiliationsService(OodiUserService oodiUserService,
+    public AffiliationsService(OpenUniversityService userService,
                                FacultyConverter facultyConverter,
                                SecurityUtils securityUtils) {
-        this.oodiUserService = oodiUserService;
+        this.userService = userService;
         this.facultyConverter = facultyConverter;
         this.securityUtils = securityUtils;
     }
@@ -42,7 +42,7 @@ public class AffiliationsService {
     public AffiliationsDto getAffiliations() {
         return securityUtils.getAppUser().map(appUser -> {
             AffiliationsDto affiliationsDto = new AffiliationsDto();
-            affiliationsDto.openUniversity = oodiUserService.isOpenUniversityUser(appUser);
+            affiliationsDto.openUniversity = userService.isOpenUniversityUser(appUser);
             affiliationsDto.faculty = facultyConverter.getFacultyDto(appUser);
             return affiliationsDto;
         }).orElseThrow(forbiddenException("No session"));

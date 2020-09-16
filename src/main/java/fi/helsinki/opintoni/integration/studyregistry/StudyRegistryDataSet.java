@@ -20,8 +20,6 @@ package fi.helsinki.opintoni.integration.studyregistry;
 public enum StudyRegistryDataSet {
     STUDENT_ENROLLMENTS,
     STUDENT_EVENTS,
-    TEACHER_COURSES,
-    TEACHER_EVENTS,
     STUDY_ATTAINMENTS,
     STUDY_RIGHTS,
     COURSE_REALISATION_TEACHERS,

@@ -23,11 +23,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Event {
+
     public String roomName;
 
     public Integer typeCode;
 
-    public Integer realisationId;
+    public String realisationId;
 
     public List<LocalizedText> realisationName = Lists.newArrayList();
 

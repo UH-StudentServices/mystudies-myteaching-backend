@@ -17,11 +17,16 @@
 
 package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonRequest;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyAttainmentRequest;
+import java.time.LocalDate;
+
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Authenticated_course_unit_realisation_searchQueryResponse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personQueryResponse;
 
 public interface SisuClient {
-    PrivatePersonRequest getPrivatePerson(String id);
 
-    StudyAttainmentRequest getStudyAttainments(String id);
+    public Authenticated_course_unit_realisation_searchQueryResponse curSearch(String responsiblePerson, LocalDate since);
+
+    public Private_personQueryResponse getPrivatePerson(String personId);
+
+    public Private_personQueryResponse getStudyAttainments(String personId);
 }
