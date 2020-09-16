@@ -18,7 +18,10 @@
 package fi.helsinki.opintoni.web.rest.publicapi;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.integration.studyregistry.Person;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuStudyRegistry;
 import fi.helsinki.opintoni.localization.Language;
+import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -26,12 +29,15 @@ import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringEndsWith;
 import org.hamcrest.core.StringStartsWith;
 import org.junit.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,6 +45,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PublicCalendarFeedResourceTest extends SpringTest {
 
     private static final String CRLF = "\r\n";
+
+    @MockBean
+    SisuStudyRegistry mockSisuStudyRegistry;
 
     @Test
     public void thatCalendarFeedIsDisplayed() throws Exception {
@@ -97,6 +106,8 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
 
         String expectedFeedEnd = "END:VCALENDAR" + CRLF;
 
+        when(mockSisuStudyRegistry.getPerson(anyString())).thenReturn(person(TestConstants.STUDENT_NUMBER));
+
         mockMvc.perform(get(String.format("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/%s", language.getCode())))
             .andExpect(status().isOk())
             .andExpect(content().contentType(WebConstants.TEXT_CALENDAR_UTF8))
@@ -105,6 +116,12 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                     expectedFeedStart,
                     expectedFeedEnd,
                     expectedCalendarEvents)))));
+    }
+
+    private Person person(String studentNumber) {
+        Person person = new Person();
+        person.studentNumber = studentNumber;
+        return person;
     }
 
     @Test
@@ -124,6 +141,8 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                     + "sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11\\, overlapping where data",
                 "UID:")
         );
+
+        when(mockSisuStudyRegistry.getPerson(anyString())).thenReturn(person(TestConstants.STUDENT_NUMBER));
 
         mockMvc.perform(get(String.format("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/%s", language.getCode())))
             .andExpect(status().isOk())
@@ -167,7 +186,6 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
 
     private void expectEvents(Language language) {
         defaultStudentRequestChain()
-            .roles("roleswithstudentrole.json")
             .enrollments()
             .events()
             .defaultImplementationWithLocale(new Locale(language.getCode()));
@@ -175,7 +193,6 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
 
     private void expectOverlapping(Language language) {
         defaultStudentRequestChain()
-            .roles("roleswithstudentrole.json")
             .enrollments()
             .events()
             .courseImplementationWithLocaleRequestChain("123456789", new Locale(language.getCode()), "course_with_overlapping_data.json");

@@ -34,10 +34,8 @@ import fi.helsinki.opintoni.server.GuideNewsServer;
 import fi.helsinki.opintoni.server.GuideServer;
 import fi.helsinki.opintoni.server.OodiServer;
 import fi.helsinki.opintoni.server.PublicWwwServer;
-import fi.helsinki.opintoni.server.SisuServer;
 import fi.helsinki.opintoni.server.SotkaServer;
 import fi.helsinki.opintoni.server.WebPageServer;
-import fi.helsinki.opintoni.util.DateTimeUtil;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
 import fi.helsinki.opintoni.web.requestchain.TeacherRequestChain;
@@ -68,7 +66,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.Filter;
 import javax.servlet.http.Cookie;
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.util.Lists.newArrayList;
@@ -126,7 +123,6 @@ public abstract class SpringTest {
     private static final String DEFAULT_SEQUENCE_SUFFIX = "_id_seq";
 
     protected OodiServer oodiServer;
-    protected SisuServer sisuServer;
     protected CoursePageServer coursePageServer;
     protected CourseCmsServer courseCmsServer;
     protected GuideServer guideServer;
@@ -206,7 +202,6 @@ public abstract class SpringTest {
 
     private void initRestServer() {
         oodiServer = new OodiServer(appConfiguration, oodiRestTemplate);
-        sisuServer = new SisuServer(appConfiguration, mockServerRule.getClient());
         coursePageServer = new CoursePageServer(appConfiguration, coursePageRestTemplate);
         courseCmsServer = new CourseCmsServer(appConfiguration, courseCmsRestTemplate);
         guideServer = new GuideServer(appConfiguration, guideRestTemplate);
@@ -300,19 +295,11 @@ public abstract class SpringTest {
     }
 
     protected TeacherRequestChain defaultTeacherRequestChain() {
-        return new TeacherRequestChain(TestConstants.EMPLOYEE_NUMBER,
-            DateTimeUtil.getSemesterStartDateOodiString(LocalDate.now()),
-            oodiServer,
-            coursePageServer, courseCmsServer, sotkaServer);
+        return new TeacherRequestChain(coursePageServer, courseCmsServer, sotkaServer);
     }
 
-    protected TeacherRequestChain teacherRequestChain(String teacherNumber) {
-        return new TeacherRequestChain(
-            teacherNumber,
-            DateTimeUtil.getSemesterStartDateOodiString(LocalDate.now()),
-            oodiServer,
-            coursePageServer,
-            courseCmsServer, sotkaServer);
+    protected TeacherRequestChain teacherRequestChain() {
+        return new TeacherRequestChain(coursePageServer, courseCmsServer, sotkaServer);
     }
 
     protected StudentRequestChain defaultStudentRequestChain() {

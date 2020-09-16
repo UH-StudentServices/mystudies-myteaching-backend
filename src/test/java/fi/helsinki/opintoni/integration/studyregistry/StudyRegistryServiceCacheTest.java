@@ -17,22 +17,31 @@
 
 package fi.helsinki.opintoni.integration.studyregistry;
 
-import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.util.DateTimeUtil;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
-import java.util.List;
-
 import static fi.helsinki.opintoni.web.TestConstants.EMPLOYEE_NUMBER;
 import static fi.helsinki.opintoni.web.TestConstants.STUDENT_NUMBER;
 import static fi.helsinki.opintoni.web.TestConstants.STUDENT_PERSON_ID;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuStudyRegistry;
+import fi.helsinki.opintoni.util.DateTimeUtil;
 
 public class StudyRegistryServiceCacheTest extends SpringTest {
     @Autowired
     private StudyRegistryService studyRegistryService;
+
+    @MockBean
+    SisuStudyRegistry mockSisuStudyRegistry;
 
     @Test
     public void thatStudentEnrollmentsAreCached() {
@@ -56,24 +65,19 @@ public class StudyRegistryServiceCacheTest extends SpringTest {
 
     @Test
     public void thatTeacherCoursesAreCached() {
-        teacherRequestChain(EMPLOYEE_NUMBER).defaultCourses();
-
         LocalDate sinceDate = DateTimeUtil.getSemesterStartDate(LocalDate.now());
-
-        List<TeacherCourse> courses = studyRegistryService.getTeacherCourses(EMPLOYEE_NUMBER, sinceDate);
-        List<TeacherCourse> cachedCourses = studyRegistryService.getTeacherCourses(EMPLOYEE_NUMBER, sinceDate);
-
-        assertThat(cachedCourses).isSameAs(courses);
+        when(mockSisuStudyRegistry.getTeacherCourses(EMPLOYEE_NUMBER, sinceDate)).thenReturn(List.of());
+        studyRegistryService.getTeacherCourses(EMPLOYEE_NUMBER, sinceDate);
+        studyRegistryService.getTeacherCourses(EMPLOYEE_NUMBER, sinceDate);
+        verify(mockSisuStudyRegistry, times(1)).getTeacherCourses(EMPLOYEE_NUMBER, sinceDate);
     }
 
     @Test
     public void thatTeacherEventsAreCached() {
-        teacherRequestChain(EMPLOYEE_NUMBER).events();
-
-        List<Event> events = studyRegistryService.getTeacherEvents(EMPLOYEE_NUMBER);
-        List<Event> cachedEvents = studyRegistryService.getTeacherEvents(EMPLOYEE_NUMBER);
-
-        assertThat(cachedEvents).isSameAs(events);
+        when(mockSisuStudyRegistry.getTeacherEvents(EMPLOYEE_NUMBER)).thenReturn(List.of());
+        studyRegistryService.getTeacherEvents(EMPLOYEE_NUMBER);
+        studyRegistryService.getTeacherEvents(EMPLOYEE_NUMBER);
+        verify(mockSisuStudyRegistry, times(1)).getTeacherEvents(EMPLOYEE_NUMBER);
     }
 
     @Test

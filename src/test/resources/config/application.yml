@@ -297,4 +297,6 @@ obar:
         -----END RSA PRIVATE KEY-----
 
 sisu:
+    baseUrl: "http://localhost"
+    apiPath: "/graphql"
     client.implementation: graphQL

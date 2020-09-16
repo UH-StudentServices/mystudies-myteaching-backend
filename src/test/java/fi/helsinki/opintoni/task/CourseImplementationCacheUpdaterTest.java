@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.task;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.domain.CachedItemUpdatesCheck;
+import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageIntegrationException;
@@ -49,8 +50,9 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
     private static final String UPDATED_COURSE_TITLE = "Updated title";
     private static final String UPDATED_COURSE_TITLE_2 = "Updated title 2";
     private static final String SECOND_COURSE_REALISATION_ID = "99903630";
+    private static final String STRIPPED_TEACHER_CUR_ID = IntegrationUtil.stripKnownSisuCurPrefixes(TEACHER_COURSE_REALISATION_ID);
 
-    private static final String UPDATED_COURSE_REALISATION_IDS = String.join(",", TEACHER_COURSE_REALISATION_ID, SECOND_COURSE_REALISATION_ID);
+    private static final String UPDATED_COURSE_REALISATION_IDS = String.join(",", STRIPPED_TEACHER_CUR_ID, SECOND_COURSE_REALISATION_ID);
 
     @Autowired
     private CoursePageClient coursePageRestClient;
@@ -94,7 +96,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
     }
 
     private void assertGetCourseImplementationAndUpdateCachedItem(Locale locale) {
-        coursePageServer.expectCourseImplementationRequest(TEACHER_COURSE_REALISATION_ID, COURSE_IMPLEMENTATION_RESPONSE, locale);
+        coursePageServer.expectCourseImplementationRequest(STRIPPED_TEACHER_CUR_ID, COURSE_IMPLEMENTATION_RESPONSE, locale);
         coursePageServer.expectCourseImplementationRequest(SECOND_COURSE_REALISATION_ID, COURSE_IMPLEMENTATION_RESPONSE, locale);
         LocalDateTime initialLastCheckDateTime = getLastCheckDateTime();
         coursePageServer.expectCourseImplementationChangesRequestWhenMultipleChanges(initialLastCheckDateTime);
@@ -102,7 +104,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
         List<Locale> availableLocales = getAvailableLocales();
 
         availableLocales.forEach(availableLocale -> {
-                coursePageServer.expectCourseImplementationRequest(TEACHER_COURSE_REALISATION_ID + "," + SECOND_COURSE_REALISATION_ID,
+                coursePageServer.expectCourseImplementationRequest(STRIPPED_TEACHER_CUR_ID + "," + SECOND_COURSE_REALISATION_ID,
                         UPDATED_COURSE_IMPLEMENTATIONS_RESPONSE, availableLocale);
             }
         );
@@ -126,7 +128,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
 
         availableLocales.forEach(availableLocale -> {
             CoursePageCourseImplementation implementationAfterUpdate =
-                getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, availableLocale);
+                getCourseImplementationFromCache(STRIPPED_TEACHER_CUR_ID, availableLocale);
             assertThat(implementationAfterUpdate.title).isEqualTo(UPDATED_COURSE_TITLE);
 
             implementationAfterUpdate =
@@ -152,7 +154,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
         courseImplementationUpdatesChecker.getCourseImplementationChangesAndUpdateCache();
 
         availableLocales.stream().forEach(l -> {
-            assertThat(getCourseImplementationFromCache(TEACHER_COURSE_REALISATION_ID, l)).isNotNull();
+            assertThat(getCourseImplementationFromCache(STRIPPED_TEACHER_CUR_ID, l)).isNotNull();
             assertThat(getCourseImplementationFromCache(SECOND_COURSE_REALISATION_ID, l)).isNotNull();
         });
     }
@@ -176,7 +178,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
     public void thatCachedItemIsRetainedIfCourseImplementationHasNotBeenUpdated() {
         Locale locale = Locale.ENGLISH;
 
-        coursePageServer.expectCourseImplementationRequest(TEACHER_COURSE_REALISATION_ID, COURSE_IMPLEMENTATION_RESPONSE, locale);
+        coursePageServer.expectCourseImplementationRequest(STRIPPED_TEACHER_CUR_ID, COURSE_IMPLEMENTATION_RESPONSE, locale);
 
         coursePageServer.expectCourseImplementationChangesRequestWhenNoChanges(getLastCheckDateTime());
 
@@ -214,7 +216,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
     @Test
     public void thatEmptyCourseImplementationIsCached() {
         Locale locale = Locale.ENGLISH;
-        coursePageServer.expectCourseImplementationRequest(TEACHER_COURSE_REALISATION_ID, EMPTY_COURSE_IMPLEMENTATION_RESPONSE, locale);
+        coursePageServer.expectCourseImplementationRequest(STRIPPED_TEACHER_CUR_ID, EMPTY_COURSE_IMPLEMENTATION_RESPONSE, locale);
 
         CoursePageCourseImplementation courseImplementation = coursePageRestClient.getCoursePage(TEACHER_COURSE_REALISATION_ID, locale);
 
@@ -228,7 +230,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
         LocalDateTime initialLastCheckDateTime = getLastCheckDateTime();
         coursePageServer.expectCourseImplementationChangesRequestWhenMultipleChanges(initialLastCheckDateTime);
 
-        coursePageServer.expectCourseImplementationRequest(TEACHER_COURSE_REALISATION_ID + "," + SECOND_COURSE_REALISATION_ID,
+        coursePageServer.expectCourseImplementationRequest(STRIPPED_TEACHER_CUR_ID + "," + SECOND_COURSE_REALISATION_ID,
                 UPDATED_COURSE_IMPLEMENTATION_RESPONSE, getAvailableLocales().get(0));
 
         assertThatExceptionOfType(CoursePageIntegrationException.class).isThrownBy(() ->

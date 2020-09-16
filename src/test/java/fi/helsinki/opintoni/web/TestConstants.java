@@ -28,10 +28,10 @@ public class TestConstants {
     public static final String STUDENT_PERSON_ID = "1001";
 
     public static final String EMPLOYEE_NUMBER = "010540";
-    public static final String TEACHER_COURSE_REALISATION_ID = "99903629";
+    public static final String TEACHER_COURSE_REALISATION_ID = "hy-CUR-99903629";
 
-    public static final String EXAM_TEACHER_COURSE_REALISATION_ID = "99903628";
-    public static final String POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID = "1234567";
+    public static final String EXAM_TEACHER_COURSE_REALISATION_ID = "hy-CUR-99903628";
+    public static final String POSITION_STUDYGROUP_TEACHER_COURSE_REALISATION_ID = "hy-CUR-1234567";
 
     public static final Long PROFILE_ID = 2L;
 

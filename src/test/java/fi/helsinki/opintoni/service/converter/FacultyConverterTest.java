@@ -19,59 +19,69 @@ package fi.helsinki.opintoni.service.converter;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.FacultyDto;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRight;
+import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiStudyRegistry;
 import fi.helsinki.opintoni.security.AppUser;
+import fi.helsinki.opintoni.service.UserRoleService;
 import fi.helsinki.opintoni.web.TestConstants;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 public class FacultyConverterTest extends SpringTest {
+
+    @MockBean
+    UserRoleService mockUserRoleService;
+
+    @MockBean
+    OodiStudyRegistry mockOodiStudyRegistry;
 
     @Autowired
     private FacultyConverter facultyConverter;
 
     @Test
     public void thatOpenUniversityTeacherFacultyIsReturned() {
-        defaultTeacherRequestChain().openUniversityCourses();
-
+        when(mockUserRoleService.isOpenUniversityTeacher(anyString())).thenReturn(true);
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createTeacher());
-
         assertThat(facultyDto.code).isEqualTo("A93000");
     }
 
     @Test
     public void thatOpenUniversityStudentFacultyIsReturned() {
-        defaultStudentRequestChain().enrollments("enrollmentsopenuniversity.json");
-
+        when(mockUserRoleService.isOpenUniversityStudent(anyString())).thenReturn(true);
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createStudent());
-
         assertThat(facultyDto.code).isEqualTo("A93000");
     }
 
     @Test
     public void thatUnknownFacultyReturnsNull() {
-        defaultStudentRequestChain().enrollments().studyRights("studentstudyrightswithunknownfaculty.json");
-
         assertThat(facultyConverter.getFacultyDto(createStudent())).isNull();
     }
 
     @Test
     public void thatTeacherFacultyIsReturned() {
-        defaultTeacherRequestChain().defaultCourses();
-
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createTeacher());
-
         assertThat(facultyDto.code).isEqualTo("A90000");
     }
 
     @Test
     public void thatStudentFacultyIsReturned() {
-        defaultStudentRequestChain().enrollments().studyRights();
-
+        when(mockOodiStudyRegistry.getStudentStudyRights(anyString())).thenReturn(List.of(getStudentStudyRight("H70")));
         FacultyDto facultyDto = facultyConverter.getFacultyDto(createStudent());
-
         assertThat(facultyDto.code).isEqualTo("H70");
+    }
+
+    private StudyRight getStudentStudyRight(String faculty) {
+        StudyRight sr = new StudyRight();
+        sr.faculty = faculty;
+        sr.priority = 1;
+        return sr;
     }
 
     private AppUser createTeacher() {
