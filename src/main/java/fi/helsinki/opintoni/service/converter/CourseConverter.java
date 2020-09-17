@@ -139,8 +139,7 @@ public class CourseConverter {
             enrichWithNewCoursePageData(dto, courseCmsClient.getCoursePage(dto.realisationId, locale), locale);
         } else {
             String oodiId = IntegrationUtil.stripKnownSisuCurPrefixes(dto.realisationId);
-
-            if(oodiId.startsWith(IntegrationUtil.SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX)) {
+            if (oodiId.startsWith(IntegrationUtil.SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX)) {
                 oodiId = sotkaClient.getOodiHierarchy(oodiId).oodiId;
             }
             enrichWithOldCoursePageData(dto, coursePageClient.getCoursePage(oodiId, locale));

@@ -22,7 +22,6 @@ import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
 import fi.helsinki.opintoni.integration.sotka.SotkaClient;
 import fi.helsinki.opintoni.integration.sotka.SotkaMockClient;
 import fi.helsinki.opintoni.integration.sotka.SotkaRestClient;
-import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;

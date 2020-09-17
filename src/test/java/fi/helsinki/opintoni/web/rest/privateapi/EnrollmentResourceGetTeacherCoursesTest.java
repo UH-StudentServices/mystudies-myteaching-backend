@@ -48,8 +48,7 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
     @MockBean
     SisuStudyRegistry mockSisuStudyRegistry;
 
-
-    private TeacherCourse course(String code){
+    private TeacherCourse course(String code) {
         TeacherCourse course = new TeacherCourse();
         course.learningOpportunityId = code;
         course.realisationId = ROOT_REALISATION_ID;
