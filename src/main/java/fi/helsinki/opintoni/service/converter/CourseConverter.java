@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service.converter;
 
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.CourseDto;
+import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
@@ -77,6 +78,10 @@ public class CourseConverter {
         this.coursePageUtil = coursePageUtil;
     }
 
+    private boolean isPositionStudyGroupSet(String position) {
+        return Position.getByValue(position).equals(Position.STUDY_GROUP_SET);
+    }
+
     public Optional<CourseDto> toDto(Enrollment enrollment, Locale locale) {
         CourseDto dto = null;
 
@@ -101,10 +106,6 @@ public class CourseConverter {
             enrichWithCoursePageData(dto, enrollment, locale);
         }
         return Optional.ofNullable(dto);
-    }
-
-    private boolean isPositionStudyGroupSet(String position) {
-        return Position.getByValue(position).equals(Position.STUDY_GROUP_SET);
     }
 
     public CourseDto toDto(TeacherCourse teacherCourse, Locale locale, boolean isChildCourseWithoutRoot) {
@@ -137,10 +138,12 @@ public class CourseConverter {
         if (coursePageUtil.useNewCoursePageIntegration(courseRealisation)) {
             enrichWithNewCoursePageData(dto, courseCmsClient.getCoursePage(dto.realisationId, locale), locale);
         } else {
-            // TODO use sotka
-            // String realisationId = dto.realisationId;
-            // String optimeId = sotkaClient.getOodiHierarchy(realisationId).optimeId;
-            enrichWithOldCoursePageData(dto, coursePageClient.getCoursePage(dto.realisationId, locale));
+            String oodiId = IntegrationUtil.stripKnownSisuCurPrefixes(dto.realisationId);
+
+            if(oodiId.startsWith(IntegrationUtil.SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX)) {
+                oodiId = sotkaClient.getOodiHierarchy(oodiId).oodiId;
+            }
+            enrichWithOldCoursePageData(dto, coursePageClient.getCoursePage(oodiId, locale));
         }
     }
 

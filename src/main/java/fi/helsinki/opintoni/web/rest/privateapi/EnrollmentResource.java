@@ -55,6 +55,7 @@ public class EnrollmentResource extends AbstractResource {
         this.courseService = courseService;
     }
 
+    // XXX not used anymore?
     @StudentRoleRequired
     @RequestMapping(value = "/students/enrollments/events", method = RequestMethod.GET)
     @Timed

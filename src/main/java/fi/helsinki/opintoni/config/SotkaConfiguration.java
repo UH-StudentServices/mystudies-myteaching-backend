@@ -24,6 +24,7 @@ import fi.helsinki.opintoni.integration.sotka.SotkaMockClient;
 import fi.helsinki.opintoni.integration.sotka.SotkaRestClient;
 import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -33,9 +34,6 @@ import java.util.Collections;
 
 @Configuration
 public class SotkaConfiguration {
-
-    @Autowired
-    private AppConfiguration appConfiguration;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -50,22 +48,14 @@ public class SotkaConfiguration {
     }
 
     @Bean
-    public SotkaClient sotkaRestClient() {
+    @ConditionalOnExpression("'${sotka.client.implementation}' == 'rest'")
+    public SotkaClient sotkaRestClient(@Autowired AppConfiguration appConfiguration) {
         return new SotkaRestClient(appConfiguration.get("sotka.base.url"), sotkaRestTemplate());
     }
 
     @Bean
+    @ConditionalOnExpression("'${sotka.client.implementation}' == 'mock'")
     public SotkaClient sotkaMockClient() {
         return new SotkaMockClient(objectMapper);
-    }
-
-    @Bean
-    public SotkaClient sotkaClient() {
-        return NamedDelegatesProxy.builder(
-            SotkaClient.class,
-            () -> appConfiguration.get("sotka.client.implementation"))
-            .with("rest", sotkaRestClient())
-            .with("mock", sotkaMockClient())
-            .build();
     }
 }

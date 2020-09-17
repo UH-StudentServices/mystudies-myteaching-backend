@@ -18,14 +18,23 @@
 package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.integration.studyregistry.LocalizedText;
+import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryLocale;
+import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuStudyRegistry;
 import fi.helsinki.opintoni.web.WebConstants;
 import org.junit.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 
-import java.util.Locale;
+import java.time.LocalDate;
+import java.util.List;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -33,15 +42,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
 
-    private static final String PARENT_REALISATION_ID = "99903630";
     private static final String ROOT_REALISATION_ID = "99903629";
-    private static final String STUDY_GROUP_WITHOUT_PARENT_TITLE = "Realisat... Study subgroup name";
     private static final String OFFICIAL_ROLE_NAME = "official";
-    private static final String SISU_REALISATION_FROM_OPTIME_ID = "hy-opt-cur-2021-b33fa3e8-c4a5-4b71-894d-7f4a3639e911";
+
+    @MockBean
+    SisuStudyRegistry mockSisuStudyRegistry;
+
+
+    private TeacherCourse course(String code){
+        TeacherCourse course = new TeacherCourse();
+        course.learningOpportunityId = code;
+        course.realisationId = ROOT_REALISATION_ID;
+        course.rootId = ROOT_REALISATION_ID;
+        course.startDate = LocalDate.of(2015, 10, 26).atStartOfDay();
+        course.endDate = LocalDate.of(2016, 4, 27).atStartOfDay();
+        course.realisationName = List.of(new LocalizedText(StudyRegistryLocale.FI, "Formulointi III"));
+        course.teacherRole = OFFICIAL_ROLE_NAME;
+        return course;
+    }
 
     @Test
     public void thatTeacherCoursesAreReturned() throws Exception {
-        expectTeacherCourses();
+        defaultTeacherRequestChain().courseImplementationWithRealisationId(ROOT_REALISATION_ID).and();
+        when(mockSisuStudyRegistry.getTeacherCourses(anyString(), any(LocalDate.class))).thenReturn(List.of(course("10440")));
 
         mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")
             .with(securityContext(teacherSecurityContext()))
@@ -65,121 +88,7 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
             .andExpect(jsonPath("$[0].isCancelled").value(false))
             .andExpect(jsonPath("$[0].realisationId").value(ROOT_REALISATION_ID))
             .andExpect(jsonPath("$[0].parentId").isEmpty())
-            .andExpect(jsonPath("$[0].teacherRole").value(OFFICIAL_ROLE_NAME))
-            .andExpect(jsonPath("$[1].code").value("10442"))
-            .andExpect(jsonPath("$[1].isExam").value(true))
-            .andExpect(jsonPath("$[1].isCancelled").value(true))
-            .andExpect(jsonPath("$[1].parentId").value(PARENT_REALISATION_ID))
-            .andExpect(jsonPath("$[1].isHidden").value(false))
-            .andExpect(jsonPath("$[2].name").value(STUDY_GROUP_WITHOUT_PARENT_TITLE))
-            .andExpect(jsonPath("$[2].isHidden").value(true));
-    }
-
-    @Test
-    public void thatTeacherCoursesAreEnrichedWithCourseCmsDataForCoursesStartingAfterCutOffDate() throws Exception {
-        defaultTeacherRequestChain()
-            .courses("teachercourses_singlecourse_after_coursecms_cutoff.json")
-            .course("99903629", "normal_courseunitrealisation.json")
-            .oodiHierarchy("99903629")
-            .and()
-            .courseCmsCourseUnitRealisation(SISU_REALISATION_FROM_OPTIME_ID, new Locale("fi"));
-
-        mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")
-            .with(securityContext(teacherSecurityContext()))
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$[0].code").value("10440"))
-            .andExpect(jsonPath("$[0].name").value("Formulointi II"))
-            .andExpect(jsonPath("$[0].startDate[0]").value(2020))
-            .andExpect(jsonPath("$[0].startDate[1]").value(10))
-            .andExpect(jsonPath("$[0].startDate[2]").value(26))
-            .andExpect(jsonPath("$[0].startDate[3]").value(0))
-            .andExpect(jsonPath("$[0].startDate[4]").value(0))
-            .andExpect(jsonPath("$[0].endDate[0]").value(2021))
-            .andExpect(jsonPath("$[0].endDate[1]").value(4))
-            .andExpect(jsonPath("$[0].endDate[2]").value(27))
-            .andExpect(jsonPath("$[0].endDate[3]").value(0))
-            .andExpect(jsonPath("$[0].endDate[4]").value(0))
-            .andExpect(jsonPath("$[0].isExam").value(false))
-            .andExpect(jsonPath("$[0].isCancelled").value(false))
-            .andExpect(jsonPath("$[0].realisationId").value(ROOT_REALISATION_ID))
-            .andExpect(jsonPath("$[0].parentId").isEmpty())
-            .andExpect(jsonPath("$[0].isHidden").value(false))
-            .andExpect(jsonPath("$[0].coursePageUri").value("https://studies-qa.it.helsinki.fi/Shibboleth.sso/Login?target=https%3A%2F%2Fstudies-qa.it.helsinki.fi%2Fopintotarjonta%2Fcur%2Fcourse"));
-    }
-
-    @Test
-    public void thatTeacherCourseCourseCmsDataIsFetchedWithOodiIdIfSotkaDataIsNotFoundForRealisation() throws Exception {
-        defaultTeacherRequestChain()
-            .courses("teachercourses_singlecourse_after_coursecms_cutoff.json")
-            .course("99903629", "normal_courseunitrealisation.json")
-            .oodiHierarchyNotFound("99903629")
-            .and()
-            .courseCmsCourseUnitRealisation("99903629", new Locale("fi"));
-
-        mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")
-            .with(securityContext(teacherSecurityContext()))
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$[0].code").value("10440"))
-            .andExpect(jsonPath("$[0].name").value("Formulointi II"))
-            .andExpect(jsonPath("$[0].startDate[0]").value(2020))
-            .andExpect(jsonPath("$[0].startDate[1]").value(10))
-            .andExpect(jsonPath("$[0].startDate[2]").value(26))
-            .andExpect(jsonPath("$[0].startDate[3]").value(0))
-            .andExpect(jsonPath("$[0].startDate[4]").value(0))
-            .andExpect(jsonPath("$[0].endDate[0]").value(2021))
-            .andExpect(jsonPath("$[0].endDate[1]").value(4))
-            .andExpect(jsonPath("$[0].endDate[2]").value(27))
-            .andExpect(jsonPath("$[0].endDate[3]").value(0))
-            .andExpect(jsonPath("$[0].endDate[4]").value(0))
-            .andExpect(jsonPath("$[0].isExam").value(false))
-            .andExpect(jsonPath("$[0].isCancelled").value(false))
-            .andExpect(jsonPath("$[0].realisationId").value(ROOT_REALISATION_ID))
-            .andExpect(jsonPath("$[0].parentId").isEmpty())
-            .andExpect(jsonPath("$[0].isHidden").value(false))
-            .andExpect(jsonPath("$[0].coursePageUri").value("https://studies-qa.it.helsinki.fi/Shibboleth.sso/Login?target=https%3A%2F%2Fstudies-qa.it.helsinki.fi%2Fopintotarjonta%2Fcur%2Fcourse"));
-    }
-
-    @Test
-    public void thatTeacherCoursesForOpenUniversityStartingAfterCutOffDateAreEnrichedWithOldCoursePageData() throws Exception {
-        defaultTeacherRequestChain()
-            .courses("teachercourses_singlecourse_for_open_university_after_coursecms_cutoff.json")
-            .course("99903629", "openuni_courseunitrealisation.json")
-            .courseImplementationWithRealisationId(ROOT_REALISATION_ID);
-
-        mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")
-            .with(securityContext(teacherSecurityContext()))
-            .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$[0].code").value("10440"))
-            .andExpect(jsonPath("$[0].name").value("Formulointi II"))
-            .andExpect(jsonPath("$[0].startDate[0]").value(2020))
-            .andExpect(jsonPath("$[0].startDate[1]").value(10))
-            .andExpect(jsonPath("$[0].startDate[2]").value(26))
-            .andExpect(jsonPath("$[0].startDate[3]").value(0))
-            .andExpect(jsonPath("$[0].startDate[4]").value(0))
-            .andExpect(jsonPath("$[0].endDate[0]").value(2021))
-            .andExpect(jsonPath("$[0].endDate[1]").value(4))
-            .andExpect(jsonPath("$[0].endDate[2]").value(27))
-            .andExpect(jsonPath("$[0].endDate[3]").value(0))
-            .andExpect(jsonPath("$[0].endDate[4]").value(0))
-            .andExpect(jsonPath("$[0].isExam").value(false))
-            .andExpect(jsonPath("$[0].isCancelled").value(false))
-            .andExpect(jsonPath("$[0].realisationId").value(ROOT_REALISATION_ID))
-            .andExpect(jsonPath("$[0].parentId").isEmpty())
-            .andExpect(jsonPath("$[0].coursePageUri").value("https://dev.student.helsinki.fi/tvt"));
-    }
-
-    private void expectTeacherCourses() {
-        defaultTeacherRequestChain()
-            .defaultCoursesWithImplementationsAndRealisations();
+            .andExpect(jsonPath("$[0].teacherRole").value(OFFICIAL_ROLE_NAME));
     }
 
 }

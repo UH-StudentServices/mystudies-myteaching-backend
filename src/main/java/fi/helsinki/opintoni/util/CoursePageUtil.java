@@ -28,7 +28,7 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class CoursePageUtil {
 
-    private static final String OPEN_UNIVERSITY_ORG_CODE = "H930";
+    public static final String OPEN_UNIVERSITY_ORG_CODE = "H930";
 
     private final AppConfiguration appConfiguration;
     private final LocalDate useNewCoursePageCutOffDate;
