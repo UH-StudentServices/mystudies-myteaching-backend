@@ -22,6 +22,7 @@ import com.codahale.metrics.ehcache.InstrumentedEhcache;
 import fi.helsinki.opintoni.cache.CacheConstants;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Ehcache;
+import net.sf.ehcache.ObjectExistsException;
 import net.sf.ehcache.config.PersistenceConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,10 +75,16 @@ public class TransientCacheConfiguration {
     }
 
     private void configureCaches() {
-        CacheConstants.TRANSIENT_CACHE_NAMES.forEach(cacheName -> {
-            cacheManager.addCache(cacheName);
-            setDefaultCacheProperties(cacheName);
-        });
+        CacheConstants.TRANSIENT_CACHE_NAMES.stream()
+            .filter(cacheName -> cacheManager.getCache(cacheName) == null)
+            .forEach(cacheName -> {
+                try {
+                    cacheManager.addCache(cacheName);
+                    setDefaultCacheProperties(cacheName);
+                } catch (ObjectExistsException e) {
+                    // cache already exists
+                }
+            });
     }
 
     private void setDefaultCacheProperties(final String cacheName) {
