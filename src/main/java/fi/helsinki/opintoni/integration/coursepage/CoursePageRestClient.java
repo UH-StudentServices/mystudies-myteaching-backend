@@ -109,7 +109,7 @@ public class CoursePageRestClient implements CoursePageClient {
 
     @Override
     public List<CoursePageCourseImplementation> getCoursePages(List<String> courseImplementationIds, Locale locale) {
-        List<String> strippedIds = courseImplementationIds.stream().map(IntegrationUtil::stripKnownSisuCurPrefixes).collect(Collectors.toList());
+        List<String> strippedIds = courseImplementationIds.stream().map(IntegrationUtil::stripPossibleSisuOodiCurPrefix).collect(Collectors.toList());
         return Lists.partition(strippedIds, COURSE_IMPLEMENTATION_BATCH_SIZE).parallelStream()
             .map(idListPartition ->
                 getCoursePageData("/course_implementation/{courseImplementationIds}",
@@ -137,7 +137,7 @@ public class CoursePageRestClient implements CoursePageClient {
 
     private CoursePageCourseImplementation getEmptyCoursePageImplementation(String courseImplementationId) {
         CoursePageCourseImplementation emptyCourseContent = new CoursePageCourseImplementation();
-        String strippedCurId = IntegrationUtil.stripKnownSisuCurPrefixes(courseImplementationId);
+        String strippedCurId = IntegrationUtil.stripPossibleSisuOodiCurPrefix(courseImplementationId);
         emptyCourseContent.courseImplementationId = Integer.parseInt(strippedCurId);
         return emptyCourseContent;
     }

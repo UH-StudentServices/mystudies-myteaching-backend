@@ -50,7 +50,7 @@ public class CourseImplementationCacheUpdaterTest extends SpringTest {
     private static final String UPDATED_COURSE_TITLE = "Updated title";
     private static final String UPDATED_COURSE_TITLE_2 = "Updated title 2";
     private static final String SECOND_COURSE_REALISATION_ID = "99903630";
-    private static final String STRIPPED_TEACHER_CUR_ID = IntegrationUtil.stripKnownSisuCurPrefixes(TEACHER_COURSE_REALISATION_ID);
+    private static final String STRIPPED_TEACHER_CUR_ID = IntegrationUtil.stripPossibleSisuOodiCurPrefix(TEACHER_COURSE_REALISATION_ID);
 
     private static final String UPDATED_COURSE_REALISATION_IDS = String.join(",", STRIPPED_TEACHER_CUR_ID, SECOND_COURSE_REALISATION_ID);
 

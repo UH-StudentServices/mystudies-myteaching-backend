@@ -31,7 +31,7 @@ import static fi.helsinki.opintoni.web.TestConstants.TEACHER_COURSE_REALISATION_
 public class TeacherRequestChain {
 
     private static final String TEACHER_COURSE_IMPLEMENTATION_FILE = "teacher_course.json";
-    private static final String STRIPPED_CUR_ID = IntegrationUtil.stripKnownSisuCurPrefixes(TEACHER_COURSE_REALISATION_ID);
+    private static final String STRIPPED_CUR_ID = IntegrationUtil.stripPossibleSisuOodiCurPrefix(TEACHER_COURSE_REALISATION_ID);
 
     private final CoursePageServer coursePageServer;
     private final CourseCmsServer courseCmsServer;

@@ -170,7 +170,7 @@ public class EventService {
     private Map<String, CoursePageCourseImplementation> getOldCoursePages(List<String> courseIds, Locale locale) {
         return courseIds.stream()
             .map(id -> {
-                String oodiId = IntegrationUtil.stripKnownSisuCurPrefixes(id);
+                String oodiId = IntegrationUtil.stripPossibleSisuOodiCurPrefix(id);
                 if (oodiId.startsWith(IntegrationUtil.SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX)) {
                     oodiId = sotkaClient.getOodiHierarchy(oodiId).oodiId;
                 }

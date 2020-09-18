@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CoursePageRestClientTest extends SpringTest {
 
-    private static final String STRIPPED_CUR_ID = IntegrationUtil.stripKnownSisuCurPrefixes(TEACHER_COURSE_REALISATION_ID);
+    private static final String STRIPPED_CUR_ID = IntegrationUtil.stripPossibleSisuOodiCurPrefix(TEACHER_COURSE_REALISATION_ID);
 
     @Autowired
     private CoursePageClient coursePageRestClient;

@@ -120,7 +120,7 @@ public class EnrollmentResourceGetTeacherEventsTest extends SpringTest {
         coursePage.title = "Animal Biotechnology B (KEL/KEBIOT230)";
         coursePage.hasMaterial = true;
         coursePage.url = "https://dev.student.helsinki.fi/tvt";
-        coursePage.courseImplementationId = Integer.parseInt(IntegrationUtil.stripKnownSisuCurPrefixes(CUR_ID));
+        coursePage.courseImplementationId = Integer.parseInt(IntegrationUtil.stripPossibleSisuOodiCurPrefix(CUR_ID));
         return coursePage;
     }
 
