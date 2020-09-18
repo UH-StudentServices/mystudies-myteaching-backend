@@ -43,7 +43,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -82,6 +82,7 @@ public class EventService {
         this.optimeCalendarService = optimeCalendarService;
     }
 
+    // this is not used anymore?
     public List<EventDto> getStudentEvents(String studentNumber, Locale locale) {
         List<Enrollment> enrollments = studyRegistryService.getEnrollments(studentNumber).stream()
             .filter(e -> !e.isCancelled)
@@ -124,23 +125,20 @@ public class EventService {
         List<? extends CourseRealisation> courses,
         Locale locale) {
 
-        Map<Boolean, List<CourseRealisation>> partitioned = courses.stream()
+        Map<Boolean, List<CourseRealisation>> partitionedCourses = courses.stream()
             .collect(Collectors.partitioningBy(coursePageUtil::useNewCoursePageIntegration));
 
-        List<String> useOld = partitioned.get(false).stream().map(cr -> {
-            return IntegrationUtil.stripKnownSisuCurPrefixes(cr.realisationId);
-        }).collect(Collectors.toList());
+        List<String> useOldCoursePages = partitionedCourses.get(false).stream()
+            .map(cr -> cr.realisationId)
+            .collect(Collectors.toList());
 
-        /// XXX TODO use sotka here
-        Map<String, CoursePageCourseImplementation> coursePages = getOldCoursePages(studyRegistryEvents, useOld, locale);
+        Map<String, CoursePageCourseImplementation> coursePages = getOldCoursePages(useOldCoursePages, locale);
 
-        Map<String, CourseCmsCourseUnitRealisation> newCoursePages = partitioned.get(true).stream()
-            .map(c -> c.realisationId)
-            .distinct()
-            .map(realisationId -> {
-                return Map.entry(realisationId, courseCmsClient.getCoursePage(realisationId, locale));
-            })
-            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        List<String> useNewCoursePages = partitionedCourses.get(true).stream()
+            .map(cr -> cr.realisationId)
+            .collect(Collectors.toList());
+
+        Map<String, CourseCmsCourseUnitRealisation> newCoursePages = getNewCoursePages(useNewCoursePages, locale);
 
         Stream<EventDto> studyRegistryEventDtos = studyRegistryEvents.stream()
             .filter(event -> !event.isCancelled && event.startDate != null)
@@ -169,24 +167,32 @@ public class EventService {
         return coursePages.getOrDefault(realisationId, null);
     }
 
-    private Map<String, CoursePageCourseImplementation> getOldCoursePages(
-        List<Event> events,
-        List<String> courseIds,
-        Locale locale) {
-        return Stream
-            .concat(
-                getEventCourseIds(events),
-                courseIds.stream())
-            .distinct()
+    private Map<String, CoursePageCourseImplementation> getOldCoursePages(List<String> courseIds, Locale locale) {
+        return courseIds.stream()
+            .map(id -> {
+                String oodiId = IntegrationUtil.stripKnownSisuCurPrefixes(id);
+                if (oodiId.startsWith(IntegrationUtil.SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX)) {
+                    oodiId = sotkaClient.getOodiHierarchy(oodiId).oodiId;
+                }
+                return Map.entry(id, oodiId);
+            })
             .collect(Collectors.toMap(
-                realisationId -> realisationId,
-                courseImplementationId -> coursePageClient.getCoursePage(courseImplementationId, locale)));
+                idPair -> idPair.getKey(),
+                idPair -> {
+                    CoursePageCourseImplementation cp = coursePageClient.getCoursePage(idPair.getValue(), locale);
+                    return cp;
+                }
+                )
+            );
     }
 
-    private Stream<String> getEventCourseIds(List<Event> events) {
-        return events
-            .stream()
-            .map(event -> event.realisationId);
+    private Map<String, CourseCmsCourseUnitRealisation> getNewCoursePages(List<String> courseIds, Locale locale) {
+        return courseIds.stream()
+            .collect(Collectors.toMap(
+                Function.identity(),
+                realisationId -> courseCmsClient.getCoursePage(realisationId, locale)
+                )
+            );
     }
 
 }
