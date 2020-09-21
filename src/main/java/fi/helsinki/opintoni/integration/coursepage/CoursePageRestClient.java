@@ -138,7 +138,12 @@ public class CoursePageRestClient implements CoursePageClient {
     private CoursePageCourseImplementation getEmptyCoursePageImplementation(String courseImplementationId) {
         CoursePageCourseImplementation emptyCourseContent = new CoursePageCourseImplementation();
         String strippedCurId = IntegrationUtil.stripPossibleSisuOodiCurPrefix(courseImplementationId);
-        emptyCourseContent.courseImplementationId = Integer.parseInt(strippedCurId);
+        try {
+            emptyCourseContent.courseImplementationId = Integer.parseInt(strippedCurId);
+        } catch (NumberFormatException e) {
+            log.warn("{} is not valid number, returning empty course content without implementation id", strippedCurId);
+        }
+
         return emptyCourseContent;
     }
 
