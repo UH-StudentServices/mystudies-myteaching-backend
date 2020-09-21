@@ -144,7 +144,6 @@ public class SisuStudyRegistryConverter {
         tc.startDate = sisuDateStringToLocalDate(cur.getActivityPeriod().getStartDate());
         tc.endDate = sisuDateStringToLocalDate(cur.getActivityPeriod().getEndDate()).minusDays(1); // XXX end date -1
         tc.isCancelled = "CANCELLED".equals(cur.getFlowState());
-        tc.isHidden = "NOT_READY".equals(cur.getFlowState());  // XXX sisun haku ei palauta muita kun PUBLISHED
         if (cur.getName() != null) {
             tc.name = localizedStringToToLocalizedText(cur.getName());
             tc.realisationName = localizedStringToToLocalizedText(cur.getName());
