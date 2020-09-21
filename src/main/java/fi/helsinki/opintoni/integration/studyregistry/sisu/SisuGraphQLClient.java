@@ -130,9 +130,9 @@ public class SisuGraphQLClient implements SisuClient {
         return execute(gqlRequest, Authenticated_course_unit_realisation_searchQueryResponse.class);
     }
 
-    private GraphQLOperationRequest getTeacherCoursesRequest(String id, LocalDate now) {
-        String start = DateTimeUtil.getSemesterStartDateSisuString(now);
-        String end = DateTimeUtil.getSemesterStartDateSisuString(now.plus(1, ChronoUnit.YEARS));
+    private GraphQLOperationRequest getTeacherCoursesRequest(String id, LocalDate since) {
+        String start = DateTimeUtil.getSemesterStartDateSisuString(since);
+        String end = DateTimeUtil.getSemesterStartDateSisuString(since.plusYears(1));
 
         return new Authenticated_course_unit_realisation_searchQueryRequest.Builder()
             .setResponsiblePersonIds(Arrays.asList(id))
