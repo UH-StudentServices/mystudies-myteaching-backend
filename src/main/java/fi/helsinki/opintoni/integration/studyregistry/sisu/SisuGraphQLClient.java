@@ -140,7 +140,7 @@ public class SisuGraphQLClient implements SisuClient {
             .build();
     }
 
-    // TODO cache
+    @Cacheable(value = CacheConstants.GRAPHQL_PRIVATE_PERSON, cacheManager = "transientCacheManager", sync = true)
     @Override
     public Private_personQueryResponse getPrivatePerson(String personId) {
         GraphQLOperationRequest qr = new Private_personsQueryRequest.Builder().setIds(List.of(personId)).build();
@@ -151,7 +151,6 @@ public class SisuGraphQLClient implements SisuClient {
         return execute(gqlRequest, Private_personQueryResponse.class);
     }
 
-    // TODO cache
     @Override
     public Private_personQueryResponse getStudyAttainments(String personId) {
         GraphQLOperationRequest qr = new Private_personQueryRequest.Builder().setId(personId).build();

@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +60,6 @@ import fi.helsinki.opintoni.util.FunctionHelper;
 @Component
 public class SisuStudyRegistryConverter {
 
-    private static final ZoneId HELSINKI_ZONE_ID = ZoneId.of("Europe/Helsinki");
     public static final String DATE_PATTERN = "yyyy-MM-dd";
     static DateTimeFormatter sisuDateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME;
 
@@ -145,13 +143,14 @@ public class SisuStudyRegistryConverter {
         TeacherCourse tc = new TeacherCourse();
         tc.realisationId = cur.getId();
         tc.startDate = sisuDateStringToLocalDate(cur.getActivityPeriod().getStartDate());
-        tc.endDate = sisuDateStringToLocalDate(cur.getActivityPeriod().getEndDate()).minusDays(1); // XXX end date -1
+        // https://sis-helsinki-test.funidata.fi/kori/docs/index.html#_localdaterange
+        tc.endDate = sisuDateStringToLocalDate(cur.getActivityPeriod().getEndDate()).minusDays(1);
         tc.isCancelled = "CANCELLED".equals(cur.getFlowState());
         if (cur.getName() != null) {
             tc.name = localizedStringToToLocalizedText(cur.getName());
             tc.realisationName = localizedStringToToLocalizedText(cur.getName());
         }
-        tc.learningOpportunityId = cur.getCourseUnits().get(0).getCode(); // XXX jos monta CU:ta niin minkä CU:n koodi?
+        tc.learningOpportunityId = cur.getCourseUnits().get(0).getCode();
         tc.organisations = cur.getOrganisations().stream().map(sisuorg -> {
             Organisation org = new Organisation();
             org.code = sisuorg.getOrganisation().getCode();
@@ -198,7 +197,7 @@ public class SisuStudyRegistryConverter {
             .findFirst()
             .ifPresent(loc -> {
                 if (loc.getName() != null) {
-                    event.roomName = loc.getName().getFi(); // XXX fi only ?
+                    event.roomName = loc.getName().getFi();
                 }
                 if (loc.getBuilding() != null) {
                     event.buildingStreet = loc.getBuilding().getAddress().getStreetAddress();
@@ -211,8 +210,8 @@ public class SisuStudyRegistryConverter {
             .filter(override -> override.getEventDate().equals(sisuEvent.getStart()))
             .findFirst()
             .ifPresent(override -> {
-                if (override.getNotice() != null && StringUtils.isNotBlank(override.getNotice().getFi())) { // XXX fi only ?
-                    event.optimeExtras = parseOptimeExtras(override.getNotice().getFi()); // XXX fi only?
+                if (override.getNotice() != null && StringUtils.isNotBlank(override.getNotice().getFi())) {
+                    event.optimeExtras = parseOptimeExtras(override.getNotice().getFi());
                 }
                 setEventLocation(event, override.getIrregularLocations());
             }

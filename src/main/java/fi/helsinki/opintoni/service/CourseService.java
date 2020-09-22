@@ -21,6 +21,8 @@ import fi.helsinki.opintoni.dto.CourseDto;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
 import fi.helsinki.opintoni.service.converter.CourseConverter;
+import fi.helsinki.opintoni.util.FunctionHelper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -59,7 +62,8 @@ public class CourseService {
 
         return teacherCourses
             .stream()
-            .map(c -> courseConverter.toDto(c, locale, isChildCourseWithoutRoot(c, coursesByRealisationIds)))
+            .map(FunctionHelper.logAndIgnoreExceptions(c -> courseConverter.toDto(c, locale, isChildCourseWithoutRoot(c, coursesByRealisationIds))))
+            .filter(Objects::nonNull)
             .collect(toList());
     }
 
