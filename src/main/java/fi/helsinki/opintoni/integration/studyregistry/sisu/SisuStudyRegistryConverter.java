@@ -24,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -55,6 +56,7 @@ import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PublicPersonTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyEventRealisationTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyEventTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudySubGroupTO;
+import fi.helsinki.opintoni.util.FunctionHelper;
 
 @Component
 public class SisuStudyRegistryConverter {
@@ -134,8 +136,9 @@ public class SisuStudyRegistryConverter {
 
     public List<TeacherCourse> sisuCURSearchResultToTeacherCourseList(
             Authenticated_course_unit_realisation_searchQueryResponse curResult) {
-        return curResult.authenticated_course_unit_realisation_search().stream().map(this::sisuCurToTeacherCourse)
-                .collect(Collectors.toList());
+        return curResult.authenticated_course_unit_realisation_search().stream()
+            .map(FunctionHelper.logAndIgnoreExceptions(this::sisuCurToTeacherCourse))
+            .collect(Collectors.filtering(Objects::nonNull, Collectors.toList()));
     }
 
     public TeacherCourse sisuCurToTeacherCourse(CourseUnitRealisationTO cur) {
@@ -155,7 +158,6 @@ public class SisuStudyRegistryConverter {
             org.name = localizedStringToToLocalizedText(sisuorg.getOrganisation().getName());
             return org;
         }).collect(Collectors.toList());
-        // TODO poista oodismi
         tc.realisationTypeCode = SISU_CUR_TYPE_TO_TYPE_CODE.getOrDefault(cur.getCourseUnitRealisationTypeUrn(), DEFAULT_CUR_TYPE_CODE);
         return tc;
     }
@@ -174,9 +176,9 @@ public class SisuStudyRegistryConverter {
 
     public List<Event> sisuCurSearchResultToEvents(Authenticated_course_unit_realisation_searchQueryResponse curSearchResult, String teacherNumber) {
         return curSearchResult.authenticated_course_unit_realisation_search().stream()
-           .map(cur -> sisuCurToTeacherEvents(cur, teacherNumber))
+           .map(FunctionHelper.logAndIgnoreExceptions(cur -> sisuCurToTeacherEvents(cur, teacherNumber)))
            .flatMap(x -> x.stream())
-           .collect(Collectors.toList());
+           .collect(Collectors.filtering(Objects::isNull, Collectors.toList()));
     }
 
     private LocalDateTime parseDateTime(String datetime) {
@@ -188,7 +190,6 @@ public class SisuStudyRegistryConverter {
         event.realisationId = cur.getId();
         event.realisationName = localizedStringToToLocalizedText(ssg.getName());
         event.realisationRootName = localizedStringToToLocalizedText(cur.getName());
-        // TODO ui still expects to see oodi data...
         event.typeCode = SISU_CUR_TYPE_TO_TYPE_CODE.getOrDefault(cur.getCourseUnitRealisationTypeUrn(), DEFAULT_CUR_TYPE_CODE);
         event.startDate = parseDateTime(sisuEvent.getStart());
         event.endDate = parseDateTime(sisuEvent.getEnd());

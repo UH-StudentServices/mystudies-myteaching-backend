@@ -18,7 +18,6 @@
 package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
