@@ -10,6 +10,8 @@ The following directories must exist on host machine
 - ~/.m2
 - ~/.gradle
 
+This project uses code generation for the graphql api classes. To generate required classes run ```./gradlew build```.
+
 ## Running locally
 
 ### Prerequisites

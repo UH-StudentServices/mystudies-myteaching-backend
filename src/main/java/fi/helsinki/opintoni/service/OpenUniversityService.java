@@ -22,21 +22,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OodiUserService {
+public class OpenUniversityService {
 
-    private final UserRoleService oodiUserRoleService;
+    private final UserRoleService userRoleService;
 
     @Autowired
-    public OodiUserService(UserRoleService oodiUserRoleService) {
-        this.oodiUserRoleService = oodiUserRoleService;
+    public OpenUniversityService(UserRoleService userRoleService) {
+        this.userRoleService = userRoleService;
     }
 
     @SuppressWarnings("squid:S3655") // User having either employee number and/or student number is guaranteed in appUser instance creation
     public boolean isOpenUniversityUser(AppUser appUser) {
         if (appUser.isTeacher()) {
-            return oodiUserRoleService.isOpenUniversityTeacher(appUser.getEmployeeNumber().get());
+            return userRoleService.isOpenUniversityTeacher(appUser.getSisuPersonId());
         } else {
-            return oodiUserRoleService.isOpenUniversityStudent(appUser.getStudentNumber().get());
+            return userRoleService.isOpenUniversityStudent(appUser.getStudentNumber().get());
         }
     }
 }

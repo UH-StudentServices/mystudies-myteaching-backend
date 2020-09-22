@@ -17,20 +17,35 @@
 
 package fi.helsinki.opintoni.web.rest.privateapi;
 
-import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.web.WebConstants;
-import org.junit.Test;
-import org.springframework.http.MediaType;
-
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.junit.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+
+import fi.helsinki.opintoni.SpringTest;
+import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuStudyRegistry;
+import fi.helsinki.opintoni.web.WebConstants;
+
 public class AffiliationsResourceTest extends SpringTest {
+
+    @MockBean
+    SisuStudyRegistry mockSisuStudyRegistry;
+
     @Test
     public void getAffiliationsForStudentReturnsCorrectResponse() throws Exception {
         defaultStudentRequestChain().enrollments().studyRights();
@@ -45,7 +60,8 @@ public class AffiliationsResourceTest extends SpringTest {
 
     @Test
     public void getAffiliationsForTeacherReturnsCorrectResponse() throws Exception {
-        defaultTeacherRequestChain().openUniversityCourses();
+        when(mockSisuStudyRegistry.getTeacherCourses(anyString(), any(LocalDate.class)))
+            .thenReturn(courses(List.of("a123", "A124")));
 
         mockMvc.perform(get("/api/private/v1/affiliations").with(securityContext(teacherSecurityContext()))
             .accept(MediaType.APPLICATION_JSON))
@@ -53,6 +69,14 @@ public class AffiliationsResourceTest extends SpringTest {
             .andExpect(content().contentType(WebConstants.APPLICATION_JSON_UTF8))
             .andExpect(jsonPath("$.openUniversity").value(true))
             .andExpect(jsonPath("$.faculty.code").value("A93000"));
+    }
+
+    private List<TeacherCourse> courses(List<String> codes) {
+        return codes.stream().map(code -> {
+            TeacherCourse c = new TeacherCourse();
+            c.learningOpportunityId = code;
+            return c;
+        }).collect(Collectors.toList());
     }
 
 }

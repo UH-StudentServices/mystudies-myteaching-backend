@@ -20,9 +20,9 @@ package fi.helsinki.opintoni.integration;
 import java.time.format.DateTimeFormatter;
 
 public class DateFormatter {
-
     public static final String UTC_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     public static final String UTC_TIME_FORMAT_OODI = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String LEIKI_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    public static final String DATE_FORMAT_SISU = "yyyy-MM-dd";
     public static final DateTimeFormatter COURSE_PAGE_DATE_TIME_FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
 }

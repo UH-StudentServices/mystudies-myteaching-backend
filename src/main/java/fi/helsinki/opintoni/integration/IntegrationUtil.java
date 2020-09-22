@@ -44,6 +44,14 @@ public final class IntegrationUtil {
         return SISU_PRIVATE_PERSON_ID_PREFIX + id;
     }
 
+    public static String stripPossibleSisuOodiCurPrefix(String curId) {
+        if (curId.startsWith(IntegrationUtil.SISU_COURSE_UNIT_REALISATION_FROM_OODI_ID_PREFIX)) {
+            return curId.substring(SISU_COURSE_UNIT_REALISATION_FROM_OODI_ID_PREFIX.length());
+        }
+
+        return curId;
+    }
+
     private IntegrationUtil() {
     }
 }

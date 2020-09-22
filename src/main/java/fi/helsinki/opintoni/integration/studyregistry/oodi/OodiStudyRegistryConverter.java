@@ -26,7 +26,6 @@ import fi.helsinki.opintoni.integration.studyregistry.StudyAttainment;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryLocale;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRight;
 import fi.helsinki.opintoni.integration.studyregistry.Teacher;
-import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
 import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.OodiCourseUnitRealisationTeacher;
 import org.springframework.stereotype.Component;
 
@@ -59,10 +58,12 @@ public class OodiStudyRegistryConverter {
         return enrollment;
     }
 
+
+    // XXX used for student events only, are these even needed anymore?
     public Event oodiEventToEvent(OodiEvent oodiEvent) {
         Event event = new Event();
         event.optimeExtras = oodiEvent.optimeExtras;
-        event.realisationId = oodiEvent.realisationId;
+        event.realisationId = String.valueOf(oodiEvent.realisationId);
         event.buildingStreet = oodiEvent.buildingStreet;
         event.roomName = oodiEvent.roomName;
         event.startDate = oodiEvent.startDate;
@@ -73,7 +74,6 @@ public class OodiStudyRegistryConverter {
         event.realisationRootName = oodiLocalizedValuesToLocalizedTexts(oodiEvent.realisationRootName);
         event.typeCode = oodiEvent.typeCode;
         event.isHidden = oodiEvent.isHidden;
-
         return event;
     }
 
@@ -87,29 +87,6 @@ public class OodiStudyRegistryConverter {
         studyAttainment.teachers = oodiTeachersToTeachers(oodiStudyAttainment.teachers);
 
         return studyAttainment;
-    }
-
-    public TeacherCourse oodiTeacherCourseToTeacherCourse(OodiTeacherCourse oodiTeacherCourse) {
-        TeacherCourse teacherCourse = new TeacherCourse();
-        teacherCourse.rootId = oodiTeacherCourse.rootId;
-        teacherCourse.realisationName = oodiLocalizedValuesToLocalizedTexts(oodiTeacherCourse.realisationName);
-        teacherCourse.realisationTypeCode = oodiTeacherCourse.realisationTypeCode;
-        teacherCourse.realisationRootName = oodiLocalizedValuesToLocalizedTexts(oodiTeacherCourse.realisationRootName);
-        teacherCourse.teacherRole = oodiTeacherCourse.teacherRole;
-        teacherCourse.isHidden = oodiTeacherCourse.isHidden;
-        teacherCourse.isCancelled = oodiTeacherCourse.isCancelled;
-        teacherCourse.learningOpportunityId = oodiTeacherCourse.learningOpportunityId;
-        teacherCourse.name = oodiLocalizedValuesToLocalizedTexts(oodiTeacherCourse.realisationName);
-        teacherCourse.parentId = oodiTeacherCourse.parentId;
-        teacherCourse.position = oodiTeacherCourse.position;
-        teacherCourse.realisationId = oodiTeacherCourse.realisationId;
-        teacherCourse.startDate = oodiTeacherCourse.startDate;
-        teacherCourse.endDate = oodiTeacherCourse.endDate;
-        teacherCourse.organisations = oodiTeacherCourse.organisations.stream()
-            .map(org -> new Organisation(org.code, oodiLocalizedValuesToLocalizedTexts(org.name)))
-            .collect(toList());
-
-        return teacherCourse;
     }
 
     public StudyRight oodiStudyRightToStudyRight(OodiStudyRight oodiStudyRight) {

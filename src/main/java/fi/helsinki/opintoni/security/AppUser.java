@@ -22,10 +22,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
+import fi.helsinki.opintoni.integration.IntegrationUtil;
+
+import java.security.Principal;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -83,6 +87,10 @@ public final class AppUser extends User {
         return personId;
     }
 
+    public String getSisuPersonId() {
+        return IntegrationUtil.getSisuPrivatePersonId(getPersonId());
+    }
+
     public String getEduPersonPrincipalName() {
         return eduPersonPrincipalName;
     }
@@ -117,6 +125,10 @@ public final class AppUser extends User {
             .append("employeeNumber", employeeNumber)
             .append("personId", personId)
             .toString();
+    }
+
+    public static AppUser appUser(Principal principal) {
+        return (AppUser) ((UsernamePasswordAuthenticationToken) principal).getPrincipal();
     }
 
     public static class AppUserBuilder {

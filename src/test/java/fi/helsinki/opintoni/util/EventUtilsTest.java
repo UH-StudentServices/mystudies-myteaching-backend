@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.util;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.dto.EventDtoBuilder;
 import fi.helsinki.opintoni.dto.LocationDto;
+import fi.helsinki.opintoni.integration.IntegrationUtil;
 
 import org.junit.Test;
 
@@ -31,32 +32,40 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class EventUtilsTest {
 
+    private static final String CUR_ID = IntegrationUtil.getSisuCourseUnitRealisationId("123");
+
     @Test
     public void thatCourseUriIsMergedCorrectly() {
         EventDto optimeEvent = new EventDtoBuilder()
             .setSource(EventDto.Source.OPTIME)
             .setTitle("Optime Event")
-            .setRealisationId(123)
+            .setRealisationId(CUR_ID)
+            .setLocations(new ArrayList<LocationDto>())
+            .createEventDto();
+        EventDto oodiEvent = new EventDtoBuilder()
+            .setSource(EventDto.Source.STUDY_REGISTRY)
+            .setTitle("Oodiu Event")
+            .setRealisationId(CUR_ID)
             .setLocations(new ArrayList<LocationDto>())
             .createEventDto();
 
         EventDto coursePageEvent = new EventDtoBuilder()
             .setSource(EventDto.Source.COURSE_PAGE)
             .setTitle("Course Page Event")
-            .setRealisationId(123)
+            .setRealisationId(CUR_ID)
             .setCourseUri("http://coursepage/123")
             .setLocations(new ArrayList<LocationDto>())
             .createEventDto();
 
         EventDto expectedEvent = new EventDtoBuilder()
-            .setSource(EventDto.Source.OPTIME)
+            .setSource(EventDto.Source.STUDY_REGISTRY)
             .setTitle("Optime Event")
-            .setRealisationId(123)
+            .setRealisationId(CUR_ID)
             .setCourseUri("http://coursepage/123")
             .setLocations(new ArrayList<LocationDto>())
             .createEventDto();
 
-        Stream<EventDto> optimeEventStream = Stream.of(optimeEvent);
+        Stream<EventDto> optimeEventStream = Stream.of(optimeEvent, oodiEvent);
         Stream<EventDto> coursePageEventStream = Stream.of(coursePageEvent);
 
         List<EventDto> mergedList = EventUtils.mergeStreams(optimeEventStream, coursePageEventStream);

@@ -23,16 +23,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.COURSE_REALISATION_TEACHERS;
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.PERSON_INFO;
 import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.STUDENT_ENROLLMENTS;
 import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.STUDENT_EVENTS;
 import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.STUDY_ATTAINMENTS;
 import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.STUDY_RIGHTS;
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.TEACHER_COURSES;
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.TEACHER_EVENTS;
 
 @Service
 public class StudyRegistryService {
@@ -66,7 +64,7 @@ public class StudyRegistryService {
 
     @Cacheable(value = CacheConstants.TEACHER_EVENTS, cacheManager = "transientCacheManager")
     public List<Event> getTeacherEvents(String teacherNumber) {
-        return getStudyRegistry(TEACHER_EVENTS).getTeacherEvents(teacherNumber);
+        return sisuStudyRegistry.getTeacherEvents(teacherNumber);
     }
 
     @Cacheable(value = CacheConstants.STUDY_ATTAINMENTS, cacheManager = "transientCacheManager")
@@ -80,8 +78,8 @@ public class StudyRegistryService {
     }
 
     @Cacheable(value = CacheConstants.TEACHER_COURSES, cacheManager = "transientCacheManager")
-    public List<TeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
-        return getStudyRegistry(TEACHER_COURSES).getTeacherCourses(teacherNumber, sinceDateString);
+    public List<TeacherCourse> getTeacherCourses(String teacherNumber, LocalDate sinceDate) {
+        return sisuStudyRegistry.getTeacherCourses(teacherNumber, sinceDate);
     }
 
     @Cacheable(value = CacheConstants.STUDY_RIGHTS, cacheManager = "transientCacheManager")
@@ -95,6 +93,6 @@ public class StudyRegistryService {
     }
 
     public Person getPerson(String personId) {
-        return getStudyRegistry(PERSON_INFO).getPerson(personId);
+        return sisuStudyRegistry.getPerson(personId);
     }
 }

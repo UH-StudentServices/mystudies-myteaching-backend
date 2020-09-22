@@ -19,6 +19,7 @@ package fi.helsinki.opintoni.service.converter;
 
 import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.CourseDto;
+import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
@@ -77,6 +78,10 @@ public class CourseConverter {
         this.coursePageUtil = coursePageUtil;
     }
 
+    private boolean isPositionStudyGroupSet(String position) {
+        return Position.getByValue(position).equals(Position.STUDY_GROUP_SET);
+    }
+
     public Optional<CourseDto> toDto(Enrollment enrollment, Locale locale) {
         CourseDto dto = null;
 
@@ -103,52 +108,36 @@ public class CourseConverter {
         return Optional.ofNullable(dto);
     }
 
-    public Optional<CourseDto> toDto(TeacherCourse teacherCourse, Locale locale, boolean isChildCourseWithoutRoot) {
-        CourseDto dto = null;
+    public CourseDto toDto(TeacherCourse teacherCourse, Locale locale) {
+        CourseDto dto = new CourseDto(
+            teacherCourse.learningOpportunityId,
+            teacherCourse.realisationTypeCode,
+            localizedValueConverter.toLocalizedString(teacherCourse.realisationName, locale),
+            teacherCourse.startDate,
+            teacherCourse.endDate,
+            teacherCourse.realisationId,
+            teacherCourse.parentId,
+            teacherCourse.rootId,
+            null,
+            Lists.newArrayList(),
+            eventTypeResolver.isExam(teacherCourse.realisationTypeCode),
+            teacherCourse.isCancelled,
+            teacherCourse.isHidden,
+            teacherCourse.teacherRole);
 
-        if (!isPositionStudyGroupSet(teacherCourse.position)) {
-            dto = new CourseDto(
-                teacherCourse.learningOpportunityId,
-                teacherCourse.realisationTypeCode,
-                isChildCourseWithoutRoot ?
-                    enrollmentNameConverter.getRealisationNameWithRootName(
-                        teacherCourse.realisationName,
-                        teacherCourse.realisationRootName,
-                        locale) :
-                    localizedValueConverter.toLocalizedString(teacherCourse.realisationName, locale),
-                teacherCourse.startDate,
-                teacherCourse.endDate,
-                teacherCourse.realisationId,
-                teacherCourse.parentId,
-                teacherCourse.rootId,
-                null,
-                Lists.newArrayList(),
-                eventTypeResolver.isExam(teacherCourse.realisationTypeCode),
-                teacherCourse.isCancelled,
-                teacherCourse.isHidden,
-                teacherCourse.teacherRole);
-
-            enrichWithCoursePageData(dto, teacherCourse, locale);
-        }
-        return Optional.ofNullable(dto);
-    }
-
-    private boolean isPositionRoot(String position) {
-        return Position.getByValue(position).equals(Position.ROOT);
-    }
-
-    private boolean isPositionStudyGroupSet(String position) {
-        return Position.getByValue(position).equals(Position.STUDY_GROUP_SET);
+        enrichWithCoursePageData(dto, teacherCourse, locale);
+        return dto;
     }
 
     private void enrichWithCoursePageData(CourseDto dto, CourseRealisation courseRealisation, Locale locale) {
         if (coursePageUtil.useNewCoursePageIntegration(courseRealisation)) {
-            String realisationId = isPositionRoot(courseRealisation.position) ? dto.realisationId : dto.rootId;
-            String optimeId = sotkaClient.getOodiHierarchy(realisationId).optimeId;
-
-            enrichWithNewCoursePageData(dto, courseCmsClient.getCoursePage(optimeId != null ? optimeId : dto.realisationId, locale), locale);
+            enrichWithNewCoursePageData(dto, courseCmsClient.getCoursePage(dto.realisationId, locale), locale);
         } else {
-            enrichWithOldCoursePageData(dto, coursePageClient.getCoursePage(dto.realisationId, locale));
+            String oodiId = IntegrationUtil.stripPossibleSisuOodiCurPrefix(dto.realisationId);
+            if (oodiId.startsWith(IntegrationUtil.SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX)) {
+                oodiId = sotkaClient.getOodiHierarchy(oodiId).oodiId;
+            }
+            enrichWithOldCoursePageData(dto, coursePageClient.getCoursePage(oodiId, locale));
         }
     }
 

@@ -20,13 +20,13 @@ package fi.helsinki.opintoni.web.rest.privateapi;
 import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.dto.CourseDto;
 import fi.helsinki.opintoni.dto.EventDto;
+import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.authorization.StudentRoleRequired;
 import fi.helsinki.opintoni.security.authorization.TeacherRoleRequired;
 import fi.helsinki.opintoni.service.CourseService;
 import fi.helsinki.opintoni.service.EventService;
 import fi.helsinki.opintoni.web.WebConstants;
 import fi.helsinki.opintoni.web.arguments.StudentNumber;
-import fi.helsinki.opintoni.web.arguments.TeacherNumber;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,6 +55,7 @@ public class EnrollmentResource extends AbstractResource {
         this.courseService = courseService;
     }
 
+    // XXX not used anymore?
     @StudentRoleRequired
     @RequestMapping(value = "/students/enrollments/events", method = RequestMethod.GET)
     @Timed
@@ -71,15 +73,15 @@ public class EnrollmentResource extends AbstractResource {
     @TeacherRoleRequired
     @RequestMapping(value = "/teachers/enrollments/events", method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<List<EventDto>> getTeacherEvents(@TeacherNumber String teacherNumber, Locale locale) {
-        return response(eventService.getTeacherEvents(teacherNumber, locale));
+    public ResponseEntity<List<EventDto>> getTeacherEvents(Principal principal, Locale locale) {
+        return response(eventService.getTeacherEvents(AppUser.appUser(principal).getSisuPersonId(), locale));
     }
 
     @TeacherRoleRequired
     @RequestMapping(value = "/teachers/enrollments/courses", method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<List<CourseDto>> getTeacherCourses(@TeacherNumber String teacherNumber, Locale locale) {
-        return response(courseService.getTeacherCourses(teacherNumber, locale));
+    public ResponseEntity<List<CourseDto>> getTeacherCourses(Principal principal, Locale locale) {
+        return response(courseService.getTeacherCourses(AppUser.appUser(principal).getSisuPersonId(), locale));
     }
 
 }

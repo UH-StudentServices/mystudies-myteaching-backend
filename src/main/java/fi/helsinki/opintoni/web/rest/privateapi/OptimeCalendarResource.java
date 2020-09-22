@@ -18,12 +18,15 @@
 package fi.helsinki.opintoni.web.rest.privateapi;
 
 import fi.helsinki.opintoni.dto.OptimeCalendarDto;
+import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.authorization.TeacherRoleRequired;
 import fi.helsinki.opintoni.service.OptimeCalendarService;
 import fi.helsinki.opintoni.web.WebConstants;
-import fi.helsinki.opintoni.web.arguments.TeacherNumber;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
+
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,8 +47,10 @@ public class OptimeCalendarResource extends AbstractResource {
 
     @TeacherRoleRequired
     @RequestMapping(value = "/calendar")
-    public ResponseEntity<OptimeCalendarDto> getOptimeCalendar(@TeacherNumber String teacherNumber) {
-        return response(optimeCalendarService.getOptimeCalendar(teacherNumber));
+    public ResponseEntity<OptimeCalendarDto> getOptimeCalendar(Principal principal) {
+        return response(optimeCalendarService.getOptimeCalendar(
+            AppUser.appUser(principal).getEmployeeNumber().get()) // teachers have it
+        );
     }
 
 }

@@ -20,6 +20,8 @@ package fi.helsinki.opintoni.dto;
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
+import fi.helsinki.opintoni.integration.IntegrationUtil;
+
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
@@ -31,6 +33,7 @@ public class EventDtoTest {
     private static final String COURSE_TITLE = "Title of course";
     private static final String LOCATION = "Location";
     private static final String LOCATION_DETAIL = "Location details";
+    private static final String CUR_ID = IntegrationUtil.getSisuCourseUnitRealisationId("100");
 
     @Test
     public void compareTo() {
@@ -39,7 +42,7 @@ public class EventDtoTest {
             .setSource(EventDto.Source.STUDY_REGISTRY)
             .setStartDate(LocalDateTime.of(2018, 2, 1, 8, 0))
             .setEndDate(LocalDateTime.of(2018, 2, 1, 8, 0))
-            .setRealisationId(100)
+            .setRealisationId(CUR_ID)
             .setTitle(EVENT_TITLE)
             .setCourseTitle(COURSE_TITLE)
             .setHasMaterial(false).createEventDto();
@@ -49,7 +52,7 @@ public class EventDtoTest {
             .setSource(EventDto.Source.STUDY_REGISTRY)
             .setStartDate(LocalDateTime.of(2018, 1, 1, 8, 0))
             .setEndDate(LocalDateTime.of(2018, 3, 1, 8, 0))
-            .setRealisationId(100)
+            .setRealisationId(CUR_ID)
             .setTitle(EVENT_TITLE)
             .setCourseTitle(COURSE_TITLE)
             .setHasMaterial(false).createEventDto();
@@ -64,12 +67,12 @@ public class EventDtoTest {
             .setSource(EventDto.Source.COURSE_PAGE)
             .setStartDate(LocalDateTime.of(2018, 1, 1, 8, 0))
             .setEndDate(LocalDateTime.of(2018, 3, 1, 8, 0))
-            .setRealisationId(100)
+            .setRealisationId(CUR_ID)
             .setTitle(EVENT_TITLE)
             .setCourseTitle(COURSE_TITLE)
             .setHasMaterial(false).createEventDto();
 
-        assertEquals("1002018-01-01T08:002018-03-01T08:00", EventDto.getRealisationIdAndTimes(eventDto));
+        assertEquals("hy-CUR-1002018-01-01T08:002018-03-01T08:00", EventDto.getRealisationIdAndTimes(eventDto));
     }
 
     @Test
@@ -79,7 +82,7 @@ public class EventDtoTest {
             .setSource(EventDto.Source.STUDY_REGISTRY)
             .setStartDate(LocalDateTime.of(2018, 1, 1, 8, 0))
             .setEndDate(LocalDateTime.of(2018, 1, 1, 8, 0))
-            .setRealisationId(100)
+            .setRealisationId(CUR_ID)
             .setTitle(EVENT_TITLE)
             .setCourseTitle(COURSE_TITLE)
             .setHasMaterial(false).createEventDto();
@@ -94,7 +97,7 @@ public class EventDtoTest {
             .setSource(EventDto.Source.COURSE_PAGE)
             .setStartDate(LocalDateTime.of(2018, 1, 1, 8, 0))
             .setEndDate(LocalDateTime.of(2018, 1, 1, 8, 0))
-            .setRealisationId(100)
+            .setRealisationId(CUR_ID)
             .setTitle(EVENT_TITLE)
             .setCourseTitle(COURSE_TITLE)
             .setHasMaterial(false).createEventDto();

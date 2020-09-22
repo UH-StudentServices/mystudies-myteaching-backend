@@ -23,11 +23,11 @@ import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageMockClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageRestClient;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
-import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -82,25 +82,17 @@ public class CoursePageConfiguration {
     }
 
     @Bean
+    @ConditionalOnExpression("'${coursePage.client.implementation}' == 'mock'")
     public CoursePageClient coursePageMockClient() {
         return new CoursePageMockClient(objectMapper);
     }
 
     @Bean
+    @ConditionalOnExpression("'${coursePage.client.implementation}' == 'rest'")
     public CoursePageClient coursePageRestClient() {
         return new CoursePageRestClient(
             appConfiguration.get("coursePage.base.url"),
             appConfiguration.get("coursePage.api.path"),
             coursePageRestTemplate());
-    }
-
-    @Bean
-    public CoursePageClient coursePageClient() {
-        return NamedDelegatesProxy.builder(
-            CoursePageClient.class,
-            () -> appConfiguration.get("coursePage.client.implementation"))
-            .with("rest", coursePageRestClient())
-            .with("mock", coursePageMockClient())
-            .build();
     }
 }

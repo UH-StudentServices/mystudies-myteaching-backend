@@ -19,24 +19,39 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.SpringTest;
 import fi.helsinki.opintoni.dto.CourseDto;
+import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
+import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuStudyRegistry;
 import fi.helsinki.opintoni.web.TestConstants;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_USER_LOCALE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 public class CourseServiceTest extends SpringTest {
 
     @Autowired
     private CourseService courseService;
+
+    @MockBean
+    SisuStudyRegistry mockSisyStudyRegistry;
+
+    @MockBean
+    CourseCmsClient mockCourseCmsClient;
 
     @Test
     public void thatStudentCourseDtosAreFetched() {
@@ -52,31 +67,32 @@ public class CourseServiceTest extends SpringTest {
 
     @Test
     public void thatTeacherCourseDtosAreFetched() {
-        expectTeacherCourses();
+        when(mockSisyStudyRegistry.getTeacherCourses(anyString(), any(LocalDate.class))).thenReturn(
+            List.of(course(TestConstants.TEACHER_COURSE_REALISATION_ID),
+                course(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID)));
 
         Set<CourseDto> courseDtos = courseService
             .getCourses(Optional.empty(), Optional.of(TestConstants.EMPLOYEE_NUMBER), DEFAULT_USER_LOCALE);
 
-        assertThat(courseDtos).hasSize(3);
+        assertThat(courseDtos).hasSize(2);
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.TEACHER_COURSE_REALISATION_ID));
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID));
     }
 
-    @Test
-    public void thatTeacherCourseDtosHaveHiddenField() {
-        expectTeacherCourses();
-
-        Set<CourseDto> courseDtos = courseService
-            .getCourses(Optional.empty(), Optional.of(TestConstants.EMPLOYEE_NUMBER), DEFAULT_USER_LOCALE);
-
-        assertThat(courseDtos).hasSize(3);
-        assertThat(courseDtos.stream().filter(courseDto -> courseDto.isHidden).count()).isEqualTo(1);
+    private TeacherCourse course(String teacherCourseRealisationId) {
+        TeacherCourse course = new TeacherCourse();
+        course.realisationId = teacherCourseRealisationId;
+        course.startDate = LocalDate.of(2020, 8, 1).atStartOfDay();
+        course.startDate = LocalDate.of(2020, 9, 1).atStartOfDay();
+        return course;
     }
 
     @Test
     public void thatStudentAndTeacherCourseDtosAreFetched() {
-        expectTeacherCourses();
         expectStudentCourses();
+        when(mockSisyStudyRegistry.getTeacherCourses(anyString(), any(LocalDate.class))).thenReturn(
+            List.of(course(TestConstants.TEACHER_COURSE_REALISATION_ID),
+                course(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID)));
 
         Set<CourseDto> courseDtos = courseService
             .getCourses(
@@ -84,7 +100,7 @@ public class CourseServiceTest extends SpringTest {
                 Optional.of(TestConstants.EMPLOYEE_NUMBER),
                 DEFAULT_USER_LOCALE);
 
-        assertThat(courseDtos).hasSize(4);
+        assertThat(courseDtos).hasSize(3);
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.STUDENT_COURSE_REALISATION_ID));
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.TEACHER_COURSE_REALISATION_ID));
         assertThat(courseDtos, hasCourseWithRealisationId(TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID));
@@ -120,8 +136,4 @@ public class CourseServiceTest extends SpringTest {
             .defaultImplementation();
     }
 
-    private void expectTeacherCourses() {
-        defaultTeacherRequestChain()
-            .defaultCoursesWithImplementationsAndRealisations();
-    }
 }

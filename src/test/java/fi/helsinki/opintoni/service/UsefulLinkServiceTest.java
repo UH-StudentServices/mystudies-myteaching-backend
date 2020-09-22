@@ -28,6 +28,7 @@ import fi.helsinki.opintoni.security.SecurityUtils;
 import fi.helsinki.opintoni.service.usefullink.UsefulLinkService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -39,6 +40,8 @@ import java.util.Locale;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -53,6 +56,9 @@ public class UsefulLinkServiceTest extends SpringTest {
     private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_STUDENT = 2;
     private static final int USEFUL_LINKS_COUNT_FOR_DEFAULT_TEACHER = 4;
     private static final int USEFUL_LINKS_COUNT_FOR_OPEN_UNI_TEACHER = 1;
+
+    @MockBean
+    UserRoleService mockUserRoleService;
 
     @Autowired
     RestTemplate linkUrlLoaderRestTemplate;
@@ -70,7 +76,7 @@ public class UsefulLinkServiceTest extends SpringTest {
     public void thatUsefulLinksAreFetchedByUserId() {
         List<UsefulLinkDto> usefulLinkDtoList = usefulLinkService.findByUserId(3L, englishLocale());
 
-        assertThat(2).isEqualTo(usefulLinkDtoList.size());
+        assertThat(usefulLinkDtoList.size()).isEqualTo(2);
         assertThat(usefulLinkDtoList.get(0).description).isEqualTo("Google");
         assertThat(usefulLinkDtoList.get(0).url).isEqualTo("http://www.google.com");
         assertThat(usefulLinkDtoList.get(0).type).isEqualTo("USER_DEFINED");
@@ -130,10 +136,6 @@ public class UsefulLinkServiceTest extends SpringTest {
     @Transactional
     public void thatStudentDefaultUsefulLinksAreCreated() {
         configureStudentSecurityContext();
-
-        defaultStudentRequestChain()
-            .enrollments();
-
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
         assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_DEFAULT_STUDENT);
         checkLinkURLAndDescription(usefulLinks.get(0),
@@ -148,8 +150,7 @@ public class UsefulLinkServiceTest extends SpringTest {
     @Transactional
     public void thatTeacherDefaultUsefulLinksAreCreated() {
         configureTeacherSecurityContext();
-
-        defaultTeacherRequestChain().defaultCourses();
+        when(mockUserRoleService.isOpenUniversityTeacher(anyString())).thenReturn(false);
 
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
         assertThat(usefulLinks.size()).isEqualTo(USEFUL_LINKS_COUNT_FOR_DEFAULT_TEACHER);
@@ -207,7 +208,7 @@ public class UsefulLinkServiceTest extends SpringTest {
     public void thatOpenUniversityLinksAreAddedForStudent() {
         configureStudentSecurityContext();
 
-        defaultStudentRequestChain().enrollments("enrollmentsopenuniversity.json");
+        when(mockUserRoleService.isOpenUniversityStudent(anyString())).thenReturn(true);
 
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
 
@@ -224,8 +225,7 @@ public class UsefulLinkServiceTest extends SpringTest {
     @Transactional
     public void thatOpenUniversityLinkIsAddedForTeacher() {
         configureTeacherSecurityContext();
-
-        defaultTeacherRequestChain().openUniversityCourses();
+        when(mockUserRoleService.isOpenUniversityTeacher(anyString())).thenReturn(true);
 
         List<UsefulLinkDto> usefulLinks = createDefaultLinksForUser(securityUtils.getAppUser().get());
 

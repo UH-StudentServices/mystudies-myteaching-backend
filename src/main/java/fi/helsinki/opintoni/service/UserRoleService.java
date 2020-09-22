@@ -42,7 +42,7 @@ public class UserRoleService {
     @Cacheable(value = CacheConstants.IS_OPEN_UNIVERSITY_TEACHER, cacheManager = "transientCacheManager")
     public boolean isOpenUniversityTeacher(String teacherNumber) {
         List<TeacherCourse> teacherCourses =
-            studyRegistryService.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDateString(LocalDate.now()));
+            studyRegistryService.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDate(LocalDate.now()));
 
         return !teacherCourses.isEmpty() &&
             teacherCourses

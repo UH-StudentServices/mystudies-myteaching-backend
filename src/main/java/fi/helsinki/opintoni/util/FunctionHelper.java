@@ -15,12 +15,29 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.studyregistry.sisu.model;
+package fi.helsinki.opintoni.util;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.function.Function;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class PublicPerson {
-    public String firstName;
-    public String lastName;
+public class FunctionHelper {
+
+    private FunctionHelper(){
+    }
+
+    private static final Logger log = LoggerFactory.getLogger(FunctionHelper.class);
+
+    public static <T, R> Function<T, R> logAndIgnoreExceptions(Function<T, R> wrappedFunction) {
+        return t -> {
+            try {
+                return wrappedFunction.apply(t);
+            } catch (Exception e) {
+                log.error(String.format("Returning null and ignoring exception that occured while processing stream with function %s, parameter %s",
+                    wrappedFunction, t), e);
+                return null;
+            }
+        };
+    }
+
 }

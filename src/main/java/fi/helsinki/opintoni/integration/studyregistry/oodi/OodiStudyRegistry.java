@@ -25,11 +25,12 @@ import fi.helsinki.opintoni.integration.studyregistry.StudyRegistry;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRight;
 import fi.helsinki.opintoni.integration.studyregistry.Teacher;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
-import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.OodiCourseUnitRealisation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,11 +68,7 @@ public class OodiStudyRegistry implements StudyRegistry {
 
     @Override
     public List<Event> getTeacherEvents(String teacherNumber) {
-        List<OodiEvent> oodiEvents = oodiClient.getTeacherEvents(teacherNumber);
-
-        return oodiEvents.stream()
-            .map(oodiStudyRegistryConverter::oodiEventToEvent)
-            .collect(Collectors.toList());
+        throw new UnsupportedOperationException("use sisu");
     }
 
     @Override
@@ -95,16 +92,8 @@ public class OodiStudyRegistry implements StudyRegistry {
     }
 
     @Override
-    public List<TeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
-        List<OodiTeacherCourse> oodiTeacherCourses = oodiClient.getTeacherCourses(teacherNumber, sinceDateString);
-
-        return oodiTeacherCourses.stream()
-            .peek(teacherCourse -> {
-                OodiCourseUnitRealisation oodiCourse = oodiClient.getGdprCourseUnitRealisation(teacherCourse.realisationId);
-                teacherCourse.organisations.addAll(oodiCourse.organisations);
-            })
-            .map(oodiStudyRegistryConverter::oodiTeacherCourseToTeacherCourse)
-            .collect(Collectors.toList());
+    public List<TeacherCourse> getTeacherCourses(String teacherNumber, LocalDate since) {
+        throw new UnsupportedOperationException("use sisu");
     }
 
     @Override

@@ -144,14 +144,12 @@ public class OodiMockClient implements OodiClient {
 
     @Override
     public List<OodiEvent> getTeacherEvents(String teacherNumber) {
-        return getOodiResponse(teacherEvents, new TypeReference<OodiResponse<OodiEvent>>() {
-        });
+        throw new UnsupportedOperationException("use sisu");
     }
 
     @Override
     public List<OodiTeacherCourse> getTeacherCourses(String teacherNumber, String sinceDateString) {
-        return getOodiResponse(teacherCourses, new TypeReference<OodiResponse<OodiTeacherCourse>>() {
-        });
+        throw new UnsupportedOperationException("use sisu");
     }
 
     @Override

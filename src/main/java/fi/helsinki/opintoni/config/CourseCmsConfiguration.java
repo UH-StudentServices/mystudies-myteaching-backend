@@ -22,8 +22,8 @@ import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsMockClient;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsRestClient;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
-import fi.helsinki.opintoni.util.NamedDelegatesProxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -33,9 +33,6 @@ import static java.util.Collections.singletonList;
 
 @Configuration
 public class CourseCmsConfiguration {
-
-    @Autowired
-    private AppConfiguration appConfiguration;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -50,22 +47,14 @@ public class CourseCmsConfiguration {
     }
 
     @Bean
-    public CourseCmsClient courseCmsRestClient() {
+    @ConditionalOnExpression("'${courseCms.client.implementation}' == 'rest'")
+    public CourseCmsClient courseCmsRestClient(@Autowired AppConfiguration appConfiguration) {
         return new CourseCmsRestClient(appConfiguration.get("courseCms.base.url"), courseCmsRestTemplate());
     }
 
     @Bean
+    @ConditionalOnExpression("'${courseCms.client.implementation}' == 'mock'")
     public CourseCmsClient courseCmsMockClient() {
         return new CourseCmsMockClient(objectMapper);
-    }
-
-    @Bean
-    public CourseCmsClient courseCmsClient() {
-        return NamedDelegatesProxy.builder(
-            CourseCmsClient.class,
-            () -> appConfiguration.get("courseCms.client.implementation"))
-            .with("rest", courseCmsRestClient())
-            .with("mock", courseCmsMockClient())
-            .build();
     }
 }

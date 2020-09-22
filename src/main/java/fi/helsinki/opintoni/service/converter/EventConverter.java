@@ -96,7 +96,7 @@ public class EventConverter {
             .setSource(EventDto.Source.COURSE_PAGE)
             .setStartDate(event.begin)
             .setEndDate(event.end)
-            .setRealisationId(coursePage.courseImplementationId)
+            .setRealisationId(String.valueOf(coursePage.courseImplementationId))
             .setTitle(event.title)
             .setCourseTitle(coursePage.title)
             .setCourseUri(coursePage.url).setCourseImageUri(coursePageUriBuilder.getImageUri(coursePage))
