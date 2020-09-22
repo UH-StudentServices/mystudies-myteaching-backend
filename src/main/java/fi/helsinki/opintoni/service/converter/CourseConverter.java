@@ -108,16 +108,11 @@ public class CourseConverter {
         return Optional.ofNullable(dto);
     }
 
-    public CourseDto toDto(TeacherCourse teacherCourse, Locale locale, boolean isChildCourseWithoutRoot) {
+    public CourseDto toDto(TeacherCourse teacherCourse, Locale locale) {
         CourseDto dto = new CourseDto(
             teacherCourse.learningOpportunityId,
             teacherCourse.realisationTypeCode,
-            isChildCourseWithoutRoot ?
-                enrollmentNameConverter.getRealisationNameWithRootName(
-                    teacherCourse.realisationName,
-                    teacherCourse.realisationRootName,
-                    locale) :
-                localizedValueConverter.toLocalizedString(teacherCourse.realisationName, locale),
+            localizedValueConverter.toLocalizedString(teacherCourse.realisationName, locale),
             teacherCourse.startDate,
             teacherCourse.endDate,
             teacherCourse.realisationId,

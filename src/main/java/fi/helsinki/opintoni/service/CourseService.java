@@ -62,7 +62,7 @@ public class CourseService {
 
         return teacherCourses
             .stream()
-            .map(FunctionHelper.logAndIgnoreExceptions(c -> courseConverter.toDto(c, locale, isChildCourseWithoutRoot(c, coursesByRealisationIds))))
+            .map(FunctionHelper.logAndIgnoreExceptions(c -> courseConverter.toDto(c, locale)))
             .filter(Objects::nonNull)
             .collect(toList());
     }
@@ -102,11 +102,6 @@ public class CourseService {
         );
 
         return courseDtos;
-    }
-
-    private boolean isChildCourseWithoutRoot(TeacherCourse teacherCourse, Map<String, TeacherCourse> coursesByRealisationIds) {
-        return !teacherCourse.realisationId.equals(teacherCourse.rootId) &&
-            !coursesByRealisationIds.containsKey(teacherCourse.rootId);
     }
 
 }

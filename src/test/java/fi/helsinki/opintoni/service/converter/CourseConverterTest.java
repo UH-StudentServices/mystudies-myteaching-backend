@@ -87,8 +87,7 @@ public class CourseConverterTest extends SpringTest {
     @Test
     public void thatTeacherCoursesAreEnrichedWithCourseCmsDataForCoursesStartingAfterCutOffDate() throws Exception {
         when(mockCourseCmsClient.getCoursePage(anyString(), any(Locale.class))).thenReturn(courseCMSPage());
-        CourseDto dto = courseConverter.toDto(course(CODE, LocalDate.of(2020, 10, 26).atStartOfDay()), new Locale("fi"),
-                true);
+        CourseDto dto = courseConverter.toDto(course(CODE, LocalDate.of(2020, 10, 26).atStartOfDay()), new Locale("fi"));
         assertCMSCalled();
         assertEnrichments(dto);
     }
@@ -96,7 +95,7 @@ public class CourseConverterTest extends SpringTest {
     @Test
     public void thatTeacherCoursesAreEnrichedWithCoursePageDataForCoursesStartingBeforeCutOffDate() throws Exception {
         when(mockCoursePageClient.getCoursePage(anyString(), any(Locale.class))).thenReturn(coursePage());
-        CourseDto dto = courseConverter.toDto(course(CODE, LocalDate.of(2015, 10, 26).atStartOfDay()), new Locale("fi"), true);
+        CourseDto dto = courseConverter.toDto(course(CODE, LocalDate.of(2015, 10, 26).atStartOfDay()), new Locale("fi"));
         assertCoursePageCalled();
         assertEnrichments(dto);
     }
@@ -106,7 +105,7 @@ public class CourseConverterTest extends SpringTest {
         when(mockCoursePageClient.getCoursePage(anyString(), any(Locale.class))).thenReturn(coursePage());
         TeacherCourse course = course(CODE, LocalDate.of(2020, 10, 26).atStartOfDay());
         course.organisations = List.of(new Organisation(CoursePageUtil.OPEN_UNIVERSITY_ORG_CODE, List.of()));
-        CourseDto dto = courseConverter.toDto(course, new Locale("fi"), true);
+        CourseDto dto = courseConverter.toDto(course, new Locale("fi"));
         assertEnrichments(dto);
         assertCoursePageCalled();
     }
@@ -122,7 +121,7 @@ public class CourseConverterTest extends SpringTest {
         when(mockSotkaClient.getOodiHierarchy(SISU_REALISATION_FROM_OPTIME_ID)).thenReturn(oodiHierarchy);
         when(mockCoursePageClient.getCoursePage(eq(OODI_ID), any(Locale.class))).thenReturn(coursePage());
 
-        CourseDto dto = courseConverter.toDto(course, new Locale("fi"), true);
+        CourseDto dto = courseConverter.toDto(course, new Locale("fi"));
 
         verify(mockCoursePageClient, times(1)).getCoursePage(OODI_ID, new Locale("fi"));
         verify(mockSotkaClient, times(1)).getOodiHierarchy(SISU_REALISATION_FROM_OPTIME_ID);
