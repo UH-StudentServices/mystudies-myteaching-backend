@@ -60,7 +60,7 @@ public final class AppUser extends User {
         this.email = builder.email;
         this.commonName = builder.commonName;
         this.studentNumber = builder.studentNumber;
-        this.personId = builder.personId; //todo works until oodi is the master for persons
+        this.personId = builder.personId;
         this.employeeNumber = builder.employeeNumber;
         this.authorities = builder.authorities;
         this.teacherFacultyCode = builder.teacherFacultyCode;
