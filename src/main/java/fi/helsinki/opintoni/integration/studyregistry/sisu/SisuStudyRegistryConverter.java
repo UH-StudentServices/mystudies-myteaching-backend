@@ -192,6 +192,7 @@ public class SisuStudyRegistryConverter {
         event.typeCode = SISU_CUR_TYPE_TO_TYPE_CODE.getOrDefault(cur.getCourseUnitRealisationTypeUrn(), DEFAULT_CUR_TYPE_CODE);
         event.startDate = parseDateTime(sisuEvent.getStart());
         event.endDate = parseDateTime(sisuEvent.getEnd());
+        event.isCancelled = sisuEvent.getCancelled();
         Optional.ofNullable(se.getLocations()).stream()
             .flatMap(List::stream)
             .findFirst()
@@ -225,8 +226,9 @@ public class SisuStudyRegistryConverter {
                 .filter(ssg -> ssg.getTeacherIds().contains(teacherNumber))
                 .map(ssg -> ssg.getStudyEvents().stream()
                     .map(se -> se.getEvents().stream()
-                        .map(sisuEvent -> sisuEventToEvent(cur, ssg, se, sisuEvent))
-                    )
+                        .filter(sisuEvent -> !sisuEvent.getExcluded())
+                        .map(FunctionHelper.logAndIgnoreExceptions(sisuEvent -> sisuEventToEvent(cur, ssg, se, sisuEvent)))
+                    ).filter(Objects::nonNull)
                 )
             ).flatMap(Function.identity()).flatMap(Function.identity()).flatMap(Function.identity()).collect(Collectors.toList());
     }
