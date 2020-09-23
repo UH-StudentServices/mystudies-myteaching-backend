@@ -15,16 +15,15 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.sotka;
+package fi.helsinki.opintoni.integration.sotka.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class OodiHierarchy {
+public class SotkaHierarchy {
 
     @JsonProperty("oodiId")
     public String oodiId;
 
     @JsonProperty("optimeId")
     public String optimeId;
-
 }

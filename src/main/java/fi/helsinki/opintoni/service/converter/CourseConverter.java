@@ -25,6 +25,7 @@ import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.sotka.SotkaClient;
+import fi.helsinki.opintoni.integration.sotka.model.SotkaHierarchy;
 import fi.helsinki.opintoni.integration.studyregistry.CourseRealisation;
 import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
@@ -135,7 +136,10 @@ public class CourseConverter {
         } else {
             String oodiId = IntegrationUtil.stripPossibleSisuOodiCurPrefix(dto.realisationId);
             if (oodiId.startsWith(IntegrationUtil.SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX)) {
-                oodiId = sotkaClient.getOodiHierarchy(oodiId).oodiId;
+                Optional<SotkaHierarchy> sotkaHierarchy = sotkaClient.getOptimeHierarchy(oodiId);
+                oodiId = sotkaHierarchy.orElseThrow(
+                    () -> new IllegalArgumentException("Oodi id not found for cur: " + dto.realisationId)
+                ).oodiId;
             }
             enrichWithOldCoursePageData(dto, coursePageClient.getCoursePage(oodiId, locale));
         }

@@ -22,12 +22,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
+import fi.helsinki.opintoni.integration.sotka.model.SotkaHierarchy;
+
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 public class SotkaMockClient implements SotkaClient {
 
-    private static final String TEST_REALISATION_ID = "234567891";
-    private static final String TEST_REALISATION_NOT_FOUND_ID = "123456789";
+    private static final String TEST_REALISATION_SISU_CUR_ID = "hy-opt-cur-2021-e1f67d07-d60f-4cbd-ab85-6b6bfecd7cf4";
+    private static final String TEST_REALISATION_NOT_FOUND_SISU_CUR_ID = "hy-cur-123456789";
 
     private final ObjectMapper objectMapper;
 
@@ -42,17 +49,33 @@ public class SotkaMockClient implements SotkaClient {
     }
 
     @Override
-    public OodiHierarchy getOodiHierarchy(String oodiRealisationId) {
-        if (TEST_REALISATION_NOT_FOUND_ID.equals(oodiRealisationId)) {
-            return new OodiHierarchy();
+    public Optional<SotkaHierarchy> getOptimeHierarchy(String optimeId) {
+        Resource hierarchy;
+        if (TEST_REALISATION_NOT_FOUND_SISU_CUR_ID.equals(optimeId)) {
+            return Optional.empty();
+        } else if (TEST_REALISATION_SISU_CUR_ID.equals(optimeId)) {
+            hierarchy = hierarchy1;
+        } else {
+            hierarchy = hierarchy2;
         }
 
-        Resource hierarchy = TEST_REALISATION_ID.equals(oodiRealisationId) ? hierarchy1 : hierarchy2;
-
-        OodiHierarchy response = getResponse(hierarchy, new TypeReference<OodiHierarchy>() {
+        SotkaHierarchy response = getResponse(hierarchy, new TypeReference<SotkaHierarchy>() {
         });
-        response.oodiId = oodiRealisationId;
-        return response;
+        response.optimeId = optimeId;
+        return Optional.of(response);
+    }
+
+    @Override
+    public List<SotkaHierarchy> getOptimeHierarchy(List<String> optimeIds) {
+        if (optimeIds.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return optimeIds.stream()
+            .map(this::getOptimeHierarchy)
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .collect(toList());
     }
 
     private <T> T getResponse(Resource resource, TypeReference<T> typeReference) {

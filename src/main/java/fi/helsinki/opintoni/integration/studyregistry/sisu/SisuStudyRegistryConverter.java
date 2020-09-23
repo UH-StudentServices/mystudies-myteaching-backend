@@ -177,7 +177,7 @@ public class SisuStudyRegistryConverter {
         return curSearchResult.authenticated_course_unit_realisation_search().stream()
            .map(FunctionHelper.logAndIgnoreExceptions(cur -> sisuCurToTeacherEvents(cur, teacherNumber)))
            .flatMap(x -> x.stream())
-           .collect(Collectors.filtering(Objects::isNull, Collectors.toList()));
+           .collect(Collectors.filtering(Objects::nonNull, Collectors.toList()));
     }
 
     private LocalDateTime parseDateTime(String datetime) {
