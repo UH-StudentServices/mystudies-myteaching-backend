@@ -17,8 +17,21 @@
 
 package fi.helsinki.opintoni.integration.sotka;
 
+import java.util.List;
+import java.util.Optional;
+
+import fi.helsinki.opintoni.integration.sotka.model.SotkaHierarchy;
+
 public interface SotkaClient {
 
-    OodiHierarchy getOodiHierarchy(String oodiRealisationId);
+    Optional<SotkaHierarchy> getOptimeHierarchy(String optimeId);
 
+    /**
+     * Returns list of sotka hierarchies containing oodi and optime ids for given input list of sisu realisation ids.
+     * NOTE: Not yet usable as corresponding api endpoint has not been implemented on sisu side yet
+     *
+     * @param optimeIds List of sisu realisation ids
+     * @return List of sotka hierarchies
+     */
+    List<SotkaHierarchy> getOptimeHierarchy(List<String> optimeIds);
 }

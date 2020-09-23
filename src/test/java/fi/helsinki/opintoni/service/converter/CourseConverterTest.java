@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
@@ -42,8 +43,8 @@ import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsFile;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-import fi.helsinki.opintoni.integration.sotka.OodiHierarchy;
 import fi.helsinki.opintoni.integration.sotka.SotkaClient;
+import fi.helsinki.opintoni.integration.sotka.model.SotkaHierarchy;
 import fi.helsinki.opintoni.integration.studyregistry.Organisation;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
 import fi.helsinki.opintoni.util.CoursePageUtil;
@@ -115,16 +116,16 @@ public class CourseConverterTest extends SpringTest {
         TeacherCourse course = course(CODE, LocalDate.of(2019, 10, 26).atStartOfDay());
         course.realisationId = SISU_REALISATION_FROM_OPTIME_ID;
 
-        OodiHierarchy oodiHierarchy = new OodiHierarchy();
-        oodiHierarchy.oodiId = OODI_ID;
+        SotkaHierarchy sotkaHierarchy = new SotkaHierarchy();
+        sotkaHierarchy.oodiId = OODI_ID;
 
-        when(mockSotkaClient.getOodiHierarchy(SISU_REALISATION_FROM_OPTIME_ID)).thenReturn(oodiHierarchy);
+        when(mockSotkaClient.getOptimeHierarchy(SISU_REALISATION_FROM_OPTIME_ID)).thenReturn(Optional.of(sotkaHierarchy));
         when(mockCoursePageClient.getCoursePage(eq(OODI_ID), any(Locale.class))).thenReturn(coursePage());
 
         CourseDto dto = courseConverter.toDto(course, new Locale("fi"));
 
         verify(mockCoursePageClient, times(1)).getCoursePage(OODI_ID, new Locale("fi"));
-        verify(mockSotkaClient, times(1)).getOodiHierarchy(SISU_REALISATION_FROM_OPTIME_ID);
+        verify(mockSotkaClient, times(1)).getOptimeHierarchy(SISU_REALISATION_FROM_OPTIME_ID);
 
         assertEnrichments(dto);
     }
