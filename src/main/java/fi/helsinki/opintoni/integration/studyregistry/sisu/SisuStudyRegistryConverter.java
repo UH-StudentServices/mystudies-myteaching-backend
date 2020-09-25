@@ -208,13 +208,15 @@ public class SisuStudyRegistryConverter {
 
         Optional.ofNullable(se.getOverrides()).stream()
             .flatMap(List::stream)
-            .filter(override -> override.getEventDate().equals(sisuEvent.getStart()))
+            .filter(override -> override.getEventDate().equals(event.startDate.toLocalDate().toString()))
             .findFirst()
             .ifPresent(override -> {
                 if (override.getNotice() != null && StringUtils.isNotBlank(override.getNotice().getFi())) {
                     event.optimeExtras = parseOptimeExtras(override.getNotice().getFi());
                 }
-                setEventLocation(event, override.getIrregularLocations());
+                if (override.getIrregularLocations() != null) {
+                    setEventLocation(event, override.getIrregularLocations());
+                }
             }
         );
         return event;
