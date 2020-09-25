@@ -69,7 +69,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 "BEGIN:VEVENT",
                 "DTSTART;TZID=Europe/Helsinki:20161219T141500",
                 "DTEND;TZID=Europe/Helsinki:20161219T154500",
-                "SUMMARY:Formulat... Harjoitus II (en)",
+                "SUMMARY:Formulation II Harjoitus II (en)",
                 "DESCRIPTION:Aku Ankka\\, testauksessa mukana",
                 "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11\\, Päärakennus\\, "
                     + "sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11",
@@ -85,7 +85,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 "BEGIN:VEVENT",
                 "DTSTART;TZID=Europe/Helsinki:20170131T110000",
                 "DTEND;TZID=Europe/Helsinki:20170131T140000",
-                "SUMMARY:Formulat... Harjoitus (en)",
+                "SUMMARY:Formulation III Harjoitus (en)",
                 "LOCATION:Arppeanumin auditorio\\, Viikinkaari 11",
                 "UID:"),
             eventToString(
@@ -135,7 +135,7 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
                 "BEGIN:VEVENT",
                 "DTSTART;TZID=Europe/Helsinki:20161219T141500",
                 "DTEND;TZID=Europe/Helsinki:20161219T154500",
-                "SUMMARY:Formulat... Harjoitus II (en)",
+                "SUMMARY:Formulation II Harjoitus II (en)",
                 "DESCRIPTION:Aku Ankka\\, testauksessa mukana",
                 "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11\\, Päärakennus\\, "
                     + "sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11\\, overlapping where data",

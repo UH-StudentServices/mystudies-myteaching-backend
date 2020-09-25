@@ -27,7 +27,7 @@ import java.util.Locale;
 @Component
 public class EnrollmentNameConverter {
 
-    private static final int REALISATION_ROOT_NAME_LENGTH = 8;
+    private static final int REALISATION_ROOT_NAME_LENGTH = 20;
     private static final String REALISATION_NAME_DELIMITER = "... ";
 
     private final LocalizedValueConverter localizedValueConverter;
@@ -44,8 +44,10 @@ public class EnrollmentNameConverter {
 
         if (localizedRealisationRootName != null && !localizedRealisationRootName.equals(localizedRealisationName)) {
             int rootNameLength = Math.min(REALISATION_ROOT_NAME_LENGTH, localizedRealisationRootName.length());
+            String delimiter =  (localizedRealisationRootName.length() > REALISATION_ROOT_NAME_LENGTH)
+                ? REALISATION_NAME_DELIMITER : " ";
             return String.join(
-                REALISATION_NAME_DELIMITER,
+                delimiter,
                 localizedRealisationRootName.substring(0, rootNameLength),
                 localizedRealisationName);
         } else {

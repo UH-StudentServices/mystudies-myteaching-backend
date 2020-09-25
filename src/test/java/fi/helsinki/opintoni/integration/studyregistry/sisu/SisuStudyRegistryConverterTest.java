@@ -21,9 +21,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.junit.Test;
 
@@ -33,6 +34,7 @@ import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Authenticated_c
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitRealisationTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.DatePeriodTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.EventOverrideTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.LocalizedStringTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyEventRealisationTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyEventTO;
@@ -45,17 +47,26 @@ public class SisuStudyRegistryConverterTest {
     private static final String HY_HLO_ID2 = "hy-hlo-2";
 
     @Test
-    public void thatMinimalSisuResponseIsConvertedToCourses() throws Exception {
+    public void thatSisuResponseIsConvertedToCourses() {
         SisuStudyRegistryConverter converter = new SisuStudyRegistryConverter();
         List<TeacherCourse> courses = converter.sisuCURSearchResultToTeacherCourseList(getResponse());
         assertEquals(1, courses.size());
     }
 
     @Test
-    public void thatMinimalSisuResponseIsConvertedToEvents() throws Exception {
+    public void thatSisuResponseIsConvertedToEvents() {
         SisuStudyRegistryConverter converter = new SisuStudyRegistryConverter();
         List<Event> events = converter.sisuCurSearchResultToEvents(getResponse(), HY_HLO_ID);
         assertEquals(10, events.size());
+    }
+
+    @Test
+    public void thatSisuResponseContainingOverridesIsConvertedToOptimeExtras() {
+        SisuStudyRegistryConverter converter = new SisuStudyRegistryConverter();
+        Event event = converter.sisuCurSearchResultToEvents(getResponse(), HY_HLO_ID).get(0);
+        assertEquals("room notes", event.optimeExtras.roomNotes);
+        assertEquals("staff notes", event.optimeExtras.staffNotes);
+        assertEquals("other notes", event.optimeExtras.otherNotes);
     }
 
     private Authenticated_course_unit_realisation_searchQueryResponse getResponse() {
@@ -92,25 +103,26 @@ public class SisuStudyRegistryConverterTest {
     }
 
     private StudyEventTO studyEvent() {
+        LocalDateTime now = LocalDateTime.now();
         return StudyEventTO.builder()
             .setName(name("study event name fi", "study event name en", "study event name sv"))
-            .setEvents(events())
+            .setOverrides(List.of(EventOverrideTO.builder()
+                .setEventDate(now.toLocalDate().toString())
+                .setNotice(LocalizedStringTO.builder()
+                    .setFi("room notes\u200bstaff notes\u200bother notes").build()).build()))
+                    .setLocations(List.of())
+            .setEvents(events(now))
             .build();
     }
 
-    private List<StudyEventRealisationTO> events() {
-        List<StudyEventRealisationTO> events = new ArrayList<>();
-        LocalDateTime now = LocalDateTime.now();
-        for (int i = 0; i < 10; i++) {
-            LocalDateTime start = now.plusWeeks(i);
-            events.add(StudyEventRealisationTO.builder()
+    private List<StudyEventRealisationTO> events(LocalDateTime startDateTime) {
+        return IntStream.range(0, 10).mapToObj(
+            i -> StudyEventRealisationTO.builder()
                 .setExcluded(false)
-                .setStart(start.format(DateTimeFormatter.ISO_DATE_TIME))
-                .setEnd(start.plusHours(1).format(DateTimeFormatter.ISO_DATE_TIME))
+                .setStart(startDateTime.plusWeeks(i).format(DateTimeFormatter.ISO_DATE_TIME))
+                .setEnd(startDateTime.plusWeeks(i).plusHours(1).format(DateTimeFormatter.ISO_DATE_TIME))
                 .setCancelled(false)
-                .build());
-        }
-        return events;
+                .build()).collect(Collectors.toList());
     }
 
     private DatePeriodTO getPeriod(String startDate, String endDate) {
