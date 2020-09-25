@@ -187,9 +187,15 @@ public class SisuStudyRegistryConverter {
     private Event sisuEventToEvent(CourseUnitRealisationTO cur, StudySubGroupTO ssg, StudyEventTO se, StudyEventRealisationTO sisuEvent) {
         Event event = new Event();
         event.realisationId = cur.getId();
-        event.realisationName = localizedStringToToLocalizedText(ssg.getName());
         event.realisationRootName = localizedStringToToLocalizedText(cur.getName());
         event.typeCode = SISU_CUR_TYPE_TO_TYPE_CODE.getOrDefault(cur.getCourseUnitRealisationTypeUrn(), DEFAULT_CUR_TYPE_CODE);
+
+        if (ssg.getName() != null) {
+            event.realisationName = localizedStringToToLocalizedText(ssg.getName());
+        } else {
+            event.realisationName = event.realisationRootName;
+        }
+
         event.startDate = parseDateTime(sisuEvent.getStart());
         event.endDate = parseDateTime(sisuEvent.getEnd());
         event.isCancelled = sisuEvent.getCancelled();
