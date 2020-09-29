@@ -129,13 +129,17 @@ public class SisuGraphQLClient implements SisuClient {
         return execute(gqlRequest, Authenticated_course_unit_realisation_searchQueryResponse.class);
     }
 
-    private GraphQLOperationRequest getTeacherCoursesRequest(String id, LocalDate since) {
-        String start = DateTimeUtil.getSemesterStartDateSisuString(since);
-        String end = DateTimeUtil.getSemesterStartDateSisuString(since.plusYears(1));
+    DatePeriodInputTO getDatePeriod(LocalDate now) {
+        return DatePeriodInputTO.builder()
+          .setStartDate(DateTimeUtil.getSemesterStartDateSisuString(now))
+          .setEndDate(DateTimeUtil.getSisuDateString(now.plusYears(2))).build();
+    }
+
+    private Authenticated_course_unit_realisation_searchQueryRequest getTeacherCoursesRequest(String id, LocalDate now) {
 
         return new Authenticated_course_unit_realisation_searchQueryRequest.Builder()
             .setResponsiblePersonIds(Arrays.asList(id))
-            .setActivityPeriods(Arrays.asList(new DatePeriodInputTO(end, start)))
+            .setActivityPeriods(Arrays.asList(getDatePeriod(now)))
             .setLimit(10000d)
             .build();
     }
