@@ -22,6 +22,7 @@ import fi.helsinki.opintoni.domain.CalendarFeed;
 import fi.helsinki.opintoni.dto.CalendarFeedDto;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.exception.http.CalendarFeedNotFoundException;
+import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.integration.studyregistry.Person;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.service.converter.EventConverter;
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CalendarService {
@@ -71,17 +73,24 @@ public class CalendarService {
     }
 
     private String getCalendarFeedFromEvents(CalendarFeed calendarFeed, Locale locale) {
-        Person person = studyRegistryService.getPerson(calendarFeed.user.personId);
+        Optional<Person> person = Optional.ofNullable(
+            studyRegistryService.getPerson(IntegrationUtil.getSisuPrivatePersonId(calendarFeed.user.personId))
+        );
 
-        List<EventDto> studentEvents = Optional.ofNullable(person.studentNumber)
-            .map(s -> eventService.getStudentEvents(s, locale))
-            .orElse(Lists.newArrayList());
-        List<EventDto> teacherEvents = Optional.ofNullable(person.teacherNumber)
-            .map(s -> eventService.getTeacherEvents(s, locale))
-            .orElse(Lists.newArrayList());
+        List<EventDto> events = person.stream().map(p -> {
+            List<EventDto> studentEvents = Optional.ofNullable(p.studentNumber)
+                .map(s -> eventService.getStudentEvents(s, locale))
+                .orElse(Lists.newArrayList());
+            List<EventDto> teacherEvents = Optional.ofNullable(p.teacherNumber)
+                .map(s -> eventService.getTeacherEvents(s, locale))
+                .orElse(Lists.newArrayList());
 
-        studentEvents.addAll(teacherEvents);
+            studentEvents.addAll(teacherEvents);
+            return studentEvents;
 
-        return eventConverter.toICalendar(studentEvents);
+        }).flatMap(List::stream).collect(Collectors.toList());
+
+        return eventConverter.toICalendar(events);
+
     }
 }

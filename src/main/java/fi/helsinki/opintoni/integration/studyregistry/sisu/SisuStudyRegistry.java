@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.integration.studyregistry.Person;
@@ -98,6 +99,6 @@ public class SisuStudyRegistry implements StudyRegistry {
 
     @Override
     public Person getPerson(String personId) {
-        return sisuStudyRegistryConverter.sisuPrivatePersonToPerson(sisuClient.getPrivatePerson(personId));
+        return sisuStudyRegistryConverter.sisuPrivatePersonToPerson(sisuClient.getPrivatePerson(IntegrationUtil.getSisuPrivatePersonId(personId)));
     }
 }

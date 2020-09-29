@@ -117,10 +117,13 @@ public class SisuStudyRegistryConverter {
     }
 
     public Person sisuPrivatePersonToPerson(Private_personQueryResponse privatePersonQueryResponse) {
-        Person person = new Person();
-        person.studentNumber = privatePersonQueryResponse.private_person().getStudentNumber();
-        person.teacherNumber = privatePersonQueryResponse.private_person().getEmployeeNumber();
-        return person;
+        if (privatePersonQueryResponse.getData() != null) {
+            Person person = new Person();
+            person.studentNumber = privatePersonQueryResponse.private_person().getStudentNumber();
+            person.teacherNumber = privatePersonQueryResponse.private_person().getEmployeeNumber();
+            return person;
+        }
+        return null;
     }
 
     private Teacher sisuAcceptorPersonToTeacher(AcceptorPersonTO acceptorPerson) {
