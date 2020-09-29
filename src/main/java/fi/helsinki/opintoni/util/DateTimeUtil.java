@@ -35,6 +35,10 @@ public class DateTimeUtil {
         return getSemesterStartDate(now).format(DateTimeFormatter.ofPattern(DateFormatter.DATE_FORMAT_SISU));
     }
 
+    public static String getSisuDateString(LocalDate date) {
+        return date.format(DateTimeFormatter.ofPattern(DateFormatter.DATE_FORMAT_SISU));
+    }
+
     public static LocalDate getSemesterStartDate(LocalDate now) {
         int year = now.getYear();
         int month = now.getMonthValue();
