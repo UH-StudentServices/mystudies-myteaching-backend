@@ -147,7 +147,7 @@ public class SisuGraphQLClient implements SisuClient {
     @Cacheable(value = CacheConstants.GRAPHQL_PRIVATE_PERSON, cacheManager = "transientCacheManager", sync = true)
     @Override
     public Private_personQueryResponse getPrivatePerson(String personId) {
-        GraphQLOperationRequest qr = new Private_personsQueryRequest.Builder().setIds(List.of(personId)).build();
+        GraphQLOperationRequest qr = new Private_personQueryRequest.Builder().setId(personId).build();
         PrivatePersonResponseProjection projection =  new PrivatePersonResponseProjection()
             .studentNumber()
             .employeeNumber();
