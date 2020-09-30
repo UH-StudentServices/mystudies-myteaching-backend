@@ -72,6 +72,7 @@ public class CalendarService {
             .orElseThrow(CalendarFeedNotFoundException::new);
     }
 
+    //XXX should perhaps return only teacher events here because student events are at mystudies
     private String getCalendarFeedFromEvents(CalendarFeed calendarFeed, Locale locale) {
         Optional<Person> person = Optional.ofNullable(
             studyRegistryService.getPerson(IntegrationUtil.getSisuPrivatePersonId(calendarFeed.user.personId))
@@ -82,7 +83,7 @@ public class CalendarService {
                 .map(s -> eventService.getStudentEvents(s, locale))
                 .orElse(Lists.newArrayList());
             List<EventDto> teacherEvents = Optional.ofNullable(p.teacherNumber)
-                .map(s -> eventService.getTeacherEvents(s, locale))
+                .map(s -> eventService.getTeacherEvents(IntegrationUtil.getSisuPrivatePersonId(calendarFeed.user.personId), locale))
                 .orElse(Lists.newArrayList());
 
             studentEvents.addAll(teacherEvents);

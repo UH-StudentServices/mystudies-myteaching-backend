@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 import com.google.common.base.Splitter;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import fi.helsinki.opintoni.integration.studyregistry.Event;
@@ -62,6 +64,7 @@ public class SisuStudyRegistryConverter {
 
     public static final String DATE_PATTERN = "yyyy-MM-dd";
     static DateTimeFormatter sisuDateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME;
+    private static final Logger logger = LoggerFactory.getLogger(SisuStudyRegistryConverter.class);
 
     private static final Map<String, Integer> SISU_CUR_TYPE_TO_TYPE_CODE;
     private static final Integer DEFAULT_CUR_TYPE_CODE = 17;
@@ -142,7 +145,9 @@ public class SisuStudyRegistryConverter {
                 .map(FunctionHelper.logAndIgnoreExceptions(this::sisuCurToTeacherCourse))
                 .collect(Collectors.filtering(Objects::nonNull, Collectors.toList()));
         }
-
+        if (curResult != null && curResult.hasErrors()) {
+            curResult.getErrors().forEach(e -> logger.error(e.toString()));
+        }
         return List.of();
     }
 
@@ -186,6 +191,10 @@ public class SisuStudyRegistryConverter {
                 .map(FunctionHelper.logAndIgnoreExceptions(cur -> sisuCurToTeacherEvents(cur, teacherNumber)))
                 .flatMap(x -> x.stream())
                 .collect(Collectors.filtering(Objects::nonNull, Collectors.toList()));
+        }
+
+        if (curSearchResult != null && curSearchResult.hasErrors()) {
+            curSearchResult.getErrors().forEach(e -> logger.error(e.toString()));
         }
 
         return List.of();

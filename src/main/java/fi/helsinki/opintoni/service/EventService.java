@@ -100,19 +100,19 @@ public class EventService {
             locale);
     }
 
-    public List<EventDto> getTeacherEvents(final String teacherNumber, final Locale locale) {
+    public List<EventDto> getTeacherEvents(final String hloId, final Locale locale) {
 
         List<EventDto> optimeEvents = Collections.emptyList();
         List<Event> studyRegistryEvents = Collections.emptyList();
 
         if (optimeConfiguration.useOptimeFeedForWebCalendar) {
-            String optimeFeedurl = optimeCalendarService.getOptimeCalendar(teacherNumber).url;
+            String optimeFeedurl = optimeCalendarService.getOptimeCalendar(hloId).url;
             optimeEvents = optimeService.getOptimeEvents(optimeFeedurl);
         } else {
-            studyRegistryEvents = studyRegistryService.getTeacherEvents(teacherNumber);
+            studyRegistryEvents = studyRegistryService.getTeacherEvents(hloId);
         }
 
-        List<TeacherCourse> courses = studyRegistryService.getTeacherCourses(teacherNumber, DateTimeUtil.getSemesterStartDate(LocalDate.now()))
+        List<TeacherCourse> courses = studyRegistryService.getTeacherCourses(hloId, DateTimeUtil.getSemesterStartDate(LocalDate.now()))
             .stream()
             .filter(c -> !c.isCancelled)
             .collect(Collectors.toList());
