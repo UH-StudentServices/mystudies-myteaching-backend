@@ -137,9 +137,13 @@ public class SisuStudyRegistryConverter {
 
     public List<TeacherCourse> sisuCURSearchResultToTeacherCourseList(
             Authenticated_course_unit_realisation_searchQueryResponse curResult) {
-        return curResult.authenticated_course_unit_realisation_search().stream()
-            .map(FunctionHelper.logAndIgnoreExceptions(this::sisuCurToTeacherCourse))
-            .collect(Collectors.filtering(Objects::nonNull, Collectors.toList()));
+        if (curResult != null && curResult.authenticated_course_unit_realisation_search() != null) {
+            return curResult.authenticated_course_unit_realisation_search().stream()
+                .map(FunctionHelper.logAndIgnoreExceptions(this::sisuCurToTeacherCourse))
+                .collect(Collectors.filtering(Objects::nonNull, Collectors.toList()));
+        }
+
+        return List.of();
     }
 
     public TeacherCourse sisuCurToTeacherCourse(CourseUnitRealisationTO cur) {
