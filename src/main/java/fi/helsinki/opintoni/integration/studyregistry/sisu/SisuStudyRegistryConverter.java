@@ -177,7 +177,7 @@ public class SisuStudyRegistryConverter {
     }
 
     public List<Event> sisuCurSearchResultToEvents(Authenticated_course_unit_realisation_searchQueryResponse curSearchResult, String teacherNumber) {
-        if(curSearchResult != null && curSearchResult.authenticated_course_unit_realisation_search() != null) {
+        if (curSearchResult != null && curSearchResult.authenticated_course_unit_realisation_search() != null) {
             return curSearchResult.authenticated_course_unit_realisation_search().stream()
                 .map(FunctionHelper.logAndIgnoreExceptions(cur -> sisuCurToTeacherEvents(cur, teacherNumber)))
                 .flatMap(x -> x.stream())
