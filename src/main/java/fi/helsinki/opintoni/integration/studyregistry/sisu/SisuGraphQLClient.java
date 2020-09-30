@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
 
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLOperationRequest;
 import com.kobylynskyi.graphql.codegen.model.graphql.GraphQLRequest;
@@ -50,7 +49,6 @@ import fi.helsinki.opintoni.integration.studyregistry.sisu.model.OrganisationRes
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonResponseProjection;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personQueryRequest;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personQueryResponse;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personsQueryRequest;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PublicPersonResponseProjection;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyEventRealisationResponseProjection;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyEventResponseProjection;
