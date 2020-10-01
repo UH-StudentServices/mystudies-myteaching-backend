@@ -18,28 +18,40 @@
 package fi.helsinki.opintoni.integration.studyregistry.sisu.mock;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuClient;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AttainmentTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Authenticated_course_unit_realisation_searchQueryResponse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitRealisationOrganisationTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitRealisationTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.DatePeriodTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.GradeScaleTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.GradeTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.LocalizedStringTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.OrganisationTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personQueryResponse;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.RangeTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyGroupSetTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudySubGroupTO;
 
 public class SisuMockClient implements SisuClient {
 
     @Override
     public Authenticated_course_unit_realisation_searchQueryResponse curSearch(String personId, LocalDate since) {
-        Authenticated_course_unit_realisation_searchQueryResponse r = new Authenticated_course_unit_realisation_searchQueryResponse();
         CourseUnitRealisationTO cur = new CourseUnitRealisationTO();
         cur.setCourseUnits(List.of(getCourseUnit("abc")));
-        r.setData(Map.of(personId, List.of(cur)));
+        cur.setId("hy-cur-1");
+        cur.setActivityPeriod(getActivityPeriod());
+        cur.setOrganisations(getCourseUnitRealisationOrganisations("org-1"));
+        cur.setStudyGroupSets(getStudyGroupSets(personId));
+        Authenticated_course_unit_realisation_searchQueryResponse r = new Authenticated_course_unit_realisation_searchQueryResponse();
+        r.setData(Map.of("authenticated_course_unit_realisation_search", List.of(cur)));
         return r;
     }
 
@@ -73,6 +85,40 @@ public class SisuMockClient implements SisuClient {
         courseUnit.setCode(code);
         courseUnit.setName(getLocalizedString("Integraalilaskenta", "Integral Calculus", "Integral kalkyl"));
         return courseUnit;
+    }
+
+    private DatePeriodTO getActivityPeriod() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate startDate = LocalDate.of(currentDate.getYear(), currentDate.getMonthValue() > 7 ? 8 : 1, 1);
+        LocalDate endDate = LocalDate.of(currentDate.getYear(), currentDate.getMonthValue() > 7 ? 12 : 7, 31);
+        return new DatePeriodTO(endDate.toString(), startDate.toString());
+    }
+
+    private List<CourseUnitRealisationOrganisationTO> getCourseUnitRealisationOrganisations(String... ids) {
+        return Arrays.asList(ids).stream().map(id -> {
+            return new CourseUnitRealisationOrganisationTO(
+                id,
+                new OrganisationTO(id, id + "-code", null,
+                        new LocalizedStringTO("TestiOrg" + id, "TestOrg" + id, "TestOrg1" + id, null, null, null),
+                        new LocalizedStringTO("Testi Organisaatio", "Test Organisation", "Testi Organisaatio", null,
+                                null, null),
+                        List.of(), List.of(), "parent-org-" + id, null, "hy-test-org-" + id, null, null, null, "ACTIVE"),
+                "urn:", 100D, new DatePeriodTO("2050-01-30", "2010-08-01")
+            );
+        }).collect(Collectors.toList());
+    }
+
+    private List<StudyGroupSetTO> getStudyGroupSets(String personId) {
+        return List.of(
+            new StudyGroupSetTO(
+                "sgs-1",
+                new LocalizedStringTO("Luennot", "Lectures", "Luennot (sv)", null, null, null),
+                List.of(new StudySubGroupTO(false, "ACTIVE", "ssg-1",
+                    new LocalizedStringTO("Ryhmä 1", "Group 1", "Grupp 1", null, null, null), 20,
+                    List.of("se-1", "se-2", "se-3"), List.of(), List.of("hy-teacher-person-1", personId), List.of())),
+                new RangeTO(0, 30)
+            )
+        );
     }
 
     private GradeScaleTO getGradeScale() {
