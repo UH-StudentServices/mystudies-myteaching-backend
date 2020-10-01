@@ -44,13 +44,13 @@ public class SisuMockClient implements SisuClient {
 
     @Override
     public Authenticated_course_unit_realisation_searchQueryResponse curSearch(String personId, LocalDate since) {
-        Authenticated_course_unit_realisation_searchQueryResponse r = new Authenticated_course_unit_realisation_searchQueryResponse();
         CourseUnitRealisationTO cur = new CourseUnitRealisationTO();
         cur.setCourseUnits(List.of(getCourseUnit("abc")));
         cur.setId("hy-cur-1");
-        cur.setActivityPeriod(new DatePeriodTO("2021-01-30", "2020-08-01"));
+        cur.setActivityPeriod(getActivityPeriod());
         cur.setOrganisations(getCourseUnitRealisationOrganisations("org-1"));
         cur.setStudyGroupSets(getStudyGroupSets(personId));
+        Authenticated_course_unit_realisation_searchQueryResponse r = new Authenticated_course_unit_realisation_searchQueryResponse();
         r.setData(Map.of("authenticated_course_unit_realisation_search", List.of(cur)));
         return r;
     }
@@ -85,6 +85,13 @@ public class SisuMockClient implements SisuClient {
         courseUnit.setCode(code);
         courseUnit.setName(getLocalizedString("Integraalilaskenta", "Integral Calculus", "Integral kalkyl"));
         return courseUnit;
+    }
+
+    private DatePeriodTO getActivityPeriod() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate startDate = LocalDate.of(currentDate.getYear(), currentDate.getMonthValue() > 7 ? 8 : 1, 1);
+        LocalDate endDate = LocalDate.of(currentDate.getYear(), currentDate.getMonthValue() > 7 ? 12 : 7, 31);
+        return new DatePeriodTO(endDate.toString(), startDate.toString());
     }
 
     private List<CourseUnitRealisationOrganisationTO> getCourseUnitRealisationOrganisations(String... ids) {
