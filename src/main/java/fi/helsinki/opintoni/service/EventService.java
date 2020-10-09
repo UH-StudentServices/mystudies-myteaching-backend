@@ -19,14 +19,9 @@ package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.config.OptimeConfiguration;
 import fi.helsinki.opintoni.dto.EventDto;
-import fi.helsinki.opintoni.integration.IntegrationUtil;
-import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
-import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.optime.OptimeService;
-import fi.helsinki.opintoni.integration.sotka.SotkaClient;
-import fi.helsinki.opintoni.integration.sotka.model.SotkaHierarchy;
 import fi.helsinki.opintoni.integration.studyregistry.CourseRealisation;
 import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
@@ -48,7 +43,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -56,9 +50,6 @@ import java.util.stream.Stream;
 public class EventService {
 
     private final StudyRegistryService studyRegistryService;
-    private final CoursePageClient coursePageClient;
-    private final CourseCmsClient courseCmsClient;
-    private final SotkaClient sotkaClient;
     private final CoursePageUtil coursePageUtil;
     private final EventConverter eventConverter;
     private final OptimeConfiguration optimeConfiguration;
@@ -67,9 +58,6 @@ public class EventService {
 
     @Autowired
     public EventService(StudyRegistryService studyRegistryService,
-                        CoursePageClient coursePageClient,
-                        CourseCmsClient courseCmsClient,
-                        SotkaClient sotkaClient,
                         CoursePageUtil coursePageUtil,
                         EventConverter eventConverter,
                         OptimeConfiguration optimeConfiguration,
@@ -77,9 +65,6 @@ public class EventService {
                         OptimeCalendarService optimeCalendarService) {
 
         this.studyRegistryService = studyRegistryService;
-        this.coursePageClient = coursePageClient;
-        this.courseCmsClient = courseCmsClient;
-        this.sotkaClient = sotkaClient;
         this.coursePageUtil = coursePageUtil;
         this.eventConverter = eventConverter;
         this.optimeConfiguration = optimeConfiguration;
@@ -138,14 +123,14 @@ public class EventService {
             .map(cr -> cr.realisationId)
             .collect(Collectors.toList());
 
-        Map<String, CoursePageCourseImplementation> coursePages = getOldCoursePages(useOldCoursePages, locale);
+        Map<String, CoursePageCourseImplementation> coursePages = coursePageUtil.getOldCoursePages(useOldCoursePages, locale);
 
         List<String> useNewCoursePages = Optional.ofNullable(partitionedCourses.get(true)).stream()
             .flatMap(List::stream)
             .map(cr -> cr.realisationId)
             .collect(Collectors.toList());
 
-        Map<String, CourseCmsCourseUnitRealisation> newCoursePages = getNewCoursePages(useNewCoursePages, locale);
+        Map<String, CourseCmsCourseUnitRealisation> newCoursePages = coursePageUtil.getNewCoursePages(useNewCoursePages, locale);
 
         Stream<EventDto> studyRegistryEventDtos = studyRegistryEvents.stream()
             .filter(event -> !event.isCancelled && event.startDate != null)
@@ -176,35 +161,6 @@ public class EventService {
     private CourseCmsCourseUnitRealisation getNewCoursePage(Map<String, CourseCmsCourseUnitRealisation> coursePages,
         String realisationId) {
         return coursePages.getOrDefault(realisationId, null);
-    }
-
-    private Entry<String, CoursePageCourseImplementation> sisuCurIdToCoursePageImplementation(String courseId, Locale locale) {
-        String oodiId = IntegrationUtil.stripPossibleSisuOodiCurPrefix(courseId);
-        if (oodiId.startsWith(IntegrationUtil.SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX)) {
-            Optional<SotkaHierarchy> sotkaHierarchy = sotkaClient.getOptimeHierarchy(oodiId);
-            oodiId = sotkaHierarchy.orElseThrow(
-                () -> new IllegalArgumentException("Oodi id not found for cur: " + courseId)
-            ).oodiId;
-        }
-        return Map.entry(courseId, coursePageClient.getCoursePage(oodiId, locale));
-    }
-
-    private Map<String, CoursePageCourseImplementation> getOldCoursePages(List<String> courseIds, Locale locale) {
-        return courseIds.stream()
-            .map(FunctionHelper.logAndIgnoreExceptions(id -> sisuCurIdToCoursePageImplementation(id, locale)))
-            .filter(Objects::nonNull)
-            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
-    }
-
-    private Entry<String, CourseCmsCourseUnitRealisation> getCourseCmsPage(String realisationId, Locale locale) {
-        return Map.entry(realisationId, courseCmsClient.getCoursePage(realisationId, locale));
-    }
-
-    private Map<String, CourseCmsCourseUnitRealisation> getNewCoursePages(List<String> courseIds, Locale locale) {
-        return courseIds.stream()
-            .map(FunctionHelper.logAndIgnoreExceptions(id -> getCourseCmsPage(id, locale)))
-            .filter(Objects::nonNull)
-            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
     }
 
 }

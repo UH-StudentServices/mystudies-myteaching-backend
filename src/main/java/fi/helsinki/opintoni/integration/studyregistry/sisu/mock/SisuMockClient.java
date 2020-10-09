@@ -50,7 +50,13 @@ public class SisuMockClient implements SisuClient {
     private static final String CUR_PAST_EXAM = "hy-CUR-234567894";
     private static final String CUR_FUTURE_EXAM = "hy-CUR-234567895";
 
-    Map<String, String> curNames = Map.of(CUR_ID_PAST, "Frumulointi I", CUR_ID_WITH_CMS_DATA, "Formulointi II", CUR_ID_FUTURE, "Formulointi III", CUR_PAST_EXAM, "Mennyt tentti", CUR_FUTURE_EXAM, "Tuleva tentti");
+    Map<String, String> curNames = Map.of(
+        CUR_ID_PAST, "Frumulointi I",
+        CUR_ID_WITH_CMS_DATA, "Formulointi II",
+        CUR_ID_FUTURE, "Formulointi III",
+        CUR_PAST_EXAM, "Mennyt tentti",
+        CUR_FUTURE_EXAM, "Tuleva tentti"
+    );
 
     @Override
     public Authenticated_course_unit_realisation_searchQueryResponse curSearch(String personId, LocalDate since) {
@@ -68,22 +74,21 @@ public class SisuMockClient implements SisuClient {
 
     private CourseUnitRealisationTO cur(LocalDate start, String curId, int eventCount) {
         boolean isExam = eventCount == 1;
-        CourseUnitRealisationTO cur = CourseUnitRealisationTO.builder()
-        .setId(curId)
-        .setActivityPeriod(getPeriod(start.toString(),
-            isExam
-                ? start.plusDays(1).toString()
-                : start.plusMonths(3).toString()))
-        .setCourseUnits(List.of(getCourseUnit("ABC123")))
-        .setStudyGroupSets(List.of(getStudyGroupSet(start, eventCount)))
-        .setOrganisations(List.of())
-        .setName(name(curNames.get(curId)))
-        .setCourseUnitRealisationTypeUrn(
-            isExam
-                ? "urn:code:course-unit-realisation-type:exam-exam"
-                : "urn:code:course-unit-realisation-type:teaching-participation-lectures")
-        .build();
-        return cur;
+        return CourseUnitRealisationTO.builder()
+            .setId(curId)
+            .setActivityPeriod(getPeriod(start.toString(),
+                isExam
+                    ? start.plusDays(1).toString()
+                    : start.plusMonths(3).toString()))
+            .setCourseUnits(List.of(getCourseUnit("ABC123")))
+            .setStudyGroupSets(List.of(getStudyGroupSet(start, eventCount)))
+            .setOrganisations(List.of())
+            .setName(name(curNames.get(curId)))
+            .setCourseUnitRealisationTypeUrn(
+                isExam
+                    ? "urn:code:course-unit-realisation-type:exam-exam"
+                    : "urn:code:course-unit-realisation-type:teaching-participation-lectures")
+            .build();
     }
 
     private LocalizedStringTO name(String prefix) {

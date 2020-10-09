@@ -35,12 +35,10 @@ public class TeacherRequestChain {
 
     private final CoursePageServer coursePageServer;
     private final CourseCmsServer courseCmsServer;
-    private final SotkaServer sotkaServer;
 
     public TeacherRequestChain(CoursePageServer coursePageServer, CourseCmsServer courseCmsServer, SotkaServer sotkaServer) {
         this.coursePageServer = coursePageServer;
         this.courseCmsServer = courseCmsServer;
-        this.sotkaServer = sotkaServer;
     }
 
     public CourseImplementationRequestChain<TeacherRequestChain> defaultCourseImplementation() {
@@ -93,35 +91,5 @@ public class TeacherRequestChain {
             locale
         );
         return builder.expectCourseUnitRealisation(responseFile);
-    }
-
-    public SotkaRequestChain<TeacherRequestChain> oodiHierarchy() {
-        return oodiHierarchy(TEACHER_COURSE_REALISATION_ID);
-    }
-
-    public SotkaRequestChain<TeacherRequestChain> oodiHierarchy(String oodiRealisationId) {
-        return oodiHierarchy(oodiRealisationId, "oodi_hierarchy_from_optime.json");
-    }
-
-    public SotkaRequestChain<TeacherRequestChain> oodiHierarchy(String oodiRealisationId, String responseFile) {
-        SotkaRequestChain<TeacherRequestChain> builder = new SotkaRequestChain<>(
-            sotkaServer,
-            this,
-            oodiRealisationId
-        );
-        return builder.expectOodiHieracry(responseFile);
-    }
-
-    public SotkaRequestChain<TeacherRequestChain> oodiHierarchyNotFound() {
-        return oodiHierarchyNotFound(TEACHER_COURSE_REALISATION_ID);
-    }
-
-    public SotkaRequestChain<TeacherRequestChain> oodiHierarchyNotFound(String oodiRealisationId) {
-        SotkaRequestChain<TeacherRequestChain> builder = new SotkaRequestChain<>(
-            sotkaServer,
-            this,
-            oodiRealisationId
-        );
-        return builder.expectOodiHierarchyNotFound();
     }
 }

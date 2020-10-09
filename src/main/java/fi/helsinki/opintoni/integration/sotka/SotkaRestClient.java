@@ -17,12 +17,10 @@
 
 package fi.helsinki.opintoni.integration.sotka;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.web.client.RestTemplate;
@@ -47,33 +45,22 @@ public class SotkaRestClient implements SotkaClient {
 
     @Override
     @Cacheable(value = CacheConstants.SOTKA, cacheManager = "transientCacheManager")
-    public Optional<SotkaHierarchy> getOptimeHierarchy(String optimeId) {
-        return getSotkaData(baseUrl + "/oodi/hierarchy/optime/{realisationId}",
-            new ParameterizedTypeReference<SotkaHierarchy>() {
-            }, optimeId);
-    }
+    public List<SotkaHierarchy> getOptimeHierarchies(List<String> optimeIds) {
+        if (optimeIds.isEmpty()) {
+            return List.of();
+        }
 
-    @Override
-    @Cacheable(value = CacheConstants.SOTKA, cacheManager = "transientCacheManager")
-    public List<SotkaHierarchy> getOptimeHierarchy(List<String> optimeIds) {
-        // TODO: remove throw and uncomment implementation once Sotka side is working
-        throw new NotImplementedException("POST /oodi/hierarchy/optime is not implemented at Sotka side");
-        /*return postSotkaData(baseUrl + "/oodi/hierarchy/optime",
-            new ParameterizedTypeReference<List<SotkaHierarchy>>() {
-            }, optimeIds)
-            .orElse(Collections.emptyList());*/
-    }
-
-    private <T> Optional<T> getSotkaData(String url, ParameterizedTypeReference<T> typeReference, Object... uriVariables) {
         try {
-            return Optional.ofNullable(restTemplate.exchange(url, HttpMethod.GET, null, typeReference, uriVariables).getBody());
-        } catch (Exception e) {
-            log.error("Caught Sotka integration exception", e);
-            throw new SotkaIntegrationException(e.getMessage(), e);
+            return postSotkaData(baseUrl + "/oodi/hierarchy/optime",
+                new ParameterizedTypeReference<List<SotkaHierarchy>>() {
+                }, optimeIds)
+                .orElse(List.of());
+        } catch (SotkaIntegrationException e) {
+            // already logged
+            return List.of();
         }
     }
 
-    @SuppressWarnings("unused")
     private <T> Optional<T> postSotkaData(String url, ParameterizedTypeReference<T> typeReference, Object body) {
         try {
             RequestEntity<Object> request = RequestEntity

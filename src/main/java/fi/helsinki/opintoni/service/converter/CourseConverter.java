@@ -17,99 +17,46 @@
 
 package fi.helsinki.opintoni.service.converter;
 
-import com.google.common.collect.Lists;
 import fi.helsinki.opintoni.dto.CourseDto;
-import fi.helsinki.opintoni.integration.IntegrationUtil;
-import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
-import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-import fi.helsinki.opintoni.integration.sotka.SotkaClient;
-import fi.helsinki.opintoni.integration.sotka.model.SotkaHierarchy;
-import fi.helsinki.opintoni.integration.studyregistry.CourseRealisation;
 import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
-import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
-import fi.helsinki.opintoni.integration.studyregistry.oodi.courseunitrealisation.Position;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.util.CourseMaterialDtoFactory;
 import fi.helsinki.opintoni.util.CoursePageUriBuilder;
-import fi.helsinki.opintoni.util.CoursePageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 public class CourseConverter {
 
-    private final CoursePageClient coursePageClient;
-    private final CourseCmsClient courseCmsClient;
-    private final SotkaClient sotkaClient;
-    private final StudyRegistryService studyRegistryService;
     private final CoursePageUriBuilder coursePageUriBuilder;
     private final EventTypeResolver eventTypeResolver;
     private final LocalizedValueConverter localizedValueConverter;
     private final CourseMaterialDtoFactory courseMaterialDtoFactory;
-    private final EnrollmentNameConverter enrollmentNameConverter;
-    private final CoursePageUtil coursePageUtil;
 
     @Autowired
-    public CourseConverter(CoursePageClient coursePageClient,
-                           CourseCmsClient courseCmsClient,
-                           SotkaClient sotkaClient,
-                           StudyRegistryService studyRegistryService,
-                           CoursePageUriBuilder coursePageUriBuilder,
-                           EventTypeResolver eventTypeResolver,
-                           LocalizedValueConverter localizedValueConverter,
-                           CourseMaterialDtoFactory courseMaterialDtoFactory,
-                           EnrollmentNameConverter enrollmentNameConverter,
-                           CoursePageUtil coursePageUtil) {
-        this.coursePageClient = coursePageClient;
-        this.courseCmsClient = courseCmsClient;
-        this.sotkaClient = sotkaClient;
-        this.studyRegistryService = studyRegistryService;
+    public CourseConverter(CoursePageUriBuilder coursePageUriBuilder, EventTypeResolver eventTypeResolver,
+        LocalizedValueConverter localizedValueConverter, CourseMaterialDtoFactory courseMaterialDtoFactory) {
         this.coursePageUriBuilder = coursePageUriBuilder;
         this.eventTypeResolver = eventTypeResolver;
         this.localizedValueConverter = localizedValueConverter;
         this.courseMaterialDtoFactory = courseMaterialDtoFactory;
-        this.enrollmentNameConverter = enrollmentNameConverter;
-        this.coursePageUtil = coursePageUtil;
     }
 
-    private boolean isPositionStudyGroupSet(String position) {
-        return Position.getByValue(position).equals(Position.STUDY_GROUP_SET);
-    }
-
+    // not used, todo cleanup
     public Optional<CourseDto> toDto(Enrollment enrollment, Locale locale) {
         CourseDto dto = null;
-
-        if (!isPositionStudyGroupSet(enrollment.position)) {
-            dto = new CourseDto(
-                enrollment.learningOpportunityId,
-                enrollment.typeCode,
-                localizedValueConverter.toLocalizedString(enrollment.name, locale),
-                enrollment.startDate,
-                enrollment.endDate,
-                enrollment.realisationId,
-                enrollment.parentId,
-                enrollment.rootId,
-                enrollment.credits,
-                studyRegistryService.getCourseRealisationTeachers(enrollment.realisationId)
-                    .stream().map(t -> t.name).collect(Collectors.toList()),
-                eventTypeResolver.isExam(enrollment.typeCode),
-                enrollment.isCancelled,
-                enrollment.isHidden,
-                null);
-
-            enrichWithCoursePageData(dto, enrollment, locale);
-        }
         return Optional.ofNullable(dto);
     }
 
-    public CourseDto toDto(TeacherCourse teacherCourse, Locale locale) {
+    public CourseDto toDto(TeacherCourse teacherCourse, CoursePageCourseImplementation oldCoursePage, CourseCmsCourseUnitRealisation newCoursePage,
+        Locale locale) {
         CourseDto dto = new CourseDto(
             teacherCourse.learningOpportunityId,
             teacherCourse.realisationTypeCode,
@@ -120,29 +67,21 @@ public class CourseConverter {
             teacherCourse.parentId,
             teacherCourse.rootId,
             null,
-            Lists.newArrayList(),
+            List.of(),
             eventTypeResolver.isExam(teacherCourse.realisationTypeCode),
             teacherCourse.isCancelled,
             teacherCourse.isHidden,
             teacherCourse.teacherRole);
 
-        enrichWithCoursePageData(dto, teacherCourse, locale);
-        return dto;
-    }
-
-    private void enrichWithCoursePageData(CourseDto dto, CourseRealisation courseRealisation, Locale locale) {
-        if (coursePageUtil.useNewCoursePageIntegration(courseRealisation)) {
-            enrichWithNewCoursePageData(dto, courseCmsClient.getCoursePage(dto.realisationId, locale), locale);
-        } else {
-            String oodiId = IntegrationUtil.stripPossibleSisuOodiCurPrefix(dto.realisationId);
-            if (oodiId.startsWith(IntegrationUtil.SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX)) {
-                Optional<SotkaHierarchy> sotkaHierarchy = sotkaClient.getOptimeHierarchy(oodiId);
-                oodiId = sotkaHierarchy.orElseThrow(
-                    () -> new IllegalArgumentException("Oodi id not found for cur: " + dto.realisationId)
-                ).oodiId;
-            }
-            enrichWithOldCoursePageData(dto, coursePageClient.getCoursePage(oodiId, locale));
+        if (oldCoursePage != null) {
+            enrichWithOldCoursePageData(dto, oldCoursePage);
         }
+
+        if (newCoursePage != null) {
+            enrichWithNewCoursePageData(dto, newCoursePage, locale);
+        }
+
+        return dto;
     }
 
     private void enrichWithOldCoursePageData(CourseDto dto, CoursePageCourseImplementation coursePage) {
@@ -158,4 +97,5 @@ public class CourseConverter {
         // Courses using new course page always have published course page, even without cms data.
         dto.isHidden = false;
     }
+
 }

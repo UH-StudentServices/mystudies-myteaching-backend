@@ -22,25 +22,10 @@ import org.junit.Test;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.studentSecurityContext;
-import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class EnrollmentResourcePermissionsTest extends SpringTest {
-
-    @Test
-    public void thatTeacherCannotGetStudentEvents() throws Exception {
-        mockMvc.perform(get("/api/private/v1/students/enrollments/events")
-            .with(securityContext(teacherSecurityContext())))
-            .andExpect(status().isForbidden());
-    }
-
-    @Test
-    public void thatTeacherCannotGetStudentCourses() throws Exception {
-        mockMvc.perform(get("/api/private/v1/students/enrollments/courses")
-            .with(securityContext(teacherSecurityContext())))
-            .andExpect(status().isForbidden());
-    }
 
     @Test
     public void thatStudentCannotGetTeacherEvents() throws Exception {

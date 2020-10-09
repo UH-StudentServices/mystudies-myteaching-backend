@@ -18,18 +18,10 @@
 package fi.helsinki.opintoni.service.converter;
 
 import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
@@ -44,18 +36,14 @@ import fi.helsinki.opintoni.integration.coursecms.CourseCmsFile;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.sotka.SotkaClient;
-import fi.helsinki.opintoni.integration.sotka.model.SotkaHierarchy;
-import fi.helsinki.opintoni.integration.studyregistry.Organisation;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
-import fi.helsinki.opintoni.util.CoursePageUtil;
 
 public class CourseConverterTest extends SpringTest {
 
     private static final String REALISATION_ID = "1";
     private static final String CODE = "10440";
     private static final String IMAGE_URI = "coursePageImageUrl";
-    private static final String SISU_REALISATION_FROM_OPTIME_ID = "hy-opt-cur-2021-b33fa3e8-c4a5-4b71-894d-7f4a3639e911";
-    private static final String OODI_ID = "1234567";
+    private static final Locale FI = new Locale("fi");
 
     @Autowired
     CourseConverter courseConverter;
@@ -86,47 +74,14 @@ public class CourseConverterTest extends SpringTest {
     }
 
     @Test
-    public void thatTeacherCoursesAreEnrichedWithCourseCmsDataForCoursesStartingAfterCutOffDate() throws Exception {
-        when(mockCourseCmsClient.getCoursePage(anyString(), any(Locale.class))).thenReturn(courseCMSPage());
-        CourseDto dto = courseConverter.toDto(course(CODE, LocalDate.of(2020, 10, 26).atStartOfDay()), new Locale("fi"));
-        assertCMSCalled();
+    public void thatTeacherCoursesAreEnrichedWithCourseCmsData() throws Exception {
+        CourseDto dto = courseConverter.toDto(course(CODE, LocalDate.of(2020, 10, 26).atStartOfDay()), null, courseCMSPage(), FI);
         assertEnrichments(dto);
     }
 
     @Test
-    public void thatTeacherCoursesAreEnrichedWithCoursePageDataForCoursesStartingBeforeCutOffDate() throws Exception {
-        when(mockCoursePageClient.getCoursePage(anyString(), any(Locale.class))).thenReturn(coursePage());
-        CourseDto dto = courseConverter.toDto(course(CODE, LocalDate.of(2015, 10, 26).atStartOfDay()), new Locale("fi"));
-        assertCoursePageCalled();
-        assertEnrichments(dto);
-    }
-
-    @Test
-    public void thatTeacherCoursesForOpenUniversityStartingAfterCutOffDateAreEnrichedWithOldCoursePageData() throws Exception {
-        when(mockCoursePageClient.getCoursePage(anyString(), any(Locale.class))).thenReturn(coursePage());
-        TeacherCourse course = course(CODE, LocalDate.of(2020, 10, 26).atStartOfDay());
-        course.organisations = List.of(new Organisation(CoursePageUtil.OPEN_UNIVERSITY_ORG_CODE, List.of()));
-        CourseDto dto = courseConverter.toDto(course, new Locale("fi"));
-        assertEnrichments(dto);
-        assertCoursePageCalled();
-    }
-
-    @Test
-    public void thatTeacherCourseCourseCmsDataIsFetchedWithOodiIdIfSotkaDataIsNotFoundForRealisation() throws Exception {
-        TeacherCourse course = course(CODE, LocalDate.of(2019, 10, 26).atStartOfDay());
-        course.realisationId = SISU_REALISATION_FROM_OPTIME_ID;
-
-        SotkaHierarchy sotkaHierarchy = new SotkaHierarchy();
-        sotkaHierarchy.oodiId = OODI_ID;
-
-        when(mockSotkaClient.getOptimeHierarchy(SISU_REALISATION_FROM_OPTIME_ID)).thenReturn(Optional.of(sotkaHierarchy));
-        when(mockCoursePageClient.getCoursePage(eq(OODI_ID), any(Locale.class))).thenReturn(coursePage());
-
-        CourseDto dto = courseConverter.toDto(course, new Locale("fi"));
-
-        verify(mockCoursePageClient, times(1)).getCoursePage(OODI_ID, new Locale("fi"));
-        verify(mockSotkaClient, times(1)).getOptimeHierarchy(SISU_REALISATION_FROM_OPTIME_ID);
-
+    public void thatTeacherCoursesAreEnrichedWithCoursePageData() throws Exception {
+        CourseDto dto = courseConverter.toDto(course(CODE, LocalDate.of(2015, 10, 26).atStartOfDay()), coursePage(), null, FI);
         assertEnrichments(dto);
     }
 
@@ -137,16 +92,6 @@ public class CourseConverterTest extends SpringTest {
         file.uri.url = IMAGE_URI;
         coursePage.courseImage = file;
         return coursePage;
-    }
-
-    private void assertCMSCalled() {
-        verify(mockCourseCmsClient, times(1)).getCoursePage(REALISATION_ID, new Locale("fi"));
-        verify(mockCoursePageClient, times(0)).getCoursePage(REALISATION_ID, new Locale("fi"));
-    }
-
-    private void assertCoursePageCalled() {
-        verify(mockCourseCmsClient, times(0)).getCoursePage(REALISATION_ID, new Locale("fi"));
-        verify(mockCoursePageClient, times(1)).getCoursePage(REALISATION_ID, new Locale("fi"));
     }
 
     private void assertEnrichments(CourseDto dto) {

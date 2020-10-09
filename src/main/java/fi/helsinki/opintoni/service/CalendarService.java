@@ -81,7 +81,7 @@ public class CalendarService {
         List<EventDto> events = person.stream().map(p -> {
             List<EventDto> studentEvents = Optional.ofNullable(p.studentNumber)
                 .map(s -> eventService.getStudentEvents(s, locale))
-                .orElse(Lists.newArrayList());
+                .orElse(List.of());
             List<EventDto> teacherEvents = Optional.ofNullable(p.teacherNumber)
                 .map(s -> eventService.getTeacherEvents(IntegrationUtil.getSisuPrivatePersonId(calendarFeed.user.personId), locale))
                 .orElse(Lists.newArrayList());
