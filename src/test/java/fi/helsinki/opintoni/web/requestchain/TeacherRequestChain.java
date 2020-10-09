@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.web.requestchain;
 import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.server.CourseCmsServer;
 import fi.helsinki.opintoni.server.CoursePageServer;
-import fi.helsinki.opintoni.server.SotkaServer;
 
 import java.util.Locale;
 
@@ -36,7 +35,7 @@ public class TeacherRequestChain {
     private final CoursePageServer coursePageServer;
     private final CourseCmsServer courseCmsServer;
 
-    public TeacherRequestChain(CoursePageServer coursePageServer, CourseCmsServer courseCmsServer, SotkaServer sotkaServer) {
+    public TeacherRequestChain(CoursePageServer coursePageServer, CourseCmsServer courseCmsServer) {
         this.coursePageServer = coursePageServer;
         this.courseCmsServer = courseCmsServer;
     }
