@@ -18,41 +18,118 @@
 package fi.helsinki.opintoni.integration.studyregistry.sisu.mock;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuClient;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AttainmentTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Authenticated_course_unit_realisation_searchQueryResponse;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitRealisationOrganisationTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitRealisationTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.DatePeriodTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.EventOverrideTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.GradeScaleTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.GradeTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.LocalizedStringTO;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.OrganisationTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personQueryResponse;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.RangeTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyEventRealisationTO;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyEventTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudyGroupSetTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.StudySubGroupTO;
 
 public class SisuMockClient implements SisuClient {
 
+    private static final String HY_HLO_ID = "hy-hlo-1000";
+    private static final String CUR_ID_WITH_CMS_DATA = "hy-CUR-234567891"; // @see CourseCmsMockClient
+    private static final String CUR_ID_PAST = "hy-CUR-234567892";
+    private static final String CUR_ID_FUTURE = "hy-CUR-234567893";
+    private static final String CUR_PAST_EXAM = "hy-CUR-234567894";
+    private static final String CUR_FUTURE_EXAM = "hy-CUR-234567895";
+
+    Map<String, String> curNames = Map.of(
+        CUR_ID_PAST, "Frumulointi I",
+        CUR_ID_WITH_CMS_DATA, "Formulointi II",
+        CUR_ID_FUTURE, "Formulointi III",
+        CUR_PAST_EXAM, "Mennyt tentti",
+        CUR_FUTURE_EXAM, "Tuleva tentti"
+    );
+
     @Override
     public Authenticated_course_unit_realisation_searchQueryResponse curSearch(String personId, LocalDate since) {
-        CourseUnitRealisationTO cur = new CourseUnitRealisationTO();
-        cur.setCourseUnits(List.of(getCourseUnit("abc")));
-        cur.setId("hy-cur-1");
-        cur.setActivityPeriod(getActivityPeriod());
-        cur.setOrganisations(getCourseUnitRealisationOrganisations("org-1"));
-        cur.setStudyGroupSets(getStudyGroupSets(personId));
-        Authenticated_course_unit_realisation_searchQueryResponse r = new Authenticated_course_unit_realisation_searchQueryResponse();
-        r.setData(Map.of("authenticated_course_unit_realisation_search", List.of(cur)));
-        return r;
+        LocalDate now = LocalDate.now();
+        Authenticated_course_unit_realisation_searchQueryResponse response = new Authenticated_course_unit_realisation_searchQueryResponse();
+        response.setData(Map.of("authenticated_course_unit_realisation_search", List.of(
+            cur(now.minusMonths(4), CUR_ID_PAST, 10),
+            cur(now, CUR_ID_WITH_CMS_DATA, 10),
+            cur(now.plusYears(1), CUR_ID_FUTURE, 10),
+            cur(now.minusWeeks(1), CUR_PAST_EXAM, 1),
+            cur(now.plusWeeks(1), CUR_FUTURE_EXAM, 1)
+            )));
+        return response;
+    }
+
+    private CourseUnitRealisationTO cur(LocalDate start, String curId, int eventCount) {
+        boolean isExam = eventCount == 1;
+        return CourseUnitRealisationTO.builder()
+            .setId(curId)
+            .setActivityPeriod(getPeriod(start.toString(),
+                isExam
+                    ? start.plusDays(1).toString()
+                    : start.plusMonths(3).toString()))
+            .setCourseUnits(List.of(getCourseUnit("ABC123")))
+            .setStudyGroupSets(List.of(getStudyGroupSet(start, eventCount)))
+            .setOrganisations(List.of())
+            .setName(name(curNames.get(curId)))
+            .setCourseUnitRealisationTypeUrn(
+                isExam
+                    ? "urn:code:course-unit-realisation-type:exam-exam"
+                    : "urn:code:course-unit-realisation-type:teaching-participation-lectures")
+            .build();
+    }
+
+    private LocalizedStringTO name(String prefix) {
+        return LocalizedStringTO.builder().setFi(prefix + " fi").setEn(prefix + " en").setSv(prefix + " sv").build();
+    }
+
+    private DatePeriodTO getPeriod(String startDate, String endDate) {
+        return DatePeriodTO.builder()
+            .setStartDate(startDate)
+            .setEndDate(endDate)
+            .build();
+    }
+
+    private StudySubGroupTO getStudySubGroup(LocalDate start, String hloId, int eventCount) {
+        return StudySubGroupTO.builder().setName(name("SSG nimi Sisusta"))
+            .setStudyEvents(List.of(studyEvent(start, eventCount)))
+            .setTeacherIds(List.of(hloId))
+            .setCancelled(false)
+            .build();
+    }
+
+    private StudyEventTO studyEvent(LocalDate start, int eventCount) {
+        return StudyEventTO.builder()
+            .setName(name("Study event nimi Sisusta"))
+            .setOverrides(List.of(EventOverrideTO.builder()
+                .setEventDate(start.toString())
+                .setNotice(LocalizedStringTO.builder()
+                    .setFi("room notes sisusta\u200bstaff notes sisusta\u200bother notes sisusta").build()).build()))
+                    .setLocations(List.of())
+            .setEvents(events(start, eventCount))
+            .build();
+    }
+
+    private List<StudyEventRealisationTO> events(LocalDate startDate, int eventCount) {
+        return IntStream.range(0, eventCount).mapToObj(
+            i -> StudyEventRealisationTO.builder()
+                .setExcluded(false)
+                .setStart(startDate.plusWeeks(i).atTime(8, 45).format(DateTimeFormatter.ISO_DATE_TIME))
+                .setEnd(startDate.plusWeeks(i).atTime(9, 45).format(DateTimeFormatter.ISO_DATE_TIME))
+                .setCancelled(false)
+                .build()).collect(Collectors.toList());
     }
 
     @Override
@@ -87,38 +164,11 @@ public class SisuMockClient implements SisuClient {
         return courseUnit;
     }
 
-    private DatePeriodTO getActivityPeriod() {
-        LocalDate currentDate = LocalDate.now();
-        LocalDate startDate = LocalDate.of(currentDate.getYear(), currentDate.getMonthValue() > 7 ? 8 : 1, 1);
-        LocalDate endDate = LocalDate.of(currentDate.getYear(), currentDate.getMonthValue() > 7 ? 12 : 7, 31);
-        return new DatePeriodTO(endDate.toString(), startDate.toString());
-    }
-
-    private List<CourseUnitRealisationOrganisationTO> getCourseUnitRealisationOrganisations(String... ids) {
-        return Arrays.asList(ids).stream().map(id -> {
-            return new CourseUnitRealisationOrganisationTO(
-                id,
-                new OrganisationTO(id, id + "-code", null,
-                        new LocalizedStringTO("TestiOrg" + id, "TestOrg" + id, "TestOrg1" + id, null, null, null),
-                        new LocalizedStringTO("Testi Organisaatio", "Test Organisation", "Testi Organisaatio", null,
-                                null, null),
-                        List.of(), List.of(), "parent-org-" + id, null, "hy-test-org-" + id, null, null, null, "ACTIVE"),
-                "urn:", 100D, new DatePeriodTO("2050-01-30", "2010-08-01")
-            );
-        }).collect(Collectors.toList());
-    }
-
-    private List<StudyGroupSetTO> getStudyGroupSets(String personId) {
-        return List.of(
-            new StudyGroupSetTO(
-                "sgs-1",
-                new LocalizedStringTO("Luennot", "Lectures", "Luennot (sv)", null, null, null),
-                List.of(new StudySubGroupTO(false, "ACTIVE", "ssg-1",
-                    new LocalizedStringTO("Ryhmä 1", "Group 1", "Grupp 1", null, null, null), 20,
-                    List.of("se-1", "se-2", "se-3"), List.of(), List.of("hy-teacher-person-1", personId), List.of())),
-                new RangeTO(0, 30)
-            )
-        );
+    private StudyGroupSetTO getStudyGroupSet(LocalDate start, int eventCount) {
+        return StudyGroupSetTO.builder().setName(name("Luennot"))
+                .setStudySubGroups(List.of(
+                    getStudySubGroup(start, HY_HLO_ID, eventCount)
+                )).build();
     }
 
     private GradeScaleTO getGradeScale() {

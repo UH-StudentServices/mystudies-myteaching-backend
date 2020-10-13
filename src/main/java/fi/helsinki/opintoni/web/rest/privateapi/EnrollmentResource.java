@@ -21,12 +21,10 @@ import com.codahale.metrics.annotation.Timed;
 import fi.helsinki.opintoni.dto.CourseDto;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.security.AppUser;
-import fi.helsinki.opintoni.security.authorization.StudentRoleRequired;
 import fi.helsinki.opintoni.security.authorization.TeacherRoleRequired;
 import fi.helsinki.opintoni.service.CourseService;
 import fi.helsinki.opintoni.service.EventService;
 import fi.helsinki.opintoni.web.WebConstants;
-import fi.helsinki.opintoni.web.arguments.StudentNumber;
 import fi.helsinki.opintoni.web.rest.AbstractResource;
 import fi.helsinki.opintoni.web.rest.RestConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,21 +51,6 @@ public class EnrollmentResource extends AbstractResource {
                               CourseService courseService) {
         this.eventService = eventService;
         this.courseService = courseService;
-    }
-
-    // XXX not used anymore?
-    @StudentRoleRequired
-    @RequestMapping(value = "/students/enrollments/events", method = RequestMethod.GET)
-    @Timed
-    public ResponseEntity<List<EventDto>> getStudentEvents(@StudentNumber String studentNumber, Locale locale) {
-        return response(eventService.getStudentEvents(studentNumber, locale));
-    }
-
-    @StudentRoleRequired
-    @RequestMapping(value = "/students/enrollments/courses", method = RequestMethod.GET)
-    @Timed
-    public ResponseEntity<List<CourseDto>> getStudentCourses(@StudentNumber String studentNumber, Locale locale) {
-        return response(courseService.getStudentCourses(studentNumber, locale));
     }
 
     @TeacherRoleRequired

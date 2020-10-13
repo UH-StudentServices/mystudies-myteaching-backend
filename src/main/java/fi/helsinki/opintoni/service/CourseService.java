@@ -18,9 +18,12 @@
 package fi.helsinki.opintoni.service;
 
 import fi.helsinki.opintoni.dto.CourseDto;
+import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
+import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
 import fi.helsinki.opintoni.service.converter.CourseConverter;
+import fi.helsinki.opintoni.util.CoursePageUtil;
 import fi.helsinki.opintoni.util.FunctionHelper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +31,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -45,63 +45,42 @@ public class CourseService {
 
     private final StudyRegistryService studyRegistryService;
     private final CourseConverter courseConverter;
+    private final CoursePageUtil coursePageUtil;
 
     @Autowired
     public CourseService(StudyRegistryService studyRegistryService,
-                         CourseConverter courseConverter) {
+                         CourseConverter courseConverter, CoursePageUtil coursePageUtil) {
         this.studyRegistryService = studyRegistryService;
         this.courseConverter = courseConverter;
+        this.coursePageUtil = coursePageUtil;
     }
 
     public List<CourseDto> getTeacherCourses(String teacherNumber, Locale locale) {
         List<TeacherCourse> teacherCourses = studyRegistryService
             .getTeacherCourses(teacherNumber, LocalDate.now(ZoneId.of("Europe/Helsinki")));
 
-        Map<String, TeacherCourse> coursesByRealisationIds = teacherCourses.stream()
-              .collect(Collectors.toMap(c -> c.realisationId, Function.identity()));
+        Map<Boolean, List<TeacherCourse>> partitionedCourses = teacherCourses.stream()
+            .collect(Collectors.groupingBy(FunctionHelper.logAndIgnoreExceptions(coursePageUtil::useNewCoursePageIntegration)));
+
+        List<String> useOldCoursePages = Optional.ofNullable(partitionedCourses.get(false)).stream()
+            .flatMap(List::stream)
+            .map(cr -> cr.realisationId)
+            .collect(Collectors.toList());
+
+        Map<String, CoursePageCourseImplementation> coursePages = coursePageUtil.getOldCoursePages(useOldCoursePages, locale);
+
+        List<String> useNewCoursePages = Optional.ofNullable(partitionedCourses.get(true)).stream()
+            .flatMap(List::stream)
+            .map(cr -> cr.realisationId)
+            .collect(Collectors.toList());
+
+        Map<String, CourseCmsCourseUnitRealisation> newCoursePages = coursePageUtil.getNewCoursePages(useNewCoursePages, locale);
 
         return teacherCourses
             .stream()
-            .map(FunctionHelper.logAndIgnoreExceptions(c -> courseConverter.toDto(c, locale)))
+            .map(FunctionHelper.logAndIgnoreExceptions(
+                c -> courseConverter.toDto(c, coursePages.get(c.realisationId), newCoursePages.get(c.realisationId), locale)))
             .filter(Objects::nonNull)
             .collect(toList());
     }
-
-    public List<CourseDto> getStudentCourses(String studentNumber, Locale locale) {
-        return studyRegistryService.getEnrollments(studentNumber).stream()
-            .map(c -> courseConverter.toDto(c, locale))
-            .filter(Optional::isPresent)
-            .map(Optional::get)
-            .collect(toList());
-    }
-
-    public List<String> getTeacherCourseIds(String teacherNumber) {
-        return studyRegistryService.getTeacherCourses(teacherNumber, LocalDate.now()).stream()
-            .filter(e -> !e.isCancelled)
-            .map(e -> String.valueOf(e.realisationId))
-            .collect(toList());
-    }
-
-    public List<String> getStudentCourseIds(String studentNumber) {
-        return studyRegistryService.getEnrollments(studentNumber)
-            .stream()
-            .filter(e -> !e.isCancelled)
-            .map(e -> String.valueOf(e.realisationId))
-            .collect(toList());
-    }
-
-    public Set<CourseDto> getCourses(Optional<String> studentNumber, Optional<String> teacherNumber, Locale locale) {
-        Set<CourseDto> courseDtos = new HashSet<>();
-
-        teacherNumber.ifPresent(number -> courseDtos.addAll(
-                getTeacherCourses(number, locale))
-        );
-
-        studentNumber.ifPresent(number -> courseDtos.addAll(
-                getStudentCourses(number, locale))
-        );
-
-        return courseDtos;
-    }
-
 }

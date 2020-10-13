@@ -48,8 +48,7 @@ public class SotkaMockClient implements SotkaClient {
         this.objectMapper = objectMapper;
     }
 
-    @Override
-    public Optional<SotkaHierarchy> getOptimeHierarchy(String optimeId) {
+    private Optional<SotkaHierarchy> getOptimeHierarchy(String optimeId) {
         Resource hierarchy;
         if (TEST_REALISATION_NOT_FOUND_SISU_CUR_ID.equals(optimeId)) {
             return Optional.empty();
@@ -66,7 +65,7 @@ public class SotkaMockClient implements SotkaClient {
     }
 
     @Override
-    public List<SotkaHierarchy> getOptimeHierarchy(List<String> optimeIds) {
+    public List<SotkaHierarchy> getOptimeHierarchies(List<String> optimeIds) {
         if (optimeIds.isEmpty()) {
             return Collections.emptyList();
         }

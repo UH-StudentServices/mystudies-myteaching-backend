@@ -80,11 +80,6 @@ public class StudentRequestChain {
         return this;
     }
 
-    public StudentRequestChain defaultCourseUnitRealisationTeachers() {
-        oodiServer.expectCourseUnitRealisationTeachersRequest(STUDENT_COURSE_REALISATION_ID);
-        return this;
-    }
-
     public StudentRequestChain attainments() {
         oodiServer.expectStudentStudyAttainmentsRequest(studentNumber);
         return this;
