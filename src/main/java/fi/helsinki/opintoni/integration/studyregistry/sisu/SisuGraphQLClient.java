@@ -31,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 import fi.helsinki.opintoni.cache.CacheConstants;
+import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AcceptorPersonResponseProjection;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AddressResponseProjection;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AttainmentResponseProjection;
@@ -43,6 +44,8 @@ import fi.helsinki.opintoni.integration.studyregistry.sisu.model.CourseUnitRespo
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.DatePeriodInputTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.DatePeriodResponseProjection;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.EventOverrideResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.GradeResponseProjection;
+import fi.helsinki.opintoni.integration.studyregistry.sisu.model.GradeScaleResponseProjection;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.LocalizedStringResponseProjection;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.LocationResponseProjection;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.OrganisationResponseProjection;
@@ -153,18 +156,42 @@ public class SisuGraphQLClient implements SisuClient {
         return execute(gqlRequest, Private_personQueryResponse.class);
     }
 
+    @Cacheable(value = CacheConstants.GRAPHQL_STUDY_ATTAINMENTS, cacheManager = "transientCacheManager", sync = true)
     @Override
     public Private_personQueryResponse getStudyAttainments(String personId) {
+        if (!personId.startsWith(IntegrationUtil.SISU_PRIVATE_PERSON_ID_PREFIX)) {
+            throw new IllegalArgumentException(String.format("Illegal sisu personId : %s", personId));
+        }
         GraphQLOperationRequest qr = new Private_personQueryRequest.Builder().setId(personId).build();
         PrivatePersonResponseProjection projection =  new PrivatePersonResponseProjection()
             .studentNumber()
             .employeeNumber()
             .attainments(new AttainmentResponseProjection()
+                .id()
+                .attainmentDate()
+                .credits()
+                .courseUnit(new CourseUnitResponseProjection()
+                    .name(ALL_LANGUAGES))
+                .courseUnitId()
+                .gradeId()
+                .gradeScale(new GradeScaleResponseProjection()
+                    .grades(new GradeResponseProjection()
+                        .localId()
+                        .abbreviation(ALL_LANGUAGES))
+                )
+                .grade(new GradeResponseProjection()
+                    .localId()
+                    .abbreviation(ALL_LANGUAGES))
                 .acceptorPersons(new AcceptorPersonResponseProjection()
                 .person(new PublicPersonResponseProjection()
                     .firstName().lastName())));
+
         GraphQLRequest gqlRequest = new GraphQLRequest(qr, projection);
-        return execute(gqlRequest, Private_personQueryResponse.class);
+        Private_personQueryResponse response = execute(gqlRequest, Private_personQueryResponse.class);
+        if (response != null && response.hasErrors()) {
+            throw new SisuIntegrationException(response.getErrors().toString());
+        }
+        return response;
     }
 
 }

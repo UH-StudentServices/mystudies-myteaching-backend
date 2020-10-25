@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
-import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.COURSE_REALISATION_TEACHERS;
 import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.STUDENT_ENROLLMENTS;
 import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.STUDENT_EVENTS;
 import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.STUDY_ATTAINMENTS;
@@ -85,11 +84,6 @@ public class StudyRegistryService {
     @Cacheable(value = CacheConstants.STUDY_RIGHTS, cacheManager = "transientCacheManager")
     public List<StudyRight> getStudentStudyRights(String studentNumber) {
         return getStudyRegistry(STUDY_RIGHTS).getStudentStudyRights(studentNumber);
-    }
-
-    @Cacheable(value = CacheConstants.COURSE_UNIT_REALISATION_TEACHERS, cacheManager = "transientCacheManager")
-    public List<Teacher> getCourseRealisationTeachers(String realisationId) {
-        return getStudyRegistry(COURSE_REALISATION_TEACHERS).getCourseRealisationTeachers(realisationId);
     }
 
     public Person getPerson(String personId) {

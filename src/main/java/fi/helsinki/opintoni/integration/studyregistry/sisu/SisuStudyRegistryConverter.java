@@ -103,7 +103,9 @@ public class SisuStudyRegistryConverter {
         studyAttainment.credits = attainment.getCredits().intValue();
         studyAttainment.grade = sisuGradeScaleToLocalizedTextList(attainment.getGradeScale(), attainment.getGradeId());
         studyAttainment.studyAttainmentId = attainment.getId();
-        studyAttainment.learningOpportunityName = localizedStringToToLocalizedText(attainment.getCourseUnit().getName());
+        if (attainment.getCourseUnit() != null) {
+            studyAttainment.learningOpportunityName = localizedStringToToLocalizedText(attainment.getCourseUnit().getName());
+        }
         studyAttainment.teachers = Optional.ofNullable(attainment.getAcceptorPersons()).stream()
             .flatMap(List::stream)
             .map(this::sisuAcceptorPersonToTeacher)
@@ -132,8 +134,8 @@ public class SisuStudyRegistryConverter {
     private Teacher sisuAcceptorPersonToTeacher(AcceptorPersonTO acceptorPerson) {
         Teacher teacher = new Teacher();
         PublicPersonTO person = acceptorPerson.getPerson();
-        String firstName = person.getFirstName() != null ? person.getFirstName() : "";
-        String lastName = person.getLastName() != null ? person.getLastName() : "";
+        String firstName = (person != null && person.getFirstName() != null) ? person.getFirstName() : "";
+        String lastName = (person != null && person.getLastName() != null) ? person.getLastName() : "";
         teacher.name = String.format("%s %s", firstName, lastName);
         return teacher;
     }

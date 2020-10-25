@@ -20,6 +20,7 @@ package fi.helsinki.opintoni.integration.studyregistry.sisu;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,6 @@ import fi.helsinki.opintoni.integration.studyregistry.StudyRegistry;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRight;
 import fi.helsinki.opintoni.integration.studyregistry.Teacher;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
-import fi.helsinki.opintoni.integration.studyregistry.sisu.model.PrivatePersonTO;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.Private_personQueryResponse;
 
 @Component
@@ -69,17 +69,16 @@ public class SisuStudyRegistry implements StudyRegistry {
 
     @Override
     public List<StudyAttainment> getStudyAttainments(String personId) {
-        Private_personQueryResponse res = sisuClient.getStudyAttainments(personId);
-        return res.getData().values().stream().findFirst().stream()
-            .map(PrivatePersonTO::getAttainments)
-            .flatMap(List::stream)
+        Private_personQueryResponse res = sisuClient.getStudyAttainments(IntegrationUtil.getSisuPrivatePersonId(personId));
+        return res.private_person().getAttainments().stream()
+            .filter(a -> Objects.nonNull(a.getCourseUnit()))
             .map(sisuStudyRegistryConverter::sisuAttainmentToStudyAttainment)
             .collect(Collectors.toList());
     }
 
     @Override
     public List<StudyAttainment> getStudyAttainments(String personId, String studentNumber) {
-        return getStudyAttainments(personId);
+        return getStudyAttainments(IntegrationUtil.getSisuPrivatePersonId(personId));
     }
 
     @Override

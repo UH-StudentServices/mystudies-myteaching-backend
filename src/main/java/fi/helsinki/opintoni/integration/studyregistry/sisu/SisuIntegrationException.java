@@ -15,11 +15,15 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.studyregistry;
+package fi.helsinki.opintoni.integration.studyregistry.sisu;
 
-public enum StudyRegistryDataSet {
-    STUDENT_ENROLLMENTS,
-    STUDENT_EVENTS,
-    STUDY_ATTAINMENTS,
-    STUDY_RIGHTS
+public class SisuIntegrationException extends RuntimeException {
+
+    public SisuIntegrationException(String message) {
+        super(message);
+    }
+
+    public SisuIntegrationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
