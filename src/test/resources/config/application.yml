@@ -298,5 +298,5 @@ obar:
 
 sisu:
     baseUrl: "http://localhost"
-    apiPath: "/graphql"
     client.implementation: graphQL
+    apiKey: test_api_key

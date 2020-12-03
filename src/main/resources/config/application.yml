@@ -490,6 +490,6 @@ studyregistry:
         - STUDY_ATTAINMENTS
 
 sisu:
-    baseUrl: https://esbmt2.it.helsinki.fi:443/secure/doo-sisu
+    baseUrl: https://mock-sisu
     client.implementation: mock
-    apiPath: /graphql
+    apiKey: ei_ole

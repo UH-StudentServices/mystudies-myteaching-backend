@@ -27,7 +27,7 @@ public class SisuGraphQLClientTest {
     @Test
     public void testDatePeriod() {
         LocalDate start = LocalDate.of(2020, 9, 10);
-        SisuGraphQLClient sisu = new SisuGraphQLClient(null, null);
+        SisuGraphQLClient sisu = new SisuGraphQLClient(null, null, null);
         DatePeriodInputTO datePeriod = sisu.getDatePeriod(start);
         System.out.println(datePeriod);
         assertEquals("2020-05-01", datePeriod.getStartDate());

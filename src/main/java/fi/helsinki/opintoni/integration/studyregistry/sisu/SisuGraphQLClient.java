@@ -63,15 +63,18 @@ public class SisuGraphQLClient implements SisuClient {
 
     private final RestTemplate restTemplate;
     private final String url;
+    private final String apiKey;
 
-    public SisuGraphQLClient(String url, RestTemplate restTemplate) {
+    public SisuGraphQLClient(String baseUrl, String apiKey, RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.url = url;
+        this.url = baseUrl + "/graphql";
+        this.apiKey = apiKey;
     }
 
     private <T> T execute(GraphQLRequest request, Class<T> type) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("X-Api-Key", apiKey);
 
         HttpEntity<String> httpEntity = new HttpEntity<>(request.toHttpJsonBody(), headers);
         return restTemplate.exchange(url, HttpMethod.POST, httpEntity, type).getBody();

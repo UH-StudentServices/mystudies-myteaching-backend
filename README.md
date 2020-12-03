@@ -1,5 +1,6 @@
-# MyStudies/MyTeaching Backend
+# MyStudies/MyTeaching/Profile Backend
 
+My studies is no longer in production use.
 
 ## Requirements
 
