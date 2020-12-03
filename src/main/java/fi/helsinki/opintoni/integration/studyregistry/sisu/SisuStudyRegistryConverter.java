@@ -99,7 +99,7 @@ public class SisuStudyRegistryConverter {
     public StudyAttainment sisuAttainmentToStudyAttainment(AttainmentTO attainment) {
         StudyAttainment studyAttainment = new StudyAttainment();
         studyAttainment.attainmentDate = LocalDate
-                .parse(attainment.getAttainmentDate(), DateTimeFormatter.ofPattern(DATE_PATTERN)).atStartOfDay();
+            .parse(attainment.getAttainmentDate(), DateTimeFormatter.ofPattern(DATE_PATTERN)).atStartOfDay();
         studyAttainment.credits = attainment.getCredits().intValue();
         studyAttainment.grade = sisuGradeScaleToLocalizedTextList(attainment.getGradeScale(), attainment.getGradeId());
         studyAttainment.studyAttainmentId = attainment.getId();
@@ -141,7 +141,7 @@ public class SisuStudyRegistryConverter {
     }
 
     public List<TeacherCourse> sisuCURSearchResultToTeacherCourseList(
-            Authenticated_course_unit_realisation_searchQueryResponse curResult) {
+        Authenticated_course_unit_realisation_searchQueryResponse curResult) {
         if (curResult != null && curResult.authenticated_course_unit_realisation_search() != null) {
             return curResult.authenticated_course_unit_realisation_search().stream()
                 .map(FunctionHelper.logAndIgnoreExceptions(this::sisuCurToTeacherCourse))
@@ -165,12 +165,14 @@ public class SisuStudyRegistryConverter {
             tc.realisationName = localizedStringToToLocalizedText(cur.getName());
         }
         tc.learningOpportunityId = cur.getCourseUnits().get(0).getCode();
-        tc.organisations = cur.getOrganisations().stream().map(sisuorg -> {
-            Organisation org = new Organisation();
-            org.code = sisuorg.getOrganisation().getCode();
-            org.name = localizedStringToToLocalizedText(sisuorg.getOrganisation().getName());
-            return org;
-        }).collect(Collectors.toList());
+        tc.organisations = cur.getOrganisations().stream()
+            .filter(curOrg -> curOrg.getOrganisation() != null)
+            .map(curOrg -> {
+                Organisation org = new Organisation();
+                org.code = curOrg.getOrganisation().getCode();
+                org.name = localizedStringToToLocalizedText(curOrg.getOrganisation().getName());
+                return org;
+            }).collect(Collectors.toList());
         tc.realisationTypeCode = SISU_CUR_TYPE_TO_TYPE_CODE.getOrDefault(cur.getCourseUnitRealisationTypeUrn(), DEFAULT_CUR_TYPE_CODE);
         return tc;
     }
