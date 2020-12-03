@@ -74,8 +74,8 @@ public class StudyRegistryConfiguration {
     @Value("${sisu.baseUrl}")
     private String sisuBaseUrl;
 
-    @Value("${sisu.apiPath}")
-    private String sisuApiPath;
+    @Value("${sisu.apiKey}")
+    private String sisuApiKey;
 
     @Autowired
     public StudyRegistryConfiguration(AppConfiguration appConfiguration, Environment env, ObjectMapper objectMapper) {
@@ -145,7 +145,7 @@ public class StudyRegistryConfiguration {
             new LoggingInterceptor()
         ));
 
-        return new SisuGraphQLClient(sisuBaseUrl + sisuApiPath, restTemplate);
+        return new SisuGraphQLClient(sisuBaseUrl, sisuApiKey, restTemplate);
     }
 
     @Bean
