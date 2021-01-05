@@ -20,8 +20,12 @@ package fi.helsinki.opintoni.web.requestchain;
 import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.server.CourseCmsServer;
 import fi.helsinki.opintoni.server.CoursePageServer;
+import fi.helsinki.opintoni.server.StudiesServer;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_USER_LOCALE;
 import static fi.helsinki.opintoni.web.TestConstants.EXAM_TEACHER_COURSE_REALISATION_ID;
@@ -34,10 +38,12 @@ public class TeacherRequestChain {
 
     private final CoursePageServer coursePageServer;
     private final CourseCmsServer courseCmsServer;
+    private final StudiesServer studiesServer;
 
-    public TeacherRequestChain(CoursePageServer coursePageServer, CourseCmsServer courseCmsServer) {
+    public TeacherRequestChain(CoursePageServer coursePageServer, CourseCmsServer courseCmsServer, StudiesServer studiesServer) {
         this.coursePageServer = coursePageServer;
         this.courseCmsServer = courseCmsServer;
+        this.studiesServer = studiesServer;
     }
 
     public CourseImplementationRequestChain<TeacherRequestChain> defaultCourseImplementation() {
@@ -90,5 +96,25 @@ public class TeacherRequestChain {
             locale
         );
         return builder.expectCourseUnitRealisation(responseFile);
+    }
+
+    public StudiesRequestChain<TeacherRequestChain> defaultCoursePageUrls() throws Exception {
+        return defaultCoursePageUrls(new Locale("fi"));
+    }
+
+    public StudiesRequestChain<TeacherRequestChain> defaultCoursePageUrls(Locale locale) throws Exception {
+        return coursePageUrls(Collections.singletonList("hy-CUR-123456789"), locale);
+    }
+
+    public StudiesRequestChain<TeacherRequestChain> coursePageUrls(List<String> courseIds, Locale locale) throws Exception {
+        return studiesRequestChain().expectCoursePageUrls(courseIds, locale);
+    }
+
+    public StudiesRequestChain<TeacherRequestChain> coursePageUrls(Map<String, String> coursePageUrlsByCourseId, Locale locale) throws Exception {
+        return studiesRequestChain().expectCoursePageUrls(coursePageUrlsByCourseId, locale);
+    }
+
+    private StudiesRequestChain<TeacherRequestChain> studiesRequestChain() {
+        return new StudiesRequestChain<>(this, studiesServer);
     }
 }

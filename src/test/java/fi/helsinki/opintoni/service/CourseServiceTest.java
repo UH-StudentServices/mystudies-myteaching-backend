@@ -21,7 +21,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import fi.helsinki.opintoni.integration.studies.StudiesClient;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +37,12 @@ import fi.helsinki.opintoni.integration.coursecms.CourseCmsFile;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsIntegrationException;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-import fi.helsinki.opintoni.integration.sotka.SotkaClient;
-import fi.helsinki.opintoni.integration.sotka.model.SotkaHierarchy;
 import fi.helsinki.opintoni.integration.studyregistry.Organisation;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuStudyRegistry;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -69,27 +70,15 @@ public class CourseServiceTest extends SpringTest {
     CoursePageClient mockCoursePageClient;
 
     @MockBean
-    SotkaClient mockSotkaClient;
-
-    @MockBean
     SisuStudyRegistry mockSisuStudyRegistry;
 
-    @Test
-    public void thatOldCoursepageisFetchedforCoursesBeforeCutoffDate() throws Exception {
-        mockStudyRegistry(ORG, LocalDate.of(2020, 5, 10).atStartOfDay());
-        mockSokcaClient();
-        Mockito.when(mockCoursePageClient.getCoursePage(anyString(), Mockito.any(Locale.class))).thenReturn(coursePage());
-
-        List<CourseDto> dtos = courseService.getTeacherCourses(TEACHER_ID, FI);
-
-        assertEquals(2, dtos.size());
-        assertCoursePageCalled(OODI_ID, OODI_ID2);
-        verify(mockSotkaClient, times(1)).getOptimeHierarchies(List.of(SISU_REALISATION_FROM_OPTIME_ID2, SISU_REALISATION_FROM_OPTIME_ID));
-    }
+    @MockBean
+    StudiesClient mockStudiesClient;
 
     @Test
-    public void thatNewCoursepageIsFetchedforCoursesAfterCutoffDate() throws Exception {
+    public void thatNewCoursePageIsFetchedForCoursesWithNewCoursePageUrl() throws Exception {
         mockStudyRegistry(ORG, LocalDate.of(2020, 9, 10).atStartOfDay());
+        mockCoursePageUrls(true);
         Mockito.when(mockCourseCmsClient.getCoursePage(anyString(), Mockito.any(Locale.class))).thenReturn(cmsPage());
 
         List<CourseDto> dtos = courseService.getTeacherCourses(TEACHER_ID, FI);
@@ -99,9 +88,9 @@ public class CourseServiceTest extends SpringTest {
     }
 
     @Test
-    public void thatOldCoursePageIsFetchedForOpenUniversityCoursesAfterCutOffDate() throws Exception {
+    public void thatOldCoursePageIsFetchedForCoursesWithOldCoursePageUrl() throws Exception {
         mockStudyRegistry(ORG_OPEN_UNIVERSITY, LocalDate.of(2020, 9, 10).atStartOfDay());
-        mockSokcaClient();
+        mockCoursePageUrls(false);
         Mockito.when(mockCoursePageClient.getCoursePage(anyString(), Mockito.any(Locale.class))).thenReturn(coursePage());
 
         List<CourseDto> dtos = courseService.getTeacherCourses(TEACHER_ID, FI);
@@ -113,6 +102,7 @@ public class CourseServiceTest extends SpringTest {
     @Test
     public void thatCoursesAreReturnedWhenCMSCallFails() throws Exception {
         mockStudyRegistry(ORG, LocalDate.of(2020, 9, 10).atStartOfDay());
+        mockCoursePageUrls(true);
         Mockito.when(mockCourseCmsClient.getCoursePage(anyString(), Mockito.any(Locale.class))).thenThrow(CourseCmsIntegrationException.class);
 
         List<CourseDto> dtos = courseService.getTeacherCourses(TEACHER_ID, FI);
@@ -122,21 +112,19 @@ public class CourseServiceTest extends SpringTest {
     }
 
     @Test
-    public void thatCoursesAreReturnedWhenSotkaCallFails() throws Exception {
+    public void thatCoursesAreReturnedWhenStudiesCallFails() throws Exception {
         mockStudyRegistry(ORG, LocalDate.of(2020, 5, 10).atStartOfDay());
-        Mockito.when(mockSotkaClient.getOptimeHierarchies(
-            List.of(SISU_REALISATION_FROM_OPTIME_ID2, SISU_REALISATION_FROM_OPTIME_ID))).thenReturn(List.of());
+        Mockito.when(mockStudiesClient.getCoursePageUrls(anyList(), Mockito.any(Locale.class))).thenThrow(RuntimeException.class);
 
         List<CourseDto> dtos = courseService.getTeacherCourses(TEACHER_ID, FI);
 
         assertEquals(2, dtos.size());
-        verify(mockSotkaClient, times(1)).getOptimeHierarchies(List.of(SISU_REALISATION_FROM_OPTIME_ID2, SISU_REALISATION_FROM_OPTIME_ID));
     }
 
     @Test
     public void thatCoursesAreReturnedWhenCoursePageCallFails() throws Exception {
         mockStudyRegistry(ORG, LocalDate.of(2020, 5, 10).atStartOfDay());
-        mockSokcaClient();
+        mockCoursePageUrls(false);
         Mockito.when(mockCoursePageClient.getCoursePage(anyString(), Mockito.any(Locale.class))).thenThrow(new RuntimeException("no internet"));
 
         List<CourseDto> dtos = courseService.getTeacherCourses(TEACHER_ID, FI);
@@ -165,6 +153,20 @@ public class CourseServiceTest extends SpringTest {
         return coursePage;
     }
 
+    private void mockCoursePageUrls(boolean newCoursePage) {
+        Mockito.when(mockStudiesClient.getCoursePageUrls(anyList(), Mockito.any(Locale.class)))
+            .thenReturn(Map.of(
+                SISU_REALISATION_FROM_OPTIME_ID, getCoursePageUrl(newCoursePage, SISU_REALISATION_FROM_OPTIME_ID, OODI_ID),
+                SISU_REALISATION_FROM_OPTIME_ID2, getCoursePageUrl(newCoursePage, SISU_REALISATION_FROM_OPTIME_ID2, OODI_ID2)
+            ));
+    }
+
+    private String getCoursePageUrl(boolean newCoursePage, String sisuId, String oodiId) {
+        return newCoursePage
+            ? "https://studies.helsinki.fi/opintotarjonta/cur/" + sisuId
+            : "https://courses.helsinki.fi/fi/1234/" + oodiId;
+    }
+
     private void mockStudyRegistry(String org, LocalDateTime start) {
         Mockito.when(mockSisuStudyRegistry.getTeacherCourses(Mockito.anyString(), Mockito.any(LocalDate.class))).thenReturn(
             List.of(
@@ -172,14 +174,6 @@ public class CourseServiceTest extends SpringTest {
                 course(org, SISU_REALISATION_FROM_OPTIME_ID, start)
             )
         );
-    }
-
-    private void mockSokcaClient() {
-        Mockito.when(mockSotkaClient.getOptimeHierarchies(
-            List.of(SISU_REALISATION_FROM_OPTIME_ID2, SISU_REALISATION_FROM_OPTIME_ID))).thenReturn(List.of(
-            sotkaHierarchy(OODI_ID, SISU_REALISATION_FROM_OPTIME_ID),
-            sotkaHierarchy(OODI_ID2, SISU_REALISATION_FROM_OPTIME_ID2)
-        ));
     }
 
     private TeacherCourse course(String org, String realisationId, LocalDateTime startDate) {
@@ -192,12 +186,4 @@ public class CourseServiceTest extends SpringTest {
         course.endDate = startDate.plusMonths(2);
         return course;
     }
-
-    private SotkaHierarchy sotkaHierarchy(String oodiId, String sisuRealisationFromOptimeId) {
-        SotkaHierarchy sotkaHierarchy = new SotkaHierarchy();
-        sotkaHierarchy.oodiId = oodiId;
-        sotkaHierarchy.optimeId = sisuRealisationFromOptimeId;
-        return sotkaHierarchy;
-    }
-
 }

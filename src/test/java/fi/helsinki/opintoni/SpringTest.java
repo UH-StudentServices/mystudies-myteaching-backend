@@ -34,6 +34,7 @@ import fi.helsinki.opintoni.server.GuideNewsServer;
 import fi.helsinki.opintoni.server.GuideServer;
 import fi.helsinki.opintoni.server.OodiServer;
 import fi.helsinki.opintoni.server.PublicWwwServer;
+import fi.helsinki.opintoni.server.StudiesServer;
 import fi.helsinki.opintoni.server.WebPageServer;
 import fi.helsinki.opintoni.web.TestConstants;
 import fi.helsinki.opintoni.web.requestchain.StudentRequestChain;
@@ -130,6 +131,7 @@ public abstract class SpringTest {
     protected PublicWwwServer publicWwwServer;
     protected ESBServer esbServer;
     protected GuideNewsServer guideNewsServer;
+    protected StudiesServer studiesServer;
 
     protected MockMvc mockMvc;
 
@@ -146,7 +148,7 @@ public abstract class SpringTest {
     protected RestTemplate guideRestTemplate;
 
     @Autowired
-    protected RestTemplate sotkaRestTemplate;
+    protected RestTemplate studiesRestTemplate;
 
     @Autowired
     protected FlammaRestClient flammaRestClient;
@@ -209,6 +211,7 @@ public abstract class SpringTest {
         publicWwwServer = new PublicWwwServer(appConfiguration, publicWwwRestClient.getRestTemplate());
         webPageServer = new WebPageServer(metaDataRestTemplate);
         esbServer = new ESBServer(appConfiguration, esbRestTemplate);
+        studiesServer = new StudiesServer(appConfiguration, studiesRestTemplate);
         configureMockMvc();
     }
 
@@ -239,6 +242,7 @@ public abstract class SpringTest {
         publicWwwServer.verify();
         webPageServer.verify();
         esbServer.verify();
+        studiesServer.verify();
     }
 
     // If test data CSV files contain explicit IDs, sequence values need to be manually incremented so that further inserts made programmatically by
@@ -291,19 +295,19 @@ public abstract class SpringTest {
     }
 
     protected TeacherRequestChain defaultTeacherRequestChain() {
-        return new TeacherRequestChain(coursePageServer, courseCmsServer);
+        return new TeacherRequestChain(coursePageServer, courseCmsServer, studiesServer);
     }
 
     protected TeacherRequestChain teacherRequestChain() {
-        return new TeacherRequestChain(coursePageServer, courseCmsServer);
+        return new TeacherRequestChain(coursePageServer, courseCmsServer, studiesServer);
     }
 
     protected StudentRequestChain defaultStudentRequestChain() {
-        return new StudentRequestChain(TestConstants.STUDENT_NUMBER, oodiServer, coursePageServer);
+        return new StudentRequestChain(TestConstants.STUDENT_NUMBER, oodiServer, coursePageServer, studiesServer);
     }
 
     protected StudentRequestChain studentRequestChain(String studentNumber) {
-        return new StudentRequestChain(studentNumber, oodiServer, coursePageServer);
+        return new StudentRequestChain(studentNumber, oodiServer, coursePageServer, studiesServer);
     }
 
     protected String getRemoteMockApiUrl(String path) {

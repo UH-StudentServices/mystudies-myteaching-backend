@@ -33,6 +33,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -184,17 +185,21 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
         return String.join(CRLF, args);
     }
 
-    private void expectEvents(Language language) {
+    private void expectEvents(Language language) throws Exception {
         defaultStudentRequestChain()
             .enrollments()
             .events()
+            .coursePageUrls(Map.of("123456789", "https://courses.helsinki.fi/" + language.getCode() + "/1234/123456789"), new Locale(language.getCode()))
+            .and()
             .defaultImplementationWithLocale(new Locale(language.getCode()));
     }
 
-    private void expectOverlapping(Language language) {
+    private void expectOverlapping(Language language) throws Exception {
         defaultStudentRequestChain()
             .enrollments()
             .events()
+            .coursePageUrls(Map.of("123456789", "https://courses.helsinki.fi/" + language.getCode() + "/1234/123456789"), new Locale(language.getCode()))
+            .and()
             .courseImplementationWithLocaleRequestChain("123456789", new Locale(language.getCode()), "course_with_overlapping_data.json");
     }
 

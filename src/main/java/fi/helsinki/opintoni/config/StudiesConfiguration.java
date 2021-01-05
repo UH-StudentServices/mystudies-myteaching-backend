@@ -19,9 +19,9 @@ package fi.helsinki.opintoni.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fi.helsinki.opintoni.integration.interceptor.LoggingInterceptor;
-import fi.helsinki.opintoni.integration.sotka.SotkaClient;
-import fi.helsinki.opintoni.integration.sotka.SotkaMockClient;
-import fi.helsinki.opintoni.integration.sotka.SotkaRestClient;
+import fi.helsinki.opintoni.integration.studies.StudiesClient;
+import fi.helsinki.opintoni.integration.studies.StudiesMockClient;
+import fi.helsinki.opintoni.integration.studies.StudiesRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
@@ -32,13 +32,16 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collections;
 
 @Configuration
-public class SotkaConfiguration {
+public class StudiesConfiguration {
+
+    @Autowired
+    private AppConfiguration appConfiguration;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Bean
-    public RestTemplate sotkaRestTemplate() {
+    public RestTemplate studiesRestTemplate() {
         final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
         RestTemplate restTemplate = new RestTemplate(Collections.singletonList(converter));
@@ -47,14 +50,14 @@ public class SotkaConfiguration {
     }
 
     @Bean
-    @ConditionalOnExpression("'${sotka.client.implementation}' == 'rest'")
-    public SotkaClient sotkaRestClient(@Autowired AppConfiguration appConfiguration) {
-        return new SotkaRestClient(appConfiguration.get("sotka.base.url"), sotkaRestTemplate());
+    @ConditionalOnExpression("'${studies.client.implementation}' == 'mock'")
+    public StudiesClient studiesMockClient() {
+        return new StudiesMockClient(appConfiguration.get("studies.base.url"));
     }
 
     @Bean
-    @ConditionalOnExpression("'${sotka.client.implementation}' == 'mock'")
-    public SotkaClient sotkaMockClient() {
-        return new SotkaMockClient(objectMapper);
+    @ConditionalOnExpression("'${studies.client.implementation}' == 'rest'")
+    public StudiesClient studiesRestClient() {
+        return new StudiesRestClient(studiesRestTemplate(), appConfiguration.get("studies.client.apiUrl"));
     }
 }

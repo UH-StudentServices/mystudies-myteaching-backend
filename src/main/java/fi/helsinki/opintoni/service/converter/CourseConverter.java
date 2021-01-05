@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.service.converter;
 import fi.helsinki.opintoni.dto.CourseDto;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
 import fi.helsinki.opintoni.resolver.EventTypeResolver;
 import fi.helsinki.opintoni.util.CourseMaterialDtoFactory;
@@ -30,7 +29,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 @Component
 public class CourseConverter {
@@ -49,14 +47,11 @@ public class CourseConverter {
         this.courseMaterialDtoFactory = courseMaterialDtoFactory;
     }
 
-    // not used, todo cleanup
-    public Optional<CourseDto> toDto(Enrollment enrollment, Locale locale) {
-        CourseDto dto = null;
-        return Optional.ofNullable(dto);
-    }
-
-    public CourseDto toDto(TeacherCourse teacherCourse, CoursePageCourseImplementation oldCoursePage, CourseCmsCourseUnitRealisation newCoursePage,
-        Locale locale) {
+    public CourseDto toDto(TeacherCourse teacherCourse,
+                           CoursePageCourseImplementation oldCoursePage,
+                           CourseCmsCourseUnitRealisation newCoursePage,
+                           String coursePageUrl,
+                           Locale locale) {
         CourseDto dto = new CourseDto(
             teacherCourse.learningOpportunityId,
             teacherCourse.realisationTypeCode,
@@ -78,7 +73,7 @@ public class CourseConverter {
         }
 
         if (newCoursePage != null) {
-            enrichWithNewCoursePageData(dto, newCoursePage, locale);
+            enrichWithNewCoursePageData(dto, newCoursePage, coursePageUrl);
         }
 
         return dto;
@@ -90,9 +85,9 @@ public class CourseConverter {
         dto.courseMaterial = courseMaterialDtoFactory.fromCoursePage(coursePage);
     }
 
-    private void enrichWithNewCoursePageData(CourseDto dto, CourseCmsCourseUnitRealisation coursePage, Locale locale) {
+    private void enrichWithNewCoursePageData(CourseDto dto, CourseCmsCourseUnitRealisation coursePage, String coursePageUrl) {
         dto.imageUri = coursePageUriBuilder.getImageUri(coursePage);
-        dto.coursePageUri = coursePageUriBuilder.getNewCoursePageUri(coursePage, locale);
+        dto.coursePageUri = coursePageUriBuilder.getCourseUriWithSSO(coursePageUrl);
         dto.courseMaterial = courseMaterialDtoFactory.fromCoursePage(coursePage);
         // Courses using new course page always have published course page, even without cms data.
         dto.isHidden = false;

@@ -35,7 +35,6 @@ import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsFile;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-import fi.helsinki.opintoni.integration.sotka.SotkaClient;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
 
 public class CourseConverterTest extends SpringTest {
@@ -53,9 +52,6 @@ public class CourseConverterTest extends SpringTest {
 
     @MockBean
     CoursePageClient mockCoursePageClient;
-
-    @MockBean
-    SotkaClient mockSotkaClient;
 
     private TeacherCourse course(String code, LocalDateTime startDate) {
         TeacherCourse course = new TeacherCourse();
@@ -75,13 +71,13 @@ public class CourseConverterTest extends SpringTest {
 
     @Test
     public void thatTeacherCoursesAreEnrichedWithCourseCmsData() throws Exception {
-        CourseDto dto = courseConverter.toDto(course(CODE, LocalDate.of(2020, 10, 26).atStartOfDay()), null, courseCMSPage(), FI);
+        CourseDto dto = courseConverter.toDto(course(CODE, LocalDate.of(2020, 10, 26).atStartOfDay()), null, courseCMSPage(), "http://new-course-page", FI);
         assertEnrichments(dto);
     }
 
     @Test
     public void thatTeacherCoursesAreEnrichedWithCoursePageData() throws Exception {
-        CourseDto dto = courseConverter.toDto(course(CODE, LocalDate.of(2015, 10, 26).atStartOfDay()), coursePage(), null, FI);
+        CourseDto dto = courseConverter.toDto(course(CODE, LocalDate.of(2015, 10, 26).atStartOfDay()), coursePage(), null, null, FI);
         assertEnrichments(dto);
     }
 

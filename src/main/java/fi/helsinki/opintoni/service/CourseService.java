@@ -35,8 +35,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -49,7 +47,8 @@ public class CourseService {
 
     @Autowired
     public CourseService(StudyRegistryService studyRegistryService,
-                         CourseConverter courseConverter, CoursePageUtil coursePageUtil) {
+                         CourseConverter courseConverter,
+                         CoursePageUtil coursePageUtil) {
         this.studyRegistryService = studyRegistryService;
         this.courseConverter = courseConverter;
         this.coursePageUtil = coursePageUtil;
@@ -59,27 +58,18 @@ public class CourseService {
         List<TeacherCourse> teacherCourses = studyRegistryService
             .getTeacherCourses(teacherNumber, LocalDate.now(ZoneId.of("Europe/Helsinki")));
 
-        Map<Boolean, List<TeacherCourse>> partitionedCourses = teacherCourses.stream()
-            .collect(Collectors.groupingBy(FunctionHelper.logAndIgnoreExceptions(coursePageUtil::useNewCoursePageIntegration)));
+        Map<String, String> coursePageUrls = coursePageUtil.getCoursePageUrls(teacherCourses, locale);
+        Map<String, CoursePageCourseImplementation> oldCoursePages = coursePageUtil.getOldCoursePages(coursePageUrls, locale);
+        Map<String, CourseCmsCourseUnitRealisation> newCoursePages = coursePageUtil.getNewCoursePages(coursePageUrls, locale);
 
-        List<String> useOldCoursePages = Optional.ofNullable(partitionedCourses.get(false)).stream()
-            .flatMap(List::stream)
-            .map(cr -> cr.realisationId)
-            .collect(Collectors.toList());
-
-        Map<String, CoursePageCourseImplementation> coursePages = coursePageUtil.getOldCoursePages(useOldCoursePages, locale);
-
-        List<String> useNewCoursePages = Optional.ofNullable(partitionedCourses.get(true)).stream()
-            .flatMap(List::stream)
-            .map(cr -> cr.realisationId)
-            .collect(Collectors.toList());
-
-        Map<String, CourseCmsCourseUnitRealisation> newCoursePages = coursePageUtil.getNewCoursePages(useNewCoursePages, locale);
-
-        return teacherCourses
-            .stream()
-            .map(FunctionHelper.logAndIgnoreExceptions(
-                c -> courseConverter.toDto(c, coursePages.get(c.realisationId), newCoursePages.get(c.realisationId), locale)))
+        return teacherCourses.stream()
+            .map(FunctionHelper.logAndIgnoreExceptions(c ->
+                courseConverter.toDto(
+                    c,
+                    oldCoursePages.get(c.realisationId),
+                    newCoursePages.get(c.realisationId),
+                    coursePageUrls.get(c.realisationId),
+                    locale)))
             .filter(Objects::nonNull)
             .collect(toList());
     }
