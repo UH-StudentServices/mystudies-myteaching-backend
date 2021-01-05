@@ -15,12 +15,11 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.sotka;
+package fi.helsinki.opintoni.integration.studies;
 
-import java.util.List;
+public class StudiesIntegrationException extends RuntimeException {
 
-import fi.helsinki.opintoni.integration.sotka.model.SotkaHierarchy;
-
-public interface SotkaClient {
-    public List<SotkaHierarchy> getOptimeHierarchies(List<String> optimeIds) throws SotkaIntegrationException;
+    public StudiesIntegrationException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

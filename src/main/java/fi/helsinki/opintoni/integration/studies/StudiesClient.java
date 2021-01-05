@@ -15,15 +15,13 @@
  * along with MystudiesMyteaching application.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fi.helsinki.opintoni.integration.sotka.model;
+package fi.helsinki.opintoni.integration.studies;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-public class SotkaHierarchy {
+public interface StudiesClient {
 
-    @JsonProperty("oodiId")
-    public String oodiId;
-
-    @JsonProperty("optimeId")
-    public String optimeId;
+    Map<String, String> getCoursePageUrls(List<String> courseIds, Locale locale);
 }

@@ -17,103 +17,84 @@
 
 package fi.helsinki.opintoni.util;
 
-import fi.helsinki.opintoni.config.AppConfiguration;
-import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-import fi.helsinki.opintoni.integration.sotka.SotkaClient;
+import fi.helsinki.opintoni.integration.studies.StudiesClient;
 import fi.helsinki.opintoni.integration.studyregistry.CourseRealisation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class CoursePageUtil {
 
-    private static final List<String> OPEN_UNIVERSITY_ORG_CODES = List.of(
-        "H930", // oodi
-        "hy-org-48645785" // sisu
-    );
+    private static final Logger logger = LoggerFactory.getLogger(CoursePageUtil.class);
 
-    private final AppConfiguration appConfiguration;
-    private final LocalDate useNewCoursePageCutOffDate;
-    private final SotkaClient sotkaClient;
+    private static final Pattern OLD_COURSE_PAGE_URL_PATTERN =
+        Pattern.compile("^https?://(?:dev\\.)?courses\\.helsinki\\.fi/(?:fi|sv|en)/.+/(\\d+)$");
+
     private final CourseCmsClient courseCmsClient;
     private final CoursePageClient coursePageClient;
+    private final StudiesClient studiesClient;
 
     @Autowired
-    public CoursePageUtil(AppConfiguration appConfiguration, CourseCmsClient courseCmsClient, CoursePageClient coursePageClient,
-        SotkaClient sotkaClient) {
-        this.appConfiguration = appConfiguration;
+    public CoursePageUtil(CourseCmsClient courseCmsClient, CoursePageClient coursePageClient, StudiesClient studiesClient) {
         this.courseCmsClient = courseCmsClient;
         this.coursePageClient = coursePageClient;
-        this.sotkaClient = sotkaClient;
-
-        String useAfterDate = this.appConfiguration.get("courseCms.useAfterDate");
-        useNewCoursePageCutOffDate = LocalDate.parse(useAfterDate, DateTimeFormatter.ISO_DATE);
+        this.studiesClient = studiesClient;
     }
 
-    public boolean useNewCoursePageIntegration(CourseRealisation courseRealisation) {
-        if (appConfiguration.getBoolean("courseCms.enabled")) {
-            LocalDate courseStartDate = courseRealisation.startDate.toLocalDate();
-            return (courseStartDate.isAfter(useNewCoursePageCutOffDate) || courseStartDate.isEqual(useNewCoursePageCutOffDate))
-                && courseRealisation.organisations.stream().noneMatch(org -> OPEN_UNIVERSITY_ORG_CODES.contains(org.code));
+    public Map<String, String> getCoursePageUrls(List<? extends CourseRealisation> courses, Locale locale) {
+        try {
+            return studiesClient.getCoursePageUrls(courses.stream().map(c -> c.realisationId).collect(Collectors.toUnmodifiableList()), locale);
+        } catch (Exception e) {
+            logger.error("Failed to fetch course page urls", e);
+            return Collections.emptyMap();
         }
-        return false;
     }
 
-    public Map<String, CoursePageCourseImplementation> getOldCoursePages(List<String> courseIds, Locale locale) {
-        Map<Boolean, List<String>> partitionedIds = courseIds.stream()
-            .collect(Collectors.groupingBy(FunctionHelper.logAndIgnoreExceptions(
-                id -> {
-                    try {
-                        Integer.parseInt(id);
-                        return true;
-                    } catch (NumberFormatException e) {
-                        return id.startsWith(IntegrationUtil.SISU_COURSE_UNIT_REALISATION_FROM_OODI_ID_PREFIX);
-                    }
-                })));
-
-        List<Entry<String, String>> optimeOriginated = sotkaClient.getOptimeHierarchies(
-            Optional.ofNullable(partitionedIds.get(false)).orElse(List.of()))
-            .stream()
-            .map(h -> Map.entry(h.optimeId, h.oodiId)).collect(Collectors.toList());
-
-        List<Entry<String, String>> oodiOriginated = Optional.ofNullable(partitionedIds.get(true)).orElse(List.of()).stream()
-            .map(id -> Map.entry(id, IntegrationUtil.stripPossibleSisuOodiCurPrefix(id)))
-            .collect(Collectors.toList());
-
-        return Stream.concat(optimeOriginated.stream(), oodiOriginated.stream())
-            .map(FunctionHelper.logAndIgnoreExceptions(id -> idToCoursePageImplementation(id.getKey(), id.getValue(), locale)))
+    public Map<String, CoursePageCourseImplementation> getOldCoursePages(Map<String, String> coursePageUrlsByCourseId, Locale locale) {
+        return coursePageUrlsByCourseId.entrySet().stream()
+            .map(FunctionHelper.logAndIgnoreExceptions(entry -> getOodiIdFromCoursePageUrl(entry.getValue())
+                .map(oodiId -> Map.entry(entry.getKey(), coursePageClient.getCoursePage(oodiId, locale)))
+                .orElse(null)))
             .filter(Objects::nonNull)
-            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public Map<String, CourseCmsCourseUnitRealisation> getNewCoursePages(Map<String, String> coursePageUrlsByCourseId, Locale locale) {
+        return coursePageUrlsByCourseId.entrySet().stream()
+            .filter(entry -> getOodiIdFromCoursePageUrl(entry.getValue()).isEmpty())
+            .map(FunctionHelper.logAndIgnoreExceptions(entry -> getCourseCmsPage(entry.getKey(), locale)))
+            .filter(Objects::nonNull)
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private Entry<String, CourseCmsCourseUnitRealisation> getCourseCmsPage(String realisationId, Locale locale) {
         return Map.entry(realisationId, courseCmsClient.getCoursePage(realisationId, locale));
     }
 
-    public Map<String, CourseCmsCourseUnitRealisation> getNewCoursePages(List<String> courseIds, Locale locale) {
-        return courseIds.stream()
-            .map(FunctionHelper.logAndIgnoreExceptions(id -> getCourseCmsPage(id, locale)))
-            .filter(Objects::nonNull)
-            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+    private Optional<String> getOodiIdFromCoursePageUrl(String coursePageUrl) {
+        if (coursePageUrl != null) {
+            final Matcher m = OLD_COURSE_PAGE_URL_PATTERN.matcher(coursePageUrl);
+            if (m.find()) {
+                return Optional.of(m.group(1));
+            }
+        }
+        return Optional.empty();
     }
-
-    private Entry<String, CoursePageCourseImplementation> idToCoursePageImplementation(String courseId, String oodiId, Locale locale) {
-        return Map.entry(courseId, coursePageClient.getCoursePage(oodiId, locale));
-    }
-
 }

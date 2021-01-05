@@ -57,8 +57,6 @@ public class CacheConstants {
     public static final String STUDY_RIGHTS = "studyRights";
     public static final String STUDY_ATTAINMENTS = "studyAttainments";
 
-    public static final String SOTKA = "sotka";
-
     public static final ImmutableList<String> TRANSIENT_CACHE_NAMES = ImmutableList.<String>builder()
         .add(STUDENT_EVENTS)
         .add(STUDENT_ENROLLMENTS)
@@ -82,7 +80,6 @@ public class CacheConstants {
         .add(COURSE_CMS)
         .add(GRAPHQL_CUR_SEARCH)
         .add(GRAPHQL_PRIVATE_PERSON)
-        .add(SOTKA)
         .add(GRAPHQL_STUDY_ATTAINMENTS)
         .build();
 

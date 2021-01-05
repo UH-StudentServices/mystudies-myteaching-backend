@@ -19,9 +19,13 @@ package fi.helsinki.opintoni.web.requestchain;
 
 import fi.helsinki.opintoni.server.CoursePageServer;
 import fi.helsinki.opintoni.server.OodiServer;
+import fi.helsinki.opintoni.server.StudiesServer;
 import fi.helsinki.opintoni.web.TestConstants;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static fi.helsinki.opintoni.web.TestConstants.DEFAULT_USER_LOCALE;
 import static fi.helsinki.opintoni.web.TestConstants.STUDENT_COURSE_REALISATION_ID;
@@ -30,11 +34,13 @@ public class StudentRequestChain {
     private final OodiServer oodiServer;
     private final CoursePageServer coursePageServer;
     private final String studentNumber;
+    private final StudiesServer studiesServer;
 
-    public StudentRequestChain(String studentNumber, OodiServer oodiServer, CoursePageServer coursePageServer) {
+    public StudentRequestChain(String studentNumber, OodiServer oodiServer, CoursePageServer coursePageServer, StudiesServer studiesServer) {
         this.oodiServer = oodiServer;
         this.coursePageServer = coursePageServer;
         this.studentNumber = studentNumber;
+        this.studiesServer = studiesServer;
     }
 
     public StudentRequestChain events() {
@@ -108,5 +114,25 @@ public class StudentRequestChain {
     public StudentRequestChain studyRights(String responseFile) {
         oodiServer.expectStudentStudyRightsRequest(studentNumber, responseFile);
         return this;
+    }
+
+    public StudiesRequestChain<StudentRequestChain> defaultCoursePageUrls() throws Exception {
+        return defaultCoursePageUrls(new Locale("fi"));
+    }
+
+    public StudiesRequestChain<StudentRequestChain> defaultCoursePageUrls(Locale locale) throws Exception {
+        return coursePageUrls(Collections.singletonList("hy-CUR-123456789"), locale);
+    }
+
+    public StudiesRequestChain<StudentRequestChain> coursePageUrls(List<String> courseIds, Locale locale) throws Exception {
+        return studiesRequestChain().expectCoursePageUrls(courseIds, locale);
+    }
+
+    public StudiesRequestChain<StudentRequestChain> coursePageUrls(Map<String, String> coursePageUrlsByCourseId, Locale locale) throws Exception {
+        return studiesRequestChain().expectCoursePageUrls(coursePageUrlsByCourseId, locale);
+    }
+
+    private StudiesRequestChain<StudentRequestChain> studiesRequestChain() {
+        return new StudiesRequestChain<>(this, studiesServer);
     }
 }

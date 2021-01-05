@@ -282,9 +282,6 @@ cache:
     courseCms:
         timeToLiveSeconds: 3600
         maxEntriesLocalHeap: 500
-    sotka:
-        timeToLiveSeconds: 3600
-        maxEntriesLocalHeap: 5000
     graphqlCurSearch:
         timeToLiveSeconds: 3600
         maxEntriesLocalHeap: 1000
@@ -310,12 +307,6 @@ courseCms:
     enabled: true
     useAfterDate: 2020-07-27
     defaultCourseImageUri: /assets/images/course/default_new_course_page_image.jpg
-
-studies.base.url: https://studies-qa.it.helsinki.fi
-
-sotka:
-    base.url: https://esbmt2.it.helsinki.fi/sotkuqa
-    client.implementation: mock
 
 fileStorage:
   path: /opt/opintoni/files
@@ -493,3 +484,9 @@ sisu:
     baseUrl: https://mock-sisu
     client.implementation: mock
     apiKey: ei_ole
+
+studies:
+    base.url: https://studies-qa.it.helsinki.fi
+    client:
+        api.url: https://studies-qa.it.helsinki.fi/api
+        implementation: mock

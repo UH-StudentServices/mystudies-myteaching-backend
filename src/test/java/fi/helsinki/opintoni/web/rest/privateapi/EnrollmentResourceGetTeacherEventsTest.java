@@ -25,7 +25,7 @@ import fi.helsinki.opintoni.integration.coursecms.CourseCmsClient;
 import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageClient;
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
-import fi.helsinki.opintoni.integration.sotka.SotkaClient;
+import fi.helsinki.opintoni.integration.studies.StudiesClient;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.integration.studyregistry.LocalizedText;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryLocale;
@@ -40,11 +40,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -68,7 +70,7 @@ public class EnrollmentResourceGetTeacherEventsTest extends SpringTest {
     CourseCmsClient mockCourseCmsClient;
 
     @MockBean
-    SotkaClient mockSotkaClient;
+    StudiesClient mockStudiesClient;
 
     @Test
     public void thatTeacherEventsAreReturned() throws Exception {
@@ -77,6 +79,7 @@ public class EnrollmentResourceGetTeacherEventsTest extends SpringTest {
         when(mockSisuStudyRegistry.getTeacherCourses(anyString(), any(LocalDate.class))).thenReturn(List.of(course("xyz", COURSE_START)));
         when(mockSisuStudyRegistry.getTeacherEvents(anyString())).thenReturn(List.of(event(COURSE_START)));
         when(mockCoursePageClient.getCoursePage(anyString(), any(Locale.class))).thenReturn(coursePageCourseImplementation());
+        when(mockStudiesClient.getCoursePageUrls(anyList(), any(Locale.class))).thenReturn(Map.of(CUR_ID, "https://courses.helsinki.fi/fi/1234/99903629"));
 
         mockMvc.perform(get("/api/private/v1/teachers/enrollments/events")
             .with(securityContext(teacherSecurityContext()))
@@ -153,6 +156,7 @@ public class EnrollmentResourceGetTeacherEventsTest extends SpringTest {
         when(mockSisuStudyRegistry.getTeacherCourses(anyString(), any(LocalDate.class))).thenReturn(List.of(course("xyz", COURSE_START)));
         when(mockSisuStudyRegistry.getTeacherEvents(anyString())).thenReturn(List.of(event(COURSE_START)));
         when(mockCourseCmsClient.getCoursePage(anyString(), any(Locale.class))).thenReturn(coursePageCMSImplementation());
+        when(mockStudiesClient.getCoursePageUrls(anyList(), any(Locale.class))).thenReturn(Map.of(CUR_ID, "https://studies-qa.it.helsinki.fi/opintotarjonta/cur/" + CUR_ID));
 
         mockMvc.perform(get("/api/private/v1/teachers/enrollments/events")
             .with(securityContext(teacherSecurityContext()))

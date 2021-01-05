@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -115,30 +114,17 @@ public class EventService {
         List<? extends CourseRealisation> courses,
         Locale locale) {
 
-        Map<Boolean, List<CourseRealisation>> partitionedCourses = courses.stream()
-            .collect(Collectors.groupingBy(FunctionHelper.logAndIgnoreExceptions(coursePageUtil::useNewCoursePageIntegration)));
-
-        List<String> useOldCoursePages = Optional.ofNullable(partitionedCourses.get(false)).stream()
-            .flatMap(List::stream)
-            .map(cr -> cr.realisationId)
-            .collect(Collectors.toList());
-
-        Map<String, CoursePageCourseImplementation> coursePages = coursePageUtil.getOldCoursePages(useOldCoursePages, locale);
-
-        List<String> useNewCoursePages = Optional.ofNullable(partitionedCourses.get(true)).stream()
-            .flatMap(List::stream)
-            .map(cr -> cr.realisationId)
-            .collect(Collectors.toList());
-
-        Map<String, CourseCmsCourseUnitRealisation> newCoursePages = coursePageUtil.getNewCoursePages(useNewCoursePages, locale);
+        Map<String, String> coursePageUrls = coursePageUtil.getCoursePageUrls(courses, locale);
+        Map<String, CoursePageCourseImplementation> oldCoursePages = coursePageUtil.getOldCoursePages(coursePageUrls, locale);
+        Map<String, CourseCmsCourseUnitRealisation> newCoursePages = coursePageUtil.getNewCoursePages(coursePageUrls, locale);
 
         Stream<EventDto> studyRegistryEventDtos = studyRegistryEvents.stream()
             .filter(event -> !event.isCancelled && event.startDate != null)
-            .map(FunctionHelper.logAndIgnoreExceptions(event -> this.toEventDTO(event, coursePages, newCoursePages, locale)))
+            .map(FunctionHelper.logAndIgnoreExceptions(event -> this.toEventDTO(event, oldCoursePages, newCoursePages, coursePageUrls, locale)))
             .filter(Objects::nonNull);
 
         Stream<EventDto> optimeEventDtos = optimeEvents.stream();
-        Stream<EventDto> coursePageEventDtos = coursePages.values().stream()
+        Stream<EventDto> coursePageEventDtos = oldCoursePages.values().stream()
             .flatMap(c -> c.events.stream()
                 .filter(e -> e.begin != null)
                 .map(FunctionHelper.logAndIgnoreExceptions(e -> eventConverter.toDto(e, c)))
@@ -149,9 +135,13 @@ public class EventService {
     }
 
     private EventDto toEventDTO(Event event, Map<String, CoursePageCourseImplementation> coursePages,
-        Map<String, CourseCmsCourseUnitRealisation> newCoursePages, Locale locale) {
-        return eventConverter.toDto(event, getCoursePage(coursePages, event.realisationId),
-            getNewCoursePage(newCoursePages, event.realisationId), locale);
+        Map<String, CourseCmsCourseUnitRealisation> newCoursePages, Map<String, String> coursePageUrls, Locale locale) {
+        return eventConverter.toDto(
+            event,
+            getCoursePage(coursePages, event.realisationId),
+            getNewCoursePage(newCoursePages, event.realisationId),
+            coursePageUrls.get(event.realisationId),
+            locale);
     }
 
     private CoursePageCourseImplementation getCoursePage(Map<String, CoursePageCourseImplementation> coursePages, String realisationId) {

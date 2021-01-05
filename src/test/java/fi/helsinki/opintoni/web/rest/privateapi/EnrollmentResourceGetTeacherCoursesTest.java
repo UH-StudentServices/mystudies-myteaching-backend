@@ -29,6 +29,8 @@ import org.springframework.http.MediaType;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import static fi.helsinki.opintoni.security.SecurityRequestPostProcessors.securityContext;
 import static fi.helsinki.opintoni.security.TestSecurityContext.teacherSecurityContext;
@@ -62,7 +64,10 @@ public class EnrollmentResourceGetTeacherCoursesTest extends SpringTest {
 
     @Test
     public void thatTeacherCoursesAreReturned() throws Exception {
-        defaultTeacherRequestChain().courseImplementationWithRealisationId(ROOT_REALISATION_ID).and();
+        defaultTeacherRequestChain()
+            .coursePageUrls(Map.of(ROOT_REALISATION_ID, "https://courses.helsinki.fi/fi/1234/" + ROOT_REALISATION_ID), new Locale("fi"))
+            .and()
+            .courseImplementationWithRealisationId(ROOT_REALISATION_ID).and();
         when(mockSisuStudyRegistry.getTeacherCourses(anyString(), any(LocalDate.class))).thenReturn(List.of(course("10440")));
 
         mockMvc.perform(get("/api/private/v1/teachers/enrollments/courses")

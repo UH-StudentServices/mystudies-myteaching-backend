@@ -107,7 +107,11 @@ public class EventConverter {
             .createEventDto();
     }
 
-    public EventDto toDto(Event event, CoursePageCourseImplementation coursePage, CourseCmsCourseUnitRealisation newCoursePage, Locale locale) {
+    public EventDto toDto(Event event,
+                          CoursePageCourseImplementation coursePage,
+                          CourseCmsCourseUnitRealisation newCoursePage,
+                          String newCoursePageUrl,
+                          Locale locale) {
         EventDtoBuilder builder = new EventDtoBuilder()
             .setType(eventTypeResolver.getEventTypeByOodiTypeCode(event.typeCode))
             .setSource(EventDto.Source.STUDY_REGISTRY)
@@ -123,7 +127,7 @@ public class EventConverter {
         if (newCoursePage != null) {
             builder
                 .setCourseTitle(newCoursePage.name)
-                .setCourseUri(coursePageUriBuilder.getNewCoursePageUri(newCoursePage, locale))
+                .setCourseUri(coursePageUriBuilder.getCourseUriWithSSO(newCoursePageUrl))
                 .setCourseImageUri(coursePageUriBuilder.getImageUri(newCoursePage))
                 .setMoodleUri(newCoursePage.moodleLink != null && StringUtils.isNotBlank(newCoursePage.moodleLink.uri)
                     ? newCoursePage.moodleLink.uri : null);
