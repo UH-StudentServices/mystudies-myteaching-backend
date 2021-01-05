@@ -58,6 +58,6 @@ public class StudiesConfiguration {
     @Bean
     @ConditionalOnExpression("'${studies.client.implementation}' == 'rest'")
     public StudiesClient studiesRestClient() {
-        return new StudiesRestClient(studiesRestTemplate(), appConfiguration.get("studies.client.apiUrl"));
+        return new StudiesRestClient(studiesRestTemplate(), appConfiguration.get("studies.client.api.url"));
     }
 }

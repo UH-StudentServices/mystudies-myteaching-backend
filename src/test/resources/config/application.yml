@@ -298,5 +298,5 @@ sisu:
 studies:
     base.url: https://studies-qa.it.helsinki.fi
     client:
-        apiUrl: https://studies-qa.it.helsinki.fi/api
+        api.url: https://studies-qa.it.helsinki.fi/api
         implementation: rest

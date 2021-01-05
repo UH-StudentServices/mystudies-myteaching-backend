@@ -42,11 +42,13 @@ public class StudiesRestClientTest extends SpringTest {
 
     private StudiesClient studiesClient;
     private RestTemplate spyRestTemplate;
+    private String studiesBaseUrl;
 
     @Before
     public void init() {
         spyRestTemplate = Mockito.spy(studiesRestTemplate);
-        this.studiesClient = new StudiesRestClient(spyRestTemplate, appConfiguration.get("studies.client.apiUrl"));
+        this.studiesClient = new StudiesRestClient(spyRestTemplate, appConfiguration.get("studies.client.api.url"));
+        this.studiesBaseUrl = appConfiguration.get("studies.base.url");
     }
 
     @Test
@@ -56,7 +58,7 @@ public class StudiesRestClientTest extends SpringTest {
 
         Map<String, String> coursePageUrls = studiesClient.getCoursePageUrls(courseIds, LOCALE_FI);
         assertThat(coursePageUrls.size()).isEqualTo(2);
-        courseIds.forEach(courseId -> assertThat(coursePageUrls.get(courseId)).isEqualTo("http://local.studies.helsinki.fi/opintotarjonta/cur/" + courseId));
+        courseIds.forEach(courseId -> assertThat(coursePageUrls.get(courseId)).isEqualTo(studiesBaseUrl + "/opintotarjonta/cur/" + courseId));
     }
 
     @Test

@@ -38,12 +38,14 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 public class StudiesServer extends AbstractRestServiceServer {
-    private final String studiesApiBseUrl;
+    private final String studiesApiBaseUrl;
+    private final String studiesBaseUrl;
     private final ObjectMapper objectMapper;
 
     public StudiesServer(AppConfiguration appConfiguration, RestTemplate restTemplate) {
         super(MockRestServiceServer.createServer(restTemplate));
-        this.studiesApiBseUrl = appConfiguration.get("studies.client.apiUrl");
+        this.studiesApiBaseUrl = appConfiguration.get("studies.client.api.url");
+        this.studiesBaseUrl = appConfiguration.get("studies.base.url");
         this.objectMapper = new ObjectMapper();
     }
 
@@ -62,13 +64,13 @@ public class StudiesServer extends AbstractRestServiceServer {
     }
 
     private String coursePageUrlsUrl(List<String> courseIds, Locale locale) {
-        return UriComponentsBuilder.fromHttpUrl(studiesApiBseUrl).path("/courses/url")
+        return UriComponentsBuilder.fromHttpUrl(studiesApiBaseUrl).path("/courses/url")
             .queryParam("courseId", courseIds.toArray())
             .queryParam("languageCode", locale.getLanguage())
             .build().toUriString();
     }
 
     private String courseIdToCoursePageUrl(String courseId) {
-        return "http://local.studies.helsinki.fi/opintotarjonta/cur/" + courseId;
+        return studiesBaseUrl + "/opintotarjonta/cur/" + courseId;
     }
 }
