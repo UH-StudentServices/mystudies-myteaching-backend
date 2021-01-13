@@ -18,6 +18,7 @@
 package fi.helsinki.opintoni.integration.studies;
 
 import fi.helsinki.opintoni.SpringTest;
+import org.apache.commons.collections4.ListUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -29,12 +30,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class StudiesRestClientTest extends SpringTest {
@@ -87,5 +92,24 @@ public class StudiesRestClientTest extends SpringTest {
         verifyZeroInteractions(spyRestTemplate);
 
         assertThat(coursePageUrls.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void thatFetchingCoursePageUrlsWithOver100IdsIsPartitionedToSeparateApiCalls() {
+        List<String> ids = IntStream.range(1, 999).mapToObj(String::valueOf).collect(Collectors.toUnmodifiableList());
+        ListUtils.partition(ids, 100).forEach(idListPartition -> {
+            try {
+                studiesServer.expectCoursePageUrlsRequest(idListPartition, LOCALE_FI);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        Map<String, String> coursePageUrls = studiesClient.getCoursePageUrls(ids, LOCALE_FI);
+
+        verify(spyRestTemplate, times(10))
+            .exchange(any(), eq(HttpMethod.GET), isNull(), eq(new ParameterizedTypeReference<Map<String, String>>() {}));
+
+        assertThat(coursePageUrls.size()).isEqualTo(ids.size());
     }
 }

@@ -65,8 +65,8 @@ public class StudiesServer extends AbstractRestServiceServer {
 
     private String coursePageUrlsUrl(List<String> courseIds, Locale locale) {
         return UriComponentsBuilder.fromHttpUrl(studiesApiBaseUrl).path("/courses/url")
-            .queryParam("courseId", courseIds.toArray())
             .queryParam("languageCode", locale.getLanguage())
+            .queryParam("courseId", courseIds.toArray())
             .build().toUriString();
     }
 
