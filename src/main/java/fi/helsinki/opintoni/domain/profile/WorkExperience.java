@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.domain.profile;
 import fi.helsinki.opintoni.domain.AbstractAuditingEntity;
 import fi.helsinki.opintoni.domain.Ownership;
 import org.hibernate.annotations.Type;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,8 +31,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
@@ -45,15 +44,12 @@ public class WorkExperience extends AbstractAuditingEntity implements Ownership 
     public Long id;
 
     @NotEmpty
-    @Size(max = 255)
     public String employer;
 
-    @Size(max = 255)
     @Column(name = "employer_url")
     public String employerUrl;
 
     @NotEmpty
-    @Size(max = 255)
     @Column(name = "job_title", nullable = false)
     public String jobTitle;
 

@@ -19,7 +19,6 @@ package fi.helsinki.opintoni.domain.profile;
 
 import fi.helsinki.opintoni.domain.AbstractAuditingEntity;
 import fi.helsinki.opintoni.domain.Ownership;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -48,14 +48,11 @@ public class Degree extends AbstractAuditingEntity implements Ownership {
     public String dateOfDegree;
 
     @NotEmpty
-    @Size(max = 255)
     public String title;
 
-    @Size(max = 255)
     @Column(name = "institution")
     public String institution;
 
-    @Size(max = 500)
     public String description;
 
     @Column(name = "order_index")
