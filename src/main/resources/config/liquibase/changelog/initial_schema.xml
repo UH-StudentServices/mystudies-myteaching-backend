@@ -2182,4 +2182,22 @@
             <column name="localized_text_id" />
         </createIndex>
     </changeSet>
+
+    <changeSet id="OO-1507" author="Joni Korhonen">
+        <sql splitStatements="false">
+            <![CDATA[
+
+            alter table work_experience
+                alter column job_title type text using job_title,
+                alter column employer type text using employer,
+                alter column employer_url type text using employer_url;
+
+            alter table degree
+                alter column title type text using title,
+                alter column description type text using description,
+                alter column institution type text using institution;
+
+            ]]>
+        </sql>
+    </changeSet>
 </databaseChangeLog>
