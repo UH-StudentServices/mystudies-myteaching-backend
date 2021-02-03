@@ -22,11 +22,9 @@ import fi.helsinki.opintoni.domain.CalendarFeed;
 import fi.helsinki.opintoni.dto.CalendarFeedDto;
 import fi.helsinki.opintoni.dto.EventDto;
 import fi.helsinki.opintoni.exception.http.CalendarFeedNotFoundException;
-import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.integration.studyregistry.Person;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.service.converter.EventConverter;
-import fi.helsinki.opintoni.util.TimeZoneUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,20 +39,16 @@ public class CalendarService {
     private final EventService eventService;
     private final StudyRegistryService studyRegistryService;
     private final CalendarTransactionalService calendarTransactionalService;
-    private final TimeZoneUtils timeZoneUtils;
     private final EventConverter eventConverter;
 
     @Autowired
     public CalendarService(EventService eventService,
                            StudyRegistryService studyRegistryService,
                            CalendarTransactionalService calendarTransactionalService,
-                           TimeZoneUtils timeZoneUtils,
                            EventConverter eventConverter) {
-
         this.eventService = eventService;
         this.studyRegistryService = studyRegistryService;
         this.calendarTransactionalService = calendarTransactionalService;
-        this.timeZoneUtils = timeZoneUtils;
         this.eventConverter = eventConverter;
     }
 
@@ -72,18 +66,19 @@ public class CalendarService {
             .orElseThrow(CalendarFeedNotFoundException::new);
     }
 
-    //XXX should perhaps return only teacher events here because student events are at mystudies
+    // Should actually return only teacher events here because student events are at mystudies
+    // but changing this would require extensive test modifications, and this system goes out in a half a year.
     private String getCalendarFeedFromEvents(CalendarFeed calendarFeed, Locale locale) {
         Optional<Person> person = Optional.ofNullable(
-            studyRegistryService.getPerson(IntegrationUtil.getSisuPrivatePersonId(calendarFeed.user.personId))
+            studyRegistryService.getPerson(calendarFeed.user.personId)
         );
 
         List<EventDto> events = person.stream().map(p -> {
             List<EventDto> studentEvents = Optional.ofNullable(p.studentNumber)
                 .map(s -> eventService.getStudentEvents(s, locale))
-                .orElse(List.of());
+                .orElse(Lists.newArrayList());
             List<EventDto> teacherEvents = Optional.ofNullable(p.teacherNumber)
-                .map(s -> eventService.getTeacherEvents(IntegrationUtil.getSisuPrivatePersonId(calendarFeed.user.personId), locale))
+                .map(s -> eventService.getTeacherEvents(calendarFeed.user.personId, locale))
                 .orElse(Lists.newArrayList());
 
             studentEvents.addAll(teacherEvents);

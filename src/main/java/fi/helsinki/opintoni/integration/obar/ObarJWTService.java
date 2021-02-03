@@ -68,8 +68,7 @@ public class ObarJWTService {
             claims.put("user", Map.of(
                 "userName", Iterables.get(Splitter.on('@').split(appUser.getEduPersonPrincipalName()), 0),
                 "firstName", firstName,
-                "lastName", lastName,
-                "oodiId", appUser.getPersonId()
+                "lastName", lastName
             ));
         }
         return Jwts.builder().setClaims(claims).setExpiration(getExpirationDate()).signWith(signatureAlgorithm, obarSecretKey).compact();

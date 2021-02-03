@@ -41,7 +41,7 @@ public class UsernameArgumentResolverTest  extends SpringTest {
 
     @Before
     public void setUp() {
-        resolver = new UsernameArgumentResolver(userService, securityUtils);
+        resolver = new UsernameArgumentResolver(securityUtils);
     }
 
     @Test

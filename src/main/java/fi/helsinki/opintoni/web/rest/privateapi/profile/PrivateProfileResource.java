@@ -53,7 +53,6 @@ import java.util.Locale;
 public class PrivateProfileResource extends AbstractResource {
     private final ProfileService profileService;
     private final EmployeeProfileService employeeProfileService;
-    private final UserSettingsService userSettingsService;
 
     @Autowired
     public PrivateProfileResource(ProfileService profileService,
@@ -61,7 +60,6 @@ public class PrivateProfileResource extends AbstractResource {
                                   UserSettingsService userSettingsService) {
         this.profileService = profileService;
         this.employeeProfileService = employeeProfileService;
-        this.userSettingsService = userSettingsService;
     }
 
     @RequestMapping(value = "/{profileRole}", method = RequestMethod.GET)

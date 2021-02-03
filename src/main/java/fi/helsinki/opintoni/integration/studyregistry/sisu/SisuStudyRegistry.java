@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.integration.studyregistry.Person;
@@ -62,14 +61,14 @@ public class SisuStudyRegistry implements StudyRegistry {
     }
 
     @Override
-    public List<Event> getTeacherEvents(String teacherNumber) {
+    public List<Event> getTeacherEvents(String personId) {
         return sisuStudyRegistryConverter.sisuCurSearchResultToEvents(
-            sisuClient.curSearch(teacherNumber, LocalDate.now(ZoneId.of("Europe/Helsinki"))), teacherNumber);
+            sisuClient.curSearch(personId, LocalDate.now(ZoneId.of("Europe/Helsinki"))), personId);
     }
 
     @Override
     public List<StudyAttainment> getStudyAttainments(String personId) {
-        Private_personQueryResponse res = sisuClient.getStudyAttainments(IntegrationUtil.getSisuPrivatePersonId(personId));
+        Private_personQueryResponse res = sisuClient.getStudyAttainments(personId);
         return res.private_person().getAttainments().stream()
             .filter(a -> Objects.nonNull(a.getCourseUnit()))
             .map(sisuStudyRegistryConverter::sisuAttainmentToStudyAttainment)
@@ -78,7 +77,7 @@ public class SisuStudyRegistry implements StudyRegistry {
 
     @Override
     public List<StudyAttainment> getStudyAttainments(String personId, String studentNumber) {
-        return getStudyAttainments(IntegrationUtil.getSisuPrivatePersonId(personId));
+        return getStudyAttainments(personId);
     }
 
     @Override
@@ -98,6 +97,6 @@ public class SisuStudyRegistry implements StudyRegistry {
 
     @Override
     public Person getPerson(String personId) {
-        return sisuStudyRegistryConverter.sisuPrivatePersonToPerson(sisuClient.getPrivatePerson(IntegrationUtil.getSisuPrivatePersonId(personId)));
+        return sisuStudyRegistryConverter.sisuPrivatePersonToPerson(sisuClient.getPrivatePerson(personId));
     }
 }

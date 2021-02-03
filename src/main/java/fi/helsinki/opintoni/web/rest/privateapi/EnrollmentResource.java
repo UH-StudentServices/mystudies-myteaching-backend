@@ -57,14 +57,14 @@ public class EnrollmentResource extends AbstractResource {
     @RequestMapping(value = "/teachers/enrollments/events", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<List<EventDto>> getTeacherEvents(Principal principal, Locale locale) {
-        return response(eventService.getTeacherEvents(AppUser.appUser(principal).getSisuPersonId(), locale));
+        return response(eventService.getTeacherEvents(AppUser.appUser(principal).getPersonId(), locale));
     }
 
     @TeacherRoleRequired
     @RequestMapping(value = "/teachers/enrollments/courses", method = RequestMethod.GET)
     @Timed
     public ResponseEntity<List<CourseDto>> getTeacherCourses(Principal principal, Locale locale) {
-        return response(courseService.getTeacherCourses(AppUser.appUser(principal).getSisuPersonId(), locale));
+        return response(courseService.getTeacherCourses(AppUser.appUser(principal).getPersonId(), locale));
     }
 
 }

@@ -20,7 +20,6 @@ package fi.helsinki.opintoni.web.arguments;
 import fi.helsinki.opintoni.exception.http.ForbiddenException;
 import fi.helsinki.opintoni.security.AppUser;
 import fi.helsinki.opintoni.security.SecurityUtils;
-import fi.helsinki.opintoni.service.UserService;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -31,11 +30,9 @@ import static fi.helsinki.opintoni.exception.http.ForbiddenException.forbiddenEx
 
 public class UsernameArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final UserService userService;
     private final SecurityUtils securityUtils;
 
-    public UsernameArgumentResolver(UserService userService, SecurityUtils securityUtils) {
-        this.userService = userService;
+    public UsernameArgumentResolver(SecurityUtils securityUtils) {
         this.securityUtils = securityUtils;
     }
 
@@ -57,7 +54,7 @@ public class UsernameArgumentResolver implements HandlerMethodArgumentResolver {
         MethodParameter parameter,
         ModelAndViewContainer mavContainer,
         NativeWebRequest webRequest,
-        WebDataBinderFactory binderFactory) throws Exception {
+        WebDataBinderFactory binderFactory) {
 
         return securityUtils.getAppUser()
             .map(AppUser::getEduPersonPrincipalName)

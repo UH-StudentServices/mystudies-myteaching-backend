@@ -53,8 +53,7 @@ public class TeacherDefaultUsefulLinksService extends DefaultUsefulLinksService 
     }
 
     public void createDefaultLinks(User user, AppUser appUser) {
-        boolean isOu = userRoleService.isOpenUniversityTeacher(appUser.getSisuPersonId());
-        List<UsefulLink> usefulLinks = userRoleService.isOpenUniversityTeacher(appUser.getSisuPersonId())
+        List<UsefulLink> usefulLinks = userRoleService.isOpenUniversityTeacher(appUser.getPersonId())
             ? createLocalizedUsefulLinks(openUniversityDefaultUsefulLinks, user)
             : createUsefulLinksForTeacher(user, appUser);
 

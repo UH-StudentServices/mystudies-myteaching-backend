@@ -31,7 +31,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 import fi.helsinki.opintoni.cache.CacheConstants;
-import fi.helsinki.opintoni.integration.IntegrationUtil;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AcceptorPersonResponseProjection;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AddressResponseProjection;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.model.AttainmentResponseProjection;
@@ -162,9 +161,6 @@ public class SisuGraphQLClient implements SisuClient {
     @Cacheable(value = CacheConstants.GRAPHQL_STUDY_ATTAINMENTS, cacheManager = "transientCacheManager", sync = true)
     @Override
     public Private_personQueryResponse getStudyAttainments(String personId) {
-        if (!personId.startsWith(IntegrationUtil.SISU_PRIVATE_PERSON_ID_PREFIX)) {
-            throw new IllegalArgumentException(String.format("Illegal sisu personId : %s", personId));
-        }
         GraphQLOperationRequest qr = new Private_personQueryRequest.Builder().setId(personId).build();
         PrivatePersonResponseProjection projection =  new PrivatePersonResponseProjection()
             .studentNumber()
