@@ -79,7 +79,7 @@ public class DevUserDetailsService implements org.springframework.security.core.
             .email("opettaja@mail.helsinki.fi")
             .commonName("Olli Opettaja")
             .employeeNumber("010540")
-            .personId("1000")
+            .personId("hy-hlo-1000")
             .role(AppUser.Role.ADMIN)
             .build();
     }
@@ -90,7 +90,7 @@ public class DevUserDetailsService implements org.springframework.security.core.
             .email("opiskelija@mail.helsinki.fi")
             .commonName("Olli Opiskelija")
             .studentNumber("010189791")
-            .personId("1001")
+            .personId("hy-hlo-1001")
             .build();
     }
 
@@ -100,7 +100,7 @@ public class DevUserDetailsService implements org.springframework.security.core.
             .email("opiskelija@mail.helsinki.fi")
             .commonName("Maggie Simpson")
             .studentNumber("011631484")
-            .personId("80")
+            .personId("hy-hlo-80")
             .build();
     }
 
@@ -112,7 +112,7 @@ public class DevUserDetailsService implements org.springframework.security.core.
             .commonName("Hybrid User")
             .employeeNumber("010540")
             .studentNumber("010189791")
-            .personId("1002")
+            .personId("hy-hlo-1002")
             .build();
     }
 
@@ -123,7 +123,7 @@ public class DevUserDetailsService implements org.springframework.security.core.
             .email("testteacher@mail.helsinki.fi")
             .commonName("Test Teacher")
             .employeeNumber("010540")
-            .personId("1003")
+            .personId("hy-hlo-1003")
             .build();
     }
 
@@ -133,7 +133,7 @@ public class DevUserDetailsService implements org.springframework.security.core.
             .email("teststudent@mail.helsinki.fi")
             .commonName("Test Student")
             .studentNumber("010189791")
-            .personId("1004")
+            .personId("hy-hlo-1004")
             .build();
     }
 
@@ -145,7 +145,7 @@ public class DevUserDetailsService implements org.springframework.security.core.
             .commonName("Test Hybrid User")
             .employeeNumber("010540")
             .studentNumber("010189791")
-            .personId("1005")
+            .personId("hy-hlo-1005")
             .build();
     }
 
@@ -155,7 +155,7 @@ public class DevUserDetailsService implements org.springframework.security.core.
             .email("testopenunistudent@mail.helsinki.fi")
             .commonName("Test Open Uni Student")
             .studentNumber(STUDENT_NUMBER_TEST_OPEN_UNI_STUDENT)
-            .personId("1006")
+            .personId("hy-hlo-1006")
             .build();
     }
 
@@ -165,7 +165,7 @@ public class DevUserDetailsService implements org.springframework.security.core.
             .email("testnewstudent@mail.helsinki.fi")
             .commonName("Test New Student")
             .studentNumber(STUDENT_NUMBER_TEST_NEW_STUDENT)
-            .personId("1007")
+            .personId("hy-hlo-1007")
             .build();
     }
 }

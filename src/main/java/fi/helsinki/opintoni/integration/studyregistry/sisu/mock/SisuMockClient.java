@@ -138,7 +138,7 @@ public class SisuMockClient implements SisuClient {
         PrivatePersonTO pp = new PrivatePersonTO();
         pp.setStudentNumber("010189791");
         pp.setEmployeeNumber("010540");
-        r.setData(Map.of(personId, pp));
+        r.setData(Map.of("private_person", pp));
         return r;
     }
 
@@ -146,6 +146,7 @@ public class SisuMockClient implements SisuClient {
     public Private_personQueryResponse getStudyAttainments(String personId) {
         AttainmentTO attainment = new AttainmentTO();
         attainment.setId("hy-opinto-126377006");
+        attainment.setGradeId("3");
         attainment.setCredits(5.0);
         attainment.setAttainmentDate("2019-05-09");
         attainment.setGradeScale(getGradeScale());
@@ -153,7 +154,7 @@ public class SisuMockClient implements SisuClient {
         PrivatePersonTO pp = new PrivatePersonTO();
         pp.setAttainments(List.of(attainment));
         Private_personQueryResponse r = new Private_personQueryResponse();
-        r.setData(Map.of(personId, pp));
+        r.setData(Map.of("private_person", pp));
         return r;
     }
 

@@ -34,7 +34,7 @@ public class OpenUniversityService {
     @SuppressWarnings("squid:S3655") // User having either employee number and/or student number is guaranteed in appUser instance creation
     public boolean isOpenUniversityUser(AppUser appUser) {
         if (appUser.isTeacher()) {
-            return userRoleService.isOpenUniversityTeacher(appUser.getSisuPersonId());
+            return userRoleService.isOpenUniversityTeacher(appUser.getPersonId());
         } else {
             return userRoleService.isOpenUniversityStudent(appUser.getStudentNumber().get());
         }

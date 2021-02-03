@@ -25,8 +25,6 @@ public final class IntegrationUtil {
     public static final String SISU_COURSE_UNIT_REALISATION_FROM_OPTIME_ID_PREFIX = "hy-opt-cur-";
     public static final String SISU_COURSE_UNIT_REALISATION_PREFIX = "otm-";
 
-    public static final String SISU_PRIVATE_PERSON_ID_PREFIX = "hy-hlo-";
-
     public static String getSisuCourseUnitRealisationId(String id) {
         if (StringUtils.startsWithAny(id,
             SISU_COURSE_UNIT_REALISATION_FROM_OODI_ID_PREFIX,
@@ -35,13 +33,6 @@ public final class IntegrationUtil {
             return id;
         }
         return SISU_COURSE_UNIT_REALISATION_FROM_OODI_ID_PREFIX + id;
-    }
-
-    public static String getSisuPrivatePersonId(String id) {
-        if (StringUtils.startsWithIgnoreCase(id, SISU_PRIVATE_PERSON_ID_PREFIX)) {
-            return id;
-        }
-        return SISU_PRIVATE_PERSON_ID_PREFIX + id;
     }
 
     public static String stripPossibleSisuOodiCurPrefix(String curId) {

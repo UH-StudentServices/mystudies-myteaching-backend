@@ -36,7 +36,7 @@ public class SAMLUserDetailsServiceTest {
         ".org:schac:personalUniqueCode:int:studentID:helsinki.fi:011631484";
     private static final String SAML_STUDENT_NUMBER_FINAL = "011631484";
     private static final String SAML_EMPLOYEE_NUMBER = "employeeNumber";
-    private static final String OODI_PERSON_ID = "1440748";
+    private static final String SISU_PERSON_ID = "hy-hlo-1440748";
     private static final String SAML_PREFERRED_LANGUAGE = "fi";
 
     private final UserService userService = mock(UserService.class);
@@ -52,7 +52,7 @@ public class SAMLUserDetailsServiceTest {
         assertThat(appUser.getUsername()).isEqualTo(SAML_PRINCIPAL_NAME);
         assertThat(appUser.getEmail()).isEqualTo(SAML_EMAIL);
         assertThat(appUser.getCommonName()).isEqualTo(SAML_COMMON_NAME);
-        assertThat(appUser.getPersonId()).isEqualTo(OODI_PERSON_ID);
+        assertThat(appUser.getPersonId()).isEqualTo(SISU_PERSON_ID);
         assertThat(appUser.getStudentNumber().get()).isEqualTo(SAML_STUDENT_NUMBER_FINAL);
         assertThat(appUser.getPreferredLanguage()).isEqualTo(SAML_PREFERRED_LANGUAGE);
         assertThat(appUser.getEmployeeNumber().isPresent()).isFalse();
@@ -71,7 +71,7 @@ public class SAMLUserDetailsServiceTest {
         assertThat(appUser.getUsername()).isEqualTo(SAML_PRINCIPAL_NAME);
         assertThat(appUser.getEmail()).isEqualTo(SAML_EMAIL);
         assertThat(appUser.getCommonName()).isEqualTo(SAML_COMMON_NAME);
-        assertThat(appUser.getPersonId()).isEqualTo(OODI_PERSON_ID);
+        assertThat(appUser.getPersonId()).isEqualTo(SISU_PERSON_ID);
         assertThat(appUser.getEmployeeNumber().get()).isEqualTo(SAML_EMPLOYEE_NUMBER);
         assertThat(appUser.getPreferredLanguage()).isEqualTo(SAML_PREFERRED_LANGUAGE);
         assertThat(appUser.getStudentNumber().isPresent()).isFalse();
@@ -141,7 +141,7 @@ public class SAMLUserDetailsServiceTest {
         when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.5923.1.1.1.6")).thenReturn(SAML_PRINCIPAL_NAME);
         when(credential.getAttributeAsString("urn:oid:0.9.2342.19200300.100.1.3")).thenReturn(SAML_EMAIL);
         when(credential.getAttributeAsString("urn:oid:2.5.4.3")).thenReturn(SAML_COMMON_NAME);
-        when(credential.getAttributeAsString("1.3.6.1.4.1.18869.1.1.1.32")).thenReturn(OODI_PERSON_ID);
+        when(credential.getAttributeAsString("urn:oid:1.3.6.1.4.1.18869.1.1.1.48")).thenReturn(SISU_PERSON_ID);
         when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.39")).thenReturn(SAML_PREFERRED_LANGUAGE);
         return credential;
     }

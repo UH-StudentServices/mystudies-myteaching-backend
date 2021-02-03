@@ -62,8 +62,8 @@ public class StudyRegistryService {
     }
 
     @Cacheable(value = CacheConstants.TEACHER_EVENTS, cacheManager = "transientCacheManager")
-    public List<Event> getTeacherEvents(String teacherNumber) {
-        return sisuStudyRegistry.getTeacherEvents(teacherNumber);
+    public List<Event> getTeacherEvents(String personId) {
+        return sisuStudyRegistry.getTeacherEvents(personId);
     }
 
     @Cacheable(value = CacheConstants.STUDY_ATTAINMENTS, cacheManager = "transientCacheManager")
@@ -77,8 +77,8 @@ public class StudyRegistryService {
     }
 
     @Cacheable(value = CacheConstants.TEACHER_COURSES, cacheManager = "transientCacheManager")
-    public List<TeacherCourse> getTeacherCourses(String teacherNumber, LocalDate sinceDate) {
-        return sisuStudyRegistry.getTeacherCourses(teacherNumber, sinceDate);
+    public List<TeacherCourse> getTeacherCourses(String personId, LocalDate sinceDate) {
+        return sisuStudyRegistry.getTeacherCourses(personId, sinceDate);
     }
 
     @Cacheable(value = CacheConstants.STUDY_RIGHTS, cacheManager = "transientCacheManager")

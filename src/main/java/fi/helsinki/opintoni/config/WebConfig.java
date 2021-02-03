@@ -68,9 +68,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private AutowireCapableBeanFactory beanFactory;
 
-    @Autowired
-    private AppConfiguration appConfiguration;
-
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.addAll(Lists.newArrayList(
@@ -78,7 +75,7 @@ public class WebConfig implements WebMvcConfigurer {
             new StudentNumberArgumentResolver(securityUtils),
             new PersonIdArgumentResolver(securityUtils),
             new UserIdArgumentResolver(userService, securityUtils),
-            new UsernameArgumentResolver(userService, securityUtils)));
+            new UsernameArgumentResolver(securityUtils)));
     }
 
     @Override

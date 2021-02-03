@@ -17,8 +17,6 @@
 
 package fi.helsinki.opintoni.security;
 
-import fi.helsinki.opintoni.config.AppConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -33,15 +31,8 @@ import java.util.stream.Collectors;
 @Component
 public class SecurityUtils {
 
-    private final AppConfiguration appConfiguration;
-
     @Value("#{'${whitelistedIps:127.0.0.1}'.split(',')}")
     private List<String> whitelistedIps;
-
-    @Autowired
-    public SecurityUtils(AppConfiguration appConfiguration) {
-        this.appConfiguration = appConfiguration;
-    }
 
     public String getCurrentLogin() {
         SecurityContext securityContext = SecurityContextHolder.getContext();

@@ -2200,4 +2200,12 @@
             ]]>
         </sql>
     </changeSet>
+
+    <changeSet id="OO-1510" author="TH">
+        <sql splitStatements="false">
+            <![CDATA[
+            update user_account set person_id = concat('hy-hlo-', person_id)
+            ]]>
+        </sql>
+    </changeSet>
 </databaseChangeLog>

@@ -26,13 +26,13 @@ public interface StudyRegistry {
 
     List<Event> getStudentEvents(String studentNumber);
 
-    List<Event> getTeacherEvents(String teacherNumber);
+    List<Event> getTeacherEvents(String personId);
 
     List<StudyAttainment> getStudyAttainments(String personId);
 
     List<StudyAttainment> getStudyAttainments(String personId, String studentNumber);
 
-    List<TeacherCourse> getTeacherCourses(String teacherNumber, LocalDate sinceDate);
+    List<TeacherCourse> getTeacherCourses(String personId, LocalDate sinceDate);
 
     List<StudyRight> getStudentStudyRights(String studentNumber);
 
