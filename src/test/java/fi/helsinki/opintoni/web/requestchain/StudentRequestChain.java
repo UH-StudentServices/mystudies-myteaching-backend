@@ -96,8 +96,8 @@ public class StudentRequestChain {
         return this;
     }
 
-    public StudentRequestChain roles(String responseFile) {
-        oodiServer.expectRolesRequest(TestConstants.STUDENT_PERSON_ID, responseFile);
+    public StudentRequestChain roles(String personId) {
+        oodiServer.expectRolesRequest(personId);
         return this;
     }
 
