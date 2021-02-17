@@ -111,9 +111,22 @@ public class OodiStudyRegistry implements StudyRegistry {
             .oodiCourseUnitRealisationTeachersToTeachers(oodiClient.getCourseUnitRealisationTeachers(realisationId));
     }
 
+    // Only works with persons migrated from Oodi, as their IDs start with the known prefix.
+    // Profile must and will be switched to integrate to Sisu instead of Oodi before
+    // Sisu native persons appear.
+    private String toOodiId(String personId) {
+        String sisuPrefix = "hy-hlo-";
+        if (personId.startsWith(sisuPrefix)) {
+            personId = personId.replace(sisuPrefix, "");
+        }
+        // Check that we have an integer:
+        Long.valueOf(personId);
+        return personId;
+    }
+
     @Override
     public Person getPerson(String personId) {
-        OodiRoles oodiRoles = oodiClient.getRoles(personId);
+        OodiRoles oodiRoles = oodiClient.getRoles(toOodiId(personId));
 
         return oodiStudyRegistryConverter.oodiRolesToPerson(oodiRoles);
     }

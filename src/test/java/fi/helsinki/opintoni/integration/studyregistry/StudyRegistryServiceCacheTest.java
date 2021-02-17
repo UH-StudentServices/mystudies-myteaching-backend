@@ -115,4 +115,23 @@ public class StudyRegistryServiceCacheTest extends SpringTest {
 
         assertThat(studyRights).isSameAs(cachedStudyRights);
     }
+
+    @Test
+    public void thatPersonIdIsTransformedToOodiFormatWhenFetchingStudyAttainments() {
+        studentRequestChain(STUDENT_NUMBER).roles("1234").attainments();
+
+        studyRegistryService.getStudyAttainments("hy-hlo-1234");
+    }
+
+    @Test
+    public void thatOodiPersonIdStillWorksForFetchingStudyAttainments() {
+        studentRequestChain(STUDENT_NUMBER).roles("1234").attainments();
+
+        studyRegistryService.getStudyAttainments("1234");
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void thatSisuNativePersonIdThrowsExceptionWhenFetchingStudyAttainments() {
+        studyRegistryService.getStudyAttainments("otm-sisu-native-id-here");
+    }
 }
