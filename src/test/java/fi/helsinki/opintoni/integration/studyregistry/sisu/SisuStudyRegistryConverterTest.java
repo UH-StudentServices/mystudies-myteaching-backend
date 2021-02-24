@@ -109,7 +109,7 @@ public class SisuStudyRegistryConverterTest {
             .setOverrides(List.of(EventOverrideTO.builder()
                 .setEventDate(now.toLocalDate().toString())
                 .setNotice(LocalizedStringTO.builder()
-                    .setFi("room notes\u200bstaff notes\u200bother notes").build()).build()))
+                    .setFi("other notes\u200broom notes\u200bstaff notes").build()).build()))
                     .setLocations(List.of())
             .setEvents(events(now))
             .build();

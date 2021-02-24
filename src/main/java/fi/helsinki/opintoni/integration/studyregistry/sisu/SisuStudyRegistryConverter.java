@@ -286,9 +286,9 @@ public class SisuStudyRegistryConverter {
 
         List<String> split = Splitter.on('\u200b').splitToList(extras);
         if (split.size() == 3) {
-            oe.roomNotes = split.get(0).trim();
-            oe.staffNotes = split.get(1).trim();
-            oe.otherNotes = split.get(2).trim();
+            oe.otherNotes = split.get(0).trim();
+            oe.roomNotes = split.get(1).trim();
+            oe.staffNotes = split.get(2).trim();
         }
         return oe;
     }
