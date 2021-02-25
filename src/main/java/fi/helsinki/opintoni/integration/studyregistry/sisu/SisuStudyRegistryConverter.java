@@ -268,12 +268,11 @@ public class SisuStudyRegistryConverter {
     /**
      * Parses optime extras from zero width space (u200b) separated string.
      *
-     * <p>Optime has three additional data fields for study events: RoomNotice, StaffNotice and OtherNotice.
+     * <p>Optime has three additional data fields for study events: OtherNotice, RoomNotice and StaffNotice.
      * These fields are not localized nor formatted, but may contain line feeds.
      * The data transfer to Sisu puts these three Optime fields, in the order listed above, into ONE field in Sisu.
-     * Separated by a zero width space character '\u200B'. And with non-empty Optime field formatted with a double
-     * line feed '\n\n' in the end, before the separator. The Sisu field is localized, and the same
-     * data gets copied for languages by the data transfer.</p>
+     * Separated by a zero width space character '\u200B'.
+     * The Sisu field is localized, and the same data gets copied for all languages by the data transfer.</p>
      *
      * @param extras Zero width space separated string
      * @return optime extras parsed from input string
