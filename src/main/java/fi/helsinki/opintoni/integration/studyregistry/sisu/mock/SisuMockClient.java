@@ -116,7 +116,7 @@ public class SisuMockClient implements SisuClient {
             .setOverrides(List.of(EventOverrideTO.builder()
                 .setEventDate(start.toString())
                 .setNotice(LocalizedStringTO.builder()
-                    .setFi("room notes sisusta\u200bstaff notes sisusta\u200bother notes sisusta").build()).build()))
+                    .setFi("other notes sisusta\u200broom notes sisusta\u200bstaff notes sisusta").build()).build()))
                     .setLocations(List.of())
             .setEvents(events(start, eventCount))
             .build();
