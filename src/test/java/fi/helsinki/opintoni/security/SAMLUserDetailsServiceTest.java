@@ -29,15 +29,16 @@ import static org.mockito.Mockito.when;
 
 public class SAMLUserDetailsServiceTest {
 
+    private static final String SAML_PERSONAL_UNIQUE_CODE_FIELD = "urn:oid:1.3.6.1.4.1.25178.1.2.14";
     private static final String SAML_EMAIL = "email";
     private static final String SAML_COMMON_NAME = "commonName";
     private static final String SAML_PRINCIPAL_NAME = "eduPersonPrincipalName";
-    private static final String SAML_STUDENT_NUMBER = "urn:mace:terena" +
-        ".org:schac:personalUniqueCode:int:studentID:helsinki.fi:011631484";
-    private static final String SAML_OTHER_UNIVERSITY_STUDENT_NUMBER = "urn:mace:terena" +
-        ".org:schac:personalUniqueCode:int:studentID:tut.fi:011631484";
-    private static final String SAML_EMPLOYEE_PERSONAL_UNIQUE_CODE = "urn:mace:terena"
-            + ".org:schac:personalUniqueCode:se:LIN:112435";
+    private static final String SAML_STUDENT_NUMBER =
+        "urn:schac:personalUniqueCode:int:studentID:helsinki.fi:011631484";
+    private static final String SAML_OTHER_UNIVERSITY_STUDENT_NUMBER =
+        "urn:schac:personalUniqueCode:int:studentID:tut.fi:011631484";
+    private static final String SAML_EMPLOYEE_PERSONAL_UNIQUE_CODE =
+        "urn:schac:personalUniqueCode:se:LIN:112435";
     private static final String SAML_STUDENT_NUMBER_FINAL = "011631484";
     private static final String SAML_EMPLOYEE_NUMBER = "employeeNumber";
     private static final String SISU_PERSON_ID = "hy-hlo-1440748";
@@ -67,8 +68,8 @@ public class SAMLUserDetailsServiceTest {
     }
 
     @Test
-    public void thatStudentAppUserWithMultipleUniversityStudentIDIsReturnedWithCorrectStudentNumber() {
-        SAMLCredential credential = samlStudentOtherUniversityCredential();
+    public void thatStudentAppUserWithMultipleUniversityStudentIDsReturnedWithUHStudentNumber() {
+        SAMLCredential credential = samlStudentWithMultipleUniversityStudentIdsCredential();
 
         AppUser appUser = (AppUser) userDetailsService.loadUserBySAML(credential);
         assertThat(appUser.getStudentNumber().get()).isEqualTo(SAML_STUDENT_NUMBER_FINAL);
@@ -139,7 +140,7 @@ public class SAMLUserDetailsServiceTest {
     private SAMLCredential samlStudentCredential() {
         SAMLCredential credential = samlCommonCredential();
 
-        when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.25178.1.2.14")).thenReturn(new String[] {SAML_STUDENT_NUMBER});
+        when(credential.getAttributeAsStringArray(SAML_PERSONAL_UNIQUE_CODE_FIELD)).thenReturn(new String[] {SAML_STUDENT_NUMBER});
         return credential;
     }
 
@@ -152,7 +153,7 @@ public class SAMLUserDetailsServiceTest {
     private SAMLCredential samlHybridCredential() {
         SAMLCredential credential = samlCommonCredential();
         when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.3")).thenReturn(SAML_EMPLOYEE_NUMBER);
-        when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.25178.1.2.14")).thenReturn(new String[] {SAML_STUDENT_NUMBER});
+        when(credential.getAttributeAsStringArray(SAML_PERSONAL_UNIQUE_CODE_FIELD)).thenReturn(new String[] {SAML_STUDENT_NUMBER});
         return credential;
     }
 
@@ -166,10 +167,10 @@ public class SAMLUserDetailsServiceTest {
         return credential;
     }
 
-    private SAMLCredential samlStudentOtherUniversityCredential() {
+    private SAMLCredential samlStudentWithMultipleUniversityStudentIdsCredential() {
         SAMLCredential credential = samlCommonCredential();
 
-        when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.25178.1.2.14"))
+        when(credential.getAttributeAsStringArray(SAML_PERSONAL_UNIQUE_CODE_FIELD))
             .thenReturn(new String[] {SAML_OTHER_UNIVERSITY_STUDENT_NUMBER, SAML_STUDENT_NUMBER});
         return credential;
     }
@@ -177,7 +178,7 @@ public class SAMLUserDetailsServiceTest {
     private SAMLCredential samlNoValidStudentIDCredential() {
         SAMLCredential credential = samlCommonCredential();
 
-        when(credential.getAttributeAsStringArray("urn:oid:1.3.6.1.4.1.25178.1.2.14"))
+        when(credential.getAttributeAsStringArray(SAML_PERSONAL_UNIQUE_CODE_FIELD))
             .thenReturn(new String[] {SAML_EMPLOYEE_PERSONAL_UNIQUE_CODE, SAML_OTHER_UNIVERSITY_STUDENT_NUMBER});
         when(credential.getAttributeAsString("urn:oid:2.16.840.1.113730.3.1.3")).thenReturn(SAML_EMPLOYEE_NUMBER);
         return credential;
