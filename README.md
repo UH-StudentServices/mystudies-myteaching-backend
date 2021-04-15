@@ -56,6 +56,10 @@ local Opintoni header is used (for instance when running e2e tests). When using 
 
 `./gradlew bootRun ----debug-jvm`
 
+### Running with local shibboleth authentication
+
+[Instructions for running local shibboleth authentication](src/main/local-shibbo/README.md)
+
 ### Running tests
 
 `./gradlew test`
