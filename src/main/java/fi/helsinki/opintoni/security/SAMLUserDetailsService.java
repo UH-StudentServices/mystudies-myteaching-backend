@@ -19,6 +19,9 @@ package fi.helsinki.opintoni.security;
 
 import fi.helsinki.opintoni.config.Constants;
 import fi.helsinki.opintoni.service.UserService;
+
+import java.util.Arrays;
+
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.saml2.core.Attribute;
 import org.slf4j.Logger;
@@ -47,6 +50,7 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
     private static final String SAML_ATTRIBUTE_STUDENT_NUMBER = "urn:oid:1.3.6.1.4.1.25178.1.2.14";
     private static final String SAML_ATTRIBUTE_TEACHER_FACULTY_CODE = "urn:mace:funet.fi:helsinki.fi:hyAccountingCode";
     private static final String SAML_ATTRIBUTE_PREFERRED_LANGUAGE = "urn:oid:2.16.840.1.113730.3.1.39";
+    private static final String PERSONAL_UNIQUE_CODE_HY_STUDENT_ID_PREFIX = "schac:personalUniqueCode:int:studentID:helsinki.fi:";
 
     private final UserService userService;
 
@@ -95,9 +99,23 @@ public class SAMLUserDetailsService implements org.springframework.security.saml
     }
 
     /*
-     * Student number is of format "urn:mace:terena.org:schac:personalUniqueCode:int:studentID:helsinki.fi:011631484"
+     * Get student number from multiple directory strings, possible values are as follows
+     * Valid student personalUniqueCodes:
+     * "urn:schac:personalUniqueCode:int:studentID:helsinki.fi:011631484"
+     * Valid personalUniqueCodes, but not invalid for University of Helsinki, filter out:
+     * "urn:schac:personalUniqueCode:int:studentID:tut.fi:011631484"
+     * "urn:schac:personalUniqueCode:se:LIN:87654321"
      */
     private String getStudentNumber(SAMLCredential credential) {
-        return StringUtils.substringAfterLast(credential.getAttributeAsString(SAML_ATTRIBUTE_STUDENT_NUMBER), ":");
+        String studentNumber = null;
+        String[] schacPersonalUniqueCodes = credential.getAttributeAsStringArray(SAML_ATTRIBUTE_STUDENT_NUMBER);
+        if (schacPersonalUniqueCodes != null) {
+            studentNumber = Arrays.asList(schacPersonalUniqueCodes).stream()
+                .filter(code -> code.contains(PERSONAL_UNIQUE_CODE_HY_STUDENT_ID_PREFIX))
+                .map(code -> StringUtils.substringAfterLast(code, ":"))
+                .findAny()
+                .orElse(null);
+        }
+        return studentNumber;
     }
 }
