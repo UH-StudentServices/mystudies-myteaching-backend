@@ -68,7 +68,7 @@ public class SAMLUserDetailsServiceTest {
     }
 
     @Test
-    public void thatStudentAppUserWithMultipleUniversityStudentIDsReturnedWithUHStudentNumber() {
+    public void thatStudentAppUserWithMultipleUniversityStudentIDsIsReturnedWithUHStudentNumber() {
         SAMLCredential credential = samlStudentWithMultipleUniversityStudentIdsCredential();
 
         AppUser appUser = (AppUser) userDetailsService.loadUserBySAML(credential);
