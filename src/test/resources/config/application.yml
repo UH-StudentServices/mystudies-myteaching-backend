@@ -153,7 +153,8 @@ optime:
     useOptimeFeedForWebCalendar: false
 
 esb:
-    base.url: https://esbmt2.it.helsinki.fi/devel
+    base.url: https://test-esb.helsinki.fi
+    apiKey: abloy
     client.implementation: rest
 
 iam:

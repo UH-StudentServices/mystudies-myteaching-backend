@@ -174,7 +174,8 @@ adminAccounts: opettaja@helsinki.fi, opiskelija@helsinki.fi
 embedlyApiKey: dd741e653b0e4841bc59a60650031057
 
 esb:
-    base.url: https://esbmt2.it.helsinki.fi/devel
+    base.url: https://mock-esb.it.helsinki.fi/
+    apiKey: there is no api key for mock esb
     client.implementation: mock
 
 googleAnalyticsAccount:
