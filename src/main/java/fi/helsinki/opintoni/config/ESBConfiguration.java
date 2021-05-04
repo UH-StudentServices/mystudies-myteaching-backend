@@ -37,6 +37,7 @@ import static com.google.common.collect.Lists.newArrayList;
 public class ESBConfiguration {
     private static final String CLIENT_IMPLEMENTATION_PROPERTY = "esb.client.implementation";
     private static final String ESB_BASE_URL_PROPERTY = "esb.base.url";
+    private static final String ESB_APIKEY_PROPERTY = "esb.apiKey";
     private static final String REST_IMPLEMENTATION = "rest";
     private static final String MOCK_IMPLEMENTATION = "mock";
 
@@ -61,7 +62,7 @@ public class ESBConfiguration {
     }
 
     private ESBClient esbRestClient() {
-        return new ESBRestClient(appConfiguration.get(ESB_BASE_URL_PROPERTY), esbRestTemplate());
+        return new ESBRestClient(appConfiguration.get(ESB_BASE_URL_PROPERTY), appConfiguration.get(ESB_APIKEY_PROPERTY), esbRestTemplate());
     }
 
     private ESBClient esbMockClient() {

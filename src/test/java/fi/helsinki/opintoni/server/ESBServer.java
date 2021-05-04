@@ -27,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 import static fi.helsinki.opintoni.service.profile.EmployeeContactInformationService.EMPLOYEE_NUMBER_PREFIX;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 public class ESBServer extends AbstractRestServiceServer {
@@ -41,10 +42,11 @@ public class ESBServer extends AbstractRestServiceServer {
     }
 
     public void expectEmployeeContactInformationRequest(String employeeNumber) {
-        server.expect(requestTo(String.format("%s/person/v2/employee/%s%s",
+        server.expect(requestTo(String.format("%s/person/opetukseni/employee/%s%s",
             baseUrl,
             EMPLOYEE_NUMBER_PREFIX,
             employeeNumber)))
+            .andExpect(header("Apikey", "abloy"))
             .andExpect(method(HttpMethod.GET))
             .andRespond(withSuccess(SampleDataFiles.toText("esb/employeeinfo.json"), MediaType.APPLICATION_JSON));
     }

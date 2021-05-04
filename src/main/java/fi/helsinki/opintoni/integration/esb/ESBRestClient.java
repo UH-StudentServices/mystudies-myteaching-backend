@@ -21,7 +21,10 @@ import fi.helsinki.opintoni.integration.studyregistry.oodi.OodiRestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -33,11 +36,13 @@ public class ESBRestClient implements ESBClient {
 
     private static final Logger log = LoggerFactory.getLogger(OodiRestClient.class);
 
+    private String apiKey;
     private final RestTemplate restTemplate;
     private final String baseUrl;
 
-    public ESBRestClient(String baseUrl, RestTemplate restTemplate) {
+    public ESBRestClient(String baseUrl, String apiKey, RestTemplate restTemplate) {
         this.baseUrl = baseUrl;
+        this.apiKey = apiKey;
         this.restTemplate = restTemplate;
     }
 
@@ -45,9 +50,9 @@ public class ESBRestClient implements ESBClient {
     public List<ESBEmployeeInfo> getEmployeeInfo(String employeeNumber) {
         try {
             return restTemplate.exchange(
-                baseUrl + "/person/v2/employee/{employeeNumber}",
+                baseUrl + "/person/opetukseni/employee/{employeeNumber}",
                 HttpMethod.GET,
-                null,
+                apiKeyHeaders(),
                 new ParameterizedTypeReference<List<ESBEmployeeInfo>>() {
                 },
                 employeeNumber).getBody();
@@ -64,7 +69,7 @@ public class ESBRestClient implements ESBClient {
                 Optional.ofNullable(restTemplate.exchange(
                     baseUrl + "/optime/staff/{staffId}",
                     HttpMethod.GET,
-                    null,
+                    apiKeyHeaders(),
                     new ParameterizedTypeReference<OptimeStaffInformation>() {
                     },
                     staffId).getBody());
@@ -72,5 +77,11 @@ public class ESBRestClient implements ESBClient {
             log.error("Error when fetching Optime staff information info from ESB", e);
             return Optional.empty();
         }
+    }
+
+    private HttpEntity apiKeyHeaders() {
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+        headers.add("Apikey", apiKey);
+        return new HttpEntity(headers);
     }
 }
