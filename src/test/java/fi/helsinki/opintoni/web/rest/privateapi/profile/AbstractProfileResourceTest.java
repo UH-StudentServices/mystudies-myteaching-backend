@@ -37,7 +37,7 @@ public abstract class AbstractProfileResourceTest extends SpringTest {
     protected static final String PRIVATE_PROFILE_API_PATH = RestConstants.PRIVATE_API_V1 + "/profile";
     protected static final String STUDENT_PROFILE_API_PATH = PRIVATE_PROFILE_API_PATH + "/student";
     protected static final String TEACHER_PROFILE_API_PATH = PRIVATE_PROFILE_API_PATH + "/teacher";
-    protected static final String SESSION_LANG = EN.getCode();
+    protected static final String DEFAULT_SESSION_LANG = EN.getCode();
     protected static final String ABSOLUTE_BASE_URL = "https://dev.student.helsinki.fi";
     protected static final String ABSOLUTE_PUBLIC_API_PATH = ABSOLUTE_BASE_URL + RestConstants.PUBLIC_API_V1;
     protected static final String ABSOLUTE_RESTRICTED_API_PATH = ABSOLUTE_BASE_URL + RestConstants.RESTRICTED_API_V1;
@@ -56,8 +56,12 @@ public abstract class AbstractProfileResourceTest extends SpringTest {
     }
 
     protected ResultActions createProfile(SecurityContext securityContext, String apiUrl) throws Exception {
+        return createProfile(securityContext, apiUrl, Language.EN);
+    }
+
+    protected ResultActions createProfile(SecurityContext securityContext, String apiUrl, Language sessionLang) throws Exception {
         return mockMvc.perform(post(apiUrl)
-            .cookie(langCookie(EN))
+            .cookie(langCookie(sessionLang))
             .with(securityContext(securityContext))
             .characterEncoding("UTF-8")
             .contentType(MediaType.APPLICATION_JSON)
@@ -70,6 +74,10 @@ public abstract class AbstractProfileResourceTest extends SpringTest {
 
     protected ResultActions createStudentProfile(SecurityContext securityContext, Language lang) throws Exception {
         return createProfile(securityContext, String.join("/", STUDENT_PROFILE_API_PATH, lang.getCode()));
+    }
+
+    protected ResultActions createStudentProfileWithSessionLanguage(SecurityContext securityContext, Language sessionLang) throws Exception {
+        return createProfile(securityContext, STUDENT_PROFILE_API_PATH, sessionLang);
     }
 
     protected ResultActions createTeacherProfile(SecurityContext securityContext) throws Exception {

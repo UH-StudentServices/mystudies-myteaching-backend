@@ -86,14 +86,10 @@ public class ProfileServiceTest extends SpringTest {
 
     @Test
     public void thatTeacherProfileAndComponentVisibilitiesAreCreated() {
-        componentVisibilityRepository.deleteAll();
-        deleteExistingTeacherProfile();
+        // Teacher has existing FI profile, create new
+        profileService.insert(4L, "Olli Opettaja", ProfileRole.TEACHER, Language.EN);
 
-        assertThat(profileRepository.findByUserId(4L).count()).isZero();
-
-        profileService.insert(4L, "Olli Opettaja", ProfileRole.TEACHER, Language.FI);
-
-        Profile profile = profileRepository.findByUserId(4L).findFirst().get();
+        Profile profile = profileRepository.findByUserId(4L).filter(p -> p.language.equals(Language.EN)).findFirst().get();
         assertThat(profile.visibility).isEqualTo(ProfileVisibility.PRIVATE);
         assertThat(profile.profileRole).isEqualTo(ProfileRole.TEACHER);
         assertThat(componentVisibilityService.findByProfileId(profile.id))
