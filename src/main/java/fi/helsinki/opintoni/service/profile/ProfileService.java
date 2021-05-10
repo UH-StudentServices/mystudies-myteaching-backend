@@ -23,6 +23,7 @@ import fi.helsinki.opintoni.domain.profile.ProfileSharedLink;
 import fi.helsinki.opintoni.domain.profile.ProfileVisibility;
 import fi.helsinki.opintoni.domain.profile.TeacherProfileSection;
 import fi.helsinki.opintoni.dto.profile.ProfileDto;
+import fi.helsinki.opintoni.exception.http.ForbiddenException;
 import fi.helsinki.opintoni.exception.http.NotFoundException;
 import fi.helsinki.opintoni.localization.Language;
 import fi.helsinki.opintoni.repository.UserRepository;
@@ -54,7 +55,6 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
-    private final ProfilePathGenerator profilePathGenerator;
     private final ProfileConverter profileConverter;
     private final ProfileStudyAttainmentWhitelistService whitelistService;
     private final ComponentVisibilityService componentVisibilityService;
@@ -64,7 +64,6 @@ public class ProfileService {
     @Autowired
     public ProfileService(ProfileRepository profileRepository,
                           UserRepository userRepository,
-                          ProfilePathGenerator profilePathGenerator,
                           ProfileConverter profileConverter,
                           ProfileStudyAttainmentWhitelistService whitelistService,
                           ComponentVisibilityService componentVisibilityService,
@@ -72,7 +71,6 @@ public class ProfileService {
                           ImageService imageService) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
-        this.profilePathGenerator = profilePathGenerator;
         this.profileConverter = profileConverter;
         this.whitelistService = whitelistService;
         this.componentVisibilityService = componentVisibilityService;
@@ -85,7 +83,7 @@ public class ProfileService {
             .findByUserId(userId)
             .findFirst()
             .map(profile -> profile.path)
-            .orElse(profilePathGenerator.create(name));
+            .orElseThrow(() -> new ForbiddenException("User [" + userId + "] does not have existing profile"));
 
         Profile profile = new Profile();
         profile.language = lang;
