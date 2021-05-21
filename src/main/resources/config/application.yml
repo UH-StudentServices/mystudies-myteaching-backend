@@ -475,7 +475,7 @@ obar:
     jwtTimeout: 60 # seconds
 
 studyregistry:
-    oodiDatasets:
+    sisuDataSets:
         - STUDENT_ENROLLMENTS
         - STUDENT_EVENTS
         - STUDY_RIGHTS
