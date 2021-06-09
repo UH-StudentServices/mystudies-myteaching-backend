@@ -23,7 +23,6 @@ import fi.helsinki.opintoni.integration.coursecms.CourseCmsCourseUnitRealisation
 import fi.helsinki.opintoni.integration.coursepage.CoursePageCourseImplementation;
 import fi.helsinki.opintoni.integration.optime.OptimeService;
 import fi.helsinki.opintoni.integration.studyregistry.CourseRealisation;
-import fi.helsinki.opintoni.integration.studyregistry.Enrollment;
 import fi.helsinki.opintoni.integration.studyregistry.Event;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.integration.studyregistry.TeacherCourse;
@@ -69,19 +68,6 @@ public class EventService {
         this.optimeConfiguration = optimeConfiguration;
         this.optimeService = optimeService;
         this.optimeCalendarService = optimeCalendarService;
-    }
-
-    // this is not used anymore?
-    public List<EventDto> getStudentEvents(String studentNumber, Locale locale) {
-        List<Enrollment> enrollments = studyRegistryService.getEnrollments(studentNumber).stream()
-            .filter(e -> !e.isCancelled)
-            .collect(Collectors.toList());
-
-        return filterEnrichAndMergeEvents(
-            studyRegistryService.getStudentEvents(studentNumber),
-            Collections.emptyList(),
-            enrollments,
-            locale);
     }
 
     public List<EventDto> getTeacherEvents(final String hloId, final Locale locale) {

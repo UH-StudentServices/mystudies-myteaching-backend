@@ -25,6 +25,8 @@ import fi.helsinki.opintoni.exception.http.CalendarFeedNotFoundException;
 import fi.helsinki.opintoni.integration.studyregistry.Person;
 import fi.helsinki.opintoni.integration.studyregistry.StudyRegistryService;
 import fi.helsinki.opintoni.service.converter.EventConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,8 @@ public class CalendarService {
     private final StudyRegistryService studyRegistryService;
     private final CalendarTransactionalService calendarTransactionalService;
     private final EventConverter eventConverter;
+
+    private static final Logger log = LoggerFactory.getLogger(CalendarService.class);
 
     @Autowired
     public CalendarService(EventService eventService,
@@ -66,25 +70,16 @@ public class CalendarService {
             .orElseThrow(CalendarFeedNotFoundException::new);
     }
 
-    // Should actually return only teacher events here because student events are at mystudies
-    // but changing this would require extensive test modifications, and this system goes out in a half a year.
     private String getCalendarFeedFromEvents(CalendarFeed calendarFeed, Locale locale) {
+        log.warn(String.format("Calendar feed should be fetched from Optime, but now fetching from Opetukseni for user %s: %s.",
+                calendarFeed.user.personId, calendarFeed.user.eduPersonPrincipalName));
         Optional<Person> person = Optional.ofNullable(
             studyRegistryService.getPerson(calendarFeed.user.personId)
         );
 
-        List<EventDto> events = person.stream().map(p -> {
-            List<EventDto> studentEvents = Optional.ofNullable(p.studentNumber)
-                .map(s -> eventService.getStudentEvents(s, locale))
-                .orElse(Lists.newArrayList());
-            List<EventDto> teacherEvents = Optional.ofNullable(p.teacherNumber)
+        List<EventDto> events = person.stream().map(p -> Optional.ofNullable(p.teacherNumber)
                 .map(s -> eventService.getTeacherEvents(calendarFeed.user.personId, locale))
-                .orElse(Lists.newArrayList());
-
-            studentEvents.addAll(teacherEvents);
-            return studentEvents;
-
-        }).flatMap(List::stream).collect(Collectors.toList());
+                .orElse(Lists.newArrayList())).flatMap(List::stream).collect(Collectors.toList());
 
         return eventConverter.toICalendar(events);
 

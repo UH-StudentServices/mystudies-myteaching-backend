@@ -18,161 +18,22 @@
 package fi.helsinki.opintoni.web.rest.publicapi;
 
 import fi.helsinki.opintoni.SpringTest;
-import fi.helsinki.opintoni.integration.studyregistry.Person;
 import fi.helsinki.opintoni.integration.studyregistry.sisu.SisuStudyRegistry;
-import fi.helsinki.opintoni.localization.Language;
-import fi.helsinki.opintoni.web.TestConstants;
-import fi.helsinki.opintoni.web.WebConstants;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
-import org.hamcrest.core.StringContains;
-import org.hamcrest.core.StringEndsWith;
-import org.hamcrest.core.StringStartsWith;
 import org.junit.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * This class only used to test the calendar feed for students.
+ * Now only calendar feed for teachers is implemented, but instead of that, Optime calendar feed should be used.
+ * The system is sunsetting, so we will not use effort for writing tests for teacher calendar feed at this time.
+ */
 public class PublicCalendarFeedResourceTest extends SpringTest {
-
-    private static final String CRLF = "\r\n";
 
     @MockBean
     SisuStudyRegistry mockSisuStudyRegistry;
-
-    @Test
-    public void thatCalendarFeedIsDisplayed() throws Exception {
-        Language language = Language.EN;
-
-        expectEvents(language);
-
-        String expectedFeedStart = String.join(CRLF,
-            "BEGIN:VCALENDAR",
-                "VERSION:2.0",
-                "CALSCALE:GREGORIAN",
-                "BEGIN:VTIMEZONE",
-                "TZID:Europe/Helsinki",
-                "TZURL:http://tzurl.org/zoneinfo/Europe/Helsinki",
-                "X-LIC-LOCATION:Europe/Helsinki");
-
-        List<String> expectedCalendarEvents = newArrayList(
-            eventToString(
-                "BEGIN:VEVENT",
-                "DTSTART;TZID=Europe/Helsinki:20161219T141500",
-                "DTEND;TZID=Europe/Helsinki:20161219T154500",
-                "SUMMARY:Formulation II Harjoitus II (en)",
-                "DESCRIPTION:Aku Ankka\\, testauksessa mukana",
-                "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11\\, Päärakennus\\, "
-                    + "sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11",
-                "UID:"),
-            eventToString(
-                "BEGIN:VEVENT",
-                "DTSTART;TZID=Europe/Helsinki:20161223T160000",
-                "DTEND;TZID=Europe/Helsinki:20161223T160000",
-                "SUMMARY:Test exam 04159adb2253\\, Animal Biotechnology B (KEL/KEBIOT230)",
-                "LOCATION:Place: Test 04156f654df1",
-                "UID:"),
-            eventToString(
-                "BEGIN:VEVENT",
-                "DTSTART;TZID=Europe/Helsinki:20170131T110000",
-                "DTEND;TZID=Europe/Helsinki:20170131T140000",
-                "SUMMARY:Formulation III Harjoitus (en)",
-                "LOCATION:Arppeanumin auditorio\\, Viikinkaari 11",
-                "UID:"),
-            eventToString(
-                "BEGIN:VEVENT",
-                "DTSTART;TZID=Europe/Helsinki:20401028T130000",
-                "DTEND;TZID=Europe/Helsinki:20401128T160000",
-                "SUMMARY:Tentti\\, Animal Biotechnology B (KEL/KEBIOT230)",
-                "LOCATION:Tenttisali",
-                "UID:"),
-            eventToString(
-                "BEGIN:VEVENT",
-                "DTSTART;TZID=Europe/Helsinki:20401028T130000",
-                "DTEND;TZID=Europe/Helsinki:20401028T235959",
-                "SUMMARY:Ei päättymisaikaa\\, Animal Biotechnology B (KEL/KEBIOT230)",
-                "LOCATION:Paikka X"
-            )
-        );
-
-        String expectedFeedEnd = "END:VCALENDAR" + CRLF;
-
-        when(mockSisuStudyRegistry.getPerson(anyString())).thenReturn(person(TestConstants.STUDENT_NUMBER));
-
-        mockMvc.perform(get(String.format("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/%s", language.getCode())))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.TEXT_CALENDAR_UTF8))
-            .andExpect(content().string(Matchers.allOf(newArrayList(
-                contentMatchers(
-                    expectedFeedStart,
-                    expectedFeedEnd,
-                    expectedCalendarEvents)))));
-    }
-
-    private Person person(String studentNumber) {
-        Person person = new Person();
-        person.studentNumber = studentNumber;
-        return person;
-    }
-
-    @Test
-    public void thatCalendarFeedIsDisplayedWithOverlappingEventData() throws Exception {
-        Language language = Language.EN;
-
-        expectOverlapping(language);
-
-        List<String> expectedCalendarEvents = newArrayList(
-            eventToString(
-                "BEGIN:VEVENT",
-                "DTSTART;TZID=Europe/Helsinki:20161219T141500",
-                "DTEND;TZID=Europe/Helsinki:20161219T154500",
-                "SUMMARY:Formulation II Harjoitus II (en)",
-                "DESCRIPTION:Aku Ankka\\, testauksessa mukana",
-                "LOCATION:Päärakennus\\, sali 1\\, Viikinkaari 11\\, Päärakennus\\, "
-                    + "sali 2\\, Viikinkaari 11\\, Päärakennus\\, sali 3\\, Viikinkaari 11\\, overlapping where data",
-                "UID:")
-        );
-
-        when(mockSisuStudyRegistry.getPerson(anyString())).thenReturn(person(TestConstants.STUDENT_NUMBER));
-
-        mockMvc.perform(get(String.format("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/%s", language.getCode())))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(WebConstants.TEXT_CALENDAR_UTF8))
-            .andExpect(content().string(Matchers.allOf(newArrayList(
-                contentMatchers(
-                    null,
-                    null,
-                    expectedCalendarEvents)))));
-    }
-
-    private List<Matcher<String>> contentMatchers(String expectedFeedStart, String expectedFeedEnd, List<String> expectedCalendarEvents) {
-
-        List<Matcher<String>> matchers = newArrayList();
-
-        if (expectedFeedStart != null) {
-            matchers.add(new StringStartsWith(expectedFeedStart));
-        }
-
-        if (expectedFeedEnd != null) {
-            matchers.add(new StringEndsWith(expectedFeedEnd));
-        }
-
-        matchers.addAll(expectedCalendarEvents.stream()
-            .map(StringContains::containsString)
-            .collect(Collectors.toList()));
-
-        return matchers;
-    }
 
     @Test
     public void that404IsReturnedWhenUsingIllegalLocale() throws Exception {
@@ -180,27 +41,4 @@ public class PublicCalendarFeedResourceTest extends SpringTest {
         mockMvc.perform(get(String.format("/api/public/v1/calendar/c9ea7949-577c-458c-a9d9-3c2a39269dd8/%s", lang)))
             .andExpect(status().isNotFound());
     }
-
-    private String eventToString(String... args) {
-        return String.join(CRLF, args);
-    }
-
-    private void expectEvents(Language language) throws Exception {
-        defaultStudentRequestChain()
-            .enrollments()
-            .events()
-            .coursePageUrls(Map.of("123456789", "https://courses.helsinki.fi/" + language.getCode() + "/1234/123456789"), new Locale(language.getCode()))
-            .and()
-            .defaultImplementationWithLocale(new Locale(language.getCode()));
-    }
-
-    private void expectOverlapping(Language language) throws Exception {
-        defaultStudentRequestChain()
-            .enrollments()
-            .events()
-            .coursePageUrls(Map.of("123456789", "https://courses.helsinki.fi/" + language.getCode() + "/1234/123456789"), new Locale(language.getCode()))
-            .and()
-            .courseImplementationWithLocaleRequestChain("123456789", new Locale(language.getCode()), "course_with_overlapping_data.json");
-    }
-
 }
