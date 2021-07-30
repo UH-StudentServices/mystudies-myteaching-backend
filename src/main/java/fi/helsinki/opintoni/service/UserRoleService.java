@@ -63,6 +63,6 @@ public class UserRoleService {
     }
 
     private boolean isOpenUniversityId(String code) {
-        return code.matches("^(A|a).*");
+        return code != null && code.matches("^(A|a).*");
     }
 }

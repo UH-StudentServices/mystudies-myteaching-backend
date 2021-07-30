@@ -164,7 +164,9 @@ public class SisuStudyRegistryConverter {
             tc.name = localizedStringToToLocalizedText(cur.getName());
             tc.realisationName = localizedStringToToLocalizedText(cur.getName());
         }
-        tc.learningOpportunityId = cur.getCourseUnits().get(0).getCode();
+        if (cur.getCourseUnits() != null && !cur.getCourseUnits().isEmpty()) {
+            tc.learningOpportunityId = cur.getCourseUnits().get(0).getCode();
+        }
         tc.organisations = cur.getOrganisations().stream()
             .filter(curOrg -> curOrg.getOrganisation() != null)
             .map(curOrg -> {
