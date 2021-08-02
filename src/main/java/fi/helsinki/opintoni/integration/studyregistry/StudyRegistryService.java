@@ -57,6 +57,11 @@ public class StudyRegistryService {
         return oodiStudyRegistry;
     }
 
+    // Methods catching UnsupportedOperationException from sisu integration and returning empty list
+    // retained for legacy reasons. Student users can only use profile currently, which does not use
+    // enrollment, study rights or student events so those can safely return default value if/when
+    // they are called from routes where that data was used for My Studies side of application.
+
     @Cacheable(value = CacheConstants.STUDENT_ENROLLMENTS, cacheManager = "transientCacheManager")
     public List<Enrollment> getEnrollments(String studentNumber) {
         try {
