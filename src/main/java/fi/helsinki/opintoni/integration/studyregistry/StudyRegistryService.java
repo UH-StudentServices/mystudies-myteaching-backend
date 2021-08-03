@@ -18,12 +18,15 @@
 package fi.helsinki.opintoni.integration.studyregistry;
 
 import fi.helsinki.opintoni.cache.CacheConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSet.STUDENT_ENROLLMENTS;
@@ -33,6 +36,9 @@ import static fi.helsinki.opintoni.integration.studyregistry.StudyRegistryDataSe
 
 @Service
 public class StudyRegistryService {
+
+    private static final Logger logger = LoggerFactory.getLogger(StudyRegistryService.class);
+
     @Autowired
     @Qualifier("oodiStudyRegistry")
     private StudyRegistry oodiStudyRegistry;
@@ -51,14 +57,29 @@ public class StudyRegistryService {
         return oodiStudyRegistry;
     }
 
+    // Methods catching UnsupportedOperationException from sisu integration and returning empty list
+    // retained for legacy reasons. Student users can only use profile currently, which does not use
+    // enrollment, study rights or student events so those can safely return default value if/when
+    // they are called from routes where that data was used for My Studies side of application.
+
     @Cacheable(value = CacheConstants.STUDENT_ENROLLMENTS, cacheManager = "transientCacheManager")
     public List<Enrollment> getEnrollments(String studentNumber) {
-        return getStudyRegistry(STUDENT_ENROLLMENTS).getEnrollments(studentNumber);
+        try {
+            return getStudyRegistry(STUDENT_ENROLLMENTS).getEnrollments(studentNumber);
+        } catch (UnsupportedOperationException e) {
+            logger.info("Called not implemented student enrollments");
+            return Collections.emptyList();
+        }
     }
 
     @Cacheable(value = CacheConstants.STUDENT_EVENTS, cacheManager = "transientCacheManager")
     public List<Event> getStudentEvents(String studentNumber) {
-        return getStudyRegistry(STUDENT_EVENTS).getStudentEvents(studentNumber);
+        try {
+            return getStudyRegistry(STUDENT_EVENTS).getStudentEvents(studentNumber);
+        } catch (UnsupportedOperationException e) {
+            logger.info("Called not implemented student events");
+            return Collections.emptyList();
+        }
     }
 
     @Cacheable(value = CacheConstants.TEACHER_EVENTS, cacheManager = "transientCacheManager")
@@ -83,7 +104,12 @@ public class StudyRegistryService {
 
     @Cacheable(value = CacheConstants.STUDY_RIGHTS, cacheManager = "transientCacheManager")
     public List<StudyRight> getStudentStudyRights(String studentNumber) {
-        return getStudyRegistry(STUDY_RIGHTS).getStudentStudyRights(studentNumber);
+        try {
+            return getStudyRegistry(STUDY_RIGHTS).getStudentStudyRights(studentNumber);
+        } catch (UnsupportedOperationException e) {
+            logger.info("Called not implemented student study rights");
+            return Collections.emptyList();
+        }
     }
 
     public Person getPerson(String personId) {
