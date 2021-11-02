@@ -1,3 +1,6 @@
+# This project is being shut down
+Only Nginx remains for redirects.
+
 # MyStudies/MyTeaching/Profile Backend
 
 My studies is no longer in production use.
